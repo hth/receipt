@@ -5,6 +5,7 @@ import com.receiptofi.domain.annotation.Mobile;
 import com.receiptofi.repository.ExpenseTagManager;
 import com.receiptofi.repository.ItemManager;
 import com.receiptofi.repository.ReceiptManager;
+import com.receiptofi.utils.RandomString;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -71,7 +72,14 @@ public class ExpensesService {
     }
 
     public void updateExpenseTag(String expenseTypeId, String expenseTagName, String expenseTagColor, String rid) {
-        expenseTagManager.updateExpenseTag(expenseTypeId, expenseTagName, expenseTagColor, rid);
+        ExpenseTagEntity expenseTag = expenseTagManager.getExpenseTagByName(rid, expenseTagName);
+        if (expenseTag == null) {
+            expenseTagManager.updateExpenseTag(expenseTypeId, expenseTagName, expenseTagColor, rid);
+        } else {
+            expenseTag.setTagName(expenseTag.getTagName() + RandomString.newInstance(3).nextString());
+            expenseTagManager.save(expenseTag);
+            expenseTagManager.updateExpenseTag(expenseTypeId, expenseTagName, expenseTagColor, rid);
+        }
     }
 
     @Mobile

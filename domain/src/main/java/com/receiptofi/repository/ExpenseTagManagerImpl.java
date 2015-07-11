@@ -2,6 +2,7 @@ package com.receiptofi.repository;
 
 import static com.receiptofi.repository.util.AppendAdditionalFields.entityUpdate;
 import static com.receiptofi.repository.util.AppendAdditionalFields.isActive;
+import static com.receiptofi.repository.util.AppendAdditionalFields.isNotActive;
 import static com.receiptofi.repository.util.AppendAdditionalFields.isNotDeleted;
 import static org.springframework.data.domain.Sort.Direction.ASC;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
@@ -99,6 +100,22 @@ public class ExpenseTagManagerImpl implements ExpenseTagManager {
                                 .and("RID").is(rid)
                                 .andOperator(
                                         isActive(),
+                                        isNotDeleted()
+                                )
+                ),
+                ExpenseTagEntity.class,
+                TABLE
+        );
+    }
+
+    @Override
+    public ExpenseTagEntity getExpenseTagByName(String rid, String expenseTagName) {
+        Assert.hasText(expenseTagName, "ExpenseTagName is empty");
+        return mongoTemplate.findOne(
+                query(where("TAG").is(expenseTagName)
+                                .and("RID").is(rid)
+                                .andOperator(
+                                        isNotActive(),
                                         isNotDeleted()
                                 )
                 ),
