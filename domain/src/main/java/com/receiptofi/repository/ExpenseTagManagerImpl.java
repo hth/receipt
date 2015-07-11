@@ -2,6 +2,7 @@ package com.receiptofi.repository;
 
 import static com.receiptofi.repository.util.AppendAdditionalFields.entityUpdate;
 import static com.receiptofi.repository.util.AppendAdditionalFields.isActive;
+import static com.receiptofi.repository.util.AppendAdditionalFields.isDeleted;
 import static com.receiptofi.repository.util.AppendAdditionalFields.isNotActive;
 import static com.receiptofi.repository.util.AppendAdditionalFields.isNotDeleted;
 import static org.springframework.data.domain.Sort.Direction.ASC;
@@ -116,7 +117,7 @@ public class ExpenseTagManagerImpl implements ExpenseTagManager {
                                 .and("RID").is(rid)
                                 .andOperator(
                                         isNotActive(),
-                                        isNotDeleted()
+                                        isDeleted()
                                 )
                 ),
                 ExpenseTagEntity.class,
