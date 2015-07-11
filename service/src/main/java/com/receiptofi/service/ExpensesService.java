@@ -71,16 +71,19 @@ public class ExpensesService {
         expenseTagManager.save(expenseType);
     }
 
+    @Mobile
     public void updateExpenseTag(String expenseTypeId, String expenseTagName, String expenseTagColor, String rid) {
         ExpenseTagEntity expenseTag = expenseTagManager.getExpenseTagByName(rid, expenseTagName);
         if (expenseTag == null) {
             expenseTagManager.updateExpenseTag(expenseTypeId, expenseTagName, expenseTagColor, rid);
         } else {
+            //TODO(hth) prefer to delete inactive expenseTag instead.
             LOG.warn("Previously existing expense tag by name={}", expenseTag.getTagName());
             expenseTag.setTagName(expenseTag.getTagName() + "-" + RandomString.newInstance(3).nextString());
-            LOG.warn("Previously existing expense tag saved by new name={}", expenseTag.getTagName());
             expenseTagManager.save(expenseTag);
 
+            LOG.warn("Inactive expense tag saved by new name={} and now updating existing expense tag with name={}",
+                    expenseTag.getTagName(), expenseTagName);
             expenseTagManager.updateExpenseTag(expenseTypeId, expenseTagName, expenseTagColor, rid);
         }
     }
