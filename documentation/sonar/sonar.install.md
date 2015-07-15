@@ -21,6 +21,10 @@ To drop
     DROP DATABASE IF EXISTS sonar;
     DROP USER 'sonar'@'localhost';
     DROP USER 'sonar'@'%';
+    
+During sonar upgrade, take db dump in case, before upgrade.    
+    
+    mysqldump -u root --databases sonar > ~/Downloads/sonar.sql
 
 Then configure **[nginx.conf](../nginx/nginx.conf.md)** to map with `https://sonar.receiptofi.com` and note local LAN
 users should have access. Update `/etc/hosts` file with `sonar` IP and sub-domain. Do not forget to update the `hosts`
