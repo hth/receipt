@@ -36,9 +36,19 @@ public class JsonBizStore {
     @JsonProperty ("phone")
     private String phone;
 
+    @JsonProperty ("lat")
+    private String lat;
+
+    @JsonProperty ("lng")
+    private String lng;
+
     private JsonBizStore(BizStoreEntity bizStoreEntity) {
         this.address = bizStoreEntity.getAddress();
         this.phone = bizStoreEntity.getPhoneFormatted();
+        if (null != bizStoreEntity.getCoordinate()) {
+            this.lat = Double.toString(bizStoreEntity.getCoordinate().getLat());
+            this.lng = Double.toString(bizStoreEntity.getCoordinate().getLng());
+        }
     }
 
     public static JsonBizStore newInstance(BizStoreEntity bizStoreEntity) {
