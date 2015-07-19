@@ -75,7 +75,7 @@ public class ExpensesService {
         } else {
             //TODO(hth) prefer to delete inactive expenseTag instead.
             LOG.warn("Previously existing expense tag by name={}", expenseTagExists.getTagName());
-            expenseTagExists.setTagName(expenseTag.getTagName() + "-" + RandomString.newInstance(3).nextString());
+            expenseTagExists.setTagName(expenseTagExists.getTagName() + "-" + RandomString.newInstance(3).nextString());
             expenseTagManager.save(expenseTagExists);
 
             LOG.warn("Inactive expense tag saved by new name={} and now saving new expense tag with name={}",
