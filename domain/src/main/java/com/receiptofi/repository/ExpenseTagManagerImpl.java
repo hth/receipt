@@ -55,7 +55,7 @@ public class ExpenseTagManagerImpl implements ExpenseTagManager {
     @Override
     public void save(ExpenseTagEntity object) {
         try {
-            if (object.getId() != null) {
+            if (null != object.getId()) {
                 object.setUpdated();
             }
             mongoTemplate.save(object, TABLE);
