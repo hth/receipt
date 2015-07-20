@@ -1,7 +1,6 @@
 package com.receiptofi.repository;
 
 import com.receiptofi.domain.ExpenseTagEntity;
-import com.receiptofi.domain.annotation.Mobile;
 
 import java.util.List;
 
@@ -29,7 +28,4 @@ public interface ExpenseTagManager extends RepositoryManager<ExpenseTagEntity> {
     void updateExpenseTag(String expenseTagId, String expenseTagName, String expenseTagColor, String rid);
 
     boolean softDeleteExpenseTag(String expenseTagId, String expenseTagName, String rid);
-
-    @Mobile
-    boolean doesExits(String rid, String expenseTagName);
 }
