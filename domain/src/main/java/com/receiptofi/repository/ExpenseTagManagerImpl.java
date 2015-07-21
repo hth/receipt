@@ -148,12 +148,4 @@ public class ExpenseTagManagerImpl implements ExpenseTagManager {
                 ExpenseTagEntity.class);
         return writeResult.getN() > 0;
     }
-
-    @Override
-    public boolean doesExits(String rid, String expenseTagName) {
-        return mongoTemplate.count(
-                query(where("RID").is(rid).and("TAG").is(expenseTagName)),
-                ExpenseTagEntity.class
-        ) > 0;
-    }
 }
