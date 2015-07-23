@@ -8,6 +8,8 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import javax.validation.constraints.NotNull;
+
 /**
  * @author hitender
  * @since Dec 23, 2012 1:48:36 AM
@@ -20,6 +22,10 @@ import org.springframework.data.mongodb.core.mapping.Field;
 })
 @Document (collection = "USER_PREFERENCE")
 public class UserPreferenceEntity extends BaseEntity {
+
+    @NotNull
+    @Field ("RID")
+    private String receiptUserId;
 
     @DBRef
     @Indexed (unique = true)
@@ -38,6 +44,7 @@ public class UserPreferenceEntity extends BaseEntity {
     private UserPreferenceEntity(UserProfileEntity userProfile) {
         super();
         this.userProfile = userProfile;
+        this.receiptUserId = userProfile.getReceiptUserId();
     }
 
     /**
