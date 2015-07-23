@@ -7,6 +7,8 @@ import static com.receiptofi.repository.util.AppendAdditionalFields.isActive;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
 
+import com.mongodb.WriteResult;
+
 import com.receiptofi.domain.BaseEntity;
 import com.receiptofi.domain.UserAuthenticationEntity;
 import com.receiptofi.domain.UserProfileEntity;
@@ -17,6 +19,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.WriteResultChecking;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -48,6 +51,9 @@ public final class UserProfileManagerImpl implements UserProfileManager {
 
     private MongoTemplate mongoTemplate;
 
+    /** When OptimisticLockingFailureException happen, ignore and re-create record. */
+    private boolean ignoreOptimisticLockingFailureException = false;
+
     @Autowired
     public UserProfileManagerImpl(MongoTemplate mongoTemplate) {
         this.mongoTemplate = mongoTemplate;
@@ -55,11 +61,36 @@ public final class UserProfileManagerImpl implements UserProfileManager {
 
     @Override
     public void save(UserProfileEntity object) {
-        mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
-        if (object.getId() != null) {
-            object.setUpdated();
+        try {
+            mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
+            if (object.getId() != null) {
+                object.setUpdated();
+            }
+            mongoTemplate.save(object, TABLE);
+        } catch (OptimisticLockingFailureException e) {
+            //TODO may be remove this condition in future. This is annoying temporary condition.
+            if (ignoreOptimisticLockingFailureException) {
+                /** This will re-create user profile with same details every time when there is a failure. */
+                LOG.error("UserProfile saving optimistic locking failure, override optimistic locking rid={} reason={}",
+                        object.getReceiptUserId(), e.getLocalizedMessage(), e);
+
+                WriteResult writeResult = mongoTemplate.remove(
+                        query(where("RID").is(object.getReceiptUserId())),
+                        UserProfileEntity.class,
+                        TABLE);
+                if (writeResult.getN() > 0) {
+                    LOG.info("Deleted optimistic locking data issue for rid={}", object.getReceiptUserId());
+                    object.setId(null);
+                    object.setVersion(null);
+                    mongoTemplate.save(object, TABLE);
+                } else {
+                    LOG.error("Delete failed on locking issue for rid={}", object.getReceiptUserId());
+                    throw e;
+                }
+            } else {
+                throw e;
+            }
         }
-        mongoTemplate.save(object, TABLE);
     }
 
     @Override
