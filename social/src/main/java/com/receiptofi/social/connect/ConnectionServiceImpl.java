@@ -3,24 +3,20 @@ package com.receiptofi.social.connect;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
 
-import com.receiptofi.domain.ExpenseTagEntity;
 import com.receiptofi.domain.UserAccountEntity;
 import com.receiptofi.domain.UserAuthenticationEntity;
 import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.domain.types.ProviderEnum;
 import com.receiptofi.domain.types.RoleEnum;
-import com.receiptofi.repository.ExpenseTagManager;
 import com.receiptofi.repository.GenerateUserIdManager;
 import com.receiptofi.repository.UserAccountManager;
-import com.receiptofi.repository.UserAuthenticationManager;
 import com.receiptofi.repository.UserProfileManager;
 import com.receiptofi.service.AccountService;
-import com.receiptofi.service.BillingService;
-import com.receiptofi.service.ExpensesService;
 import com.receiptofi.service.RegistrationService;
 import com.receiptofi.social.UserAccountDuplicateException;
 import com.receiptofi.social.annotation.Social;
 import com.receiptofi.social.config.ProviderConfig;
+import com.receiptofi.social.service.CustomUserDetailsService;
 import com.receiptofi.utils.DateUtil;
 import com.receiptofi.utils.RandomString;
 
@@ -32,7 +28,6 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.dao.DuplicateKeyException;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -77,10 +72,7 @@ public class ConnectionServiceImpl implements ConnectionService {
     @Autowired private ProviderConfig providerConfig;
     @Autowired private UserAccountManager userAccountManager;
     @Autowired private UserProfileManager userProfileManager;
-    @Autowired private BillingService billingService;
-    @Autowired private UserAuthenticationManager userAuthenticationManager;
-    @Autowired private ExpensesService expensesService;
-    @Autowired private ExpenseTagManager expenseTagManager;
+    @Autowired private CustomUserDetailsService customUserDetailsService;
 
     @Value ("${social.profile.lastFetched:60}")
     private long lastFetched;
@@ -95,7 +87,8 @@ public class ConnectionServiceImpl implements ConnectionService {
     }
 
     /**
-     * This is called when the provider userId i.e puid does not exists in DB.
+     * Called when the provider userId i.e puid does not exists in DB. Invoked only by website social login for the
+     * first time. Not invoked by mobile sign up.
      *
      * @param userId
      * @param userConn
@@ -109,10 +102,20 @@ public class ConnectionServiceImpl implements ConnectionService {
 
             if (userProfile == null) {
                 UserAccountEntity userAccount = createUserAccount(userId, userConn);
+                /** Social account, hence account is considered validated by default. */
+                userAccount.setAccountValidatedBeginDate();
+                userAccount.setAccountValidated(true);
                 accountService.createNewAccount(userAccount);
 
-                copyToUserProfile(user, userAccount);
-            } else {
+                userProfile = copyToUserProfile(user, userAccount);
+                accountService.save(userProfile);
+                accountService.createPreferences(userProfile);
+
+                /** Set the blank names in UserAccount from UserProfile. */
+                userAccount.setFirstName(userProfile.getFirstName());
+                userAccount.setLastName(userProfile.getLastName());
+                customUserDetailsService.updateUserIdWithEmailWhenPresent(userAccount, userProfile);
+            } else if (userProfile.getProviderId() != ProviderEnum.FACEBOOK) {
                 LOG.info("Account already exists rid={} email={} pid={}",
                         userProfile.getReceiptUserId(), userProfile.getEmail(), userProfile.getProviderId());
                 throw new UserAccountDuplicateException("Found existing user with similar login");
@@ -124,10 +127,20 @@ public class ConnectionServiceImpl implements ConnectionService {
 
             if (userProfile == null) {
                 UserAccountEntity userAccount = createUserAccount(userId, userConn);
+                /** Social account, hence account is considered validated by default. */
+                userAccount.setAccountValidatedBeginDate();
+                userAccount.setAccountValidated(true);
                 accountService.createNewAccount(userAccount);
 
-                copyToUserProfile(person, userAccount);
-            } else {
+                userProfile = copyToUserProfile(person, userAccount);
+                accountService.save(userProfile);
+                accountService.createPreferences(userProfile);
+
+                /** Set the blank names in UserAccount from UserProfile. */
+                userAccount.setFirstName(userProfile.getFirstName());
+                userAccount.setLastName(userProfile.getLastName());
+                customUserDetailsService.updateUserIdWithEmailWhenPresent(userAccount, userProfile);
+            } else if (userProfile.getProviderId() != ProviderEnum.GOOGLE) {
                 LOG.info("Account already exists rid={} email={} pid={}",
                         userProfile.getReceiptUserId(), userProfile.getEmail(), userProfile.getProviderId());
                 throw new UserAccountDuplicateException("Found existing user with similar login");
@@ -136,7 +149,11 @@ public class ConnectionServiceImpl implements ConnectionService {
     }
 
     private Facebook getFacebook(UserAccountEntity userAccountFromConnection) {
-        return new FacebookTemplate(userAccountFromConnection.getAccessToken(), "notfoundexception");
+        return new FacebookTemplate(userAccountFromConnection.getAccessToken(), "");
+    }
+
+    private Facebook getFacebook(String accessToken) {
+        return new FacebookTemplate(accessToken, "");
     }
 
     private User getFacebookUser(Facebook facebook) {
@@ -206,7 +223,12 @@ public class ConnectionServiceImpl implements ConnectionService {
             if (ProviderEnum.valueOf(userConn.getKey().getProviderId().toUpperCase()) == ProviderEnum.FACEBOOK) {
                 Facebook facebook = getFacebook(userAccountFromConnection);
                 User user = getFacebookUser(facebook);
-                copyToUserProfile(user, userAccount);
+                userProfile = copyToUserProfile(user, userAccount);
+                accountService.save(userProfile);
+
+                /** Update with latest names in UserAccount from UserProfile. */
+                updateUserAccountName(userAccount, userProfile);
+                customUserDetailsService.updateUserIdWithEmailWhenPresent(userAccount, userProfile);
 
                 if (providerConfig.isPopulateSocialFriendOn()) {
                     populateFacebookFriends(userAccount, facebook);
@@ -214,7 +236,12 @@ public class ConnectionServiceImpl implements ConnectionService {
             } else {
                 Google google = getGoogle(userAccountFromConnection);
                 Person person = getGooglePerson(google);
-                copyToUserProfile(person, userAccount);
+                userProfile = copyToUserProfile(person, userAccount);
+                accountService.save(userProfile);
+
+                /** Update with latest names in UserAccount from UserProfile. */
+                updateUserAccountName(userAccount, userProfile);
+                customUserDetailsService.updateUserIdWithEmailWhenPresent(userAccount, userProfile);
 
                 if (providerConfig.isPopulateSocialFriendOn()) {
                     // XXX TODO page Circle to get all the users in the circle
@@ -223,6 +250,24 @@ public class ConnectionServiceImpl implements ConnectionService {
             }
         } else {
             LOG.info("Skipped social userProfile update as it was last fetched within seconds={}", lastFetched);
+        }
+    }
+
+    /**
+     * Updates with latest names in UserAccount from UserProfile.
+     *
+     * @param userAccount
+     * @param userProfile
+     */
+    private void updateUserAccountName(UserAccountEntity userAccount, UserProfileEntity userProfile) {
+        if (StringUtils.equalsIgnoreCase(userAccount.getFirstName(), userProfile.getFirstName())
+                && StringUtils.equalsIgnoreCase(userAccount.getLastName(), userProfile.getLastName())) {
+
+            LOG.debug("Found matching first and last name");
+        } else {
+            userAccount.setFirstName(userProfile.getFirstName());
+            userAccount.setLastName(userProfile.getLastName());
+            userAccountManager.save(userAccount);
         }
     }
 
@@ -275,13 +320,11 @@ public class ConnectionServiceImpl implements ConnectionService {
         }
     }
 
-    public void copyToUserProfile(User facebookUserProfile, UserAccountEntity userAccount) {
+    public UserProfileEntity copyToUserProfile(User facebookUserProfile, UserAccountEntity userAccount) {
         LOG.info("copying facebookUserProfile to userProfile for userAccount={}", userAccount.getReceiptUserId());
         UserProfileEntity userProfile = userProfileManager.findByProviderUserId(facebookUserProfile.getId());
-        boolean createProfilePreference = false;
         if (null == userProfile) {
             userProfile = new UserProfileEntity();
-            createProfilePreference = true;
         } else {
             userProfile.setUpdated();
         }
@@ -298,61 +341,14 @@ public class ConnectionServiceImpl implements ConnectionService {
         } else {
             userProfile.inActive();
         }
-        createOrSaveUserProfile(userAccount, userProfile, createProfilePreference);
-
-        //TODO(hth) think about moving this up in previous method call
-        updateUserIdWithEmailWhenPresent(userAccount, userProfile);
+        return userProfile;
     }
 
-    /**
-     * Any failure in the process of creating UserProfile, delete all reminiscence of that user including user account.
-     *
-     * @param userAccount
-     * @param userProfile
-     * @param createProfilePreference
-     */
-    private void createOrSaveUserProfile(
-            UserAccountEntity userAccount,
-            UserProfileEntity userProfile,
-            boolean createProfilePreference
-    ) {
-        try {
-            userProfileManager.save(userProfile);
-            if (createProfilePreference) {
-                accountService.createPreferences(userProfile);
-            }
-        } catch (Exception e) {
-            LOG.error("Something went wrong in creating user profile email={} rid={} userAccount={} userProfile={} reason={}",
-                    userProfile.getEmail(), userAccount.getReceiptUserId(), userAccount.getId(), userProfile.getId(), e.getLocalizedMessage(), e);
-
-            /**
-             * Keep this code commented out since we are not sure if this will happen how often. Note: If there is any
-             * error in saving user profile, this will delete all the user information, billing and account. It would be
-             * nice to know if the account is newly created or old. Better to check user account create time stamp is
-             * less than a minute to decide in deleting. Could opt of softdelete instead.
-             */
-
-            /*List<ExpenseTagEntity> expenseTagEntities = expensesService.getAllExpenseTypes(userAccount.getReceiptUserId());
-            expenseTagEntities.forEach(expenseTagManager::deleteHard);
-
-            userAuthenticationManager.deleteHard(userAccount.getUserAuthentication());
-            userAccountManager.deleteHard(userAccount);
-            billingService.deleteHardBillingWhenAccountCreationFails(userProfile.getReceiptUserId());
-            if (StringUtils.isNotBlank(userProfile.getId())) {
-                userProfileManager.deleteHard(userProfile);
-            }*/
-
-            throw new RuntimeException("Something went wrong and we failed to create or save userProfile. Please bear with us until an engineer looks into this issue.");
-        }
-    }
-
-    public void copyToUserProfile(Person googleUserProfile, UserAccountEntity userAccount) {
+    public UserProfileEntity copyToUserProfile(Person googleUserProfile, UserAccountEntity userAccount) {
         LOG.debug("copying googleUserProfile to userProfile for userAccount={}", userAccount.getReceiptUserId());
         UserProfileEntity userProfile = userProfileManager.findByProviderUserId(googleUserProfile.getId());
-        boolean createProfilePreference = false;
         if (null == userProfile) {
             userProfile = new UserProfileEntity();
-            createProfilePreference = true;
         } else {
             userProfile.setUpdated();
         }
@@ -369,10 +365,7 @@ public class ConnectionServiceImpl implements ConnectionService {
         } else {
             userProfile.inActive();
         }
-        createOrSaveUserProfile(userAccount, userProfile, createProfilePreference);
-
-        //TODO(hth) think about moving this up in previous method call
-        updateUserIdWithEmailWhenPresent(userAccount, userProfile);
+        return userProfile;
     }
 
     private void deepCopy(User facebookUserProfile, UserProfileEntity userProfile) {
@@ -399,7 +392,6 @@ public class ConnectionServiceImpl implements ConnectionService {
         if (googleUserProfile.getOrganizations() != null) {
             for (Organization organization : googleUserProfile.getOrganizations()) {
                 Reference reference = new Reference(organization.getName());
-                //TODO fix me or check me out when Google Auth bug is fixed
 //                WorkEntry workEntry = new WorkEntry(
 //                        reference,
 //                        organization.getStartDate(),
@@ -417,38 +409,6 @@ public class ConnectionServiceImpl implements ConnectionService {
             });
         }
         userProfile.setEmail(googleUserProfile.getAccountEmail());
-    }
-
-    /**
-     * Replaces userId number with email if exists. Social providers provides Id when email is not shared or user
-     * email is not verified.
-     *
-     * @param userAccount
-     * @param userProfile
-     */
-    private void updateUserIdWithEmailWhenPresent(UserAccountEntity userAccount, UserProfileEntity userProfile) {
-        try {
-            if (StringUtils.isNotBlank(userProfile.getEmail())) {
-                if (StringUtils.equalsIgnoreCase(userAccount.getUserId(), userProfile.getEmail())) {
-                    LOG.debug("found matching userId and mail address, skipping update");
-                } else {
-                    LOG.debug("about to update userId={} with email={}", userAccount.getUserId(), userProfile.getEmail());
-                    userAccount.setUserId(userProfile.getEmail());
-                    userAccountManager.save(userAccount);
-                }
-            } else {
-                LOG.debug("found empty email, skipping update");
-            }
-        } catch (DuplicateKeyException e) {
-            LOG.error(
-                    "account already exists userId={} with email={} reason={}",
-                    userAccount.getUserId(),
-                    userProfile.getEmail(),
-                    e.getLocalizedMessage(),
-                    e
-            );
-            throw new UserAccountDuplicateException("Found existing user with similar login", e);
-        }
     }
 
     public void remove(String userId, ConnectionKey connectionKey) {

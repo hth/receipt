@@ -12,13 +12,13 @@ import com.receiptofi.domain.types.ProviderEnum;
 import com.receiptofi.domain.types.RoleEnum;
 import com.receiptofi.repository.GenerateUserIdManager;
 import com.receiptofi.service.AccountService;
+import com.receiptofi.service.BillingService;
 import com.receiptofi.service.LoginService;
 import com.receiptofi.service.UserProfilePreferenceService;
 import com.receiptofi.social.UserAccountDuplicateException;
 import com.receiptofi.social.annotation.Social;
 import com.receiptofi.social.config.SocialConfig;
 import com.receiptofi.social.connect.ConnectionService;
-import com.receiptofi.utils.RandomString;
 import com.receiptofi.utils.ScrubbedInput;
 
 import org.apache.commons.lang3.StringUtils;
@@ -28,6 +28,7 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -73,6 +74,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Autowired private ConnectionService connectionService;
     @Autowired private GenerateUserIdManager generateUserIdManager;
     @Autowired private GoogleAccessTokenService googleAccessTokenService;
+    @Autowired private BillingService billingService;
 
     @Value ("${mail.validation.timeout.period}")
     private int mailValidationTimeoutPeriod;
@@ -99,7 +101,7 @@ public class CustomUserDetailsService implements UserDetailsService {
             LOG.warn("user={} accountValidated={}", userAccount.getReceiptUserId(), userAccount.isAccountValidated());
 
             boolean condition = isUserActiveAndRegistrationTurnedOn(userAccount, userProfile);
-            if(!condition && null == userAccount.getProviderId()) {
+            if (!condition && null == userAccount.getProviderId()) {
                 /** Throw exception when its NOT a social signup. */
                 throw new RuntimeException("Registration is turned off. We will notify you on your registered email " +
                         (StringUtils.isNotBlank(userProfile.getEmail()) ? "<b>" + userProfile.getEmail() + "</b>" : "") +
@@ -236,18 +238,30 @@ public class CustomUserDetailsService implements UserDetailsService {
             }
             return "{}";
         } catch (UserAccountDuplicateException e) {
-            LOG.error("duplicate account error pid={} reason={}", provider, e.getLocalizedMessage(), e);
+            LOG.error("Duplicate account error pid={} reason={}", provider, e.getLocalizedMessage(), e);
             throw e;
+        } catch (DuplicateKeyException e) {
+            LOG.error("Duplicate account error pid={} reason={}", provider, e.getLocalizedMessage(), e);
+            throw new UserAccountDuplicateException("Account with similar email address exists under another social provider");
         }
     }
 
+    /**
+     * Mobile connection only. Not for web social login.
+     *
+     * @param provider
+     * @param accessToken
+     * @return
+     */
     private UserAccountEntity connectFacebook(ProviderEnum provider, String accessToken) {
         UserAccountEntity userAccount;
         UsersConnectionRepository userConnectionRepository;
         ConnectionRepository connectionRepository;
         List<Connection<?>> connections;
+
         Facebook facebook = new FacebookTemplate(accessToken);
-        String facebookProfileId = facebook.userOperations().getUserProfile().getId();
+        User user = facebook.userOperations().getUserProfile();
+        String facebookProfileId = user.getId();
         LOG.debug("facebook profile mail={}", facebook.userOperations().getUserProfile().getEmail());
 
         userAccount = accountService.findByProviderUserId(facebookProfileId);
@@ -256,6 +270,13 @@ public class CustomUserDetailsService implements UserDetailsService {
                     accessToken,
                     provider,
                     facebook.userOperations().getUserProfile());
+
+            /** Copy to user profile. */
+            UserProfileEntity userProfile = connectionService.copyToUserProfile(facebook.userOperations().getUserProfile(), userAccount);
+            accountService.save(userProfile);
+            accountService.createNewAccount(userAccount);
+            accountService.createPreferences(userProfile);
+            updateUserIdWithEmailWhenPresent(userAccount, userProfile);
         } else {
             LOG.info("access token different between old and new",
                     StringUtils.difference(userAccount.getAccessToken(), accessToken));
@@ -272,6 +293,8 @@ public class CustomUserDetailsService implements UserDetailsService {
     }
 
     /**
+     * Mobile connection only. Not for web social login.
+     *
      * @param provider
      * @param authorizationCode
      * @param accessToken
@@ -291,6 +314,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         UsersConnectionRepository userConnectionRepository;
         ConnectionRepository connectionRepository;
         List<Connection<?>> connections;
+
         Google google = new GoogleTemplate(accessToken);
         String googleProfileId = google.plusOperations().getGoogleProfile().getId();
         LOG.debug("google profile mail={}", google.plusOperations().getGoogleProfile().getAccountEmail());
@@ -303,6 +327,13 @@ public class CustomUserDetailsService implements UserDetailsService {
                     authorizationCode,
                     provider,
                     google.plusOperations().getGoogleProfile());
+
+            /** Copy to user profile. */
+            UserProfileEntity userProfile = connectionService.copyToUserProfile(google.plusOperations().getGoogleProfile(), userAccount);
+            accountService.save(userProfile);
+            accountService.createNewAccount(userAccount);
+            accountService.createPreferences(userProfile);
+            updateUserIdWithEmailWhenPresent(userAccount, userProfile);
         } else {
             LOG.info("access token different between old and new",
                     StringUtils.difference(userAccount.getAccessToken(), accessToken));
@@ -321,6 +352,76 @@ public class CustomUserDetailsService implements UserDetailsService {
     }
 
     /**
+     * Any failure in the process of creating UserProfile, delete all reminiscence of that user including user account.
+     */
+    private void createOrSaveUserProfile(
+            UserAccountEntity userAccount,
+            UserProfileEntity userProfile,
+            boolean createProfilePreference
+    ) {
+        try {
+            accountService.save(userProfile);
+            if (createProfilePreference) {
+                accountService.createPreferences(userProfile);
+            }
+        } catch (Exception e) {
+            LOG.error("Something went wrong in creating user profile email={} rid={} userAccount={} userProfile={} reason={}",
+                    userProfile.getEmail(), userAccount.getReceiptUserId(), userAccount.getId(), userProfile.getId(), e.getLocalizedMessage(), e);
+
+            /**
+             * Keep this code commented out since we are not sure if this will happen how often. Note: If there is any
+             * error in saving user profile, this will delete all the user information, billing and account. It would be
+             * nice to know if the account is newly created or old. Better to check user account create time stamp is
+             * less than a minute to decide in deleting. Could opt of softdelete instead.
+             */
+
+            /*List<ExpenseTagEntity> expenseTagEntities = expensesService.getAllExpenseTypes(userAccount.getReceiptUserId());
+            expenseTagEntities.forEach(expenseTagManager::deleteHard);
+
+            userAuthenticationManager.deleteHard(userAccount.getUserAuthentication());
+            userAccountManager.deleteHard(userAccount);
+            billingService.deleteHardBillingWhenAccountCreationFails(userProfile.getReceiptUserId());
+            if (StringUtils.isNotBlank(userProfile.getId())) {
+                userProfileManager.deleteHard(userProfile);
+            }*/
+
+            throw new RuntimeException("Something went wrong and we failed to create or save userProfile. Please bear with us until an engineer looks into this issue.");
+        }
+    }
+
+    /**
+     * Replaces userId number with email if exists. Social providers provides Id when email is not shared or user
+     * email is not verified.
+     *
+     * @param userAccount
+     * @param userProfile
+     */
+    public void updateUserIdWithEmailWhenPresent(UserAccountEntity userAccount, UserProfileEntity userProfile) {
+        try {
+            if (StringUtils.isNotBlank(userProfile.getEmail())) {
+                if (StringUtils.equalsIgnoreCase(userAccount.getUserId(), userProfile.getEmail())) {
+                    LOG.debug("Found matching userId and mail address, skipping update");
+                } else {
+                    LOG.debug("About to update userId={} with email={}", userAccount.getUserId(), userProfile.getEmail());
+                    userAccount.setUserId(userProfile.getEmail());
+                    accountService.save(userAccount);
+                }
+            } else {
+                LOG.debug("found empty email, skipping update");
+            }
+        } catch (DuplicateKeyException e) {
+            LOG.error(
+                    "account already exists userId={} with email={} reason={}",
+                    userAccount.getUserId(),
+                    userProfile.getEmail(),
+                    e.getLocalizedMessage(),
+                    e
+            );
+            throw new UserAccountDuplicateException("Found existing user with similar login", e);
+        }
+    }
+
+    /**
      * Save UserAccountEntity when user signs up from mobile using Facebook provider.
      *
      * @param accessToken
@@ -333,25 +434,21 @@ public class CustomUserDetailsService implements UserDetailsService {
             ProviderEnum provider,
             User facebookProfile
     ) {
-        UserAuthenticationEntity userAuthentication = accountService.getUserAuthenticationEntity(
-                RandomString.newInstance().nextString()
-        );
-
         UserAccountEntity userAccount = UserAccountEntity.newInstance(
                 generateUserIdManager.getNextAutoGeneratedUserId(),
                 facebookProfile.getId(),
                 facebookProfile.getFirstName(),
                 facebookProfile.getLastName(),
-                userAuthentication
+                UserAuthenticationEntity.blankInstance()
         );
         userAccount.setProviderId(provider);
         userAccount.setProviderUserId(facebookProfile.getId());
         userAccount.setAccessToken(accessToken);
         userAccount.setProfileUrl(facebookProfile.getLink());
-        accountService.saveUserAccount(userAccount);
 
-        /** Save profile. */
-        connectionService.copyToUserProfile(facebookProfile, userAccount);
+        /** Social account, hence account is considered validated by default. */
+        userAccount.setAccountValidatedBeginDate();
+        userAccount.setAccountValidated(true);
         return userAccount;
     }
 
@@ -372,16 +469,12 @@ public class CustomUserDetailsService implements UserDetailsService {
             ProviderEnum provider,
             Person person
     ) {
-        UserAuthenticationEntity userAuthentication = accountService.getUserAuthenticationEntity(
-                RandomString.newInstance().nextString()
-        );
-
         UserAccountEntity userAccount = UserAccountEntity.newInstance(
                 generateUserIdManager.getNextAutoGeneratedUserId(),
                 person.getId(),
                 person.getGivenName(),
                 person.getFamilyName(),
-                userAuthentication
+                UserAuthenticationEntity.blankInstance()
         );
         //TODO(hth) save offline access key created by google
         userAccount.setProviderId(provider);
@@ -392,10 +485,10 @@ public class CustomUserDetailsService implements UserDetailsService {
         userAccount.setAccessToken(accessToken);
         userAccount.setRefreshToken(refreshToken);
         userAccount.setAuthorizationCode(authorizationCode);
-        accountService.saveUserAccount(userAccount);
 
-        /** Save profile. */
-        connectionService.copyToUserProfile(person, userAccount);
+        /** Social account, hence account is considered validated by default. */
+        userAccount.setAccountValidatedBeginDate();
+        userAccount.setAccountValidated(true);
         return userAccount;
     }
 

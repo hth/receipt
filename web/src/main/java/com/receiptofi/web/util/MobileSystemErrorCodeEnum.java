@@ -15,9 +15,9 @@ public enum MobileSystemErrorCodeEnum {
 
     USER_INPUT("100", "100"),
     API_WARNING("200", "200"),
-    AUTHENTICATION("400", "Authentication denied by provider"),
+    AUTHENTICATION("400", "Authentication denied by provider."),
     SEVERE("500", "500"),
-    SEVERE_ACCOUNT_DUPLICATE("501", "Found existing user with similar login"),
+    SEVERE_ACCOUNT_DUPLICATE("501", "Failed to signup. Found existing user with similar login."),
     SOCIAL_LOGIN_ERROR("502", "We failed to log you in. Engineers are looking into it. Please try sometime later.");
 
     private String code;
