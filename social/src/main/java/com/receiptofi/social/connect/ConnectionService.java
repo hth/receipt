@@ -1,6 +1,7 @@
 package com.receiptofi.social.connect;
 
 import com.receiptofi.domain.UserAccountEntity;
+import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.domain.types.ProviderEnum;
 
 import org.springframework.social.connect.Connection;
@@ -35,7 +36,7 @@ public interface ConnectionService {
 
     List<String> getUserIds(ProviderEnum providerId, String providerUserId);
 
-    void copyToUserProfile(User facebookUserProfile, UserAccountEntity userAccount);
+    UserProfileEntity copyToUserProfile(User facebookUserProfile, UserAccountEntity userAccount);
 
-    void copyToUserProfile(Person googleUserProfile, UserAccountEntity userAccount);
+    UserProfileEntity copyToUserProfile(Person googleUserProfile, UserAccountEntity userAccount);
 }

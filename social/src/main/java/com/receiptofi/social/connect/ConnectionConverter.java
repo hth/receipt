@@ -57,6 +57,14 @@ public class ConnectionConverter {
         );
     }
 
+    /**
+     * Should contain connect converter related operation. Any other changes should go in the specific method calls.
+     *
+     * @param userId
+     * @param receiptUserId
+     * @param cnn
+     * @return
+     */
     public UserAccountEntity convert(String userId, String receiptUserId, Connection<?> cnn) {
         ConnectionData data = cnn.createData();
 
@@ -78,9 +86,6 @@ public class ConnectionConverter {
 
         userAccount.setSecret(encrypt(data.getSecret()));
         userAccount.setRefreshToken(encrypt(data.getRefreshToken()));
-
-        /** Social account, hence account is considered validated by default. */
-        userAccount.setAccountValidated(true);
         return userAccount;
     }
 
