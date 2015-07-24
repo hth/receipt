@@ -54,7 +54,7 @@ public class JsonBilling {
             LOG.error("Billing Account is null for rid=", billings.get(0).getRid());
             throw new RuntimeException("Billing Account is empty for rid=" + billings.get(0).getRid());
         } else {
-            this.billingPlan = billingAccount.getBillingPlan().name();
+            this.billingPlan = billingAccount.getBillingPlan().getDescription();
         }
         this.billingHistories.addAll(billings.stream().map(JsonBillingHistory::new).collect(Collectors.toList()));
     }
