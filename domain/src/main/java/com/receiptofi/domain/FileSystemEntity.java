@@ -2,6 +2,8 @@ package com.receiptofi.domain;
 
 import com.receiptofi.utils.FileUtil;
 
+import org.apache.commons.lang3.StringUtils;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -92,6 +94,10 @@ public class FileSystemEntity extends BaseEntity {
     private long scaledFileLength;
 
     @NotNull
+    @Field ("YML")
+    private String yearMonthLocation;
+
+    @NotNull
     @Field ("OFN")
     private String originalFilename;
 
@@ -127,6 +133,8 @@ public class FileSystemEntity extends BaseEntity {
                 LOG.error("failed to get content-type reason={}", e.getLocalizedMessage(), e);
             }
         }
+
+        this.yearMonthLocation = computeFileYearMonthLocation();
     }
 
     public String getBlobId() {
@@ -221,28 +229,38 @@ public class FileSystemEntity extends BaseEntity {
      */
     @Transient
     public String getKey() {
-        String first = new StringBuilder()
-                .append(SDF_YEAR_AND_MONTH.format(getCreated()))
-                .append("/")
-                .append(SDF_DATE.format(getCreated()))
-                .append("/")
-                .append(blobId)
-                .append(FileUtil.DOT)
-                .append(FileUtil.getFileExtension(originalFilename))
-                .toString();
-
         ZonedDateTime zonedDateTime = getCreated().toInstant().atZone(ZoneId.of("UTC"));
-        String location = new StringBuilder()
-                .append(zonedDateTime.getYear() + "-" + TWO_DIGIT_FORMAT.format(zonedDateTime.getMonthValue()))
+        String location;
+        if (StringUtils.isEmpty(yearMonthLocation)) {
+            location = new StringBuilder()
+                    .append(computeFileYearMonthLocation())
+                    .append(blobId)
+                    .append(FileUtil.DOT)
+                    .append(FileUtil.getFileExtension(originalFilename))
+                    .toString();
+        } else {
+            location = new StringBuilder()
+                    .append(yearMonthLocation)
+                    .append(blobId)
+                    .append(FileUtil.DOT)
+                    .append(FileUtil.getFileExtension(originalFilename))
+                    .toString();
+        }
+
+        LOG.info("Created={} zonedDateTime={} year-month={} day={} id={} location={} first={}",
+                getCreated(), zonedDateTime, zonedDateTime.getYear() + "-" + TWO_DIGIT_FORMAT.format(zonedDateTime.getMonthValue()), TWO_DIGIT_FORMAT.format(zonedDateTime.getDayOfMonth()), blobId, location);
+        return location;
+    }
+
+    @Transient
+    private String computeFileYearMonthLocation() {
+        ZonedDateTime zonedDateTime = getCreated().toInstant().atZone(ZoneId.of("UTC"));
+        return new StringBuilder()
+                .append(zonedDateTime.getYear())
+                .append("-")
+                .append(TWO_DIGIT_FORMAT.format(zonedDateTime.getMonthValue()))
                 .append("/")
                 .append(TWO_DIGIT_FORMAT.format(zonedDateTime.getDayOfMonth()))
-                .append("/")
-                .append(blobId)
-                .append(FileUtil.DOT)
-                .append(FileUtil.getFileExtension(originalFilename))
-                .toString();
-        LOG.info("Created={} zonedDateTime={} year-month={} day={} id={} location={} first={}",
-                getCreated(), zonedDateTime, SDF_YEAR_AND_MONTH.format(getCreated()), SDF_DATE.format(getCreated()), blobId, location, first);
-        return location;
+                .append("/").toString();
     }
 }
