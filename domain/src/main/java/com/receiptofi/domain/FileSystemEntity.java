@@ -14,7 +14,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 
 import javax.validation.constraints.NotNull;
 
@@ -39,6 +42,7 @@ public class FileSystemEntity extends BaseEntity {
 
     public static final SimpleDateFormat SDF_YEAR_AND_MONTH = new SimpleDateFormat("yyyy-MM");
     public static final SimpleDateFormat SDF_DATE = new SimpleDateFormat("dd");
+    private static final DecimalFormat TWO_DIGIT_FORMAT = new DecimalFormat("00");
 
     /** Means image it aligned vertically. */
     public static final int DEFAULT_ORIENTATION_ANGLE = 0;
@@ -217,7 +221,7 @@ public class FileSystemEntity extends BaseEntity {
      */
     @Transient
     public String getKey() {
-        return new StringBuilder()
+        String first = new StringBuilder()
                 .append(SDF_YEAR_AND_MONTH.format(getCreated()))
                 .append("/")
                 .append(SDF_DATE.format(getCreated()))
@@ -226,5 +230,19 @@ public class FileSystemEntity extends BaseEntity {
                 .append(FileUtil.DOT)
                 .append(FileUtil.getFileExtension(originalFilename))
                 .toString();
+
+        ZonedDateTime zonedDateTime = getCreated().toInstant().atZone(ZoneId.of("UTC"));
+        String location = new StringBuilder()
+                .append(zonedDateTime.getYear() + "-" + TWO_DIGIT_FORMAT.format(zonedDateTime.getMonthValue()))
+                .append("/")
+                .append(TWO_DIGIT_FORMAT.format(zonedDateTime.getDayOfMonth()))
+                .append("/")
+                .append(blobId)
+                .append(FileUtil.DOT)
+                .append(FileUtil.getFileExtension(originalFilename))
+                .toString();
+        LOG.info("Created={} zonedDateTime={} year-month={} day={} id={} location={} first={}",
+                getCreated(), zonedDateTime, SDF_YEAR_AND_MONTH.format(getCreated()), SDF_DATE.format(getCreated()), blobId, location, first);
+        return location;
     }
 }
