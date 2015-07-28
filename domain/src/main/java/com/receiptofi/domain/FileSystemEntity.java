@@ -230,26 +230,22 @@ public class FileSystemEntity extends BaseEntity {
     @Transient
     public String getKey() {
         ZonedDateTime zonedDateTime = getCreated().toInstant().atZone(ZoneId.of("UTC"));
-        String location;
+        StringBuilder location = new StringBuilder();
         if (StringUtils.isEmpty(yearMonthLocation)) {
-            location = new StringBuilder()
-                    .append(computeFileYearMonthLocation())
+            location.append(computeFileYearMonthLocation())
                     .append(blobId)
                     .append(FileUtil.DOT)
-                    .append(FileUtil.getFileExtension(originalFilename))
-                    .toString();
+                    .append(FileUtil.getFileExtension(originalFilename));
         } else {
-            location = new StringBuilder()
-                    .append(yearMonthLocation)
+            location.append(yearMonthLocation)
                     .append(blobId)
                     .append(FileUtil.DOT)
-                    .append(FileUtil.getFileExtension(originalFilename))
-                    .toString();
+                    .append(FileUtil.getFileExtension(originalFilename));
         }
 
         LOG.info("Created={} zonedDateTime={} year-month={} day={} id={} location={} first={}",
                 getCreated(), zonedDateTime, zonedDateTime.getYear() + "-" + TWO_DIGIT_FORMAT.format(zonedDateTime.getMonthValue()), TWO_DIGIT_FORMAT.format(zonedDateTime.getDayOfMonth()), blobId, location);
-        return location;
+        return location.toString();
     }
 
     @Transient
