@@ -94,8 +94,8 @@ public class FileSystemEntity extends BaseEntity {
     private long scaledFileLength;
 
     @NotNull
-    @Field ("YML")
-    private String yearMonthLocation;
+    @Field ("FL")
+    private String yearMonthDayLocation;
 
     @NotNull
     @Field ("OFN")
@@ -134,7 +134,7 @@ public class FileSystemEntity extends BaseEntity {
             }
         }
 
-        this.yearMonthLocation = computeFileYearMonthLocation();
+        this.yearMonthDayLocation = computeFileYearMonthDayLocation();
     }
 
     public String getBlobId() {
@@ -229,28 +229,25 @@ public class FileSystemEntity extends BaseEntity {
      */
     @Transient
     public String getKey() {
-        ZonedDateTime zonedDateTime = getCreated().toInstant().atZone(ZoneId.of("UTC"));
         StringBuilder location = new StringBuilder();
-        if (StringUtils.isEmpty(yearMonthLocation)) {
-            location.append(computeFileYearMonthLocation())
+        if (StringUtils.isEmpty(yearMonthDayLocation)) {
+            location.append(computeFileYearMonthDayLocation())
                     .append(blobId)
                     .append(FileUtil.DOT)
                     .append(FileUtil.getFileExtension(originalFilename));
         } else {
-            location.append(yearMonthLocation)
+            location.append(yearMonthDayLocation)
                     .append(blobId)
                     .append(FileUtil.DOT)
                     .append(FileUtil.getFileExtension(originalFilename));
         }
-
-        LOG.info("Created={} zonedDateTime={} year-month={} day={} id={} location={} first={}",
-                getCreated(), zonedDateTime, zonedDateTime.getYear() + "-" + TWO_DIGIT_FORMAT.format(zonedDateTime.getMonthValue()), TWO_DIGIT_FORMAT.format(zonedDateTime.getDayOfMonth()), blobId, location);
+        LOG.info("FileSystem created={} location={}", getCreated(), location.toString());
         return location.toString();
     }
 
     @Transient
-    private String computeFileYearMonthLocation() {
-        ZonedDateTime zonedDateTime = getCreated().toInstant().atZone(ZoneId.of("UTC"));
+    private String computeFileYearMonthDayLocation() {
+        ZonedDateTime zonedDateTime = getUTCZonedDateTime();
         return new StringBuilder()
                 .append(zonedDateTime.getYear())
                 .append("-")
@@ -258,5 +255,16 @@ public class FileSystemEntity extends BaseEntity {
                 .append("/")
                 .append(TWO_DIGIT_FORMAT.format(zonedDateTime.getDayOfMonth()))
                 .append("/").toString();
+    }
+
+    /**
+     * Why convert to UTC when the date is already saved as UTC time in Database?.
+     *
+     * This is to protect when some smarty forgets to set the time to UTC on server since JVM time is used with local
+     * timezone. In worst case scenario, if Mongo DB date format is changed from UTC to something new. Second scenario
+     * is highly unlikely.
+     */
+    private ZonedDateTime getUTCZonedDateTime() {
+        return getCreated().toInstant().atZone(ZoneId.of("UTC"));
     }
 }
