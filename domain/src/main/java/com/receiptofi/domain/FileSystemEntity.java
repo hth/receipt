@@ -241,7 +241,7 @@ public class FileSystemEntity extends BaseEntity {
                     .append(FileUtil.DOT)
                     .append(FileUtil.getFileExtension(originalFilename));
         }
-        LOG.info("FileSystem created={} location={}", getCreated(), location.toString());
+        LOG.debug("FileSystem created={} location={}", getCreated(), location.toString());
         return location.toString();
     }
 
