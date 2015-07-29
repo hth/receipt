@@ -23,7 +23,7 @@ http://stas-blogspot.blogspot.ch/2011/07/most-complete-list-of-xx-options-for.ht
 Tomcat supports unloadDelay which waits till the configured time for unloading servlets.
 This should configured in `context.xml` as follows: 20 seconds below
 
-    <context unloadDelay="20000">
+    <Context unloadDelay="20000">
 
 ### Remove whitespaces
 If your servlet container doesn't support the JSP 2.1 trimDirectiveWhitespaces property, then you need to consult its
