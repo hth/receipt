@@ -46,6 +46,9 @@ import org.springframework.util.Assert;
 import org.springframework.util.MultiValueMap;
 
 import java.lang.reflect.InvocationTargetException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -65,6 +68,8 @@ public class ConnectionServiceImpl implements ConnectionService {
 
     private MongoTemplate mongoTemplate;
     private ConnectionConverter connectionConverter;
+
+    private static final DateTimeFormatter DB_FORMATTER = DateTimeFormatter.ofPattern("MM/dd/yyyy");
 
     @Autowired private GenerateUserIdManager generateUserIdManager;
     @Autowired private AccountService accountService;
@@ -332,6 +337,11 @@ public class ConnectionServiceImpl implements ConnectionService {
         deepCopy(facebookUserProfile, userProfile);
 
         String id = userProfile.getId();
+        if (StringUtils.isEmpty(userProfile.getBirthday())) {
+            int minAge = facebookUserProfile.getAgeRange().getMin();
+            LocalDate birth = LocalDate.now().minusYears(minAge).with(TemporalAdjusters.firstDayOfYear());
+            userProfile.setBirthday(DB_FORMATTER.format(birth));
+        }
         userProfile.setProviderUserId(facebookUserProfile.getId());
         userProfile.setProviderId(ProviderEnum.FACEBOOK);
         userProfile.setReceiptUserId(userAccount.getReceiptUserId());
