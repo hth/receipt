@@ -69,6 +69,8 @@ public class ConnectionServiceImpl implements ConnectionService {
     private MongoTemplate mongoTemplate;
     private ConnectionConverter connectionConverter;
 
+    private static final DateTimeFormatter DB_FORMATTER = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+
     @Autowired private GenerateUserIdManager generateUserIdManager;
     @Autowired private AccountService accountService;
     @Autowired private RegistrationService registrationService;
@@ -338,7 +340,7 @@ public class ConnectionServiceImpl implements ConnectionService {
         if (StringUtils.isEmpty(userProfile.getBirthday())) {
             int minAge = facebookUserProfile.getAgeRange().getMin();
             LocalDate birth = LocalDate.now().minusYears(minAge).with(TemporalAdjusters.firstDayOfYear());
-            userProfile.setBirthday(DateTimeFormatter.ofPattern("MM/dd/yyyy").format(birth));
+            userProfile.setBirthday(DB_FORMATTER.format(birth));
         }
         userProfile.setProviderUserId(facebookUserProfile.getId());
         userProfile.setProviderId(ProviderEnum.FACEBOOK);
