@@ -24,9 +24,9 @@
         <key>ServiceDescription</key>
         <string>Confluence</string>
         <key>StandardErrorPath</key>
-        <string>/var/logs/receiptofi/launchd.stderr.log</string>
+        <string>/usr/local/var/log/receiptofi/launchd.stderr.log</string>
         <key>StandardOutPath</key>
-        <string>/var/logs/receiptofi/launchd.stdout.log</string>
+        <string>/usr/local/var/log/receiptofi/launchd.stdout.log</string>
         <key>UserName</key>
         <string>db</string>
     </dict>
