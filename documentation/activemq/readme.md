@@ -4,23 +4,25 @@ Use brew to get ActiveMQ or Download activemq
 unzip
 note: chown root:wheel (always root)
 
+- Manual
 
-	sudo mv ~/Downloads/apache-activemq-5.11.1 /usr/local/
-	sudo rm /Library/ActiveMQ
-	sudo ln -s /usr/local/apache-activemq-5.11.1 /Library/ActiveMQ
+		sudo mv ~/Downloads/apache-activemq-5.11.1 /usr/local/
+	   	sudo rm /Library/ActiveMQ
+	   	sudo ln -s /usr/local/apache-activemq-5.11.1 /Library/ActiveMQ
 
-	Local
+- Brew Environment
 	
-	sudo ln -s /usr/local/Cellar/activemq/5.11.1 /Library/ActiveMQ
+		brew install activemq
+		sudo rm /Library/ActiveMQ
+	 	sudo ln -s /usr/local/Cellar/activemq/5.11.1 /Library/ActiveMQ
 	
 And then change owner ship to local user ***db***
 
 	sudo chown -R db /Library/ActiveMQ
 	
-Create activemq.plist and let the owner be root
+Create [`activemq.plist`] (documentation/activemq/Library_LaunchDaemons/activemq.plist) and let the owner be root 
 	
 	sudo nano /Library/LaunchDaemons/activemq.plist
-	sudo nano activemq.plist
 
 Load 	
 
