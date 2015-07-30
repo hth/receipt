@@ -7,15 +7,20 @@ note: chown root:wheel (always root)
 
 	sudo mv ~/Downloads/apache-activemq-5.11.1 /usr/local/
 	sudo rm /Library/ActiveMQ
+	sudo ln -s /usr/local/apache-activemq-5.11.1 /Library/ActiveMQ
+
+	Local
+	
 	sudo ln -s /usr/local/Cellar/activemq/5.11.1 /Library/ActiveMQ
 	
 And then change owner ship to local user ***db***
 
 	sudo chown -R db /Library/ActiveMQ
 	
-Create activemq.plisl and let the owner be root
+Create activemq.plist and let the owner be root
 	
-	sudo nano activemq.list
+	sudo nano /Library/LaunchDaemons/activemq.plist
+	sudo nano activemq.plist
 
 Load 	
 
