@@ -33,11 +33,11 @@
         sudo launchctl unload -w /Library/LaunchDaemons/receiptofi.plist
         echo "waiting 20 seconds"
         sleep 20
-        echo "launchctl unload -w /Library/LaunchDaemons/activemq.plist"
+        echo "launchctl unload -w ~/Library/LaunchDaemons/activemq.plist"
         launchctl unload -w ~/Library/LaunchAgents/homebrew.mxcl.activemq.plist
         echo "waiting 5 seconds"
         sleep 5
-        echo "launchctl load -w /Library/LaunchDaemons/activemq.plist"
+        echo "launchctl load -w ~/Library/LaunchDaemons/activemq.plist"
         launchctl load -w ~/Library/LaunchAgents/homebrew.mxcl.activemq.plist
         echo "waiting 5 seconds"
         sleep 5
