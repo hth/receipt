@@ -22,7 +22,7 @@
 
 - Start Mongo, Check for logs 
 - Install Java manual
-- [Install ActiveMQ manual] (documentation/activemq/readme.md)
+- [Install ActiveMQ manual] (activemq/readme.md)
 - Install Tomcat manual
   - Add setenv script and launchd
   - Mark them as excutable
