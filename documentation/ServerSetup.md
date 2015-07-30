@@ -1,4 +1,4 @@
-## Server Set Up 
+## Server Set Up (First Launch)
 
 - Update Mac
 - Change to UTC/GMT time 
