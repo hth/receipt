@@ -23,9 +23,28 @@
   - Start Mongo, Check for logs 
 - Install Java manual
 - Install ActiveMQ from brew
+  - Create a link for existing homebrew-activemq list 
+  
+          sudo ln -sfv /usr/local/opt/activemq/*.plist /Library/LaunchDaemons/activemq.plist
+
 - Install Tomcat manual
   - Add setenv script and launchd
   - Mark them as excutable
 - Install Logstash from brew
+- Add script to start ActiveMQ and Tomcat
 
-
+        echo "sudo launchctl unload -w /Library/LaunchDaemons/receiptofi.plist"
+        sudo launchctl unload -w /Library/LaunchDaemons/receiptofi.plist
+        echo "waiting 20 seconds"
+        sleep 20
+        echo "sudo launchctl unload -w /Library/LaunchDaemons/activemq.plist"
+        sudo launchctl unload -w ~/Library/LaunchAgents/homebrew.mxcl.activemq.plist
+        echo "waiting 5 seconds"
+        sleep 5
+        echo "sudo launchctl load -w /Library/LaunchDaemons/activemq.plist"
+        sudo launchctl load -w /Library/LaunchDaemons/activemq.plist 
+        echo "waiting 5 seconds"
+        sleep 5
+        echo "sudo launchctl load -w /Library/LaunchDaemons/receiptofi.plist"
+        sudo launchctl load -w /Library/LaunchDaemons/receiptofi.plist
+        echo "script executed successfully"
