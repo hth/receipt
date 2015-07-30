@@ -6,6 +6,7 @@
         <string>mongodb</string>
         <key>ProgramArguments</key>
         <array>
+            <!-- this is different for brew installed -->
             <string>/usr/local/mongodb/bin/mongod</string>
             <string>run</string>
             <string>--config</string>
