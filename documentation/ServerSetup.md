@@ -24,6 +24,7 @@
 - Install Java manual
 - Install ActiveMQ from brew
 - Install Tomcat manual
+  - Add setenv script and launchd
 - Install Logstash from brew
 
 
