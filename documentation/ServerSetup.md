@@ -3,7 +3,7 @@
 - Update Mac
 - Change to UTC/GMT time 
 
-         sudo ln -sf /usr/share/zoneinfo/UTC /etc/localtime
+        sudo ln -sf /usr/share/zoneinfo/UTC /etc/localtime
          
 - Install XCode
   - Agree to XCode agreement
@@ -11,38 +11,34 @@
 - Install Mongo
   - Update Mongo config
   
-        	systemLog:
-        	  destination: file
-        	  path: /usr/local/var/log/mongodb/mongo.log
-        	  logAppend: true
-        	storage:
-        	  dbPath: /usr/local/var/mongodb
-        	net:
-        	  bindIp: 127.0.0.1
+        systemLog:
+          destination: file
+          path: /usr/local/var/log/mongodb/mongo.log
+          logAppend: true
+        storage:
+          dbPath: /usr/local/var/mongodb
+        net:
+          bindIp: 127.0.0.1
 
-  - Start Mongo, Check for logs 
+- Start Mongo, Check for logs 
 - Install Java manual
 - Install ActiveMQ from brew
-  - Create a link for existing homebrew-activemq list 
-  
-          sudo ln -sfv /usr/local/opt/activemq/*.plist /Library/LaunchDaemons/activemq.plist
-
 - Install Tomcat manual
   - Add setenv script and launchd
   - Mark them as excutable
 - Install Logstash from brew
-- Add script to start ActiveMQ and Tomcat
+- Add script `restartActiveMQAndTomcat.sh` to start ActiveMQ and Tomcat
 
         echo "sudo launchctl unload -w /Library/LaunchDaemons/receiptofi.plist"
         sudo launchctl unload -w /Library/LaunchDaemons/receiptofi.plist
         echo "waiting 20 seconds"
         sleep 20
-        echo "sudo launchctl unload -w /Library/LaunchDaemons/activemq.plist"
-        sudo launchctl unload -w ~/Library/LaunchAgents/homebrew.mxcl.activemq.plist
+        echo "launchctl unload -w /Library/LaunchDaemons/activemq.plist"
+        launchctl unload -w ~/Library/LaunchAgents/homebrew.mxcl.activemq.plist
         echo "waiting 5 seconds"
         sleep 5
-        echo "sudo launchctl load -w /Library/LaunchDaemons/activemq.plist"
-        sudo launchctl load -w /Library/LaunchDaemons/activemq.plist 
+        echo "launchctl load -w /Library/LaunchDaemons/activemq.plist"
+        launchctl load -w ~/Library/LaunchAgents/homebrew.mxcl.activemq.plist
         echo "waiting 5 seconds"
         sleep 5
         echo "sudo launchctl load -w /Library/LaunchDaemons/receiptofi.plist"
