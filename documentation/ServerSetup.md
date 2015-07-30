@@ -17,6 +17,7 @@
         	  bindIp: 127.0.0.1
 
   - Start Mongo, Check for logs 
+- Install Java
 - Install ActiveMQ
 - Install Tomcat
 
