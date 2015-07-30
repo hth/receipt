@@ -11,17 +11,23 @@
 - Install Mongo
   - Update Mongo config
   
-                systemLog:
-                  destination: file
-                  path: /usr/local/var/log/mongodb/mongo.log
-                  logAppend: true
-                storage:
-                  dbPath: /usr/local/var/mongodb
-                net:
-                  bindIp: 127.0.0.1
+          systemLog:
+            destination: file
+            path: /usr/local/var/log/mongodb/mongo.log
+            logAppend: true
+          storage:
+            dbPath: /usr/local/var/mongodb
+          net:
+            bindIp: 127.0.0.1
 
-- Start Mongo, Check for logs 
+  - Start Mongo, Check for logs 
 - Install Java manual
+
+        sudo rm /usr/bin/java
+        sudo ln -s /Library/Java/JavaVirtualMachines/jdk1.8.0_51.jdk/Contents/Home/bin/java /usr/bin/java
+        sudo rm /Library/Java/Home
+        sudo ln -s /Library/Java/JavaVirtualMachines/jdk1.8.0_51.jdk/Contents/Home /Library/Java/Home
+
 - [Install ActiveMQ manual] (activemq/readme.md)
 - Install Tomcat manual
   - Add setenv script and launchd
