@@ -2,6 +2,9 @@
 
 - Update Mac
 - Change to UTC/GMT time 
+
+         sudo ln -sf /usr/share/zoneinfo/UTC /etc/localtime
+         
 - Install XCode
   - Agree to XCode agreement
 - Install HomeBrew
@@ -18,8 +21,9 @@
         	  bindIp: 127.0.0.1
 
   - Start Mongo, Check for logs 
-- Install Java
-- Install ActiveMQ
-- Install Tomcat
+- Install Java manual
+- Install ActiveMQ from brew
+- Install Tomcat manual
+- Install Logstash from brew
 
 
