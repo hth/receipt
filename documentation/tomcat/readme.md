@@ -43,9 +43,9 @@ correct indentation.
 
 #### Set JAVA 8 symb link from above step
 - sudo rm /usr/bin/java
-- sudo ln -s /Library/Java/JavaVirtualMachines/jdk1.8.0_40.jdk/Contents/Home/bin/java /usr/bin/java
+- sudo ln -s /Library/Java/JavaVirtualMachines/jdk1.8.0_51.jdk/Contents/Home/bin/java /usr/bin/java
 - sudo rm /Library/Java/Home
-- sudo ln -s /Library/Java/JavaVirtualMachines/jdk1.8.0_40.jdk/Contents/Home /Library/Java/Home
+- sudo ln -s /Library/Java/JavaVirtualMachines/jdk1.8.0_51.jdk/Contents/Home /Library/Java/Home
 
 #### Tomcat env and auto start set up
 - http://stackoverflow.com/questions/6897476/tomcat-7-how-to-set-initial-heap-size-correctly
