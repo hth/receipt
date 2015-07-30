@@ -32,6 +32,7 @@
 - [Install Tomcat manual] (tomcat/readme.md)
   - Add setenv script and launchd
   - Mark them as excutable
+  
 - Install Logstash from brew
 - Add script `restartActiveMQAndTomcat.sh` to start ActiveMQ and Tomcat
 
