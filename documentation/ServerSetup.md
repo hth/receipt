@@ -1,6 +1,7 @@
 ## Server Set Up 
 
 - Update Mac
+- Change to UTC/GMT time 
 - Install XCode
   - Agree to XCode agreement
 - Install HomeBrew
