@@ -44,3 +44,5 @@
         echo "sudo launchctl load -w /Library/LaunchDaemons/receiptofi.plist"
         sudo launchctl load -w /Library/LaunchDaemons/receiptofi.plist
         echo "script executed successfully"
+        
+- Set /etc/hosts        
