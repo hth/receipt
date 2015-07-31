@@ -23,7 +23,7 @@
             port: 27017
           replication:
             oplogSizeMB: 25600
-            replSetName: "rs2" {rs1,rs2,rs3}  
+            replSetName: "rs"
           processManagement:
             fork: true
 
