@@ -30,6 +30,7 @@
 
   - Update [Plist] (mongo/mongodb.plist.xml) if required 
   - Start Mongo, Check for logs 
+  - Run `rs.initiate()` on just one mongo
 - Install Java manual
 
         sudo rm /usr/bin/java
