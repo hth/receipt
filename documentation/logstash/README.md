@@ -29,7 +29,7 @@ Command to run logstash
 
 	/usr/local/Cellar/logstash/1.4.2/libexec/bin/logstash agent --verbose -f /usr/local/etc/logstash.conf 
 
-Populate Logstash conf for test shipper from here **[logstash.conf](logstash.conf.md)**
+Populate Logstash conf for `test shipper` from here **[logstash.conf](logstash.conf.md)** and for `live shipper` from here **[logstash.conf](logstash.conf.live.md)**
 
 File content for ***logstash.plist***
 
