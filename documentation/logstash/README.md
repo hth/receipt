@@ -15,7 +15,7 @@ When installing through brew, create <code>logstash.conf</code>
 	touch logstash.conf
 
 Note: 
-- type => ***test_app*** is indexed; for prod it will be type => ***prod_app***
+- type => ***test_app*** is indexed; for prod it will be type => ***live_app***
 - codec => multiline not sure how much beneficial
 - http://grokdebug.herokuapp.com/ to test grok
 - Example http://www.logstashbook.com/code/6/shipper.conf
