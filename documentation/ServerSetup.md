@@ -21,6 +21,12 @@
           net:
             #  bindIp: "192.168.1.67,127.0.0.1" (remove me to connect from other machine)
             port: 27017
+          replication:
+            oplogSizeMB: 25600
+            replSetName: "rs2" {rs1,rs2,rs3}  
+          processManagement:
+            fork: true
+
 
   - Update [Plist] (mongo/mongodb.plist.xml) if required 
   - Start Mongo, Check for logs 
