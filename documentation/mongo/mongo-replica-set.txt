@@ -146,7 +146,7 @@ flab:PRIMARY> rs.status();
 flab:PRIMARY> exit
 bye
 
-Cut and paste the line below on mongo conolse 
+Cut and paste the line below on mongo console 
 
 cfg = rs.conf()
 cfg.members[0].priority = 4
