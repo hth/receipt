@@ -147,8 +147,9 @@ flab:PRIMARY> exit
 bye
 
 cfg = rs.conf()
-cfg.members[0].priority = 0.5
+cfg.members[0].priority = 4
 cfg.members[1].priority = 2
 cfg.members[2].priority = 2
 rs.reconfig(cfg)
 
+Higher the number, more likely to be primary.
