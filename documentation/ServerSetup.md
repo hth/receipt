@@ -18,6 +18,7 @@
             timeStampFormat: iso8601-utc
           storage:
             dbPath: /data/db
+            directoryPerDB: false
           net:
             #bindIp: "192.168.1.67,127.0.0.1" (remove me to connect from other machine)
             port: 27017
@@ -25,9 +26,11 @@
             oplogSizeMB: 25600
             replSetName: "rs"
           processManagement:
-            fork: true
+            fork: false 
 
-
+        # fork:false to not have daemon
+        # replSetName: "rs" common for all replica set
+ 
   - Update [Plist] (mongo/mongodb.plist.xml) if required 
   - Start Mongo, Check for logs 
   - Run `rs.initiate()` on just one mongo
