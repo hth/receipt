@@ -19,7 +19,7 @@
           storage:
             dbPath: /data/db
           net:
-            #  bindIp: "192.168.1.67,127.0.0.1" (remove me to connect from other machine)
+            #bindIp: "192.168.1.67,127.0.0.1" (remove me to connect from other machine)
             port: 27017
           replication:
             oplogSizeMB: 25600
