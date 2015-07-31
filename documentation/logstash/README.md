@@ -48,7 +48,7 @@ File content for ***logstash.plist***
 	      <string>-f</string>
 	      <string>/usr/local/etc/logstash.conf</string>
 	      <string>--log</string>
-	      <string>/var/logs/logstash/logstash.log</string>
+	      <string>/usr/local/var/log/logstash/logstash.log</string>
 	    </array>
 	    <key>RunAtLoad</key>
 	    <true/>
@@ -56,6 +56,7 @@ File content for ***logstash.plist***
 	    <string>/usr/local/Cellar/logstash/1.4.2/libexec</string>
 	  </dict>
 	</plist>
+
 
 Latest for 1.5.2. Don't forget to create logstash folder for logs. 
 
