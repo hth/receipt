@@ -28,8 +28,8 @@
           processManagement:
             fork: false 
 
-        # fork:false to not have daemon
-        # replSetName: "rs" common for all replica set
+          # fork:false to not have daemon
+          # replSetName: "rs" common for all replica set
  
   - Update [Plist] (mongo/mongodb.plist.xml) if required 
   - Start Mongo, Check for logs 
