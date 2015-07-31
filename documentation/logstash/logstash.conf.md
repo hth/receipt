@@ -1,33 +1,42 @@
-    #Date Sept 28 02:00 AM
+    #Date Jul 31 9:00 AM
     input {
         file {
             type => "test_app"
-            path => ["/var/logs/receiptofi/receiptofi.log"]
+            path => ["/usr/local/var/log/receiptofi/receiptofi.log"]
             exclude => ["launchd.stderr.log", "launchd.stdout.log"]
             sincedb_path => "/opt/logstash/sincedb-access"
             tags => "test"
             codec => "json"
-
+    
             # think about
             # stat_interval => 15
             # start_position => beginning
-
+    
             # no need for this as line are clubbed together
             # codec => multiline {
             #  pattern => "^\s"
             #  what => "previous"
             # }
         }
-
+    
         file {
             type => "test_mobile_app"
-            path => ["/var/logs/receiptofi/receiptofi-mobile.log"]
+            path => ["/usr/local/var/log/receiptofi/receiptofi-mobile.log"]
             exclude => ["launchd.stderr.log", "launchd.stdout.log"]
             sincedb_path => "/opt/logstash/sincedb-access"
             tags => "test_mobile"
             codec => "json"
         }
-
+    
+        file {
+            type => "test_app_mongo"
+            path => ["/usr/local/var/log/mongodb/mongo.log"]
+            exclude => ["output.log"]
+            sincedb_path => "/opt/logstash/sincedb-access"
+            tags => "test_mongo"
+            codec => "json"
+        }
+    
         file {
             type => "nginx"
             path => ["/var/logs/nginx/*.log"]
@@ -36,7 +45,7 @@
             tags => "nginx"
             codec => "json"
         }
-
+    
         file {
             type => "test_app_nginx"
             path => ["/var/logs/nginx/test.access.log"]
@@ -45,7 +54,7 @@
             tags => "test_nginx"
             codec => "json"
         }
-
+    
         file {
             type => "live_app_nginx"
             path => ["/var/logs/nginx/live.access.log"]
@@ -54,7 +63,7 @@
             tags => "live_nginx"
             codec => "json"
         }
-
+    
         file {
             type => "smoker"
             path => ["/var/logs/nginx/smoker.access.log"]
@@ -63,17 +72,8 @@
             tags => "smoker"
             codec => "json"
         }
-
-        file {
-            type => "test_app_mongo"
-            path => ["/var/logs/mongo/mongo.log"]
-            exclude => ["output.log"]
-            sincedb_path => "/opt/logstash/sincedb-access"
-            tags => "test_mongo"
-            codec => "json"
-        }
     }
-
+    
     filter {
         if [type] == "nginx" {
             grok {
@@ -81,7 +81,7 @@
                 add_tag => ["grokked"]
             }
         }
-
+    
         if [type] == "test_app_mongo" {
             grok { pattern => ["(?m)%{GREEDYDATA} \[conn%{NUMBER:mongoConnection}\] %{WORD:mongoCommand} %{NOTSPACE:mongoDatabase} %{WORD}: \{ %{GREEDYDATA:mongoStatement} \} %{GREEDYDATA} %{NUMBER:mongoElapsedTime:int}ms"] }
             grok { pattern => [" cursorid:%{NUMBER:mongoCursorId}"] }
@@ -100,7 +100,7 @@
             grok { pattern => [" reslen:%{NUMBER:mongoResultLength:int}"] }
         }
     }
-
+    
     output {
         redis {
             host => "192.168.1.74"
