@@ -18,9 +18,9 @@
             timeStampFormat: iso8601-utc
           storage:
             dbPath: /data/db
-          # net: (setting below does not work)
+          net:
             #  bindIp: "192.168.1.67,127.0.0.1" (remove me to connect from other machine)
-            #  port: 27017
+            port: 27017
 
   - Update [Plist] (mongo/mongodb.plist.xml) if required 
   - Start Mongo, Check for logs 
