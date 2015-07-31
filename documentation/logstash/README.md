@@ -57,6 +57,33 @@ File content for ***logstash.plist***
 	  </dict>
 	</plist>
 
+Latest for 1.5.2
+
+	<?xml version="1.0" encoding="UTF-8"?>
+	<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+	<plist version="1.0">
+	  <dict>
+	    <key>KeepAlive</key>
+	    <true/>
+	    <key>Label</key>
+	    <string>logstash</string>
+	    <key>ProgramArguments</key>
+	    <array>
+	      <string>/usr/local/Cellar/logstash/1.5.2/libexec/bin/logstash</string>
+	      <string>agent</string>
+	      <string>-f</string>
+	      <string>/usr/local/etc/logstash.conf</string>
+	      <string>--log</string>
+	      <string>/usr/local/var/log/logstash/logstash.log</string>
+	    </array>
+	    <key>RunAtLoad</key>
+	    <true/>
+	    <key>WorkingDirectory</key>
+	    <string>/usr/local/Cellar/logstash/1.5.2/libexec</string>
+	  </dict>
+	</plist>
+
+
 	cmd
 	Verbose
 	bin/logstash agent --verbose -f /etc/logstash/conf.d/receiptofi.shipper.conf
