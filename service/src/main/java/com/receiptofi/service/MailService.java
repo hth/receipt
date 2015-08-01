@@ -389,7 +389,7 @@ public class MailService {
         helper.setSubject(subject);
 
         //Attach image always at the end
-        URL url = Thread.currentThread().getContextClassLoader().getResource("../jsp/images/receipt-o-fi.logo.jpg");
+        URL url = Thread.currentThread().getContextClassLoader().getResource("../jsp/images/Receipt-48.jpg");
         Assert.notNull(url);
         FileSystemResource res = new FileSystemResource(url.getPath());
         helper.addInline("receiptofi.logo", res);
