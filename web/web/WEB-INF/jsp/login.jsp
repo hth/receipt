@@ -77,13 +77,13 @@
                 <c:remove var="SPRING_SECURITY_LAST_EXCEPTION" scope="session"/>
             </c:if>
 
-            <form:form method="post" modelAttribute="userLoginForm" action="j_spring_security_check" autocomplete="on">
+            <form:form method="post" modelAttribute="userLoginForm" action="login" autocomplete="on">
                 <%--<form:label for="emailId" path="emailId" cssClass="sign_uplabel"><strong class="bold">Email Address</strong></form:label>--%>
                 <form:input path="emailId" cssClass="text" placeholder="Email address"/>
                 <%--<form:label for="password" path="password" cssClass="sign_uplabel"><strong class="bold">Password</strong></form:label>--%>
                 <form:password path="password" cssClass="text" placeholder="Password"/>
                 <div class="checkbox">
-                    <input class="chk" type='checkbox' name='_spring_security_remember_me'/>
+                    <input class="chk" type='checkbox' name='remember-me'/>
                     <span class="checkbox_txt">Remember me on this computer</span>
                 </div>
                 <input class="right submit_btn" id="login" type="submit" value="SIGN IN"/>
