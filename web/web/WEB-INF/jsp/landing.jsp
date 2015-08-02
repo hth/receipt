@@ -280,9 +280,8 @@
 	<div id="tabs" class="nav-list">
 		<ul class="nav-block">
 			<li><a href="#tab1">OVERVIEW</a></li>
-			<li><a href="#tab2">FIRST</a></li>
             <c:if test="${isValidForMap}">
-			<li><a href="#tab3">MAP</a></li>
+			<li><a href="#tab2">MAP</a></li>
             </c:if>
 		</ul>
 		<div id="tab1" class="ajx-content">
@@ -354,14 +353,9 @@
                 <div id="expenseByBusiness"></div>
 			</div>
 		</div>
-		<div id="tab2" class="ajx-content">
-            <div class="r-info temp_offset" id="noMileageId">
-                No data here submitted for August 2014.
-            </div>
-		</div>
 
         <c:if test="${isValidForMap}">
-        <div id="tab3" class="ajx-content">
+        <div id="tab2" class="ajx-content">
             <div class="rightside-title temp_offset" id="title_MapDataId">
                 <h1 class="rightside-title-text left">
                     Expenses by business location
@@ -512,7 +506,6 @@ function drawExpenseByBusiness() {
         </c:if>
 
         $("#noReceiptId").removeClass("temp_offset");
-        $("#noMileageId").removeClass("temp_offset");
         $("#noMapDataId").removeClass("temp_offset");
         $("#title_MapDataId").removeClass("temp_offset");
     });
