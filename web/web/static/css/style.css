@@ -1435,3 +1435,15 @@ a.expense-tag:hover, a.expense-tag:visited, a.expense-tag:link {
 }
 
 /*Logout End*/
+
+/* Login page */
+.separator {
+    text-align: center;
+    height: 0.5em;
+    border-bottom: 2px solid black;
+    margin-bottom: 0.5em;
+}
+.separator:first-line {
+    background-color: white;
+}
+/* Login page */
