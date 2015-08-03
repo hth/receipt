@@ -68,7 +68,13 @@
                 <input type="hidden" name="access_type" value="offline"/>
             </form:form>
             <br><br><br><br>
-            <hr>
+
+            <div style="height: 2px; background-color: black; text-align: center">
+                <span style="background-color: white; position: relative; top: -0.5em;">
+                    &nbsp;OR&nbsp;
+                </span>
+            </div>
+
             <h1 class="h1 spacing"><fmt:message key="login.heading" /></h1>
             <c:if test="${!empty param.loginFailure and param.loginFailure eq '--' and !empty sessionScope.SPRING_SECURITY_LAST_EXCEPTION.message}">
                 <div class="r-error" style="margin-left: 0; width: 100%">
@@ -82,15 +88,14 @@
                 <form:input path="emailId" cssClass="text" placeholder="Email address"/>
                 <%--<form:label for="password" path="password" cssClass="sign_uplabel"><strong class="bold">Password</strong></form:label>--%>
                 <form:password path="password" cssClass="text" placeholder="Password"/>
+                <span class="link"><a href="${pageContext.request.contextPath}/open/forgot/password.htm">Forgot your password?</a></span>
                 <div class="checkbox">
                     <input class="chk" type='checkbox' name='remember-me'/>
-                    <span class="checkbox_txt">Remember me on this computer</span>
+                    <span class="checkbox_txt">Remember me on this device</span>
                 </div>
                 <input class="right submit_btn" id="login" type="submit" value="SIGN IN"/>
             </form:form>
             <div class="clear"></div>
-            <hr>
-            <span class="link"><a href="${pageContext.request.contextPath}/open/forgot/password.htm">Forgot your password?</a></span>
         </div>
     </div>
 </div>
