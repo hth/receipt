@@ -1,4 +1,4 @@
-    # Date: Jun 09 7:00 PM
+    # Date: Aug 04 11:00 PM
     # https://www.digitalocean.com/community/tutorials/how-to-optimize-nginx-configuration
     # user  nobody;
     # IP Address 192.168.1.71 is related to the nginx installed ip
@@ -87,7 +87,11 @@
     
             location / {
                 root   /data/www;
-                index  index.html index.htm;
+                index  index.html;
+                
+                # try_files not required here 
+                # this way nginx first tries to serve the file as an .html although it doesn't have the extension
+                try_files $uri.html $uri $uri/ =404;
             }
     
             #error_page  404              /404.html;
@@ -109,6 +113,9 @@
             location / {
                 root /data/www;
                 index index.html;
+                
+                # this way nginx first tries to serve the file as an .html although it doesn't have the extension
+                try_files $uri.html $uri $uri/ @handler;
             }
         }
     
