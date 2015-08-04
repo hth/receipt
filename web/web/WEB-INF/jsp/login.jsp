@@ -86,7 +86,7 @@
                 <form:password path="password" cssClass="text" placeholder="Password"/>
                 <span class="link"><a href="${pageContext.request.contextPath}/open/forgot/password.htm">Forgot your password?</a></span>
                 <div class="checkbox">
-                    <input class="chk" type='checkbox' name='remember-me'/>
+                    <input class="chk" type='checkbox' name='remember-me' checked="checked"/>
                     <span class="checkbox_txt">Remember me on this device</span>
                 </div>
                 <input class="right submit_btn" id="login" type="submit" value="SIGN IN"/>

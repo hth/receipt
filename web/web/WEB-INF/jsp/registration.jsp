@@ -86,7 +86,9 @@
                 <div class="checkbox">
                     <form:checkbox path="acceptsAgreement" id="acceptsAgreement" cssClass="chk"/>
                     <form:label for="acceptsAgreement" path="acceptsAgreement" cssClass="checkbox_txt"
-                            cssErrorClass="checkbox_txt lb_error">I fully agree to the Receiptofi terms</form:label>
+                            cssErrorClass="checkbox_txt lb_error">
+                        <a href="https://receiptofi.com/termsofuse.html">I fully agree to the Receiptofi Terms Of Use</a>
+                    </form:label>
                 </div>
                 <div class="clear"></div>
 
