@@ -10,6 +10,7 @@ import com.receiptofi.domain.BillingAccountEntity;
 import com.receiptofi.domain.types.PaymentGatewayEnum;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.stereotype.Repository;
@@ -57,7 +58,7 @@ public class BillingAccountManagerImpl implements BillingAccountManager {
                                         isActive(),
                                         isNotDeleted()
                                 )
-                ),
+                ).with(new Sort(Sort.Direction.DESC, "C")),
                 BillingAccountEntity.class
         );
     }
