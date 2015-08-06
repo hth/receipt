@@ -12,6 +12,9 @@ import org.apache.commons.lang3.StringUtils;
 
 import org.bson.types.ObjectId;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -37,6 +40,7 @@ import java.util.List;
 })
 @Repository
 public final class BizStoreManagerImpl implements BizStoreManager {
+    private static final Logger LOG = LoggerFactory.getLogger(BizStoreManagerImpl.class);
     private static final String TABLE = BaseEntity.getClassAnnotationValue(
             BizStoreEntity.class,
             Document.class,
@@ -69,13 +73,17 @@ public final class BizStoreManagerImpl implements BizStoreManager {
     }
 
     public BizStoreEntity findOne(BizStoreEntity bizStoreEntity) {
-        Query query = query(where("AD").is(bizStoreEntity.getAddress()));
-
-        if (StringUtils.isNotEmpty(bizStoreEntity.getPhone())) {
-            query.addCriteria(where("PH").is(bizStoreEntity.getPhone()));
+        Criteria criteria = new Criteria();
+        if (StringUtils.isEmpty(bizStoreEntity.getPhone())) {
+            criteria = where("AD").is(bizStoreEntity.getAddress());
+        } else {
+            criteria.orOperator(
+                    where("AD").is(bizStoreEntity.getAddress()),
+                    where("PH").is(bizStoreEntity.getPhone())
+            );
         }
 
-        return mongoTemplate.findOne(query, BizStoreEntity.class);
+        return mongoTemplate.findOne(query(criteria), BizStoreEntity.class);
     }
 
     @Override
@@ -148,7 +156,7 @@ public final class BizStoreManagerImpl implements BizStoreManager {
             query = query(where("BIZ_NAME.$id").is(new ObjectId(bizNameEntity.getId())));
         } else {
             query = query(where("AD").regex("^" + bizAddress, "i")
-                    .and("BIZ_NAME.$id").is(new ObjectId(bizNameEntity.getId()))
+                            .and("BIZ_NAME.$id").is(new ObjectId(bizNameEntity.getId()))
             );
         }
         query.fields().include(fieldName);
