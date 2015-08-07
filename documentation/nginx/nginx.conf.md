@@ -50,7 +50,7 @@
         client_max_body_size 10M;
     
         # Cannot mark ssl on as it will make http as not working. Only works on https. Redirect to https is better choice.
-        #ssl on;                                                    
+        #ssl on;    
         ssl_session_cache   shared:SSL:10m;
         ssl_session_timeout 10m;
         ssl_buffer_size     1400;
@@ -70,7 +70,7 @@
         ssl_stapling_verify on;
         resolver            8.8.4.4 8.8.8.8 valid=300s;
         resolver_timeout    10s;
-                    
+                
         # Remember this setting for 365 days
         add_header Strict-Transport-Security "max-age=31536000; includeSubdomains";
         add_header X-Frame-Options DENY;
@@ -88,10 +88,10 @@
             location / {
                 root   /data/www;
                 index  index.html;
-                
+    
                 # try_files not required here 
                 # this way nginx first tries to serve the file as an .html although it doesn't have the extension
-                try_files $uri.html $uri $uri/ =404;
+                try_files $uri.html $uri $uri/ @handler;
             }
     
             #error_page  404              /404.html;
@@ -108,12 +108,12 @@
             listen          8443 ssl;
             server_name     receiptofi.com;
     
-            access_log  /var/logs/nginx/access.log main;
+            access_log  /var/logs/nginx/access.log main;       
     
             location / {
                 root /data/www;
                 index index.html;
-                
+    
                 # this way nginx first tries to serve the file as an .html although it doesn't have the extension
                 try_files $uri.html $uri $uri/ @handler;
             }
