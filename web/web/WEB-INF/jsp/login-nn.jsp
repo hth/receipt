@@ -44,7 +44,7 @@
 </header>
 
 <section class="cd-fixed-background" style="background-color: #93a748" data-type="slider-item">
-    <div class="cd-content" style="left: 30%; width: 55%">
+    <div class="cd-content">
         <h2 id="login-screen-title">Manage your receipts</h2>
         <p id="login-title-message">Traveling, Budgeting, Expensing. Just snap it and we do the rest. Paperless.</p>
 
