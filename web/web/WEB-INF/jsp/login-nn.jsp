@@ -6,6 +6,10 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang=""> <!--<![endif]-->
 <head>
     <meta charset="utf-8">
+    <meta name="_csrf" content="${_csrf.token}"/>
+    <meta name="_csrf_header" content="${_csrf.headerName}"/>
+    <script>var ctx = "${pageContext.request.contextPath}"</script>
+
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -44,17 +48,33 @@
         <h2>Manage your receipts</h2>
         <p>Traveling, Budgeting, Expensing. Just snap it and we do the rest. Paperless.</p>
 
-        <form class="cd-form floating-labels" autocomplete="off">
+        <form:form class="cd-form floating-labels"  method="post" modelAttribute="userLoginForm" action="/login" autocomplete="on">
             <fieldset>
+                <c:if test="${deniedSignup}">
+                    <div class="error-message">
+                        <p>You have been registered, but we are currently not accepting new users.</p>
+                        <p>Will notify you through email when we start accepting new users and will automatically grant access to you.</p>
+                        <p>User: ${user}</p>
+                        <p>Registration: ${pid}</p>
+                    </div>
+                </c:if>
+
                 <legend>Sign in to continue</legend>
+                <c:if test="${!empty param.loginFailure and param.loginFailure eq '--' and !empty sessionScope.SPRING_SECURITY_LAST_EXCEPTION.message}">
+                    <div class="r-error" style="margin-left: 0; width: 100%">
+                        Login not successful. Reason: ${sessionScope.SPRING_SECURITY_LAST_EXCEPTION.message}
+                    </div>
+                    <c:remove var="SPRING_SECURITY_LAST_EXCEPTION" scope="session"/>
+                </c:if>
+
                 <div class="icon">
-                    <label class="cd-label" for="cd-email">Email</label>
-                    <input class="email" type="email" name="cd-email" id="cd-email" required>
+                    <label class="cd-label" for="emailId">Email</label>
+                    <input class="email" type="email" name="emailId" id="emailId" required>
                 </div>
 
                 <div class="icon">
-                    <label class="cd-label" for="cd-password">Password</label>
-                    <input class="password" type="password" name="cd-password" id="cd-password" required>
+                    <label class="cd-label" for="password">Password</label>
+                    <input class="password" type="password" name="password" id="password" required>
                 </div>
             </fieldset>
 
@@ -63,7 +83,7 @@
                     <input type="submit" value="Sign In">
                 </div>
             </fieldset>
-        </form>
+        </form:form>
     </div>
 </section>
 
