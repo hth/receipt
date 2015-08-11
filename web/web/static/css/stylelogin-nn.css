@@ -479,9 +479,14 @@ input:-webkit-autofill {
     }
 }
 
+.cd-form legend {
+    margin-bottom: 10px !important;
+}
+
+/* reduces when screen size falls below 1230 */
 @media only screen and (max-width: 1230px) {
     .cd-form legend {
-        margin-bottom: 5px !important;
+        margin-bottom: 10px !important;
     }
 
     .cd-form fieldset {
