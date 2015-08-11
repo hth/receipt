@@ -44,21 +44,45 @@
 </header>
 
 <section class="cd-fixed-background" style="background-color: #93a748" data-type="slider-item">
-    <div class="cd-content" style="left: 30%; top: 40%;">
-        <h2>Manage your receipts</h2>
-        <p>Traveling, Budgeting, Expensing. Just snap it and we do the rest. Paperless.</p>
+    <div class="cd-content" style="left: 30%; width: 55%">
+        <h2 id="login-screen-title">Manage your receipts</h2>
+        <p id="login-title-message">Traveling, Budgeting, Expensing. Just snap it and we do the rest. Paperless.</p>
+
+        <fieldset class="cd-form floating-labels">
+            <legend>Social Sign In</legend>
+
+            <c:if test="${deniedSignup}">
+                <div class="error-message">
+                    <p>You have been registered, but we are currently not accepting new users.</p>
+                    <p>Will notify you through email when we start accepting new users and will automatically grant access to you.</p>
+                    <p>User: ${user}</p>
+                    <p>Registration: ${pid}</p>
+                </div>
+            </c:if>
+
+            <!-- FACEBOOK SIGNIN -->
+            <form:form name="fb_signin" id="fb_signin" action="${pageContext.request.contextPath}/signin/facebook.htm" method="POST">
+                <input type="hidden" name="scope" value="email,public_profile,user_friends,user_about_me,user_birthday" />
+                <%--<input type="hidden" name="scope" value="email,public_profile,user_friends,user_activities,user_education_history,user_likes" />--%>
+                <%--<button type="submit"><img src="${pageContext.request.contextPath}/static/jquery/css/social/facebook/sign-in-with-facebook.png" /></button>--%>
+                <div>
+                    <input type="submit" value="FACEBOOK SIGN IN" style="float: left;">
+                </div>
+            </form:form>
+
+            <!-- GOOGLE SIGNIN -->
+            <form:form name="g_signin" id="g_signin" action="${pageContext.request.contextPath}/signin/google.htm" method="POST">
+                <input type="hidden" name="scope" value="email https://www.googleapis.com/auth/plus.login https://www.googleapis.com/auth/plus.me https://www.googleapis.com/auth/tasks https://www.googleapis.com/auth/drive https://www.googleapis.com/auth/latitude.all.best" />
+                <input type="hidden" name="request_visible_actions" value="http://schemas.google.com/AddActivity http://schemas.google.com/BuyActivity http://schemas.google.com/CheckInActivity http://schemas.google.com/CommentActivity http://schemas.google.com/CreateActivity http://schemas.google.com/DiscoverActivity http://schemas.google.com/ListenActivity http://schemas.google.com/ReserveActivity http://schemas.google.com/ReviewActivity http://schemas.google.com/WantActivity"/>
+                <input type="hidden" name="access_type" value="offline"/>
+                <div>
+                    <input type="submit" value="GOOGLE+ SIGN IN" style="float: right;">
+                </div>
+            </form:form>
+        </fieldset>
 
         <form:form class="cd-form floating-labels"  method="post" modelAttribute="userLoginForm" action="/login" autocomplete="on">
             <fieldset>
-                <c:if test="${deniedSignup}">
-                    <div class="error-message">
-                        <p>You have been registered, but we are currently not accepting new users.</p>
-                        <p>Will notify you through email when we start accepting new users and will automatically grant access to you.</p>
-                        <p>User: ${user}</p>
-                        <p>Registration: ${pid}</p>
-                    </div>
-                </c:if>
-
                 <legend>Sign in to continue</legend>
                 <c:if test="${!empty param.loginFailure and param.loginFailure eq '--' and !empty sessionScope.SPRING_SECURITY_LAST_EXCEPTION.message}">
                     <div class="r-error" style="margin-left: 0; width: 100%">
@@ -80,7 +104,7 @@
 
             <fieldset>
                 <div>
-                    <input type="submit" value="Sign In">
+                    <input type="submit" value="SIGN  IN">
                 </div>
             </fieldset>
         </form:form>
