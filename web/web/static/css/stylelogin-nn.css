@@ -472,3 +472,13 @@ input:-webkit-autofill {
 }
 
 /*Warning Error Messages*/
+
+@media only screen and (max-width: 768px) {
+    #login-screen-title {
+        display: none;
+    }
+
+    #login-title-message {
+        display: none;
+    }
+}
