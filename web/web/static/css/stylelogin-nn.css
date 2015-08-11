@@ -491,11 +491,11 @@ input:-webkit-autofill {
     }
 
     .cd-form legend {
-        margin-bottom: 0px;
+        margin-bottom: 5px !important;
     }
 
     .cd-form fieldset {
-        margin: 2px !important;
+        margin: 0px !important;
     }
 
     .cd-form {
