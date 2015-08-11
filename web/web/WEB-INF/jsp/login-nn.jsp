@@ -19,6 +19,7 @@
     <link rel="stylesheet" href="https://receiptofi.com/css/reset.css"> <!-- CSS reset -->
     <link rel="stylesheet" href="https://receiptofi.com/css/style.css"> <!-- Resource style -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/stylelogin-nn.css"> <!-- Resource style -->
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.css" rel="stylesheet">
     <script async src="https://receiptofi.com/js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script> <!-- Modernizr -->
 
     <title>Receiptofi - Park Your Receipts Here</title>
@@ -67,8 +68,10 @@
                 <input type="hidden" name="scope" value="email,public_profile,user_friends,user_about_me,user_birthday" />
                 <%--<input type="hidden" name="scope" value="email,public_profile,user_friends,user_activities,user_education_history,user_likes" />--%>
                 <%--<button type="submit"><img src="${pageContext.request.contextPath}/static/jquery/css/social/facebook/sign-in-with-facebook.png" /></button>--%>
-                <div>
-                    <input type="submit" id="facebook_bt" value="FACEBOOK SIGN IN" style="float: left;">
+                <div style="float: left; margin: 0 0 25px !important;">
+                    <button type="submit" class="btn btn-success" style="background: #3B5998;">
+                        <i class="fa fa-facebook fa-2x social-awesome-icon"></i> <span class="social-text">Facebook</span>
+                    </button>
                 </div>
             </form:form>
 
@@ -77,8 +80,10 @@
                 <input type="hidden" name="scope" value="email https://www.googleapis.com/auth/plus.login https://www.googleapis.com/auth/plus.me https://www.googleapis.com/auth/tasks https://www.googleapis.com/auth/drive https://www.googleapis.com/auth/latitude.all.best" />
                 <input type="hidden" name="request_visible_actions" value="http://schemas.google.com/AddActivity http://schemas.google.com/BuyActivity http://schemas.google.com/CheckInActivity http://schemas.google.com/CommentActivity http://schemas.google.com/CreateActivity http://schemas.google.com/DiscoverActivity http://schemas.google.com/ListenActivity http://schemas.google.com/ReserveActivity http://schemas.google.com/ReviewActivity http://schemas.google.com/WantActivity"/>
                 <input type="hidden" name="access_type" value="offline"/>
-                <div>
-                    <input type="submit" id="google_bt" value="GOOGLE+ SIGN IN" style="float: right;">
+                <div style="float: right; margin: 0 0 25px !important;">
+                    <button type="submit" class="btn btn-success" style="background: #dd4b39;">
+                        <i class="fa fa-google-plus fa-2x social-awesome-icon"></i> <span class="social-text">Google</span>
+                    </button>
                 </div>
             </form:form>
         </fieldset>

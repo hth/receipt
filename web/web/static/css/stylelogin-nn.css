@@ -480,16 +480,6 @@ input:-webkit-autofill {
 }
 
 @media only screen and (max-width: 1230px) {
-    #google_bt {
-        float: none !important;
-        padding: 16px 20px;
-    }
-
-    #facebook_bt {
-        float: none !important;
-        padding: 16px 20px;
-    }
-
     .cd-form legend {
         margin-bottom: 5px !important;
     }
@@ -501,4 +491,51 @@ input:-webkit-autofill {
     .cd-form {
         margin: 1em auto;
     }
+}
+
+.social-text {
+    font-family: "Open Sans", sans-serif;
+    font-size: 1.6rem;
+    color: #f2e6cd;
+    padding-left: 5px;
+}
+
+.social-awesome-icon {
+    vertical-align: middle;
+    font-size: 40px;
+    border-right: 2px;
+    padding-right: 5px;
+}
+
+.cd-form button[type="submit"] {
+    /* button style */
+    border: none;
+    background: #2c97de;
+    border-radius: .30em;
+    padding: 15px 20px;
+    color: #ffffff;
+    font-weight: bold;
+    float: right;
+    cursor: pointer;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -ms-appearance: none;
+    -o-appearance: none;
+    appearance: none;
+}
+.no-touch .cd-form button[type="submit"]:hover {
+    background: #42a2e1;
+}
+.cd-form button[type="submit"]:focus {
+    outline: none;
+    background: #2b3e51;
+}
+.cd-form button[type="submit"]:active {
+    -webkit-transform: scale(0.9);
+    -moz-transform: scale(0.9);
+    -ms-transform: scale(0.9);
+    -o-transform: scale(0.9);
+    transform: scale(0.9);
 }
