@@ -495,7 +495,7 @@ input:-webkit-autofill {
     }
 
     .cd-form fieldset {
-        margin: 0 !important;
+        margin: 2px !important;
     }
 
     .cd-form {
