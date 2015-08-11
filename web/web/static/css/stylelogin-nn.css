@@ -474,11 +474,31 @@ input:-webkit-autofill {
 /*Warning Error Messages*/
 
 @media only screen and (max-width: 768px) {
-    #login-screen-title {
+    #login-title-fieldset {
         display: none;
     }
+}
 
-    #login-title-message {
-        display: none;
+@media only screen and (max-width: 1230px) {
+    #google_bt {
+        float: none !important;
+        padding: 16px 20px;
+    }
+
+    #facebook_bt {
+        float: none !important;
+        padding: 16px 20px;
+    }
+
+    .cd-form legend {
+        margin-bottom: 0px;
+    }
+
+    .cd-form fieldset {
+        margin: 0 !important;
+    }
+
+    .cd-form {
+        margin: 1em auto;
     }
 }

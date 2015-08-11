@@ -45,8 +45,10 @@
 
 <section class="cd-fixed-background" style="background-color: #93a748" data-type="slider-item">
     <div class="cd-content">
-        <h2 id="login-screen-title">Manage your receipts</h2>
-        <p id="login-title-message">Traveling, Budgeting, Expensing. Just snap it and we do the rest. Paperless.</p>
+        <fieldset class="cd-form floating-labels" id="login-title-fieldset">
+            <h2>Manage your receipts</h2>
+            <p>Traveling, Budgeting, Expensing. Just snap it and we do the rest. Paperless.</p>
+        </fieldset>
 
         <fieldset class="cd-form floating-labels">
             <legend>Social Sign In</legend>
@@ -66,7 +68,7 @@
                 <%--<input type="hidden" name="scope" value="email,public_profile,user_friends,user_activities,user_education_history,user_likes" />--%>
                 <%--<button type="submit"><img src="${pageContext.request.contextPath}/static/jquery/css/social/facebook/sign-in-with-facebook.png" /></button>--%>
                 <div>
-                    <input type="submit" value="FACEBOOK SIGN IN" style="float: left;">
+                    <input type="submit" id="facebook_bt" value="FACEBOOK SIGN IN" style="float: left;">
                 </div>
             </form:form>
 
@@ -76,7 +78,7 @@
                 <input type="hidden" name="request_visible_actions" value="http://schemas.google.com/AddActivity http://schemas.google.com/BuyActivity http://schemas.google.com/CheckInActivity http://schemas.google.com/CommentActivity http://schemas.google.com/CreateActivity http://schemas.google.com/DiscoverActivity http://schemas.google.com/ListenActivity http://schemas.google.com/ReserveActivity http://schemas.google.com/ReviewActivity http://schemas.google.com/WantActivity"/>
                 <input type="hidden" name="access_type" value="offline"/>
                 <div>
-                    <input type="submit" value="GOOGLE+ SIGN IN" style="float: right;">
+                    <input type="submit" id="google_bt" value="GOOGLE+ SIGN IN" style="float: right;">
                 </div>
             </form:form>
         </fieldset>
