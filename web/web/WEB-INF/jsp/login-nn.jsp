@@ -67,7 +67,7 @@
             <form:form name="fb_signin" id="fb_signin" action="${pageContext.request.contextPath}/signin/facebook.htm" method="POST">
                 <input type="hidden" name="scope" value="email,public_profile,user_friends,user_about_me,user_birthday" />
                 <%--<input type="hidden" name="scope" value="email,public_profile,user_friends,user_activities,user_education_history,user_likes" />--%>
-                <div style="float: left; margin: 5px 0 15px 0 !important;">
+                <div style="float: left; margin: 5px 0 10px 0 !important;">
                     <button type="submit" class="btn btn-success" style="background: #3B5998;">
                         <i class="fa fa-facebook fa-2x social-awesome-icon"></i> <span class="social-text">Facebook</span>
                     </button>
@@ -79,7 +79,7 @@
                 <input type="hidden" name="scope" value="email https://www.googleapis.com/auth/plus.login https://www.googleapis.com/auth/plus.me https://www.googleapis.com/auth/tasks https://www.googleapis.com/auth/drive https://www.googleapis.com/auth/latitude.all.best" />
                 <input type="hidden" name="request_visible_actions" value="http://schemas.google.com/AddActivity http://schemas.google.com/BuyActivity http://schemas.google.com/CheckInActivity http://schemas.google.com/CommentActivity http://schemas.google.com/CreateActivity http://schemas.google.com/DiscoverActivity http://schemas.google.com/ListenActivity http://schemas.google.com/ReserveActivity http://schemas.google.com/ReviewActivity http://schemas.google.com/WantActivity"/>
                 <input type="hidden" name="access_type" value="offline"/>
-                <div style="float: right; margin: 5px 0 15px 0 !important;">
+                <div style="float: right; margin: 5px 0 10px 0 !important;">
                     <button type="submit" class="btn btn-success" style="background: #dd4b39;">
                         <i class="fa fa-google-plus fa-2x social-awesome-icon"></i> <span class="social-text">Google</span>
                     </button>
