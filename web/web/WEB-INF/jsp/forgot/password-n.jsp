@@ -15,14 +15,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
 
-    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300|Merriweather' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" href="https://receiptofi.com/css/reset.css"> <!-- CSS reset -->
-    <link rel="stylesheet" href="https://receiptofi.com/css/style.css"> <!-- Resource style -->
+    <link href='//fonts.googleapis.com/css?family=Open+Sans:400,300|Merriweather' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="//receiptofi.com/css/reset.css"> <!-- CSS reset -->
+    <link rel="stylesheet" href="//receiptofi.com/css/style.css"> <!-- Resource style -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/stylelogin-nn.css"> <!-- Resource style -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.css">
 
-    <script async src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-    <script async src="https://receiptofi.com/js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script> <!-- Modernizr -->
+    <script src="//receiptofi.com/js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script> <!-- Modernizr -->
 
     <title>Receiptofi - Park Your Receipts Here</title>
 </head>
@@ -93,27 +92,31 @@
     </footer>
 </div>
 
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 <script>
     // For login
-    if ($('.floating-labels').length > 0) {
-        floatLabels();
-    }
+    jQuery.noConflict();
+    jQuery(document).ready(function ($) {
+        if ($('.floating-labels').length > 0) {
+            floatLabels();
+        }
 
-    function floatLabels() {
-        var inputFields = $('.floating-labels .cd-label').next();
-        inputFields.each(function() {
-            var singleInput = $(this);
-            // check if user is filling one of the form fields
-            checkVal(singleInput);
-            singleInput.on('change keyup', function() {
+        function floatLabels() {
+            var inputFields = $('.floating-labels .cd-label').next();
+            inputFields.each(function() {
+                var singleInput = $(this);
+                // check if user is filling one of the form fields
                 checkVal(singleInput);
+                singleInput.on('change keyup', function() {
+                    checkVal(singleInput);
+                });
             });
-        });
-    }
+        }
 
-    function checkVal(inputField) {
-        (inputField.val() == '') ? inputField.prev('.cd-label').removeClass('float') : inputField.prev('.cd-label').addClass('float');
-    }
+        function checkVal(inputField) {
+            (inputField.val() == '') ? inputField.prev('.cd-label').removeClass('float') : inputField.prev('.cd-label').addClass('float');
+        }
+    });
 </script>
 <script>
     (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
