@@ -68,7 +68,7 @@
                 <input type="hidden" name="scope" value="email,public_profile,user_friends,user_about_me,user_birthday" />
                 <%--<input type="hidden" name="scope" value="email,public_profile,user_friends,user_activities,user_education_history,user_likes" />--%>
                 <%--<button type="submit"><img src="${pageContext.request.contextPath}/static/jquery/css/social/facebook/sign-in-with-facebook.png" /></button>--%>
-                <div style="float: left; margin: 0 0 25px !important;">
+                <div style="float: left; margin: 5px 0 15px !important;">
                     <button type="submit" class="btn btn-success" style="background: #3B5998;">
                         <i class="fa fa-facebook fa-2x social-awesome-icon"></i> <span class="social-text">Facebook</span>
                     </button>
@@ -80,7 +80,7 @@
                 <input type="hidden" name="scope" value="email https://www.googleapis.com/auth/plus.login https://www.googleapis.com/auth/plus.me https://www.googleapis.com/auth/tasks https://www.googleapis.com/auth/drive https://www.googleapis.com/auth/latitude.all.best" />
                 <input type="hidden" name="request_visible_actions" value="http://schemas.google.com/AddActivity http://schemas.google.com/BuyActivity http://schemas.google.com/CheckInActivity http://schemas.google.com/CommentActivity http://schemas.google.com/CreateActivity http://schemas.google.com/DiscoverActivity http://schemas.google.com/ListenActivity http://schemas.google.com/ReserveActivity http://schemas.google.com/ReviewActivity http://schemas.google.com/WantActivity"/>
                 <input type="hidden" name="access_type" value="offline"/>
-                <div style="float: right; margin: 0 0 25px !important;">
+                <div style="float: right; margin: 5px 0 15px !important;">
                     <button type="submit" class="btn btn-success" style="background: #dd4b39;">
                         <i class="fa fa-google-plus fa-2x social-awesome-icon"></i> <span class="social-text">Google</span>
                     </button>
@@ -107,7 +107,10 @@
                     <label class="cd-label" for="password">Password</label>
                     <input class="password" type="password" name="password" id="password" required>
                 </div>
-                <span class="cd-link"><a href="${pageContext.request.contextPath}/open/forgot/password.htm">Forgot your password?</a></span>
+
+                <div class="icon" style="text-align: right">
+                    <span class="cd-link"><a href="${pageContext.request.contextPath}/open/forgot/password.htm">Forgot your password?</a></span>
+                </div>
             </fieldset>
 
             <ul class="cd-form-list">
