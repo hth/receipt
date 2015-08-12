@@ -121,7 +121,7 @@
 
             <fieldset>
                 <div>
-                    <input type="submit" value="SIGN  IN">
+                    <input type="submit" value="Sign In">
                 </div>
             </fieldset>
         </form:form>
