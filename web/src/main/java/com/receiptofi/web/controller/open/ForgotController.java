@@ -138,14 +138,28 @@ public class ForgotController {
             return passwordPage;
         }
 
-        MailTypeEnum status = mailService.mailRecoverLink(forgotRecoverForm.getMail().getText().toLowerCase());
-        if (MailTypeEnum.FAILURE == status) {
+        MailTypeEnum mailType = mailService.mailRecoverLink(forgotRecoverForm.getMail().getText().toLowerCase());
+        if (MailTypeEnum.FAILURE == mailType) {
             LOG.error("Failed to send recovery email for user={}", forgotRecoverForm.getMail());
         }
 
-        redirectAttrs.addFlashAttribute(
-                SUCCESS_EMAIL,
-                status == MailTypeEnum.ACCOUNT_NOT_VALIDATED ? status : MailTypeEnum.SUCCESS);
+        // But we show success to user on failure. Not sure if we should show a failure message when mail fails.
+        switch (mailType) {
+            case SOCIAL_ACCOUNT:
+                redirectAttrs.addFlashAttribute(SUCCESS_EMAIL, mailType);
+                break;
+            case FAILURE:
+            case ACCOUNT_NOT_VALIDATED:
+            case ACCOUNT_NOT_FOUND:
+            case SUCCESS:
+                redirectAttrs.addFlashAttribute(
+                        SUCCESS_EMAIL,
+                        mailType == MailTypeEnum.ACCOUNT_NOT_VALIDATED ? mailType : MailTypeEnum.SUCCESS);
+                break;
+            default:
+                LOG.error("Reached unreachable condition, user={}", forgotRecoverForm.getMail().getText().toLowerCase());
+        }
+
         return recoverConfirm;
     }
 
@@ -180,7 +194,6 @@ public class ForgotController {
 
     /**
      * Called during registration when user is registered in the system.
-     *
      * Method just for changing the URL, hence have to use re-direct.
      * This could be an expensive call because of redirect.
      * Its redirected from RequestMethod.POST form.
