@@ -486,10 +486,6 @@ input:-webkit-autofill {
         padding: 10px 20px !important;
     }
 
-    .cd-form fieldset {
-        margin: 20px !important;
-    }
-
     .cd-form legend {
         font-size: inherit;
     }
@@ -498,10 +494,6 @@ input:-webkit-autofill {
 @media only screen and (max-width: 768px) {
     #login-title-fieldset {
         display: none !important;
-    }
-
-    .cd-form fieldset {
-        margin: 20px !important;
     }
 
     .cd-form legend {
