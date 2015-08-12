@@ -473,9 +473,31 @@ input:-webkit-autofill {
 
 /*Warning Error Messages*/
 
+@media only screen and (max-width: 330px) {
+    #login-title-fieldset {
+        display: none !important;
+    }
+
+    .cd-form button[type="submit"] {
+        padding: 10px 15px !important;
+    }
+
+    .cd-form input[type="submit"] {
+        padding: 10px 20px !important;
+    }
+
+    .cd-form legend {
+        font-size: inherit;
+    }
+}
+
 @media only screen and (max-width: 768px) {
     #login-title-fieldset {
-        display: none;
+        display: none !important;
+    }
+
+    .cd-form legend {
+        font-size: inherit;
     }
 }
 
@@ -547,11 +569,6 @@ input:-webkit-autofill {
 
 .cd-link a {
     color: #3d3536;
-    line-height: 10px;
-    text-align: right;
-    display: inline-block;
-    width: 100%;
-    padding: .6em 0em 20px;
 }
 
 .no-touch .cd-link a:hover {
