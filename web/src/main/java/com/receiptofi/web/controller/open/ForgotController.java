@@ -65,7 +65,7 @@ public class ForgotController {
     private static final String SUCCESS = "success";
 
     /** Called when user hits on forgot password. */
-    @Value ("${password:/forgot/password}")
+    @Value ("${password:/forgot/password-n}")
     private String passwordPage;
 
     /** Called when user tries to register with email already existing. Then user is directed to recover instead. */

@@ -41,6 +41,7 @@ Form
     color: #f2e6cd;
 }
 .cd-form input[type="text"],
+.cd-form input[type="mail"],
 .cd-form input[type="email"],
 .cd-form input[type="password"],
 .cd-form textarea,
@@ -55,6 +56,7 @@ Form
     appearance: none;
 }
 .cd-form input[type="text"],
+.cd-form input[type="mail"],
 .cd-form input[type="email"],
 .cd-form input[type="password"],
 .cd-form textarea,
@@ -67,6 +69,7 @@ Form
     box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.08);
 }
 .cd-form input[type="text"]:focus,
+.cd-form input[type="mail"]:focus,
 .cd-form input[type="email"]:focus,
 .cd-form input[type="password"]:focus,
 .cd-form textarea:focus,
@@ -267,6 +270,7 @@ Form
         margin-bottom: 10px;
     }
     .cd-form input[type="text"],
+    .cd-form input[type="mail"],
     .cd-form input[type="email"],
     .cd-form input[type="password"],
     .cd-form textarea,
