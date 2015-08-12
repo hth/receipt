@@ -487,7 +487,7 @@ input:-webkit-autofill {
     }
 
     .cd-form fieldset {
-        margin: 10px !important;
+        margin: 20px !important;
     }
 
     .cd-form legend {
@@ -501,7 +501,7 @@ input:-webkit-autofill {
     }
 
     .cd-form fieldset {
-        margin: 10px !important;
+        margin: 20px !important;
     }
 
     .cd-form legend {
@@ -511,10 +511,6 @@ input:-webkit-autofill {
 
 /* reduces when screen size falls below 1230 */
 @media only screen and (max-width: 1230px) {
-    .cd-form legend {
-        margin-bottom: 10px !important;
-    }
-
     .cd-form {
         margin: 1em auto;
     }
