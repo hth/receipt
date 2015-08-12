@@ -15,12 +15,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
 
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300|Merriweather' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" href="https://receiptofi.com/css/reset.css"> <!-- CSS reset -->
-    <link rel="stylesheet" href="https://receiptofi.com/css/style.css"> <!-- Resource style -->
+    <link href='//fonts.googleapis.com/css?family=Open+Sans:400,300|Merriweather' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="//receiptofi.com/css/reset.css"> <!-- CSS reset -->
+    <link rel="stylesheet" href="//receiptofi.com/css/style.css"> <!-- Resource style -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/stylelogin-nn.css"> <!-- Resource style -->
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.css" rel="stylesheet">
-    <script async src="https://receiptofi.com/js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script> <!-- Modernizr -->
+    <script async src="//receiptofi.com/js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script> <!-- Modernizr -->
 
     <title>Receiptofi - Park Your Receipts Here</title>
 </head>
@@ -109,6 +109,13 @@
                 </div>
             </fieldset>
 
+            <ul class="cd-form-list">
+                <li>
+                    <input type="checkbox" name="remember-me" id="cd-checkbox-1">
+                    <label for="cd-checkbox-1">Remember me on this device</label>
+                </li>
+            </ul>
+
             <fieldset>
                 <div>
                     <input type="submit" value="SIGN  IN">
@@ -125,7 +132,7 @@
     </footer>
 </div>
 
-<script async src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script async src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
 <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/highcharts/4.1.7/highcharts.js"></script>
