@@ -20,6 +20,8 @@
     <link rel="stylesheet" href="https://receiptofi.com/css/style.css"> <!-- Resource style -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/stylelogin-nn.css"> <!-- Resource style -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.css">
+
+    <script async src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <script async src="https://receiptofi.com/js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script> <!-- Modernizr -->
 
     <title>Receiptofi - Park Your Receipts Here</title>
@@ -91,7 +93,6 @@
     </footer>
 </div>
 
-<script async src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 <script>
     // For login
     if ($('.floating-labels').length > 0) {
