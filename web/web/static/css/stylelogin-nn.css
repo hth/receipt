@@ -392,6 +392,11 @@ Custom
 
 --------------------------------------- */
 
+/* for each csrf div */
+fieldset form div:last-child {
+    margin: 0px 0 !important;
+}
+
 /* ------------------------------------
 
 Chrome auto file color
