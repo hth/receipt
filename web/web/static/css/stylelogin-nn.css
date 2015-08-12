@@ -486,6 +486,10 @@ input:-webkit-autofill {
         padding: 10px 20px !important;
     }
 
+    .cd-form fieldset {
+        margin: 10px !important;
+    }
+
     .cd-form legend {
         font-size: inherit;
     }
@@ -496,23 +500,19 @@ input:-webkit-autofill {
         display: none !important;
     }
 
+    .cd-form fieldset {
+        margin: 10px !important;
+    }
+
     .cd-form legend {
         font-size: inherit;
     }
-}
-
-.cd-form legend {
-    margin-bottom: 10px !important;
 }
 
 /* reduces when screen size falls below 1230 */
 @media only screen and (max-width: 1230px) {
     .cd-form legend {
         margin-bottom: 10px !important;
-    }
-
-    .cd-form fieldset {
-        margin: 0px !important;
     }
 
     .cd-form {
