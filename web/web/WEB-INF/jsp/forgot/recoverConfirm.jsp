@@ -25,6 +25,8 @@
 <body>
 <div class="wrapper">
     <spring:eval expression="success_email eq T(com.receiptofi.domain.types.MailTypeEnum).SUCCESS" var="mailSentType" />
+    <spring:eval expression="success_email eq T(com.receiptofi.domain.types.MailTypeEnum).SOCIAL_ACCOUNT" var="socialAccount" />
+
     <c:if test="${mailSentType}">
         <div class="error_page">
             <img alt="receipt-o-fi logo" src="${pageContext.request.contextPath}/static/images/receipt-o-fi.logo.jpg" height="45px" />
@@ -35,16 +37,29 @@
         </div>
     </c:if>
 
-    <c:if test="${!mailSentType}">
-        <div class="error_page">
-            <img alt="receipt-o-fi logo" src="${pageContext.request.contextPath}/static/images/receipt-o-fi.logo.jpg" height="45px" />
-            <h1>Confirmation Page</h1>
-            <p>Since your email address has not being verified, we have sent verification email.</p>
-            <p>Follow directions in email to validated your account and then resubmit new password reset request.</p>
-            <p>&nbsp;</p>
-            <p>Click here for <a href="${pageContext.request.contextPath}/open/login.htm">Login</a> page</p>
-        </div>
-    </c:if>
+    <c:choose>
+        <c:when test="${socialAccount}">
+            <div class="error_page">
+                <img alt="receipt-o-fi logo" src="${pageContext.request.contextPath}/static/images/receipt-o-fi.logo.jpg" height="45px" />
+                <h1>Hmmmm... </h1>
+                <p>You are registered through social provider like Facebook or Google+.</p>
+                <p>Hence we cannot change the password. Please use these providers to login.</p>
+                <p>If you are having difficulties login, please contact us on support.</p>
+                <p>&nbsp;</p>
+                <p>Click here for <a href="${pageContext.request.contextPath}/open/login.htm">Login</a> page</p>
+            </div>
+        </c:when>
+        <c:otherwise>
+            <div class="error_page">
+                <img alt="receipt-o-fi logo" src="${pageContext.request.contextPath}/static/images/receipt-o-fi.logo.jpg" height="45px" />
+                <h1>Confirmation Page</h1>
+                <p>Since your email address has not being verified, we have sent verification email.</p>
+                <p>Follow directions in email to validated your account and then resubmit new password reset request.</p>
+                <p>&nbsp;</p>
+                <p>Click here for <a href="${pageContext.request.contextPath}/open/login.htm">Login</a> page</p>
+            </div>
+        </c:otherwise>
+    </c:choose>
 </div>
 
 <div class="footer">

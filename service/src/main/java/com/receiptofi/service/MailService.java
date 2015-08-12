@@ -162,7 +162,7 @@ public class MailService {
      *
      * @param userId
      * @param name
-     * @param auth - Authentication key to authenticate user when clicking link in mail
+     * @param auth   - Authentication key to authenticate user when clicking link in mail
      * @return
      */
     public boolean accountValidationMail(String userId, String name, String auth) {
@@ -211,6 +211,12 @@ public class MailService {
         if (null == userAccount) {
             LOG.warn("could not recover user={}", mail);
             return MailTypeEnum.ACCOUNT_NOT_FOUND;
+        }
+
+        if (null != userAccount.getProviderId()) {
+            /** Cannot change password for social account. Well this condition is checked in Mobile Server too. */
+            LOG.warn("Social account user={} tried recovering password", mail);
+            return MailTypeEnum.SOCIAL_ACCOUNT;
         }
 
         if (userAccount.isAccountValidated()) {

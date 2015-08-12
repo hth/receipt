@@ -104,11 +104,12 @@ public class MobileMailController {
             }
             Assert.notEmpty(map);
             MailTypeEnum mailType = mailService.mailRecoverLink(map.get("userId").getText());
-            switch(mailType) {
+            switch (mailType) {
                 case SUCCESS:
                 case ACCOUNT_NOT_VALIDATED:
                     httpServletResponse.setStatus(HttpServletResponse.SC_OK);
                     break;
+                case SOCIAL_ACCOUNT:
                 case FAILURE:
                     httpServletResponse.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Internal error occurred");
                     break;
