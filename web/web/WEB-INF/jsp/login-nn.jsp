@@ -107,6 +107,7 @@
                     <label class="cd-label" for="password">Password</label>
                     <input class="password" type="password" name="password" id="password" required>
                 </div>
+                <span class="cd-link"><a href="${pageContext.request.contextPath}/open/forgot/password.htm">Forgot your password?</a></span>
             </fieldset>
 
             <ul class="cd-form-list">
