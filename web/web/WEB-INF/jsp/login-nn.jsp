@@ -15,12 +15,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
 
-    <link href='//fonts.googleapis.com/css?family=Open+Sans:400,300|Merriweather' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" href="//receiptofi.com/css/reset.css"> <!-- CSS reset -->
-    <link rel="stylesheet" href="//receiptofi.com/css/style.css"> <!-- Resource style -->
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300|Merriweather' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="https://receiptofi.com/css/reset.css"> <!-- CSS reset -->
+    <link rel="stylesheet" href="https://receiptofi.com/css/style.css"> <!-- Resource style -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/stylelogin-nn.css"> <!-- Resource style -->
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.css" rel="stylesheet">
-    <script async src="//receiptofi.com/js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script> <!-- Modernizr -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.css">
+    <script async src="https://receiptofi.com/js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script> <!-- Modernizr -->
 
     <title>Receiptofi - Park Your Receipts Here</title>
 </head>
@@ -30,7 +30,7 @@
 <![endif]-->
 <header class="cd-header">
     <div id="cd-logo">
-        <a href="index.html"><div id="cd-logo-img"></div></a>
+        <a href="//receiptofi.com"><div id="cd-logo-img"></div></a>
     </div>
 
     <h3>Receiptofi</h3>
@@ -130,20 +130,20 @@
 
 <div class="footer-container">
     <footer class="wrapper fine-print">
-        &#64; 2015 Receiptofi, Inc. <a href="termsofuse">Terms</a> and <a href="privacypolicy">Privacy</a>.<br>
+        &#64; 2015 Receiptofi, Inc. <a href="//receiptofi.com/termsofuse">Terms</a> and <a href="//receiptofi.com/privacypolicy">Privacy</a>.<br>
         All other trademarks and logos belong to their respective owners.
     </footer>
 </div>
 
-<script async src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-<script async src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
-<script async src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.min.js"></script>
-<script async src="//receiptofi.com/js/main.js"></script>
-<script async src="//cdnjs.cloudflare.com/ajax/libs/highcharts/4.1.7/highcharts.js"></script>
+<script async src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script async src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
+<script async src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.min.js"></script>
+<script async src="https://receiptofi.com/js/main.js"></script>
+<script async src="https://cdnjs.cloudflare.com/ajax/libs/highcharts/4.1.7/highcharts.js"></script>
 <script async src="${pageContext.request.contextPath}/static/external/js/cute-time/jquery.cuteTime.min.js"></script>
 <script async src="${pageContext.request.contextPath}/static/external/js/fineuploader/jquery.fine-uploader.min.js"></script>
-<script async src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js"></script>
-<script async src="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.3.1/fullcalendar.min.js"></script>
+<script async src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js"></script>
+<script async src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.3.1/fullcalendar.min.js"></script>
 <script async src="${pageContext.request.contextPath}/static/js/fineupload.js"></script>
 <script>
     // For login
