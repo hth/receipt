@@ -71,8 +71,8 @@
 
             <fieldset>
                 <div class="icon">
-                    <label class="cd-label" for="mail">Email</label>
-                    <input class="email" type="email" name="mail" id="mail" required>
+                    <form:label for="mail" path="mail" cssClass="cd-label">Email</form:label>
+                    <form:input path="mail" cssClass="email" required="required" type="email" />
                 </div>
             </fieldset>
 
