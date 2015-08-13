@@ -1,5 +1,7 @@
 package com.receiptofi.web.listener;
 
+import org.apache.commons.lang3.StringUtils;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -7,6 +9,8 @@ import org.springframework.util.Assert;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.nio.file.AccessDeniedException;
 import java.util.Properties;
 
@@ -27,6 +31,7 @@ public class ReceiptofiServletContextListener implements ServletContextListener 
     private static final Logger LOG = LoggerFactory.getLogger(ReceiptofiServletContextListener.class);
 
     private Properties config = new Properties();
+    private Properties messages = new Properties();
 
     @Override
     public void contextDestroyed(ServletContextEvent arg0) {
@@ -39,13 +44,37 @@ public class ReceiptofiServletContextListener implements ServletContextListener 
         LOG.info("Receiptofi context initialized");
 
         try {
+            messages.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("messages.properties"));
             config.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("conf/config.properties"));
         } catch (IOException e) {
             LOG.error("could not load config properties file reason={}", e.getLocalizedMessage(), e);
         }
 
+        checkEnvironment();
         if (hasAccessToFileSystem()) {
             LOG.info("Found and has access, to directory={}", config.get("expensofiReportLocation"));
+        }
+    }
+
+    private void checkEnvironment() {
+        try {
+            String hostName = InetAddress.getLocalHost().getHostName();
+            String buildEnvironment = (String) messages.get("build.env");
+
+            LOG.info("Found environment={} on host={}", buildEnvironment, hostName);
+            if (StringUtils.equals(buildEnvironment, "prod")
+                    && !hostName.equals("live")) {
+
+                LOG.error("Mismatch environment. Found env={} on host={}", buildEnvironment, hostName);
+                throw new RuntimeException("Mismatch environment. Found env=" + buildEnvironment + " on host=" + hostName);
+            } else if (StringUtils.equals(buildEnvironment, "test")
+                    && (!hostName.equals("test") || !hostName.equals("smoker"))) {
+
+                LOG.error("Mismatch environment. Found env={} on host={}", buildEnvironment, hostName);
+                throw new RuntimeException("Mismatch environment. Found env=" + buildEnvironment + " on host=" + hostName);
+            }
+        } catch (UnknownHostException e) {
+            LOG.error("Could not get hostname reason={}", e.getLocalizedMessage(), e);
         }
     }
 
