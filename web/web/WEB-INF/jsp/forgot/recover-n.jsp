@@ -53,9 +53,11 @@
         </fieldset>
 
         <form:form class="cd-form floating-labels"  method="post" modelAttribute="forgotRecoverForm" action="password.htm">
+            <form:hidden path="mail" />
+
             <p style="display:none;visibility:hidden;">
                 <form:label for="captcha" path="captcha" cssErrorClass="error">Captcha:</form:label>
-                <form:input path="captcha" />
+                <form:input path="captcha" disabled="true" />
                 <form:errors path="captcha" cssClass="error" />
             </p>
 
@@ -71,8 +73,9 @@
 
             <fieldset>
                 <div class="icon">
-                    <label class="cd-label" for="mail">Email</label>
-                    <input class="email" type="email" name="mail" id="mail" required>
+                    <form:label for="mail" path="mail" cssClass="cd-label float">Email</form:label>
+                    <form:input path="mail" cssClass="email" readonly="true" disabled="true"
+                            cssStyle="background-color: inherit !important; color: #f2e6cd;" />
                 </div>
             </fieldset>
 
@@ -93,29 +96,6 @@
 </div>
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-<script>
-    jQuery(document).ready(function ($) {
-        if ($('.floating-labels').length > 0) {
-            floatLabels();
-        }
-
-        function floatLabels() {
-            var inputFields = $('.floating-labels .cd-label').next();
-            inputFields.each(function() {
-                var singleInput = $(this);
-                // check if user is filling one of the form fields
-                checkVal(singleInput);
-                singleInput.on('change keyup', function() {
-                    checkVal(singleInput);
-                });
-            });
-        }
-
-        function checkVal(inputField) {
-            (inputField.val() == '') ? inputField.prev('.cd-label').removeClass('float') : inputField.prev('.cd-label').addClass('float');
-        }
-    });
-</script>
 <script src="//receiptofi.com/js/main.js"></script>
 <script>
     (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=

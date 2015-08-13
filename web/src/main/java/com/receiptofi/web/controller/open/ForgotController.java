@@ -69,7 +69,7 @@ public class ForgotController {
     private String passwordPage;
 
     /** Called when user tries to register with email already existing. Then user is directed to recover instead. */
-    @Value ("${recoverPage:/forgot/recover}")
+    @Value ("${recoverPage:/forgot/recover-n}")
     private String recoverPage;
 
     @Value ("${recoverConfirmPage:/forgot/recoverConfirm}")
