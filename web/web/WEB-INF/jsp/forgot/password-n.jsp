@@ -49,7 +49,7 @@
     <div class="cd-content">
         <fieldset class="cd-form floating-labels">
             <h2><fmt:message key="account.recover.title" /></h2>
-            <p><fmt:message key="account.recover.sub.title" /></p>
+            <p><fmt:message key="account.forgot.sub.title" /></p>
         </fieldset>
 
         <form:form class="cd-form floating-labels"  method="post" modelAttribute="forgotRecoverForm" action="password.htm">
