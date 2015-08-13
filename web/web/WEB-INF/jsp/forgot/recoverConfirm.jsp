@@ -27,17 +27,16 @@
     <spring:eval expression="success_email eq T(com.receiptofi.domain.types.MailTypeEnum).SUCCESS" var="mailSentType" />
     <spring:eval expression="success_email eq T(com.receiptofi.domain.types.MailTypeEnum).SOCIAL_ACCOUNT" var="socialAccount" />
 
-    <c:if test="${mailSentType}">
-        <div class="error_page">
-            <img alt="receipt-o-fi logo" src="${pageContext.request.contextPath}/static/images/receipt-o-fi.logo.jpg" height="45px" />
-            <h1>Confirmation Page</h1>
-            <p>An email has been sent with information regarding recovering your account password</p>
-            <p>&nbsp;</p>
-            <p><a href="${pageContext.request.contextPath}/open/login.htm">Click to the login</a></p>
-        </div>
-    </c:if>
-
     <c:choose>
+        <c:when test="${mailSentType}">
+            <div class="error_page">
+                <img alt="receipt-o-fi logo" src="${pageContext.request.contextPath}/static/images/receipt-o-fi.logo.jpg" height="45px" />
+                <h1>Confirmation Page</h1>
+                <p>An email has been sent with information regarding recovering your account password</p>
+                <p>&nbsp;</p>
+                <p><a href="${pageContext.request.contextPath}/open/login.htm">Click to the login</a></p>
+            </div>
+        </c:when>
         <c:when test="${socialAccount}">
             <div class="error_page">
                 <img alt="receipt-o-fi logo" src="${pageContext.request.contextPath}/static/images/receipt-o-fi.logo.jpg" height="45px" />
