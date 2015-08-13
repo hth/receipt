@@ -138,8 +138,6 @@
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 <script>
-    // For login
-    jQuery.noConflict();
     jQuery(document).ready(function ($) {
         if ($('.floating-labels').length > 0) {
             floatLabels();
