@@ -1,4 +1,4 @@
-<%@ include file="include.jsp"%>
+<%@ include file="../include.jsp"%>
 <!doctype html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
@@ -48,31 +48,34 @@
     <div class="cd-content">
         <fieldset class="cd-form floating-labels">
             <h2><fmt:message key="account.register.title" /></h2>
-            <p><fmt:message key="account.register.sub.title" /></p>
+            <p><fmt:message key="account.invite.sub.title" /></p>
         </fieldset>
 
         <fieldset class="cd-form floating-labels">
-            <form:form method="post" modelAttribute="userRegistrationForm" action="registration.htm" autocomplete="true">
-                <spring:hasBindErrors name="userRegistrationForm">
-                <div class="r-validation" style="width: 100%; margin: 0 0 0 0;">
-                    <ul>
-                        <c:if test="${errors.hasFieldErrors('firstName')}">
-                            <li><form:errors path="firstName" /></li>
-                        </c:if>
-                        <c:if test="${errors.hasFieldErrors('lastName')}">
-                            <li><form:errors path="lastName" /></li>
-                        </c:if>
-                        <c:if test="${errors.hasFieldErrors('mail')}">
-                            <li><form:errors path="mail" /></li>
-                        </c:if>
-                        <c:if test="${errors.hasFieldErrors('password')}">
-                            <li><form:errors path="password" /></li>
-                        </c:if>
-                        <c:if test="${errors.hasFieldErrors('acceptsAgreement')}">
-                            <li><form:errors path="acceptsAgreement" /></li>
-                        </c:if>
-                    </ul>
-                </div>
+            <form:form method="post" modelAttribute="inviteAuthenticateForm" action="authenticate.htm" autocomplete="true">
+                <form:hidden path="forgotAuthenticateForm.receiptUserId" />
+                <form:hidden path="forgotAuthenticateForm.authenticationKey" />
+
+                <spring:hasBindErrors name="inviteAuthenticateForm">
+                    <div class="r-validation" style="width: 100%; margin: 0 0 0 0;">
+                        <ul>
+                            <c:if test="${errors.hasFieldErrors('firstName')}">
+                                <li><form:errors path="firstName" /></li>
+                            </c:if>
+                            <c:if test="${errors.hasFieldErrors('lastName')}">
+                                <li><form:errors path="lastName" /></li>
+                            </c:if>
+                            <c:if test="${errors.hasFieldErrors('mail')}">
+                                <li><form:errors path="mail" /></li>
+                            </c:if>
+                            <c:if test="${errors.hasFieldErrors('forgotAuthenticateForm.password')}">
+                                <li><form:errors path="forgotAuthenticateForm.password" /></li>
+                            </c:if>
+                            <c:if test="${errors.hasFieldErrors('acceptsAgreement')}">
+                                <li><form:errors path="acceptsAgreement" /></li>
+                            </c:if>
+                        </ul>
+                    </div>
                 </spring:hasBindErrors>
 
                 <fieldset>
@@ -99,8 +102,8 @@
                     </div>
 
                     <div class="icon">
-                        <form:label for="password" path="password" cssClass="cd-label">Password</form:label>
-                        <form:password path="password" cssClass="password" required="required" cssErrorClass="password error" />
+                        <form:label for="password" path="forgotAuthenticateForm.password" cssClass="cd-label">Password</form:label>
+                        <form:password path="forgotAuthenticateForm.password" cssClass="password" required="required" cssErrorClass="password error" />
                     </div>
                 </fieldset>
 
@@ -116,24 +119,16 @@
                 <div id="mailErrors"></div>
 
                 <fieldset>
-                    <c:choose>
-                    <c:when test="${userRegistrationForm.accountExists}">
-                        <input id="recover_btn_id" type="submit" value="Recover Password" name="recover" style="float: left;" />
-                    </c:when>
-                    <c:otherwise>
-                        <input id="recover_btn_id" type="submit" value="Recover Password" name="recover" style="display: none; float: left;" />
-                    </c:otherwise>
-                    </c:choose>
                     <div>
-                        <input type="submit" value="Sign Me Up" name="signup">
+                        <input type="submit" value="Complete Invitation" name="confirm_invitation">
                     </div>
                 </fieldset>
 
                 <c:if test="${!registrationTurnedOn}">
-                <div class="error-message">
-                    <p>Registration is open, but site is not accepting new users. When site starts accepting new users,
-                    you will be notified through email and your account would be turned active.</p>
-                </div>
+                    <div class="error-message">
+                        <p>Registration is open, but site is not accepting new users. When site starts accepting new users,
+                            you will be notified through email and your account would be turned active.</p>
+                    </div>
                 </c:if>
             </form:form>
         </fieldset>
@@ -170,67 +165,6 @@
             (inputField.val() == '') ? inputField.prev('.cd-label').removeClass('float') : inputField.prev('.cd-label').addClass('float');
         }
     });
-</script>
-<script type="text/javascript">
-
-    $(document).ready(function() {
-        // check name availability on focus lost
-        $('#mail').blur(function() {
-            if ($('#mail').val()) {
-                checkAvailability();
-            } else {
-                $("#recover_btn_id").css({'display': 'none'});
-            }
-        });
-    });
-
-    function checkAvailability() {
-        $.ajax({
-            type: "POST",
-            url: '${pageContext. request. contextPath}/open/registration/availability.htm',
-            beforeSend: function(xhr) {
-                xhr.setRequestHeader($("meta[name='_csrf_header']").attr("content"), $("meta[name='_csrf']").attr("content"));
-            },
-            data: JSON.stringify({
-                mail: $('#mail').val()
-            }),
-            contentType: 'application/json;charset=UTF-8',
-            mimeType: 'application/json',
-            dataType:'json',
-            success: function (data) {
-                console.log('response=', data);
-                fieldValidated(data);
-            }
-        });
-    }
-
-    function fieldValidated(result) {
-        if (result.valid === true) {
-            $("#mailErrors")
-                    .html("Verification email will be sent to above email address")
-                    .removeClass("r-error")
-                    .addClass("r-info");
-
-            $("#recover_btn_id")
-                    .css({'display': 'none', 'float': 'left'});
-            $('#firstName').prop('required',true);
-            $('#lastName').prop('required',true);
-            $('#password').prop('required',true);
-        } else {
-            $("#mailErrors")
-                    .html(result.message)
-                    .removeClass("r-info")
-                    .addClass("r-error");
-
-            //Add the button for recovery and hide button for SignUp
-            $("#recover_btn_id")
-                    .css({'display': 'inline'});
-
-            $('#firstName').removeAttr('required');
-            $('#lastName').removeAttr('required');
-            $('#password').removeAttr('required');
-        }
-    }
 </script>
 <script src="//receiptofi.com/js/main.js"></script>
 

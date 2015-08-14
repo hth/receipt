@@ -55,7 +55,7 @@ public class InviteController {
     /** Used in JSP page /invite/authenticateConfirm */
     private static final String SUCCESS = "success";
 
-    @Value ("${authenticatePage:/invite/authenticate}")
+    @Value ("${authenticatePage:/invite/authenticate-n}")
     private String authenticatePage;
 
     @Value ("${authenticateResult:redirect:/open/invite/result.htm}")

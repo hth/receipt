@@ -38,7 +38,7 @@
     <div class="signup_mainl">
         <div class="loginl">
             <h1 class="h1 spacing" style="margin-bottom: 15px;">Sign up</h1>
-            <h4 class="h4" style="margin-bottom: 40px;"><fmt:message key="invite.heading" /> and start analyzing your receipts in 30 seconds or less</h4>
+            <h4 class="h4" style="margin-bottom: 40px;">.. start analyzing your receipts in 30 seconds or less</h4>
 
             <form:form method="post" modelAttribute="inviteAuthenticateForm" action="authenticate.htm" autocomplete="true">
                 <form:hidden path="forgotAuthenticateForm.receiptUserId" />
