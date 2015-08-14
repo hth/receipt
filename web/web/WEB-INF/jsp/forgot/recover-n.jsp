@@ -75,7 +75,7 @@
                 <div class="icon">
                     <form:label for="mail" path="mail" cssClass="cd-label float">Email</form:label>
                     <form:input path="mail" cssClass="email" readonly="true" disabled="true" required="required"
-                            cssStyle="background-color: inherit !important; color: #f2e6cd;" />
+                            cssStyle="background-color: inherit !important; color: #f2e6cd;" cssErrorClass="email error" />
                 </div>
             </fieldset>
 
