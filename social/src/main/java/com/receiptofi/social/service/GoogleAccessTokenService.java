@@ -74,6 +74,7 @@ public class GoogleAccessTokenService {
     public Map<String, ScrubbedInput> getTokenForAuthorizationCode(String authorizationCode) {
         HttpClient client = HttpClientBuilder.create().build();
         HttpPost post = new HttpPost(googleAuthenticationTokenRetrieval);
+        LOG.info("Auth code={}", authorizationCode);
 
         List<NameValuePair> urlParameters = new ArrayList<>();
         urlParameters.add(new BasicNameValuePair("code", authorizationCode));
@@ -90,12 +91,12 @@ public class GoogleAccessTokenService {
         Map<String, ScrubbedInput> map = new HashMap<>();
         try {
             HttpResponse response = client.execute(post);
+            String jsonResponse = EntityUtils.toString(response.getEntity());
             if (200 == response.getStatusLine().getStatusCode()) {
-                String jsonResponse = EntityUtils.toString(response.getEntity());
-                LOG.debug("body={}", jsonResponse);
+                LOG.info("body={}", jsonResponse);
                 map = ParseJsonStringToMap.jsonStringToMap(jsonResponse);
             } else {
-                LOG.error("response from google with status code={}", response.getStatusLine().getStatusCode());
+                LOG.error("response from google with status code={} reason={}", response.getStatusLine().getStatusCode(), jsonResponse);
                 throw new HttpClientErrorException(HttpStatus.valueOf(response.getStatusLine().getStatusCode()));
             }
         } catch (IOException e) {
