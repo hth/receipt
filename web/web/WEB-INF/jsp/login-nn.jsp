@@ -131,8 +131,8 @@
 
 <div class="footer-container">
     <footer class="wrapper fine-print">
-        &#169; 2015 Receiptofi, Inc. <a href="//receiptofi.com/termsofuse">Terms</a> and <a href="//receiptofi.com/privacypolicy">Privacy</a>. (<fmt:message key="build.version" />)<br>
-        All other trademarks and logos belong to their respective owners.
+        &#169; 2015 Receiptofi, Inc. <a href="//receiptofi.com/termsofuse">Terms</a> and <a href="//receiptofi.com/privacypolicy">Privacy</a>.<br>
+        All other trademarks and logos belong to their respective owners. (<fmt:message key="build.version" />)<br>
     </footer>
 </div>
 
