@@ -130,9 +130,9 @@
                 </fieldset>
 
                 <c:if test="${!registrationTurnedOn}">
-                <div class="registrationWhenTurnedOff">
-                    Registration is open, but site is not accepting new users. When site starts accepting new users,
-                    you will be notified through email and your account would be turned active.
+                <div class="error-message">
+                    <p>Registration is open, but site is not accepting new users. When site starts accepting new users,
+                    you will be notified through email and your account would be turned active.</p>
                 </div>
                 </c:if>
             </form:form>
