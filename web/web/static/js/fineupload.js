@@ -61,4 +61,4 @@ jQuery(document).ready(function ($) {
         }
     });
     //Fineuploader ends
-})
+});
