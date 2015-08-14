@@ -55,7 +55,7 @@ public class AccountRegistrationController {
     private MailService mailService;
     private EmailValidateService emailValidateService;
 
-    @Value ("${registrationPage:registration}")
+    @Value ("${registrationPage:registration-n}")
     private String registrationPage;
 
     @Value ("${registrationSuccess:redirect:/open/registration/success.htm}")
