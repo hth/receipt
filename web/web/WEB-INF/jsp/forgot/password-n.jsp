@@ -72,7 +72,7 @@
             <fieldset>
                 <div class="icon">
                     <form:label for="mail" path="mail" cssClass="cd-label">Email</form:label>
-                    <form:input path="mail" cssClass="email" required="required" type="email" />
+                    <form:input path="mail" cssClass="email" required="required" type="email" cssErrorClass="email error" />
                 </div>
             </fieldset>
 

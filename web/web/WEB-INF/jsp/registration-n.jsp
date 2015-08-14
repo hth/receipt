@@ -80,27 +80,27 @@
 
                     <div class="icon">
                         <form:label for="firstName" path="firstName" cssClass="cd-label">I like to call myself as:</form:label>
-                        <form:input path="firstName" cssClass="user" required="required" />
+                        <form:input path="firstName" cssClass="user" required="required" cssErrorClass="user error" />
                     </div>
 
                     <div class="icon">
                         <form:label for="lastName" path="lastName" cssClass="cd-label">And last name is:</form:label>
-                        <form:input path="lastName" cssClass="user" required="required" />
+                        <form:input path="lastName" cssClass="user" required="required" cssErrorClass="user error" />
                     </div>
 
                     <div class="icon">
                         <form:label for="birthday" path="birthday" cssClass="cd-label">How old are you?</form:label>
-                        <form:input path="birthday" cssClass="user" />
+                        <form:input path="birthday" cssClass="user" cssErrorClass="user error" />
                     </div>
 
                     <div class="icon">
                         <form:label for="mail" path="mail" cssClass="cd-label">Valid email as your login:</form:label>
-                        <form:input path="mail" cssClass="email" required="required" type="email" />
+                        <form:input path="mail" cssClass="email" required="required" type="email" cssErrorClass="email error" />
                     </div>
 
                     <div class="icon">
                         <form:label for="password" path="password" cssClass="cd-label">Password</form:label>
-                        <form:password path="password" cssClass="password" required="required" />
+                        <form:password path="password" cssClass="password" required="required" cssErrorClass="password error" />
                     </div>
                 </fieldset>
 
@@ -113,11 +113,28 @@
                     </li>
                 </ul>
 
+                <div id="mailErrors"></div>
+
                 <fieldset>
+                    <c:choose>
+                    <c:when test="${userRegistrationForm.accountExists}">
+                        <input id="recover_btn_id" type="submit" value="Recover Password" name="recover" style="float: left;" />
+                    </c:when>
+                    <c:otherwise>
+                        <input id="recover_btn_id" type="submit" value="Recover Password" name="recover" style="display: none; float: left;" />
+                    </c:otherwise>
+                    </c:choose>
                     <div>
                         <input type="submit" value="Sign Me Up" name="signup">
                     </div>
                 </fieldset>
+
+                <c:if test="${!registrationTurnedOn}">
+                <div class="registrationWhenTurnedOff">
+                    Registration is open, but site is not accepting new users. When site starts accepting new users,
+                    you will be notified through email and your account would be turned active.
+                </div>
+                </c:if>
             </form:form>
         </fieldset>
     </div>
@@ -153,6 +170,67 @@
             (inputField.val() == '') ? inputField.prev('.cd-label').removeClass('float') : inputField.prev('.cd-label').addClass('float');
         }
     });
+</script>
+<script type="text/javascript">
+
+    $(document).ready(function() {
+        // check name availability on focus lost
+        $('#mail').blur(function() {
+            if ($('#mail').val()) {
+                checkAvailability();
+            } else {
+                $("#recover_btn_id").css({'display': 'none'});
+            }
+        });
+    });
+
+    function checkAvailability() {
+        $.ajax({
+            type: "POST",
+            url: '${pageContext. request. contextPath}/open/registration/availability.htm',
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader($("meta[name='_csrf_header']").attr("content"), $("meta[name='_csrf']").attr("content"));
+            },
+            data: JSON.stringify({
+                mail: $('#mail').val()
+            }),
+            contentType: 'application/json;charset=UTF-8',
+            mimeType: 'application/json',
+            dataType:'json',
+            success: function (data) {
+                console.log('response=', data);
+                fieldValidated(data);
+            }
+        });
+    }
+
+    function fieldValidated(result) {
+        if (result.valid === true) {
+            $("#mailErrors")
+                    .html("Verification email will be sent to above email address")
+                    .removeClass("r-error")
+                    .addClass("r-info");
+
+            $("#recover_btn_id")
+                    .css({'display': 'none', 'float': 'left'});
+            $('#firstName').prop('required',true);
+            $('#lastName').prop('required',true);
+            $('#password').prop('required',true);
+        } else {
+            $("#mailErrors")
+                    .html(result.message)
+                    .removeClass("r-info")
+                    .addClass("r-error");
+
+            //Add the button for recovery and hide button for SignUp
+            $("#recover_btn_id")
+                    .css({'display': 'inline'});
+
+            $('#firstName').removeAttr('required');
+            $('#lastName').removeAttr('required');
+            $('#password').removeAttr('required');
+        }
+    }
 </script>
 <script src="//receiptofi.com/js/main.js"></script>
 

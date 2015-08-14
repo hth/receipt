@@ -99,13 +99,19 @@
                 </c:if>
 
                 <div class="icon">
-                    <label class="cd-label" for="emailId">Email</label>
-                    <input class="email" type="email" name="emailId" id="emailId" required>
+                    <%--<label class="cd-label" for="emailId">Email</label>--%>
+                    <%--<input class="email" type="email" name="emailId" id="emailId" required>--%>
+
+                    <form:label for="emailId" path="emailId" cssClass="cd-label">Email</form:label>
+                    <form:input path="emailId" cssClass="email" required="required" type="email" cssErrorClass="email error" />
                 </div>
 
                 <div class="icon">
-                    <label class="cd-label" for="password">Password</label>
-                    <input class="password" type="password" name="password" id="password" required>
+                    <%--<label class="cd-label" for="password">Password</label>--%>
+                    <%--<input class="password" type="password" name="password" id="password" required>--%>
+
+                    <form:label for="password" path="password" cssClass="cd-label">Password</form:label>
+                    <form:password path="password" cssClass="password" required="required" cssErrorClass="password error" />
                 </div>
 
                 <div class="icon" style="text-align: right">
