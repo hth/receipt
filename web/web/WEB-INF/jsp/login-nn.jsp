@@ -133,9 +133,11 @@
             </fieldset>
         </form:form>
 
-        <fieldset>
-            <div class="icon register_link">
-                <span class="cd-link">Don't have an account? <a href="${pageContext.request.contextPath}/open/registration.htm">Register</a></span>
+        <fieldset class="cd-form floating-labels">
+            <legend>New User</legend>
+
+            <div class="icon">
+                <span class="cd-link"><a href="${pageContext.request.contextPath}/open/registration.htm">Click here to Register</a></span>
             </div>
         </fieldset>
     </div>
