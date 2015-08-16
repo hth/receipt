@@ -1,13 +1,75 @@
+
+
+
+
+
+
+
+
 User-agent: *
+Allow: favicon.ico
 Disallow: /
-Disallow: /index.jsp
+
+User-agent: googlebot
+Allow: /
+Disallow: /ajax/
+Disallow: /css/
+Disallow: /external/
+Disallow: /fonts/
+Disallow: /images/
+Disallow: /img/
+Disallow: /jquery/
+Disallow: /js/
 Disallow: /400.html
 Disallow: /403.html
 Disallow: /404.html
 Disallow: /405.html
 Disallow: /414.html
 Disallow: /500.html
+Disallow: /receipt-mobile/
 Disallow: /*?*
-Disallow: /receipt/
-Disallow: /app/
-Disallow: /receiptofi/*
+Allow: /open/login.htm
+Allow: /open/registration.htm
+Allow: /open/forgot/password.htm
+Disallow: /
+
+User-agent: bingbot
+Allow: /
+Disallow: /ajax/
+Disallow: /css/
+Disallow: /external/
+Disallow: /fonts/
+Disallow: /images/
+Disallow: /img/
+Disallow: /jquery/
+Disallow: /js/
+Disallow: /400.html
+Disallow: /403.html
+Disallow: /404.html
+Disallow: /405.html
+Disallow: /414.html
+Disallow: /500.html
+Disallow: /receipt-mobile/
+Disallow: /*?*
+Allow: /open/login.htm
+Allow: /open/registration.htm
+Allow: /open/forgot/password.htm
+Disallow: /
+
+User-agent: AdsBot-Google
+Disallow: /
+
+User-agent: Twitterbot
+Disallow: /
+
+User-agent: Adidxbot
+Disallow: /
+
+User-agent: Yahoo Pipes 1.0
+Disallow: /
+
+User-agent: Facebot
+Disallow: /
+
+User-agent: externalfacebookhit
+Disallow: /
