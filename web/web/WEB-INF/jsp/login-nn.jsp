@@ -132,6 +132,12 @@
                 </div>
             </fieldset>
         </form:form>
+
+        <fieldset>
+            <div class="icon register_link">
+                <span class="cd-link">Don't have an account? <a href="${pageContext.request.contextPath}/open/registration.htm">Register</a></span>
+            </div>
+        </fieldset>
     </div>
 </section>
 
