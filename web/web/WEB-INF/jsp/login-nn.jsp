@@ -67,7 +67,6 @@
             <!-- FACEBOOK SIGNIN -->
             <form:form name="fb_signin" id="fb_signin" action="${pageContext.request.contextPath}/signin/facebook.htm" method="POST">
                 <input type="hidden" name="scope" value="email,public_profile,user_friends,user_birthday" />
-                <%--<input type="hidden" name="scope" value="email,public_profile,user_friends,user_activities,user_education_history,user_likes" />--%>
                 <div style="float: left; margin: 5px 0 10px 0 !important;">
                     <button type="submit" class="btn btn-success" style="background: #3B5998;">
                         <i class="fa fa-facebook fa-2x social-awesome-icon"></i> <span class="social-text">Facebook</span>
