@@ -65,7 +65,13 @@ import com.codahale.metrics.annotation.Timed;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -138,6 +144,7 @@ public class LandingController {
     ) {
         DateTime time = DateUtil.now();
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        landingForm.setAge(getAge(receiptUser));
 
         LOG.info("LandingController loadForm user={}, rid={}", receiptUser.getUsername(), receiptUser.getRid());
 
@@ -187,6 +194,22 @@ public class LandingController {
         driven.setMiles(mileageService.getMileageForThisMonth(receiptUser.getRid(), time));
         landingForm.setMileages(driven.asJson());
         return modelAndView;
+    }
+
+    private int getAge(ReceiptUser receiptUser) {
+        UserProfileEntity userProfile = accountService.doesUserExists(receiptUser.getUsername());
+        String bd = userProfile.getBirthday();
+        if (StringUtils.isNotBlank(bd)) {
+            Date date = DateUtil.getDateFromString(bd);
+
+            Instant instant = date.toInstant();
+            ZonedDateTime zdt = instant.atZone(ZoneId.systemDefault());
+            LocalDate today = new Date().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
+            Period duration = Period.between(zdt.toLocalDate(), today);
+            return duration.getYears();
+        }
+        return 100;
     }
 
     /**
@@ -314,6 +337,7 @@ public class LandingController {
 
     /**
      * For uploading Receipts.
+     *
      * @param documentId
      * @param httpServletRequest
      * @return

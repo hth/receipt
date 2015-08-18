@@ -24,6 +24,7 @@ public final class LandingForm {
     private ReceiptForMonth receiptForMonth;
     private List<ReceiptGroupedByBizLocation> receiptGroupedByBizLocations;
     private List<ReceiptGrouped> receiptGroupedByMonths;
+    private int age;
 
     /** Receipts grouped by days. Used in showing in Calendar */
     private Iterator<ReceiptGrouped> receiptGrouped;
@@ -110,6 +111,15 @@ public final class LandingForm {
 
     public void setMileageMonthlyTotal(int mileageMonthlyTotal) {
         this.mileageMonthlyTotal = mileageMonthlyTotal;
+    }
+
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
     }
 }
 

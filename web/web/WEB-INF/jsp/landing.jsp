@@ -340,6 +340,23 @@
                 <div class="r-info" id="noReceiptId">
                     No receipt data available for this month.
                 </div>
+                    <c:choose>
+                        <c:when test="${landingForm.age < 19}">
+                            <img src="http://netdna.webdesignerdepot.com/uploads/humor_ads/Kitkat.jpg" height="50%" width="50%"/>
+                        </c:when>
+                        <c:when test="${landingForm.age < 21}">
+                            <img src="http://thefinishedbox.com/wp-content/uploads/2011/02/advertisements-edition-1-4.jpg" height="50%" width="50%"/>
+                        </c:when>
+                        <c:when test="${landingForm.age < 30}">
+                            <img src="http://thefinishedbox.com/wp-content/uploads/2011/02/advertisements-edition-1-13.jpg" height="50%" width="50%"/>
+                        </c:when>
+                        <c:when test="${landingForm.age < 100}">
+                            <img src="http://thefinishedbox.com/wp-content/uploads/2011/02/advertisements-edition-1-3.jpg" height="50%" width="50%"/>
+                        </c:when>
+                        <c:otherwise>
+                            <img src="http://netdna.webdesignerdepot.com/uploads/humor_ads/CocaLight.jpg" height="50%" width="50%"/>
+                        </c:otherwise>
+                    </c:choose>
                 </c:otherwise>
                 </c:choose>
             </div>
