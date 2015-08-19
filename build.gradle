@@ -28,8 +28,9 @@ ext {
     unzipDir = file("${buildDir}/unpacked/dist")
     unzipLibDir = file("$unzipDir$lib")
 
-    passFile = file(passwordFileLocation)
     passFileLocal = file('web/resources/conf/pass.properties')
+    passFileTest = file(passwordTestFileLocation)
+    passFileProd = file(passwordProdFileLocation)
 
     baseName = "receiptofi"
 }
@@ -421,11 +422,19 @@ task setUpProfileForJunit(dependsOn: [':clean']) << {
         from 'web/resources/conf/config.properties'
         from 'web/resources/conf/redis.properties'
 
-        if (env == 'test' || env == 'prod') {
-            if (passFile.exists()) {
-                from passwordFileLocation
+        if (env == 'prod') {
+            if (passFileProd.exists()) {
+                from passwordFileLocationProd
             } else {
-                throw new Exception("Required pass file does not exists: $passFile.canonicalPath")
+                throw new Exception("Required pass file does not exists: $passFileProd.canonicalPath")
+            }
+        }
+
+        if (env == 'test') {
+            if (passFileTest.exists()) {
+                from passwordFileLocationTest
+            } else {
+                throw new Exception("Required pass file does not exists: $passFileTest.canonicalPath")
             }
         }
 
