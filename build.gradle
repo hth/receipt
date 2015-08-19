@@ -564,11 +564,19 @@ task prepWar(dependsOn: [unzip, copyJars, individualCssMinify, individualJsMinif
         from 'web/resources/conf/config.properties'
         from 'web/resources/conf/redis.properties'
 
-        if (env == 'test' || env == 'prod') {
-            if (passFile.exists()) {
-                from passwordFileLocation
+        if (env == 'prod') {
+            if (passFileProd.exists()) {
+                from passwordProdFileLocation
             } else {
-                throw new Exception("Required pass file does not exists: $passFile.canonicalPath")
+                throw new Exception("Required pass file does not exists: $passFileProd.canonicalPath")
+            }
+        }
+
+        if (env == 'test') {
+            if (passFileTest.exists()) {
+                from passwordTestFileLocation
+            } else {
+                throw new Exception("Required pass file does not exists: $passFileTest.canonicalPath")
             }
         }
 
