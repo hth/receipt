@@ -9,6 +9,7 @@ import com.receiptofi.domain.UserAuthenticationEntity;
 import com.receiptofi.domain.UserPreferenceEntity;
 import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.domain.annotation.Mobile;
+import com.receiptofi.domain.site.ReceiptUser;
 import com.receiptofi.domain.types.BillingPlanEnum;
 import com.receiptofi.domain.types.AccountInactiveReasonEnum;
 import com.receiptofi.domain.types.BilledStatusEnum;
@@ -21,9 +22,11 @@ import com.receiptofi.repository.UserAccountManager;
 import com.receiptofi.repository.UserAuthenticationManager;
 import com.receiptofi.repository.UserPreferenceManager;
 import com.receiptofi.repository.UserProfileManager;
+import com.receiptofi.utils.DateUtil;
 import com.receiptofi.utils.HashText;
 import com.receiptofi.utils.RandomString;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.text.WordUtils;
 
 import org.slf4j.Logger;
@@ -34,8 +37,13 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
+import java.time.Instant;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Period;
+import java.time.ZoneId;
 import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -503,5 +511,22 @@ public class AccountService {
         emailValidate.inActive();
         emailValidate.setUpdated();
         emailValidateService.saveEmailValidateEntity(emailValidate);
+    }
+
+    //TODO validate the code for getting correct age of user
+    private int getAge(ReceiptUser receiptUser) {
+        UserProfileEntity userProfile = doesUserExists(receiptUser.getUsername());
+        String bd = userProfile.getBirthday();
+        if (StringUtils.isNotBlank(bd)) {
+            Date date = DateUtil.getDateFromString(bd);
+
+            Instant instant = date.toInstant();
+            ZonedDateTime zdt = instant.atZone(ZoneId.systemDefault());
+            LocalDate today = new Date().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
+            Period duration = Period.between(zdt.toLocalDate(), today);
+            return duration.getYears();
+        }
+        return 100;
     }
 }
