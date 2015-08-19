@@ -424,7 +424,7 @@ task setUpProfileForJunit(dependsOn: [':clean']) << {
 
         if (env == 'prod') {
             if (passFileProd.exists()) {
-                from passwordFileLocationProd
+                from passwordProdFileLocation
             } else {
                 throw new Exception("Required pass file does not exists: $passFileProd.canonicalPath")
             }
@@ -432,7 +432,7 @@ task setUpProfileForJunit(dependsOn: [':clean']) << {
 
         if (env == 'test') {
             if (passFileTest.exists()) {
-                from passwordFileLocationTest
+                from passwordTestFileLocation
             } else {
                 throw new Exception("Required pass file does not exists: $passFileTest.canonicalPath")
             }
