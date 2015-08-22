@@ -18,6 +18,8 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
+import java.util.regex.Matcher;
+
 /**
  * @author hitender
  * @since Dec 25, 2012 12:17:57 PM
@@ -101,7 +103,7 @@ public class UserRegistrationValidator implements Validator {
                         "Minimum length of " + passwordLength + " characters");
             }
 
-            if (StringUtils.isNotBlank(userRegistration.getBirthday()) && !userRegistration.getBirthday().matches(Constants.AGE_RANGE)) {
+            if (StringUtils.isNotBlank(userRegistration.getBirthday()) && !Constants.AGE_RANGE.matcher(userRegistration.getBirthday()).matches()) {
                 errors.rejectValue("birthday",
                         "field.birthday.not.valid",
                         new Object[]{2},

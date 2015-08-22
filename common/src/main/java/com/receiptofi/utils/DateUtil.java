@@ -105,11 +105,16 @@ public final class DateUtil {
     /**
      * Converts age tp birthday.
      *
-     * @param age any number
+     * @param age any number greater than zero
      * @return start of the year as birthday
      */
     public static String covertAgeToBirthday(String age) {
-        LocalDate localDate = LocalDate.now().minusYears(Long.parseLong(age));
+        long years = Long.parseLong(age);
+        if (years <= 0) {
+            return "";
+        }
+
+        LocalDate localDate = LocalDate.now().minusYears(years);
         localDate = localDate.with(TemporalAdjusters.firstDayOfYear());
         return localDate.format(Formatter.DOB_FORMATTER);
     }
