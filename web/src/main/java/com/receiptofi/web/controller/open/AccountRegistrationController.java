@@ -137,7 +137,7 @@ public class AccountRegistrationController {
                     userRegistrationForm.getFirstName(),
                     userRegistrationForm.getLastName(),
                     userRegistrationForm.getPassword(),
-                    StringUtils.isNotBlank(userRegistrationForm.getBirthday()) ? DateUtil.covertAgeToBirthday(userRegistrationForm.getBirthday()) : "");
+                    StringUtils.isNotBlank(userRegistrationForm.getBirthday()) ? DateUtil.parseAgeForBirthday(userRegistrationForm.getBirthday()) : "");
         } catch (RuntimeException exce) {
             LOG.error("failure in registering user", exce.getLocalizedMessage(), exce);
             model.addAttribute("registrationTurnedOn", registrationTurnedOn);

@@ -119,6 +119,19 @@ public final class DateUtil {
         return localDate.format(Formatter.DOB_FORMATTER);
     }
 
+    public static String parseAgeForBirthday(String age) {
+        String birthday = "";
+        if (StringUtils.isNotBlank(age)) {
+            if (age.contains("-")) {
+                String[] range = age.split("-");
+                birthday = covertAgeToBirthday(range[0]);
+            } else {
+                birthday = covertAgeToBirthday(age);
+            }
+        }
+        return birthday;
+    }
+
     //todo add support for small AM|PM
     private static enum DateType {
         FRM_1(
