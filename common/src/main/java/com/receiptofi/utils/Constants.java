@@ -6,5 +6,8 @@ package com.receiptofi.utils;
  */
 public class Constants {
 
-    public static final String AGE_RANGE = "^(\\d?[1-9]|[1-9]0)|(-\\d?[1-9]|[1-9]0)";
+    public static final String AGE_RANGE = "^(\\d?[1-9]|[1-9])?(-\\d?[1-9]|[1-9])";
+
+    private Constants() {
+    }
 }
