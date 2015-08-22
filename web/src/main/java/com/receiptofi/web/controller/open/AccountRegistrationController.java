@@ -9,6 +9,7 @@ import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.service.AccountService;
 import com.receiptofi.service.EmailValidateService;
 import com.receiptofi.service.MailService;
+import com.receiptofi.utils.DateUtil;
 import com.receiptofi.utils.ParseJsonStringToMap;
 import com.receiptofi.web.form.UserRegistrationForm;
 import com.receiptofi.web.helper.AvailabilityStatus;
@@ -136,7 +137,7 @@ public class AccountRegistrationController {
                     userRegistrationForm.getFirstName(),
                     userRegistrationForm.getLastName(),
                     userRegistrationForm.getPassword(),
-                    userRegistrationForm.getBirthday());
+                    StringUtils.isNotBlank(userRegistrationForm.getBirthday()) ? DateUtil.covertAgeToBirthday(userRegistrationForm.getBirthday()) : "");
         } catch (RuntimeException exce) {
             LOG.error("failure in registering user", exce.getLocalizedMessage(), exce);
             model.addAttribute("registrationTurnedOn", registrationTurnedOn);

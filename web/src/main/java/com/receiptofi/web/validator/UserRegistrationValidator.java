@@ -3,6 +3,7 @@
  */
 package com.receiptofi.web.validator;
 
+import com.receiptofi.utils.Constants;
 import com.receiptofi.utils.Validate;
 import com.receiptofi.web.form.UserRegistrationForm;
 
@@ -16,6 +17,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
+
+import java.util.regex.Matcher;
 
 /**
  * @author hitender
@@ -98,6 +101,13 @@ public class UserRegistrationValidator implements Validator {
                         "field.length",
                         new Object[]{"Password", passwordLength},
                         "Minimum length of " + passwordLength + " characters");
+            }
+
+            if (StringUtils.isNotBlank(userRegistration.getBirthday()) && !Constants.AGE_RANGE.matcher(userRegistration.getBirthday()).matches()) {
+                errors.rejectValue("birthday",
+                        "field.birthday.not.valid",
+                        new Object[]{2},
+                        "Birthday not valid. Should be digits and not more than 2 digits");
             }
 
             if (!userRegistration.isAcceptsAgreement()) {
