@@ -20,6 +20,7 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 import javax.script.ScriptEngine;
@@ -57,6 +58,7 @@ public final class Formatter {
     /** For double */
     public static final DecimalFormat DF = new DecimalFormat("#.##");
     public static final SimpleDateFormat SDF_SMALL = new SimpleDateFormat("MM-dd-yyyy");
+    public static final DateTimeFormatter DOB_FORMATTER = DateTimeFormatter.ofPattern("MM/dd/yyyy");
     private static final Logger LOG = LoggerFactory.getLogger(Formatter.class);
     //Defaults to US
     private static final String FORMAT_TO_US = "US";

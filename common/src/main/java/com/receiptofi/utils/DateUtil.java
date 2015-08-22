@@ -13,6 +13,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.time.Duration;
+import java.time.LocalDate;
+import java.time.temporal.TemporalAdjusters;
 import java.util.Date;
 
 /**
@@ -98,6 +100,18 @@ public final class DateUtil {
 
     public static long getDuration(Date begin, Date end) {
         return Duration.between(begin.toInstant(), end.toInstant()).getSeconds();
+    }
+
+    /**
+     * Converts age tp birthday.
+     *
+     * @param age any number
+     * @return start of the year as birthday
+     */
+    public static String covertAgeToBirthday(String age) {
+        LocalDate localDate = LocalDate.now().minusYears(Long.parseLong(age));
+        localDate = localDate.with(TemporalAdjusters.firstDayOfYear());
+        return localDate.format(Formatter.DOB_FORMATTER);
     }
 
     //todo add support for small AM|PM
