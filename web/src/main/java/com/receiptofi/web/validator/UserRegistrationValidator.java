@@ -3,6 +3,7 @@
  */
 package com.receiptofi.web.validator;
 
+import com.receiptofi.utils.Constants;
 import com.receiptofi.utils.Validate;
 import com.receiptofi.web.form.UserRegistrationForm;
 
@@ -98,6 +99,13 @@ public class UserRegistrationValidator implements Validator {
                         "field.length",
                         new Object[]{"Password", passwordLength},
                         "Minimum length of " + passwordLength + " characters");
+            }
+
+            if (StringUtils.isNotBlank(userRegistration.getBirthday()) && !userRegistration.getBirthday().matches(Constants.AGE_RANGE)) {
+                errors.rejectValue("birthday",
+                        "field.birthday.not.valid",
+                        new Object[]{2},
+                        "Birthday not valid. Should be digits and not more than 2 digits");
             }
 
             if (!userRegistration.isAcceptsAgreement()) {
