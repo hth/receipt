@@ -235,7 +235,7 @@
         }
     }
 </script>
-<script src="//receiptofi.com/js/main.js"></script>
+<script src="//receiptofi.com/js/main.min.js"></script>
 
 <script>
     (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
