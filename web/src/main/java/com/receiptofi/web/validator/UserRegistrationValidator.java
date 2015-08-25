@@ -107,7 +107,7 @@ public class UserRegistrationValidator implements Validator {
                 errors.rejectValue("birthday",
                         "field.birthday.not.valid",
                         new Object[]{2},
-                        "Birthday not valid. Should be digits and not more than 2 digits");
+                        "Age not valid. Should be digits and not more than 2 digits");
             }
 
             if (!userRegistration.isAcceptsAgreement()) {
