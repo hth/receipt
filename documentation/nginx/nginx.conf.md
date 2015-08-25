@@ -223,7 +223,6 @@
             }
     
             location / {
-                expires 30d;
                 proxy_buffers 16 4k;
                 proxy_buffer_size 2k;
     
@@ -252,7 +251,6 @@
             access_log  /var/logs/nginx/sonar.access.log main;
     
             location / {
-                expires 30d;
                 # block one workstation
                 deny    192.168.1.1;
                 # allow anyone in 192.168.1.0/24
