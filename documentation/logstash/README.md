@@ -218,6 +218,7 @@ Daemon to Load and Unload elasticsearch on central
 	sudo launchctl load /Library/LaunchDaemons/elasticsearch.plist
 
 To delete all index
+Note: Do not delete all, unless you open all the dashboard or save all the dashboard, since they will get deleted 
 
 	curl -XDELETE 'http://localhost:9200/*/'
 	curl -XDELETE 'http://192.168.1.74:9200/logstash-2014.09.05/'
