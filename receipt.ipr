@@ -137,7 +137,6 @@
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.dropwizard.metrics/metrics-graphite/3.1.2/15a68399652c6123fe6e4c82ac4f0749e2eb6583/metrics-graphite-3.1.2.jar" />
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.mongodb/mongo-java-driver/3.0.2/7d3880dec6c8a2f07c1f544776c326834b513712/mongo-java-driver-3.0.2.jar" />
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/joda-time/joda-time/2.8.1/f5bfc718c95a7b1d3c371bb02a188a4df18361a9/joda-time-2.8.1.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.braintreepayments.gateway/braintree-java/2.45.0/b2c924258913187da4eb2cee77961c159b4907ef/braintree-java-2.45.0.jar" />
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/aws-java-sdk-s3/1.10.2/5b484b7fd40c2e67b023abdf711f3903cf881b91/aws-java-sdk-s3-1.10.2.jar" />
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.poi/poi/3.12/8be19a6a1fa08e934a497929f360111a4d2e5115/poi-3.12.jar" />
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.tika/tika-parsers/1.9/9247e475d6346eaec183a41cd271264f4abde66e/tika-parsers-1.9.jar" />
@@ -402,7 +401,6 @@
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.dropwizard.metrics/metrics-graphite/3.1.2/15a68399652c6123fe6e4c82ac4f0749e2eb6583/metrics-graphite-3.1.2.jar" />
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.mongodb/mongo-java-driver/3.0.2/7d3880dec6c8a2f07c1f544776c326834b513712/mongo-java-driver-3.0.2.jar" />
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/joda-time/joda-time/2.8.1/f5bfc718c95a7b1d3c371bb02a188a4df18361a9/joda-time-2.8.1.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.braintreepayments.gateway/braintree-java/2.45.0/b2c924258913187da4eb2cee77961c159b4907ef/braintree-java-2.45.0.jar" />
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/aws-java-sdk-s3/1.10.2/5b484b7fd40c2e67b023abdf711f3903cf881b91/aws-java-sdk-s3-1.10.2.jar" />
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.poi/poi/3.12/8be19a6a1fa08e934a497929f360111a4d2e5115/poi-3.12.jar" />
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.tika/tika-parsers/1.9/9247e475d6346eaec183a41cd271264f4abde66e/tika-parsers-1.9.jar" />
@@ -669,7 +667,6 @@
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.dropwizard.metrics/metrics-graphite/3.1.2/15a68399652c6123fe6e4c82ac4f0749e2eb6583/metrics-graphite-3.1.2.jar" />
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.mongodb/mongo-java-driver/3.0.2/7d3880dec6c8a2f07c1f544776c326834b513712/mongo-java-driver-3.0.2.jar" />
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/joda-time/joda-time/2.8.1/f5bfc718c95a7b1d3c371bb02a188a4df18361a9/joda-time-2.8.1.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.braintreepayments.gateway/braintree-java/2.45.0/b2c924258913187da4eb2cee77961c159b4907ef/braintree-java-2.45.0.jar" />
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/aws-java-sdk-s3/1.10.2/5b484b7fd40c2e67b023abdf711f3903cf881b91/aws-java-sdk-s3-1.10.2.jar" />
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.poi/poi/3.12/8be19a6a1fa08e934a497929f360111a4d2e5115/poi-3.12.jar" />
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.tika/tika-parsers/1.9/9247e475d6346eaec183a41cd271264f4abde66e/tika-parsers-1.9.jar" />
@@ -920,7 +917,6 @@
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.dropwizard.metrics/metrics-graphite/3.1.2/15a68399652c6123fe6e4c82ac4f0749e2eb6583/metrics-graphite-3.1.2.jar" />
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.mongodb/mongo-java-driver/3.0.2/7d3880dec6c8a2f07c1f544776c326834b513712/mongo-java-driver-3.0.2.jar" />
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/joda-time/joda-time/2.8.1/f5bfc718c95a7b1d3c371bb02a188a4df18361a9/joda-time-2.8.1.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.braintreepayments.gateway/braintree-java/2.45.0/b2c924258913187da4eb2cee77961c159b4907ef/braintree-java-2.45.0.jar" />
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/aws-java-sdk-s3/1.10.2/5b484b7fd40c2e67b023abdf711f3903cf881b91/aws-java-sdk-s3-1.10.2.jar" />
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.poi/poi/3.12/8be19a6a1fa08e934a497929f360111a4d2e5115/poi-3.12.jar" />
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.tika/tika-parsers/1.9/9247e475d6346eaec183a41cd271264f4abde66e/tika-parsers-1.9.jar" />
