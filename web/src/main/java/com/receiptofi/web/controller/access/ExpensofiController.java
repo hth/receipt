@@ -102,9 +102,7 @@ public class ExpensofiController {
                         "/" +
                         bucketName +
                         "/" +
-                        fileSystem.getBlobId() +
-                        "." +
-                        FilenameUtils.getExtension(fileSystem.getOriginalFilename());
+                        fileSystem.getKey();
                 InputStream is = null;
                 try {
                     is = new URL(uri).openStream();
