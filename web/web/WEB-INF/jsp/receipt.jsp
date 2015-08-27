@@ -148,11 +148,10 @@
                                     type: 'POST',
                                     url: '${pageContext. request. contextPath}/access/expensofi/items.htm',
                                     data: JSON.stringify(jsonItems),
-                                    dataType: 'json',
+                                    dataTypes: "application/json",
                                     beforeSend: function(xhr) {
                                         xhr.setRequestHeader($("meta[name='_csrf_header']").attr("content"), $("meta[name='_csrf']").attr("content"));
                                         $('#download_expense_excel').html(
-                                                "<span style='padding-left: 40px;'></span>" +
                                                 "<span class='spinner medium-small' id='spinner'>&nbsp;&nbsp;&nbsp;&nbsp;</span>"
                                         ).show();
                                     },
@@ -160,7 +159,6 @@
                                         console.log(data.filename);
                                         if(data.filename.length > 0) {
                                             $('#download_expense_excel').html(
-                                                    "<span style='padding-left: 40px;'></span>" +
                                                     "<a href='${pageContext.request.contextPath}/access/filedownload/expensofi/${receiptForm.receipt.id}.htm'>" +
                                                     "<img src='${pageContext.request.contextPath}/static/images/download_icon_lg.png' width='26' height='26' title='Download Expense Report' class='downloadIconBlink'>" +
                                                     "</a>"
@@ -201,7 +199,6 @@
 
                 <c:if test="${!empty receiptForm.receipt.expenseReportInFS}">
                 $('#download_expense_excel').html(
-                        "<span style='padding-left: 40px;'></span>" +
                         "<a href='${pageContext.request.contextPath}/access/filedownload/expensofi/${receiptForm.receipt.id}.htm'>" +
                         "<img src='${pageContext.request.contextPath}/static/images/download_icon_lg.png' width='26' height='26' title='Download Expense Report' class='downloadIcon'>" +
                         "</a>"
@@ -377,7 +374,6 @@
                     <table>
                     <tr>
                         <td width="220px">
-                            Map-93
                             <span id="download_expense_excel">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
                         </td>
                         <td width="160px" style="text-align: right;">
@@ -399,7 +395,7 @@
                         <th class="rightside-li-date-text" style="width: 25px">&nbsp;</th>
                         <th style="vertical-align: middle">
                             <div class="receipt-tag left">
-                                <select id="actionId" name="action" style="width: 155px;  background: #FFFFFF url('/static/images/select_down.png') no-repeat 90% 50%; background-size: 15px 15px;">
+                                <select id="actionId" name="action" style="width: 155px; background: #FFFFFF url('/static/images/select_down.png') no-repeat 90% 50%; background-size: 15px 15px;">
                                     <option value="NONE">ACTION</option>
                                     <option value="expenseReport">EXPENSE REPORT</option>
                                     <option value="recheck">RE-CHECK RECEIPT</option>
