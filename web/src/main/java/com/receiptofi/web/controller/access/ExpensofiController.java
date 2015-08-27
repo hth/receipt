@@ -36,6 +36,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
@@ -73,7 +74,11 @@ public class ExpensofiController {
     @Autowired private FileSystemProcess fileSystemProcess;
     @Autowired private ExpensofiExcelView expensofiExcelView;
 
-    @RequestMapping (value = "/items", method = RequestMethod.POST)
+    @RequestMapping (
+            value = "/items",
+            method = RequestMethod.POST,
+            headers = "Accept=application/json",
+            produces = "application/json")
     public String updateExpenseTagOfItems(
             @RequestBody
             String itemIds,
@@ -92,22 +97,25 @@ public class ExpensofiController {
             ReceiptEntity receiptEntity = items.get(0).getReceipt();
             Collection<AnchorFileInExcel> anchorFileInExcels = new LinkedList<>();
             for (FileSystemEntity fileSystem : receiptEntity.getFileSystemEntities()) {
-                InputStream is = new URL(awsS3Endpoint +
+                String uri = awsS3Endpoint +
                         bucketName +
                         "/" +
                         bucketName +
                         "/" +
                         fileSystem.getBlobId() +
                         "." +
-                        FilenameUtils.getExtension(fileSystem.getOriginalFilename())
-                ).openStream();
+                        FilenameUtils.getExtension(fileSystem.getOriginalFilename());
+                InputStream is = null;
                 try {
+                    is = new URL(uri).openStream();
                     AnchorFileInExcel anchorFileInExcel = new AnchorFileInExcel(
                             IOUtils.toByteArray(is),
                             fileSystem.getContentType());
                     anchorFileInExcels.add(anchorFileInExcel);
-                } catch (IOException exce) {
-                    LOG.error("Failed to load receipt image: " + exce.getLocalizedMessage());
+                } catch (FileNotFoundException e) {
+                    LOG.error("File not found at URL={}", uri, e);
+                } catch (IOException e) {
+                    LOG.error("Failed to load receipt image reason={}", e.getLocalizedMessage(), e);
                 } finally {
                     IOUtils.closeQuietly(is);
                 }
