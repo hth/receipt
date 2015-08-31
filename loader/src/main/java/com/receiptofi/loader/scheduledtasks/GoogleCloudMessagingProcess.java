@@ -67,7 +67,7 @@ public class GoogleCloudMessagingProcess {
      * Note: Cron string blow run every 5 minutes.
      */
     @Scheduled (fixedDelayString = "${loader.FilesUploadToS3.upload}")
-    public void upload() {
+    public void notification() {
         CronStatsEntity cronStats = new CronStatsEntity(
                 GoogleCloudMessagingProcess.class.getName(),
                 "GCM Notify",
