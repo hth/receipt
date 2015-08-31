@@ -19,6 +19,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.stereotype.Repository;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * User: hitender
@@ -86,6 +87,19 @@ public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
                 RegisteredDeviceEntity.class,
                 TABLE
         );
+    }
+
+    /**
+     * Gets all the registered device ids for rid.
+     *
+     * @param rid
+     * @return
+     */
+    public List<RegisteredDeviceEntity> getDevicesForRid(String rid) {
+        return mongoTemplate.find(
+                query(where("RID").is(rid)),
+                RegisteredDeviceEntity.class,
+                TABLE);
     }
 
     @Override

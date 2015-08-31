@@ -92,6 +92,10 @@ public class DocumentUpdateService {
         return documentManager.getAllProcessedDocuments();
     }
 
+    public List<DocumentEntity> getAllDocumentsModified(int delay) {
+        return documentManager.getAllDocumentsModified(delay);
+    }
+
     public void cloudUploadSuccessful(String documentId) {
         documentManager.cloudUploadSuccessful(documentId);
     }
@@ -133,7 +137,7 @@ public class DocumentUpdateService {
             updateMessageManager(document, PENDING, PROCESSED);
 
             notificationService.addNotification(
-                    receipt.getTotalString() + " '" + receipt.getBizName().getBusinessName() + "' receipt processed",
+                    getNotificationMessageForReceiptProcess(receipt),
                     NotificationTypeEnum.RECEIPT,
                     receipt);
 
@@ -267,11 +271,7 @@ public class DocumentUpdateService {
             updateMessageManager(document, REPROCESS, PROCESSED);
 
             notificationService.addNotification(
-                    receipt.getTotalString() +
-                            " '" +
-                            receipt.getBizName().getBusinessName() +
-                            "' " +
-                            "receipt re-checked",
+                    getNotificationMessageForReceiptReCheck(receipt),
                     NotificationTypeEnum.RECEIPT,
                     receipt);
 
@@ -354,7 +354,7 @@ public class DocumentUpdateService {
             DBObject dbObject = gridFSDBFile.getMetaData();
 
             notificationService.addNotification(
-                    "Could not process document '" + dbObject.get("ORIGINAL_FILENAME") + "'",
+                    getNotificationMessageForReceiptReject(dbObject),
                     NotificationTypeEnum.DOCUMENT_REJECTED,
                     document);
 
@@ -560,5 +560,25 @@ public class DocumentUpdateService {
             processedByUser.put(date, userProfilePreferenceService.findByReceiptUserId(processedBy.get(date)));
         }
         return processedByUser;
+    }
+
+    public void markNotified(String documentId) {
+        documentManager.markNotified(documentId);
+    }
+
+    public String getNotificationMessageForReceiptProcess(ReceiptEntity receipt) {
+        return receipt.getTotalString() + " '" + receipt.getBizName().getBusinessName() + "' receipt processed";
+    }
+
+    public String getNotificationMessageForReceiptReCheck(ReceiptEntity receipt) {
+        return receipt.getTotalString() +
+                " '" +
+                receipt.getBizName().getBusinessName() +
+                "' " +
+                "receipt re-checked";
+    }
+
+    public String getNotificationMessageForReceiptReject(DBObject dbObject) {
+        return "Could not process document '" + dbObject.get("ORIGINAL_FILENAME") + "'";
     }
 }

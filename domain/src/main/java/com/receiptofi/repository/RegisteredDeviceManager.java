@@ -3,6 +3,8 @@ package com.receiptofi.repository;
 import com.receiptofi.domain.RegisteredDeviceEntity;
 import com.receiptofi.domain.annotation.Mobile;
 
+import java.util.List;
+
 /**
  * User: hitender
  * Date: 8/12/14 10:11 PM
@@ -41,4 +43,12 @@ public interface RegisteredDeviceManager extends RepositoryManager<RegisteredDev
     @SuppressWarnings ("unused")
     @Mobile
     RegisteredDeviceEntity registerDevice(String rid, String did);
+
+    /**
+     * Get registered devices for RID.
+     *
+     * @param rid
+     * @return
+     */
+    List<RegisteredDeviceEntity> getDevicesForRid(String rid);
 }
