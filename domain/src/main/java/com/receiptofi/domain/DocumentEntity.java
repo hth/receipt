@@ -93,6 +93,9 @@ public class DocumentEntity extends BaseEntity {
     @Field ("PB")
     private Map<Date, String> processedBy = new LinkedHashMap<>();
 
+    @Field("NU")
+    private boolean notifyUser;
+
     public static DocumentEntity newInstance() {
         return new DocumentEntity();
     }
@@ -224,6 +227,14 @@ public class DocumentEntity extends BaseEntity {
 
     public void addProcessedBy(Date updated, String rid) {
         this.processedBy.put(updated, rid);
+    }
+
+    public boolean isNotifyUser() {
+        return notifyUser;
+    }
+
+    public void setNotifyUser(boolean notifyUser) {
+        this.notifyUser = notifyUser;
     }
 
     @Override
