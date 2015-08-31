@@ -1,3 +1,7 @@
+#### Date Aug 30 2015 - Build 1304
+Added notify user field
+    db.getCollection('DOCUMENT').update({}, { $set: {NU: false} }, {multi: true});
+    
 #### Date Jun 11 2015 - Build 1124
 Removed BilledAccount boolean as was not being used
     

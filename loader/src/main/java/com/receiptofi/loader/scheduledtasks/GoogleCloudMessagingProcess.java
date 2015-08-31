@@ -81,8 +81,6 @@ public class GoogleCloudMessagingProcess {
         List<DocumentEntity> documents = documentUpdateService.getAllDocumentsModified(5);
         if (!documents.isEmpty()) {
             LOG.info("Notification to be send, count={}", documents.size());
-        } else {
-            LOG.info("Notification to be send, count={}", documents.size());
         }
 
         ReceiptEntity receipt;
