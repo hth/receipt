@@ -70,7 +70,7 @@ public class GoogleCloudMessagingProcess {
     public void notification() {
         CronStatsEntity cronStats = new CronStatsEntity(
                 GoogleCloudMessagingProcess.class.getName(),
-                "GCM Notify",
+                "GCM_Notify",
                 notifyUserSwitch);
 
         if ("OFF".equalsIgnoreCase(notifyUserSwitch)) {

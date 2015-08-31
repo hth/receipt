@@ -29,7 +29,7 @@ import java.util.Date;
 })
 @Component
 public class NotificationPurgeProcess {
-    private static final Logger LOG = LoggerFactory.getLogger(DocumentsPurgeProcess.class);
+    private static final Logger LOG = LoggerFactory.getLogger(NotificationPurgeProcess.class);
 
     private NotificationService notificationService;
     private CronStatsService cronStatsService;
