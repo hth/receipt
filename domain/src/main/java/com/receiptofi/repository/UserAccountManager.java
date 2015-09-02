@@ -31,4 +31,6 @@ public interface UserAccountManager extends RepositoryManager<UserAccountEntity>
     void updateAccountToValidated(String id, AccountInactiveReasonEnum air);
 
     List<UserAccountEntity> findAllForBilling(int skipDocuments, int limit);
+
+    List<UserAccountEntity> findAllTechnician();
 }

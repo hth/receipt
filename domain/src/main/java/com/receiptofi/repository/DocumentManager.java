@@ -77,7 +77,7 @@ public interface DocumentManager extends RepositoryManager<DocumentEntity> {
 
     List<DocumentEntity> getAllProcessedDocuments();
 
-    List<DocumentEntity> getAllDocumentsModified(int delay);
+    List<DocumentEntity> getDocumentsForNotification(int delay);
 
     void cloudUploadSuccessful(String documentId);
 

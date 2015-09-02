@@ -6,9 +6,11 @@ import com.mongodb.gridfs.GridFSDBFile;
 import com.receiptofi.domain.CronStatsEntity;
 import com.receiptofi.domain.DocumentEntity;
 import com.receiptofi.domain.ReceiptEntity;
+import com.receiptofi.domain.UserAccountEntity;
 import com.receiptofi.loader.service.GoogleCloudMessagingService;
 import com.receiptofi.repository.ReceiptManager;
 import com.receiptofi.repository.StorageManager;
+import com.receiptofi.service.AccountService;
 import com.receiptofi.service.CronStatsService;
 import com.receiptofi.service.DocumentUpdateService;
 
@@ -20,6 +22,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -41,6 +44,7 @@ public class GoogleCloudMessagingProcess {
     private DocumentUpdateService documentUpdateService;
     private StorageManager storageManager;
     private ReceiptManager receiptManager;
+    private AccountService accountService;
     private CronStatsService cronStatsService;
 
     @Autowired
@@ -52,6 +56,7 @@ public class GoogleCloudMessagingProcess {
             DocumentUpdateService documentUpdateService,
             StorageManager storageManager,
             ReceiptManager receiptManager,
+            AccountService accountService,
             CronStatsService cronStatsService
 
     ) {
@@ -60,6 +65,7 @@ public class GoogleCloudMessagingProcess {
         this.documentUpdateService = documentUpdateService;
         this.storageManager = storageManager;
         this.receiptManager = receiptManager;
+        this.accountService = accountService;
         this.cronStatsService = cronStatsService;
     }
 
@@ -78,8 +84,10 @@ public class GoogleCloudMessagingProcess {
             return;
         }
 
-        List<DocumentEntity> documents = documentUpdateService.getAllDocumentsModified(5);
+        List<UserAccountEntity> userAccountEntities = new ArrayList<>();
+        List<DocumentEntity> documents = documentUpdateService.getDocumentsForNotification(5);
         if (!documents.isEmpty()) {
+            userAccountEntities = accountService.findAllTechnician();
             LOG.info("Notification to be send, count={}", documents.size());
         }
 
@@ -90,8 +98,15 @@ public class GoogleCloudMessagingProcess {
                 documentUpdateService.markNotified(document.getId());
                 switch (document.getDocumentStatus()) {
                     case PENDING:
-                        LOG.error("There should be no documents marked PENDING in the list  documentId={} rid={}", document.getId(), document.getReceiptUserId());
-                        failure++;
+                        LOG.info("Notifying technicians on documents={} documentId={} rid={}",
+                                document.getDocumentStatus(), document.getId(), document.getReceiptUserId());
+
+                        for (UserAccountEntity userAccount : userAccountEntities) {
+                            googleCloudMessagingService.sendNotification(
+                                    "New document received.",
+                                    userAccount.getReceiptUserId());
+                        }
+                        success++;
                         break;
                     case PROCESSED:
                         receipt = receiptManager.findReceipt(document.getReferenceDocumentId(), document.getReceiptUserId());
@@ -101,10 +116,14 @@ public class GoogleCloudMessagingProcess {
                         success++;
                         break;
                     case REPROCESS:
-                        receipt = receiptManager.findReceipt(document.getReferenceDocumentId(), document.getReceiptUserId());
-                        googleCloudMessagingService.sendNotification(
-                                documentUpdateService.getNotificationMessageForReceiptReCheck(receipt),
-                                document.getReceiptUserId());
+                        LOG.info("Notifying technicians on documents={} documentId={} rid={}",
+                                document.getDocumentStatus(), document.getId(), document.getReceiptUserId());
+
+                        for (UserAccountEntity userAccount : userAccountEntities) {
+                            googleCloudMessagingService.sendNotification(
+                                    "Re-check document received.",
+                                    userAccount.getReceiptUserId());
+                        }
                         success++;
                         break;
                     case REJECT:
