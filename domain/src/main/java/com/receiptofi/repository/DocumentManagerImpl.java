@@ -175,11 +175,8 @@ public final class DocumentManagerImpl implements DocumentManager {
     public List<DocumentEntity> getDocumentsForNotification(int delay) {
         return mongoTemplate.find(
                 query(where("NU").is(false)
-                                .and("U").lte(DateTime.now().minusMinutes(delay))
-                                .andOperator(
-                                        isNotActive()
-                                )
-                ).with(new Sort(Direction.ASC, "U")),
+                        .and("U").lte(DateTime.now().minusMinutes(delay)))
+                        .with(new Sort(Direction.ASC, "U")),
                 DocumentEntity.class,
                 TABLE
         );
