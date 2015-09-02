@@ -129,6 +129,7 @@ public class DocumentUpdateService {
 
             bizService.copyBizNameAndBizStoreFromReceipt(document, receipt);
             document.setDocumentStatus(PROCESSED);
+            document.setNotifyUser(false);
             document.setReferenceDocumentId(receipt.getId());
             document.inActive();
             document.addProcessedBy(transaction, technicianId);
@@ -170,6 +171,7 @@ public class DocumentUpdateService {
                 }
 
                 document.setDocumentStatus(PENDING);
+                document.setNotifyUser(true);
                 documentManager.save(document);
                 //LOG.error("Failed to rollback Document: " + documentForm.getId() + ", error message: " + e.getLocalizedMessage());
 
@@ -221,6 +223,7 @@ public class DocumentUpdateService {
 
             bizService.copyBizNameAndBizStoreFromReceipt(document, receipt);
             document.setDocumentStatus(PROCESSED);
+            document.setNotifyUser(false);
             document.inActive();
 
             //Only recheck comments are updated by technician. Receipt notes are never modified
@@ -304,6 +307,7 @@ public class DocumentUpdateService {
                 }
 
                 document.setDocumentStatus(PENDING);
+                document.setNotifyUser(true);
                 documentManager.save(document);
                 //LOG.error("Failed to rollback Document: " + documentForm.getId() + ", error message: " + e.getLocalizedMessage());
 
@@ -337,6 +341,7 @@ public class DocumentUpdateService {
         DocumentEntity document = loadActiveDocumentById(documentId);
         try {
             document.setDocumentStatus(REJECT);
+            document.setNotifyUser(false);
             document.setDocumentOfType(documentOfType);
             document.setBizName(null);
             document.setBizStore(null);
@@ -363,6 +368,7 @@ public class DocumentUpdateService {
                     document.getId(), exce.getLocalizedMessage(), exce);
 
             document.setDocumentStatus(PENDING);
+            document.setNotifyUser(true);
             document.active();
             documentManager.save(document);
             //LOG.error("Failed to rollback Document: " + documentForm.getId() + ", error message: " + e.getLocalizedMessage());
@@ -506,6 +512,7 @@ public class DocumentUpdateService {
 
             updateDocumentVersion(document, documentEntity);
             document.setDocumentStatus(PROCESSED);
+            document.setNotifyUser(false);
             document.setReferenceDocumentId(mileage.getId());
             document.inActive();
             document.addProcessedBy(transaction, technicianId);
