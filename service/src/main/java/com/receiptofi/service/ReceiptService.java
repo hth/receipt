@@ -175,6 +175,7 @@ public class ReceiptService {
                     DocumentEntity receiptOCR = documentManager.findDocumentByRid(receipt.getDocumentId(), rid);
                     receiptOCR.active();
                     receiptOCR.setDocumentStatus(DocumentStatusEnum.REPROCESS);
+                    receiptOCR.setNotifyUser(false);
                     receiptOCR.setRecheckComment(receipt.getRecheckComment());
                     receiptOCR.setNotes(receipt.getNotes());
                     receiptOCR.setProcessedBy(receipt.getProcessedBy());
