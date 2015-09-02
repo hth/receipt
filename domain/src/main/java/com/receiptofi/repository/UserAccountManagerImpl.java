@@ -13,6 +13,7 @@ import com.receiptofi.domain.BaseEntity;
 import com.receiptofi.domain.UserAccountEntity;
 import com.receiptofi.domain.types.AccountInactiveReasonEnum;
 import com.receiptofi.domain.types.ProviderEnum;
+import com.receiptofi.domain.types.RoleEnum;
 import com.receiptofi.repository.util.AppendAdditionalFields;
 
 import org.slf4j.Logger;
@@ -145,6 +146,18 @@ public class UserAccountManagerImpl implements UserAccountManager {
     public List<UserAccountEntity> findAllForBilling(int skipDocuments, int limit) {
         return mongoTemplate.find(
                 query(isActive().andOperator(isNotDeleted())).with(new Sort(DESC, "RID")).skip(skipDocuments).limit(limit),
+                UserAccountEntity.class
+        );
+    }
+
+    @Override
+    public List<UserAccountEntity> findAllTechnician() {
+        return mongoTemplate.find(
+                query(where("RE").in(RoleEnum.ROLE_SUPERVISOR, RoleEnum.ROLE_TECHNICIAN)
+                        .andOperator(
+                                isActive(),
+                                isNotDeleted()
+                        )).with(new Sort(DESC, "RID")),
                 UserAccountEntity.class
         );
     }

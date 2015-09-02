@@ -92,8 +92,8 @@ public class DocumentUpdateService {
         return documentManager.getAllProcessedDocuments();
     }
 
-    public List<DocumentEntity> getAllDocumentsModified(int delay) {
-        return documentManager.getAllDocumentsModified(delay);
+    public List<DocumentEntity> getDocumentsForNotification(int delay) {
+        return documentManager.getDocumentsForNotification(delay);
     }
 
     public void cloudUploadSuccessful(String documentId) {

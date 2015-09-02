@@ -529,4 +529,8 @@ public class AccountService {
         }
         return 100;
     }
+
+    public List<UserAccountEntity> findAllTechnician() {
+        return userAccountManager.findAllTechnician();
+    }
 }

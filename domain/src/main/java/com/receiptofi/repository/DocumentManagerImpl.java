@@ -172,10 +172,9 @@ public final class DocumentManagerImpl implements DocumentManager {
     }
 
     @Override
-    public List<DocumentEntity> getAllDocumentsModified(int delay) {
+    public List<DocumentEntity> getDocumentsForNotification(int delay) {
         return mongoTemplate.find(
-                query(where("DS").ne(DocumentStatusEnum.PENDING)
-                                .and("NU").is(false)
+                query(where("NU").is(false)
                                 .and("U").lte(DateTime.now().minusMinutes(delay))
                                 .andOperator(
                                         isNotActive()
