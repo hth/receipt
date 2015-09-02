@@ -2,6 +2,7 @@ package com.receiptofi.loader.service;
 
 import com.receiptofi.domain.RegisteredDeviceEntity;
 import com.receiptofi.repository.RegisteredDeviceManager;
+import com.receiptofi.utils.CommonUtil;
 
 import org.apache.commons.io.IOUtils;
 
@@ -48,7 +49,7 @@ public class GoogleCloudMessagingService {
     public void sendNotification(String message, String rid) {
         List<RegisteredDeviceEntity> registeredDevices = registeredDeviceManager.getDevicesForRid(rid);
 
-        for(RegisteredDeviceEntity registeredDevice : registeredDevices) {
+        for (RegisteredDeviceEntity registeredDevice : registeredDevices) {
             try {
                 // Prepare JSON containing the GCM message content. What to send and where to send.
                 JSONObject jGcmData = new JSONObject();
@@ -75,7 +76,20 @@ public class GoogleCloudMessagingService {
                 // Read GCM response.
                 InputStream inputStream = conn.getInputStream();
                 String resp = IOUtils.toString(inputStream);
-                LOG.info(resp);
+                if (CommonUtil.isJSONValid(resp)) {
+                    org.json.JSONObject jo = new org.json.JSONObject(resp);
+                    if (jo.has("error")) {
+                        LOG.warn("Error while sending notification reason={} deviceId={} rid={}",
+                                jo.getString("error"), registeredDevice.getDeviceId(), rid);
+                    }
+
+                    if (jo.has("message_id")) {
+                        LOG.info("Success sending notification messageId={} deviceId={} rid={}",
+                                jo.getString("message_id"), registeredDevice.getDeviceId(), rid);
+                    }
+                } else {
+                    LOG.info(resp);
+                }
             } catch (IOException e) {
                 LOG.error("Unable to send GCM message. Reason={}", e.getLocalizedMessage(), e);
             }
