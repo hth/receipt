@@ -94,7 +94,7 @@ public class ReceiptWebService {
         try {
             return fetcherService.findDistinctBizName(StringUtils.stripToEmpty(businessName));
         } catch (Exception fetchBusinessName) {
-            LOG.error("Error fetching business number, error={}", fetchBusinessName);
+            LOG.warn("Error fetching business number, error={}", fetchBusinessName);
             return new HashSet<>();
         }
     }
@@ -120,7 +120,7 @@ public class ReceiptWebService {
         try {
             return fetcherService.findDistinctBizAddress(StringUtils.stripToEmpty(bizAddress), StringUtils.stripToEmpty(businessName));
         } catch (Exception fetchBusinessAddress) {
-            LOG.error("Error fetching business address, error={}", fetchBusinessAddress);
+            LOG.warn("Error fetching business address, error={}", fetchBusinessAddress);
             return new HashSet<>();
         }
     }
@@ -154,7 +154,7 @@ public class ReceiptWebService {
                     StringUtils.stripToEmpty(businessName)
             );
         } catch (Exception fetchingPhone) {
-            LOG.error("Error fetching phone number, error={}", fetchingPhone);
+            LOG.warn("Error fetching phone number, error={}", fetchingPhone);
             return new HashSet<>();
         }
     }
@@ -180,7 +180,7 @@ public class ReceiptWebService {
         try {
             return fetcherService.findDistinctItems(StringUtils.stripToEmpty(itemName), StringUtils.stripToEmpty(businessName));
         } catch (Exception fetchingItems) {
-            LOG.error("Error fetching items, error={}", fetchingItems);
+            LOG.warn("Error fetching items, error={}", fetchingItems);
             return new HashSet<>();
         }
     }
