@@ -59,7 +59,7 @@ public final class DateUtil {
             }
         }
 
-        LOG.error("Unsupported date condition reached='{}'", dateAsStr);
+        LOG.warn("Unsupported date condition reached='{}'", dateAsStr);
         throw new IllegalArgumentException("Unsupported date condition reached " + dateAsStr);
     }
 
