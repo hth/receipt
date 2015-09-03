@@ -81,20 +81,18 @@ public class GoogleCloudMessagingService {
                 String resp = IOUtils.toString(inputStream);
                 if (CommonUtil.isJSONValid(resp)) {
                     try {
-                        org.json.JSONObject jo = (org.json.JSONObject) new JSONParser().parse(resp);
+                        org.json.JSONObject jo = new org.json.JSONObject(resp);
                         if (jo.has("error")) {
                             LOG.warn("Error while sending notification reason={} deviceId={} rid={}",
-                                    jo.get("error"), registeredDevice.getDeviceId(), rid);
+                                    jo.getString("error"), registeredDevice.getDeviceId(), rid);
                         }
 
                         if (jo.has("message_id")) {
                             LOG.info("Success sending notification messageId={} deviceId={} rid={}",
-                                    jo.get("message_id"), registeredDevice.getDeviceId(), rid);
+                                    jo.getString("message_id"), registeredDevice.getDeviceId(), rid);
                         }
                     } catch (JSONException e) {
                         LOG.error("Failed parsing JSON string={}", resp);
-                    } catch (ParseException e) {
-                        LOG.error("Parser failure reason={}", e.getLocalizedMessage(), e);
                     }
                 } else {
                     LOG.info(resp);
