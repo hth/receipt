@@ -89,7 +89,7 @@ public class GoogleCloudMessagingService {
 
                         if (jo.has("message_id")) {
                             LOG.info("Success sending notification messageId={} deviceId={} rid={}",
-                                    jo.getString("message_id"), registeredDevice.getDeviceId(), rid);
+                                    jo.getInt("message_id"), registeredDevice.getDeviceId(), rid);
                         }
                     } catch (JSONException e) {
                         LOG.error("Failed parsing JSON string={}", resp);
