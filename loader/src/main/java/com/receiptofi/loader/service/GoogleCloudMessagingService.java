@@ -13,7 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import org.json.JSONException;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -77,15 +80,21 @@ public class GoogleCloudMessagingService {
                 InputStream inputStream = conn.getInputStream();
                 String resp = IOUtils.toString(inputStream);
                 if (CommonUtil.isJSONValid(resp)) {
-                    org.json.JSONObject jo = new org.json.JSONObject(resp);
-                    if (jo.has("error")) {
-                        LOG.warn("Error while sending notification reason={} deviceId={} rid={}",
-                                jo.getString("error"), registeredDevice.getDeviceId(), rid);
-                    }
+                    try {
+                        org.json.JSONObject jo = (org.json.JSONObject) new JSONParser().parse(resp);
+                        if (jo.has("error")) {
+                            LOG.warn("Error while sending notification reason={} deviceId={} rid={}",
+                                    jo.get("error"), registeredDevice.getDeviceId(), rid);
+                        }
 
-                    if (jo.has("message_id")) {
-                        LOG.info("Success sending notification messageId={} deviceId={} rid={}",
-                                jo.getString("message_id"), registeredDevice.getDeviceId(), rid);
+                        if (jo.has("message_id")) {
+                            LOG.info("Success sending notification messageId={} deviceId={} rid={}",
+                                    jo.get("message_id"), registeredDevice.getDeviceId(), rid);
+                        }
+                    } catch (JSONException e) {
+                        LOG.error("Failed parsing JSON string={}", resp);
+                    } catch (ParseException e) {
+                        LOG.error("Parser failure reason={}", e.getLocalizedMessage(), e);
                     }
                 } else {
                     LOG.info(resp);
