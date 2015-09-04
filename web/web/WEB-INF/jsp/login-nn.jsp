@@ -23,7 +23,7 @@
 
     <script src="//receiptofi.com/js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script> <!-- Modernizr -->
 
-    <title>Receiptofi - Park Your Receipts Here</title>
+    <title>Receiptofi - Receipt App to park your Receipts</title>
 </head>
 <body>
 <!--[if lt IE 8]>
