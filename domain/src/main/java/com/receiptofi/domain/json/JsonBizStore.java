@@ -31,16 +31,16 @@ import com.receiptofi.domain.annotation.Mobile;
 public class JsonBizStore {
 
     @JsonProperty ("address")
-    private String address;
+    private String address = "";
 
     @JsonProperty ("phone")
-    private String phone;
+    private String phone = "";
 
     @JsonProperty ("lat")
-    private String lat;
+    private String lat = "";
 
     @JsonProperty ("lng")
-    private String lng;
+    private String lng = "";
 
     private JsonBizStore(BizStoreEntity bizStoreEntity) {
         this.address = bizStoreEntity.getAddress();
