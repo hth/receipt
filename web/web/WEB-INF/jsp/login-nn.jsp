@@ -23,7 +23,8 @@
 
     <script src="//receiptofi.com/js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script> <!-- Modernizr -->
 
-    <title>Receiptofi - Receipt App to park your Receipts</title>
+    <title>Receiptofi | Receipt App to park your Receipts</title>
+    <meta name="keywords" content="receiptapp, receipt app, scan receipts, receipt organizer, organize receipts, receipt detail, online bookkeeping, online expense reporting, receipt tracker, receipt scanning, itemized, tag expense, travel, business"/>
 </head>
 <body>
 <!--[if lt IE 8]>
