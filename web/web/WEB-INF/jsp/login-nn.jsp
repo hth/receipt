@@ -131,7 +131,7 @@
             </fieldset>
         </form:form>
 
-        <fieldset class="cd-form floating-labels">
+        <fieldset class="cd-form floating-labels" id="register-fieldset">
             <legend>New User</legend>
 
             <div class="icon">

@@ -513,6 +513,17 @@ input:-webkit-autofill {
     }
 }
 
+#register-fieldset {
+    display: none !important;
+}
+
+/** For mobile phone */
+@media screen and (max-width: 768px) {
+    #register-fieldset {
+        display: block !important;
+    }
+}
+
 .social-text {
     font-family: "Open Sans", sans-serif;
     font-size: 1.6rem;
