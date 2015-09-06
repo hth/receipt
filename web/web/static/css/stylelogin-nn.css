@@ -497,6 +497,10 @@ input:-webkit-autofill {
 }
 
 @media only screen and (max-width: 768px) {
+    .cd-form {
+        margin: 1em auto;
+    }
+
     #login-title-fieldset {
         display: none !important;
     }
