@@ -24,7 +24,6 @@
     <script src="//receiptofi.com/js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script> <!-- Modernizr -->
 
     <title>Receiptofi | Receipt App to park your Receipts</title>
-    <meta name="description" content="The fast, easy and secure way to turn paper receipts to digitized format. For individual or small businesses saving time and money with ReceiptApp."/>
     <meta name="keywords" content="receiptapp, receipt app, scan receipts, receipt organizer, organize receipts, receipt detail, online bookkeeping, online expense reporting, receipt tracker, receipt scanning, itemized, tag expense, travel, business"/>
 </head>
 <body>
