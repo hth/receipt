@@ -84,6 +84,9 @@ public class AccountService {
     @Value("${ExpenseTagColors.Default:#1a9af9,#b492e8}")
     private String[] expenseTagColors;
 
+    @Value ("${promotionalPeriod}")
+    private int promotionalPeriod;
+
     @Autowired
     public AccountService(
             UserAccountManager userAccountManager,
@@ -270,23 +273,17 @@ public class AccountService {
         billingService.save(userAccount.getBillingAccount());
 
         /**
-         * Mark first and second month as PROMOTIONAL.
-         * First month marked PROMOTIONAL during signup.
+         * Mark month as PROMOTIONAL.
          */
-        BillingHistoryEntity billingHistory = new BillingHistoryEntity(
-                userAccount.getReceiptUserId(),
-                new Date());
-        billingHistory.setBilledStatus(BilledStatusEnum.P);
-        billingHistory.setBillingPlan(BillingPlanEnum.P);
-        billingService.save(billingHistory);
-
-        /** Second month marked as PROMOTIONAL too. */
-        billingHistory = new BillingHistoryEntity(
-                userAccount.getReceiptUserId(),
-                Date.from(LocalDateTime.now().plusMonths(1).toInstant(ZoneOffset.UTC)));
-        billingHistory.setBilledStatus(BilledStatusEnum.P);
-        billingHistory.setBillingPlan(BillingPlanEnum.P);
-        billingService.save(billingHistory);
+        BillingHistoryEntity billingHistory;
+        for (int monthCount = 0; monthCount < promotionalPeriod; monthCount++) {
+            billingHistory = new BillingHistoryEntity(
+                    userAccount.getReceiptUserId(),
+                    Date.from(LocalDateTime.now().plusMonths(monthCount).toInstant(ZoneOffset.UTC)));
+            billingHistory.setBilledStatus(BilledStatusEnum.P);
+            billingHistory.setBillingPlan(BillingPlanEnum.P);
+            billingService.save(billingHistory);
+        }
     }
 
     /**

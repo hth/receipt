@@ -43,17 +43,20 @@ public class BillingProcess {
     private int promotionalPeriod;
     private int limit;
     private String billingProcessStatus;
+
     private BillingService billingService;
     private AccountService accountService;
     private ReceiptService receiptService;
     private CronStatsService cronStatsService;
 
+    private boolean keepPromotionRunning = true;
+
     @Autowired
     public BillingProcess(
-            @Value ("${promotionalPeriod:2}")
+            @Value ("${promotionalPeriod}")
             int promotionalPeriod,
 
-            @Value ("${limit:2}")
+            @Value ("${limit:100}")
             int limit,
 
             @Value ("${billingProcessStatus:ON}")
@@ -104,6 +107,7 @@ public class BillingProcess {
             try {
                 while (true) {
                     List<UserAccountEntity> userAccounts = accountService.findAllForBilling(skipDocuments, limit);
+                    LOG.info("Found accounts to be billed size={} limit={}", userAccounts.size(), limit);
 
                     if (userAccounts.isEmpty()) {
                         break;
@@ -130,7 +134,7 @@ public class BillingProcess {
                                     }
                                     break;
                                 case P:
-                                    if (billingService.countLastPromotion(billedForMonth, billingAccount.getRid()) >= promotionalPeriod) {
+                                    if (!keepPromotionRunning && billingService.countLastPromotion(billedForMonth, billingAccount.getRid()) >= promotionalPeriod) {
                                         if (doesDocumentExistsInBillingHistory(billedForMonth, billingAccount)) {
                                             /**
                                              * Since the account is passed promotional period, its reset to NB and
