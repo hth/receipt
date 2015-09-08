@@ -38,16 +38,40 @@ import java.util.List;
 public class SendOutAccountActiveEmail {
     private static final Logger LOG = LoggerFactory.getLogger(SendOutAccountActiveEmail.class);
 
-    @Value ("${registration.turned.on}")
+    private int promotionalPeriod;
     private boolean registrationTurnedOn;
-
-    @Value ("${registration.invite.daily.limit}")
     private int registrationInviteDailyLimit;
 
-    @Autowired private AccountService accountService;
-    @Autowired private MailService mailService;
-    @Autowired private BillingService billingService;
-    @Autowired private CronStatsService cronStatsService;
+    private AccountService accountService;
+    private MailService mailService;
+    private BillingService billingService;
+    private CronStatsService cronStatsService;
+
+    @Autowired
+    public SendOutAccountActiveEmail(
+            @Value ("${promotionalPeriod}")
+            int promotionalPeriod,
+
+            @Value ("${registration.turned.on}")
+            boolean registrationTurnedOn,
+
+            @Value ("${registration.invite.daily.limit}")
+            int registrationInviteDailyLimit,
+
+            AccountService accountService,
+            MailService mailService,
+            BillingService billingService,
+            CronStatsService cronStatsService
+    ) {
+        this.promotionalPeriod = promotionalPeriod;
+        this.registrationTurnedOn = registrationTurnedOn;
+        this.registrationInviteDailyLimit = registrationInviteDailyLimit;
+        this.accountService = accountService;
+        this.mailService = mailService;
+        this.billingService = billingService;
+        this.cronStatsService = cronStatsService;
+
+    }
 
     @Scheduled (cron = "${loader.SendOutAccountActiveEmail.registrationCompleteEmail}")
     public void registrationCompleteEmail() {
@@ -72,47 +96,27 @@ public class SendOutAccountActiveEmail {
                         billingAccount.setCreateAndUpdate(now);
                         billingService.save(billingAccount);
 
-                        BillingHistoryEntity billingHistory = billingService.findLatestBillingHistoryForMonth(
-                                now,
-                                billingAccount.getRid());
+                        for (int monthCount = 0; monthCount < promotionalPeriod; monthCount++) {
+                            BillingHistoryEntity billingHistory = billingService.findLatestBillingHistoryForMonth(
+                                    Date.from(LocalDateTime.now().plusMonths(monthCount).toInstant(ZoneOffset.UTC)),
+                                    billingAccount.getRid());
 
-                        if (billingHistory == null) {
-                            /**
-                             * Mark PROMOTIONAL as billed for the first and second month.
-                             * First month marked PROMOTIONAL during signup.
-                             */
-                            billingHistory = new BillingHistoryEntity(
-                                    userAccount.getReceiptUserId(),
-                                    now);
-                            billingHistory.setBilledStatus(BilledStatusEnum.P);
-                            billingHistory.setBillingPlan(BillingPlanEnum.P);
-                            billingService.save(billingHistory);
-                        } else {
-                            billingHistory.setBilledStatus(BilledStatusEnum.P);
-                            billingHistory.setBillingPlan(BillingPlanEnum.P);
-                            billingService.save(billingHistory);
-                        }
-
-                        billingHistory = billingService.findLatestBillingHistoryForMonth(
-                                Date.from(LocalDateTime.now().plusMonths(1).toInstant(ZoneOffset.UTC)),
-                                billingAccount.getRid());
-
-                        if (billingHistory == null) {
-                            /**
-                             * Second month marked as PROMOTIONAL too. Second month Bill History can exists as it
-                             * would be created by billing cron task. Even if it exists this will over ride to
-                             * PROMOTIONAL status for that month.
-                             */
-                            billingHistory = new BillingHistoryEntity(
-                                    userAccount.getReceiptUserId(),
-                                    Date.from(LocalDateTime.now().plusMonths(1).toInstant(ZoneOffset.UTC)));
-                            billingHistory.setBilledStatus(BilledStatusEnum.P);
-                            billingHistory.setBillingPlan(BillingPlanEnum.P);
-                            billingService.save(billingHistory);
-                        } else {
-                            billingHistory.setBilledStatus(BilledStatusEnum.P);
-                            billingHistory.setBillingPlan(BillingPlanEnum.P);
-                            billingService.save(billingHistory);
+                            if (billingHistory == null) {
+                                /**
+                                 * Mark PROMOTIONAL as billed for the number of month count.
+                                 * Number of months marked PROMOTIONAL during signup.
+                                 */
+                                billingHistory = new BillingHistoryEntity(
+                                        userAccount.getReceiptUserId(),
+                                        Date.from(LocalDateTime.now().plusMonths(monthCount).toInstant(ZoneOffset.UTC)));
+                                billingHistory.setBilledStatus(BilledStatusEnum.P);
+                                billingHistory.setBillingPlan(BillingPlanEnum.P);
+                                billingService.save(billingHistory);
+                            } else {
+                                billingHistory.setBilledStatus(BilledStatusEnum.P);
+                                billingHistory.setBillingPlan(BillingPlanEnum.P);
+                                billingService.save(billingHistory);
+                            }
                         }
 
                         success++;
