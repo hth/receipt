@@ -6,6 +6,7 @@ import static org.springframework.data.mongodb.core.query.Update.update;
 
 import com.receiptofi.domain.BaseEntity;
 import com.receiptofi.domain.RegisteredDeviceEntity;
+import com.receiptofi.domain.types.DeviceTypeEnum;
 
 import org.joda.time.DateTime;
 
@@ -63,8 +64,8 @@ public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
     }
 
     @Override
-    public RegisteredDeviceEntity registerDevice(String rid, String did) {
-        RegisteredDeviceEntity registeredDevice = RegisteredDeviceEntity.newInstance(rid, did);
+    public RegisteredDeviceEntity registerDevice(String rid, String did, DeviceTypeEnum deviceType) {
+        RegisteredDeviceEntity registeredDevice = RegisteredDeviceEntity.newInstance(rid, did, deviceType);
         if (null == find(rid, did)) {
             save(registeredDevice);
             LOG.info("registered device for rid={} did={}", rid, did);

@@ -2,6 +2,7 @@ package com.receiptofi.repository;
 
 import com.receiptofi.domain.RegisteredDeviceEntity;
 import com.receiptofi.domain.annotation.Mobile;
+import com.receiptofi.domain.types.DeviceTypeEnum;
 
 import java.util.List;
 
@@ -42,7 +43,7 @@ public interface RegisteredDeviceManager extends RepositoryManager<RegisteredDev
      */
     @SuppressWarnings ("unused")
     @Mobile
-    RegisteredDeviceEntity registerDevice(String rid, String did);
+    RegisteredDeviceEntity registerDevice(String rid, String did, DeviceTypeEnum deviceType);
 
     /**
      * Get registered devices for RID.

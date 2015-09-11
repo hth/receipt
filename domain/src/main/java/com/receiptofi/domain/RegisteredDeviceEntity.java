@@ -1,6 +1,7 @@
 package com.receiptofi.domain;
 
 import com.receiptofi.domain.annotation.Mobile;
+import com.receiptofi.domain.types.DeviceTypeEnum;
 
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
@@ -34,14 +35,19 @@ public class RegisteredDeviceEntity extends BaseEntity {
     @Field ("DID")
     private String deviceId;
 
-    private RegisteredDeviceEntity(String receiptUserId, String deviceId) {
+    @NotNull
+    @Field ("DT")
+    private DeviceTypeEnum deviceType;
+
+    private RegisteredDeviceEntity(String receiptUserId, String deviceId, DeviceTypeEnum deviceType) {
         super();
         this.receiptUserId = receiptUserId;
         this.deviceId = deviceId;
+        this.deviceType = deviceType;
     }
 
-    public static RegisteredDeviceEntity newInstance(String userProfileId, String deviceId) {
-        return new RegisteredDeviceEntity(userProfileId, deviceId);
+    public static RegisteredDeviceEntity newInstance(String userProfileId, String deviceId, DeviceTypeEnum deviceType) {
+        return new RegisteredDeviceEntity(userProfileId, deviceId, deviceType);
     }
 
     public String getReceiptUserId() {
@@ -58,5 +64,13 @@ public class RegisteredDeviceEntity extends BaseEntity {
 
     public void setDeviceId(String deviceId) {
         this.deviceId = deviceId;
+    }
+
+    public DeviceTypeEnum getDeviceType() {
+        return deviceType;
+    }
+
+    public void setDeviceType(DeviceTypeEnum deviceType) {
+        this.deviceType = deviceType;
     }
 }
