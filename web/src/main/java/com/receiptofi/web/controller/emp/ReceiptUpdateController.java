@@ -11,6 +11,7 @@ import com.receiptofi.domain.ReceiptEntity;
 import com.receiptofi.domain.site.ReceiptUser;
 import com.receiptofi.service.DocumentUpdateService;
 import com.receiptofi.web.form.ReceiptDocumentForm;
+import com.receiptofi.web.validator.DocumentRejectValidator;
 import com.receiptofi.web.validator.MileageDocumentValidator;
 import com.receiptofi.web.validator.ReceiptDocumentValidator;
 
@@ -58,6 +59,7 @@ public class ReceiptUpdateController {
     public static final String REDIRECT_EMP_LANDING_HTM = "redirect:/emp/landing.htm";
 
     @Autowired private ReceiptDocumentValidator receiptDocumentValidator;
+    @Autowired private DocumentRejectValidator documentRejectValidator;
     @Autowired private DocumentUpdateService documentUpdateService;
     @Autowired private MileageDocumentValidator mileageDocumentValidator;
 
@@ -254,9 +256,18 @@ public class ReceiptUpdateController {
             @ModelAttribute ("receiptDocumentForm")
             ReceiptDocumentForm receiptDocumentForm,
 
+            BindingResult result,
             RedirectAttributes redirectAttrs
     ) {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        documentRejectValidator.validate(receiptDocumentForm, result);
+        if (result.hasErrors()) {
+            LOG.warn("validation error");
+            redirectAttrs.addFlashAttribute("result", result);
+            redirectAttrs.addFlashAttribute("receiptDocumentForm", receiptDocumentForm);
+            return "redirect:/emp" + NEXT_PAGE_UPDATE + "/" + receiptDocumentForm.getReceiptDocument().getId() + ".htm";
+        }
+
         return submitRejectionOfDocument(receiptUser.getRid(), receiptDocumentForm, redirectAttrs);
     }
 
@@ -275,9 +286,17 @@ public class ReceiptUpdateController {
             @ModelAttribute ("receiptDocumentForm")
             ReceiptDocumentForm receiptDocumentForm,
 
+            BindingResult result,
             RedirectAttributes redirectAttrs
     ) {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        documentRejectValidator.validate(receiptDocumentForm, result);
+        if (result.hasErrors()) {
+            LOG.warn("validation error");
+            redirectAttrs.addFlashAttribute("result", result);
+            redirectAttrs.addFlashAttribute("receiptDocumentForm", receiptDocumentForm);
+            return "redirect:/emp" + NEXT_PAGE_UPDATE + "/" + receiptDocumentForm.getReceiptDocument().getId() + ".htm";
+        }
         return submitRejectionOfDocument(receiptUser.getRid(), receiptDocumentForm, redirectAttrs);
     }
 
@@ -296,12 +315,17 @@ public class ReceiptUpdateController {
         LOG.info("Beginning of Rejecting document={}", receiptDocumentForm.getReceiptDocument().getId());
         try {
             DocumentEntity document = receiptDocumentForm.getReceiptDocument();
-            documentUpdateService.processDocumentForReject(technicianId, document.getId(), document.getDocumentOfType());
+            documentUpdateService.processDocumentForReject(
+                    technicianId,
+                    document.getId(),
+                    document.getDocumentOfType(),
+                    document.getDocumentRejectReason());
+
             return REDIRECT_EMP_LANDING_HTM;
         } catch (Exception e) {
             LOG.error("Error happened during rejecting document={} reason={}", receiptDocumentForm.getReceiptDocument().getId(), e.getLocalizedMessage(), e);
 
-            String message = "Receipt could not be processed for Reject. Contact administrator with Document # ";
+            String message = "Document could not be processed for Reject. Contact administrator with Document # ";
             receiptDocumentForm.setErrorMessage(message + receiptDocumentForm.getReceiptDocument().getId());
             redirectAttrs.addFlashAttribute("receiptDocumentForm", receiptDocumentForm);
             return "redirect:/emp" + NEXT_PAGE_UPDATE + "/" + receiptDocumentForm.getReceiptDocument().getId() + ".htm";

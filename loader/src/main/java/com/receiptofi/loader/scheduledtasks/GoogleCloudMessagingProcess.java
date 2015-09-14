@@ -130,7 +130,7 @@ public class GoogleCloudMessagingProcess {
                         GridFSDBFile gridFSDBFile = storageManager.get(document.getFileSystemEntities().iterator().next().getBlobId());
                         DBObject dbObject = gridFSDBFile.getMetaData();
                         googleCloudMessagingService.sendNotification(
-                                documentUpdateService.getNotificationMessageForReceiptReject(dbObject),
+                                documentUpdateService.getNotificationMessageForReceiptReject(dbObject, document.getDocumentRejectReason()),
                                 document.getReceiptUserId());
                         success++;
                         break;

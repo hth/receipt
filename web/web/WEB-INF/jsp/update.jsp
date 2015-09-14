@@ -482,8 +482,17 @@
                                     </td>
                                 </tr>
                                 <tr style="height: 6em;">
-                                    <td colspan="4">
+                                    <td colspan="1">
                                         <input type="submit" value="Reject" name="receipt-reject" id="reject" class="btn btn-danger" />
+                                    </td>
+                                    <td colspan="3">
+                                        <form:label for="receiptDocument.documentRejectReason" path="receiptDocument.documentRejectReason" cssErrorClass="error">Reject Reason: </form:label>
+                                        <form:select path="receiptDocument.documentRejectReason" id="documentRejectReason">
+                                            <form:option value="NONE" label="--- Select ---"/>
+                                            <form:options itemValue="name" itemLabel="description" />
+                                        </form:select>
+                                        <br/>
+                                        <form:errors path="receiptDocument.documentRejectReason" cssClass="error" />
                                     </td>
                                     <td colspan="2">
                                         <input type="submit" value="Submit" name="receipt-submit" id="submit" class="btn btn-default" />
@@ -519,8 +528,17 @@
                                     </td>
                                 </tr>
                                 <tr style="height: 6em;">
-                                    <td colspan="4">
+                                    <td colspan="1">
                                         <input type="submit" value="Reject" name="mileage-reject" id="rejectMileage" class="btn btn-danger" />
+                                    </td>
+                                    <td colspan="3">
+                                        <form:label for="receiptDocument.documentRejectReason" path="receiptDocument.documentRejectReason" cssErrorClass="error">Reject Reason: </form:label>
+                                        <form:select path="receiptDocument.documentRejectReason" id="documentRejectReason">
+                                            <form:option value="NONE" label="--- Select ---"/>
+                                            <form:options itemValue="name" itemLabel="description" />
+                                        </form:select>
+                                        <br/>
+                                        <form:errors path="receiptDocument.documentRejectReason" cssClass="error" />
                                     </td>
                                     <td colspan="2">
                                         <input type="submit" value="Submit" name="mileage-submit" id="submitMileage" class="btn btn-default" />

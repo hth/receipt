@@ -47,7 +47,8 @@ public class ForgotRecoverValidator implements Validator {
         if (!errors.hasErrors()) {
             EmailValidator emailValidator = EmailValidator.getInstance();
             if (!emailValidator.isValid(frf.getMail().getText().toLowerCase())) {
-                errors.rejectValue("mail",
+                errors.rejectValue(
+                        "mail",
                         "field.email.address.not.valid",
                         new Object[]{frf.getMail().getText()},
                         "Email address provided is not valid");

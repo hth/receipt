@@ -4,6 +4,7 @@
 package com.receiptofi.domain;
 
 import com.receiptofi.domain.types.DocumentOfTypeEnum;
+import com.receiptofi.domain.types.DocumentRejectReasonEnum;
 import com.receiptofi.domain.types.DocumentStatusEnum;
 
 import org.springframework.data.annotation.Transient;
@@ -85,6 +86,10 @@ public class DocumentEntity extends BaseEntity {
     @NotNull
     @Field ("DT")
     private DocumentOfTypeEnum documentOfType;
+
+    /** Defaults to DocumentRejectReasonEnum.G because validation of null enum is such a pain. */
+    @Field ("RR")
+    private DocumentRejectReasonEnum documentRejectReason = DocumentRejectReasonEnum.G;
 
     @SuppressWarnings ("unused")
     @Field ("IU")
@@ -210,6 +215,14 @@ public class DocumentEntity extends BaseEntity {
 
     public void setDocumentOfType(DocumentOfTypeEnum documentOfType) {
         this.documentOfType = documentOfType;
+    }
+
+    public DocumentRejectReasonEnum getDocumentRejectReason() {
+        return documentRejectReason;
+    }
+
+    public void setDocumentRejectReason(DocumentRejectReasonEnum documentRejectReason) {
+        this.documentRejectReason = documentRejectReason;
     }
 
     @SuppressWarnings ("unused")
