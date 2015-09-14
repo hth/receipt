@@ -4,6 +4,7 @@ import static org.springframework.ui.freemarker.FreeMarkerTemplateUtils.processT
 
 import com.receiptofi.domain.EmailValidateEntity;
 import com.receiptofi.domain.ForgotRecoverEntity;
+import com.receiptofi.domain.FriendEntity;
 import com.receiptofi.domain.InviteEntity;
 import com.receiptofi.domain.UserAccountEntity;
 import com.receiptofi.domain.UserAuthenticationEntity;
@@ -67,6 +68,7 @@ public class MailService {
     private UserAuthenticationManager userAuthenticationManager;
     private UserAccountManager userAccountManager;
     private UserProfilePreferenceService userProfilePreferenceService;
+    private FriendService friendService;
 
     @Value ("${do.not.reply.email}")
     private String doNotReplyEmail;
@@ -107,6 +109,7 @@ public class MailService {
                        FreeMarkerConfigurationFactoryBean freemarkerConfiguration,
 
                        EmailValidateService emailValidateService,
+                       FriendService friendService,
                        LoginService loginService,
                        UserAuthenticationManager userAuthenticationManager,
                        UserAccountManager userAccountManager,
@@ -117,6 +120,7 @@ public class MailService {
         this.mailSender = mailSender;
         this.freemarkerConfiguration = freemarkerConfiguration;
         this.emailValidateService = emailValidateService;
+        this.friendService = friendService;
         this.loginService = loginService;
         this.userAuthenticationManager = userAuthenticationManager;
         this.userAccountManager = userAccountManager;
@@ -287,6 +291,10 @@ public class MailService {
             InviteEntity inviteEntity = null;
             try {
                 inviteEntity = inviteService.initiateInvite(invitedUserEmail, invitedBy);
+
+                FriendEntity friend = new FriendEntity(invitedByRid, inviteEntity.getInvited().getReceiptUserId());
+                friendService.save(friend);
+
                 formulateInvitationMail(invitedUserEmail, invitedBy, inviteEntity);
                 return true;
             } catch (RuntimeException exception) {
@@ -319,7 +327,11 @@ public class MailService {
                     //Means invite exist by another user. Better to create a new invite for the requesting user
                     inviteEntity = reCreateAnotherInvite(emailId, invitedBy);
                     isNewInvite = true;
+
+                    FriendEntity friend = new FriendEntity(invitedByRid, inviteEntity.getInvited().getReceiptUserId());
+                    friendService.save(friend);
                 }
+
                 formulateInvitationMail(emailId, invitedBy, inviteEntity);
                 if (!isNewInvite) {
                     inviteService.save(inviteEntity);
