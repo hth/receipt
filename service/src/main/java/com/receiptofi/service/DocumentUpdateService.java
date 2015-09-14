@@ -1,5 +1,6 @@
 package com.receiptofi.service;
 
+import static com.receiptofi.domain.types.DocumentStatusEnum.DUPLICATE;
 import static com.receiptofi.domain.types.DocumentStatusEnum.PENDING;
 import static com.receiptofi.domain.types.DocumentStatusEnum.PROCESSED;
 import static com.receiptofi.domain.types.DocumentStatusEnum.REJECT;
@@ -18,6 +19,7 @@ import com.receiptofi.domain.MileageEntity;
 import com.receiptofi.domain.ReceiptEntity;
 import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.domain.types.DocumentOfTypeEnum;
+import com.receiptofi.domain.types.DocumentRejectReasonEnum;
 import com.receiptofi.domain.types.DocumentStatusEnum;
 import com.receiptofi.domain.types.NotificationTypeEnum;
 import com.receiptofi.repository.DocumentManager;
@@ -337,10 +339,16 @@ public class DocumentUpdateService {
      * @param documentId
      * @param documentOfType
      */
-    public void processDocumentForReject(String technicianId, String documentId, DocumentOfTypeEnum documentOfType) {
+    public void processDocumentForReject(
+            String technicianId,
+            String documentId,
+            DocumentOfTypeEnum documentOfType,
+            DocumentRejectReasonEnum documentRejectReason
+    ) {
         DocumentEntity document = loadActiveDocumentById(documentId);
         try {
             document.setDocumentStatus(REJECT);
+            document.setDocumentRejectReason(documentRejectReason);
             document.setNotifyUser(false);
             document.setDocumentOfType(documentOfType);
             document.setBizName(null);
@@ -359,7 +367,7 @@ public class DocumentUpdateService {
             DBObject dbObject = gridFSDBFile.getMetaData();
 
             notificationService.addNotification(
-                    getNotificationMessageForReceiptReject(dbObject),
+                    getNotificationMessageForReceiptReject(dbObject, document.getDocumentRejectReason()),
                     NotificationTypeEnum.DOCUMENT_REJECTED,
                     document);
 
@@ -585,7 +593,20 @@ public class DocumentUpdateService {
                 "receipt re-checked";
     }
 
-    public String getNotificationMessageForReceiptReject(DBObject dbObject) {
-        return "Could not process document '" + dbObject.get("ORIGINAL_FILENAME") + "'";
+    public String getNotificationMessageForReceiptReject(DBObject dbObject, DocumentRejectReasonEnum documentRejectReason) {
+        switch(documentRejectReason) {
+            case C:
+            case D:
+            case E:
+            case M:
+            case V:
+                return "Document '" +
+                        dbObject.get("ORIGINAL_FILENAME") +
+                        "' " +
+                        documentRejectReason.getInSentence();
+            default:
+                LOG.error("Document Reject Reason is not defined");
+                throw new IllegalStateException("Document Reject Reason is not defined");
+        }
     }
 }
