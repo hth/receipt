@@ -716,3 +716,44 @@ function populateExpenseByBusiness(data, bizNames, categories, expenseTags) {
         }
     }
 }
+
+function friendRequest(id, auth, accept) {
+    "use strict";
+
+    var object = {id: id, auth: auth, friend: accept};
+
+    $.ajax({
+        type: "POST",
+        beforeSend: function (xhr) {
+            $('#acceptFriend_bt').attr('disabled', 'disabled');
+            $('#declineFriend_bt').attr('disabled', 'disabled');
+            xhr.setRequestHeader($("meta[name='_csrf_header']").attr("content"), $("meta[name='_csrf']").attr("content"));
+        },
+        url: ctx + "/access/split/friend.htm",
+        data: object,
+        success: function (response) {
+            console.debug(response);
+            $('#acceptFriend_bt').removeAttr('disabled');
+            $('#declineFriend_bt').removeAttr('disabled');
+
+            if (response.success && accept === true) {
+                $('#' + id).find("label").slice(1, 3).remove();
+                $('#' + id).insertAfter('#friends');
+
+                if (!$.trim($('#awaiting').html()).length) {
+                    $('#awaiting').prev("h2").remove();
+                    $('#awaiting').remove();
+                    $('#pending').prev("h2").css("padding-top", "0%");
+                    $('#friends .r-info').remove();
+                }
+            } else {
+                $('#' + id).hide();
+            }
+        },
+        error: function (response, xhr, ajaxOptions, thrownError) {
+            console.error(response, xhr.status, thrownError);
+            $('#acceptFriend_bt').removeAttr('disabled');
+            $('#declineFriend_bt').removeAttr('disabled');
+        }
+    });
+}

@@ -111,10 +111,10 @@ public class ReceiptController {
             @PathVariable
             String receiptId
     ) {
-        JsonReceiptDetail jsonReceiptDetail = new JsonReceiptDetail();
         LOG.info("Loading Receipt Item with id={}", receiptId);
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
+        JsonReceiptDetail jsonReceiptDetail = new JsonReceiptDetail();
         ReceiptEntity receipt = receiptService.findReceipt(receiptId, receiptUser.getRid());
         if (null == receipt) {
             LOG.warn("User={}, tried submitting an invalid receipt={}", receiptUser.getRid(), receiptId);

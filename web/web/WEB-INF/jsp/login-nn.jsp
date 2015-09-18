@@ -96,6 +96,17 @@
                     </div>
                     <c:remove var="SPRING_SECURITY_LAST_EXCEPTION" scope="session"/>
                 </c:if>
+                <c:if test="${!empty param.error and param.error eq 'provider'}">
+                    <div class="r-error" style="margin-left: 0; width: 100%">
+                        Login not successful. Reason: You seems to be already registered with one of the other social provider.
+                    </div>
+                </c:if>
+                <c:if test="${!empty param.error and param.error eq 'multiple_users'}">
+                    <div class="r-error" style="margin-left: 0; width: 100%">
+                        Login not successful. Reason: You seem to have exceed number of connections allowed.
+                        Please wait and try after some time.
+                    </div>
+                </c:if>
 
                 <div class="icon">
                     <%--<label class="cd-label" for="emailId">Email</label>--%>
