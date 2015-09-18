@@ -9,12 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * User: hitender
@@ -42,14 +39,6 @@ public class FriendService {
         friendManager.deleteHard(receiptUserId, friendUserId);
     }
 
-    public Map<String, List<UserProfileEntity>> getProfileForAllFriends(String rid) {
-        Map<String, List<UserProfileEntity>> profiles = new HashMap<>();
-        profiles.put(ACTIVE, getActiveConnections(rid));
-        profiles.put(PENDING, getPendingConnections(rid));
-
-        return profiles;
-    }
-
     public List<FriendEntity> findConnections(String rid) {
         return friendManager.findConnections(rid);
     }
@@ -75,13 +64,17 @@ public class FriendService {
         return userProfiles;
     }
 
-    public List<UserProfileEntity> getPendingConnections(String rid) {
-        List<UserProfileEntity> userProfiles = new ArrayList<>();
+    public List<JsonAwaitingAcceptance> getPendingConnections(String rid) {
+        List<JsonAwaitingAcceptance> jsonAwaitingAcceptances = new ArrayList<>();
 
         List<FriendEntity> friends = friendManager.findPendingFriends(rid);
-        userProfiles.addAll(friends.stream().map(friend -> userProfilePreferenceService.forProfilePreferenceFindByReceiptUserId(friend.getFriendUserId())).collect(Collectors.toList()));
+        for (FriendEntity friend : friends) {
+            UserProfileEntity userProfile = userProfilePreferenceService.forProfilePreferenceFindByReceiptUserId(friend.getFriendUserId());
+            JsonAwaitingAcceptance jsonAwaitingAcceptance = new JsonAwaitingAcceptance(friend, userProfile);
+            jsonAwaitingAcceptances.add(jsonAwaitingAcceptance);
+        }
 
-        return userProfiles;
+        return jsonAwaitingAcceptances;
     }
 
     public List<JsonAwaitingAcceptance> getAwaitingConnections(String rid) {
@@ -101,7 +94,22 @@ public class FriendService {
         return friendManager.hasConnection(receiptUserId, friendUserId);
     }
 
+    /**
+     * Find specific connection between two users.
+     *
+     * @param receiptUserId
+     * @param friendUserId
+     * @return
+     */
+    public FriendEntity getConnection(String receiptUserId, String friendUserId) {
+        return friendManager.getConnection(receiptUserId, friendUserId);
+    }
+
     public boolean updateResponse(String id, String authenticationKey, boolean acceptConnection, String rid) {
         return friendManager.updateResponse(id, authenticationKey, acceptConnection, rid);
+    }
+
+    public boolean cancelInvite(String id, String authenticationKey) {
+        return friendManager.cancelInvite(id, authenticationKey);
     }
 }

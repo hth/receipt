@@ -4,6 +4,7 @@ import com.google.gson.JsonObject;
 
 import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.domain.site.ReceiptUser;
+import com.receiptofi.domain.types.FriendConnectionTypeEnum;
 import com.receiptofi.service.FriendService;
 import com.receiptofi.web.form.SplitForm;
 
@@ -57,10 +58,8 @@ public class SplitController {
     public String loadForm(@ModelAttribute ("splitForm") SplitForm splitForm) {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        Map<String, List<UserProfileEntity>> profiles = friendService.getProfileForAllFriends(receiptUser.getRid());
-        splitForm.setActiveProfiles(profiles.get(FriendService.ACTIVE));
-        splitForm.setPendingProfiles(profiles.get(FriendService.PENDING));
-
+        splitForm.setActiveProfiles(friendService.getActiveConnections(receiptUser.getRid()));
+        splitForm.setPendingProfiles(friendService.getPendingConnections(receiptUser.getRid()));
         splitForm.setAwaitingProfiles(friendService.getAwaitingConnections(receiptUser.getRid()));
 
         return nextPage;
@@ -81,14 +80,32 @@ public class SplitController {
             @RequestParam ("auth")
             String auth,
 
-            @RequestParam ("friend")
-            boolean accept,
+            @RequestParam ("ct")
+            FriendConnectionTypeEnum friendConnectionType,
 
             HttpServletResponse httpServletResponse
     ) {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        boolean response = friendService.updateResponse(id, auth, accept, receiptUser.getRid());
+        boolean response = false;
+        switch (friendConnectionType) {
+            case A:
+                /** Accept connection. */
+                response = friendService.updateResponse(id, auth, true, receiptUser.getRid());
+                break;
+            case C:
+                /** Cancel invitation to friend. */
+                response = friendService.cancelInvite(id, auth);
+                break;
+            case D:
+                /** Decline connection. */
+                response = friendService.updateResponse(id, auth, false, receiptUser.getRid());
+                break;
+            case R:
+                /** Revoke connection. */
+                break;
+        }
+
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty(LandingController.SUCCESS, response);
         return jsonObject.toString();

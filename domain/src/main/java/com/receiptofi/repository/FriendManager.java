@@ -48,4 +48,8 @@ public interface FriendManager extends RepositoryManager<FriendEntity> {
     void deleteHard(String receiptUserId, String friendUserId);
 
     boolean updateResponse(String id, String authenticationKey, boolean acceptConnection, String rid);
+
+    boolean cancelInvite(String id, String authenticationKey);
+
+    FriendEntity getConnection(String receiptUserId, String friendUserId);
 }

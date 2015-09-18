@@ -717,10 +717,10 @@ function populateExpenseByBusiness(data, bizNames, categories, expenseTags) {
     }
 }
 
-function friendRequest(id, auth, accept) {
+function friendRequest(id, auth, connectionType) {
     "use strict";
 
-    var object = {id: id, auth: auth, friend: accept};
+    var object = {id: id, auth: auth, ct: connectionType};
 
     $.ajax({
         type: "POST",
@@ -735,8 +735,9 @@ function friendRequest(id, auth, accept) {
             console.debug(response);
             $('#acceptFriend_bt').removeAttr('disabled');
             $('#declineFriend_bt').removeAttr('disabled');
+            $('#cancelFriend_bt').removeAttr('disabled');
 
-            if (response.success && accept === true) {
+            if (response.success && connectionType === 'A') {
                 $('#' + id).find("label").slice(1, 3).remove();
                 $('#' + id).insertAfter('#friends');
 
@@ -744,16 +745,31 @@ function friendRequest(id, auth, accept) {
                     $('#awaiting').prev("h2").remove();
                     $('#awaiting').remove();
                     $('#pending').prev("h2").css("padding-top", "0%");
-                    $('#friends .r-info').remove();
                 }
-            } else {
-                $('#' + id).hide();
+
+                $('#tabs-2 #friends .r-info').remove();
+            } else if(response.success && connectionType === 'D') {
+                $('#' + id).remove();
+
+                if (!$.trim($('#awaiting').html()).length) {
+                    $('#awaiting').prev("h2").remove();
+                    $('#awaiting').remove();
+                    $('#pending').prev("h2").css("padding-top", "0%");
+                }
+            } else if(response.success && connectionType === 'C') {
+                $('#' + id).remove();
+
+                if (!$.trim($('#pending').html()).length) {
+                    $('#pending').prev("h2").remove();
+                    $('#pending').remove();
+                }
             }
         },
         error: function (response, xhr, ajaxOptions, thrownError) {
             console.error(response, xhr.status, thrownError);
             $('#acceptFriend_bt').removeAttr('disabled');
             $('#declineFriend_bt').removeAttr('disabled');
+            $('#cancelFriend_bt').removeAttr('disabled');
         }
     });
 }

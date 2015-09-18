@@ -12,7 +12,7 @@ import java.util.List;
 public class SplitForm {
     private List<UserProfileEntity> activeProfiles;
     private List<JsonAwaitingAcceptance> awaitingProfiles;
-    private List<UserProfileEntity> pendingProfiles;
+    private List<JsonAwaitingAcceptance> pendingProfiles;
 
     public List<UserProfileEntity> getActiveProfiles() {
         return activeProfiles;
@@ -30,11 +30,11 @@ public class SplitForm {
         this.awaitingProfiles = awaitingProfiles;
     }
 
-    public List<UserProfileEntity> getPendingProfiles() {
+    public List<JsonAwaitingAcceptance> getPendingProfiles() {
         return pendingProfiles;
     }
 
-    public void setPendingProfiles(List<UserProfileEntity> pendingProfiles) {
+    public void setPendingProfiles(List<JsonAwaitingAcceptance> pendingProfiles) {
         this.pendingProfiles = pendingProfiles;
     }
 }

@@ -11,7 +11,7 @@
     <title><fmt:message key="title"/></title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/style.css"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/stylelogin.css"/>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/stylelogin-nn.css"> <!-- Resource style -->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/stylelogin-nn.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/colpick.css"/>
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/sweetalert/0.5.0/sweet-alert.css"/>
 
@@ -144,13 +144,17 @@
                             </c:otherwise>
                         </c:choose>
                         </label>
-                        <label class="profile_label" style="!important; color: #606060; !important; font-weight: normal; !important; line-height: 30px; width: 135px;">
+                        <label class="profile_label" style="!important; color: #606060; !important; font-weight: normal; !important; line-height: 30px; width: 140px;">
                             <fmt:formatDate value="${profile.created}" pattern="MMM dd, yyyy" />
                         </label>
-                        <label class="profile_label" style="!important; color: #606060; !important; font-weight: normal; !important; line-height: 30px; width: 135px;">
+                        <label class="profile_label" style="!important; color: #606060; !important; font-weight: normal; !important; line-height: 30px; width: 140px;">
                             <div class="cd-form" style="margin: 0; width: 100%;">
-                                <button style="font-size: 11px !important; padding: 9px 10px; float: left;" onclick="friendRequest('${profile.id}', '${profile.authKey}', true)" id="acceptFriend_bt">Accept</button>
-                                <button style="font-size: 11px !important; padding: 9px 10px;" onclick="friendRequest('${profile.id}', '${profile.authKey}', false)" id="declineFriend_bt">Decline</button>
+                                <button style="font-size: 11px !important; padding: 9px 10px; float: left;"
+                                        onclick="friendRequest('${profile.id}', '${profile.authKey}', 'A')"
+                                        id="acceptFriend_bt">Accept</button>
+                                <button style="font-size: 11px !important; padding: 9px 10px;"
+                                        onclick="friendRequest('${profile.id}', '${profile.authKey}', 'D')"
+                                        id="declineFriend_bt">Decline</button>
                             </div>
                         </label>
                     </div>
@@ -171,7 +175,7 @@
 
                     <div id="pending">
                     <c:forEach var="profile" items="${splitForm.pendingProfiles}" varStatus="status">
-                    <div class="row_field">
+                    <div class="row_field" id="${profile.id}">
                         <label class="profile_label" style="!important; color: #606060; !important; font-weight: normal; !important; line-height: 30px; width: 300px;">
                             <c:choose>
                                 <c:when test="${!empty profile.name}">
@@ -182,8 +186,15 @@
                                 </c:otherwise>
                             </c:choose>
                         </label>
-                        <label class="profile_label" style="!important; color: #606060; !important; font-weight: normal; !important; line-height: 30px;">
+                        <label class="profile_label" style="!important; color: #606060; !important; font-weight: normal; !important; line-height: 30px; width: 140px;">
                             <fmt:formatDate value="${profile.created}" pattern="MMM dd, yyyy" />
+                        </label
+                        <label class="profile_label" style="!important; color: #606060; !important; font-weight: normal; !important; line-height: 30px; width: 140px;">
+                            <div class="cd-form" style="margin: 0; width: 100%;">
+                                <button style="font-size: 11px !important; padding: 9px 10px; float: left;"
+                                        onclick="friendRequest('${profile.id}', '${profile.authKey}', 'C')"
+                                        id="cancelFriend_bt">Cancel Invite</button>
+                            </div>
                         </label>
                     </div>
                     </c:forEach>

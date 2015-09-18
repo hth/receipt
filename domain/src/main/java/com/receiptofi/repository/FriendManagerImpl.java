@@ -77,7 +77,8 @@ public class FriendManagerImpl implements FriendManager {
         return this.mongoTemplate.find(
                 query(where("RID").is(rid)
                         .and("CON").is(false)
-                        .and("AC").is(false)),
+                        .and("AC").is(false)
+                        .and("AUTH").exists(true)),
                 FriendEntity.class
         );
     }
@@ -87,7 +88,9 @@ public class FriendManagerImpl implements FriendManager {
         return this.mongoTemplate.find(
                 query(where("FID").is(rid)
                         .and("CON").is(false)
-                        .and("AC").is(false)),
+                        .and("AC").is(false)
+                        .and("AUTH").exists(true)
+                ),
                 FriendEntity.class
         );
     }
@@ -114,8 +117,27 @@ public class FriendManagerImpl implements FriendManager {
         WriteResult writeResult = this.mongoTemplate.updateFirst(
                 query(where("id").is(id).and("AUTH").is(authenticationKey).and("AC").is(false).and("FID").is(rid)),
                 entityUpdate(update("AC", acceptConnection).set("CON", acceptConnection).unset("AUTH")),
+                FriendEntity.class);
+
+        return writeResult.getN() > 0;
+    }
+
+    @Override
+    public boolean cancelInvite(String id, String authenticationKey) {
+        WriteResult writeResult = this.mongoTemplate.remove(
+                query(where("id").is(id).and("AUTH").is(authenticationKey)),
+                FriendEntity.class);
+
+        return writeResult.getN() > 0;
+    }
+
+    @Override
+    public FriendEntity getConnection(String receiptUserId, String friendUserId) {
+        return this.mongoTemplate.findOne(
+                query(new Criteria().orOperator(
+                        Criteria.where("FID").is(receiptUserId).and("RID").is(friendUserId),
+                        Criteria.where("RID").is(receiptUserId).and("FID").is(friendUserId))),
                 FriendEntity.class
         );
-        return writeResult.getN() > 0;
     }
 }

@@ -3,6 +3,7 @@ package com.receiptofi.social.connect;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
 
+import com.receiptofi.domain.FriendEntity;
 import com.receiptofi.domain.UserAccountEntity;
 import com.receiptofi.domain.UserAuthenticationEntity;
 import com.receiptofi.domain.UserProfileEntity;
@@ -12,7 +13,7 @@ import com.receiptofi.repository.GenerateUserIdManager;
 import com.receiptofi.repository.UserAccountManager;
 import com.receiptofi.repository.UserProfileManager;
 import com.receiptofi.service.AccountService;
-import com.receiptofi.service.RegistrationService;
+import com.receiptofi.service.FriendService;
 import com.receiptofi.social.UserAccountDuplicateException;
 import com.receiptofi.social.annotation.Social;
 import com.receiptofi.social.config.ProviderConfig;
@@ -41,6 +42,7 @@ import org.springframework.social.facebook.api.impl.FacebookTemplate;
 import org.springframework.social.google.api.Google;
 import org.springframework.social.google.api.impl.GoogleTemplate;
 import org.springframework.social.google.api.plus.Organization;
+import org.springframework.social.google.api.plus.PeoplePage;
 import org.springframework.social.google.api.plus.Person;
 import org.springframework.util.Assert;
 import org.springframework.util.MultiValueMap;
@@ -73,11 +75,11 @@ public class ConnectionServiceImpl implements ConnectionService {
 
     @Autowired private GenerateUserIdManager generateUserIdManager;
     @Autowired private AccountService accountService;
-    @Autowired private RegistrationService registrationService;
     @Autowired private ProviderConfig providerConfig;
     @Autowired private UserAccountManager userAccountManager;
     @Autowired private UserProfileManager userProfileManager;
     @Autowired private CustomUserDetailsService customUserDetailsService;
+    @Autowired private FriendService friendService;
 
     @Value ("${social.profile.lastFetched:60}")
     private long lastFetched;
@@ -202,6 +204,29 @@ public class ConnectionServiceImpl implements ConnectionService {
             if (DateUtil.getDuration(userAccount.getUpdated(), new Date()) > lastFetched) {
                 LOG.info("fetched before save userAccount={}", userAccount);
 
+                /**
+                 * Rare and one time execution for if condition below.
+                 *
+                 * This happens when this user was added as a friend. User as a friend from Facebook would be added
+                 * only when this user has been using the same app and is not signed up. That would not happen.
+                 *
+                 * The likelihood of this happening when user has already signed is next to zero. Only happens when
+                 * testing app using facebook test users. To avoid this condition delete app access from test user app
+                 * settings.
+                 */
+                if (StringUtils.isBlank(userAccount.getAccessToken()) &&
+                        userAccount.getProviderId() != null &&
+                        !userAccount.isActive()) {
+
+                    /**
+                     * Payment should not be decided on account active or in-active,
+                     * instead should be based on BillingAccount
+                     */
+                    userAccount.active();
+
+                    LOG.info("Pending user just signed up for first time. rid={}", userAccount.getReceiptUserId());
+                }
+
                 userAccount.setDisplayName(userAccountFromConnection.getDisplayName());
                 userAccount.setProfileUrl(userAccountFromConnection.getProfileUrl());
                 userAccount.setExpireTime(userAccountFromConnection.getExpireTime());
@@ -222,7 +247,8 @@ public class ConnectionServiceImpl implements ConnectionService {
         }
 
         Assert.notNull(userAccount, "UserAccount is null before social profile update.");
-        UserProfileEntity userProfile = userProfileManager.findByReceiptUserId(userAccount.getReceiptUserId());
+        /** Get user matching RID, even when user is in-active. */
+        UserProfileEntity userProfile = userProfileManager.forProfilePreferenceFindByReceiptUserId(userAccount.getReceiptUserId());
         Assert.notNull(userProfile, "UserProfile is null for rid=" + userAccount.getReceiptUserId());
         if (DateUtil.getDuration(userProfile.getUpdated(), new Date()) > lastFetched) {
             if (ProviderEnum.valueOf(userConn.getKey().getProviderId().toUpperCase()) == ProviderEnum.FACEBOOK) {
@@ -234,10 +260,6 @@ public class ConnectionServiceImpl implements ConnectionService {
                 /** Update with latest names in UserAccount from UserProfile. */
                 updateUserAccountName(userAccount, userProfile);
                 customUserDetailsService.updateUserIdWithEmailWhenPresent(userAccount, userProfile);
-
-                if (providerConfig.isPopulateSocialFriendOn()) {
-                    populateFacebookFriends(userAccount, facebook);
-                }
             } else {
                 Google google = getGoogle(userAccountFromConnection);
                 Person person = getGooglePerson(google);
@@ -247,15 +269,21 @@ public class ConnectionServiceImpl implements ConnectionService {
                 /** Update with latest names in UserAccount from UserProfile. */
                 updateUserAccountName(userAccount, userProfile);
                 customUserDetailsService.updateUserIdWithEmailWhenPresent(userAccount, userProfile);
-
-                if (providerConfig.isPopulateSocialFriendOn()) {
-                    // XXX TODO page Circle to get all the users in the circle
-                    LOG.warn("Missing Google get friends");
-                }
             }
         } else {
             LOG.info("Skipped social userProfile update as it was last fetched within seconds={}", lastFetched);
         }
+
+        if (providerConfig.isPopulateSocialFriendOn()) {
+            if (ProviderEnum.valueOf(userConn.getKey().getProviderId().toUpperCase()) == ProviderEnum.FACEBOOK) {
+                Facebook facebook = getFacebook(userAccountFromConnection);
+                populateFacebookFriends(userAccount, facebook);
+            } else {
+                Google google = getGoogle(userAccountFromConnection);
+                populateGoogleFriends(userAccount, google);
+            }
+        }
+
     }
 
     /**
@@ -290,11 +318,23 @@ public class ConnectionServiceImpl implements ConnectionService {
                     query(new Criteria()
                                     .orOperator(
                                             where("PUID").is(facebookUserProfile.getId()),
-                                            where("UID").is(facebookUserProfile.getId())
+                                            where("UID").is(facebookUserProfile.getId()),
+                                            where("UID").is(facebookUserProfile.getEmail())
                                     )
                     ),
                     UserAccountEntity.class
             );
+
+            /**
+             * Rare execution for if condition below.
+             *
+             * This happens when this user was added as a friend. User as a friend from Facebook would be added
+             * only when this user has been using the same app and is not signed up. That would not happen.
+             *
+             * The likelihood of this happening when user has already signed is next to zero. Only happens when
+             * testing app using facebook test users. To avoid this condition delete app access from test user app
+             * settings.
+             */
             if (null == userAccountEntity) {
                 userAccountEntity = UserAccountEntity.newInstance(
                         generateUserIdManager.getNextAutoGeneratedUserId(),
@@ -303,26 +343,47 @@ public class ConnectionServiceImpl implements ConnectionService {
                         StringUtils.EMPTY,
                         UserAuthenticationEntity.blankInstance()
                 );
+                /** Inactive because friend and has not signed up. */
                 userAccountEntity.inActive();
-                //userAccountEntity.setDeleted(false);
+                userAccountEntity.setProviderId(ProviderEnum.FACEBOOK);
+                userAccountEntity.setProviderUserId(facebookUserProfile.getId());
 
-                UserAuthenticationEntity userAuthentication = accountService.getUserAuthenticationEntity(
-                        RandomString.newInstance().nextString()
-                );
-                userAccountEntity.setUserAuthentication(userAuthentication);
-                registrationService.isRegistrationAllowed(userAccount);
-                LOG.info("new account created user={} provider={}",
-                        userAccountEntity.getReceiptUserId(), ProviderEnum.FACEBOOK);
-            } else {
-                userAccountEntity.setUpdated();
+                /** Social account, hence account is considered validated by default. */
+                userAccountEntity.setAccountValidatedBeginDate();
+                userAccountEntity.setAccountValidated(true);
+                accountService.createNewAccount(userAccountEntity);
+
+                UserProfileEntity userProfile = copyToUserProfile(facebookUserProfile, userAccountEntity);
+                accountService.save(userProfile);
+                accountService.createPreferences(userProfile);
+
+                /** Set the blank names in UserAccount from UserProfile. */
+                userAccountEntity.setFirstName(userProfile.getFirstName());
+                userAccountEntity.setLastName(userProfile.getLastName());
+                userAccountEntity.setDisplayName(userProfile.getName());
+                userAccountEntity.setProfileUrl(userProfile.getLink());
+                customUserDetailsService.updateUserIdWithEmailWhenPresent(userAccount, userProfile);
+                accountService.save(userAccountEntity);
+
+                LOG.info("Added friend rid={} provider={}", userAccountEntity.getReceiptUserId(), ProviderEnum.FACEBOOK);
             }
-            userAccountEntity.setUserId(facebookUserProfile.getId());
-            userAccountEntity.setProviderId(ProviderEnum.FACEBOOK);
-            userAccountEntity.setProviderUserId(facebookUserProfile.getId());
 
-            userAccountManager.save(userAccountEntity);
-            copyToUserProfile(facebookUserProfile, userAccountEntity);
+            if (!friendService.hasConnection(userAccount.getReceiptUserId(), userAccountEntity.getReceiptUserId())) {
+                FriendEntity friend = new FriendEntity(userAccount.getReceiptUserId(), userAccountEntity.getReceiptUserId());
+                friendService.save(friend);
+            }
         }
+    }
+
+    private void populateGoogleFriends(UserAccountEntity userAccount, Google google) {
+        PeoplePage people = google.plusOperations().getPeopleInCircles("me", null);
+        List<Person> persons = people.getItems();
+        for (Person person : persons) {
+            LOG.warn("Missing Google get friends");
+        }
+
+        // XXX TODO page Circle to get all the users in the circle
+        LOG.warn("Missing Google get friends");
     }
 
     public UserProfileEntity copyToUserProfile(User facebookUserProfile, UserAccountEntity userAccount) {
