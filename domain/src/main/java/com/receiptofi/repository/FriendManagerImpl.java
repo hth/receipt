@@ -1,7 +1,11 @@
 package com.receiptofi.repository;
 
+import static com.receiptofi.repository.util.AppendAdditionalFields.entityUpdate;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
+import static org.springframework.data.mongodb.core.query.Update.update;
+
+import com.mongodb.WriteResult;
 
 import com.receiptofi.domain.BaseEntity;
 import com.receiptofi.domain.FriendEntity;
@@ -49,12 +53,69 @@ public class FriendManagerImpl implements FriendManager {
     }
 
     @Override
-    public List<FriendEntity> findFriends(String rid) {
+    public List<FriendEntity> findConnections(String rid) {
         return this.mongoTemplate.find(
                 query(new Criteria().orOperator(
                         Criteria.where("FID").is(rid),
                         Criteria.where("RID").is(rid))),
                 FriendEntity.class
         );
+    }
+
+    @Override
+    public List<FriendEntity> findFriends(String rid) {
+        return this.mongoTemplate.find(
+                query(where("CON").is(true).orOperator(
+                        Criteria.where("FID").is(rid),
+                        Criteria.where("RID").is(rid))),
+                FriendEntity.class
+        );
+    }
+
+    @Override
+    public List<FriendEntity> findPendingFriends(String rid) {
+        return this.mongoTemplate.find(
+                query(where("RID").is(rid)
+                        .and("CON").is(false)
+                        .and("AC").is(false)),
+                FriendEntity.class
+        );
+    }
+
+    @Override
+    public List<FriendEntity> findAwaitingFriends(String rid) {
+        return this.mongoTemplate.find(
+                query(where("FID").is(rid)
+                        .and("CON").is(false)
+                        .and("AC").is(false)),
+                FriendEntity.class
+        );
+    }
+
+    @Override
+    public boolean hasConnection(String receiptUserId, String friendUserId) {
+        return this.mongoTemplate.exists(
+                query(new Criteria().orOperator(
+                        Criteria.where("FID").is(receiptUserId),
+                        Criteria.where("RID").is(friendUserId),
+                        Criteria.where("RID").is(receiptUserId),
+                        Criteria.where("FID").is(friendUserId))),
+                FriendEntity.class
+        );
+    }
+
+    @Override
+    public void deleteHard(String receiptUserId, String friendUserId) {
+        this.mongoTemplate.remove(query(where("RID").is(receiptUserId).and("FID").is(friendUserId)));
+    }
+
+    @Override
+    public boolean updateResponse(String id, String authenticationKey, boolean acceptConnection, String rid) {
+        WriteResult writeResult = this.mongoTemplate.updateFirst(
+                query(where("id").is(id).and("AUTH").is(authenticationKey).and("AC").is(false).and("FID").is(rid)),
+                entityUpdate(update("AC", acceptConnection).set("CON", acceptConnection).unset("AUTH")),
+                FriendEntity.class
+        );
+        return writeResult.getN() > 0;
     }
 }

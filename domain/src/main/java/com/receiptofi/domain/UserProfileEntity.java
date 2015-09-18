@@ -6,7 +6,9 @@ import com.receiptofi.domain.types.ProviderEnum;
 import com.receiptofi.domain.types.UserLevelEnum;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.text.WordUtils;
 
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -482,5 +484,15 @@ public class UserProfileEntity extends BaseEntity {
 
     public void setLevel(UserLevelEnum level) {
         this.level = level;
+    }
+
+    @Transient
+    public String getInitials() {
+        String name = getName();
+        if (!StringUtils.isBlank(name)) {
+            return WordUtils.initials(name);
+        } else {
+            return WordUtils.initials(getEmail()) + "@";
+        }
     }
 }

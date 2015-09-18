@@ -297,14 +297,15 @@ public class MailService {
 
                 formulateInvitationMail(invitedUserEmail, invitedBy, inviteEntity);
                 return true;
-            } catch (RuntimeException exception) {
+            } catch (RuntimeException e) {
+                LOG.error("Error persisting InviteEntity, reason={}", e.getLocalizedMessage(), e);
+
                 if (inviteEntity != null) {
+                    friendService.deleteHard(invitedByRid, inviteEntity.getInvited().getReceiptUserId());
                     deleteInvite(inviteEntity);
-                    LOG.info("Due to failure in sending the invitation email. Deleting Invite={}, for={}",
+                    LOG.warn("Due to failure in sending the invitation email. Deleting Invite={}, for={}",
                             inviteEntity.getId(), inviteEntity.getEmail());
                 }
-                LOG.error("Exception occurred during persisting InviteEntity, message={}",
-                        exception.getLocalizedMessage(), exception);
             }
         }
         return false;
@@ -320,6 +321,7 @@ public class MailService {
     public boolean reSendInvitation(String emailId, String invitedByRid) {
         UserAccountEntity invitedBy = accountService.findByReceiptUserId(invitedByRid);
         if (null != invitedBy) {
+            FriendEntity friend = null;
             try {
                 InviteEntity inviteEntity = inviteService.reInviteActiveInvite(emailId, invitedBy);
                 boolean isNewInvite = false;
@@ -328,7 +330,7 @@ public class MailService {
                     inviteEntity = reCreateAnotherInvite(emailId, invitedBy);
                     isNewInvite = true;
 
-                    FriendEntity friend = new FriendEntity(invitedByRid, inviteEntity.getInvited().getReceiptUserId());
+                    friend = new FriendEntity(invitedByRid, inviteEntity.getInvited().getReceiptUserId());
                     friendService.save(friend);
                 }
 
@@ -336,9 +338,11 @@ public class MailService {
                 if (!isNewInvite) {
                     inviteService.save(inviteEntity);
                 }
-            } catch (Exception exception) {
-                LOG.error("Exception occurred during persisting InviteEntity, reason={}",
-                        exception.getLocalizedMessage(), exception);
+            } catch (Exception e) {
+                LOG.error("Error persisting InviteEntity, reason={}", e.getLocalizedMessage(), e);
+                if (friend != null) {
+                    friendService.deleteHard(friend.getReceiptUserId(), friend.getFriendUserId());
+                }
                 return false;
             }
         }
