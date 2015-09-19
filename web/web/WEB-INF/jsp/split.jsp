@@ -97,16 +97,24 @@
                 <h1 class="h1">FRIENDS</h1>
                 <hr>
 
-                <div class="down_form" style="width: 40%">
+                <div class="down_form" style="width: 45%">
                     <h2 class="h2" style="padding-bottom:2%; text-decoration: underline;">Connected</h2>
 
                     <div id="friends">
                     <c:choose>
                     <c:when test="${!empty splitForm.activeProfiles}">
                         <c:forEach var="profile" items="${splitForm.activeProfiles}" varStatus="status">
-                        <div class="row_field">
+                        <div class="row_field" id="${profile.id}">
                             <label class="profile_label" style="!important; color: #606060; !important; font-weight: normal; !important; line-height: 30px; width: 360px;">
-                                <div class="member" style="background-color: #00529B"><span class="member-initials">${profile.initials}</span></div>&nbsp;&nbsp;${profile.name}
+                                <div class="member" style="background-color: #00529B">
+                                    <span class="member-initials">${profile.initials}</span>
+                                </div>
+                                &nbsp;
+                                <img src="${pageContext.request.contextPath}/static/images/heartFriendx32.png"
+                                        title="Connection" width="25" style="vertical-align: middle"
+                                        onclick="unfriendRequest('${profile.email}', '${profile.name}', '${profile.id}', event);">
+                                &nbsp;
+                                ${profile.name}
                             </label>
                         </div>
                         </c:forEach>
@@ -127,7 +135,7 @@
                     </div>
                 </div>
 
-                <div class="down_form" style="width: 55%">
+                <div class="down_form" style="width: 50%">
                     <c:if test="${!empty splitForm.awaitingProfiles}">
                     <h2 class="h2" style="padding-bottom:2%; text-decoration: underline;">Awaiting Acceptance</h2>
 

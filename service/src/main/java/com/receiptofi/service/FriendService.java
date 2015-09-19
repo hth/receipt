@@ -25,9 +25,6 @@ import java.util.Set;
 })
 @Service
 public class FriendService {
-    public static final String ACTIVE = "ACTIVE";
-    public static final String PENDING = "PENDING";
-
     @Autowired private FriendManager friendManager;
     @Autowired private UserProfilePreferenceService userProfilePreferenceService;
 
@@ -111,5 +108,10 @@ public class FriendService {
 
     public boolean cancelInvite(String id, String authenticationKey) {
         return friendManager.cancelInvite(id, authenticationKey);
+    }
+
+    public boolean unfriend(String receiptUserId, String mail) {
+        UserProfileEntity userProfile = userProfilePreferenceService.findByEmail(mail);
+        return friendManager.unfriend(receiptUserId, userProfile.getReceiptUserId());
     }
 }

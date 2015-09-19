@@ -8,6 +8,9 @@ import com.receiptofi.domain.types.FriendConnectionTypeEnum;
 import com.receiptofi.service.FriendService;
 import com.receiptofi.web.form.SplitForm;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -41,6 +44,7 @@ import javax.servlet.http.HttpServletResponse;
 @Controller
 @RequestMapping (value = "/access/split")
 public class SplitController {
+    private static final Logger LOG = LoggerFactory.getLogger(SplitController.class);
 
     @Autowired
     private FriendService friendService;
@@ -87,7 +91,7 @@ public class SplitController {
     ) {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        boolean response = false;
+        boolean response;
         switch (friendConnectionType) {
             case A:
                 /** Accept connection. */
@@ -101,13 +105,33 @@ public class SplitController {
                 /** Decline connection. */
                 response = friendService.updateResponse(id, auth, false, receiptUser.getRid());
                 break;
-            case R:
-                /** Revoke connection. */
-                break;
+            default:
+                LOG.error("FriendConnectionType={} not defined", friendConnectionType);
+                throw new UnsupportedOperationException("FriendConnectionType not supported " + friendConnectionType);
         }
 
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty(LandingController.SUCCESS, response);
+        return jsonObject.toString();
+    }
+
+    @PreAuthorize ("hasRole('ROLE_USER')")
+    @RequestMapping (
+            value = "/unfriend",
+            method = RequestMethod.POST,
+            headers = "Accept=application/json",
+            produces = "application/json"
+    )
+    @ResponseBody
+    public String unfriend(
+            @RequestParam ("mail")
+            String mail,
+
+            HttpServletResponse httpServletResponse
+    ) {
+        ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty(LandingController.SUCCESS, friendService.unfriend(receiptUser.getRid(), mail));
         return jsonObject.toString();
     }
 }

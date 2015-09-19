@@ -442,6 +442,20 @@ public class LandingController {
                                 "New connection with " + accountService.doesUserExists(receiptUser.getUsername()).getName(),
                                 NotificationTypeEnum.MESSAGE,
                                 userProfile.getReceiptUserId());
+                    } else if (StringUtils.isNotBlank(friend.getUnfriendUser())) {
+                        friend.connect();
+                        friend.setUnfriendUser(null);
+                        friendService.save(friend);
+
+                        notificationService.addNotification(
+                                "Re-connection with " + userProfile.getName(),
+                                NotificationTypeEnum.MESSAGE,
+                                receiptUser.getRid());
+
+                        notificationService.addNotification(
+                                "Re-connection with " + accountService.doesUserExists(receiptUser.getUsername()).getName(),
+                                NotificationTypeEnum.MESSAGE,
+                                userProfile.getReceiptUserId());
                     }
                 } else if (friend == null) {
                     friend = new FriendEntity(receiptUser.getRid(), userProfile.getReceiptUserId());

@@ -138,7 +138,8 @@ public class GoogleCloudMessagingProcess {
                         skipped++;
                         break;
                     default:
-
+                        LOG.error("DocumentStatus not defined {}", document.getDocumentStatus());
+                        throw new UnsupportedOperationException("DocumentStatus not defined " + document.getDocumentStatus());
                 }
             } catch (Exception e) {
                 LOG.error("Notification failure document={} reason={}", document, e.getLocalizedMessage(), e);
