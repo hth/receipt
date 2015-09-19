@@ -528,7 +528,7 @@ div .sidebar-invite form input {
     font-weight: bold;
     color: #000;
     float: right;
-    text-transform: uppercase;
+    text-transform: lowercase;
 }
 
 .big-view {
@@ -1447,3 +1447,35 @@ a.expense-tag:hover, a.expense-tag:visited, a.expense-tag:link {
     background-color: white;
 }
 /* Login page */
+
+/** Circle div image */
+.member {
+    background-color: #d6dadc;
+    border-radius: 3px;
+    color: #d6dadc;
+    display: block;
+    float: left;
+    height: 30px;
+    margin: 0 4px 4px 0;
+    overflow: hidden;
+    position: relative;
+    width: 30px;
+    text-decoration: none;
+    user-select: none;
+    z-index: 0;
+}
+
+.member-initials {
+    display: block;
+    font-size: 9pt;
+    font-weight: 700;
+    height: 30px;
+    left: 0;
+    line-height: 30px;
+    overflow: hidden;
+    position: absolute;
+    text-align: center;
+    top: 0;
+    width: 100%;
+}
+/** Circle div image */

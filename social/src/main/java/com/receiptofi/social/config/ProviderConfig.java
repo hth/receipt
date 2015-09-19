@@ -19,7 +19,10 @@ import org.springframework.context.annotation.Configuration;
 @Social
 public class ProviderConfig {
 
-    @Value ("${populate.social.friend.on:false}")
+    /**
+     * Facebook friends are found when the friend is using ReceiptApp. Otherwise would not show up in friend list.
+     */
+    @Value ("${populate.social.friend.on:true}")
     private boolean populateSocialFriendOn;
 
     public boolean isPopulateSocialFriendOn() {

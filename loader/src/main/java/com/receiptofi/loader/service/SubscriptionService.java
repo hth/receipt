@@ -108,7 +108,7 @@ public class SubscriptionService {
                 break;
             default:
                 LOG.error("WebhookNotification kind={} not defined {}", notification.getKind(), notification);
-                throw new UnsupportedOperationException("WebhookNotification kind not defined" + notification.getKind());
+                throw new UnsupportedOperationException("WebhookNotification kind not defined " + notification.getKind());
         }
     }
 }

@@ -6,6 +6,7 @@ package com.receiptofi.web.controller.access;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
+import com.receiptofi.domain.FriendEntity;
 import com.receiptofi.domain.MileageEntity;
 import com.receiptofi.domain.ReceiptEntity;
 import com.receiptofi.domain.UserProfileEntity;
@@ -17,6 +18,7 @@ import com.receiptofi.domain.types.UserLevelEnum;
 import com.receiptofi.domain.value.ReceiptGrouped;
 import com.receiptofi.domain.value.ReceiptGroupedByBizLocation;
 import com.receiptofi.service.AccountService;
+import com.receiptofi.service.FriendService;
 import com.receiptofi.service.LandingService;
 import com.receiptofi.service.MailService;
 import com.receiptofi.service.MileageService;
@@ -86,7 +88,7 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping (value = "/access")
 public class LandingController {
     private static final Logger LOG = LoggerFactory.getLogger(LandingController.class);
-    private static final String SUCCESS = "success";
+    public static final String SUCCESS = "success";
     private static final String UPLOAD_MESSAGE = "uploadMessage";
     private static final String FILE_UPLOADED_SUCCESSFULLY = "File uploaded successfully";
 
@@ -107,6 +109,9 @@ public class LandingController {
 
     @Autowired
     private MileageService mileageService;
+
+    @Autowired
+    private FriendService friendService;
 
     private static final DateTimeFormatter DTF = DateTimeFormat.forPattern("MMM, yyyy");
 
@@ -420,6 +425,53 @@ public class LandingController {
                     responseMessage = "Unsuccessful in sending invitation: " + StringUtils.abbreviate(invitedUserEmail, 26);
                 }
             } else if (userProfile.isActive() && !userProfile.isDeleted()) {
+                FriendEntity friend = friendService.getConnection(receiptUser.getRid(), userProfile.getReceiptUserId());
+                if (null != friend && !friend.isConnected()) {
+                    /** Auto connect if invited friend is connecting to invitee. */
+                    if (friend.getFriendUserId().equalsIgnoreCase(receiptUser.getRid())) {
+                        friend.acceptConnection();
+                        friend.connect();
+                        friendService.save(friend);
+
+                        notificationService.addNotification(
+                                "New connection with " + userProfile.getName(),
+                                NotificationTypeEnum.MESSAGE,
+                                receiptUser.getRid());
+
+                        notificationService.addNotification(
+                                "New connection with " + accountService.doesUserExists(receiptUser.getUsername()).getName(),
+                                NotificationTypeEnum.MESSAGE,
+                                userProfile.getReceiptUserId());
+                    } else if (StringUtils.isNotBlank(friend.getUnfriendUser())) {
+                        friend.connect();
+                        friend.setUnfriendUser(null);
+                        friendService.save(friend);
+
+                        notificationService.addNotification(
+                                "Re-connection with " + userProfile.getName(),
+                                NotificationTypeEnum.MESSAGE,
+                                receiptUser.getRid());
+
+                        notificationService.addNotification(
+                                "Re-connection with " + accountService.doesUserExists(receiptUser.getUsername()).getName(),
+                                NotificationTypeEnum.MESSAGE,
+                                userProfile.getReceiptUserId());
+                    }
+                } else if (friend == null) {
+                    friend = new FriendEntity(receiptUser.getRid(), userProfile.getReceiptUserId());
+                    friendService.save(friend);
+
+                    notificationService.addNotification(
+                            "Sent friend request to " + userProfile.getName(),
+                            NotificationTypeEnum.MESSAGE,
+                            receiptUser.getRid());
+
+                    notificationService.addNotification(
+                            "New friend request from " + accountService.doesUserExists(receiptUser.getUsername()).getName(),
+                            NotificationTypeEnum.MESSAGE,
+                            userProfile.getReceiptUserId());
+                }
+
                 LOG.info("{}, already registered. Thanks! active={} deleted={}",
                         invitedUserEmail,
                         userProfile.isActive(),

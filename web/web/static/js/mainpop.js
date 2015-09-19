@@ -716,3 +716,123 @@ function populateExpenseByBusiness(data, bizNames, categories, expenseTags) {
         }
     }
 }
+
+function friendRequest(id, auth, connectionType) {
+    "use strict";
+
+    var object = {id: id, auth: auth, ct: connectionType};
+
+    $.ajax({
+        type: "POST",
+        beforeSend: function (xhr) {
+            $('#acceptFriend_bt').attr('disabled', 'disabled');
+            $('#declineFriend_bt').attr('disabled', 'disabled');
+            $('#cancelFriend_bt').attr('disabled', 'disabled');
+
+            xhr.setRequestHeader($("meta[name='_csrf_header']").attr("content"), $("meta[name='_csrf']").attr("content"));
+        },
+        url: ctx + "/access/split/friend.htm",
+        data: object,
+        success: function (response) {
+            console.debug(response);
+            $('#acceptFriend_bt').removeAttr('disabled');
+            $('#declineFriend_bt').removeAttr('disabled');
+            $('#cancelFriend_bt').removeAttr('disabled');
+
+            if (response.success && connectionType === 'A') {
+                $('#' + id).find("label").slice(1, 3).remove();
+                $('#' + id).insertAfter('#friends');
+
+                if (!$.trim($('#awaiting').html()).length) {
+                    $('#awaiting').prev("h2").remove();
+                    $('#awaiting').remove();
+                    $('#pending').prev("h2").css("padding-top", "0%");
+                }
+
+                $('#tabs-2 #friends .r-info').remove();
+            } else if(response.success && connectionType === 'D') {
+                $('#' + id).remove();
+
+                if (!$.trim($('#awaiting').html()).length) {
+                    $('#awaiting').prev("h2").remove();
+                    $('#awaiting').remove();
+                    $('#pending').prev("h2").css("padding-top", "0%");
+                }
+            } else if(response.success && connectionType === 'C') {
+                $('#' + id).remove();
+
+                if (!$.trim($('#pending').html()).length) {
+                    $('#pending').prev("h2").remove();
+                    $('#pending').remove();
+                }
+            }
+        },
+        error: function (response, xhr, ajaxOptions, thrownError) {
+            console.error(response, xhr.status, thrownError);
+            $('#acceptFriend_bt').removeAttr('disabled');
+            $('#declineFriend_bt').removeAttr('disabled');
+            $('#cancelFriend_bt').removeAttr('disabled');
+        }
+    });
+}
+
+function unfriendRequest(mail, name, id, event) {
+    event.preventDefault();
+    swal({
+        imageUrl: "/static/images/heartUnfriendx88.png",
+        title: "Are you sure to unfriend?",
+        text: "" +
+        "<p style='text-align: left;'>You and " + name + " would not be able to split expenses among yourselves. " +
+        "Lost connection can only be re-initiated by you.<br><br>" +
+        "<p style='text-align: left;'><b>"  + name + "</b> with email: '<b>" + mail + "</b>' will be removed from " +
+        "your connection immediately.",
+        showCancelButton: true,
+        confirmButtonClass: 'btn-danger',
+        confirmButtonColor: "#DD6B55",
+        confirmButtonText: 'Yes, unfriend me.',
+        cancelButtonText: "No, cancel please!",
+        closeOnConfirm: true,
+        closeOnCancel: true,
+        html: true
+    }, function (isConfirm) {
+        if (isConfirm) {
+            $.ajax({
+                type: 'POST',
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader(
+                        $("meta[name='_csrf_header']").attr("content"),
+                        $("meta[name='_csrf']").attr("content")
+                    );
+                },
+                url: ctx + "/access/split/unfriend.htm",
+                data: {mail: mail},
+                success: function (responseData) {
+                    if (responseData.success === true) {
+                        $('#' + id).remove();
+
+                        if (!$.trim($('#friends').html()).length) {
+                            if(document.getElementById("pending")) {
+                                $('#friends').html(
+                                    "<div class='r-info' id='noReceiptId'>" +
+                                    "Friend has yet to approve your request." +
+                                    "</div>"
+                                );
+                            } else {
+                                $('#friends').html(
+                                    "<div class='r-info' id='noReceiptId'>" +
+                                    "Invite friends to split expenses." +
+                                    "</div>"
+                                );
+                            }
+                        }
+                    } else if (responseData.success === false) {
+                        console.log("Failed to unfriend: " + name);
+                    }
+                },
+                error: function () {
+                    console.log("Error during unfriend: " + name);
+                }
+            })
+        }
+    })
+}
