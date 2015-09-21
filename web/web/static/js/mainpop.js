@@ -365,7 +365,7 @@ function clickedExpenseTag(button) {
 
 function activeExpenseTagSaveUpdate_bt() {
     $(this).prop("readonly", false).focus();
-    $('#expenseTagSaveUpdate_bt').attr('disabled', false).css('background', '#0079FF');
+    $('#expenseTagSaveUpdate_bt').attr('disabled', false).css('background', '#2c97de');
 }
 
 function inactiveExpenseTagSaveUpdate_bt() {
