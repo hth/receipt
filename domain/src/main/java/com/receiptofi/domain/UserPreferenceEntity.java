@@ -47,6 +47,10 @@ public class UserPreferenceEntity extends BaseEntity {
         this.receiptUserId = userProfile.getReceiptUserId();
     }
 
+    public String getReceiptUserId() {
+        return receiptUserId;
+    }
+
     /**
      * This method is used when the Entity is created for the first time.
      *

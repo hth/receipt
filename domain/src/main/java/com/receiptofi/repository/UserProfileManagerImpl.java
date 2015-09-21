@@ -150,6 +150,7 @@ public final class UserProfileManagerImpl implements UserProfileManager {
      */
     @Override
     public UserProfileEntity findByProviderUserId(String puid, String email) {
+        Assert.hasLength(email, "Email should not be empty");
         return mongoTemplate.findOne(
                 query(new Criteria()
                         .orOperator(
