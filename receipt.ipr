@@ -233,6 +233,7 @@
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.mongodb/mongo-java-driver/3.0.3/2861ec441c95b6cff99ad6761c01776cf708817a/mongo-java-driver-3.0.3.jar" />
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.braintreepayments.gateway/braintree-java/2.49.0/a61a3d7bbdcba6fccc8c095d4734e8f64e4c1324/braintree-java-2.49.0.jar" />
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-messaging/4.2.1.RELEASE/ee93f4eabc91fd8b496ccdae9df1b515e83f91a8/spring-messaging-4.2.1.RELEASE.jar" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.guava/guava/19.0-rc2/93e17f60bc524c2610b41c494bb829c11ca89436/guava-19.0-rc2.jar" />
           </element>
           <element id="file-copy" path="$PROJECT_DIR$/web/environment/dev/mongo-config.xml" />
           <element id="file-copy" path="$PROJECT_DIR$/web/environment/dev/receipt-servlet.xml" />
@@ -497,6 +498,7 @@
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.mongodb/mongo-java-driver/3.0.3/2861ec441c95b6cff99ad6761c01776cf708817a/mongo-java-driver-3.0.3.jar" />
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.braintreepayments.gateway/braintree-java/2.49.0/a61a3d7bbdcba6fccc8c095d4734e8f64e4c1324/braintree-java-2.49.0.jar" />
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-messaging/4.2.1.RELEASE/ee93f4eabc91fd8b496ccdae9df1b515e83f91a8/spring-messaging-4.2.1.RELEASE.jar" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.guava/guava/19.0-rc2/93e17f60bc524c2610b41c494bb829c11ca89436/guava-19.0-rc2.jar" />
           </element>
         </element>
         <element id="directory" name="META-INF">
@@ -763,6 +765,7 @@
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.mongodb/mongo-java-driver/3.0.3/2861ec441c95b6cff99ad6761c01776cf708817a/mongo-java-driver-3.0.3.jar" />
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.braintreepayments.gateway/braintree-java/2.49.0/a61a3d7bbdcba6fccc8c095d4734e8f64e4c1324/braintree-java-2.49.0.jar" />
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-messaging/4.2.1.RELEASE/ee93f4eabc91fd8b496ccdae9df1b515e83f91a8/spring-messaging-4.2.1.RELEASE.jar" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.guava/guava/19.0-rc2/93e17f60bc524c2610b41c494bb829c11ca89436/guava-19.0-rc2.jar" />
           </element>
         </element>
         <element id="directory" name="META-INF">
@@ -1013,6 +1016,7 @@
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.mongodb/mongo-java-driver/3.0.3/2861ec441c95b6cff99ad6761c01776cf708817a/mongo-java-driver-3.0.3.jar" />
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.braintreepayments.gateway/braintree-java/2.49.0/a61a3d7bbdcba6fccc8c095d4734e8f64e4c1324/braintree-java-2.49.0.jar" />
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-messaging/4.2.1.RELEASE/ee93f4eabc91fd8b496ccdae9df1b515e83f91a8/spring-messaging-4.2.1.RELEASE.jar" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.guava/guava/19.0-rc2/93e17f60bc524c2610b41c494bb829c11ca89436/guava-19.0-rc2.jar" />
           </element>
         </element>
         <element id="directory" name="META-INF">
