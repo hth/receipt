@@ -185,7 +185,7 @@
                         <c:choose>
                             <c:when test="${empty pageContext.request.userPrincipal.principal.pid}">
                                 <div class="full" style="display: <c:out value="${(isSameUser) ? '' : 'none'}"/>">
-                                    <input type="submit" value="UPDATE" style="background: #808080;" class="read_btn" disabled="disabled"
+                                    <input type="submit" value="UPDATE" style="background: #2c97de;" class="read_btn" disabled="disabled"
                                             name="profile_update" id="profileUpdate_bt">
                                 </div>
                             </c:when>
@@ -265,9 +265,9 @@
 
                     <div class="full" style="display: <c:out value="${(isSameUser) ? '' : 'none'}"/>">
                         <input type="submit" value="SAVE" class="read_btn" name="expense_tag_save_update" id="expenseTagSaveUpdate_bt"
-                                style="background: #808080; margin: 77px 10px 0px 0px;" class="read_btn" disabled="disabled">
-                        <input type="submit" value="DELETE" class="read_btn" name="expense_tag_delete" id="expenseTagDelete_bt" hidden="true"
-                                style="background:#0079FF; margin: 77px 10px 0px 0px;">
+                                style="background: #808080; margin: 77px 10px 0 0;" disabled="disabled">
+                        <input type="submit" value="DELETE" class="read_btn" name="expense_tag_delete" id="expenseTagDelete_bt" hidden="hidden"
+                                style="background:#FC462A; margin: 77px 10px 0 0;">
                     </div>
                 </form:form>
             </div>
@@ -419,8 +419,8 @@
                     &nbsp;<br>
                     &nbsp;<br>
                     &nbsp;<br>
-                    <input type="reset" value="RESET" name="Reset" class="read_btn" style="background:#0079FF; margin: 0; !important;" />
-                    <input type="submit" value="UPDATE" name="Update" class="read_btn" style="background:#0079FF; margin: 0; !important;" />
+                    <input type="reset" value="RESET" name="Reset" class="read_btn" style="background:#2c97de; margin: 0; !important;" />
+                    <input type="submit" value="UPDATE" name="Update" class="read_btn" style="background:#2c97de; margin: 0; !important;" />
                     </form:form>
                 </div>
             </div>
