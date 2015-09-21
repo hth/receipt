@@ -94,7 +94,10 @@
 
             <h2 class="h2" style="padding-bottom:2%; padding-top: 2%">Please rate us!</h2>
             <div id="star"></div>
-            <input type="submit" value="SUBMIT" class="read_btn">
+
+            <div class="gd-button-holder">
+                <button class="gd-button">SUBMIT</button>
+            </div>
         </form:form>
     </div>
     <div class="footer-tooth clearfix">

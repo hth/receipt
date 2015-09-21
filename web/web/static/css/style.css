@@ -267,14 +267,31 @@ header h1 {
 .gd-button {
     width: 279px;
     height: 49px;
-    background: #007AFF;
-    border-bottom: 1px solid #31578D;
-    border-left: 1px solid #31578D;
-    border-right: none;
-    border-top: none;
-    color: #fff;
     font-size: 0.875em;
+    border: none;
+    background: #2c97de;
+    border-radius: .30em;
+    padding: 15px 20px;
+    color: #ffffff;
     font-weight: bold;
+    float: right;
+    cursor: pointer;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -ms-appearance: none;
+    -o-appearance: none;
+    appearance: none;
+}
+
+.gd-button-holder button:hover {
+    background: #42a2e1;
+}
+
+.gd-button-holder button:focus {
+    outline: none;
+    background: #2b3e51;
 }
 
 .sidebar-indication {
@@ -735,8 +752,8 @@ a.view-more-text:hover, a.view-more-text:visited, a.view-more-text {
 }
 
 .overview_view {
-    border: 1px solid #0079FF;
-    background: #0079FF;
+    border: 1px solid #42a2e1;
+    background: #42a2e1;
     cursor: pointer;
     font-size: 0.8rem;
     float: left;
@@ -748,14 +765,14 @@ a.view-more-text:hover, a.view-more-text:visited, a.view-more-text {
 }
 
 .toggle_button_left {
-    margin: 0px;
+    margin: 0;
     border-bottom-left-radius: 5px;
     border-top-left-radius: 5px;
 }
 
 .toggle_selected {
     background: #FFF;
-    color: #0079FF;
+    color: #42a2e1;
 }
 
 .toggle_disabled {
@@ -906,19 +923,16 @@ a.view-more-text:hover, a.view-more-text:visited, a.view-more-text {
 
 .read_btn {
     margin: 77px 96px 0px 0px;
-    padding: 11px 0px;
-    color: #fff;
     width: 153px;
     cursor: pointer;
     height: 49px;
-    background: #007AFF;
-    border-bottom: 1px solid #31578D;
-    border-left: 1px solid #31578D;
-    border-right: none;
-    border-top: none;
     font-size: 0.875em;
     font-weight: bold;
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    background: #2c97de;
+    padding: 11px 0px;
+    color: #fff;
+    border-radius: .30em;
 }
 
 .choose_file_btn {
