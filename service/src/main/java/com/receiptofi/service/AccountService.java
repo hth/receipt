@@ -229,7 +229,13 @@ public class AccountService {
      * Save userProfile.
      */
     public void save(UserProfileEntity userProfile) {
-        userProfileManager.save(userProfile);
+        try {
+            userProfileManager.save(userProfile);
+            LOG.debug("Created UserProfileEntity={} id={}", userProfile.getReceiptUserId(), userProfile.getId());
+        } catch (Exception e) {
+            LOG.error("Saving UserProfile rid={} reason={}", userProfile.getReceiptUserId(), e.getLocalizedMessage(), e);
+            throw new RuntimeException("Error saving user profile");
+        }
     }
 
     /**
@@ -239,8 +245,9 @@ public class AccountService {
         try {
             UserPreferenceEntity userPreferenceEntity = UserPreferenceEntity.newInstance(userProfile);
             userPreferenceManager.save(userPreferenceEntity);
+            LOG.debug("Created UserPreferenceEntity={}", userPreferenceEntity.getReceiptUserId());
         } catch (Exception e) {
-            LOG.error("During saving UserPreferenceEntity={}", e.getLocalizedMessage(), e);
+            LOG.error("Saving UserPreferenceEntity rid={} reason={}", userProfile.getReceiptUserId(),  e.getLocalizedMessage(), e);
             throw new RuntimeException("Error saving user preference");
         }
     }
