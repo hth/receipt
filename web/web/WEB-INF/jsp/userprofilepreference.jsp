@@ -461,15 +461,15 @@
     <c:if test="${empty pageContext.request.userPrincipal.principal.pid}">
     $("#userProfile_firstName").on('click', function () {
         $(this).prop("readonly", false).focus();
-        $('#profileUpdate_bt').attr('disabled', false).css('background', '#0079FF');
+        $('#profileUpdate_bt').attr('disabled', false).css('background', '#2c97de');
     });
     $("#userProfile_lastName").on('click', function () {
         $(this).prop("readonly", false).focus();
-        $('#profileUpdate_bt').attr('disabled', false).css('background', '#0079FF');
+        $('#profileUpdate_bt').attr('disabled', false).css('background', '#2c97de');
     });
     $("#userProfile_mail").on('click', function () {
         $(this).prop("readonly", false).focus();
-        $('#profileUpdate_bt').attr('disabled', false).css('background', '#0079FF');
+        $('#profileUpdate_bt').attr('disabled', false).css('background', '#2c97de');
     });
     </c:if>
 </script>
