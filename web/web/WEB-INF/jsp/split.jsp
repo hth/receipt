@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/style.css"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/stylelogin.css"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/stylelogin-nn.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/colpick.css"/>
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/sweetalert/0.5.0/sweet-alert.css"/>
 
@@ -142,7 +143,7 @@
                     <div id="awaiting">
                     <c:forEach var="profile" items="${splitForm.awaitingProfiles}" varStatus="status">
                     <div class="row_field" id="${profile.id}">
-                        <label class="profile_label" style="!important; color: #606060; !important; font-weight: normal; !important; line-height: 30px; width: 300px;">
+                        <label class="profile_label" style="!important; color: #606060; !important; font-weight: normal; !important; line-height: 30px; width: 290px;">
                         <c:choose>
                             <c:when test="${!empty profile.name}">
                                 <div class="member" style="background-color: #00529B"><span class="member-initials">${profile.initials}</span></div>&nbsp;&nbsp;${profile.name}
@@ -152,10 +153,10 @@
                             </c:otherwise>
                         </c:choose>
                         </label>
-                        <label class="profile_label" style="!important; color: #606060; !important; font-weight: normal; !important; line-height: 30px; width: 140px;">
+                        <label class="profile_label" style="!important; color: #606060; !important; font-weight: normal; !important; line-height: 30px; width: 150px;">
                             <fmt:formatDate value="${profile.created}" pattern="MMM dd, yyyy" />
                         </label>
-                        <label class="profile_label" style="!important; color: #606060; !important; font-weight: normal; !important; line-height: 30px; width: 140px;">
+                        <label class="profile_label" style="!important; color: #606060; !important; font-weight: normal; !important; line-height: 30px; width: 150px;">
                             <div class="cd-form" style="margin: 0; width: 100%;">
                                 <button style="font-size: 11px !important; padding: 9px 10px; float: left;"
                                         onclick="friendRequest('${profile.id}', '${profile.authKey}', 'A')"
@@ -184,7 +185,7 @@
                     <div id="pending">
                     <c:forEach var="profile" items="${splitForm.pendingProfiles}" varStatus="status">
                     <div class="row_field" id="${profile.id}">
-                        <label class="profile_label" style="!important; color: #606060; !important; font-weight: normal; !important; line-height: 30px; width: 300px;">
+                        <label class="profile_label" style="!important; color: #606060; !important; font-weight: normal; !important; line-height: 30px; width: 290px;">
                             <c:choose>
                                 <c:when test="${!empty profile.name}">
                                     <div class="member" style="background-color: #00529B"><span class="member-initials">${profile.initials}</span></div>&nbsp;&nbsp;${profile.name}
@@ -194,10 +195,27 @@
                                 </c:otherwise>
                             </c:choose>
                         </label>
-                        <label class="profile_label" style="!important; color: #606060; !important; font-weight: normal; !important; line-height: 30px; width: 140px;">
-                            <fmt:formatDate value="${profile.created}" pattern="MMM dd, yyyy" />
+                        <label class="profile_label" style="!important; color: #606060; !important; font-weight: normal; !important; line-height: 30px; width: 150px;">
+                            <c:choose>
+                                <c:when test="${profile.active}">
+                                    <fmt:formatDate value="${profile.created}" pattern="MMM dd, yyyy" />
+                                </c:when>
+                                <c:otherwise>
+                                    <c:choose>
+                                        <c:when test="${profile.provider.name().equals('FACEBOOK')}">
+                                            <span class="fa fa-facebook social-awesome-icon" style="vertical-align: middle; background: #3B5998; color: #ffffff; padding: 3px;"></span> sign up pending
+                                        </c:when>
+                                        <c:when test="${profile.provider.name().equals('GOOGLE')}">
+                                            <span class="fa fa-google-plus social-awesome-icon" style="vertical-align: middle; background: #dd4b39; color: #ffffff; padding: 3px;"></span> sign up pending
+                                        </c:when>
+                                        <c:otherwise>
+                                            Sign up pending
+                                        </c:otherwise>
+                                    </c:choose>
+                                </c:otherwise>
+                            </c:choose>
                         </label
-                        <label class="profile_label" style="!important; color: #606060; !important; font-weight: normal; !important; line-height: 30px; width: 140px;">
+                        <label class="profile_label" style="!important; color: #606060; !important; font-weight: normal; !important; line-height: 30px; width: 150px;">
                             <div class="cd-form" style="margin: 0; width: 100%;">
                                 <button style="font-size: 11px !important; padding: 9px 10px; float: left;"
                                         onclick="friendRequest('${profile.id}', '${profile.authKey}', 'C')"

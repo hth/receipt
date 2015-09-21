@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -99,10 +100,8 @@ public class FriendManagerImpl implements FriendManager {
     public boolean hasConnection(String receiptUserId, String friendUserId) {
         return this.mongoTemplate.exists(
                 query(new Criteria().orOperator(
-                        Criteria.where("FID").is(receiptUserId),
-                        Criteria.where("RID").is(friendUserId),
-                        Criteria.where("RID").is(receiptUserId),
-                        Criteria.where("FID").is(friendUserId))),
+                        Criteria.where("FID").is(receiptUserId).and("RID").is(friendUserId),
+                        Criteria.where("RID").is(receiptUserId).and("FID").is(friendUserId))),
                 FriendEntity.class
         );
     }
@@ -124,8 +123,9 @@ public class FriendManagerImpl implements FriendManager {
 
     @Override
     public boolean cancelInvite(String id, String authenticationKey) {
-        WriteResult writeResult = this.mongoTemplate.remove(
+        WriteResult writeResult = this.mongoTemplate.updateFirst(
                 query(where("id").is(id).and("AUTH").is(authenticationKey)),
+                entityUpdate(new Update().unset("AUTH")),
                 FriendEntity.class);
 
         return writeResult.getN() > 0;

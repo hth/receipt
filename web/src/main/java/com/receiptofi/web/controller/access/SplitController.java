@@ -98,7 +98,7 @@ public class SplitController {
                 response = friendService.updateResponse(id, auth, true, receiptUser.getRid());
                 break;
             case C:
-                /** Cancel invitation to friend. */
+                /** Cancel invitation to friend by removing AUTH id. */
                 response = friendService.cancelInvite(id, auth);
                 break;
             case D:

@@ -229,6 +229,7 @@ public class AccountService {
      * Save userProfile.
      */
     public void save(UserProfileEntity userProfile) {
+        Assert.notNull(userProfile.getEmail(), "Email cannot be null");
         userProfileManager.save(userProfile);
     }
 
