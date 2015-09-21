@@ -2,6 +2,7 @@ package com.receiptofi.domain.json;
 
 import com.receiptofi.domain.FriendEntity;
 import com.receiptofi.domain.UserProfileEntity;
+import com.receiptofi.domain.types.ProviderEnum;
 
 import java.util.Date;
 
@@ -17,6 +18,8 @@ public class JsonAwaitingAcceptance {
     private String initials;
     private String name;
     private String email;
+    private boolean active;
+    private ProviderEnum provider;
 
     public JsonAwaitingAcceptance(FriendEntity friend, UserProfileEntity userProfile) {
         this.created = friend.getCreated();
@@ -26,6 +29,8 @@ public class JsonAwaitingAcceptance {
         this.initials = userProfile.getInitials();
         this.name = userProfile.getName();
         this.email = userProfile.getEmail();
+        this.active = userProfile.isActive();
+        this.provider = userProfile.getProviderId();
     }
 
     public String getId() {
@@ -50,5 +55,13 @@ public class JsonAwaitingAcceptance {
 
     public String getEmail() {
         return email;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public ProviderEnum getProvider() {
+        return provider;
     }
 }

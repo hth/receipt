@@ -131,14 +131,32 @@ public final class UserProfileManagerImpl implements UserProfileManager {
     }
 
     /**
-     * Find any user matching with provider user id; ignore active or not active
+     * Find any user matching with provider user id; ignore active or not active profile.
      *
-     * @param puid
+     * @param puid unique string from Google or Facebook
      * @return
      */
     @Override
     public UserProfileEntity findByProviderUserId(String puid) {
         return mongoTemplate.findOne(query(where("PUID").is(puid)), UserProfileEntity.class, TABLE);
+    }
+
+    /**
+     * Find any user matching with provider user id and email; ignore active or not active profile.
+     *
+     * @param puid unique string from Google or Facebook
+     * @param email unique email address
+     * @return
+     */
+    @Override
+    public UserProfileEntity findByProviderUserId(String puid, String email) {
+        return mongoTemplate.findOne(
+                query(new Criteria()
+                        .orOperator(
+                                where("PUID").is(puid),
+                                where("EM").is(email))),
+                UserProfileEntity.class,
+                TABLE);
     }
 
     @Override

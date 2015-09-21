@@ -23,6 +23,7 @@ import com.receiptofi.utils.RandomString;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.text.WordUtils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -122,6 +123,8 @@ public class ConnectionServiceImpl implements ConnectionService {
                 userAccount.setFirstName(userProfile.getFirstName());
                 userAccount.setLastName(userProfile.getLastName());
                 customUserDetailsService.updateUserIdWithEmailWhenPresent(userAccount, userProfile);
+            } else if (!userProfile.isActive()) {
+                update(user.getEmail(), userConn);
             } else if (userProfile.getProviderId() != ProviderEnum.FACEBOOK) {
                 LOG.info("Account already exists rid={} email={} pid={}",
                         userProfile.getReceiptUserId(), userProfile.getEmail(), userProfile.getProviderId());
@@ -147,6 +150,8 @@ public class ConnectionServiceImpl implements ConnectionService {
                 userAccount.setFirstName(userProfile.getFirstName());
                 userAccount.setLastName(userProfile.getLastName());
                 customUserDetailsService.updateUserIdWithEmailWhenPresent(userAccount, userProfile);
+            } else if (!userProfile.isActive()) {
+                update(person.getAccountEmail(), userConn);
             } else if (userProfile.getProviderId() != ProviderEnum.GOOGLE) {
                 LOG.info("Account already exists rid={} email={} pid={}",
                         userProfile.getReceiptUserId(), userProfile.getEmail(), userProfile.getProviderId());
@@ -214,15 +219,15 @@ public class ConnectionServiceImpl implements ConnectionService {
                  * testing app using facebook test users. To avoid this condition delete app access from test user app
                  * settings.
                  */
-                if (StringUtils.isBlank(userAccount.getAccessToken()) &&
-                        userAccount.getProviderId() != null &&
-                        !userAccount.isActive()) {
+                if (StringUtils.isBlank(userAccount.getAccessToken()) && !userAccount.isActive()) {
 
                     /**
                      * Payment should not be decided on account active or in-active,
                      * instead should be based on BillingAccount
                      */
                     userAccount.active();
+                    userAccount.setAccountValidatedBeginDate();
+                    userAccount.setAccountValidated(true);
 
                     LOG.info("Pending user just signed up for first time. rid={}", userAccount.getReceiptUserId());
                 }
@@ -232,6 +237,8 @@ public class ConnectionServiceImpl implements ConnectionService {
                 userAccount.setExpireTime(userAccountFromConnection.getExpireTime());
                 userAccount.setAccessToken(userAccountFromConnection.getAccessToken());
                 userAccount.setImageUrl(userAccountFromConnection.getImageUrl());
+                userAccount.setProviderUserId(userAccountFromConnection.getProviderUserId());
+                userAccount.setProviderId(userAccountFromConnection.getProviderId());
 
                 userAccount.setUpdated();
                 userAccountManager.save(userAccount);
@@ -433,16 +440,17 @@ public class ConnectionServiceImpl implements ConnectionService {
 
     public UserProfileEntity copyToUserProfile(User facebookUserProfile, UserAccountEntity userAccount) {
         LOG.info("copying facebookUserProfile to userProfile for userAccount={}", userAccount.getReceiptUserId());
-        UserProfileEntity userProfile = userProfileManager.findByProviderUserId(facebookUserProfile.getId());
+        String id = null;
+        UserProfileEntity userProfile = userProfileManager.findByProviderUserId(facebookUserProfile.getId(), facebookUserProfile.getEmail());
         if (null == userProfile) {
             userProfile = new UserProfileEntity();
         } else {
+            id = userProfile.getId();
             userProfile.setUpdated();
         }
 
         deepCopy(facebookUserProfile, userProfile);
 
-        String id = userProfile.getId();
         if (StringUtils.isEmpty(userProfile.getBirthday())) {
             int minAge = facebookUserProfile.getAgeRange().getMin();
             LocalDate birth = LocalDate.now().minusYears(minAge).with(TemporalAdjusters.firstDayOfYear());
@@ -462,16 +470,18 @@ public class ConnectionServiceImpl implements ConnectionService {
 
     public UserProfileEntity copyToUserProfile(Person googleUserProfile, UserAccountEntity userAccount) {
         LOG.debug("copying googleUserProfile to userProfile for userAccount={}", userAccount.getReceiptUserId());
-        UserProfileEntity userProfile = userProfileManager.findByProviderUserId(googleUserProfile.getId());
+        String id = null;
+        UserProfileEntity userProfile = userProfileManager.findByProviderUserId(googleUserProfile.getId(), googleUserProfile.getAccountEmail());
         if (null == userProfile) {
             userProfile = new UserProfileEntity();
         } else {
             userProfile.setUpdated();
+            id = userProfile.getId();
         }
 
         deepCopy(googleUserProfile, userProfile);
 
-        String id = userProfile.getId();
+
         userProfile.setProviderUserId(googleUserProfile.getId());
         userProfile.setProviderId(ProviderEnum.GOOGLE);
         userProfile.setReceiptUserId(userAccount.getReceiptUserId());
@@ -496,7 +506,7 @@ public class ConnectionServiceImpl implements ConnectionService {
     private void deepCopy(Person googleUserProfile, UserProfileEntity userProfile) {
         userProfile.setFirstName(googleUserProfile.getGivenName());
         userProfile.setLastName(googleUserProfile.getFamilyName());
-        userProfile.setName(googleUserProfile.getDisplayName());
+        userProfile.setName(WordUtils.capitalizeFully(googleUserProfile.getDisplayName()));
         userProfile.setLink(googleUserProfile.getUrl());
         //skipped thumbnailURL; this can be found in user account entity
         userProfile.setBirthday(googleUserProfile.getBirthday() == null ? null : googleUserProfile.getBirthday().toString());
@@ -559,9 +569,14 @@ public class ConnectionServiceImpl implements ConnectionService {
      * @return
      */
     private UserAccountEntity getUserAccountEntity(String userId, ProviderEnum providerId, String providerUserId) {
-        Query q = query(where("UID").is(userId).and("PID").is(providerId));
+        Query q = query(new Criteria().orOperator(
+                where("UID").is(userId).and("PID").is(providerId),
+                where("UID").is(userId)));
+
         if (StringUtils.isNotBlank(providerUserId)) {
-            q = query(where("PUID").is(providerUserId).and("PID").is(providerId));
+            q = query(new Criteria().orOperator(
+                            where("PUID").is(providerUserId).and("PID").is(providerId),
+                            where("UID").is(userId)));
         }
         return mongoTemplate.findOne(q, UserAccountEntity.class);
     }
