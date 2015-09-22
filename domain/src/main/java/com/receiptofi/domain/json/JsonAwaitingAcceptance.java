@@ -4,6 +4,9 @@ import com.receiptofi.domain.FriendEntity;
 import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.domain.types.ProviderEnum;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.springframework.util.Assert;
 
 import java.util.Date;
@@ -13,6 +16,7 @@ import java.util.Date;
  * Date: 9/17/15 3:56 PM
  */
 public class JsonAwaitingAcceptance {
+    private static final Logger LOG = LoggerFactory.getLogger(JsonAwaitingAcceptance.class);
 
     private String id;
     private String authKey;
@@ -24,8 +28,15 @@ public class JsonAwaitingAcceptance {
     private ProviderEnum provider;
 
     public JsonAwaitingAcceptance(FriendEntity friend, UserProfileEntity userProfile) {
-        Assert.notNull(friend, "Friend cannot be null");
-        Assert.notNull(userProfile, "UserProfile cannot be null rid=" + friend.getReceiptUserId() + " fid=" + friend.getFriendUserId());
+        if (userProfile == null) {
+            LOG.error("UserProfile cannot be null rid={} fid={}", friend.getReceiptUserId(), friend.getFriendUserId());
+            Assert.notNull(userProfile, "UserProfile cannot be null rid=" + friend.getReceiptUserId() + " fid=" + friend.getFriendUserId());
+        }
+
+        if (friend == null) {
+            LOG.error("Friend cannot be null");
+            Assert.notNull(friend, "Friend cannot be null");
+        }
 
         this.created = friend.getCreated();
         this.id = friend.getId();
