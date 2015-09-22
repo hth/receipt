@@ -4,6 +4,8 @@ import com.receiptofi.domain.FriendEntity;
 import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.domain.types.ProviderEnum;
 
+import org.springframework.util.Assert;
+
 import java.util.Date;
 
 /**
@@ -22,6 +24,9 @@ public class JsonAwaitingAcceptance {
     private ProviderEnum provider;
 
     public JsonAwaitingAcceptance(FriendEntity friend, UserProfileEntity userProfile) {
+        Assert.notNull(friend, "Friend cannot be null");
+        Assert.notNull(userProfile, "UserProfile cannot be null rid=" + friend.getReceiptUserId() + " fid=" + friend.getFriendUserId());
+
         this.created = friend.getCreated();
         this.id = friend.getId();
         this.authKey = friend.getAuthenticationKey();
