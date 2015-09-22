@@ -73,7 +73,7 @@ function submitInvitationForm() {
         type: "POST",
         beforeSend: function (xhr) {
             xhr.setRequestHeader($("meta[name='_csrf_header']").attr("content"), $("meta[name='_csrf']").attr("content"));
-            $('#sendInvite_bt').attr('disabled', 'disabled');
+            $('#sendInvite_bt').css('background', '#2b3e51').attr('disabled', 'disabled');
             $('#inviteEmailId').attr('disabled', 'disabled');
         },
         url: ctx + "/access/landing/invite.htm",
@@ -81,6 +81,7 @@ function submitInvitationForm() {
         success: function (response) {
             console.debug(response);
             var json = $.parseJSON(response);
+            $('#sendInvite_bt').css('background', '#2c97de')
             $('#inviteEmailId').removeAttr('disabled');
             if (json.status) {
                 $('#inviteTextMessage').html(json.message).addClass("r-success").css("margin-left", "0px").css("width", "100%").delay(5000)
