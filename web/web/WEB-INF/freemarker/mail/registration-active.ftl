@@ -1,6 +1,6 @@
 <#assign ftlDateTime = .now>
 <html>
-<body>
+<body style="font-size: 15px;">
 <p>
 	Dear ${to},
 

@@ -1,13 +1,13 @@
 <#assign ftlDateTime = .now>
 <html>
-<body>
+<body style="font-size: 15px;">
 <p>
     Hey,
 </p>
 
 <p>
-    I would like you to join Receiptofi. It is a great place to manage and analyze your receipts and expenses month over
-    month.
+    I would like you to join ReceiptApp. It is a great place to manage and analyze your receipts and expenses month over
+    month. Easy to compare, on the go 24/7, at your finger tips, paperless. Fun to track expenses with mapped location.
 </p>
 
 <p>
@@ -16,7 +16,17 @@
 </p>
 
 <p>
-    <a href="${https}://${domain}/open/invite/authenticate.htm?authenticationKey=${link}">Receiptofi Sign Up ></a>
+    <a href="${https}://${domain}/open/invite/authenticate.htm?authenticationKey=${link}">ReceiptApp Sign Up ></a>
+</p>
+
+<p>
+	Or sign up using social connection to connect with your friends to split expenses and share receipts.
+</p>
+
+<p>
+    <a href="${https}://${domain}/open/login.htm"><img src="cid:googlePlus.logo" alt="Google Signup" height="48px" width="48px"/></a>
+    &nbsp;&nbsp;
+    <a href="${https}://${domain}/open/login.htm"><img src="cid:facebook.logo" alt="Facebook Signup" height="48px" width="48px"/></a>
 </p>
 
 <p>

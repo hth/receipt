@@ -1,13 +1,13 @@
 <#assign ftlDateTime = .now>
 <html>
-<body>
+<body style="font-size: 15px;">
 <p>
     Dear ${to},
 
 </p>
 
 <p>
-    To reset your Receiptofi ID password, simply click the link below. That will take you to a web page where you can
+    To reset your ReceiptApp ID password, simply click the link below. That will take you to a web page where you can
     create a new password.
 
 </p>

@@ -416,6 +416,20 @@ public class MailService {
         FileSystemResource res = new FileSystemResource(url.getPath());
         helper.addInline("receiptofi.logo", res);
 
+        if (subject.startsWith(mailInviteSubject)) {
+            //Attach image always at the end
+            URL googleUrl = Thread.currentThread().getContextClassLoader().getResource("../jsp/images/smallGoogle+.jpg");
+            Assert.notNull(googleUrl);
+            FileSystemResource googleRes = new FileSystemResource(googleUrl.getPath());
+            helper.addInline("googlePlus.logo", googleRes);
+
+            //Attach image always at the end
+            URL facebookUrl = Thread.currentThread().getContextClassLoader().getResource("../jsp/images/smallFacebook.jpg");
+            Assert.notNull(facebookUrl);
+            FileSystemResource facebookRes = new FileSystemResource(facebookUrl.getPath());
+            helper.addInline("facebook.logo", facebookRes);
+        }
+
         try {
             mailSender.send(message);
         } catch (MailSendException mailSendException) {

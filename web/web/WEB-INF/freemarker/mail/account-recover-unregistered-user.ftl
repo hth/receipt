@@ -1,13 +1,13 @@
 <#assign ftlDateTime = .now>
 <html>
-<body>
+<body style="font-size: 15px;">
 <p>
 	Hey,
 
 </p>
 
 <p>
-	Someone requested an account recovery on Receiptofi for ${contact_email}, but we don’t have an account on this site that matches this email address.
+	Someone requested an account recovery on Receiptofi's ReceiptApp for ${contact_email}, but we don’t have an account on this site that matches this email address.
 
 </p>
 

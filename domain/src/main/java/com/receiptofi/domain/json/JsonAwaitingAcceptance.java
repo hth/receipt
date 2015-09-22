@@ -7,8 +7,6 @@ import com.receiptofi.domain.types.ProviderEnum;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.springframework.util.Assert;
-
 import java.util.Date;
 
 /**
@@ -30,12 +28,10 @@ public class JsonAwaitingAcceptance {
     public JsonAwaitingAcceptance(FriendEntity friend, UserProfileEntity userProfile) {
         if (userProfile == null) {
             LOG.error("UserProfile cannot be null rid={} fid={}", friend.getReceiptUserId(), friend.getFriendUserId());
-            Assert.notNull(userProfile, "UserProfile cannot be null rid=" + friend.getReceiptUserId() + " fid=" + friend.getFriendUserId());
         }
 
         if (friend == null) {
             LOG.error("Friend cannot be null");
-            Assert.notNull(friend, "Friend cannot be null");
         }
 
         this.created = friend.getCreated();
