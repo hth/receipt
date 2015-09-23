@@ -210,7 +210,7 @@
     function fieldValidated(result) {
         if (result.valid === true) {
             $("#mailErrors")
-                    .html("Verification email will be sent to above email address")
+                    .html("Email to activate account will be sent to above email address")
                     .removeClass("r-error")
                     .addClass("r-info");
 

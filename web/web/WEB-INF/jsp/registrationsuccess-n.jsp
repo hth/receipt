@@ -49,8 +49,8 @@
     <div class="cd-content">
         <fieldset class="cd-form floating-labels">
             <legend><fmt:message key="signup.success" /></legend>
-            <p>Verification email has been sent to email <b><c:out value="${email}"/></b>.</p>
-            <p>Please follow the directions in the email to validated your account.</p>
+            <p>Thanks For Signing Up!</p>
+            <p>Please check your email and click Activate Account in the message we just sent to <b><c:out value="${email}"/></b>.</p>
             <p>&nbsp;</p>
             <p>Click here for <span class="cd-link"><a href="${pageContext.request.contextPath}/open/login.htm">Sign In</a></span> page</p>
         </fieldset>
