@@ -28,16 +28,13 @@
 	}
 </style>
 <body>
-<p style="background: rgba(255, 255, 255, 0.95);">
-    <img src="cid:headerReceiptApp.logo" alt="ReceiptApp for Receipts" />
-</p>
-<p style="padding-top: 10px;">
+<img src="cid:headerReceiptApp.logo" alt="ReceiptApp for Receipts" />
+<p>
 	Hey,
 </p>
 <p>
-	Do you have receipts, expenses to track and split among friends? I found ReceiptApp to be easy and available on the go.
-    I have signed up and now have all my detailed expenses at my finger tips. Travelling and shopping made simple, as
-    it's paperless. My favorite feature is seeing my expenses on Google Maps.
+	I found ReceiptApp to replace paper receipts, track and split expenses among friends. I have signed up and it's
+    amazing to see my expenses on Google Maps.
 </p>
 <p>
     All you have to do is take a picture of your receipt and ReceiptApp does the rest. It's that simple.

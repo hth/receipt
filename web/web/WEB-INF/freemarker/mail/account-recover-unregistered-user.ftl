@@ -33,33 +33,23 @@
 </p>
 <p style="padding-top: 10px;">
 	Hey,
-
 </p>
-
 <p>
-	Someone requested an account recovery on Receiptofi's ReceiptApp for ${contact_email}, but we don’t have an account on this site that matches this email address.
-
+	Someone requested an account recovery on Receiptofi's ReceiptApp for ${contact_email}, but we don’t have an account
+	on this site that matches this email address.
 </p>
-
 <p>
 	If you would like to create an account on Receiptofi just visit our sign-up page:
 	<a href="${https}://${domain}/open/registration.htm">${https}://${domain}/open/registration.htm ></a>
-
 </p>
-
 <p>
-	If you did not request this account recovery, just ignore this email. We'll keep your accounts safe.
-
+	If you did not request this account recovery, just ignore this email. Your email address is safe.
 </p>
-<hr>
 <p>
-	Questions? Comments? Let us know on our feedback site.
-
+	Thanks,
+	<br/>
+	Receiptofi Customer Support
 </p>
-Thanks,
-<br/>
-Receiptofi Customer Support
-
 <br/><br/><br/>
 <hr/>
 <span class="tm">
