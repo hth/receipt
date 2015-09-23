@@ -43,11 +43,7 @@
 	<a href="${https}://${domain}/open/registration.htm">${https}://${domain}/open/registration.htm ></a>
 </p>
 <p>
-	If you did not request this account recovery, just ignore this email. We'll keep your accounts safe.
-</p>
-<hr>
-<p>
-	Questions? Comments? Let us know on our feedback site.
+	If you did not request this account recovery, just ignore this email. Your email address is safe.
 </p>
 <p>
 	Thanks,

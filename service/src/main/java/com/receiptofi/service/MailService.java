@@ -100,6 +100,9 @@ public class MailService {
     @Value ("${mail.registration.active.subject}")
     private String mailRegistrationActiveSubject;
 
+    @Value ("${mail.account.not.found}")
+    private String accountNotFound;
+
     @Autowired
     public MailService(AccountService accountService,
                        InviteService inviteService,
@@ -213,7 +216,40 @@ public class MailService {
     public MailTypeEnum mailRecoverLink(String mail) {
         UserAccountEntity userAccount = accountService.findByUserId(mail);
         if (null == userAccount) {
-            LOG.warn("could not recover user={}", mail);
+            LOG.warn("Could not recover user={}", mail);
+
+            Map<String, String> rootMap = new HashMap<>();
+            rootMap.put("contact_email", mail);
+            rootMap.put("domain", domain);
+            rootMap.put("https", https);
+
+            try {
+                MimeMessage message = mailSender.createMimeMessage();
+
+                // use the true flag to indicate you need a multipart message
+                MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+                helper.setFrom(new InternetAddress(doNotReplyEmail, emailAddressName));
+
+                String sentTo = StringUtils.isEmpty(devSentTo) ? mail : devSentTo;
+                if (sentTo.equalsIgnoreCase(devSentTo)) {
+                    helper.setTo(new InternetAddress(devSentTo, emailAddressName));
+                    LOG.info("Mail account not found send to={}", devSentTo);
+                } else {
+                    helper.setTo(new InternetAddress(mail, userAccount.getName()));
+                    LOG.info("Mail account not found send to={}", mail);
+                }
+
+                sendMail(
+                        accountNotFound,
+                        freemarkerToString("mail/account-recover-unregistered-user.ftl", rootMap),
+                        message,
+                        helper
+                );
+                return MailTypeEnum.SUCCESS;
+            } catch (IOException | TemplateException | MessagingException exception) {
+                LOG.error("Account not found email={}", exception.getLocalizedMessage(), exception);
+            }
+
             return MailTypeEnum.ACCOUNT_NOT_FOUND;
         }
 

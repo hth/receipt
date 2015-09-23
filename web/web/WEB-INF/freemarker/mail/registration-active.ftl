@@ -42,8 +42,8 @@
 </p>
 <p>
 	<b>Wondering why you got this email?</b>
-	It's sent when someone sign's up when registration was not allowed and now you have been selected and this marks
-	as completion of your registration.
+	This email is sent when system starts accepting new registration. This confirmation email marks as completion of your
+    registration and now your account is ready and active.
 </p>
 <p>
 	Thanks,
