@@ -33,29 +33,23 @@
 </p>
 <p style="padding-top: 10px;">
 	Dear ${to},
-
 </p>
-
 <p>
 	We have completed your registration and your account is now active. Please click on the link below to login.
-
 </p>
-
 <p>
 	<a href="${https}://${domain}/open/login.htm">Login now ></a>
-
 </p>
-
 <p>
 	<b>Wondering why you got this email?</b>
 	It's sent when someone sign's up when registration was not allowed and now you have been selected and this marks
 	as completion of your registration.
 </p>
-
-Thanks,
-<br/>
-Receiptofi Customer Support
-
+<p>
+	Thanks,
+	<br/>
+	Receiptofi Customer Support
+</p>
 <br/><br/><br/>
 <hr/>
 <span class="tm">

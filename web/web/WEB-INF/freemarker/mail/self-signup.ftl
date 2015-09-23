@@ -33,31 +33,25 @@
 </p>
 <p style="padding-top: 10px;">
 	Dear ${to},
-
 </p>
-
 <p>
 	You've entered ${contact_email} as the contact email address for your ReceiptApp ID. To complete the process, we
 	just need to verify that this email address belongs to you. Simply click the link below and sign in using your
 	ReceiptApp ID and password.
-
 </p>
-
 <p>
 	<a href="${https}://${domain}/open/validate.htm?authenticationKey=${link}">Activate Account ></a>
-
 </p>
-
 <p>
 	<b>Wondering why you got this email?</b>
 	It's sent when someone sign's up or changes a contact email address for an ReceiptApp account. If you didn't do this,
 	don't worry. Your email address cannot be used as a contact address with Receiptofi's ReceiptApp without your verification.
 </p>
-
-Thanks,
-<br/>
-Receiptofi Customer Support
-
+<p>
+	Thanks,
+	<br/>
+	Receiptofi Customer Support
+</p>
 <br/><br/><br/>
 <hr/>
 <span class="tm">
