@@ -257,40 +257,55 @@ public class ConnectionServiceImpl implements ConnectionService {
         /** Get user matching RID, even when user is in-active. */
         UserProfileEntity userProfile = userProfileManager.forProfilePreferenceFindByReceiptUserId(userAccount.getReceiptUserId());
         Assert.notNull(userProfile, "UserProfile is null for rid=" + userAccount.getReceiptUserId());
+        ProviderEnum provider = ProviderEnum.valueOf(userConn.getKey().getProviderId().toUpperCase());
+
         if (DateUtil.getDuration(userProfile.getUpdated(), new Date()) > lastFetched) {
-            if (ProviderEnum.valueOf(userConn.getKey().getProviderId().toUpperCase()) == ProviderEnum.FACEBOOK) {
-                Facebook facebook = getFacebook(userAccountFromConnection);
-                User user = getFacebookUser(facebook);
-                userProfile = copyToUserProfile(user, userAccount);
-                accountService.save(userProfile);
+            switch(provider) {
+                case FACEBOOK:
+                    Facebook facebook = getFacebook(userAccountFromConnection);
+                    User user = getFacebookUser(facebook);
+                    userProfile = copyToUserProfile(user, userAccount);
+                    accountService.save(userProfile);
 
-                /** Update with latest names in UserAccount from UserProfile. */
-                updateUserAccountName(userAccount, userProfile);
-                customUserDetailsService.updateUserIdWithEmailWhenPresent(userAccount, userProfile);
-            } else {
-                Google google = getGoogle(userAccountFromConnection);
-                Person person = getGooglePerson(google);
-                userProfile = copyToUserProfile(person, userAccount);
-                accountService.save(userProfile);
+                    /** Update with latest names in UserAccount from UserProfile. */
+                    updateUserAccountName(userAccount, userProfile);
+                    customUserDetailsService.updateUserIdWithEmailWhenPresent(userAccount, userProfile);
+                    break;
+                case GOOGLE:
+                    Google google = getGoogle(userAccountFromConnection);
+                    Person person = getGooglePerson(google);
+                    userProfile = copyToUserProfile(person, userAccount);
+                    accountService.save(userProfile);
 
-                /** Update with latest names in UserAccount from UserProfile. */
-                updateUserAccountName(userAccount, userProfile);
-                customUserDetailsService.updateUserIdWithEmailWhenPresent(userAccount, userProfile);
+                    /** Update with latest names in UserAccount from UserProfile. */
+                    updateUserAccountName(userAccount, userProfile);
+                    customUserDetailsService.updateUserIdWithEmailWhenPresent(userAccount, userProfile);
+                    break;
+                default:
+                    LOG.error("Social provider={} is not defined", provider);
+                    throw new IllegalStateException("Social provider is not defined");
             }
         } else {
             LOG.info("Skipped social userProfile update as it was last fetched within seconds={}", lastFetched);
         }
 
-        if (providerConfig.isPopulateSocialFriendOn()) {
-            if (ProviderEnum.valueOf(userConn.getKey().getProviderId().toUpperCase()) == ProviderEnum.FACEBOOK) {
-                Facebook facebook = getFacebook(userAccountFromConnection);
-                populateFacebookFriends(userAccount.getReceiptUserId(), facebook);
-            } else {
-                Google google = getGoogle(userAccountFromConnection);
-                populateGoogleFriends(userAccount.getReceiptUserId(), google);
-            }
+        switch(provider) {
+            case FACEBOOK:
+                if (providerConfig.isPopulateFacebookFriendOn()) {
+                    Facebook facebook = getFacebook(userAccountFromConnection);
+                    populateFacebookFriends(userAccount.getReceiptUserId(), facebook);
+                }
+                break;
+            case GOOGLE:
+                if (providerConfig.isPopulateGoogleFriendOn()) {
+                    Google google = getGoogle(userAccountFromConnection);
+                    populateGoogleFriends(userAccount.getReceiptUserId(), google);
+                }
+                break;
+            default:
+                LOG.error("Social provider={} is not defined", provider);
+                throw new IllegalStateException("Social provider is not defined");
         }
-
     }
 
     /**

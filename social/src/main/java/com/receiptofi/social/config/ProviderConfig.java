@@ -25,7 +25,17 @@ public class ProviderConfig {
     @Value ("${populate.social.friend.on:true}")
     private boolean populateSocialFriendOn;
 
-    public boolean isPopulateSocialFriendOn() {
-        return populateSocialFriendOn;
+    @Value ("${populate.facebook.friend.on:true}")
+    private boolean populateFacebookFriendOn;
+
+    public boolean isPopulateFacebookFriendOn() {
+        return populateFacebookFriendOn && populateSocialFriendOn;
+    }
+
+    @Value ("${populate.google.friend.on:false}")
+    private boolean populateGoogleFriendOn;
+
+    public boolean isPopulateGoogleFriendOn() {
+        return populateGoogleFriendOn && populateFacebookFriendOn;
     }
 }
