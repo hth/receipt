@@ -78,7 +78,7 @@ public class JsonAwaitingAcceptance {
         this.initials = userProfile.getInitials();
         this.name = userProfile.getName();
         this.email = userProfile.getEmail();
-        this.provider = userProfile.getProviderId().name();
+        this.provider = userProfile.getProviderId() == null ? "" : userProfile.getProviderId().name();
         this.active = userProfile.isActive();
     }
 

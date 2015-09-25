@@ -2,7 +2,6 @@ package com.receiptofi.web.controller.access;
 
 import com.google.gson.JsonObject;
 
-import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.domain.json.JsonFriend;
 import com.receiptofi.domain.site.ReceiptUser;
 import com.receiptofi.domain.types.FriendConnectionTypeEnum;
@@ -18,7 +17,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -28,7 +26,6 @@ import com.codahale.metrics.annotation.ExceptionMetered;
 import com.codahale.metrics.annotation.Timed;
 
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 

@@ -1,5 +1,8 @@
 package com.receiptofi.service;
 
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
+
 import com.receiptofi.domain.FriendEntity;
 import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.domain.json.JsonAwaitingAcceptance;
@@ -13,6 +16,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 /**
@@ -27,8 +31,22 @@ import java.util.stream.Collectors;
 })
 @Service
 public class FriendService {
-    @Autowired private FriendManager friendManager;
-    @Autowired private UserProfilePreferenceService userProfilePreferenceService;
+    private static final int SIZE_1000 = 1_000;
+    private final Cache<String, List<JsonFriend>> friends;
+
+    private FriendManager friendManager;
+    private UserProfilePreferenceService userProfilePreferenceService;
+
+    @Autowired
+    public FriendService(FriendManager friendManager, UserProfilePreferenceService userProfilePreferenceService) {
+        friends = CacheBuilder.newBuilder()
+                .maximumSize(SIZE_1000)
+                .expireAfterWrite(30, TimeUnit.MINUTES)
+                .build();
+
+        this.friendManager = friendManager;
+        this.userProfilePreferenceService = userProfilePreferenceService;
+    }
 
     public void save(FriendEntity friend) {
         friendManager.save(friend);
@@ -120,9 +138,13 @@ public class FriendService {
     }
 
     public List<JsonFriend> getFriends(String rid) {
-        List<JsonFriend> jsonFriends = new ArrayList<>();
-        List<UserProfileEntity> userProfiles = getActiveConnections(rid);
-        jsonFriends.addAll(userProfiles.stream().map(JsonFriend::new).collect(Collectors.toList()));
+        List<JsonFriend> jsonFriends = friends.getIfPresent(rid);
+        if (jsonFriends == null) {
+            jsonFriends = new ArrayList<>();
+            List<UserProfileEntity> userProfiles = getActiveConnections(rid);
+            jsonFriends.addAll(userProfiles.stream().map(JsonFriend::new).collect(Collectors.toList()));
+            friends.put(rid, jsonFriends);
+        }
         return jsonFriends;
     }
 }
