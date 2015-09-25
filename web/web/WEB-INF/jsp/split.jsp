@@ -202,10 +202,10 @@
                                 </c:when>
                                 <c:otherwise>
                                     <c:choose>
-                                        <c:when test="${profile.provider.name().equals('FACEBOOK')}">
+                                        <c:when test="${profile.provider.equals('FACEBOOK')}">
                                             <span class="fa fa-facebook social-awesome-icon" style="vertical-align: middle; background: #3B5998; color: #ffffff; padding: 3px;"></span> sign up pending
                                         </c:when>
-                                        <c:when test="${profile.provider.name().equals('GOOGLE')}">
+                                        <c:when test="${profile.provider.equals('GOOGLE')}">
                                             <span class="fa fa-google-plus social-awesome-icon" style="vertical-align: middle; background: #dd4b39; color: #ffffff; padding: 3px;"></span> sign up pending
                                         </c:when>
                                         <c:otherwise>

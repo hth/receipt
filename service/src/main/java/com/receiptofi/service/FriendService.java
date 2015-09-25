@@ -3,6 +3,7 @@ package com.receiptofi.service;
 import com.receiptofi.domain.FriendEntity;
 import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.domain.json.JsonAwaitingAcceptance;
+import com.receiptofi.domain.json.JsonFriend;
 import com.receiptofi.repository.FriendManager;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * User: hitender
@@ -66,6 +68,7 @@ public class FriendService {
 
         List<FriendEntity> friends = friendManager.findPendingFriends(rid);
         for (FriendEntity friend : friends) {
+            /** Find by FID. */
             UserProfileEntity userProfile = userProfilePreferenceService.forProfilePreferenceFindByReceiptUserId(friend.getFriendUserId());
             JsonAwaitingAcceptance jsonAwaitingAcceptance = new JsonAwaitingAcceptance(friend, userProfile);
             jsonAwaitingAcceptances.add(jsonAwaitingAcceptance);
@@ -79,6 +82,7 @@ public class FriendService {
 
         List<FriendEntity> friends = friendManager.findAwaitingFriends(rid);
         for (FriendEntity friend : friends) {
+            /** Find by RID. */
             UserProfileEntity userProfile = userProfilePreferenceService.forProfilePreferenceFindByReceiptUserId(friend.getReceiptUserId());
             JsonAwaitingAcceptance jsonAwaitingAcceptance = new JsonAwaitingAcceptance(friend, userProfile);
             jsonAwaitingAcceptances.add(jsonAwaitingAcceptance);
@@ -113,5 +117,12 @@ public class FriendService {
     public boolean unfriend(String receiptUserId, String mail) {
         UserProfileEntity userProfile = userProfilePreferenceService.findByEmail(mail);
         return friendManager.unfriend(receiptUserId, userProfile.getReceiptUserId());
+    }
+
+    public List<JsonFriend> getFriends(String rid) {
+        List<JsonFriend> jsonFriends = new ArrayList<>();
+        List<UserProfileEntity> userProfiles = getActiveConnections(rid);
+        jsonFriends.addAll(userProfiles.stream().map(JsonFriend::new).collect(Collectors.toList()));
+        return jsonFriends;
     }
 }

@@ -3,6 +3,7 @@ package com.receiptofi.web.controller.access;
 import com.google.gson.JsonObject;
 
 import com.receiptofi.domain.UserProfileEntity;
+import com.receiptofi.domain.json.JsonFriend;
 import com.receiptofi.domain.site.ReceiptUser;
 import com.receiptofi.domain.types.FriendConnectionTypeEnum;
 import com.receiptofi.service.FriendService;
@@ -69,6 +70,8 @@ public class SplitController {
         return nextPage;
     }
 
+    @Timed
+    @ExceptionMetered
     @PreAuthorize ("hasRole('ROLE_USER')")
     @RequestMapping (
             value = "/friend",
@@ -115,6 +118,8 @@ public class SplitController {
         return jsonObject.toString();
     }
 
+    @Timed
+    @ExceptionMetered
     @PreAuthorize ("hasRole('ROLE_USER')")
     @RequestMapping (
             value = "/unfriend",
@@ -133,5 +138,20 @@ public class SplitController {
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty(LandingController.SUCCESS, friendService.unfriend(receiptUser.getRid(), mail));
         return jsonObject.toString();
+    }
+
+    @Timed
+    @ExceptionMetered
+    @PreAuthorize ("hasRole('ROLE_USER')")
+    @RequestMapping (
+            value = "/friends",
+            method = RequestMethod.GET,
+            headers = "Accept=application/json",
+            produces = "application/json"
+    )
+    @ResponseBody
+    public List<JsonFriend> getFriends(HttpServletResponse httpServletResponse) {
+        ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return friendService.getFriends(receiptUser.getRid());
     }
 }
