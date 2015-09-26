@@ -397,7 +397,7 @@ public class ConnectionServiceImpl implements ConnectionService {
                         friendService.save(friend);
                     }
                 } catch (Exception e) {
-                    LOG.error("During friends account creation rid={} reason={}", userAccountEntity.getReceiptUserId(), e.getLocalizedMessage(), e);
+                    LOG.error("During friend account creation for user rid={} reason={}", rid, e.getLocalizedMessage(), e);
                 }
             } else {
                 if (!friendService.hasConnection(rid, userAccountEntity.getReceiptUserId())) {
@@ -462,7 +462,7 @@ public class ConnectionServiceImpl implements ConnectionService {
                         friendService.save(friend);
                     }
                 } catch (Exception e) {
-                    LOG.error("During friends account creation rid={} reason={}", userAccountEntity.getReceiptUserId(), e.getLocalizedMessage(), e);
+                    LOG.error("During friend account creation for user rid={} reason={}", rid, e.getLocalizedMessage(), e);
                 }
             } else {
                 if (!friendService.hasConnection(rid, userAccountEntity.getReceiptUserId())) {

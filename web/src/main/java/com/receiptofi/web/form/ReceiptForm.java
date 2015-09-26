@@ -3,6 +3,7 @@ package com.receiptofi.web.form;
 import com.receiptofi.domain.ExpenseTagEntity;
 import com.receiptofi.domain.ItemEntity;
 import com.receiptofi.domain.ReceiptEntity;
+import com.receiptofi.domain.json.JsonFriend;
 
 import java.util.List;
 
@@ -22,20 +23,33 @@ public final class ReceiptForm {
     private ReceiptEntity receipt;
     private List<ItemEntity> items;
     private List<ExpenseTagEntity> expenseTags;
+    private List<JsonFriend> jsonFriends;
 
     /** Used for showing error messages to user when the request action fails to execute */
     private String errorMessage;
 
     /** Need for bean instantiation */
+    @SuppressWarnings("unused")
     private ReceiptForm() {
     }
 
-    public static ReceiptForm newInstance(ReceiptEntity receipt, List<ItemEntity> items, List<ExpenseTagEntity> expenseTypes) {
-        ReceiptForm receiptForm = new ReceiptForm();
-        receiptForm.setReceipt(receipt);
-        receiptForm.setItems(items);
-        receiptForm.setExpenseTags(expenseTypes);
-        return receiptForm;
+    private ReceiptForm(
+            ReceiptEntity receipt,
+            List<ItemEntity> items,
+            List<ExpenseTagEntity> expenseTags,
+            List<JsonFriend> jsonFriends) {
+        this.receipt = receipt;
+        this.items = items;
+        this.expenseTags = expenseTags;
+        this.jsonFriends = jsonFriends;
+    }
+
+    public static ReceiptForm newInstance(
+            ReceiptEntity receipt,
+            List<ItemEntity> items,
+            List<ExpenseTagEntity> expenseTags,
+            List<JsonFriend> jsonFriends) {
+        return new ReceiptForm(receipt, items, expenseTags, jsonFriends);
     }
 
     public ReceiptEntity getReceipt() {
@@ -60,6 +74,14 @@ public final class ReceiptForm {
 
     public void setExpenseTags(List<ExpenseTagEntity> expenseTags) {
         this.expenseTags = expenseTags;
+    }
+
+    public List<JsonFriend> getJsonFriends() {
+        return jsonFriends;
+    }
+
+    public void setJsonFriends(List<JsonFriend> jsonFriends) {
+        this.jsonFriends = jsonFriends;
     }
 
     public String getErrorMessage() {

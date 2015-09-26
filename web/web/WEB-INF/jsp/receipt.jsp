@@ -369,6 +369,17 @@
                     <spring:eval expression="receiptForm.receipt.bizStore.phoneFormatted"/>
                 </p>
             </div>
+            <div id="friends">
+                <c:forEach var="friend" items="${receiptForm.jsonFriends}" varStatus="status">
+                <div class="row_field" id="${friend.rid}">
+                    <label class="profile_label" style="!important; color: #606060; !important; font-weight: normal; !important; line-height: 30px; width: 360px;">
+                        <div class="member" style="background-color: #00529B">
+                            <span class="member-initials">${friend.initials}</span>
+                        </div>
+                    </label>
+                </div>
+                </c:forEach>
+            </div>
             <div class="detailHead">
                 <h1 class="font2em" style="margin-left: 5px; vertical-align: middle;">
                     <table>

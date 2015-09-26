@@ -2,7 +2,7 @@ package com.receiptofi.web.controller.access;
 
 import com.google.gson.JsonObject;
 
-import com.receiptofi.domain.UserProfileEntity;
+import com.receiptofi.domain.json.JsonFriend;
 import com.receiptofi.domain.site.ReceiptUser;
 import com.receiptofi.domain.types.FriendConnectionTypeEnum;
 import com.receiptofi.service.FriendService;
@@ -17,7 +17,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -27,7 +26,6 @@ import com.codahale.metrics.annotation.ExceptionMetered;
 import com.codahale.metrics.annotation.Timed;
 
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -46,8 +44,7 @@ import javax.servlet.http.HttpServletResponse;
 public class SplitController {
     private static final Logger LOG = LoggerFactory.getLogger(SplitController.class);
 
-    @Autowired
-    private FriendService friendService;
+    @Autowired private FriendService friendService;
 
     /**
      * Refers to split.jsp
@@ -69,6 +66,8 @@ public class SplitController {
         return nextPage;
     }
 
+    @Timed
+    @ExceptionMetered
     @PreAuthorize ("hasRole('ROLE_USER')")
     @RequestMapping (
             value = "/friend",
@@ -115,6 +114,8 @@ public class SplitController {
         return jsonObject.toString();
     }
 
+    @Timed
+    @ExceptionMetered
     @PreAuthorize ("hasRole('ROLE_USER')")
     @RequestMapping (
             value = "/unfriend",

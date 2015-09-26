@@ -37,6 +37,14 @@
             </c:choose>
         });
         </c:if>
+
+        $(document).ready(function () {
+            "use strict";
+
+            $("#friend_title_id").removeClass("temp_offset");
+            $("#friend_id").removeClass("temp_offset");
+            $("#friend_awaiting_id").removeClass("temp_offset");
+        });
     </script>
 </head>
 <body>
@@ -95,10 +103,10 @@
             </div>
 
             <div id="tabs-2" class="ajx-content report_my">
-                <h1 class="h1">FRIENDS</h1>
-                <hr>
+                <h1 class="h1 temp_offset" id="friend_title_id">FRIENDS</h1>
+                <hr class="temp_offset">
 
-                <div class="down_form" style="width: 45%">
+                <div class="down_form temp_offset" id="friend_id" style="width: 45%">
                     <h2 class="h2" style="padding-bottom:2%; text-decoration: underline;">Connected</h2>
 
                     <div id="friends">
@@ -136,7 +144,7 @@
                     </div>
                 </div>
 
-                <div class="down_form" style="width: 50%">
+                <div class="down_form temp_offset" id="friend_awaiting_id" style="width: 50%">
                     <c:if test="${!empty splitForm.awaitingProfiles}">
                     <h2 class="h2" style="padding-bottom:2%; text-decoration: underline;">Awaiting Acceptance</h2>
 
@@ -202,10 +210,10 @@
                                 </c:when>
                                 <c:otherwise>
                                     <c:choose>
-                                        <c:when test="${profile.provider.name().equals('FACEBOOK')}">
+                                        <c:when test="${profile.provider.equals('FACEBOOK')}">
                                             <span class="fa fa-facebook social-awesome-icon" style="vertical-align: middle; background: #3B5998; color: #ffffff; padding: 3px;"></span> sign up pending
                                         </c:when>
-                                        <c:when test="${profile.provider.name().equals('GOOGLE')}">
+                                        <c:when test="${profile.provider.equals('GOOGLE')}">
                                             <span class="fa fa-google-plus social-awesome-icon" style="vertical-align: middle; background: #dd4b39; color: #ffffff; padding: 3px;"></span> sign up pending
                                         </c:when>
                                         <c:otherwise>

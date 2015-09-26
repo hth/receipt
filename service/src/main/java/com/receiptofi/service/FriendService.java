@@ -1,8 +1,12 @@
 package com.receiptofi.service;
 
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
+
 import com.receiptofi.domain.FriendEntity;
 import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.domain.json.JsonAwaitingAcceptance;
+import com.receiptofi.domain.json.JsonFriend;
 import com.receiptofi.repository.FriendManager;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +16,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 /**
  * User: hitender
@@ -25,8 +31,22 @@ import java.util.Set;
 })
 @Service
 public class FriendService {
-    @Autowired private FriendManager friendManager;
-    @Autowired private UserProfilePreferenceService userProfilePreferenceService;
+    private static final int SIZE_1000 = 1_000;
+    private final Cache<String, List<JsonFriend>> friends;
+
+    private FriendManager friendManager;
+    private UserProfilePreferenceService userProfilePreferenceService;
+
+    @Autowired
+    public FriendService(FriendManager friendManager, UserProfilePreferenceService userProfilePreferenceService) {
+        friends = CacheBuilder.newBuilder()
+                .maximumSize(SIZE_1000)
+                .expireAfterWrite(30, TimeUnit.MINUTES)
+                .build();
+
+        this.friendManager = friendManager;
+        this.userProfilePreferenceService = userProfilePreferenceService;
+    }
 
     public void save(FriendEntity friend) {
         friendManager.save(friend);
@@ -66,6 +86,7 @@ public class FriendService {
 
         List<FriendEntity> friends = friendManager.findPendingFriends(rid);
         for (FriendEntity friend : friends) {
+            /** Find by FID. */
             UserProfileEntity userProfile = userProfilePreferenceService.forProfilePreferenceFindByReceiptUserId(friend.getFriendUserId());
             JsonAwaitingAcceptance jsonAwaitingAcceptance = new JsonAwaitingAcceptance(friend, userProfile);
             jsonAwaitingAcceptances.add(jsonAwaitingAcceptance);
@@ -79,6 +100,7 @@ public class FriendService {
 
         List<FriendEntity> friends = friendManager.findAwaitingFriends(rid);
         for (FriendEntity friend : friends) {
+            /** Find by RID. */
             UserProfileEntity userProfile = userProfilePreferenceService.forProfilePreferenceFindByReceiptUserId(friend.getReceiptUserId());
             JsonAwaitingAcceptance jsonAwaitingAcceptance = new JsonAwaitingAcceptance(friend, userProfile);
             jsonAwaitingAcceptances.add(jsonAwaitingAcceptance);
@@ -113,5 +135,16 @@ public class FriendService {
     public boolean unfriend(String receiptUserId, String mail) {
         UserProfileEntity userProfile = userProfilePreferenceService.findByEmail(mail);
         return friendManager.unfriend(receiptUserId, userProfile.getReceiptUserId());
+    }
+
+    public List<JsonFriend> getFriends(String rid) {
+        List<JsonFriend> jsonFriends = friends.getIfPresent(rid);
+        if (jsonFriends == null) {
+            jsonFriends = new ArrayList<>();
+            List<UserProfileEntity> userProfiles = getActiveConnections(rid);
+            jsonFriends.addAll(userProfiles.stream().map(JsonFriend::new).collect(Collectors.toList()));
+            friends.put(rid, jsonFriends);
+        }
+        return jsonFriends;
     }
 }
