@@ -15,6 +15,7 @@ import com.receiptofi.domain.json.JsonReceiptItem;
 import com.receiptofi.domain.site.ReceiptUser;
 import com.receiptofi.repository.BizNameManager;
 import com.receiptofi.service.ExpensesService;
+import com.receiptofi.service.FriendService;
 import com.receiptofi.service.ItemService;
 import com.receiptofi.service.ReceiptService;
 import com.receiptofi.utils.ParseJsonStringToMap;
@@ -71,6 +72,7 @@ public class ReceiptController {
     @Autowired private ItemService itemService;
     @Autowired private BizNameManager bizNameManager;
     @Autowired private ExpensesService expensesService;
+    @Autowired private FriendService friendService;
 
     @RequestMapping (value = "/{receiptId}", method = RequestMethod.GET)
     public String loadForm(
@@ -93,6 +95,7 @@ public class ReceiptController {
             receiptForm.setReceipt(receipt);
             receiptForm.setItems(items);
             receiptForm.setExpenseTags(expenseTags);
+            receiptForm.setJsonFriends(friendService.getFriends(receiptUser.getRid()));
             LOG.debug("receiptForm={}", receiptForm);
         }
         return nextPage;

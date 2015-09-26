@@ -44,8 +44,7 @@ import javax.servlet.http.HttpServletResponse;
 public class SplitController {
     private static final Logger LOG = LoggerFactory.getLogger(SplitController.class);
 
-    @Autowired
-    private FriendService friendService;
+    @Autowired private FriendService friendService;
 
     /**
      * Refers to split.jsp
@@ -135,20 +134,5 @@ public class SplitController {
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty(LandingController.SUCCESS, friendService.unfriend(receiptUser.getRid(), mail));
         return jsonObject.toString();
-    }
-
-    @Timed
-    @ExceptionMetered
-    @PreAuthorize ("hasRole('ROLE_USER')")
-    @RequestMapping (
-            value = "/friends",
-            method = RequestMethod.GET,
-            headers = "Accept=application/json",
-            produces = "application/json"
-    )
-    @ResponseBody
-    public List<JsonFriend> getFriends(HttpServletResponse httpServletResponse) {
-        ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return friendService.getFriends(receiptUser.getRid());
     }
 }

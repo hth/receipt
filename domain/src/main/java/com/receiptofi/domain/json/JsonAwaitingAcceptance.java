@@ -65,21 +65,21 @@ public class JsonAwaitingAcceptance {
     public JsonAwaitingAcceptance(FriendEntity friend, UserProfileEntity userProfile) {
         if (userProfile == null) {
             LOG.error("UserProfile cannot be null rid={} fid={}", friend.getReceiptUserId(), friend.getFriendUserId());
+        } else {
+            this.initials = userProfile.getInitials();
+            this.name = userProfile.getName();
+            this.email = userProfile.getEmail();
+            this.provider = userProfile.getProviderId() == null ? "" : userProfile.getProviderId().name();
+            this.active = userProfile.isActive();
         }
 
         if (friend == null) {
             LOG.error("Friend cannot be null");
+        } else {
+            this.created = friend.getCreated();
+            this.id = friend.getId();
+            this.authKey = friend.getAuthenticationKey();
         }
-
-        this.created = friend.getCreated();
-        this.id = friend.getId();
-        this.authKey = friend.getAuthenticationKey();
-
-        this.initials = userProfile.getInitials();
-        this.name = userProfile.getName();
-        this.email = userProfile.getEmail();
-        this.provider = userProfile.getProviderId() == null ? "" : userProfile.getProviderId().name();
-        this.active = userProfile.isActive();
     }
 
     public String getId() {

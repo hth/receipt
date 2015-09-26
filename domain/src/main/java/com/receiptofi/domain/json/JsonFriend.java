@@ -36,8 +36,36 @@ public class JsonFriend {
     @JsonProperty ("in")
     private String initials;
 
+    @JsonProperty ("na")
+    private String name;
+
     public JsonFriend(UserProfileEntity userProfile) {
         this.rid = userProfile.getReceiptUserId();
         this.initials = userProfile.getInitials();
+        this.name = userProfile.getName();
+    }
+
+    public String getRid() {
+        return rid;
+    }
+
+    public void setRid(String rid) {
+        this.rid = rid;
+    }
+
+    public String getInitials() {
+        return initials;
+    }
+
+    public void setInitials(String initials) {
+        this.initials = initials;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }
