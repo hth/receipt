@@ -57,13 +57,13 @@ public class JsonAwaitingAcceptance {
     private String email;
 
     @JsonProperty ("pr")
-    private String provider;
+    private String provider = "";
 
     @JsonProperty ("a")
     private boolean active;
 
     public JsonAwaitingAcceptance(FriendEntity friend, UserProfileEntity userProfile) {
-        if (userProfile == null) {
+        if (null == userProfile) {
             LOG.error("UserProfile cannot be null rid={} fid={}", friend.getReceiptUserId(), friend.getFriendUserId());
         } else {
             this.initials = userProfile.getInitials();
@@ -73,7 +73,7 @@ public class JsonAwaitingAcceptance {
             this.active = userProfile.isActive();
         }
 
-        if (friend == null) {
+        if (null == friend) {
             LOG.error("Friend cannot be null");
         } else {
             this.created = friend.getCreated();
