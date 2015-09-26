@@ -125,7 +125,12 @@ public class FriendService {
     }
 
     public boolean updateResponse(String id, String authenticationKey, boolean acceptConnection, String rid) {
-        return friendManager.updateResponse(id, authenticationKey, acceptConnection, rid);
+        boolean response = friendManager.updateResponse(id, authenticationKey, acceptConnection, rid);
+        if (response) {
+            /** Do a refresh on friends after changes. */
+            updateJsonFriends(rid);
+        }
+        return response;
     }
 
     public boolean cancelInvite(String id, String authenticationKey) {
@@ -140,11 +145,18 @@ public class FriendService {
     public List<JsonFriend> getFriends(String rid) {
         List<JsonFriend> jsonFriends = friends.getIfPresent(rid);
         if (jsonFriends == null) {
-            jsonFriends = new ArrayList<>();
-            List<UserProfileEntity> userProfiles = getActiveConnections(rid);
-            jsonFriends.addAll(userProfiles.stream().map(JsonFriend::new).collect(Collectors.toList()));
-            friends.put(rid, jsonFriends);
+            jsonFriends = updateJsonFriends(rid);
         }
+        return jsonFriends;
+    }
+
+    private List<JsonFriend> updateJsonFriends(String rid) {
+        List<UserProfileEntity> userProfiles = getActiveConnections(rid);
+
+        List<JsonFriend> jsonFriends = new ArrayList<>();
+        jsonFriends.addAll(userProfiles.stream().map(JsonFriend::new).collect(Collectors.toList()));
+
+        friends.put(rid, jsonFriends);
         return jsonFriends;
     }
 }
