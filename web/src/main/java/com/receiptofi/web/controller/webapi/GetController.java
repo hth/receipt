@@ -44,8 +44,11 @@ public class GetController {
             produces = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"
     )
     public String get(
-            @RequestHeader ("X-R-API-MOBILE") String apiAccessToken,
-            HttpServletResponse httpServletResponse) throws IOException {
+            @RequestHeader ("X-R-API-MOBILE")
+            String apiAccessToken,
+
+            HttpServletResponse httpServletResponse
+    ) throws IOException {
         LOG.debug("CSRF invoked to create token for Mobile");
         if (webApiAccessToken.equals(apiAccessToken)) {
             return "{}";
