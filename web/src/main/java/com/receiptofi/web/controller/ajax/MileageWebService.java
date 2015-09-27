@@ -75,7 +75,12 @@ public class MileageWebService {
             value = "/m.json",
             method = RequestMethod.POST,
             produces = "application/json")
-    public String merge(@RequestBody String ids, HttpServletResponse httpServletResponse) throws IOException {
+    public String merge(
+            @RequestBody
+            String ids,
+
+            HttpServletResponse httpServletResponse
+    ) throws IOException {
         if (ids.length() > 0) {
             try {
                 Map<String, ScrubbedInput> map = ParseJsonStringToMap.jsonStringToMap(ids);
@@ -107,7 +112,12 @@ public class MileageWebService {
             value = "/s.json",
             method = RequestMethod.POST,
             produces = "application/json")
-    public String split(@RequestBody String id, HttpServletResponse httpServletResponse) throws IOException {
+    public String split(
+            @RequestBody
+            String id,
+
+            HttpServletResponse httpServletResponse
+    ) throws IOException {
         if (id.length() > 0) {
             try {
                 List<MileageEntity> mileageEntities = mileageService.split(
@@ -137,7 +147,12 @@ public class MileageWebService {
             value = "/msd",
             method = RequestMethod.POST,
             headers = "Accept=application/json")
-    public String updateMileageStartDate(@RequestBody String mileageInfo, HttpServletResponse httpServletResponse) throws IOException {
+    public String updateMileageStartDate(
+            @RequestBody
+            String mileageInfo,
+
+            HttpServletResponse httpServletResponse
+    ) throws IOException {
         if (mileageInfo.length() > 0) {
             Map<String, ScrubbedInput> map = ParseJsonStringToMap.jsonStringToMap(mileageInfo);
             try {
@@ -177,7 +192,12 @@ public class MileageWebService {
             value = "/med",
             method = RequestMethod.POST,
             headers = "Accept=application/json")
-    public String updateMileageEndDate(@RequestBody String mileageInfo, HttpServletResponse httpServletResponse) throws IOException {
+    public String updateMileageEndDate(
+            @RequestBody
+            String mileageInfo,
+
+            HttpServletResponse httpServletResponse
+    ) throws IOException {
 
 //        HttpHeaders responseHeaders = new HttpHeaders();
 //        responseHeaders.add("Content-Type", "application/json;charset=UTF-8");

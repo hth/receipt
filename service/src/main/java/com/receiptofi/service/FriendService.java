@@ -71,8 +71,8 @@ public class FriendService {
         }
         friendIds.remove(rid);
 
-        for (String id : friendIds) {
-            UserProfileEntity userProfile = userProfilePreferenceService.forProfilePreferenceFindByReceiptUserId(id);
+        for (String fid : friendIds) {
+            UserProfileEntity userProfile = userProfilePreferenceService.forProfilePreferenceFindByReceiptUserId(fid);
             if (null != userProfile) {
                 userProfiles.add(userProfile);
             }
