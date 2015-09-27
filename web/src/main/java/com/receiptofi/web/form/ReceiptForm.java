@@ -24,6 +24,7 @@ public final class ReceiptForm {
     private List<ItemEntity> items;
     private List<ExpenseTagEntity> expenseTags;
     private List<JsonFriend> jsonFriends;
+    private List<JsonFriend> jsonSplitFriends;
 
     /** Used for showing error messages to user when the request action fails to execute */
     private String errorMessage;
@@ -31,25 +32,6 @@ public final class ReceiptForm {
     /** Need for bean instantiation */
     @SuppressWarnings("unused")
     private ReceiptForm() {
-    }
-
-    private ReceiptForm(
-            ReceiptEntity receipt,
-            List<ItemEntity> items,
-            List<ExpenseTagEntity> expenseTags,
-            List<JsonFriend> jsonFriends) {
-        this.receipt = receipt;
-        this.items = items;
-        this.expenseTags = expenseTags;
-        this.jsonFriends = jsonFriends;
-    }
-
-    public static ReceiptForm newInstance(
-            ReceiptEntity receipt,
-            List<ItemEntity> items,
-            List<ExpenseTagEntity> expenseTags,
-            List<JsonFriend> jsonFriends) {
-        return new ReceiptForm(receipt, items, expenseTags, jsonFriends);
     }
 
     public ReceiptEntity getReceipt() {
@@ -82,6 +64,14 @@ public final class ReceiptForm {
 
     public void setJsonFriends(List<JsonFriend> jsonFriends) {
         this.jsonFriends = jsonFriends;
+    }
+
+    public List<JsonFriend> getJsonSplitFriends() {
+        return jsonSplitFriends;
+    }
+
+    public void setJsonSplitFriends(List<JsonFriend> jsonSplitFriends) {
+        this.jsonSplitFriends = jsonSplitFriends;
     }
 
     public String getErrorMessage() {
