@@ -369,16 +369,31 @@
                     <spring:eval expression="receiptForm.receipt.bizStore.phoneFormatted"/>
                 </p>
             </div>
-            <div id="friends">
-                <c:forEach var="friend" items="${receiptForm.jsonFriends}" varStatus="status">
-                <div class="row_field" id="${friend.rid}">
-                    <label class="profile_label" style="!important; color: #606060; !important; font-weight: normal; !important; line-height: 30px; width: 360px;">
-                        <div class="member" style="background-color: #00529B">
+            <div class="row_field">
+                <label class="profile_label" style="!important; color: #606060; !important; font-weight: normal; !important; line-height: 30px; width: 360px;">
+                    <span style="float: left; vertical-align: middle; width: 65px;">Splits:&nbsp;&nbsp;</span>
+                    <div id="splits">
+                        <c:forEach var="friend" items="${receiptForm.jsonSplitFriends}" varStatus="status">
+                        <div class="member" style="background-color: #00529B" id="${friend.rid}"
+                                onclick="updateReceiptSplit('${friend.rid}', '${receiptForm.receipt.id}');">
                             <span class="member-initials">${friend.initials}</span>
                         </div>
-                    </label>
-                </div>
-                </c:forEach>
+                        </c:forEach>
+                    </div>
+                </label>
+            </div>
+            <div class="row_field">
+                <label class="profile_label" style="!important; color: #606060; !important; font-weight: normal; !important; line-height: 30px; width: 360px;">
+                    <span style="float: left; vertical-align: middle; width: 65px;">Friends: </span>
+                    <div id="friends">
+                        <c:forEach var="friend" items="${receiptForm.jsonFriends.values()}" varStatus="status">
+                        <div class="member" style="background-color: #00529B" id="${friend.rid}"
+                                onclick="updateReceiptSplit('${friend.rid}', '${receiptForm.receipt.id}');">
+                            <span class="member-initials">${friend.initials}</span>
+                        </div>
+                        </c:forEach>
+                    </div>
+                </label>
             </div>
             <div class="detailHead">
                 <h1 class="font2em" style="margin-left: 5px; vertical-align: middle;">
@@ -393,7 +408,7 @@
                             </a>
                         </td>
                         <td width="170px">
-                            <span class="colorblue right"><spring:eval expression="receiptForm.receipt.total" /></span>
+                            <span class="colorblue right" id="my_total"><spring:eval expression="receiptForm.receipt.splitTotal" /></span>
                         </td>
                     </tr>
                     </table>

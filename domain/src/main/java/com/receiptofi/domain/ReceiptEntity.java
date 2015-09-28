@@ -6,10 +6,14 @@ package com.receiptofi.domain;
 import com.receiptofi.domain.types.BilledStatusEnum;
 import com.receiptofi.domain.types.DocumentStatusEnum;
 import com.receiptofi.utils.HashText;
+import com.receiptofi.utils.Maths;
 
 import org.apache.commons.lang3.StringUtils;
 
 import org.joda.time.DateTime;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
@@ -47,6 +51,7 @@ import javax.validation.constraints.NotNull;
         @CompoundIndex (name = "receipt_expense_Report", def = "{'EXF': -1}", background = true)
 })
 public class ReceiptEntity extends BaseEntity {
+    private static final Logger LOG = LoggerFactory.getLogger(ReceiptEntity.class);
 
     @NotNull
     @Field ("DS")
@@ -134,6 +139,10 @@ public class ReceiptEntity extends BaseEntity {
     @NotNull
     @Field ("BS")
     private BilledStatusEnum billedStatus = BilledStatusEnum.NB;
+
+    /** Defaults being shared with self hence 1. */
+    @Field ("SC")
+    private int splitCount = 1;
 
     /** To keep bean happy. */
     public ReceiptEntity() {
@@ -363,6 +372,34 @@ public class ReceiptEntity extends BaseEntity {
 
     public void setBilledStatus(BilledStatusEnum billedStatus) {
         this.billedStatus = billedStatus;
+    }
+
+    public int getSplitCount() {
+        return splitCount;
+    }
+
+    public void increaseSplitCount() {
+        //TODO add cron job to confirm if the number of users split with is matching the SplitExpenses count
+        this.splitCount++;
+    }
+
+    public void decreaseSplitCount() {
+        if (splitCount > 1) {
+            this.splitCount--;
+        } else {
+            LOG.error("Split expenses count going below 1 rid={} id={}", receiptUserId, id);
+        }
+    }
+
+    @Transient
+    @NotNull
+    @NumberFormat (style = Style.CURRENCY)
+    public Double getSplitTotal() {
+        if (getSplitCount() > 1) {
+            return Maths.divide(getTotal(), getSplitCount()).doubleValue();
+        } else {
+            return getTotal();
+        }
     }
 
     @Transient

@@ -7,17 +7,21 @@ import com.google.gson.JsonObject;
 
 import com.receiptofi.domain.BizNameEntity;
 import com.receiptofi.domain.ExpenseTagEntity;
+import com.receiptofi.domain.FriendEntity;
 import com.receiptofi.domain.ItemEntity;
 import com.receiptofi.domain.ReceiptEntity;
+import com.receiptofi.domain.SplitExpensesEntity;
 import com.receiptofi.domain.json.JsonExpenseTag;
 import com.receiptofi.domain.json.JsonReceipt;
 import com.receiptofi.domain.json.JsonReceiptItem;
 import com.receiptofi.domain.site.ReceiptUser;
+import com.receiptofi.domain.types.SplitActionEnum;
 import com.receiptofi.repository.BizNameManager;
 import com.receiptofi.service.ExpensesService;
 import com.receiptofi.service.FriendService;
 import com.receiptofi.service.ItemService;
 import com.receiptofi.service.ReceiptService;
+import com.receiptofi.service.SplitExpensesService;
 import com.receiptofi.utils.ParseJsonStringToMap;
 import com.receiptofi.utils.ScrubbedInput;
 import com.receiptofi.web.form.ReceiptByBizForm;
@@ -32,6 +36,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -39,6 +44,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.io.IOException;
@@ -46,6 +52,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author hitender
@@ -73,6 +81,7 @@ public class ReceiptController {
     @Autowired private BizNameManager bizNameManager;
     @Autowired private ExpensesService expensesService;
     @Autowired private FriendService friendService;
+    @Autowired private SplitExpensesService splitExpensesService;
 
     @RequestMapping (value = "/{receiptId}", method = RequestMethod.GET)
     public String loadForm(
@@ -96,6 +105,15 @@ public class ReceiptController {
             receiptForm.setItems(items);
             receiptForm.setExpenseTags(expenseTags);
             receiptForm.setJsonFriends(friendService.getFriends(receiptUser.getRid()));
+
+            if (receipt.getSplitCount() > 1) {
+                receiptForm.setJsonSplitFriends(splitExpensesService.populateProfileOfFriends(
+                        receipt.getId(),
+                        receipt.getReceiptUserId(),
+                        receiptForm.getJsonFriends()
+                ));
+            }
+
             LOG.debug("receiptForm={}", receiptForm);
         }
         return nextPage;
@@ -140,7 +158,10 @@ public class ReceiptController {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")
     @ResponseBody
-    public String deleteExpenseTag(@RequestBody String body) throws IOException {
+    public String deleteExpenseTag(
+            @RequestBody
+            String body
+    ) throws IOException {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         Map<String, ScrubbedInput> map = ParseJsonStringToMap.jsonStringToMap(body);
@@ -172,7 +193,10 @@ public class ReceiptController {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")
     @ResponseBody
-    public String recheck(@RequestBody String body) throws IOException {
+    public String recheck(
+            @RequestBody
+            String body
+    ) throws IOException {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         Map<String, ScrubbedInput> map = ParseJsonStringToMap.jsonStringToMap(body);
@@ -228,5 +252,72 @@ public class ReceiptController {
         }
 
         return nextPageByBiz;
+    }
+
+    @PreAuthorize ("hasRole('ROLE_USER')")
+    @RequestMapping (
+            value = "/split",
+            method = RequestMethod.POST,
+            headers = "Accept=" + MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")
+    @ResponseBody
+    public String split(
+            @RequestParam ("fid")
+            ScrubbedInput fid,
+
+            @RequestParam ("receiptId")
+            ScrubbedInput receiptId,
+
+            @RequestParam ("splitAction")
+            SplitActionEnum splitAction,
+
+            HttpServletResponse httpServletResponse
+    ) throws IOException {
+        ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        LOG.debug("Receipt id={} fid={} splitAction={}", receiptId, fid, splitAction);
+
+        boolean result = false;
+        Double splitTotal = 0.00;
+
+        String rid = receiptUser.getRid();
+        ReceiptEntity receipt = receiptService.findReceipt(receiptId.getText(), rid);
+        if (null != receipt) {
+            switch (splitAction) {
+                case A:
+                    FriendEntity friend = friendService.getConnection(receiptUser.getRid(), fid.getText());
+                    if (null != friend) {
+                        splitExpensesService.save(new SplitExpensesEntity(receipt, friend));
+                        receipt.increaseSplitCount();
+                        receiptService.save(receipt);
+                        result = true;
+                    } else {
+                        LOG.error("No friend found fid={} rid={} skipping split", fid, rid);
+                    }
+                    break;
+                case R:
+                    if (splitExpensesService.deleteHard(receiptId.getText(), receipt.getReceiptUserId(), fid.getText())) {
+                        receipt.decreaseSplitCount();
+                        receiptService.save(receipt);
+                        result = true;
+                    }
+                    break;
+            }
+            splitTotal = receipt.getSplitTotal();
+        }
+
+        JsonObject jsonObject = new JsonObject();
+        try {
+            jsonObject.addProperty("result", result);
+            if (result) {
+                jsonObject.addProperty("splitTotal", splitTotal);
+            }
+            /** Success message is set in JS. */
+        } catch (Exception e) {
+            LOG.error("Error occurred during receipt recheck receiptId={} rid={} reason={}",
+                    receiptId, receiptUser.getRid(), e.getLocalizedMessage(), e);
+
+            jsonObject.addProperty("result", false);
+        }
+        return jsonObject.toString();
     }
 }

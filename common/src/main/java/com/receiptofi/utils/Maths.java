@@ -5,6 +5,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.springframework.util.Assert;
+
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
@@ -133,6 +135,12 @@ public final class Maths {
     public static BigDecimal divide(Double divide, BigDecimal by) {
         BigDecimal total = new BigDecimal(divide.toString());
         return divide(total, by);
+    }
+
+    public static BigDecimal divide(Double divide, int by) {
+        Assert.isTrue(by > 0, "Divide by should be greater than=" + by);
+        BigDecimal total = new BigDecimal(divide.toString());
+        return divide(total, by).setScale(2, 2);
     }
 
     /**

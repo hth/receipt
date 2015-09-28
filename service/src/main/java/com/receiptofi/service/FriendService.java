@@ -13,11 +13,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
 
 /**
  * User: hitender
@@ -32,7 +34,7 @@ import java.util.stream.Collectors;
 @Service
 public class FriendService {
     private static final int SIZE_1000 = 1_000;
-    private final Cache<String, List<JsonFriend>> friends;
+    private final Cache<String, Map<String, JsonFriend>> friends;
 
     private FriendManager friendManager;
     private UserProfilePreferenceService userProfilePreferenceService;
@@ -142,19 +144,21 @@ public class FriendService {
         return friendManager.unfriend(receiptUserId, userProfile.getReceiptUserId());
     }
 
-    public List<JsonFriend> getFriends(String rid) {
-        List<JsonFriend> jsonFriends = friends.getIfPresent(rid);
-        if (jsonFriends == null) {
+    public Map<String, JsonFriend> getFriends(String rid) {
+        Map<String, JsonFriend> jsonFriends = friends.getIfPresent(rid);
+        if (null == jsonFriends) {
             jsonFriends = updateJsonFriends(rid);
         }
         return jsonFriends;
     }
 
-    private List<JsonFriend> updateJsonFriends(String rid) {
+    private Map<String, JsonFriend> updateJsonFriends(String rid) {
         List<UserProfileEntity> userProfiles = getActiveConnections(rid);
 
-        List<JsonFriend> jsonFriends = new ArrayList<>();
-        jsonFriends.addAll(userProfiles.stream().map(JsonFriend::new).collect(Collectors.toList()));
+        Map<String, JsonFriend> jsonFriends = new LinkedHashMap<>();
+        for (UserProfileEntity userProfile : userProfiles) {
+            jsonFriends.put(userProfile.getReceiptUserId(), new JsonFriend(userProfile));
+        }
 
         friends.put(rid, jsonFriends);
         return jsonFriends;

@@ -5,7 +5,9 @@ import com.receiptofi.domain.ItemEntity;
 import com.receiptofi.domain.ReceiptEntity;
 import com.receiptofi.domain.json.JsonFriend;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * User: hitender
@@ -23,14 +25,14 @@ public final class ReceiptForm {
     private ReceiptEntity receipt;
     private List<ItemEntity> items;
     private List<ExpenseTagEntity> expenseTags;
-    private List<JsonFriend> jsonFriends;
+    private Map<String, JsonFriend> jsonFriends;
     private List<JsonFriend> jsonSplitFriends;
 
     /** Used for showing error messages to user when the request action fails to execute */
     private String errorMessage;
 
     /** Need for bean instantiation */
-    @SuppressWarnings("unused")
+    @SuppressWarnings ("unused")
     private ReceiptForm() {
     }
 
@@ -58,12 +60,14 @@ public final class ReceiptForm {
         this.expenseTags = expenseTags;
     }
 
-    public List<JsonFriend> getJsonFriends() {
+    public Map<String, JsonFriend> getJsonFriends() {
         return jsonFriends;
     }
 
-    public void setJsonFriends(List<JsonFriend> jsonFriends) {
-        this.jsonFriends = jsonFriends;
+    public void setJsonFriends(Map<String, JsonFriend> jsonFriends) {
+        /** New instance because modifying this data updates cache containing JsonFriends. */
+        this.jsonFriends = new HashMap<>();
+        this.jsonFriends.putAll(jsonFriends);
     }
 
     public List<JsonFriend> getJsonSplitFriends() {
