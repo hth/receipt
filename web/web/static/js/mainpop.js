@@ -837,3 +837,44 @@ function unfriendRequest(mail, name, id, event) {
         }
     })
 }
+
+function updateReceiptSplit(fid, receiptId) {
+    var parentDiv = $('#' + fid).parent("div").attr("id");
+
+    var splitAction;
+    if (parentDiv === 'friends') {
+        splitAction = 'A';
+        $("#splits").append($('#' + fid));
+    } else if (parentDiv === 'splits') {
+        splitAction = 'R';
+        $("#friends").append($('#' + fid));
+    }
+
+    $.ajax({
+        type: 'POST',
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader(
+                $("meta[name='_csrf_header']").attr("content"),
+                $("meta[name='_csrf']").attr("content")
+            );
+        },
+        url: ctx + "/access/receipt/split.htm",
+        data: {fid: fid, receiptId: receiptId, splitAction: splitAction},
+        success: function (responseData) {
+            if (responseData.result === true) {
+                if (responseData.hasOwnProperty('splitTotal')) {
+                    $('#my_total').html('$' + responseData.splitTotal);
+                }
+            } else if (responseData.result === false) {
+                if (parentDiv === 'splits') {
+                    $("#splits").append($('#' + fid));
+                } else if (parentDiv === 'friends') {
+                    $("#friends").append($('#' + fid));
+                }
+            }
+        },
+        error: function () {
+            console.log("Error during splitting expenses: " + name);
+        }
+    })
+}

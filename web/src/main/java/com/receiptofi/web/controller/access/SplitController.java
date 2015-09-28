@@ -2,10 +2,10 @@ package com.receiptofi.web.controller.access;
 
 import com.google.gson.JsonObject;
 
-import com.receiptofi.domain.json.JsonFriend;
 import com.receiptofi.domain.site.ReceiptUser;
 import com.receiptofi.domain.types.FriendConnectionTypeEnum;
 import com.receiptofi.service.FriendService;
+import com.receiptofi.utils.ScrubbedInput;
 import com.receiptofi.web.form.SplitForm;
 
 import org.slf4j.Logger;
@@ -24,8 +24,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.codahale.metrics.annotation.ExceptionMetered;
 import com.codahale.metrics.annotation.Timed;
-
-import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -56,7 +54,10 @@ public class SplitController {
     @ExceptionMetered
     @PreAuthorize ("hasRole('ROLE_USER')")
     @RequestMapping (method = RequestMethod.GET)
-    public String loadForm(@ModelAttribute ("splitForm") SplitForm splitForm) {
+    public String loadForm(
+            @ModelAttribute ("splitForm")
+            SplitForm splitForm
+    ) {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         splitForm.setActiveProfiles(friendService.getActiveConnections(receiptUser.getRid()));
@@ -78,10 +79,10 @@ public class SplitController {
     @ResponseBody
     public String friendAccept(
             @RequestParam ("id")
-            String id,
+            ScrubbedInput id,
 
             @RequestParam ("auth")
-            String auth,
+            ScrubbedInput auth,
 
             @RequestParam ("ct")
             FriendConnectionTypeEnum friendConnectionType,
@@ -94,15 +95,15 @@ public class SplitController {
         switch (friendConnectionType) {
             case A:
                 /** Accept connection. */
-                response = friendService.updateResponse(id, auth, true, receiptUser.getRid());
+                response = friendService.updateResponse(id.getText(), auth.getText(), true, receiptUser.getRid());
                 break;
             case C:
                 /** Cancel invitation to friend by removing AUTH id. */
-                response = friendService.cancelInvite(id, auth);
+                response = friendService.cancelInvite(id.getText(), auth.getText());
                 break;
             case D:
                 /** Decline connection. */
-                response = friendService.updateResponse(id, auth, false, receiptUser.getRid());
+                response = friendService.updateResponse(id.getText(), auth.getText(), false, receiptUser.getRid());
                 break;
             default:
                 LOG.error("FriendConnectionType={} not defined", friendConnectionType);
@@ -126,13 +127,13 @@ public class SplitController {
     @ResponseBody
     public String unfriend(
             @RequestParam ("mail")
-            String mail,
+            ScrubbedInput mail,
 
             HttpServletResponse httpServletResponse
     ) {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty(LandingController.SUCCESS, friendService.unfriend(receiptUser.getRid(), mail));
+        jsonObject.addProperty(LandingController.SUCCESS, friendService.unfriend(receiptUser.getRid(), mail.getText()));
         return jsonObject.toString();
     }
 }
