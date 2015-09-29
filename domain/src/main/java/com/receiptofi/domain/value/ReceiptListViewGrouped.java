@@ -34,6 +34,10 @@ public class ReceiptListViewGrouped {
     @NumberFormat (style = NumberFormat.Style.CURRENCY)
     private Double splitTotal;
 
+    /** Defaults being shared with self hence 1. */
+    @Field ("SC")
+    private int splitCount = 1;
+
     @DBRef (lazy = false)
     @Field ("EXPENSE_TAG")
     private ExpenseTagEntity expenseTag;
@@ -75,6 +79,14 @@ public class ReceiptListViewGrouped {
 
     public void setSplitTotal(Double splitTotal) {
         this.splitTotal = splitTotal;
+    }
+
+    public int getSplitCount() {
+        return splitCount;
+    }
+
+    public void setSplitCount(int splitCount) {
+        this.splitCount = splitCount;
     }
 
     public ExpenseTagEntity getExpenseTag() {

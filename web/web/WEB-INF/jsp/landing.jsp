@@ -303,14 +303,36 @@
                         <c:forEach var="receipt" items="${landingForm.receiptForMonth.receipts}" varStatus="status">
                         <li>
                             <c:choose>
-                                <c:when test="${!empty receipt.expenseReportInFS}">
+                                <c:when test="${!empty receipt.expenseReportInFS or receipt.splitCount gt 1}">
                                     <span class="rightside-li-date-text rightside-li-date-text-short"><fmt:formatDate value="${receipt.date}" pattern="MMM. dd"/></span>
-                                    <p class="rightside-li-date-text rightside-li-date-text-show-attr" align="center">
-                                        <a href='${pageContext.request.contextPath}/access/filedownload/expensofi/${receipt.id}.htm' style="margin-top: -2px;">
-                                            <img src='${pageContext.request.contextPath}/static/images/download_icon_lg.png'
-                                                    width='15' height='16' title='Download Expense Report' class='downloadIcon'>
-                                        </a>
-                                    </p>
+                                    <c:choose>
+                                        <c:when test="${!empty receipt.expenseReportInFS and receipt.splitCount gt 1}">
+                                            <p class="rightside-li-date-text rightside-li-date-text-show-attr" align="center">
+                                                <a href='${pageContext.request.contextPath}/access/filedownload/expensofi/${receipt.id}.htm' style="margin-top: -2px;">
+                                                    <img src='${pageContext.request.contextPath}/static/images/download_icon_lg.png'
+                                                            width='15' height='16' title='Download Expense Report' class='downloadIcon'>
+                                                </a>
+                                                <span class="member" style="background-color: #00529B; width: 20px; height: 20px; margin-top: 15px;">
+                                                    <span class="member-initials" style="line-height: 20px;">+</span>
+                                                </span>
+                                            </p>
+                                        </c:when>
+                                        <c:when test="${!empty receipt.expenseReportInFS}">
+                                            <p class="rightside-li-date-text rightside-li-date-text-show-attr" align="center">
+                                                <a href='${pageContext.request.contextPath}/access/filedownload/expensofi/${receipt.id}.htm' style="margin-top: -2px;">
+                                                    <img src='${pageContext.request.contextPath}/static/images/download_icon_lg.png'
+                                                            width='15' height='16' title='Download Expense Report' class='downloadIcon'>
+                                                </a>
+                                            </p>
+                                        </c:when>
+                                        <c:when test="${!empty receipt.splitCount}">
+                                            <p class="rightside-li-date-text rightside-li-date-text-show-attr" align="center">
+                                                <span class="member" style="background-color: #00529B; width: 20px; height: 20px; margin-top: 3px;">
+                                                    <span class="member-initials" style="line-height: 20px;">+</span>
+                                                </span>
+                                            </p>
+                                        </c:when>
+                                    </c:choose>
                                 </c:when>
                                 <c:otherwise>
                                     <span class="rightside-li-date-text"><fmt:formatDate value="${receipt.date}" pattern="MMMM dd, yyyy"/></span>

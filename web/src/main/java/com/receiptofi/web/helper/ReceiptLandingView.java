@@ -34,6 +34,7 @@ public final class ReceiptLandingView {
 
     @NumberFormat (style = NumberFormat.Style.CURRENCY)
     private Double splitTotal;
+    private int splitCount;
 
     private String userProfileId;
     private String bizNameForId;
@@ -46,6 +47,7 @@ public final class ReceiptLandingView {
         id = receipt.getId();
         name = receipt.getBizName().getBusinessName();
         date = receipt.getReceiptDate();
+        splitCount = receipt.getSplitCount();
         splitTax = receipt.getSplitTax();
         splitTotal = receipt.getSplitTotal();
         userProfileId = receipt.getReceiptUserId();
@@ -86,6 +88,14 @@ public final class ReceiptLandingView {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public int getSplitCount() {
+        return splitCount;
+    }
+
+    public void setSplitCount(int splitCount) {
+        this.splitCount = splitCount;
     }
 
     public Double getSplitTax() {

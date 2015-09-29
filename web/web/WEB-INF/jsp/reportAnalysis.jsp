@@ -113,7 +113,19 @@
                 <ul>
                     <c:forEach var="receipt" items="${receipts.receiptListViewGroupedList}"  varStatus="status">
                     <li>
-                        <span class="rightside-li-date-text"><fmt:formatDate value="${receipt.date}" pattern="MMMM dd, yyyy"/></span>
+                        <c:choose>
+                            <c:when test="${receipt.splitCount gt 1}">
+                                <span class="rightside-li-date-text rightside-li-date-text-short"><fmt:formatDate value="${receipt.date}" pattern="MMM. dd"/></span>
+                                <p class="rightside-li-date-text rightside-li-date-text-show-attr" align="center">
+                                <span class="member" style="background-color: #00529B; width: 20px; height: 20px; margin-top: 3px;">
+                                    <span class="member-initials" style="line-height: 20px;">+</span>
+                                </span>
+                                </p>
+                            </c:when>
+                            <c:otherwise>
+                                <span class="rightside-li-date-text"><fmt:formatDate value="${receipt.date}" pattern="MMMM dd, yyyy"/></span>
+                            </c:otherwise>
+                        </c:choose>
                         <span style="background-color: ${receipt.expenseColor}" title="${receipt.expenseTagName}">&nbsp;&nbsp;&nbsp;</span>
                         <c:choose>
                         <c:when test="${receipt.billedStatus eq 'NB'}">
