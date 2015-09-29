@@ -1,6 +1,5 @@
 package com.receiptofi.service;
 
-import static com.receiptofi.domain.types.DocumentStatusEnum.DUPLICATE;
 import static com.receiptofi.domain.types.DocumentStatusEnum.PENDING;
 import static com.receiptofi.domain.types.DocumentStatusEnum.PROCESSED;
 import static com.receiptofi.domain.types.DocumentStatusEnum.REJECT;
@@ -347,30 +346,33 @@ public class DocumentUpdateService {
     ) {
         DocumentEntity document = loadActiveDocumentById(documentId);
         try {
-            document.setDocumentStatus(REJECT);
-            document.setDocumentRejectReason(documentRejectReason);
-            document.setNotifyUser(false);
-            document.setDocumentOfType(documentOfType);
-            document.setBizName(null);
-            document.setBizStore(null);
-            document.inActive();
-            document.addProcessedBy(new Date(), technicianId);
-            document.markAsDeleted();
-            documentManager.save(document);
+            if (null == document) {
+                LOG.warn("Rejected inactive or not found document id={} technicianId={}", documentId, technicianId);
+            } else {
+                document.setDocumentStatus(REJECT);
+                document.setDocumentRejectReason(documentRejectReason);
+                document.setNotifyUser(false);
+                document.setDocumentOfType(documentOfType);
+                document.setBizName(null);
+                document.setBizStore(null);
+                document.inActive();
+                document.addProcessedBy(new Date(), technicianId);
+                document.markAsDeleted();
+                documentManager.save(document);
 
-            updateMessageWithDocumentChanges(document);
-            itemOCRManager.deleteWhereReceipt(document);
+                updateMessageWithDocumentChanges(document);
+                itemOCRManager.deleteWhereReceipt(document);
 
-            fileSystemService.deleteSoft(document.getFileSystemEntities());
-            storageManager.deleteSoft(document.getFileSystemEntities());
-            GridFSDBFile gridFSDBFile = storageManager.get(document.getFileSystemEntities().iterator().next().getBlobId());
-            DBObject dbObject = gridFSDBFile.getMetaData();
+                fileSystemService.deleteSoft(document.getFileSystemEntities());
+                storageManager.deleteSoft(document.getFileSystemEntities());
+                GridFSDBFile gridFSDBFile = storageManager.get(document.getFileSystemEntities().iterator().next().getBlobId());
+                DBObject dbObject = gridFSDBFile.getMetaData();
 
-            notificationService.addNotification(
-                    getNotificationMessageForReceiptReject(dbObject, document.getDocumentRejectReason()),
-                    NotificationTypeEnum.DOCUMENT_REJECTED,
-                    document);
-
+                notificationService.addNotification(
+                        getNotificationMessageForReceiptReject(dbObject, document.getDocumentRejectReason()),
+                        NotificationTypeEnum.DOCUMENT_REJECTED,
+                        document);
+            }
         } catch (Exception exce) {
             LOG.error("Revert all the transaction for ReceiptOCR={}. Rejection of a receipt failed, reason={}",
                     document.getId(), exce.getLocalizedMessage(), exce);
@@ -594,7 +596,7 @@ public class DocumentUpdateService {
     }
 
     public String getNotificationMessageForReceiptReject(DBObject dbObject, DocumentRejectReasonEnum documentRejectReason) {
-        switch(documentRejectReason) {
+        switch (documentRejectReason) {
             case C:
             case D:
             case E:
