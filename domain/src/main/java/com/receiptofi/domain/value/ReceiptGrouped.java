@@ -33,7 +33,8 @@ public class ReceiptGrouped implements Serializable {
     private static final SimpleDateFormat fullCalendarSDF = new SimpleDateFormat("yyyy-MM-dd");
 
     @NumberFormat (style = NumberFormat.Style.CURRENCY)
-    private BigDecimal total;
+    private BigDecimal splitTotal;
+
     private int year;
     private int month;
     private int day;
@@ -46,16 +47,16 @@ public class ReceiptGrouped implements Serializable {
         super();
     }
 
-    private ReceiptGrouped(BigDecimal total, int year, int month, int day) {
+    private ReceiptGrouped(BigDecimal splitTotal, int year, int month, int day) {
         super();
-        this.total = total;
+        this.splitTotal = splitTotal;
         this.year = year;
         this.month = month;
         this.day = day;
     }
 
-    public static ReceiptGrouped newInstance(BigDecimal total, int year, int month, int day) {
-        return new ReceiptGrouped(total, year, month, day);
+    public static ReceiptGrouped newInstance(BigDecimal splitTotal, int year, int month, int day) {
+        return new ReceiptGrouped(splitTotal, year, month, day);
     }
 
     /**
@@ -65,7 +66,7 @@ public class ReceiptGrouped implements Serializable {
      */
     @SuppressWarnings ("unused")
     public BigDecimal getStringTotal() {
-        return total.setScale(2, BigDecimal.ROUND_HALF_UP);
+        return splitTotal.setScale(2, BigDecimal.ROUND_HALF_UP);
     }
 
     //TODO: Note day should not be zero other wise gets an exception while setting the date with zero. May remove this code
@@ -115,14 +116,14 @@ public class ReceiptGrouped implements Serializable {
         return this.day;
     }
 
-    public BigDecimal getTotal() {
-        return total;
+    public BigDecimal getSplitTotal() {
+        return splitTotal;
     }
 
     @Override
     public String toString() {
         return "ReceiptGrouped{" +
-                "total=" + total +
+                "splitTotal=" + splitTotal +
                 ", year=" + year +
                 ", month=" + month +
                 ", day=" + day +

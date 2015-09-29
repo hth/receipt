@@ -66,17 +66,17 @@
         <div class="sidebar-top-summary-upper clearfix">
             <ul>
                 <c:set var="yearVar" value="" />
-                <c:forEach var="item" items="${reportAnalysisForm.receiptGroupedByMonths}"  varStatus="status">
-                <c:if test="${empty yearVar || yearVar ne item.year}">
-                    <c:set var="yearVar" value="${item.year}" />
-                    <c:if test="${yearVar eq item.year}">
-                        <span class="ll-h">${item.year}</span>
+                <c:forEach var="receiptGrouped" items="${reportAnalysisForm.receiptGroupedByMonths}"  varStatus="status">
+                <c:if test="${empty yearVar || yearVar ne receiptGrouped.year}">
+                    <c:set var="yearVar" value="${receiptGrouped.year}" />
+                    <c:if test="${yearVar eq receiptGrouped.year}">
+                        <span class="ll-h">${receiptGrouped.year}</span>
                     </c:if>
                 </c:if>
 
                 <li>
-                    <a href="${pageContext.request.contextPath}/access/landing/report/<spring:eval expression='item.dateTime.toString("MMM, yyyy")' />.htm" class="ll-t" target="_blank">
-                        <spring:eval expression='item.dateTime.toString("MMM")' /> &nbsp;&nbsp; <spring:eval expression="item.total" />
+                    <a href="${pageContext.request.contextPath}/access/landing/report/<spring:eval expression='receiptGrouped.dateTime.toString("MMM, yyyy")' />.htm" class="ll-t" target="_blank">
+                        <spring:eval expression='receiptGrouped.dateTime.toString("MMM")' /> &nbsp;&nbsp; <spring:eval expression="receiptGrouped.splitTotal" />
                     </a>
                 </li>
                 </c:forEach>
@@ -106,7 +106,7 @@
                 <h1 class="rightside-title-text left">
                     <fmt:formatDate value="${receipts.date}" pattern="MMMM, yyyy"/>
                     &nbsp;&nbsp;&nbsp;&nbsp;
-                    <span style="color: #007aff;"><spring:eval expression="receipts.total" /></span>
+                    <span style="color: #007aff;"><spring:eval expression="receipts.splitTotal" /></span>
                 </h1>
             </div>
             <div class="rightside-list-holder rightside-list-holder-report">
@@ -144,7 +144,7 @@
                         </c:otherwise>
                         </c:choose>
                         <span class="rightside-li-right-text">
-                            <spring:eval expression='receipt.total'/>
+                            <spring:eval expression='receipt.splitTotal'/>
                         </span>
                     </li>
                     </c:forEach>

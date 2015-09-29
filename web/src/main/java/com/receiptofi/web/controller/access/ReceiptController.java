@@ -309,7 +309,7 @@ public class ReceiptController {
         try {
             jsonObject.addProperty("result", result);
             if (result) {
-                jsonObject.addProperty("splitTotal", splitTotal);
+                jsonObject.addProperty("splitTotal", splitTotal.toString());
             }
             /** Success message is set in JS. */
         } catch (Exception e) {

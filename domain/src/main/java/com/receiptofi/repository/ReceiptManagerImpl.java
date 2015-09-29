@@ -123,12 +123,12 @@ public class ReceiptManagerImpl implements ReceiptManager {
     @Override
     public Iterator<ReceiptGrouped> getAllObjectsGroupedByDate(String rid) {
         GroupBy groupBy = GroupBy.key("T", "M", "Y")
-                .initialDocument("{ total: 0 }")
+                .initialDocument("{ splitTotal: 0 }")
                 .reduceFunction("function(obj, result) { " +
                         "  result.day = obj.T; " +
                         "  result.month = obj.M; " +
                         "  result.year = obj.Y; " +
-                        "  result.total += obj.TOT; " +
+                        "  result.splitTotal += obj.ST; " +
                         "}");
 
         Criteria criteria = where("RID").is(rid)
@@ -155,7 +155,7 @@ public class ReceiptManagerImpl implements ReceiptManager {
                 group("year", "month")
                         .first("year").as("Y")
                         .first("month").as("M")
-                        .sum("total").as("total"),
+                        .sum("splitTotal").as("splitTotal"),
                 sort(DESC, previousOperation())
         );
 
@@ -192,9 +192,9 @@ public class ReceiptManagerImpl implements ReceiptManager {
 
     public Iterator<ReceiptGroupedByBizLocation> getAllReceiptGroupedByBizLocation(String rid) {
         GroupBy groupBy = GroupBy.key("BIZ_STORE", "BIZ_NAME")
-                .initialDocument("{ total: 0 }")
+                .initialDocument("{ splitTotal: 0 }")
                 .reduceFunction("function(obj, result) { " +
-                        "  result.total += obj.TOT; " +
+                        "  result.splitTotal += obj.ST; " +
                         "  result.bizStore = obj.BIZ_STORE; " +
                         "  result.bizName = obj.BIZ_NAME; " +
                         "}");

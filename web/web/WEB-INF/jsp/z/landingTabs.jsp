@@ -37,7 +37,7 @@
                 </a>
             </c:otherwise>
             </c:choose>
-            <span class="rightside-li-right-text"><spring:eval expression='receipt.total'/></span>
+            <span class="rightside-li-right-text"><spring:eval expression='receipt.splitTotal'/></span>
         </li>
         </c:forEach>
     </ul>

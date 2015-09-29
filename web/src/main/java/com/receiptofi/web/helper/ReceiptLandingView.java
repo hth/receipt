@@ -30,10 +30,10 @@ public final class ReceiptLandingView {
     private Date date;
 
     @NumberFormat (style = NumberFormat.Style.CURRENCY)
-    private Double tax;
+    private Double splitTax;
 
     @NumberFormat (style = NumberFormat.Style.CURRENCY)
-    private Double total;
+    private Double splitTotal;
 
     private String userProfileId;
     private String bizNameForId;
@@ -46,8 +46,8 @@ public final class ReceiptLandingView {
         id = receipt.getId();
         name = receipt.getBizName().getBusinessName();
         date = receipt.getReceiptDate();
-        tax = receipt.getTax();
-        total = receipt.getTotal();
+        splitTax = receipt.getSplitTax();
+        splitTotal = receipt.getSplitTotal();
         userProfileId = receipt.getReceiptUserId();
         expenseReportInFS = receipt.getExpenseReportInFS();
         if (null != receipt.getExpenseTag()) {
@@ -88,20 +88,20 @@ public final class ReceiptLandingView {
         this.date = date;
     }
 
-    public Double getTax() {
-        return tax;
+    public Double getSplitTax() {
+        return splitTax;
     }
 
-    public void setTax(Double tax) {
-        this.tax = tax;
+    public void setSplitTax(Double splitTax) {
+        this.splitTax = splitTax;
     }
 
-    public Double getTotal() {
-        return total;
+    public Double getSplitTotal() {
+        return splitTotal;
     }
 
-    public void setTotal(Double total) {
-        this.total = total;
+    public void setSplitTotal(Double splitTotal) {
+        this.splitTotal = splitTotal;
     }
 
     public String getUserProfileId() {

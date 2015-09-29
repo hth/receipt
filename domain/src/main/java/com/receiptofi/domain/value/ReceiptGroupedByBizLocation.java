@@ -20,7 +20,7 @@ import java.text.NumberFormat;
 })
 public class ReceiptGroupedByBizLocation implements Serializable {
 
-    private BigDecimal total;
+    private BigDecimal splitTotal;
     private BizNameEntity bizName;
     private BizStoreEntity bizStore;
 
@@ -30,22 +30,22 @@ public class ReceiptGroupedByBizLocation implements Serializable {
     }
 
     @SuppressWarnings ("unused")
-    private ReceiptGroupedByBizLocation(BigDecimal total) {
+    private ReceiptGroupedByBizLocation(BigDecimal splitTotal) {
         super();
-        this.total = total;
+        this.splitTotal = splitTotal;
     }
 
-    public BigDecimal getTotal() {
-        return total;
+    public BigDecimal getSplitTotal() {
+        return splitTotal;
     }
 
-    public void setTotal(BigDecimal total) {
-        this.total = total;
+    public void setSplitTotal(BigDecimal splitTotal) {
+        this.splitTotal = splitTotal;
     }
 
     public String getTotalStr() {
         NumberFormat fmt = NumberFormat.getCurrencyInstance();
-        return fmt.format(getTotal());
+        return fmt.format(splitTotal);
     }
 
     public BizNameEntity getBizName() {
