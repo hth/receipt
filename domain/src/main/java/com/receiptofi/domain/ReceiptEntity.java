@@ -144,6 +144,15 @@ public class ReceiptEntity extends BaseEntity {
     @Field ("SC")
     private int splitCount = 1;
 
+    @NotNull
+    @NumberFormat (style = Style.CURRENCY)
+    @Field ("ST")
+    private Double splitTotal;
+
+    @NumberFormat (style = Style.CURRENCY)
+    @Field ("SX")
+    private Double splitTax;
+
     /** To keep bean happy. */
     public ReceiptEntity() {
         super();
@@ -226,6 +235,7 @@ public class ReceiptEntity extends BaseEntity {
 
     public void setTotal(Double total) {
         this.total = total;
+        this.splitTotal = total;
     }
 
     /**
@@ -246,6 +256,7 @@ public class ReceiptEntity extends BaseEntity {
 
     public void setTax(Double tax) {
         this.tax = tax;
+        this.splitTax = tax;
     }
 
     /**
@@ -381,25 +392,26 @@ public class ReceiptEntity extends BaseEntity {
     public void increaseSplitCount() {
         //TODO add cron job to confirm if the number of users split with is matching the SplitExpenses count
         this.splitCount++;
+        this.splitTotal = Maths.divide(total, splitCount).doubleValue();
+        this.splitTax = Maths.divide(tax, splitCount).doubleValue();
     }
 
     public void decreaseSplitCount() {
         if (splitCount > 1) {
             this.splitCount--;
+            this.splitTax = Maths.divide(tax, splitCount).doubleValue();
+            this.splitTotal = Maths.divide(total, splitCount).doubleValue();
         } else {
             LOG.error("Split expenses count going below 1 rid={} id={}", receiptUserId, id);
         }
     }
 
-    @Transient
-    @NotNull
-    @NumberFormat (style = Style.CURRENCY)
     public Double getSplitTotal() {
-        if (getSplitCount() > 1) {
-            return Maths.divide(getTotal(), getSplitCount()).doubleValue();
-        } else {
-            return getTotal();
-        }
+        return splitTotal;
+    }
+
+    public Double getSplitTax() {
+        return splitTax;
     }
 
     @Transient

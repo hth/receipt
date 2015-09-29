@@ -1,5 +1,29 @@
+#### Date Sept 30 2015 - Build 1352
+Added split count and copied TOT and TAX to ST and SX    
+
+    db.getCollection('RECEIPT').update({}, { $set: {SC: 1} }, {multi: true});
+    db.getCollection('RECEIPT').update({}, { $set: {ST: 0} }, {multi: true});
+    db.getCollection('RECEIPT').update({}, { $set: {SX: 0} }, {multi: true});
+    
+    db.getCollection('RECEIPT').find().forEach(
+       function (elem) {
+           db.getCollection('RECEIPT').update(
+               {
+                   _id: elem._id
+               },
+               {
+                   $set: {
+                       ST: elem.TOT,
+                       SX: elem.TAX
+                   }
+               }
+           );
+       }
+    );   
+
 #### Date Aug 30 2015 - Build 1304
 Added notify user field
+
     db.getCollection('DOCUMENT').update({}, { $set: {NU: false} }, {multi: true});
     
 #### Date Jun 11 2015 - Build 1124

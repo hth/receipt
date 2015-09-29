@@ -19,6 +19,9 @@ public class ReceiptListView {
     @NumberFormat (style = NumberFormat.Style.CURRENCY)
     private BigDecimal total;
 
+    @NumberFormat (style = NumberFormat.Style.CURRENCY)
+    private BigDecimal splitTotal;
+
     private List<ReceiptListViewGrouped> receiptListViewGroupedList;
 
     public int getYear() {
@@ -51,6 +54,14 @@ public class ReceiptListView {
 
     public void setTotal(BigDecimal total) {
         this.total = total;
+    }
+
+    public BigDecimal getSplitTotal() {
+        return splitTotal;
+    }
+
+    public void setSplitTotal(BigDecimal splitTotal) {
+        this.splitTotal = splitTotal;
     }
 
     public List<ReceiptListViewGrouped> getReceiptListViewGroupedList() {

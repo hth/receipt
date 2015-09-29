@@ -125,7 +125,7 @@ public class LandingService {
             receiptListView.setMonth(receiptGrouped.getMonth());
             receiptListView.setYear(receiptGrouped.getYear());
             receiptListView.setDate(receiptGrouped.getDateTime().toDate());
-            receiptListView.setTotal(receiptGrouped.getTotal());
+            receiptListView.setSplitTotal(receiptGrouped.getSplitTotal());
 
             receiptListView.setReceiptListViewGroupedList(
                     receiptManager.getReceiptForGroupedByMonth(

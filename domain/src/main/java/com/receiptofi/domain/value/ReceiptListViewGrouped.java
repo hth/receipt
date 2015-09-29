@@ -26,13 +26,13 @@ public class ReceiptListViewGrouped {
     @DateTimeFormat (iso = DateTimeFormat.ISO.DATE_TIME)
     private Date date;
 
-    @Field ("TAX")
+    @Field ("SX")
     @NumberFormat (style = NumberFormat.Style.CURRENCY)
-    private Double tax;
+    private Double splitTax;
 
-    @Field ("TOT")
+    @Field ("ST")
     @NumberFormat (style = NumberFormat.Style.CURRENCY)
-    private Double total;
+    private Double splitTotal;
 
     @DBRef (lazy = false)
     @Field ("EXPENSE_TAG")
@@ -61,20 +61,20 @@ public class ReceiptListViewGrouped {
         this.date = date;
     }
 
-    public Double getTax() {
-        return tax;
+    public Double getSplitTax() {
+        return splitTax;
     }
 
-    public void setTax(Double tax) {
-        this.tax = tax;
+    public void setSplitTax(Double splitTax) {
+        this.splitTax = splitTax;
     }
 
-    public Double getTotal() {
-        return total;
+    public Double getSplitTotal() {
+        return splitTotal;
     }
 
-    public void setTotal(Double total) {
-        this.total = total;
+    public void setSplitTotal(Double splitTotal) {
+        this.splitTotal = splitTotal;
     }
 
     public ExpenseTagEntity getExpenseTag() {

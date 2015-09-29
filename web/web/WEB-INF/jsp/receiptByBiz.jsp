@@ -103,7 +103,7 @@
                 <span class="rightside-li-right-text" style="width: 140px;">
                     <c:choose>
                         <c:when test="${receipt.tax gt 0}">
-                            <spring:eval expression='receipt.tax'/>&nbsp;&nbsp;&nbsp;(T)
+                            <spring:eval expression='receipt.splitTax'/>&nbsp;&nbsp;&nbsp;(T)
                         </c:when>
                         <c:otherwise>
                             &nbsp;&nbsp;&nbsp;
@@ -111,7 +111,7 @@
                     </c:choose>
                 </span>
                 <span class="rightside-li-right-text" style="width: 140px;">
-                    <spring:eval expression='receipt.total'/>
+                    <spring:eval expression='receipt.splitTotal'/>
                 </span>
             </li>
             </c:forEach>
