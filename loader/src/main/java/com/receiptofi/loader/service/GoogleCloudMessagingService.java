@@ -1,6 +1,7 @@
 package com.receiptofi.loader.service;
 
 import com.receiptofi.domain.RegisteredDeviceEntity;
+import com.receiptofi.domain.types.DeviceTypeEnum;
 import com.receiptofi.repository.RegisteredDeviceManager;
 import com.receiptofi.utils.CommonUtil;
 
@@ -50,7 +51,7 @@ public class GoogleCloudMessagingService {
     }
 
     public void sendNotification(String message, String rid) {
-        List<RegisteredDeviceEntity> registeredDevices = registeredDeviceManager.getDevicesForRid(rid);
+        List<RegisteredDeviceEntity> registeredDevices = registeredDeviceManager.getDevicesForRid(rid, DeviceTypeEnum.A);
 
         for (RegisteredDeviceEntity registeredDevice : registeredDevices) {
             try {

@@ -51,5 +51,5 @@ public interface RegisteredDeviceManager extends RepositoryManager<RegisteredDev
      * @param rid
      * @return
      */
-    List<RegisteredDeviceEntity> getDevicesForRid(String rid);
+    List<RegisteredDeviceEntity> getDevicesForRid(String rid, DeviceTypeEnum deviceType);
 }
