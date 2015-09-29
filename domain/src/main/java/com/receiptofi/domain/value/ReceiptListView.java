@@ -17,9 +17,6 @@ public class ReceiptListView {
     private Date date;
 
     @NumberFormat (style = NumberFormat.Style.CURRENCY)
-    private BigDecimal total;
-
-    @NumberFormat (style = NumberFormat.Style.CURRENCY)
     private BigDecimal splitTotal;
 
     private List<ReceiptListViewGrouped> receiptListViewGroupedList;
@@ -46,14 +43,6 @@ public class ReceiptListView {
 
     public void setDate(Date date) {
         this.date = date;
-    }
-
-    public BigDecimal getTotal() {
-        return total;
-    }
-
-    public void setTotal(BigDecimal total) {
-        this.total = total;
     }
 
     public BigDecimal getSplitTotal() {
