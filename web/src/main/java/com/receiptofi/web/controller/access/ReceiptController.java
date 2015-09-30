@@ -98,7 +98,7 @@ public class ReceiptController {
         if (null == receipt) {
             LOG.warn("User={}, tried submitting an invalid receipt={}", receiptUser.getRid(), receiptId);
         } else {
-            String fetchReceiptId = receipt.getReferToReceiptId() == null ? receipt.getId() : receipt.getReferToReceiptId();
+            String fetchReceiptId = null == receipt.getReferToReceiptId() ? receipt.getId() : receipt.getReferToReceiptId();
             List<ItemEntity> items = itemService.getAllItemsOfReceipt(fetchReceiptId);
             List<ExpenseTagEntity> expenseTags = expensesService.getExpenseTags(receiptUser.getRid());
 
@@ -106,7 +106,7 @@ public class ReceiptController {
             receiptForm.setItems(items);
             receiptForm.setExpenseTags(expenseTags);
 
-            if (receipt.getReferToReceiptId() == null) {
+            if (null == receipt.getReferToReceiptId()) {
                 receiptForm.setJsonFriends(friendService.getFriends(receiptUser.getRid()));
 
                 if (receipt.getSplitCount() > 1) {
