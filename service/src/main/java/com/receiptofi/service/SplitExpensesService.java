@@ -50,4 +50,8 @@ public class SplitExpensesService {
 
         return jsonSplitFriends;
     }
+
+    public boolean doesExists(String rdid, String rid, String fid) {
+        return splitExpensesManager.doesExists(rdid, rid, fid);
+    }
 }
