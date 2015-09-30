@@ -13,4 +13,6 @@ public interface SplitExpensesManager extends RepositoryManager<SplitExpensesEnt
     boolean deleteHard(String rdid, String rid, String fid);
 
     List<SplitExpensesEntity> getSplitExpensesFriendsForReceipt(String rdid);
+
+    boolean doesExists(String rdid, String rid, String fid);
 }

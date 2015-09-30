@@ -73,4 +73,12 @@ public class SplitExpensesManagerImpl implements SplitExpensesManager {
                 SplitExpensesEntity.class
         );
     }
+
+    @Override
+    public boolean doesExists(String rdid, String rid, String fid) {
+        return mongoTemplate.exists(
+                query(where("RDID").is(rdid).and("RID").is(rid).and("FID").is(fid)),
+                SplitExpensesEntity.class
+        );
+    }
 }

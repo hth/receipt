@@ -286,20 +286,26 @@ public class ReceiptController {
                 case A:
                     FriendEntity friend = friendService.getConnection(receiptUser.getRid(), fid.getText());
                     if (null != friend) {
-                        splitExpensesService.save(new SplitExpensesEntity(receipt, friend));
-                        receipt.increaseSplitCount();
-                        receiptService.save(receipt);
+                        if (!splitExpensesService.doesExists(receipt.getId(), receipt.getReceiptUserId(), fid.getText())) {
+                            splitExpensesService.save(new SplitExpensesEntity(receipt.getId(), receipt.getReceiptUserId(), fid.getText()));
+                            receipt.increaseSplitCount();
+                            receiptService.save(receipt);
+                        } else {
+                            LOG.warn("Already split expenses with fid={} rid={} skipping split", fid, rid);
+                        }
                         result = true;
                     } else {
-                        LOG.error("No friend found fid={} rid={} skipping split", fid, rid);
+                        LOG.error("No friend connection found fid={} rid={} skipping split", fid, rid);
                     }
                     break;
                 case R:
                     if (splitExpensesService.deleteHard(receiptId.getText(), receipt.getReceiptUserId(), fid.getText())) {
                         receipt.decreaseSplitCount();
                         receiptService.save(receipt);
-                        result = true;
+                    } else {
+                        LOG.warn("Not found splitting expenses between fid={} rid={} skipping removing from split", fid, rid);
                     }
+                    result = true;
                     break;
             }
             splitTotal = receipt.getSplitTotal();

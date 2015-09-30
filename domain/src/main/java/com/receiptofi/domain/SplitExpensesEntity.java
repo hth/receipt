@@ -51,15 +51,14 @@ public class SplitExpensesEntity extends BaseEntity {
         super();
     }
 
-    public SplitExpensesEntity(ReceiptEntity receipt, FriendEntity friend) {
-        Assert.assertEquals(receipt.getReceiptUserId(), friend.getReceiptUserId());
-        this.receiptDocumentId = receipt.getId();
-        this.receiptUserId = receipt.getReceiptUserId();
+    public SplitExpensesEntity(String receiptDocumentId, String receiptUserId, String fid) {
+        this.receiptDocumentId = receiptDocumentId;
+        this.receiptUserId = receiptUserId;
         /**
          * There is always a possibility that a friend could be same as receipt user id in receipt.
          * So select the other friend.
          */
-        this.friendUserId = friend.getFriendUserId().equals(receipt.getReceiptUserId()) ? friend.getReceiptUserId() : friend.getFriendUserId();
+        this.friendUserId = fid;
     }
 
     public String getReceiptDocumentId() {
