@@ -176,7 +176,7 @@ public class ReceiptController {
                 jsonObject.addProperty("message", "Failed to deleted receipt.");
             }
             /** Success message is set in JS. */
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             LOG.error("Error occurred during receipt delete receiptId={} rid={} reason={}",
                     receiptId, receiptUser.getRid(), e.getLocalizedMessage(), e);
 

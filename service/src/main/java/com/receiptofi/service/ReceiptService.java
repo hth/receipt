@@ -110,7 +110,7 @@ public class ReceiptService {
      *
      * @param receiptId - Receipt id to delete
      */
-    public boolean deleteReceipt(String receiptId, String rid) throws Exception {
+    public boolean deleteReceipt(String receiptId, String rid) {
         ReceiptEntity receipt = receiptManager.getReceipt(receiptId, rid);
         if (null == receipt) {
             return false;
@@ -149,7 +149,7 @@ public class ReceiptService {
             return true;
         } else {
             LOG.error("Attempt to delete inactive Receipt={}, Browser Back Action performed", receipt.getId());
-            throw new Exception("Receipt no longer exists");
+            throw new RuntimeException("Receipt no longer exists");
         }
     }
 
