@@ -19,7 +19,7 @@
                                             width='15' height='16' title='Download Expense Report' class='downloadIcon'>
                                 </a>
                                 <span class="member" style="background-color: #00529B; width: 25px; height: 20px; margin-top: 15px;">
-                                    <span class="member-initials" style="line-height: 20px;">+${receipt.splitCount}</span>
+                                    <span class="member-initials" style="line-height: 20px;">+${receipt.splitCount - 1}</span>
                                 </span>
                             </p>
                         </c:when>
