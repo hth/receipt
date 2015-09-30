@@ -101,7 +101,7 @@
         <div id="tab1" class="report-content">
             <c:choose>
             <c:when test="${!empty reportAnalysisForm.receiptListViews}">
-            <c:forEach var="receipts" items="${reportAnalysisForm.receiptListViews}"  varStatus="status">
+            <c:forEach var="receipts" items="${reportAnalysisForm.receiptListViews}" varStatus="status">
             <div class="rightside-title report-title">
                 <h1 class="rightside-title-text left">
                     <fmt:formatDate value="${receipts.date}" pattern="MMMM, yyyy"/>
@@ -111,14 +111,14 @@
             </div>
             <div class="rightside-list-holder rightside-list-holder-report">
                 <ul>
-                    <c:forEach var="receipt" items="${receipts.receiptListViewGroupedList}"  varStatus="status">
+                    <c:forEach var="receipt" items="${receipts.receiptListViewGroupedList}" varStatus="status">
                     <li>
                         <c:choose>
                             <c:when test="${receipt.splitCount gt 1}">
                                 <span class="rightside-li-date-text rightside-li-date-text-short"><fmt:formatDate value="${receipt.date}" pattern="MMM. dd"/></span>
                                 <p class="rightside-li-date-text rightside-li-date-text-show-attr" align="center">
-                                <span class="member" style="background-color: #00529B; width: 20px; height: 20px; margin-top: 3px;">
-                                    <span class="member-initials" style="line-height: 20px;">+</span>
+                                <span class="member" style="background-color: #00529B; width: 25px; height: 25px; margin-top: 4px;">
+                                    <span class="member-initials" style="line-height: 25px;">+${receipt.splitCount}</span>
                                 </span>
                                 </p>
                             </c:when>
