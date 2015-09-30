@@ -158,33 +158,6 @@ public class ReceiptEntity extends BaseEntity {
         super();
     }
 
-    @Deprecated
-    private ReceiptEntity(Date receiptDate, Double total, Double tax, DocumentStatusEnum receiptStatus, FileSystemEntity fileSystemEntities, String receiptUserId) {
-        super();
-        this.receiptDate = receiptDate;
-        this.total = total;
-        this.tax = tax;
-        this.receiptStatus = receiptStatus;
-        this.fileSystemEntities.add(fileSystemEntities);
-        this.receiptUserId = receiptUserId;
-    }
-
-    /**
-     * Use this method to create the Entity for OCR Entity.
-     *
-     * @param receiptDate
-     * @param total
-     * @param tax
-     * @param receiptStatus
-     * @param receiptBlobId
-     * @param userProfileId
-     * @return
-     */
-    @Deprecated
-    public static ReceiptEntity newInstance(Date receiptDate, Double total, Double tax, DocumentStatusEnum receiptStatus, FileSystemEntity receiptBlobId, String userProfileId) {
-        return new ReceiptEntity(receiptDate, total, tax, receiptStatus, receiptBlobId, userProfileId);
-    }
-
     public static ReceiptEntity newInstance() {
         return new ReceiptEntity();
     }
