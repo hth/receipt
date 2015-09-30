@@ -15,6 +15,7 @@ import static org.springframework.data.mongodb.core.aggregation.Aggregation.prev
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.sort;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
+import static org.springframework.data.mongodb.core.query.Update.*;
 
 import com.receiptofi.domain.BaseEntity;
 import com.receiptofi.domain.BizNameEntity;
@@ -246,6 +247,25 @@ public class ReceiptManagerImpl implements ReceiptManager {
     /**
      *
      * @param id
+     * @return
+     */
+    @Override
+    public ReceiptEntity findReceipt(String id) {
+        Assert.hasText(id, "Id is empty");
+        return mongoTemplate.findOne(
+                query(where("id").is(id)
+                                .andOperator(
+                                        isActive(),
+                                        isNotDeleted()
+                                )
+                ),
+                ReceiptEntity.class,
+                TABLE);
+    }
+
+    /**
+     *
+     * @param id
      * @param rid
      * @return
      */
@@ -338,7 +358,7 @@ public class ReceiptManagerImpl implements ReceiptManager {
 
         mongoTemplate.updateFirst(
                 query(where("id").is(object.getId())),
-                entityUpdate(Update.update("D", true).set("CS", checksum)),
+                entityUpdate(update("D", true).set("CS", checksum)),
                 ReceiptEntity.class);
     }
 
@@ -411,7 +431,7 @@ public class ReceiptManagerImpl implements ReceiptManager {
     public void removeExpensofiFilenameReference(String filename) {
         mongoTemplate.findAndModify(
                 query(where("EXF").is(filename)),
-                Update.update("EXF", StringUtils.EMPTY),
+                update("EXF", StringUtils.EMPTY),
                 ReceiptEntity.class
         );
     }
@@ -471,6 +491,23 @@ public class ReceiptManagerImpl implements ReceiptManager {
         return mongoTemplate.updateMulti(
                 query(where("RID").is(rid).and("EXPENSE_TAG.$id").is(new ObjectId(expenseTagId))),
                 entityUpdate(new Update().unset("EXPENSE_TAG")),
+                TABLE
+        ).getN() > 0;
+    }
+
+    @Override
+    public boolean updateFriendReceipt(String referToReceiptId, int splitCount, Double splitTotal, Double splitTax) {
+        return mongoTemplate.updateMulti(
+                query(where("RF").is(referToReceiptId)),
+                entityUpdate(update("SC", splitCount).set("ST", splitTotal).set("SX", splitTax)),
+                TABLE
+        ).getN() > 0;
+    }
+
+    @Override
+    public boolean deleteFriendReceipt(String receiptId, String rid) {
+        return mongoTemplate.remove(
+                query(where("RF").is(receiptId).and("RID").is(rid)),
                 TABLE
         ).getN() > 0;
     }

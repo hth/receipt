@@ -373,15 +373,27 @@
                 <label class="profile_label" style="!important; color: #606060; !important; font-weight: normal; !important; line-height: 30px; width: 360px;">
                     <span style="float: left; vertical-align: middle; width: 65px;">Splits:&nbsp;&nbsp;</span>
                     <div id="splits">
-                        <c:forEach var="friend" items="${receiptForm.jsonSplitFriends}" varStatus="status">
-                        <div class="member" style="background-color: #00529B" id="${friend.rid}"
-                                onclick="updateReceiptSplit('${friend.rid}', '${receiptForm.receipt.id}');">
-                            <span class="member-initials">${friend.initials}</span>
-                        </div>
-                        </c:forEach>
+                        <c:choose>
+                        <c:when test="${empty receiptForm.receipt.referToReceiptId}">
+                            <c:forEach var="friend" items="${receiptForm.jsonSplitFriends}" varStatus="status">
+                                <div class="member" style="background-color: #00529B" id="${friend.rid}"
+                                        onclick="updateReceiptSplit('${friend.rid}', '${receiptForm.receipt.id}');">
+                                    <span class="member-initials">${friend.initials}</span>
+                                </div>
+                            </c:forEach>
+                        </c:when>
+                        <c:otherwise>
+                            <c:forEach var="friend" items="${receiptForm.jsonSplitFriends}" varStatus="status">
+                                <div class="member" style="background-color: #606060" id="${friend.rid}">
+                                    <span class="member-initials">${friend.initials}</span>
+                                </div>
+                            </c:forEach>
+                        </c:otherwise>
+                        </c:choose>
                     </div>
                 </label>
             </div>
+            <c:if test="${empty receiptForm.receipt.referToReceiptId}">
             <div class="row_field">
                 <label class="profile_label" style="!important; color: #606060; !important; font-weight: normal; !important; line-height: 30px; width: 360px;">
                     <span style="float: left; vertical-align: middle; width: 65px;">Friends: </span>
@@ -395,6 +407,7 @@
                     </div>
                 </label>
             </div>
+            </c:if>
             <div class="detailHead">
                 <h1 class="font2em" style="margin-left: 5px; vertical-align: middle;">
                     <table>

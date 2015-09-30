@@ -20,6 +20,8 @@ Added split count and copied TOT and TAX to ST and SX
            );
        }
     );   
+    
+    Drop all ReceiptEntity index 
 
 #### Date Aug 30 2015 - Build 1304
 Added notify user field

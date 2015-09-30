@@ -66,6 +66,16 @@ public class ReceiptService {
     @Autowired private NotificationService notificationService;
 
     /**
+     * Do not use this query unless you are using during split.
+     *
+     * @param receiptId
+     * @return
+     */
+    public ReceiptEntity findReceipt(String receiptId) {
+        return receiptManager.findReceipt(receiptId);
+    }
+
+    /**
      * Find receipt for a receipt id for a specific user profile id.
      *
      * @param receiptId
@@ -151,6 +161,10 @@ public class ReceiptService {
             LOG.error("Attempt to delete inactive Receipt={}, Browser Back Action performed", receipt.getId());
             throw new RuntimeException("Receipt no longer exists");
         }
+    }
+
+    public boolean deleteFriendReceipt(String receiptId, String rid) {
+        return receiptManager.deleteFriendReceipt(receiptId, rid);
     }
 
     /**
@@ -419,5 +433,9 @@ public class ReceiptService {
 
     public ItemService getItemService() {
         return itemService;
+    }
+
+    public boolean updateFriendReceipt(String referToReceiptId, int splitCount, Double splitTotal, Double splitTax) {
+        return receiptManager.updateFriendReceipt(referToReceiptId, splitCount, splitTotal, splitTax);
     }
 }

@@ -23,6 +23,14 @@ import java.util.List;
 public interface ReceiptManager extends RepositoryManager<ReceiptEntity> {
 
     /**
+     * Used mostly for loading receipt by Id. Should be refrained from using as this query is not secure.
+     *
+     * @param receiptId
+     * @return
+     */
+    ReceiptEntity findReceipt(String receiptId);
+
+    /**
      * @param receiptId
      * @param rid
      * @return
@@ -201,6 +209,26 @@ public interface ReceiptManager extends RepositoryManager<ReceiptEntity> {
      * @return
      */
     boolean removeExpenseTagReferences(String rid, String expenseTagId);
+
+    /**
+     * Updates receipts created while splitting expenses.
+     *
+     * @param referToReceiptId
+     * @param splitCount
+     * @param splitTotal
+     * @param splitTax
+     * @return
+     */
+    boolean updateFriendReceipt(String referToReceiptId, int splitCount, Double splitTotal, Double splitTax);
+
+    /**
+     * Delete shared receipts with friend.
+     *
+     * @param receiptId
+     * @param rid
+     * @return
+     */
+    boolean deleteFriendReceipt(String receiptId, String rid);
 
     /**
      * Collection size.
