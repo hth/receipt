@@ -117,7 +117,7 @@
                             <c:when test="${receipt.splitCount gt 1}">
                                 <span class="rightside-li-date-text rightside-li-date-text-short"><fmt:formatDate value="${receipt.date}" pattern="MMM. dd"/></span>
                                 <p class="rightside-li-date-text rightside-li-date-text-show-attr" align="center">
-                                <span class="member" style="background-color: #00529B; width: 25px; height: 25px; margin-top: 4px;">
+                                <span class="member" style="background-color: #00529B; width: 25px; height: 25px; margin-top: 3px;">
                                     <span class="member-initials" style="line-height: 25px;">+${receipt.splitCount - 1}</span>
                                 </span>
                                 </p>
