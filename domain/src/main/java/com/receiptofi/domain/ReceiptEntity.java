@@ -48,7 +48,8 @@ import javax.validation.constraints.NotNull;
 @CompoundIndexes (value = {
         @CompoundIndex (name = "receipt_idx", def = "{'RTXD': -1, 'RID': 1}", background = true),
         @CompoundIndex (name = "receipt_unique_idx", def = "{'CS': -1}", unique = true, background = true),
-        @CompoundIndex (name = "receipt_expense_Report", def = "{'EXF': -1}", background = true)
+        @CompoundIndex (name = "receipt_expense_report_idx", def = "{'EXF': -1}", background = true),
+        @CompoundIndex (name = "receipt_friend_reference_idx", def = "{'RD': -1}", background = true)
 })
 public class ReceiptEntity extends BaseEntity {
     private static final Logger LOG = LoggerFactory.getLogger(ReceiptEntity.class);
@@ -152,6 +153,9 @@ public class ReceiptEntity extends BaseEntity {
     @NumberFormat (style = Style.CURRENCY)
     @Field ("SX")
     private Double splitTax;
+
+    @Field ("RF")
+    private String referToReceiptId;
 
     /** To keep bean happy. */
     public ReceiptEntity() {
@@ -379,12 +383,32 @@ public class ReceiptEntity extends BaseEntity {
         }
     }
 
+    private void setSplitCount(int splitCount) {
+        this.splitCount = splitCount;
+    }
+
     public Double getSplitTotal() {
         return splitTotal;
     }
 
+    private void setSplitTotal(Double splitTotal) {
+        this.splitTotal = splitTotal;
+    }
+
     public Double getSplitTax() {
         return splitTax;
+    }
+
+    private void setSplitTax(Double splitTax) {
+        this.splitTax = splitTax;
+    }
+
+    public String getReferToReceiptId() {
+        return referToReceiptId;
+    }
+
+    private void setReferToReceiptId(String referToReceiptId) {
+        this.referToReceiptId = referToReceiptId;
     }
 
     @Transient
@@ -415,5 +439,26 @@ public class ReceiptEntity extends BaseEntity {
                 ", expenseReportInFS='" + expenseReportInFS + '\'' +
                 ", checksum='" + checksum + '\'' +
                 '}';
+    }
+
+    public ReceiptEntity createReceiptForFriend(String fid) {
+        ReceiptEntity friendReceipt = ReceiptEntity.newInstance();
+        friendReceipt.setReceiptStatus(receiptStatus);
+        friendReceipt.setFileSystemEntities(fileSystemEntities);
+        friendReceipt.setReceiptDate(receiptDate);
+        friendReceipt.setTotal(total);
+        friendReceipt.setTax(tax);
+        friendReceipt.setPercentTax(percentTax);
+        friendReceipt.setReceiptUserId(fid);
+        friendReceipt.setBizName(bizName);
+        friendReceipt.setBizStore(bizStore);
+        /** Ignore documentId as we do not support document recheck on shared receipts. */
+        friendReceipt.setBilledStatus(billedStatus);
+        friendReceipt.setSplitCount(splitCount);
+        friendReceipt.setSplitTotal(splitTotal);
+        friendReceipt.setSplitTax(splitTax);
+        friendReceipt.setReferToReceiptId(id);
+
+        return friendReceipt;
     }
 }

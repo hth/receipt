@@ -98,18 +98,31 @@ public class ReceiptController {
         if (null == receipt) {
             LOG.warn("User={}, tried submitting an invalid receipt={}", receiptUser.getRid(), receiptId);
         } else {
-            List<ItemEntity> items = itemService.getAllItemsOfReceipt(receipt.getId());
+            String fetchReceiptId = receipt.getReferToReceiptId() == null ? receipt.getId() : receipt.getReferToReceiptId();
+            List<ItemEntity> items = itemService.getAllItemsOfReceipt(fetchReceiptId);
             List<ExpenseTagEntity> expenseTags = expensesService.getExpenseTags(receiptUser.getRid());
 
             receiptForm.setReceipt(receipt);
             receiptForm.setItems(items);
             receiptForm.setExpenseTags(expenseTags);
-            receiptForm.setJsonFriends(friendService.getFriends(receiptUser.getRid()));
 
-            if (receipt.getSplitCount() > 1) {
+            if (receipt.getReferToReceiptId() == null) {
+                receiptForm.setJsonFriends(friendService.getFriends(receiptUser.getRid()));
+
+                if (receipt.getSplitCount() > 1) {
+                    receiptForm.setJsonSplitFriends(splitExpensesService.populateProfileOfFriends(
+                            fetchReceiptId,
+                            receipt.getReceiptUserId(),
+                            receiptForm.getJsonFriends()
+                    ));
+                }
+            } else {
+                ReceiptEntity originalReceipt = receiptService.findReceipt(receipt.getReferToReceiptId());
+                receiptForm.setJsonFriends(friendService.getFriends(originalReceipt.getReceiptUserId()));
+
                 receiptForm.setJsonSplitFriends(splitExpensesService.populateProfileOfFriends(
-                        receipt.getId(),
-                        receipt.getReceiptUserId(),
+                        fetchReceiptId,
+                        originalReceipt.getReceiptUserId(),
                         receiptForm.getJsonFriends()
                 ));
             }
@@ -176,7 +189,7 @@ public class ReceiptController {
                 jsonObject.addProperty("message", "Failed to deleted receipt.");
             }
             /** Success message is set in JS. */
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             LOG.error("Error occurred during receipt delete receiptId={} rid={} reason={}",
                     receiptId, receiptUser.getRid(), e.getLocalizedMessage(), e);
 
@@ -290,6 +303,13 @@ public class ReceiptController {
                             splitExpensesService.save(new SplitExpensesEntity(receipt.getId(), receipt.getReceiptUserId(), fid.getText()));
                             receipt.increaseSplitCount();
                             receiptService.save(receipt);
+
+                            /** Update all existing friend receipt. */
+                            updateFriendReceipt(receipt);
+
+                            /** Create new entry for friend. */
+                            ReceiptEntity friendReceipt = receipt.createReceiptForFriend(fid.getText());
+                            receiptService.save(friendReceipt);
                         } else {
                             LOG.warn("Already split expenses with fid={} rid={} skipping split", fid, rid);
                         }
@@ -302,6 +322,12 @@ public class ReceiptController {
                     if (splitExpensesService.deleteHard(receiptId.getText(), receipt.getReceiptUserId(), fid.getText())) {
                         receipt.decreaseSplitCount();
                         receiptService.save(receipt);
+
+                        /** Update all existing friend receipt. */
+                        updateFriendReceipt(receipt);
+
+                        /** Remove entry. */
+                        receiptService.deleteFriendReceipt(receipt.getId(), fid.getText());
                     } else {
                         LOG.warn("Not found splitting expenses between fid={} rid={} skipping removing from split", fid, rid);
                     }
@@ -325,5 +351,20 @@ public class ReceiptController {
             jsonObject.addProperty("result", false);
         }
         return jsonObject.toString();
+    }
+
+    /**
+     * Update all existing friend receipt.
+     *
+     * @param receipt
+     */
+    private void updateFriendReceipt(ReceiptEntity receipt) {
+        if (receipt.getSplitCount() > 1) {
+            receiptService.updateFriendReceipt(
+                    receipt.getId(),
+                    receipt.getSplitCount(),
+                    receipt.getSplitTotal(),
+                    receipt.getSplitTax());
+        }
     }
 }
