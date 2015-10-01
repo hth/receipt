@@ -7,11 +7,10 @@ import com.google.gson.JsonObject;
 
 import com.receiptofi.domain.BizNameEntity;
 import com.receiptofi.domain.ExpenseTagEntity;
-import com.receiptofi.domain.FriendEntity;
 import com.receiptofi.domain.ItemEntity;
 import com.receiptofi.domain.ReceiptEntity;
-import com.receiptofi.domain.SplitExpensesEntity;
 import com.receiptofi.domain.json.JsonExpenseTag;
+import com.receiptofi.domain.json.JsonFriend;
 import com.receiptofi.domain.json.JsonReceipt;
 import com.receiptofi.domain.json.JsonReceiptItem;
 import com.receiptofi.domain.site.ReceiptUser;
@@ -22,6 +21,7 @@ import com.receiptofi.service.FriendService;
 import com.receiptofi.service.ItemService;
 import com.receiptofi.service.ReceiptService;
 import com.receiptofi.service.SplitExpensesService;
+import com.receiptofi.service.UserProfilePreferenceService;
 import com.receiptofi.utils.ParseJsonStringToMap;
 import com.receiptofi.utils.ScrubbedInput;
 import com.receiptofi.web.form.ReceiptByBizForm;
@@ -82,6 +82,7 @@ public class ReceiptController {
     @Autowired private ExpensesService expensesService;
     @Autowired private FriendService friendService;
     @Autowired private SplitExpensesService splitExpensesService;
+    @Autowired private UserProfilePreferenceService userProfilePreferenceService;
 
     @RequestMapping (value = "/{receiptId}", method = RequestMethod.GET)
     public String loadForm(
@@ -107,6 +108,7 @@ public class ReceiptController {
             receiptForm.setExpenseTags(expenseTags);
 
             if (null == receipt.getReferToReceiptId()) {
+                /** Refers to original user accessing original receipt. */
                 receiptForm.setJsonFriends(friendService.getFriends(receiptUser.getRid()));
 
                 if (receipt.getSplitCount() > 1) {
@@ -117,6 +119,7 @@ public class ReceiptController {
                     ));
                 }
             } else {
+                /** Refers to split user accessing shared receipt. */
                 ReceiptEntity originalReceipt = receiptService.findReceipt(receipt.getReferToReceiptId());
                 receiptForm.setJsonFriends(friendService.getFriends(originalReceipt.getReceiptUserId()));
 
@@ -125,6 +128,9 @@ public class ReceiptController {
                         originalReceipt.getReceiptUserId(),
                         receiptForm.getJsonFriends()
                 ));
+
+                receiptForm.getJsonSplitFriends().remove(new JsonFriend(receiptUser.getRid(), "", ""));
+                receiptForm.getJsonSplitFriends().add(new JsonFriend(userProfilePreferenceService.findByReceiptUserId(originalReceipt.getReceiptUserId())));
             }
 
             LOG.debug("receiptForm={}", receiptForm);
@@ -267,6 +273,16 @@ public class ReceiptController {
         return nextPageByBiz;
     }
 
+    /**
+     * Original owner of the receipt can add or remove friends from split.
+     *
+     * @param fid
+     * @param receiptId
+     * @param splitAction
+     * @param httpServletResponse
+     * @return
+     * @throws IOException
+     */
     @PreAuthorize ("hasRole('ROLE_USER')")
     @RequestMapping (
             value = "/split",
@@ -295,45 +311,7 @@ public class ReceiptController {
         String rid = receiptUser.getRid();
         ReceiptEntity receipt = receiptService.findReceipt(receiptId.getText(), rid);
         if (null != receipt) {
-            switch (splitAction) {
-                case A:
-                    FriendEntity friend = friendService.getConnection(receiptUser.getRid(), fid.getText());
-                    if (null != friend) {
-                        if (!splitExpensesService.doesExists(receipt.getId(), receipt.getReceiptUserId(), fid.getText())) {
-                            splitExpensesService.save(new SplitExpensesEntity(receipt.getId(), receipt.getReceiptUserId(), fid.getText()));
-                            receipt.increaseSplitCount();
-                            receiptService.save(receipt);
-
-                            /** Update all existing friend receipt. */
-                            updateFriendReceipt(receipt);
-
-                            /** Create new entry for friend. */
-                            ReceiptEntity friendReceipt = receipt.createReceiptForFriend(fid.getText());
-                            receiptService.save(friendReceipt);
-                        } else {
-                            LOG.warn("Already split expenses with fid={} rid={} skipping split", fid, rid);
-                        }
-                        result = true;
-                    } else {
-                        LOG.error("No friend connection found fid={} rid={} skipping split", fid, rid);
-                    }
-                    break;
-                case R:
-                    if (splitExpensesService.deleteHard(receiptId.getText(), receipt.getReceiptUserId(), fid.getText())) {
-                        receipt.decreaseSplitCount();
-                        receiptService.save(receipt);
-
-                        /** Update all existing friend receipt. */
-                        updateFriendReceipt(receipt);
-
-                        /** Remove entry. */
-                        receiptService.deleteFriendReceipt(receipt.getId(), fid.getText());
-                    } else {
-                        LOG.warn("Not found splitting expenses between fid={} rid={} skipping removing from split", fid, rid);
-                    }
-                    result = true;
-                    break;
-            }
+            result = receiptService.splitAction(fid.getText(), splitAction, receipt);
             splitTotal = receipt.getSplitTotal();
         }
 
@@ -351,20 +329,5 @@ public class ReceiptController {
             jsonObject.addProperty("result", false);
         }
         return jsonObject.toString();
-    }
-
-    /**
-     * Update all existing friend receipt.
-     *
-     * @param receipt
-     */
-    private void updateFriendReceipt(ReceiptEntity receipt) {
-        if (receipt.getSplitCount() > 1) {
-            receiptService.updateFriendReceipt(
-                    receipt.getId(),
-                    receipt.getSplitCount(),
-                    receipt.getSplitTotal(),
-                    receipt.getSplitTax());
-        }
     }
 }
