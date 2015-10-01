@@ -453,7 +453,10 @@ public class ReceiptEntity extends BaseEntity {
         friendReceipt.setBizName(bizName);
         friendReceipt.setBizStore(bizStore);
         /** Ignore documentId as we do not support document recheck on shared receipts. */
+        /** Comment, Notes are their own. */
+        /** Billed status is same as original user. */
         friendReceipt.setBilledStatus(billedStatus);
+
         friendReceipt.setSplitCount(splitCount);
         friendReceipt.setSplitTotal(splitTotal);
         friendReceipt.setSplitTax(splitTax);

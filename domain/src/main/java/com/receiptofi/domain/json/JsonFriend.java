@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import com.google.common.base.Objects;
+
 import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.domain.annotation.Mobile;
 
@@ -45,6 +47,12 @@ public class JsonFriend {
         this.name = userProfile.getName();
     }
 
+    public JsonFriend(String rid, String initials, String name) {
+        this.rid = rid;
+        this.initials = initials;
+        this.name = name;
+    }
+
     public String getRid() {
         return rid;
     }
@@ -67,5 +75,18 @@ public class JsonFriend {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        JsonFriend that = (JsonFriend) o;
+        return Objects.equal(rid, that.rid);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(rid);
     }
 }

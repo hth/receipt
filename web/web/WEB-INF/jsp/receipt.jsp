@@ -560,8 +560,10 @@
 
                     <input type="submit" value="DELETE" class="read_btn" name="delete" id="deleteBtnId"
                             style="background:#FC462A; margin: 77px 10px 0px 0px;" />
+                    <c:if test="${empty receiptForm.receipt.referToReceiptId}">
                     <input type="submit" value="RE-CHECK" class="read_btn" name="re-check" id="recheckBtnId"
                             style="margin: 77px 10px 0px 0px; display: none;" />
+                    </c:if>
 
                     <div style="padding-bottom: 30px;"></div>
                 </div>

@@ -15,7 +15,7 @@ public interface RepositoryManager<T> extends Serializable {
     /**
      * Saves a record.
      *
-     * @throws Exception
+     * @param object
      */
     void save(T object);
 

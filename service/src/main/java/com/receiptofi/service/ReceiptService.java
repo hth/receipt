@@ -7,14 +7,17 @@ import com.receiptofi.domain.CommentEntity;
 import com.receiptofi.domain.DocumentEntity;
 import com.receiptofi.domain.ExpenseTagEntity;
 import com.receiptofi.domain.FileSystemEntity;
+import com.receiptofi.domain.FriendEntity;
 import com.receiptofi.domain.ItemEntity;
 import com.receiptofi.domain.ItemEntityOCR;
 import com.receiptofi.domain.ReceiptEntity;
+import com.receiptofi.domain.SplitExpensesEntity;
 import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.domain.annotation.Mobile;
 import com.receiptofi.domain.types.CommentTypeEnum;
 import com.receiptofi.domain.types.DocumentStatusEnum;
 import com.receiptofi.domain.types.NotificationTypeEnum;
+import com.receiptofi.domain.types.SplitActionEnum;
 import com.receiptofi.repository.DocumentManager;
 import com.receiptofi.repository.ItemManager;
 import com.receiptofi.repository.ItemOCRManager;
@@ -64,6 +67,8 @@ public class ReceiptService {
     @Autowired private CloudFileService cloudFileService;
     @Autowired private ExpensesService expensesService;
     @Autowired private NotificationService notificationService;
+    @Autowired private FriendService friendService;
+    @Autowired private SplitExpensesService splitExpensesService;
 
     /**
      * Do not use this query unless you are using during split.
@@ -125,7 +130,7 @@ public class ReceiptService {
         if (null == receipt) {
             return false;
         }
-        if (receipt.isActive()) {
+        if (receipt.isActive() && StringUtils.isBlank(receipt.getReferToReceiptId())) {
             /** Notification message when receipt is deleted. */
             String md = receipt.getTotalString() + " '" + receipt.getBizName().getBusinessName() + "' receipt deleted";
 
@@ -156,6 +161,10 @@ public class ReceiptService {
 
             /** Added document deleted successfully. */
             notificationService.addNotification(md, NotificationTypeEnum.RECEIPT_DELETED, receipt);
+            return true;
+        } else if (StringUtils.isNotBlank(receipt.getReferToReceiptId())) {
+            /** User is deleting their split receipt or shared receipt. This is as good as original owner of the receipt. */
+            splitAction(rid, SplitActionEnum.R, receiptManager.findReceipt(receipt.getReferToReceiptId()));
             return true;
         } else {
             LOG.error("Attempt to delete inactive Receipt={}, Browser Back Action performed", receipt.getId());
@@ -431,11 +440,74 @@ public class ReceiptService {
         receiptManager.save(receipt);
     }
 
-    public ItemService getItemService() {
-        return itemService;
+    /**
+     * Add or Remove friend from split.
+     *
+     * @param fid
+     * @param splitAction
+     * @param receipt
+     * @return
+     */
+    public boolean splitAction(
+            String fid,
+            SplitActionEnum splitAction,
+            ReceiptEntity receipt
+    ) {
+        boolean result = false;
+        switch (splitAction) {
+            case A:
+                FriendEntity friend = friendService.getConnection(receipt.getReceiptUserId(), fid);
+                if (null != friend) {
+                    if (!splitExpensesService.doesExists(receipt.getId(), receipt.getReceiptUserId(), fid)) {
+                        splitExpensesService.save(new SplitExpensesEntity(receipt.getId(), receipt.getReceiptUserId(), fid));
+                        receipt.increaseSplitCount();
+                        save(receipt);
+
+                        /** Update all existing friend receipt. */
+                        updateFriendReceipt(receipt);
+
+                        /** Create new entry for friend. */
+                        ReceiptEntity friendReceipt = receipt.createReceiptForFriend(fid);
+                        save(friendReceipt);
+                    } else {
+                        LOG.warn("Already split expenses with fid={} rid={} skipping split", fid, receipt.getReceiptUserId());
+                    }
+                    result = true;
+                } else {
+                    LOG.error("No friend connection found fid={} rid={} skipping split", fid, receipt.getReceiptUserId());
+                }
+                break;
+            case R:
+                if (splitExpensesService.deleteHard(receipt.getId(), receipt.getReceiptUserId(), fid)) {
+                    receipt.decreaseSplitCount();
+                    save(receipt);
+
+                    /** Update all existing friend receipt. */
+                    updateFriendReceipt(receipt);
+
+                    /** Remove entry. */
+                    deleteFriendReceipt(receipt.getId(), fid);
+                } else {
+                    LOG.warn("Not found splitting expenses between fid={} rid={} skipping removing from split", fid, receipt.getReceiptUserId());
+                }
+                result = true;
+                break;
+        }
+        return result;
     }
 
-    public boolean updateFriendReceipt(String referToReceiptId, int splitCount, Double splitTotal, Double splitTax) {
-        return receiptManager.updateFriendReceipt(referToReceiptId, splitCount, splitTotal, splitTax);
+    /**
+     * Update all existing friend receipt.
+     *
+     * @param receipt
+     */
+    private void updateFriendReceipt(ReceiptEntity receipt) {
+        if (receipt.getSplitCount() > 1) {
+            receiptManager.updateFriendReceipt(
+                    receipt.getId(),
+                    receipt.getSplitCount(),
+                    receipt.getSplitTotal(),
+                    receipt.getSplitTax());
+        }
     }
 }
