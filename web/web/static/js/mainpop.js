@@ -780,7 +780,7 @@ function friendRequest(id, auth, connectionType) {
 function unfriendRequest(mail, name, id, event) {
     event.preventDefault();
     swal({
-        imageUrl: "/static/images/heartUnfriendx88.png",
+        imageUrl: "/static/images/disconnectedx88.png",
         title: "Are you sure to unfriend?",
         text: "" +
         "<p style='text-align: left;'>You and " + name + " would not be able to split expenses among yourselves. " +

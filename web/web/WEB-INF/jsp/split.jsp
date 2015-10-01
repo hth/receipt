@@ -119,7 +119,7 @@
                                     <span class="member-initials">${profile.initials}</span>
                                 </div>
                                 &nbsp;
-                                <img src="${pageContext.request.contextPath}/static/images/heartFriendx32.png"
+                                <img src="${pageContext.request.contextPath}/static/images/connectedx32.png"
                                         title="Connection" width="25" style="vertical-align: middle"
                                         onclick="unfriendRequest('${profile.email}', '${profile.name}', '${profile.id}', event);">
                                 &nbsp;
