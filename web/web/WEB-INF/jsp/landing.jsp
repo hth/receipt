@@ -312,9 +312,18 @@
                                                     <img src='${pageContext.request.contextPath}/static/images/download_icon_lg.png'
                                                             width='15' height='16' title='Download Expense Report' class='downloadIcon'>
                                                 </a>
-                                                <span class="member" style="background-color: #00529B; width: 25px; height: 20px; margin-top: 15px;">
-                                                    <span class="member-initials" style="line-height: 20px;">+${receipt.splitCount - 1}</span>
-                                                </span>
+                                                <c:choose>
+                                                <c:when test="${receipt.ownReceipt}">
+                                                    <span class="member" style="background-color: #00529B; width: 25px; height: 20px; margin-top: 15px;">
+                                                        <span class="member-initials" style="line-height: 20px;">+${receipt.splitCount - 1}</span>
+                                                    </span>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <span class="member" style="background-color: #606060 width: 25px; height: 20px; margin-top: 15px;">
+                                                        <span class="member-initials" style="line-height: 20px;">+${receipt.splitCount - 1}</span>
+                                                    </span>
+                                                </c:otherwise>
+                                                </c:choose>
                                             </p>
                                         </c:when>
                                         <c:when test="${!empty receipt.expenseReportInFS}">
@@ -327,9 +336,18 @@
                                         </c:when>
                                         <c:when test="${!empty receipt.splitCount}">
                                             <p class="rightside-li-date-text rightside-li-date-text-show-attr" align="center">
-                                                <span class="member" style="background-color: #00529B; width: 25px; height: 20px; margin-top: 3px;">
-                                                    <span class="member-initials" style="line-height: 20px;">+${receipt.splitCount - 1}</span>
-                                                </span>
+                                                <c:choose>
+                                                <c:when test="${receipt.ownReceipt}">
+                                                    <span class="member" style="background-color: #00529B; width: 25px; height: 20px; margin-top: 15px;">
+                                                        <span class="member-initials" style="line-height: 20px;">+${receipt.splitCount - 1}</span>
+                                                    </span>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <span class="member" style="background-color: #606060 width: 25px; height: 20px; margin-top: 15px;">
+                                                        <span class="member-initials" style="line-height: 20px;">+${receipt.splitCount - 1}</span>
+                                                    </span>
+                                                </c:otherwise>
+                                                </c:choose>
                                             </p>
                                         </c:when>
                                     </c:choose>
