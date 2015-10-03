@@ -42,6 +42,7 @@ public final class ReceiptLandingView {
     private String expenseTag;
     private String expenseColor;
     private BilledStatusEnum billedStatus;
+    private boolean ownReceipt;
 
     private ReceiptLandingView(ReceiptEntity receipt) {
         id = receipt.getId();
@@ -60,6 +61,7 @@ public final class ReceiptLandingView {
         /** Remove all alpha numeric characters as it creates issues with 'id' */
         bizNameForId = StringUtils.deleteWhitespace(receipt.getBizName().getBusinessName()).replaceAll("[^a-zA-Z0-9]", "");
         billedStatus = receipt.getBilledStatus();
+        ownReceipt = StringUtils.isBlank(receipt.getReferToReceiptId());
     }
 
     public static ReceiptLandingView newInstance(ReceiptEntity receiptEntity) {
@@ -156,5 +158,9 @@ public final class ReceiptLandingView {
 
     public BilledStatusEnum getBilledStatus() {
         return billedStatus;
+    }
+
+    public boolean isOwnReceipt() {
+        return ownReceipt;
     }
 }
