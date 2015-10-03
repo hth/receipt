@@ -4,6 +4,8 @@ import com.receiptofi.domain.BizNameEntity;
 import com.receiptofi.domain.ExpenseTagEntity;
 import com.receiptofi.domain.types.BilledStatusEnum;
 
+import org.apache.commons.lang3.StringUtils;
+
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -44,6 +46,9 @@ public class ReceiptListViewGrouped {
 
     @Field ("BS")
     private BilledStatusEnum billedStatus = BilledStatusEnum.NB;
+
+    @Field ("RF")
+    private String referToReceiptId;
 
     public String getId() {
         return id;
@@ -111,5 +116,9 @@ public class ReceiptListViewGrouped {
 
     public void setBilledStatus(BilledStatusEnum billedStatus) {
         this.billedStatus = billedStatus;
+    }
+
+    public boolean isOwnReceipt() {
+        return StringUtils.isBlank(referToReceiptId);
     }
 }
