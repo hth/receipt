@@ -18,6 +18,7 @@
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highcharts/4.1.7/highcharts.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/sweetalert/0.5.0/sweet-alert.min.js"></script>
     <script src="${pageContext.request.contextPath}/static/external/js/noble-count/jquery.NobleCount.min.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/static/external/js/cute-time/jquery.cuteTime.min.js"></script>
@@ -100,6 +101,9 @@
             <div id="tabs-1" class="report_my ajx-content" style="display: block;">
                 <h1 class="h1">DASHBOARD</h1>
                 <hr>
+
+                <div id="containerOwesMe" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>
+                <div id="containerOwesOthers" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>
             </div>
 
             <div id="tabs-2" class="ajx-content report_my">
@@ -252,5 +256,110 @@
     </div>
 </div>
 </body>
+<script>
+    $(function () {
+        $('#containerOwesMe').highcharts({
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: 0,
+                plotShadow: false
+            },
+            title: {
+                text: 'Owes me',
+                align: 'center',
+                verticalAlign: 'middle',
+                y: 40
+            },
+            tooltip: {
+                pointFormat: '{series.name}: <b>{point.y:.1f}</b>'
+            },
+            plotOptions: {
+                pie: {
+                    dataLabels: {
+                        enabled: true,
+                        distance: -50,
+                        style: {
+                            fontWeight: 'bold',
+                            color: 'white',
+                            textShadow: '0px 1px 2px black'
+                        }
+                    },
+                    startAngle: -90,
+                    endAngle: 90,
+                    center: ['50%', '75%']
+                }
+            },
+            series: [{
+                type: 'pie',
+                name: 'Owes you',
+                innerSize: '50%',
+                data: [
+                    <c:forEach var="oweExpense" items="${splitForm.jsonOweMe}" varStatus="status">
+                    ['${oweExpense.name}', ${oweExpense.splitTotal}],
+                    </c:forEach>
+                    {
+                        name: 'Negligible',
+                        y: 0.2,
+                        dataLabels: {
+                            enabled: false
+                        }
+                    }
+                ]
+            }]
+        });
+    });
+
+    $(function () {
+        $('#containerOwesOthers').highcharts({
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: 0,
+                plotShadow: false
+            },
+            title: {
+                text: 'You owe',
+                align: 'center',
+                verticalAlign: 'middle',
+                y: 40
+            },
+            tooltip: {
+                pointFormat: '{series.name}: <b>{point.y:.1f}</b>'
+            },
+            plotOptions: {
+                pie: {
+                    dataLabels: {
+                        enabled: true,
+                        distance: -50,
+                        style: {
+                            fontWeight: 'bold',
+                            color: 'white',
+                            textShadow: '0px 1px 2px black'
+                        }
+                    },
+                    startAngle: -90,
+                    endAngle: 90,
+                    center: ['50%', '75%']
+                }
+            },
+            series: [{
+                type: 'pie',
+                name: 'You owe',
+                innerSize: '50%',
+                data: [
+                    <c:forEach var="oweExpense" items="${splitForm.jsonOweOthers}" varStatus="status">
+                    ['${oweExpense.name}', ${oweExpense.splitTotal}],
+                    </c:forEach>
+                    {
+                        name: 'Negligible',
+                        y: 0.2,
+                        dataLabels: {
+                            enabled: false
+                        }
+                    }
+                ]
+            }]
+        });
+    });
+</script>
 <script src="${pageContext.request.contextPath}/static/js/mainpop.js"></script>
 </html>

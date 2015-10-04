@@ -2,9 +2,14 @@ package com.receiptofi.web.controller.access;
 
 import com.google.gson.JsonObject;
 
+import com.receiptofi.domain.SplitExpensesEntity;
+import com.receiptofi.domain.UserProfileEntity;
+import com.receiptofi.domain.json.JsonOweExpenses;
 import com.receiptofi.domain.site.ReceiptUser;
 import com.receiptofi.domain.types.FriendConnectionTypeEnum;
 import com.receiptofi.service.FriendService;
+import com.receiptofi.service.SplitExpensesService;
+import com.receiptofi.service.UserProfilePreferenceService;
 import com.receiptofi.utils.ScrubbedInput;
 import com.receiptofi.web.form.SplitForm;
 
@@ -25,6 +30,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.codahale.metrics.annotation.ExceptionMetered;
 import com.codahale.metrics.annotation.Timed;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.servlet.http.HttpServletResponse;
 
 /**
@@ -43,6 +51,8 @@ public class SplitController {
     private static final Logger LOG = LoggerFactory.getLogger(SplitController.class);
 
     @Autowired private FriendService friendService;
+    @Autowired private SplitExpensesService splitExpensesService;
+    @Autowired private UserProfilePreferenceService userProfilePreferenceService;
 
     /**
      * Refers to split.jsp
@@ -59,6 +69,34 @@ public class SplitController {
             SplitForm splitForm
     ) {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        List<JsonOweExpenses> jsonOweMe = new ArrayList<>();
+        List<SplitExpensesEntity> splitExpenses = splitExpensesService.getOwesMe(receiptUser.getRid());
+        for (SplitExpensesEntity splitExpense : splitExpenses) {
+            UserProfileEntity userProfile = userProfilePreferenceService.findByReceiptUserId(splitExpense.getFriendUserId());
+            JsonOweExpenses jsonOweExpense = new JsonOweExpenses(
+                    splitExpense.getReceiptUserId(),
+                    splitExpense.getFriendUserId(),
+                    splitExpense.getSplitTotal(),
+                    userProfile.getName());
+
+            jsonOweMe.add(jsonOweExpense);
+        }
+        splitForm.setJsonOweMe(jsonOweMe);
+
+        List<JsonOweExpenses> jsonOweOthers = new ArrayList<>();
+        splitExpenses = splitExpensesService.getOwesOthers(receiptUser.getRid());
+        for (SplitExpensesEntity splitExpense : splitExpenses) {
+            UserProfileEntity userProfile = userProfilePreferenceService.findByReceiptUserId(splitExpense.getFriendUserId());
+            JsonOweExpenses jsonOweExpense = new JsonOweExpenses(
+                    splitExpense.getReceiptUserId(),
+                    splitExpense.getFriendUserId(),
+                    splitExpense.getSplitTotal(),
+                    userProfile.getName());
+
+            jsonOweOthers.add(jsonOweExpense);
+        }
+        splitForm.setJsonOweOthers(jsonOweOthers);
 
         splitForm.setActiveProfiles(friendService.getActiveConnections(receiptUser.getRid()));
         splitForm.setPendingProfiles(friendService.getPendingConnections(receiptUser.getRid()));
