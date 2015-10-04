@@ -15,4 +15,10 @@ public interface SplitExpensesManager extends RepositoryManager<SplitExpensesEnt
     List<SplitExpensesEntity> getSplitExpensesFriendsForReceipt(String rdid);
 
     boolean doesExists(String rdid, String rid, String fid);
+
+    List<SplitExpensesEntity> getOwesMe(String rid);
+
+    List<SplitExpensesEntity> getOwesOthers(String rid);
+
+    boolean updateSplitTotal(String receiptId, Double splitTotal);
 }

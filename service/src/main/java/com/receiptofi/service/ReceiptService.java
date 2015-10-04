@@ -508,6 +508,12 @@ public class ReceiptService {
                     receipt.getSplitCount(),
                     receipt.getSplitTotal(),
                     receipt.getSplitTax());
+
+            if (splitExpensesService.updateSplitTotal(receipt.getId(), receipt.getSplitTotal())) {
+                LOG.debug("Success update split total with new price");
+            } else {
+                LOG.debug("Failure update split total with new price");
+            }
         }
     }
 }

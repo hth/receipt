@@ -1,12 +1,22 @@
 package com.receiptofi.repository;
 
+import static com.receiptofi.repository.util.AppendAdditionalFields.isActive;
+import static com.receiptofi.repository.util.AppendAdditionalFields.isNotDeleted;
+import static org.springframework.data.domain.Sort.Direction.DESC;
+import static org.springframework.data.mongodb.core.aggregation.Aggregation.group;
+import static org.springframework.data.mongodb.core.aggregation.Aggregation.match;
+import static org.springframework.data.mongodb.core.aggregation.Aggregation.newAggregation;
+import static org.springframework.data.mongodb.core.aggregation.Aggregation.previousOperation;
+import static org.springframework.data.mongodb.core.aggregation.Aggregation.sort;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
 
 import com.mongodb.WriteResult;
 
 import com.receiptofi.domain.BaseEntity;
+import com.receiptofi.domain.ReceiptEntity;
 import com.receiptofi.domain.SplitExpensesEntity;
+import com.receiptofi.domain.value.ReceiptGrouped;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,7 +24,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.aggregation.TypedAggregation;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -80,5 +92,49 @@ public class SplitExpensesManagerImpl implements SplitExpensesManager {
                 query(where("RDID").is(rdid).and("RID").is(rid).and("FID").is(fid)),
                 SplitExpensesEntity.class
         );
+    }
+
+    @Override
+    public List<SplitExpensesEntity> getOwesMe(String rid) {
+        TypedAggregation<SplitExpensesEntity> agg = newAggregation(SplitExpensesEntity.class,
+                match(where("RID").is(rid)
+                        .andOperator(
+                                isActive(),
+                                isNotDeleted()
+                        )),
+                group("friendUserId")
+                        .first("friendUserId").as("FID")
+                        .sum("splitTotal").as("ST"),
+                sort(DESC, previousOperation())
+        );
+
+        return mongoTemplate.aggregate(agg, TABLE, SplitExpensesEntity.class).getMappedResults();
+    }
+
+    @Override
+    public List<SplitExpensesEntity> getOwesOthers(String rid) {
+        TypedAggregation<SplitExpensesEntity> agg = newAggregation(SplitExpensesEntity.class,
+                match(where("FID").is(rid)
+                        .andOperator(
+                                isActive(),
+                                isNotDeleted()
+                        )),
+                group("receiptUserId")
+                        .first("receiptUserId").as("RID")
+                        .sum("splitTotal").as("ST"),
+                sort(DESC, previousOperation())
+        );
+
+        return mongoTemplate.aggregate(agg, TABLE, SplitExpensesEntity.class).getMappedResults();
+    }
+
+    @Override
+    public boolean updateSplitTotal(String rdid, Double splitTotal) {
+        WriteResult writeResult = mongoTemplate.updateMulti(
+                query(where("RDID").is(rdid)),
+                Update.update("ST", splitTotal),
+                SplitExpensesEntity.class
+        );
+        return writeResult.getN() > 0;
     }
 }

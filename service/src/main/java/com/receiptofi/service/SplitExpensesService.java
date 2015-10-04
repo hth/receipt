@@ -54,4 +54,16 @@ public class SplitExpensesService {
     public boolean doesExists(String rdid, String rid, String fid) {
         return splitExpensesManager.doesExists(rdid, rid, fid);
     }
+
+    public boolean updateSplitTotal(String receiptId, Double splitTotal) {
+        return splitExpensesManager.updateSplitTotal(receiptId, splitTotal);
+    }
+
+    public List<SplitExpensesEntity> getOwesMe(String rid) {
+        return splitExpensesManager.getOwesMe(rid);
+    }
+
+    public List<SplitExpensesEntity> getOwesOthers(String rid) {
+        return splitExpensesManager.getOwesOthers(rid);
+    }
 }

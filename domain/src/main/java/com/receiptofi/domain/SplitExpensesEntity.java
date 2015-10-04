@@ -45,6 +45,11 @@ public class SplitExpensesEntity extends BaseEntity {
     @Field ("FID")
     private String friendUserId;
 
+    @NotNull
+    @NumberFormat (style = NumberFormat.Style.CURRENCY)
+    @Field ("ST")
+    private Double splitTotal;
+
     /** To keep bean happy. */
     @SuppressWarnings ("unused")
     private SplitExpensesEntity() {
@@ -71,5 +76,9 @@ public class SplitExpensesEntity extends BaseEntity {
 
     public String getFriendUserId() {
         return friendUserId;
+    }
+
+    public Double getSplitTotal() {
+        return splitTotal;
     }
 }
