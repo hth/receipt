@@ -87,7 +87,7 @@ public class SplitController {
         List<JsonOweExpenses> jsonOweOthers = new ArrayList<>();
         splitExpenses = splitExpensesService.getOwesOthers(receiptUser.getRid());
         for (SplitExpensesEntity splitExpense : splitExpenses) {
-            UserProfileEntity userProfile = userProfilePreferenceService.findByReceiptUserId(splitExpense.getFriendUserId());
+            UserProfileEntity userProfile = userProfilePreferenceService.findByReceiptUserId(splitExpense.getReceiptUserId());
             JsonOweExpenses jsonOweExpense = new JsonOweExpenses(
                     splitExpense.getReceiptUserId(),
                     splitExpense.getFriendUserId(),
