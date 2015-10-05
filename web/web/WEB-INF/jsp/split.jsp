@@ -104,41 +104,56 @@
             </ul>
 
             <div id="tabs-1" class="report_my ajx-content" style="display: block;">
-                <c:if test="${!empty splitForm.jsonOweMe}">
-                    <h2 class="h2" style="padding-bottom:2%; text-decoration: underline;">Friends owe you</h2>
-                    <div id="containerOwesMe" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>
+                <c:choose>
+                    <c:when test="${!empty splitForm.jsonOweMe}">
+                        <h2 class="h2" style="padding-bottom:2%; text-decoration: underline;">Friends owe you</h2>
+                        <div id="containerOwesMe" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>
 
-                    <div class="rightside-list-holder full-list-holder" style="width: 400px;">
-                    <ul>
-                        <c:forEach var="profile" items="${splitForm.jsonOweMe}" varStatus="status">
-                        <li>
-                            <span class="rightside-li-right-text counter-li-text"><fmt:formatNumber value="${status.count}" pattern="00"/></span>
-                            <span class="rightside-li-date-text full-li-date-text">${profile.name}</span>
-                            <fmt:formatNumber value="${profile.splitTotal}" type="currency" />
-                        </li>
-                        </c:forEach>
-                    </ul>
-                    </div>
-                </c:if>
+                        <div class="rightside-list-holder full-list-holder" style="width: 400px;">
+                            <ul>
+                                <c:forEach var="profile" items="${splitForm.jsonOweMe}" varStatus="status">
+                                    <li>
+                                        <span class="rightside-li-right-text counter-li-text"><fmt:formatNumber value="${status.count}" pattern="00"/></span>
+                                        <span class="rightside-li-date-text full-li-date-text">${profile.name}</span>
+                                        <fmt:formatNumber value="${profile.splitTotal}" type="currency" />
+                                    </li>
+                                </c:forEach>
+                            </ul>
+                        </div>
+                    </c:when>
+                    <c:otherwise>
+                        <div class="r-info" id="noReceiptId">
+                            No one owes you.
+                        </div>
+                    </c:otherwise>
+                </c:choose>
+
             </div>
 
             <div id="tabs-2" class="report_my ajx-content" style="display: block;">
-                <c:if test="${!empty splitForm.jsonOweOthers}">
-                    <h2 class="h2" style="padding-bottom:2%; text-decoration: underline;">You owe friends</h2>
-                    <div id="containerOwesOthers" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>
+                <c:choose>
+                    <c:when test="${!empty splitForm.jsonOweOthers}">
+                        <h2 class="h2" style="padding-bottom:2%; text-decoration: underline;">You owe friends</h2>
+                        <div id="containerOwesOthers" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>
 
-                    <div class="rightside-list-holder full-list-holder" style="width: 400px;">
-                        <ul>
-                            <c:forEach var="profile" items="${splitForm.jsonOweOthers}" varStatus="status">
-                            <li>
-                                <span class="rightside-li-right-text counter-li-text"><fmt:formatNumber value="${status.count}" pattern="00"/></span>
-                                <span class="rightside-li-date-text full-li-date-text">${profile.name}</span>
-                                <fmt:formatNumber value="${profile.splitTotal}" type="currency" />
-                            </li>
-                            </c:forEach>
-                        </ul>
-                    </div>
-                </c:if>
+                        <div class="rightside-list-holder full-list-holder" style="width: 400px;">
+                            <ul>
+                                <c:forEach var="profile" items="${splitForm.jsonOweOthers}" varStatus="status">
+                                <li>
+                                    <span class="rightside-li-right-text counter-li-text"><fmt:formatNumber value="${status.count}" pattern="00"/></span>
+                                    <span class="rightside-li-date-text full-li-date-text">${profile.name}</span>
+                                    <fmt:formatNumber value="${profile.splitTotal}" type="currency" />
+                                </li>
+                                </c:forEach>
+                            </ul>
+                        </div>
+                    </c:when>
+                    <c:otherwise>
+                        <div class="r-info" id="noReceiptId">
+                            You owe nothing to any of your friends.
+                        </div>
+                    </c:otherwise>
+                </c:choose>
             </div>
 
             <div id="tabs-3" class="ajx-content report_my">
