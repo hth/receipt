@@ -2,6 +2,7 @@ package com.receiptofi.domain;
 
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -50,20 +51,38 @@ public class SplitExpensesEntity extends BaseEntity {
     @Field ("ST")
     private Double splitTotal;
 
+    @NotNull
+    @DateTimeFormat (iso = DateTimeFormat.ISO.DATE_TIME)
+    @Field ("RTXD")
+    private Date receiptDate;
+
+    @DBRef
+    @Field ("BIZ_NAME")
+    private BizNameEntity bizName;
+
+    @DBRef
+    @Field ("BIZ_STORE")
+    private BizStoreEntity bizStore;
+
     /** To keep bean happy. */
     @SuppressWarnings ("unused")
     private SplitExpensesEntity() {
         super();
     }
 
-    public SplitExpensesEntity(String receiptDocumentId, String receiptUserId, String fid) {
-        this.receiptDocumentId = receiptDocumentId;
-        this.receiptUserId = receiptUserId;
+    public SplitExpensesEntity(String fid, ReceiptEntity receipt) {
+
+        this.receiptDocumentId = receipt.getId();
+        this.receiptUserId = receipt.getReceiptUserId();
         /**
          * There is always a possibility that a friend could be same as receipt user id in receipt.
          * So select the other friend.
          */
         this.friendUserId = fid;
+        this.receiptDate = receipt.getReceiptDate();
+
+        this.bizName = receipt.getBizName();
+        this.bizStore = receipt.getBizStore();
     }
 
     public String getReceiptDocumentId() {
@@ -80,5 +99,17 @@ public class SplitExpensesEntity extends BaseEntity {
 
     public Double getSplitTotal() {
         return splitTotal;
+    }
+
+    public Date getReceiptDate() {
+        return receiptDate;
+    }
+
+    public BizNameEntity getBizName() {
+        return bizName;
+    }
+
+    public BizStoreEntity getBizStore() {
+        return bizStore;
     }
 }

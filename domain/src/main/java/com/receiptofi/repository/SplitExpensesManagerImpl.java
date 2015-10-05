@@ -137,4 +137,12 @@ public class SplitExpensesManagerImpl implements SplitExpensesManager {
         );
         return writeResult.getN() > 0;
     }
+
+    @Override
+    public List<SplitExpensesEntity> getSplitExpenses(String rid, String fid) {
+        return mongoTemplate.find(
+                query(where("RID").is(rid).and("FID").is(fid)),
+                SplitExpensesEntity.class
+        );
+    }
 }

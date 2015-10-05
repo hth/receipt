@@ -66,4 +66,8 @@ public class SplitExpensesService {
     public List<SplitExpensesEntity> getOwesOthers(String rid) {
         return splitExpensesManager.getOwesOthers(rid);
     }
+
+    public List<SplitExpensesEntity> getSplitExpenses(String rid, String fid) {
+        return splitExpensesManager.getSplitExpenses(rid, fid);
+    }
 }

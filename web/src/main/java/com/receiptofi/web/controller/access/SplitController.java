@@ -86,6 +86,12 @@ public class SplitController {
         }
         splitForm.setJsonOweMe(jsonOweMe);
 
+        for (JsonOweExpenses jsonOweExpense : splitForm.getJsonOweMe()) {
+            splitForm.addYourSplitExpenses(
+                    userProfilePreferenceService.findByReceiptUserId(jsonOweExpense.getFriendUserId()).getName(),
+                    splitExpensesService.getSplitExpenses(receiptUser.getRid(), jsonOweExpense.getFriendUserId()));
+        }
+
         List<JsonOweExpenses> jsonOweOthers = new ArrayList<>();
         splitExpenses = splitExpensesService.getOwesOthers(receiptUser.getRid());
         for (SplitExpensesEntity splitExpense : splitExpenses) {
@@ -101,6 +107,12 @@ public class SplitController {
             }
         }
         splitForm.setJsonOweOthers(jsonOweOthers);
+
+        for (JsonOweExpenses jsonOweExpense : splitForm.getJsonOweOthers()) {
+            splitForm.addFriendsSplitExpenses(
+                    userProfilePreferenceService.findByReceiptUserId(jsonOweExpense.getReceiptUserId()).getName(),
+                    splitExpensesService.getSplitExpenses(jsonOweExpense.getReceiptUserId(), receiptUser.getRid()));
+        }
 
         splitForm.setActiveProfiles(friendService.getActiveConnections(receiptUser.getRid()));
         splitForm.setPendingProfiles(friendService.getPendingConnections(receiptUser.getRid()));

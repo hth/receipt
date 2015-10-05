@@ -109,16 +109,24 @@
                         <h2 class="h2" style="padding-bottom:2%; text-decoration: underline;">Friends owe you</h2>
                         <div id="containerOwesMe" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>
 
-                        <div class="rightside-list-holder full-list-holder" style="width: 400px;">
-                            <ul>
-                                <c:forEach var="profile" items="${splitForm.jsonOweMe}" varStatus="status">
+                        <div class="rightside-list-holder full-list-holder" style="width: 800px;">
+                            <c:forEach items="${splitForm.yourSplitExpenses}" var="taskStats" varStatus="status">
+                            <div class="receipt-detail-holder border" style="padding-bottom: 20px;">
+                                <p class="analysis" style="padding-bottom: 10px;">${taskStats.key}</p>
+
+                                <ul>
+                                    <c:forEach items="${taskStats.value}" var="splitExpense" varStatus="status">
                                     <li>
-                                        <span class="rightside-li-right-text counter-li-text"><fmt:formatNumber value="${status.count}" pattern="00"/></span>
-                                        <span class="rightside-li-date-text full-li-date-text">${profile.name}</span>
-                                        <fmt:formatNumber value="${profile.splitTotal}" type="currency" />
+                                        <span class="rightside-li-date-text counter-li-text"><fmt:formatNumber value="${status.count}" pattern="00"/></span>
+                                        <span class="rightside-li-date-text"><fmt:formatDate value="${splitExpense.receiptDate}" pattern="MMM dd, yyyy"/></span>
+                                        <span class="rightside-li-date-text full-li-date-text">${splitExpense.bizName.businessName}</span>
+                                        <span class="rightside-li-date-text"><fmt:formatNumber value="${splitExpense.splitTotal}" type="currency" /></span>
+                                        <span class="rightside-li-date-text">Settle</span>
                                     </li>
-                                </c:forEach>
-                            </ul>
+                                    </c:forEach>
+                                </ul>
+                            </div>
+                            </c:forEach>
                         </div>
                     </c:when>
                     <c:otherwise>
@@ -127,7 +135,6 @@
                         </div>
                     </c:otherwise>
                 </c:choose>
-
             </div>
 
             <div id="tabs-2" class="report_my ajx-content" style="display: block;">
@@ -136,16 +143,24 @@
                         <h2 class="h2" style="padding-bottom:2%; text-decoration: underline;">You owe friends</h2>
                         <div id="containerOwesOthers" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>
 
-                        <div class="rightside-list-holder full-list-holder" style="width: 400px;">
-                            <ul>
-                                <c:forEach var="profile" items="${splitForm.jsonOweOthers}" varStatus="status">
-                                <li>
-                                    <span class="rightside-li-right-text counter-li-text"><fmt:formatNumber value="${status.count}" pattern="00"/></span>
-                                    <span class="rightside-li-date-text full-li-date-text">${profile.name}</span>
-                                    <fmt:formatNumber value="${profile.splitTotal}" type="currency" />
-                                </li>
-                                </c:forEach>
-                            </ul>
+                        <div class="rightside-list-holder full-list-holder" style="width: 800px;">
+                            <c:forEach items="${splitForm.friendsSplitExpenses}" var="taskStats" varStatus="status">
+                            <div class="receipt-detail-holder border" style="padding-bottom: 20px;">
+                                <p class="analysis" style="padding-bottom: 10px;">${taskStats.key}</p>
+
+                                <ul>
+                                    <c:forEach items="${taskStats.value}" var="splitExpense" varStatus="status">
+                                        <li>
+                                            <span class="rightside-li-date-text counter-li-text"><fmt:formatNumber value="${status.count}" pattern="00"/></span>
+                                            <span class="rightside-li-date-text"><fmt:formatDate value="${splitExpense.receiptDate}" pattern="MMM dd, yyyy"/></span>
+                                            <span class="rightside-li-date-text full-li-date-text">${splitExpense.bizName.businessName}</span>
+                                            <span class="rightside-li-date-text"><fmt:formatNumber value="${splitExpense.splitTotal}" type="currency" /></span>
+                                            <span class="rightside-li-date-text">Settle</span>
+                                        </li>
+                                    </c:forEach>
+                                </ul>
+                            </div>
+                            </c:forEach>
                         </div>
                     </c:when>
                     <c:otherwise>
