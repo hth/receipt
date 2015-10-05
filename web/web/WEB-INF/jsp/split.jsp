@@ -26,7 +26,11 @@
 
     <script>
         $(function () {
-            $("#tabs").tabs();
+            $("#tabs").tabs({
+                activate: function () {
+                    $(window).resize();
+                }
+            });
         });
 
         <c:if test="${!empty showTab}">
@@ -94,19 +98,50 @@
     <div class="rightside-content">
         <div id="tabs" class="nav-list">
             <ul class="nav-block">
-                <li><a href="#tabs-1">DASHBOARD</a></li>
-                <li><a href="#tabs-2">FRIENDS</a></li>
+                <li><a href="#tabs-1">OWE's YOU</a></li>
+                <li><a href="#tabs-2">YOU OWE</a></li>
+                <li><a href="#tabs-3">FRIENDS</a></li>
             </ul>
 
             <div id="tabs-1" class="report_my ajx-content" style="display: block;">
-                <h1 class="h1">DASHBOARD</h1>
-                <hr>
+                <c:if test="${!empty splitForm.jsonOweMe}">
+                    <h2 class="h2" style="padding-bottom:2%; text-decoration: underline;">Friends owe you</h2>
+                    <div id="containerOwesMe" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>
 
-                <div id="containerOwesMe" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>
-                <div id="containerOwesOthers" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>
+                    <div class="rightside-list-holder full-list-holder" style="width: 400px;">
+                    <ul>
+                        <c:forEach var="profile" items="${splitForm.jsonOweMe}" varStatus="status">
+                        <li>
+                            <span class="rightside-li-right-text counter-li-text"><fmt:formatNumber value="${status.count}" pattern="00"/></span>
+                            <span class="rightside-li-date-text full-li-date-text">${profile.name}</span>
+                            <fmt:formatNumber value="${profile.splitTotal}" type="currency" />
+                        </li>
+                        </c:forEach>
+                    </ul>
+                    </div>
+                </c:if>
             </div>
 
-            <div id="tabs-2" class="ajx-content report_my">
+            <div id="tabs-2" class="report_my ajx-content" style="display: block;">
+                <c:if test="${!empty splitForm.jsonOweOthers}">
+                    <h2 class="h2" style="padding-bottom:2%; text-decoration: underline;">You owe friends</h2>
+                    <div id="containerOwesOthers" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>
+
+                    <div class="rightside-list-holder full-list-holder" style="width: 400px;">
+                        <ul>
+                            <c:forEach var="profile" items="${splitForm.jsonOweOthers}" varStatus="status">
+                            <li>
+                                <span class="rightside-li-right-text counter-li-text"><fmt:formatNumber value="${status.count}" pattern="00"/></span>
+                                <span class="rightside-li-date-text full-li-date-text">${profile.name}</span>
+                                <fmt:formatNumber value="${profile.splitTotal}" type="currency" />
+                            </li>
+                            </c:forEach>
+                        </ul>
+                    </div>
+                </c:if>
+            </div>
+
+            <div id="tabs-3" class="ajx-content report_my">
                 <h1 class="h1 temp_offset" id="friend_title_id">FRIENDS</h1>
                 <hr class="temp_offset">
 
@@ -259,6 +294,9 @@
 <script>
     $(function () {
         $('#containerOwesMe').highcharts({
+            credits: {
+                enabled: false
+            },
             chart: {
                 plotBackgroundColor: null,
                 plotBorderWidth: 0,
@@ -271,7 +309,7 @@
                 y: 40
             },
             tooltip: {
-                pointFormat: '{series.name}: <b>{point.y:.1f}</b>'
+                pointFormat: '{series.name}: <b>{point.y:.2f}</b>'
             },
             plotOptions: {
                 pie: {
@@ -311,6 +349,9 @@
 
     $(function () {
         $('#containerOwesOthers').highcharts({
+            credits: {
+                enabled: false
+            },
             chart: {
                 plotBackgroundColor: null,
                 plotBorderWidth: 0,
@@ -323,7 +364,7 @@
                 y: 40
             },
             tooltip: {
-                pointFormat: '{series.name}: <b>{point.y:.1f}</b>'
+                pointFormat: '{series.name}: <b>{point.y:.2f}</b>'
             },
             plotOptions: {
                 pie: {
