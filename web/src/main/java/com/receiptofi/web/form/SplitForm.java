@@ -1,10 +1,13 @@
 package com.receiptofi.web.form;
 
+import com.receiptofi.domain.SplitExpensesEntity;
 import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.domain.json.JsonAwaitingAcceptance;
 import com.receiptofi.domain.json.JsonOweExpenses;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * User: hitender
@@ -16,6 +19,8 @@ public class SplitForm {
     private List<JsonAwaitingAcceptance> pendingProfiles;
     private List<JsonOweExpenses> jsonOweMe;
     private List<JsonOweExpenses> jsonOweOthers;
+    private Map<String, List<SplitExpensesEntity>> yourSplitExpenses = new HashMap<>();
+    private Map<String, List<SplitExpensesEntity>> friendsSplitExpenses = new HashMap<>();
 
     public List<UserProfileEntity> getActiveProfiles() {
         return activeProfiles;
@@ -55,5 +60,21 @@ public class SplitForm {
 
     public void setJsonOweOthers(List<JsonOweExpenses> jsonOweOthers) {
         this.jsonOweOthers = jsonOweOthers;
+    }
+
+    public Map<String, List<SplitExpensesEntity>> getYourSplitExpenses() {
+        return yourSplitExpenses;
+    }
+
+    public void addYourSplitExpenses(String id, List<SplitExpensesEntity> yourSplitExpenses) {
+        this.yourSplitExpenses.put(id, yourSplitExpenses);
+    }
+
+    public Map<String, List<SplitExpensesEntity>> getFriendsSplitExpenses() {
+        return friendsSplitExpenses;
+    }
+
+    public void addFriendsSplitExpenses(String id, List<SplitExpensesEntity> friendsSplitExpenses) {
+        this.friendsSplitExpenses.put(id, friendsSplitExpenses);
     }
 }

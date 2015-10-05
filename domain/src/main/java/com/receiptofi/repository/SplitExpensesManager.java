@@ -21,4 +21,6 @@ public interface SplitExpensesManager extends RepositoryManager<SplitExpensesEnt
     List<SplitExpensesEntity> getOwesOthers(String rid);
 
     boolean updateSplitTotal(String receiptId, Double splitTotal);
+
+    List<SplitExpensesEntity> getSplitExpenses(String rid, String fid);
 }

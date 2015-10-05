@@ -459,7 +459,7 @@ public class ReceiptService {
                 FriendEntity friend = friendService.getConnection(receipt.getReceiptUserId(), fid);
                 if (null != friend) {
                     if (!splitExpensesService.doesExists(receipt.getId(), receipt.getReceiptUserId(), fid)) {
-                        splitExpensesService.save(new SplitExpensesEntity(receipt.getId(), receipt.getReceiptUserId(), fid));
+                        splitExpensesService.save(new SplitExpensesEntity(fid, receipt));
                         receipt.increaseSplitCount();
                         save(receipt);
 
