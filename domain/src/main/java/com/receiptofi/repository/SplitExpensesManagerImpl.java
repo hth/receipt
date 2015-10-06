@@ -16,6 +16,7 @@ import com.mongodb.WriteResult;
 import com.receiptofi.domain.BaseEntity;
 import com.receiptofi.domain.ReceiptEntity;
 import com.receiptofi.domain.SplitExpensesEntity;
+import com.receiptofi.domain.types.SplitStatusEnum;
 import com.receiptofi.domain.value.ReceiptGrouped;
 
 import org.slf4j.Logger;
@@ -72,7 +73,10 @@ public class SplitExpensesManagerImpl implements SplitExpensesManager {
     @Override
     public boolean deleteHard(String rdid, String rid, String fid) {
         WriteResult writeResult = mongoTemplate.remove(
-                query(where("RDID").is(rdid).and("RID").is(rid).and("FID").is(fid)),
+                query(where("RDID").is(rdid)
+                        .and("RID").is(rid)
+                        .and("FID").is(fid)
+                        .and("SS").is(SplitStatusEnum.U)),
                 SplitExpensesEntity.class
         );
         return writeResult.getN() > 0;

@@ -164,8 +164,7 @@ public class ReceiptService {
             return true;
         } else if (StringUtils.isNotBlank(receipt.getReferToReceiptId())) {
             /** User is deleting their split receipt or shared receipt. This is as good as original owner of the receipt. */
-            splitAction(rid, SplitActionEnum.R, receiptManager.findReceipt(receipt.getReferToReceiptId()));
-            return true;
+            return splitAction(rid, SplitActionEnum.R, receiptManager.findReceipt(receipt.getReferToReceiptId()));
         } else {
             LOG.error("Attempt to delete inactive Receipt={}, Browser Back Action performed", receipt.getId());
             throw new RuntimeException("Receipt no longer exists");
