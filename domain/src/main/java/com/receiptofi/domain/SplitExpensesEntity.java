@@ -1,5 +1,7 @@
 package com.receiptofi.domain;
 
+import com.receiptofi.domain.types.SplitStatusEnum;
+
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.DBRef;
@@ -64,6 +66,10 @@ public class SplitExpensesEntity extends BaseEntity {
     @Field ("BIZ_STORE")
     private BizStoreEntity bizStore;
 
+    @NotNull
+    @Field ("SS")
+    private SplitStatusEnum splitStatus = SplitStatusEnum.U;
+
     /** To keep bean happy. */
     @SuppressWarnings ("unused")
     private SplitExpensesEntity() {
@@ -111,5 +117,9 @@ public class SplitExpensesEntity extends BaseEntity {
 
     public BizStoreEntity getBizStore() {
         return bizStore;
+    }
+
+    public SplitStatusEnum getSplitStatus() {
+        return splitStatus;
     }
 }

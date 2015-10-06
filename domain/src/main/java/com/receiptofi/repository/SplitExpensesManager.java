@@ -10,6 +10,14 @@ import java.util.List;
  */
 public interface SplitExpensesManager extends RepositoryManager<SplitExpensesEntity> {
 
+    /**
+     * Delete SplitExpense only when split expenses are un-settled.
+     *
+     * @param rdid
+     * @param rid
+     * @param fid
+     * @return
+     */
     boolean deleteHard(String rdid, String rid, String fid);
 
     List<SplitExpensesEntity> getSplitExpensesFriendsForReceipt(String rdid);
