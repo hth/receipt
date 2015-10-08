@@ -25,6 +25,10 @@ import java.util.Map;
 public class SplitExpensesService {
     @Autowired private SplitExpensesManager splitExpensesManager;
 
+    public SplitExpensesEntity getById(String id, String rid) {
+        return splitExpensesManager.getById(id, rid);
+    }
+
     public void save(SplitExpensesEntity splitExpenses) {
         splitExpensesManager.save(splitExpenses);
     }
@@ -69,5 +73,9 @@ public class SplitExpensesService {
 
     public List<SplitExpensesEntity> getSplitExpenses(String rid, String fid) {
         return splitExpensesManager.getSplitExpenses(rid, fid);
+    }
+
+    public SplitExpensesEntity findSplitExpensesToSettle(String fid, String rid, Double splitTotal) {
+        return splitExpensesManager.findSplitExpensesToSettle(fid, rid, splitTotal);
     }
 }

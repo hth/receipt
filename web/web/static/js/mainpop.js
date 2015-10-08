@@ -81,7 +81,7 @@ function submitInvitationForm() {
         success: function (response) {
             console.debug(response);
             var json = $.parseJSON(response);
-            $('#sendInvite_bt').css('background', '#2c97de')
+            $('#sendInvite_bt').css('background', '#2c97de');
             $('#inviteEmailId').removeAttr('disabled');
             if (json.status) {
                 $('#inviteTextMessage').html(json.message).addClass("r-success").css("margin-left", "0px").css("width", "100%").delay(5000)
@@ -860,6 +860,43 @@ function updateReceiptSplit(fid, receiptId) {
         },
         url: ctx + "/access/receipt/split.htm",
         data: {fid: fid, receiptId: receiptId, splitAction: splitAction},
+        success: function (responseData) {
+            if (responseData.result === true) {
+                if (responseData.hasOwnProperty('splitTotal')) {
+                    $('#my_total').html('$' + responseData.splitTotal);
+                }
+            } else if (responseData.result === false) {
+                if (parentDiv === 'splits') {
+                    $("#splits").append($('#' + fid));
+                } else if (parentDiv === 'friends') {
+                    $("#friends").append($('#' + fid));
+                }
+            }
+        },
+        error: function () {
+            console.log("Error during splitting expenses: " + name);
+        }
+    })
+}
+
+function settleSplit(id) {
+    var parentDiv = $('#' + id).closest("div").attr("id");
+    $('#' + id).remove();
+
+    if ($("#" + parentDiv).children("ul").children("li").length == 0) {
+        $('#' + parentDiv).remove();
+    }
+
+    $.ajax({
+        type: 'POST',
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader(
+                $("meta[name='_csrf_header']").attr("content"),
+                $("meta[name='_csrf']").attr("content")
+            );
+        },
+        url: ctx + "/access/split/settle.htm",
+        data: {id: id},
         success: function (responseData) {
             if (responseData.result === true) {
                 if (responseData.hasOwnProperty('splitTotal')) {

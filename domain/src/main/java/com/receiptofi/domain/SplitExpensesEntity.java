@@ -107,6 +107,10 @@ public class SplitExpensesEntity extends BaseEntity {
         return splitTotal;
     }
 
+    public void setSplitTotal(Double splitTotal) {
+        this.splitTotal = splitTotal;
+    }
+
     public Date getReceiptDate() {
         return receiptDate;
     }
@@ -121,5 +125,9 @@ public class SplitExpensesEntity extends BaseEntity {
 
     public SplitStatusEnum getSplitStatus() {
         return splitStatus;
+    }
+
+    public void setSplitStatus(SplitStatusEnum splitStatus) {
+        this.splitStatus = splitStatus;
     }
 }
