@@ -399,7 +399,7 @@ public class LandingController {
         Boolean responseStatus = Boolean.FALSE;
         String responseMessage;
         boolean isValid = EmailValidator.getInstance().isValid(invitedUserEmail);
-        if (isValid) {
+        if (isValid && !invitedUserEmail.equals(receiptUser.getUsername())) {
             UserProfileEntity userProfile = accountService.doesUserExists(invitedUserEmail);
             /**
              * Condition when the user does not exists then invite. Also allow re-invite if the user is not active and
@@ -493,7 +493,11 @@ public class LandingController {
                 responseMessage = StringUtils.abbreviate(invitedUserEmail, 26) + ", already invited. Appreciate!";
             }
         } else {
-            responseMessage = "Invalid Email: " + StringUtils.abbreviate(invitedUserEmail, 26);
+            if (!isValid) {
+                responseMessage = "Invalid Email: " + StringUtils.abbreviate(invitedUserEmail, 26);
+            } else {
+                responseMessage = "You are registered.";
+            }
         }
 
         JsonObject response = new JsonObject();
