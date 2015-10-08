@@ -314,12 +314,12 @@
                                                 </a>
                                                 <c:choose>
                                                 <c:when test="${receipt.ownReceipt}">
-                                                    <span class="member" style="background-color: #00529B; width: 25px; height: 20px; margin-top: 15px;">
+                                                    <span class="member" style="background-color: #00529B; width: 25px; height: 20px;">
                                                         <span class="member-initials" style="line-height: 20px;">+${receipt.splitCount - 1}</span>
                                                     </span>
                                                 </c:when>
                                                 <c:otherwise>
-                                                    <span class="member" style="background-color: #606060 width: 25px; height: 20px; margin-top: 15px;">
+                                                    <span class="member" style="background-color: #484848; width: 25px; height: 20px;">
                                                         <span class="member-initials" style="line-height: 20px;">+${receipt.splitCount - 1}</span>
                                                     </span>
                                                 </c:otherwise>
@@ -338,12 +338,12 @@
                                             <p class="rightside-li-date-text rightside-li-date-text-show-attr" align="center">
                                                 <c:choose>
                                                 <c:when test="${receipt.ownReceipt}">
-                                                    <span class="member" style="background-color: #00529B; width: 25px; height: 20px; margin-top: 15px;">
+                                                    <span class="member" style="background-color: #00529B; width: 25px; height: 20px;">
                                                         <span class="member-initials" style="line-height: 20px;">+${receipt.splitCount - 1}</span>
                                                     </span>
                                                 </c:when>
                                                 <c:otherwise>
-                                                    <span class="member" style="background-color: #606060 width: 25px; height: 20px; margin-top: 15px;">
+                                                    <span class="member" style="background-color: #606060; width: 25px; height: 20px;">
                                                         <span class="member-initials" style="line-height: 20px;">+${receipt.splitCount - 1}</span>
                                                     </span>
                                                 </c:otherwise>

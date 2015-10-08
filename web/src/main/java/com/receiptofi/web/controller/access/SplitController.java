@@ -252,6 +252,7 @@ public class SplitController {
 
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("st", splitExpenses.getSplitTotal());
+        jsonObject.addProperty(LandingController.SUCCESS, true);
         return jsonObject.toString();
     }
 }

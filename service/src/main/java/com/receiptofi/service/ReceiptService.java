@@ -486,10 +486,11 @@ public class ReceiptService {
 
                     /** Remove entry. */
                     deleteFriendReceipt(receipt.getId(), fid);
+                    result = true;
                 } else {
                     LOG.warn("Not found splitting expenses between fid={} rid={} skipping removing from split", fid, receipt.getReceiptUserId());
                 }
-                result = true;
+
                 break;
         }
         return result;
