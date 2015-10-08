@@ -14,10 +14,8 @@ import static org.springframework.data.mongodb.core.query.Query.query;
 import com.mongodb.WriteResult;
 
 import com.receiptofi.domain.BaseEntity;
-import com.receiptofi.domain.ReceiptEntity;
 import com.receiptofi.domain.SplitExpensesEntity;
 import com.receiptofi.domain.types.SplitStatusEnum;
-import com.receiptofi.domain.value.ReceiptGrouped;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,6 +27,7 @@ import org.springframework.data.mongodb.core.aggregation.TypedAggregation;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.Assert;
 
 import java.util.List;
 
@@ -51,6 +50,12 @@ public class SplitExpensesManagerImpl implements SplitExpensesManager {
             "collection");
 
     @Autowired private MongoTemplate mongoTemplate;
+
+    @Override
+    public SplitExpensesEntity getById(String id, String rid) {
+        Assert.hasText(id, "Id is empty");
+        return mongoTemplate.findOne(query(where("id").is(id).and("RID").is(rid)), SplitExpensesEntity.class);
+    }
 
     @Override
     public void save(SplitExpensesEntity object) {
@@ -102,6 +107,7 @@ public class SplitExpensesManagerImpl implements SplitExpensesManager {
     public List<SplitExpensesEntity> getOwesMe(String rid) {
         TypedAggregation<SplitExpensesEntity> agg = newAggregation(SplitExpensesEntity.class,
                 match(where("RID").is(rid)
+                        .and("SS").ne(SplitStatusEnum.S)
                         .andOperator(
                                 isActive(),
                                 isNotDeleted()
@@ -119,6 +125,7 @@ public class SplitExpensesManagerImpl implements SplitExpensesManager {
     public List<SplitExpensesEntity> getOwesOthers(String rid) {
         TypedAggregation<SplitExpensesEntity> agg = newAggregation(SplitExpensesEntity.class,
                 match(where("FID").is(rid)
+                        .and("SS").ne(SplitStatusEnum.S)
                         .andOperator(
                                 isActive(),
                                 isNotDeleted()
@@ -145,7 +152,20 @@ public class SplitExpensesManagerImpl implements SplitExpensesManager {
     @Override
     public List<SplitExpensesEntity> getSplitExpenses(String rid, String fid) {
         return mongoTemplate.find(
-                query(where("RID").is(rid).and("FID").is(fid)),
+                query(where("RID").is(rid)
+                        .and("FID").is(fid)
+                        .and("SS").ne(SplitStatusEnum.S)
+                ),
+                SplitExpensesEntity.class
+        );
+    }
+
+    @Override
+    public SplitExpensesEntity findSplitExpensesToSettle(String fid, String rid, Double splitTotal) {
+        return mongoTemplate.findOne(
+                query(where("RID").is(fid)
+                        .and("FID").is(rid)
+                        .and("SS").ne(SplitStatusEnum.S)),
                 SplitExpensesEntity.class
         );
     }

@@ -14,11 +14,16 @@ import java.util.Map;
  * Date: 9/14/15 9:16 PM
  */
 public class SplitForm {
+    /** List of friends, request. */
     private List<UserProfileEntity> activeProfiles;
     private List<JsonAwaitingAcceptance> awaitingProfiles;
     private List<JsonAwaitingAcceptance> pendingProfiles;
+
+    /** For showing chart data. */
     private List<JsonOweExpenses> jsonOweMe;
     private List<JsonOweExpenses> jsonOweOthers;
+
+    /** For showing tabular data to settle split. */
     private Map<String, List<SplitExpensesEntity>> yourSplitExpenses = new HashMap<>();
     private Map<String, List<SplitExpensesEntity>> friendsSplitExpenses = new HashMap<>();
 

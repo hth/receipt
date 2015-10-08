@@ -10,6 +10,8 @@ import java.util.List;
  */
 public interface SplitExpensesManager extends RepositoryManager<SplitExpensesEntity> {
 
+    SplitExpensesEntity getById(String id, String rid);
+
     /**
      * Delete SplitExpense only when split expenses are un-settled.
      *
@@ -31,4 +33,6 @@ public interface SplitExpensesManager extends RepositoryManager<SplitExpensesEnt
     boolean updateSplitTotal(String receiptId, Double splitTotal);
 
     List<SplitExpensesEntity> getSplitExpenses(String rid, String fid);
+
+    SplitExpensesEntity findSplitExpensesToSettle(String fid, String rid, Double splitTotal);
 }

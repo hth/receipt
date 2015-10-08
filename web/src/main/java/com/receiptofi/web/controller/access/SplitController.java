@@ -7,9 +7,11 @@ import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.domain.json.JsonOweExpenses;
 import com.receiptofi.domain.site.ReceiptUser;
 import com.receiptofi.domain.types.FriendConnectionTypeEnum;
+import com.receiptofi.domain.types.SplitStatusEnum;
 import com.receiptofi.service.FriendService;
 import com.receiptofi.service.SplitExpensesService;
 import com.receiptofi.service.UserProfilePreferenceService;
+import com.receiptofi.utils.Maths;
 import com.receiptofi.utils.ScrubbedInput;
 import com.receiptofi.web.form.SplitForm;
 
@@ -30,6 +32,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.codahale.metrics.annotation.ExceptionMetered;
 import com.codahale.metrics.annotation.Timed;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -188,6 +191,67 @@ public class SplitController {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty(LandingController.SUCCESS, friendService.unfriend(receiptUser.getRid(), mail.getText()));
+        return jsonObject.toString();
+    }
+
+    @Timed
+    @ExceptionMetered
+    @PreAuthorize ("hasRole('ROLE_USER')")
+    @RequestMapping (
+            value = "/settle",
+            method = RequestMethod.POST,
+            headers = "Accept=application/json",
+            produces = "application/json"
+    )
+    @ResponseBody
+    public String settle(
+            @RequestParam ("id")
+            ScrubbedInput id,
+
+            HttpServletResponse httpServletResponse
+    ) {
+        ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        SplitExpensesEntity splitExpenses = splitExpensesService.getById(id.getText(), receiptUser.getRid());
+
+        SplitExpensesEntity splitToSettle = splitExpensesService.findSplitExpensesToSettle(
+                splitExpenses.getFriendUserId(),
+                receiptUser.getRid(),
+                splitExpenses.getSplitTotal());
+
+        BigDecimal settled = Maths.subtract(splitToSettle.getSplitTotal(), splitExpenses.getSplitTotal());
+        switch (settled.compareTo(BigDecimal.ZERO)) {
+            case 1:
+                splitExpenses.setSplitStatus(SplitStatusEnum.S);
+                splitExpenses.setSplitTotal(0.00);
+                splitExpensesService.save(splitExpenses);
+
+                splitToSettle.setSplitStatus(SplitStatusEnum.P);
+                splitToSettle.setSplitTotal(settled.doubleValue());
+                splitExpensesService.save(splitToSettle);
+                break;
+            case 0:
+                splitExpenses.setSplitStatus(SplitStatusEnum.S);
+                splitExpenses.setSplitTotal(0.00);
+                splitExpensesService.save(splitExpenses);
+
+                splitToSettle.setSplitStatus(SplitStatusEnum.S);
+                splitToSettle.setSplitTotal(0.00);
+                splitExpensesService.save(splitToSettle);
+                break;
+            case -1:
+                settled = Maths.subtract(splitExpenses.getSplitTotal(), splitToSettle.getSplitTotal());
+                splitExpenses.setSplitStatus(SplitStatusEnum.P);
+                splitExpenses.setSplitTotal(settled.doubleValue());
+                splitExpensesService.save(splitExpenses);
+
+                splitToSettle.setSplitStatus(SplitStatusEnum.S);
+                splitToSettle.setSplitTotal(0.00);
+                splitExpensesService.save(splitToSettle);
+                break;
+        }
+
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("st", splitExpenses.getSplitTotal());
         return jsonObject.toString();
     }
 }

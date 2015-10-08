@@ -6,6 +6,7 @@ package com.receiptofi.domain.types;
  */
 public enum SplitStatusEnum {
     U("UNSETTLE", "Un-Settled"),
+    P("PARTIAL", "Partial"),
     S("SETTLED", "Settled");
 
     private final String description;
