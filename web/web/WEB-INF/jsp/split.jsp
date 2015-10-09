@@ -174,13 +174,6 @@
                                             </a>
                                         </span>
                                         <span class="rightside-li-date-text" style="color: black"><fmt:formatNumber value="${splitExpense.splitTotal}" type="currency" /></span>
-                                        <%--<span class="rightside-li-date-text">--%>
-                                            <%--<c:if test="${splitForm.canBeSettledWithMe(taskStats.key)}">--%>
-                                                <%--<div class="gd-button-holder" style="width: 50px;">--%>
-                                                    <%--<button class="gd-button" style="width: 100px; height: 30px; padding: 0px;">SETTLE</button>--%>
-                                                <%--</div>--%>
-                                            <%--</c:if>--%>
-                                        <%--</span>--%>
                                     </li>
                                     </c:forEach>
                                 </ul>
