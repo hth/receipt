@@ -881,8 +881,7 @@ function updateReceiptSplit(fid, receiptId) {
 
 function settleSplit(id) {
     var parentDiv = $('#' + id).closest("div").attr("id");
-    $('#' + id).fadeOut("slow", function () {
-    });
+    $('#' + id).fadeOut("slow");
 
     if ($("#" + parentDiv).children("ul").children("li").length == 0) {
         $('#' + parentDiv).hide();
@@ -907,7 +906,7 @@ function settleSplit(id) {
                 }
 
             } else if (responseData.success === false) {
-                $('#' + id).show();
+                $('#' + id).fadeIn("fast");
 
                 if ($("#" + parentDiv).children("ul").children("li").length == 0) {
                     $('#' + parentDiv).show();
