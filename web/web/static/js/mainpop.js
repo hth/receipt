@@ -881,7 +881,8 @@ function updateReceiptSplit(fid, receiptId) {
 
 function settleSplit(id) {
     var parentDiv = $('#' + id).closest("div").attr("id");
-    $('#' + id).hide();
+    $('#' + id).fadeOut("slow", function () {
+    });
 
     if ($("#" + parentDiv).children("ul").children("li").length == 0) {
         $('#' + parentDiv).hide();
@@ -898,14 +899,14 @@ function settleSplit(id) {
         url: ctx + "/access/split/settle.htm",
         data: {id: id},
         success: function (responseData) {
-            if (responseData.result === true) {
+            if (responseData.success === true) {
                 $('#' + id).remove();
 
                 if ($("#" + parentDiv).children("ul").children("li").length == 0) {
                     $('#' + parentDiv).remove();
                 }
 
-            } else if (responseData.result === false) {
+            } else if (responseData.success === false) {
                 $('#' + id).show();
 
                 if ($("#" + parentDiv).children("ul").children("li").length == 0) {
@@ -914,7 +915,7 @@ function settleSplit(id) {
             }
         },
         error: function () {
-            console.log("Error during splitting expenses: " + name);
+            console.log("Error during settling split expenses: " + id);
         }
     })
 }

@@ -218,6 +218,13 @@ public class SplitController {
                 receiptUser.getRid(),
                 splitExpenses.getSplitTotal());
 
+        if (null == splitToSettle) {
+            JsonObject jsonObject = new JsonObject();
+            jsonObject.addProperty("st", 0.00);
+            jsonObject.addProperty(LandingController.SUCCESS, false);
+            return jsonObject.toString();
+        }
+
         BigDecimal settled = Maths.subtract(splitToSettle.getSplitTotal(), splitExpenses.getSplitTotal());
         switch (settled.compareTo(BigDecimal.ZERO)) {
             case 1:
