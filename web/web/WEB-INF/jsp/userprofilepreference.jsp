@@ -62,6 +62,7 @@
                 <a class="top-account-bar-text" href="/access/eval/feedback.htm">FEEDBACK</a>
                 <a class="top-account-bar-text" href="/access/userprofilepreference/i.htm">ACCOUNT</a>
                 <a class="top-account-bar-text" href="/access/reportAnalysis.htm">REPORT & ANALYSIS</a>
+                <a class="top-account-bar-text" href="/access/split.htm">SPLIT EXPENSES</a>
                 <sec:authentication var="validated" property="principal.accountValidated"/>
                 <c:choose>
                     <c:when test="${!validated}">

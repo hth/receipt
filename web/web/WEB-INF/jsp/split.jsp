@@ -112,15 +112,20 @@
                         <div class="rightside-list-holder full-list-holder">
                             <c:forEach items="${splitForm.yourSplitExpenses}" var="taskStats" varStatus="status">
                             <div class="receipt-detail-holder border" style="padding-bottom: 20px;" id="${status.count}">
-                                <p class="analysis" style="padding-bottom: 10px;">${taskStats.key}</p>
+                                <p class="analysis" style="padding-bottom: 10px; color: black">${taskStats.key}</p>
 
                                 <ul>
                                     <c:forEach items="${taskStats.value}" var="splitExpense" varStatus="status">
-                                    <li style="width: 700px;" id="${splitExpense.id}">
+                                    <li style="width: 850px;" id="${splitExpense.id}">
                                         <span class="rightside-li-date-text counter-li-text"><fmt:formatNumber value="${status.count}" pattern="00"/></span>
                                         <span class="rightside-li-date-text"><fmt:formatDate value="${splitExpense.receiptDate}" pattern="MMM dd, yyyy"/></span>
-                                        <span class="rightside-li-date-text full-li-date-text">${splitExpense.bizName.businessName}</span>
-                                        <span class="rightside-li-date-text"><fmt:formatNumber value="${splitExpense.splitTotal}" type="currency" /></span>
+                                        <span class="rightside-li-date-text full-li-date-text" style="width: 350px !important;">
+                                            <a href="${pageContext.request.contextPath}/access/receipt/${splitExpense.receiptDocumentId}.htm"
+                                                    class="rightside-li-middle-text" target="_blank">
+                                                <spring:eval expression="splitExpense.bizName.businessName"/>
+                                            </a>
+                                        </span>
+                                        <span class="rightside-li-date-text" style="color: black"><fmt:formatNumber value="${splitExpense.splitTotal}" type="currency" /></span>
                                         <span class="rightside-li-date-text">
                                             <c:if test="${splitForm.canBeSettledWithFriend(splitExpense.friendUserId)}">
                                             <div class="gd-button-holder" style="width: 50px;">
@@ -155,22 +160,20 @@
                         <div class="rightside-list-holder full-list-holder">
                             <c:forEach items="${splitForm.friendsSplitExpenses}" var="taskStats" varStatus="status">
                             <div class="receipt-detail-holder border" style="padding-bottom: 20px;">
-                                <p class="analysis" style="padding-bottom: 10px;">${taskStats.key}</p>
+                                <p class="analysis" style="padding-bottom: 10px; color: black">${taskStats.key}</p>
 
                                 <ul>
                                     <c:forEach items="${taskStats.value}" var="splitExpense" varStatus="status">
-                                    <li style="width: 700px;">
+                                    <li style="width: 850px;">
                                         <span class="rightside-li-date-text counter-li-text"><fmt:formatNumber value="${status.count}" pattern="00"/></span>
                                         <span class="rightside-li-date-text"><fmt:formatDate value="${splitExpense.receiptDate}" pattern="MMM dd, yyyy"/></span>
-                                        <span class="rightside-li-date-text full-li-date-text">${splitExpense.bizName.businessName}</span>
-                                        <span class="rightside-li-date-text"><fmt:formatNumber value="${splitExpense.splitTotal}" type="currency" /></span>
-                                        <%--<span class="rightside-li-date-text">--%>
-                                            <%--<c:if test="${splitForm.canBeSettledWithMe(taskStats.key)}">--%>
-                                                <%--<div class="gd-button-holder" style="width: 50px;">--%>
-                                                    <%--<button class="gd-button" style="width: 100px; height: 30px; padding: 0px;">SETTLE</button>--%>
-                                                <%--</div>--%>
-                                            <%--</c:if>--%>
-                                        <%--</span>--%>
+                                        <span class="rightside-li-date-text full-li-date-text" style="width: 350px !important;">
+                                            <a href="${pageContext.request.contextPath}/access/receipt/${splitExpense.receiptDocumentId}.htm"
+                                                    class="rightside-li-middle-text" target="_blank">
+                                                <spring:eval expression="splitExpense.bizName.businessName"/>
+                                            </a>
+                                        </span>
+                                        <span class="rightside-li-date-text" style="color: black"><fmt:formatNumber value="${splitExpense.splitTotal}" type="currency" /></span>
                                     </li>
                                     </c:forEach>
                                 </ul>

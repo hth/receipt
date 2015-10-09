@@ -83,18 +83,15 @@ public class SplitForm {
         this.friendsSplitExpenses.put(id, friendsSplitExpenses);
     }
 
+    /**
+     * Find if friends owes user. If does, then show the settle button.
+     *
+     * @param rid
+     * @return
+     */
     public boolean canBeSettledWithFriend(String rid) {
         for (UserProfileEntity userProfile : activeProfiles) {
             if (userProfile.getReceiptUserId().equals(rid)) {
-                return this.yourSplitExpenses.get(userProfile.getName()) != null;
-            }
-        }
-        return false;
-    }
-
-    public boolean canBeSettledWithMe(String name) {
-        for (UserProfileEntity userProfile : activeProfiles) {
-            if (userProfile.getName().equals(name)) {
                 return this.friendsSplitExpenses.get(userProfile.getName()) != null;
             }
         }
