@@ -64,7 +64,7 @@ public class SplitController {
     @ExceptionMetered
     @PreAuthorize ("hasRole('ROLE_USER')")
     @RequestMapping (method = RequestMethod.GET)
-    public String loadForm(
+    public String split(
             @ModelAttribute ("splitForm")
             SplitForm splitForm
     ) {
