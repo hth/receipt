@@ -7,11 +7,9 @@ import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.domain.json.JsonOweExpenses;
 import com.receiptofi.domain.site.ReceiptUser;
 import com.receiptofi.domain.types.FriendConnectionTypeEnum;
-import com.receiptofi.domain.types.SplitStatusEnum;
 import com.receiptofi.service.FriendService;
 import com.receiptofi.service.SplitExpensesService;
 import com.receiptofi.service.UserProfilePreferenceService;
-import com.receiptofi.utils.Maths;
 import com.receiptofi.utils.ScrubbedInput;
 import com.receiptofi.web.form.SplitForm;
 
@@ -32,7 +30,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.codahale.metrics.annotation.ExceptionMetered;
 import com.codahale.metrics.annotation.Timed;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -219,43 +216,14 @@ public class SplitController {
                 splitExpenses.getSplitTotal());
 
         if (null == splitToSettle) {
+            LOG.warn("Could not settle expenses as null id={} rid={}", id.getText(), receiptUser.getRid());
             JsonObject jsonObject = new JsonObject();
             jsonObject.addProperty("st", 0.00);
             jsonObject.addProperty(LandingController.SUCCESS, false);
             return jsonObject.toString();
         }
 
-        BigDecimal settled = Maths.subtract(splitToSettle.getSplitTotal(), splitExpenses.getSplitTotal());
-        switch (settled.compareTo(BigDecimal.ZERO)) {
-            case 1:
-                splitExpenses.setSplitStatus(SplitStatusEnum.S);
-                splitExpenses.setSplitTotal(0.00);
-                splitExpensesService.save(splitExpenses);
-
-                splitToSettle.setSplitStatus(SplitStatusEnum.P);
-                splitToSettle.setSplitTotal(settled.doubleValue());
-                splitExpensesService.save(splitToSettle);
-                break;
-            case 0:
-                splitExpenses.setSplitStatus(SplitStatusEnum.S);
-                splitExpenses.setSplitTotal(0.00);
-                splitExpensesService.save(splitExpenses);
-
-                splitToSettle.setSplitStatus(SplitStatusEnum.S);
-                splitToSettle.setSplitTotal(0.00);
-                splitExpensesService.save(splitToSettle);
-                break;
-            case -1:
-                settled = Maths.subtract(splitExpenses.getSplitTotal(), splitToSettle.getSplitTotal());
-                splitExpenses.setSplitStatus(SplitStatusEnum.P);
-                splitExpenses.setSplitTotal(settled.doubleValue());
-                splitExpensesService.save(splitExpenses);
-
-                splitToSettle.setSplitStatus(SplitStatusEnum.S);
-                splitToSettle.setSplitTotal(0.00);
-                splitExpensesService.save(splitToSettle);
-                break;
-        }
+        splitExpensesService.settleSplitExpenses(splitExpenses, splitToSettle);
 
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("st", splitExpenses.getSplitTotal());
