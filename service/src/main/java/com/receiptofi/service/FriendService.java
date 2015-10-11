@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -130,7 +129,11 @@ public class FriendService {
         boolean response = friendManager.updateResponse(id, authenticationKey, acceptConnection, rid);
         if (response) {
             /** Do a refresh on friends after changes. */
-            updateJsonFriends(rid);
+            Map<String, JsonFriend> updatedFriends = updateJsonFriends(rid);
+            for (String fid : updatedFriends.keySet()) {
+                /** Refresh newly approved connections. */
+                updateJsonFriends(fid);
+            }
         }
         return response;
     }

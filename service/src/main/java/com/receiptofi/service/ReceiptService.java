@@ -488,7 +488,8 @@ public class ReceiptService {
                     deleteFriendReceipt(receipt.getId(), fid);
                     result = true;
                 } else {
-                    LOG.warn("Not found splitting expenses between fid={} rid={} skipping removing from split", fid, receipt.getReceiptUserId());
+                    LOG.warn("Not found split expenses between fid={} rid={} OR SplitStatus is not Unsettled. Skipping."
+                            , fid, receipt.getReceiptUserId());
                 }
 
                 break;
