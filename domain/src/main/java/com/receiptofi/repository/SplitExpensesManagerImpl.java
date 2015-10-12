@@ -169,4 +169,13 @@ public class SplitExpensesManagerImpl implements SplitExpensesManager {
                 SplitExpensesEntity.class
         );
     }
+
+    @Override
+    public boolean hasSettleProcessStarted(String rdid) {
+        return mongoTemplate.count(
+                query(where("RDID").is(rdid)
+                        .and("SS").ne(SplitStatusEnum.U)),
+                SplitExpensesEntity.class
+        ) > 0;
+    }
 }

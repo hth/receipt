@@ -62,8 +62,15 @@ public class SplitExpensesService {
         return splitExpensesManager.doesExists(rdid, rid, fid);
     }
 
-    public boolean updateSplitTotal(String receiptId, Double splitTotal) {
-        return splitExpensesManager.updateSplitTotal(receiptId, splitTotal);
+    /**
+     * Update total for matching receipt id.
+     *
+     * @param rdid       Receipt Id
+     * @param splitTotal Total amount
+     * @return
+     */
+    public boolean updateSplitTotal(String rdid, Double splitTotal) {
+        return splitExpensesManager.updateSplitTotal(rdid, splitTotal);
     }
 
     public List<SplitExpensesEntity> getOwesMe(String rid) {
@@ -116,4 +123,7 @@ public class SplitExpensesService {
         }
     }
 
+    public boolean hasSettleProcessStarted(String rdid) {
+        return splitExpensesManager.hasSettleProcessStarted(rdid);
+    }
 }

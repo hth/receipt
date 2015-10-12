@@ -30,9 +30,17 @@ public interface SplitExpensesManager extends RepositoryManager<SplitExpensesEnt
 
     List<SplitExpensesEntity> getOwesOthers(String rid);
 
-    boolean updateSplitTotal(String receiptId, Double splitTotal);
+    boolean updateSplitTotal(String rdid, Double splitTotal);
 
     List<SplitExpensesEntity> getSplitExpenses(String rid, String fid);
 
     SplitExpensesEntity findSplitExpensesToSettle(String fid, String rid, Double splitTotal);
+
+    /**
+     * Checks if any of the split shared with same rdid has been anything other then Unsettled.
+     *
+     * @param rdid
+     * @return
+     */
+    boolean hasSettleProcessStarted(String rdid);
 }

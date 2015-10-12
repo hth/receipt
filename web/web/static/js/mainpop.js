@@ -209,23 +209,23 @@ function confirmBeforeAction() {
                             $('#actionMessageId').attr('hidden', false);
                             $(".r-success").html("'" + bn + "' receipt for " + gt + " deleted successfully.").show();
                             $("div.detail-view-container").html("");
-
-                            /*Add css since its not loaded when receipt is deleted*/
-                            var cssId = 'myCss';
-                            if (!document.getElementById(cssId)) {
-                                var head = document.getElementsByTagName('head')[0];
-                                var link = document.createElement('link');
-                                link.id = cssId;
-                                link.rel = 'stylesheet';
-                                link.type = 'text/css';
-                                link.href = ctx + '/static/css/stylelogin.css';
-                                link.media = 'all';
-                                head.appendChild(link);
-                            }
                         } else {
                             $('#actionMessageId').attr('hidden', false);
                             $(".r-error").html(responseData.message).show();
                             $("div.detail-view-container").html("");
+                        }
+
+                        /*Add css since its not loaded when receipt is deleted*/
+                        var cssId = 'myCss';
+                        if (!document.getElementById(cssId)) {
+                            var head = document.getElementsByTagName('head')[0];
+                            var link = document.createElement('link');
+                            link.id = cssId;
+                            link.rel = 'stylesheet';
+                            link.type = 'text/css';
+                            link.href = ctx + '/static/css/stylelogin.css';
+                            link.media = 'all';
+                            head.appendChild(link);
                         }
                     },
                     error: function () {
@@ -277,6 +277,19 @@ function confirmBeforeAction() {
                             $('#actionMessageId').attr('hidden', false);
                             $(".r-error").html(responseData.message).show();
                             $("div.detail-view-container").html("");
+                        }
+
+                        /*Add css since its not loaded when receipt is deleted*/
+                        var cssId = 'myCss';
+                        if (!document.getElementById(cssId)) {
+                            var head = document.getElementsByTagName('head')[0];
+                            var link = document.createElement('link');
+                            link.id = cssId;
+                            link.rel = 'stylesheet';
+                            link.type = 'text/css';
+                            link.href = ctx + '/static/css/stylelogin.css';
+                            link.media = 'all';
+                            head.appendChild(link);
                         }
                     },
                     error: function () {

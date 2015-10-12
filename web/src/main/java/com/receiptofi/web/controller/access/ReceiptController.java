@@ -177,7 +177,7 @@ public class ReceiptController {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")
     @ResponseBody
-    public String deleteExpenseTag(
+    public String deleteReceipt(
             @RequestBody
             String body
     ) throws IOException {
@@ -192,7 +192,7 @@ public class ReceiptController {
             boolean result = receiptService.deleteReceipt(receiptId, receiptUser.getRid());
             jsonObject.addProperty("result", result);
             if (!result) {
-                jsonObject.addProperty("message", "Failed to deleted receipt.");
+                jsonObject.addProperty("message", "Failed to Delete Receipt. This happens if receipt is being shared and is in middle of settling splits.");
             }
             /** Success message is set in JS. */
         } catch (RuntimeException e) {
@@ -212,7 +212,7 @@ public class ReceiptController {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")
     @ResponseBody
-    public String recheck(
+    public String recheckReceipt(
             @RequestBody
             String body
     ) throws IOException {
@@ -224,8 +224,11 @@ public class ReceiptController {
 
         JsonObject jsonObject = new JsonObject();
         try {
-            receiptService.reopen(receiptId, receiptUser.getRid());
-            jsonObject.addProperty("result", true);
+            boolean result = receiptService.reopen(receiptId, receiptUser.getRid());
+            jsonObject.addProperty("result", result);
+            if (!result) {
+                jsonObject.addProperty("message", "Failed to Re-Check Receipt. This happens if receipt is being shared and is in middle of settling splits.");
+            }
             /** Success message is set in JS. */
         } catch (Exception e) {
             LOG.error("Error occurred during receipt recheck receiptId={} rid={} reason={}",

@@ -130,7 +130,14 @@ public class ReceiptService {
         if (null == receipt) {
             return false;
         }
+
         if (receipt.isActive() && StringUtils.isBlank(receipt.getReferToReceiptId())) {
+
+            if (splitExpensesService.hasSettleProcessStarted(receiptId)) {
+                LOG.info("Receipt delete failed. Middle of transaction as settle process has started for rdid={}", receiptId);
+                return false;
+            }
+
             /** Notification message when receipt is deleted. */
             String md = receipt.getTotalString() + " '" + receipt.getBizName().getBusinessName() + "' receipt deleted";
 
@@ -163,7 +170,14 @@ public class ReceiptService {
             notificationService.addNotification(md, NotificationTypeEnum.RECEIPT_DELETED, receipt);
             return true;
         } else if (StringUtils.isNotBlank(receipt.getReferToReceiptId())) {
-            /** User is deleting their split receipt or shared receipt. This is as good as original owner of the receipt. */
+            /**
+             * User is deleting their split receipt or shared receipt. This is as good as original owner of the receipt
+             * performing a delete operation. If this receipt is a split receipt, then user is removing self from split.
+             * This action will also remove all reference to the shared receipt.
+             *
+             * Delete will be successful only when settle transaction for split has not started. Otherwise nothing will
+             * be change.
+             */
             return splitAction(rid, SplitActionEnum.R, receiptManager.findReceipt(receipt.getReferToReceiptId()));
         } else {
             LOG.error("Attempt to delete inactive Receipt={}, Browser Back Action performed", receipt.getId());
@@ -183,12 +197,18 @@ public class ReceiptService {
      * @param rid
      * @throws Exception
      */
-    public void reopen(String receiptId, String rid) throws Exception {
+    public boolean reopen(String receiptId, String rid) throws Exception {
         try {
             ReceiptEntity receipt = receiptManager.getReceipt(receiptId, rid);
+
+            if (splitExpensesService.hasSettleProcessStarted(receiptId)) {
+                LOG.info("Receipt re-check failed. Middle of transaction as settle process has started for rdid={}", receiptId);
+                return false;
+            }
+
             if (null == receipt.getDocumentId()) {
                 LOG.error("No receiptOCR id found in Receipt={}, aborting the reopen process", receipt.getId());
-                throw new Exception("Receipt could not be requested for Re-Check. Contact administrator with Receipt # " + receipt.getId() + ", contact Administrator with the Id");
+                throw new RuntimeException("Receipt could not be requested for Re-Check. Contact administrator with Receipt # " + receipt.getId() + ", contact Administrator with the Id");
             } else {
                 if (receipt.isActive()) {
                     receipt.inActive();
@@ -215,16 +235,17 @@ public class ReceiptService {
                     LOG.info("DocumentEntity @Id after save: " + receiptOCR.getId());
                     UserProfileEntity userProfile = userProfileManager.findByReceiptUserId(receiptOCR.getReceiptUserId());
                     senderJMS.send(receiptOCR, userProfile);
+                    return true;
                 } else {
                     LOG.error("Attempt to invoke re-check on Receipt={}, Browser Back Action performed", receipt.getId());
-                    throw new Exception("Receipt no longer exists");
+                    throw new RuntimeException("Receipt no longer exists");
                 }
             }
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             LOG.error("Exception during customer requesting receipt recheck operation, reason={}", e.getLocalizedMessage(), e);
 
             //Need to send a well formatted error message to customer instead of jumbled mumbled exception stacktrace
-            throw new Exception(
+            throw new RuntimeException(
                     "Exception occurred during requesting receipt recheck operation for Receipt # " +
                             receiptId +
                             ", contact Administrator with the Id"
@@ -440,7 +461,8 @@ public class ReceiptService {
     }
 
     /**
-     * Add or Remove friend from split.
+     * Add or Remove friend from split. This is valid when split status is still Un-Settled.
+     * If settle process has started. Then receipt would not be able to be modified.
      *
      * @param fid
      * @param splitAction
@@ -453,6 +475,17 @@ public class ReceiptService {
             ReceiptEntity receipt
     ) {
         boolean result = false;
+
+        String rdid = receipt.getReferToReceiptId();
+        if (StringUtils.isBlank(rdid)) {
+            rdid = receipt.getId();
+        }
+
+        if (splitExpensesService.hasSettleProcessStarted(rdid)) {
+            LOG.info("Middle of transaction as settle process has started for rdid={} splitAction={}", rdid, splitAction);
+            return result;
+        }
+
         switch (splitAction) {
             case A:
                 FriendEntity friend = friendService.getConnection(receipt.getReceiptUserId(), fid);
