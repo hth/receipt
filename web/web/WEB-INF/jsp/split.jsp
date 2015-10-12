@@ -385,7 +385,7 @@
                     </c:forEach>
                     {
                         name: 'Negligible',
-                        y: 0.2,
+                        y: 0.01,
                         dataLabels: {
                             enabled: false
                         }
@@ -440,7 +440,7 @@
                     </c:forEach>
                     {
                         name: 'Negligible',
-                        y: 0.2,
+                        y: 0.01,
                         dataLabels: {
                             enabled: false
                         }
