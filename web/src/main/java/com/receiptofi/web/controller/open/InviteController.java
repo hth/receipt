@@ -76,19 +76,19 @@ public class InviteController {
     @RequestMapping (method = RequestMethod.GET, value = "authenticate")
     public String loadForm(
             @RequestParam ("authenticationKey")
-            String key,
+            ScrubbedInput key,
 
             @ModelAttribute ("inviteAuthenticateForm")
             InviteAuthenticateForm inviteAuthenticateForm,
 
             ModelMap model
     ) {
-        InviteEntity invite = inviteService.findInviteAuthenticationForKey(key);
+        InviteEntity invite = inviteService.findInviteAuthenticationForKey(key.getText());
         if (null != invite) {
             inviteAuthenticateForm.setMail(new ScrubbedInput(invite.getEmail()));
             inviteAuthenticateForm.setFirstName(new ScrubbedInput(invite.getInvited().getFirstName()));
             inviteAuthenticateForm.setLastName(new ScrubbedInput(invite.getInvited().getLastName()));
-            inviteAuthenticateForm.getForgotAuthenticateForm().setAuthenticationKey(key);
+            inviteAuthenticateForm.getForgotAuthenticateForm().setAuthenticationKey(key.getText());
             inviteAuthenticateForm.getForgotAuthenticateForm().setReceiptUserId(invite.getInvited().getReceiptUserId());
         }
         model.addAttribute("registrationTurnedOn", registrationTurnedOn);
@@ -163,13 +163,13 @@ public class InviteController {
     @RequestMapping (method = RequestMethod.GET, value = "/result")
     public String success(
             @ModelAttribute ("success")
-            String success,
+            ScrubbedInput success,
 
             HttpServletRequest httpServletRequest,
             HttpServletResponse httpServletResponse
     ) throws IOException {
         //TODO(hth) strengthen the check here as this can be hacked to get a dummy confirmation page
-        if (StringUtils.isNotBlank(success)) {
+        if (StringUtils.isNotBlank(success.getText())) {
             return authenticateConfirmPage;
         }
         LOG.warn(
