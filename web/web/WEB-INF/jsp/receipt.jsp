@@ -410,23 +410,27 @@
             </div>
             </c:if>
             <div class="detailHead">
-                <h1 class="font2em" style="margin-left: 5px; vertical-align: middle;">
-                    <table>
+                <table width="100%">
                     <tr>
                         <td width="220px">
+                            <h1 class="font2em" style="margin-left: 5px; vertical-align: middle;">
                             <span id="download_expense_excel">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                            </h1>
                         </td>
                         <td width="160px" style="text-align: right;">
+                            <h1 class="font2em" style="margin-left: 5px; vertical-align: middle;">
                             <a href="/access/userprofilepreference/i.htm#tabs-2" class="expense-tag" title="Expense Tag">
                                 <span style="background-color: ${receiptForm.receipt.expenseTag.tagColor}; margin-left: 90px;" id="expenseTagColorId">&nbsp;&nbsp;&nbsp;</span>
                             </a>
+                            </h1>
                         </td>
                         <td width="170px">
+                            <h1 class="font2em" style="margin-left: 5px; vertical-align: middle;">
                             <span class="colorblue right" id="my_total"><spring:eval expression="receiptForm.receipt.splitTotal" /></span>
+                            </h1>
                         </td>
                     </tr>
-                    </table>
-                </h1>
+                </table>
             </div>
             <div class="receipt-detail-holder border">
                 <table width="100%" style="margin-left: 4px; margin-right: 4px">
