@@ -14,6 +14,7 @@ import com.receiptofi.service.ItemAnalyticService;
 import com.receiptofi.service.NotificationService;
 import com.receiptofi.service.ReceiptService;
 import com.receiptofi.utils.FileUtil;
+import com.receiptofi.utils.ScrubbedInput;
 import com.receiptofi.web.helper.AnchorFileInExcel;
 import com.receiptofi.web.helper.json.ExcelFileName;
 import com.receiptofi.web.view.ExpensofiExcelView;
@@ -81,13 +82,13 @@ public class ExpensofiController {
             produces = "application/json")
     public String updateExpenseTagOfItems(
             @RequestBody
-            String itemIds,
+            ScrubbedInput itemIds,
 
             Model model
     ) throws IOException {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        JsonArray jsonItems = getJsonElements(itemIds);
+        JsonArray jsonItems = getJsonElements(itemIds.getText());
         List<ItemEntity> items = getItemEntities(receiptUser.getRid(), jsonItems);
 
         if (!items.isEmpty()) {

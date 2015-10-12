@@ -49,19 +49,19 @@ public class MobileMailController {
     )
     public void accountValidationMail(
             @RequestBody
-            String mailJson,
+            ScrubbedInput mailJson,
 
             @RequestHeader ("X-R-API-MOBILE")
-            String apiAccessToken,
+            ScrubbedInput apiAccessToken,
 
             HttpServletResponse httpServletResponse
     ) throws IOException {
         LOG.info("starting to send accountValidationMail");
 
-        if (webApiAccessToken.equals(apiAccessToken)) {
+        if (webApiAccessToken.equalsIgnoreCase(apiAccessToken.getText())) {
             Map<String, ScrubbedInput> map = new HashMap<>();
             try {
-                map = ParseJsonStringToMap.jsonStringToMap(mailJson);
+                map = ParseJsonStringToMap.jsonStringToMap(mailJson.getText());
             } catch (IOException e) {
                 LOG.error("could not parse mailJson={} reason={}", mailJson, e.getLocalizedMessage(), e);
             }
@@ -86,19 +86,19 @@ public class MobileMailController {
     )
     public void accountRecover(
             @RequestBody
-            String recoverJson,
+            ScrubbedInput recoverJson,
 
             @RequestHeader ("X-R-API-MOBILE")
-            String apiAccessToken,
+            ScrubbedInput apiAccessToken,
 
             HttpServletResponse httpServletResponse
     ) throws IOException {
         LOG.debug("accountRecover initiated from mobile");
 
-        if (webApiAccessToken.equals(apiAccessToken)) {
+        if (webApiAccessToken.equalsIgnoreCase(apiAccessToken.getText())) {
             Map<String, ScrubbedInput> map = new HashMap<>();
             try {
-                map = ParseJsonStringToMap.jsonStringToMap(recoverJson);
+                map = ParseJsonStringToMap.jsonStringToMap(recoverJson.getText());
             } catch (IOException e) {
                 LOG.error("could not parse mailJson={} reason={}", recoverJson, e.getLocalizedMessage(), e);
             }

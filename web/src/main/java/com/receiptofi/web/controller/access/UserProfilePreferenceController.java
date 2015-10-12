@@ -299,10 +299,13 @@ public class UserProfilePreferenceController {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")
     @ResponseBody
-    public String deleteExpenseTag(@RequestBody String expenseTagDetail) throws IOException {
+    public String deleteExpenseTag(
+            @RequestBody
+            ScrubbedInput expenseTagDetail
+    ) throws IOException {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        Map<String, ScrubbedInput> map = ParseJsonStringToMap.jsonStringToMap(expenseTagDetail);
+        Map<String, ScrubbedInput> map = ParseJsonStringToMap.jsonStringToMap(expenseTagDetail.getText());
         String tagId = map.get("tagId").getText();
         String tagName = map.get("tagName").getText();
 
@@ -362,7 +365,7 @@ public class UserProfilePreferenceController {
     @RequestMapping (value = "/their", method = RequestMethod.GET)
     public String adminGetUserStatus(
             @RequestParam ("id")
-            String rid,
+            ScrubbedInput rid,
 
             @ModelAttribute ("profileForm")
             ProfileForm profileForm,
@@ -376,10 +379,10 @@ public class UserProfilePreferenceController {
             Model model
     ) throws IOException {
         /** Since we do not plan to lose profileForm from result we need to set some other values for tab 1. */
-        populateProfile(profileForm, rid);
-        populateExpenseTag(profileForm, rid);
-        populateBilling(billingForm, rid);
-        setAccountValidationInfo(rid, profileForm);
+        populateProfile(profileForm, rid.getText());
+        populateExpenseTag(profileForm, rid.getText());
+        populateBilling(billingForm, rid.getText());
+        setAccountValidationInfo(rid.getText(), profileForm);
 
         //There is UI logic based on this. Set the right to be active when responding.
         model.addAttribute("showTab", "#tabs-4");

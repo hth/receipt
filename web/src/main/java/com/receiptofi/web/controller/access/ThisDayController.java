@@ -3,6 +3,7 @@ package com.receiptofi.web.controller.access;
 import com.receiptofi.domain.ReceiptEntity;
 import com.receiptofi.domain.site.ReceiptUser;
 import com.receiptofi.service.ReceiptService;
+import com.receiptofi.utils.ScrubbedInput;
 
 import org.joda.time.DateTime;
 
@@ -37,11 +38,11 @@ public class ThisDayController {
     @RequestMapping (method = RequestMethod.GET)
     public String getThisDay(
             @RequestParam ("date")
-            String date,
+            ScrubbedInput date,
 
             ModelMap modelMap
     ) {
-        Long longDate = Long.parseLong(date);
+        Long longDate = Long.parseLong(date.getText());
         DateTime dateTime = new DateTime(longDate);
         List<ReceiptEntity> receipts = receiptService.findReceipt(
                 dateTime,

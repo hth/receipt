@@ -87,7 +87,7 @@ public class ReceiptController {
     @RequestMapping (value = "/{receiptId}", method = RequestMethod.GET)
     public String loadForm(
             @PathVariable
-            String receiptId,
+            ScrubbedInput receiptId,
 
             @ModelAttribute ("receiptForm")
             ReceiptForm receiptForm
@@ -95,7 +95,7 @@ public class ReceiptController {
         LOG.info("Loading Receipt Item with id={}", receiptId);
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        ReceiptEntity receipt = receiptService.findReceipt(receiptId, receiptUser.getRid());
+        ReceiptEntity receipt = receiptService.findReceipt(receiptId.getText(), receiptUser.getRid());
         if (null == receipt) {
             LOG.warn("User={}, tried submitting an invalid receipt={}", receiptUser.getRid(), receiptId);
         } else {
@@ -149,13 +149,13 @@ public class ReceiptController {
     @ResponseBody
     public JsonReceiptDetail loadReceipt(
             @PathVariable
-            String receiptId
+            ScrubbedInput receiptId
     ) {
         LOG.info("Loading Receipt Item with id={}", receiptId);
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         JsonReceiptDetail jsonReceiptDetail = new JsonReceiptDetail();
-        ReceiptEntity receipt = receiptService.findReceipt(receiptId, receiptUser.getRid());
+        ReceiptEntity receipt = receiptService.findReceipt(receiptId.getText(), receiptUser.getRid());
         if (null == receipt) {
             LOG.warn("User={}, tried submitting an invalid receipt={}", receiptUser.getRid(), receiptId);
         } else {
@@ -214,11 +214,11 @@ public class ReceiptController {
     @ResponseBody
     public String recheckReceipt(
             @RequestBody
-            String body
+            ScrubbedInput body
     ) throws IOException {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        Map<String, ScrubbedInput> map = ParseJsonStringToMap.jsonStringToMap(body);
+        Map<String, ScrubbedInput> map = ParseJsonStringToMap.jsonStringToMap(body.getText());
         String receiptId = map.get("receiptId").getText();
         LOG.info("Initiating re-check on receiptId={}", receiptId);
 
@@ -249,25 +249,25 @@ public class ReceiptController {
     @RequestMapping (value = "/biz/{bizName}/{monthYear}", method = RequestMethod.GET)
     public String receiptByBizName(
             @PathVariable
-            String bizName,
+            ScrubbedInput bizName,
 
             @PathVariable
-            String monthYear,
+            ScrubbedInput monthYear,
 
             @ModelAttribute ("receiptByBizForm")
             ReceiptByBizForm receiptByBizForm
     ) throws IOException {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         LOG.info("Loading Receipts by Biz Name id={}", bizName);
-        receiptByBizForm.setMonthYear(monthYear);
-        receiptByBizForm.setBizName(bizName);
+        receiptByBizForm.setMonthYear(monthYear.getText());
+        receiptByBizForm.setBizName(bizName.getText());
 
-        List<BizNameEntity> bizNames = bizNameManager.findAllBizWithMatchingName(bizName);
+        List<BizNameEntity> bizNames = bizNameManager.findAllBizWithMatchingName(bizName.getText());
         for (BizNameEntity bizNameEntity : bizNames) {
             List<ReceiptEntity> receipts = receiptService.findReceipt(
                     bizNameEntity,
                     receiptUser.getRid(),
-                    ReceiptForMonth.MMM_YYYY.parseDateTime(monthYear));
+                    ReceiptForMonth.MMM_YYYY.parseDateTime(monthYear.getText()));
             for (ReceiptEntity receiptEntity : receipts) {
                 receiptByBizForm.getReceiptLandingViews().add(ReceiptLandingView.newInstance(receiptEntity));
             }

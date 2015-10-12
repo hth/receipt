@@ -11,6 +11,7 @@ import com.receiptofi.service.EmailValidateService;
 import com.receiptofi.service.MailService;
 import com.receiptofi.utils.DateUtil;
 import com.receiptofi.utils.ParseJsonStringToMap;
+import com.receiptofi.utils.ScrubbedInput;
 import com.receiptofi.web.form.UserRegistrationForm;
 import com.receiptofi.web.helper.AvailabilityStatus;
 import com.receiptofi.web.validator.UserRegistrationValidator;
@@ -172,11 +173,11 @@ public class AccountRegistrationController {
     @RequestMapping (method = RequestMethod.GET, value = "/success")
     public String success(
             @ModelAttribute ("email")
-            String email,
+            ScrubbedInput email,
 
             HttpServletResponse httpServletResponse
     ) throws IOException {
-        if (StringUtils.isNotBlank(email)) {
+        if (StringUtils.isNotBlank(email.getText())) {
             return registrationSuccessPage;
         } else {
             httpServletResponse.sendError(HttpServletResponse.SC_NOT_FOUND);
@@ -216,8 +217,8 @@ public class AccountRegistrationController {
             produces = "application/json"
     )
     @ResponseBody
-    public String getAvailability(@RequestBody String body) throws IOException {
-        String email = StringUtils.lowerCase(ParseJsonStringToMap.jsonStringToMap(body).get("mail").getText());
+    public String getAvailability(@RequestBody ScrubbedInput body) throws IOException {
+        String email = StringUtils.lowerCase(ParseJsonStringToMap.jsonStringToMap(body.getText()).get("mail").getText());
         AvailabilityStatus availabilityStatus;
 
         UserProfileEntity userProfileEntity = accountService.doesUserExists(email);

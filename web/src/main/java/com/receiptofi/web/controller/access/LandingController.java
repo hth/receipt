@@ -209,14 +209,14 @@ public class LandingController {
     @ResponseBody
     public ModelAndView monthlyExpenses(
             @RequestParam ("monthView")
-            String monthView,
+            ScrubbedInput monthView,
 
             @ModelAttribute ("landingForm")
             LandingForm landingForm
     ) throws IOException {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        DateTime monthYear = DTF.parseDateTime(monthView);
+        DateTime monthYear = DTF.parseDateTime(monthView.getText());
         List<ReceiptEntity> allReceiptsForThisMonth = landingService.getAllReceiptsForThisMonth(receiptUser.getRid(), monthYear);
         ReceiptForMonth receiptForMonth = getReceiptForMonth(allReceiptsForThisMonth, monthYear);
         landingForm.setReceiptForMonth(receiptForMonth);
@@ -333,7 +333,7 @@ public class LandingController {
     @ResponseBody
     public String uploadMileage(
             @PathVariable
-            String documentId,
+            ScrubbedInput documentId,
 
             HttpServletRequest httpServletRequest
     ) throws IOException {
@@ -353,7 +353,7 @@ public class LandingController {
                 uploadReceiptImage.setRid(receiptUser.getRid());
                 uploadReceiptImage.setFileType(FileTypeEnum.MILEAGE);
                 try {
-                    landingService.appendMileage(documentId, receiptUser.getRid(), uploadReceiptImage);
+                    landingService.appendMileage(documentId.getText(), receiptUser.getRid(), uploadReceiptImage);
                     outcome = "{\"success\" : true, \"uploadMessage\" : \"File uploaded successfully\"}";
                 } catch (Exception exce) {
                     outcome = "{\"success\" : false, \"uploadMessage\" : \"" + exce.getLocalizedMessage() + "\"}";

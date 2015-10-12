@@ -172,14 +172,14 @@ public class ForgotController {
     @RequestMapping (method = RequestMethod.GET, value = "recoverConfirm")
     public String showConfirmationPageForProcessingPasswordRecovery(
             @ModelAttribute (SUCCESS_EMAIL)
-            String success,
+            ScrubbedInput success,
 
             HttpServletRequest httpServletRequest,
             HttpServletResponse httpServletResponse
     ) throws IOException {
 
         //TODO(hth) strengthen the check here as this can be hacked to get a dummy confirmation page
-        if (StringUtils.isNotBlank(success)) {
+        if (StringUtils.isNotBlank(success.getText())) {
             return recoverConfirmPage;
         }
         LOG.warn(
@@ -226,13 +226,13 @@ public class ForgotController {
     @RequestMapping (method = RequestMethod.GET, value = "authenticate")
     public String whenClickedOnEmailLink(
             @RequestParam ("authenticationKey")
-            String key,
+            ScrubbedInput key,
 
             ForgotAuthenticateForm forgotAuthenticateForm
     ) {
-        ForgotRecoverEntity forgotRecoverEntity = accountService.findByAuthenticationKey(key);
+        ForgotRecoverEntity forgotRecoverEntity = accountService.findByAuthenticationKey(key.getText());
         if (forgotRecoverEntity != null) {
-            forgotAuthenticateForm.setAuthenticationKey(key);
+            forgotAuthenticateForm.setAuthenticationKey(key.getText());
             forgotAuthenticateForm.setReceiptUserId(forgotRecoverEntity.getReceiptUserId());
         }
         return authenticatePage;
