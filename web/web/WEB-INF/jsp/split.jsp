@@ -107,6 +107,19 @@
                 <c:choose>
                     <c:when test="${!empty splitForm.jsonOweMe}">
                         <h2 class="h2" style="padding-bottom:2%; text-decoration: underline;">Friends owe you</h2>
+                        <p class="analysis-text">
+                            Shows amount owed by each friend you have split your receipts with.
+                        </p>
+                        <p class="analysis-text">
+                            You can only <b>'Settle'</b> when you owe your friend. Once you hit settle, transaction
+                            cannot be reverted. Once transaction is settled, you will not be able to delete or request
+                            recheck on a receipt. Nor would you be able to remove or add friends from splitting expenses.
+                        </p>
+                        <p class="analysis-text">
+                            <b>'Let go'</b> when you have already settled with your friend and would not like to change
+                            net amount owed. Your friend would still be able to see shared receipt.
+                        </p>
+
                         <div id="containerOwesMe" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>
 
                         <div class="rightside-list-holder full-list-holder">
@@ -155,6 +168,10 @@
                 <c:choose>
                     <c:when test="${!empty splitForm.jsonOweOthers}">
                         <h2 class="h2" style="padding-bottom:2%; text-decoration: underline;">You owe friends</h2>
+                        <p class="analysis-text">
+                            Shows amount you owe to each friend who has split their receipt with you.
+                        </p>
+
                         <div id="containerOwesOthers" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>
 
                         <div class="rightside-list-holder full-list-holder">
@@ -383,13 +400,6 @@
                     <c:forEach var="oweExpense" items="${splitForm.jsonOweMe}" varStatus="status">
                     ['${oweExpense.name}', ${oweExpense.splitTotal}],
                     </c:forEach>
-                    {
-                        name: 'Negligible',
-                        y: 0.01,
-                        dataLabels: {
-                            enabled: false
-                        }
-                    }
                 ]
             }]
         });
@@ -438,13 +448,6 @@
                     <c:forEach var="oweExpense" items="${splitForm.jsonOweOthers}" varStatus="status">
                     ['${oweExpense.name}', ${oweExpense.splitTotal}],
                     </c:forEach>
-                    {
-                        name: 'Negligible',
-                        y: 0.01,
-                        dataLabels: {
-                            enabled: false
-                        }
-                    }
                 ]
             }]
         });
