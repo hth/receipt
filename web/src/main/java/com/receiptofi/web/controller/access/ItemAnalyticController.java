@@ -8,6 +8,7 @@ import com.receiptofi.domain.ItemEntity;
 import com.receiptofi.domain.site.ReceiptUser;
 import com.receiptofi.service.ExpensesService;
 import com.receiptofi.service.ItemAnalyticService;
+import com.receiptofi.utils.ScrubbedInput;
 import com.receiptofi.web.form.ItemAnalyticForm;
 
 import org.joda.time.DateTime;
@@ -57,14 +58,14 @@ public class ItemAnalyticController {
     @RequestMapping (value = "{itemId}", method = RequestMethod.GET)
     public String loadForm(
             @PathVariable("itemId")
-            String itemId,
+            ScrubbedInput itemId,
 
             @ModelAttribute ("itemAnalyticForm")
             ItemAnalyticForm itemAnalyticForm
     ) {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        ItemEntity item = itemAnalyticService.findItemById(itemId, receiptUser.getRid());
+        ItemEntity item = itemAnalyticService.findItemById(itemId.getText(), receiptUser.getRid());
         if (null != item) {
             itemAnalyticForm.setItem(item);
             itemAnalyticForm.setDays(searchLimitForDays);

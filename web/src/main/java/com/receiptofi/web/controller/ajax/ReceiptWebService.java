@@ -15,6 +15,7 @@ import com.receiptofi.service.ReceiptService;
 import com.receiptofi.utils.DateUtil;
 import com.receiptofi.utils.Formatter;
 import com.receiptofi.utils.HashText;
+import com.receiptofi.utils.ScrubbedInput;
 import com.receiptofi.web.helper.json.ReceiptExpenseTag;
 
 import org.apache.commons.lang3.StringUtils;
@@ -89,10 +90,10 @@ public class ReceiptWebService {
             produces = "application/json")
     public Set<String> searchBusinessWithBusinessName(
             @RequestParam ("term")
-            String businessName
+            ScrubbedInput businessName
     ) {
         try {
-            return fetcherService.findDistinctBizName(StringUtils.stripToEmpty(businessName));
+            return fetcherService.findDistinctBizName(StringUtils.stripToEmpty(businessName.getText()));
         } catch (Exception fetchBusinessName) {
             LOG.warn("Error fetching business number, error={}", fetchBusinessName);
             return new HashSet<>();
@@ -112,13 +113,15 @@ public class ReceiptWebService {
             produces = "application/json")
     public Set<String> searchBiz(
             @RequestParam ("term")
-            String bizAddress,
+            ScrubbedInput bizAddress,
 
             @RequestParam ("nameParam")
-            String businessName
+            ScrubbedInput businessName
     ) {
         try {
-            return fetcherService.findDistinctBizAddress(StringUtils.stripToEmpty(bizAddress), StringUtils.stripToEmpty(businessName));
+            return fetcherService.findDistinctBizAddress(
+                    StringUtils.stripToEmpty(bizAddress.getText()),
+                    StringUtils.stripToEmpty(businessName.getText()));
         } catch (Exception fetchBusinessAddress) {
             LOG.warn("Error fetching business address, error={}", fetchBusinessAddress);
             return new HashSet<>();
@@ -139,19 +142,19 @@ public class ReceiptWebService {
             produces = "application/json")
     public Set<String> searchPhone(
             @RequestParam ("term")
-            String bizPhone,
+            ScrubbedInput bizPhone,
 
             @RequestParam ("nameParam")
-            String businessName,
+            ScrubbedInput businessName,
 
             @RequestParam ("addressParam")
-            String bizAddress
+            ScrubbedInput bizAddress
     ) {
         try {
             return fetcherService.findDistinctBizPhone(
-                    StringUtils.stripToEmpty(bizPhone),
-                    StringUtils.stripToEmpty(bizAddress),
-                    StringUtils.stripToEmpty(businessName)
+                    StringUtils.stripToEmpty(bizPhone.getText()),
+                    StringUtils.stripToEmpty(bizAddress.getText()),
+                    StringUtils.stripToEmpty(businessName.getText())
             );
         } catch (Exception fetchingPhone) {
             LOG.warn("Error fetching phone number, error={}", fetchingPhone);
@@ -172,13 +175,15 @@ public class ReceiptWebService {
             produces = "application/json")
     public Set<String> searchItem(
             @RequestParam ("term")
-            String itemName,
+            ScrubbedInput itemName,
 
             @RequestParam ("nameParam")
-            String businessName
+            ScrubbedInput businessName
     ) {
         try {
-            return fetcherService.findDistinctItems(StringUtils.stripToEmpty(itemName), StringUtils.stripToEmpty(businessName));
+            return fetcherService.findDistinctItems(
+                    StringUtils.stripToEmpty(itemName.getText()),
+                    StringUtils.stripToEmpty(businessName.getText()));
         } catch (Exception fetchingItems) {
             LOG.warn("Error fetching items, error={}", fetchingItems);
             return new HashSet<>();
@@ -226,20 +231,20 @@ public class ReceiptWebService {
     //@ResponseStatus(value = HttpStatus.CONFLICT, reason = "Duplicate Account")  // 409 //TODO something to think about
     public boolean checkForDuplicate(
             @RequestParam ("date")
-            String date,
+            ScrubbedInput date,
 
             @RequestParam ("total")
-            String total,
+            ScrubbedInput total,
 
             @RequestParam ("receiptUserId")
-            String receiptUserId
+            ScrubbedInput receiptUserId
     ) throws IOException, ParseException, NumberFormatException {
         try {
-            Date receiptDate = DateUtil.getDateFromString(StringUtils.stripToEmpty(date));
-            Double receiptTotal = Formatter.getCurrencyFormatted(StringUtils.stripToEmpty(total)).doubleValue();
+            Date receiptDate = DateUtil.getDateFromString(StringUtils.stripToEmpty(date.getText()));
+            Double receiptTotal = Formatter.getCurrencyFormatted(StringUtils.stripToEmpty(total.getText())).doubleValue();
 
             String checkSum = HashText.calculateChecksumForNotDeleted(
-                    StringUtils.stripToEmpty(receiptUserId),
+                    StringUtils.stripToEmpty(receiptUserId.getText()),
                     receiptDate,
                     receiptTotal
             );
@@ -271,16 +276,16 @@ public class ReceiptWebService {
             produces = "application/json")
     public boolean changeFSImageOrientation(
             @RequestParam ("fileSystemId")
-            String fileSystemId,
+            ScrubbedInput fileSystemId,
 
             @RequestParam ("orientation")
-            String imageOrientation,
+            ScrubbedInput imageOrientation,
 
             @RequestParam ("blobId")
-            String blobId,
+            ScrubbedInput blobId,
 
             @RequestParam ("receiptUserId")
-            String receiptUserId,
+            ScrubbedInput receiptUserId,
 
             HttpServletRequest request,
             HttpServletResponse response
@@ -290,12 +295,12 @@ public class ReceiptWebService {
         if (request.isUserInRole("ROLE_ADMIN") ||
                 request.isUserInRole("ROLE_TECHNICIAN") ||
                 request.isUserInRole("ROLE_SUPERVISOR") ||
-                receiptUserId.equalsIgnoreCase(receiptUser.getRid())) {
+                receiptUserId.getText().equalsIgnoreCase(receiptUser.getRid())) {
             try {
                 fetcherService.changeFSImageOrientation(
-                        StringUtils.stripToEmpty(fileSystemId),
-                        Integer.parseInt(StringUtils.stripToEmpty(imageOrientation)),
-                        blobId
+                        StringUtils.stripToEmpty(fileSystemId.getText()),
+                        Integer.parseInt(StringUtils.stripToEmpty(imageOrientation.getText())),
+                        blobId.getText()
                 );
                 return true;
             } catch (Exception failedToChangeImageOrientation) {
@@ -318,18 +323,18 @@ public class ReceiptWebService {
     )
     public String updateExpenseTagOfReceipt(
             @RequestParam ("receiptId")
-            String receiptId,
+            ScrubbedInput receiptId,
 
             @RequestParam ("expenseTagId")
-            String expenseTagId,
+            ScrubbedInput expenseTagId,
 
             HttpServletResponse response
     ) throws IOException {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        ReceiptEntity receipt = receiptService.findReceipt(receiptId, receiptUser.getRid());
+        ReceiptEntity receipt = receiptService.findReceipt(receiptId.getText(), receiptUser.getRid());
         ReceiptExpenseTag receiptExpenseTag = new ReceiptExpenseTag("");
         if (null != receipt) {
-            ExpenseTagEntity expenseTag = receiptService.updateReceiptExpenseTag(receipt, expenseTagId);
+            ExpenseTagEntity expenseTag = receiptService.updateReceiptExpenseTag(receipt, expenseTagId.getText());
             Assert.notNull(expenseTag, "ExpenseTag should not be null");
             receiptExpenseTag = new ReceiptExpenseTag(expenseTag.getTagColor());
             receiptExpenseTag.isSuccess();
@@ -348,17 +353,17 @@ public class ReceiptWebService {
     )
     public void updateItemExpenseTag(
             @RequestParam ("itemId")
-            String itemId,
+            ScrubbedInput itemId,
 
             @RequestParam ("expenseTagId")
-            String expenseTagId,
+            ScrubbedInput expenseTagId,
 
             HttpServletResponse response
     ) throws IOException {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        ItemEntity item = itemService.findItem(itemId, receiptUser.getRid());
+        ItemEntity item = itemService.findItem(itemId.getText(), receiptUser.getRid());
         if (null != item) {
-            itemService.updateItemWithExpenseTag(item.getId(), expenseTagId);
+            itemService.updateItemWithExpenseTag(item.getId(), expenseTagId.getText());
         } else {
             response.sendError(SC_NOT_FOUND, "Could not find");
         }

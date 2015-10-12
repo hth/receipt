@@ -11,6 +11,7 @@ import com.receiptofi.domain.site.ReceiptUser;
 import com.receiptofi.service.DocumentPendingService;
 import com.receiptofi.service.DocumentUpdateService;
 import com.receiptofi.service.FileDBService;
+import com.receiptofi.utils.ScrubbedInput;
 import com.receiptofi.web.form.PendingReceiptForm;
 import com.receiptofi.web.form.ReceiptDocumentForm;
 
@@ -139,14 +140,14 @@ public class DocumentStatsController {
     @RequestMapping (value = "/{documentId}", method = RequestMethod.GET)
     public ModelAndView showDocument(
             @PathVariable
-            String documentId,
+            ScrubbedInput documentId,
 
             @ModelAttribute ("receiptDocumentForm")
             ReceiptDocumentForm receiptDocumentForm
     ) {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        DocumentEntity documentEntity = documentUpdateService.findDocumentByRid(documentId, receiptUser.getRid());
+        DocumentEntity documentEntity = documentUpdateService.findDocumentByRid(documentId.getText(), receiptUser.getRid());
         receiptDocumentForm.setReceiptDocument(documentEntity);
 
         return new ModelAndView(showDocument);

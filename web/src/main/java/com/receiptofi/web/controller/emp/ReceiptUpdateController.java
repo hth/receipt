@@ -10,6 +10,7 @@ import com.receiptofi.domain.MileageEntity;
 import com.receiptofi.domain.ReceiptEntity;
 import com.receiptofi.domain.site.ReceiptUser;
 import com.receiptofi.service.DocumentUpdateService;
+import com.receiptofi.utils.ScrubbedInput;
 import com.receiptofi.web.form.ReceiptDocumentForm;
 import com.receiptofi.web.validator.DocumentRejectValidator;
 import com.receiptofi.web.validator.MileageDocumentValidator;
@@ -80,7 +81,7 @@ public class ReceiptUpdateController {
             method = RequestMethod.GET)
     public String getNewDocument(
             @PathVariable
-            String documentId,
+            ScrubbedInput documentId,
 
             @ModelAttribute ("receiptDocumentForm")
             ReceiptDocumentForm receiptDocumentForm,
@@ -88,7 +89,7 @@ public class ReceiptUpdateController {
             Model model,
             HttpServletRequest httpServletRequest
     ) {
-        updateReceipt(documentId, receiptDocumentForm, model, httpServletRequest);
+        updateReceipt(documentId.getText(), receiptDocumentForm, model, httpServletRequest);
         return NEXT_PAGE_UPDATE;
     }
 
@@ -125,7 +126,7 @@ public class ReceiptUpdateController {
             method = RequestMethod.GET)
     public String getDocumentForRecheck(
             @PathVariable
-            String documentId,
+            ScrubbedInput documentId,
 
             @ModelAttribute ("receiptDocumentForm")
             ReceiptDocumentForm receiptDocumentForm,
@@ -133,7 +134,7 @@ public class ReceiptUpdateController {
             Model model,
             HttpServletRequest httpServletRequest
     ) {
-        updateReceipt(documentId, receiptDocumentForm, model, httpServletRequest);
+        updateReceipt(documentId.getText(), receiptDocumentForm, model, httpServletRequest);
         return NEXT_PAGE_RECHECK;
     }
 

@@ -77,13 +77,13 @@ public class MileageWebService {
             produces = "application/json")
     public String merge(
             @RequestBody
-            String ids,
+            ScrubbedInput ids,
 
             HttpServletResponse httpServletResponse
     ) throws IOException {
-        if (ids.length() > 0) {
+        if (ids.getText().length() > 0) {
             try {
-                Map<String, ScrubbedInput> map = ParseJsonStringToMap.jsonStringToMap(ids);
+                Map<String, ScrubbedInput> map = ParseJsonStringToMap.jsonStringToMap(ids.getText());
                 MileageEntity mileageEntity = mileageService.merge(
                         map.get("id1").getText(),
                         map.get("id2").getText(),
@@ -114,14 +114,14 @@ public class MileageWebService {
             produces = "application/json")
     public String split(
             @RequestBody
-            String id,
+            ScrubbedInput id,
 
             HttpServletResponse httpServletResponse
     ) throws IOException {
-        if (id.length() > 0) {
+        if (id.getText().length() > 0) {
             try {
                 List<MileageEntity> mileageEntities = mileageService.split(
-                        ParseJsonStringToMap.jsonStringToMap(id).get("id").getText(),
+                        ParseJsonStringToMap.jsonStringToMap(id.getText()).get("id").getText(),
                         ((ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getRid()
                 );
                 Driven driven = new Driven();
@@ -149,12 +149,12 @@ public class MileageWebService {
             headers = "Accept=application/json")
     public String updateMileageStartDate(
             @RequestBody
-            String mileageInfo,
+            ScrubbedInput mileageInfo,
 
             HttpServletResponse httpServletResponse
     ) throws IOException {
-        if (mileageInfo.length() > 0) {
-            Map<String, ScrubbedInput> map = ParseJsonStringToMap.jsonStringToMap(mileageInfo);
+        if (mileageInfo.getText().length() > 0) {
+            Map<String, ScrubbedInput> map = ParseJsonStringToMap.jsonStringToMap(mileageInfo.getText());
             try {
                 MileageEntity mileageEntity = mileageService.getMileage(
                         map.get("id").getText(),
@@ -194,7 +194,7 @@ public class MileageWebService {
             headers = "Accept=application/json")
     public String updateMileageEndDate(
             @RequestBody
-            String mileageInfo,
+            ScrubbedInput mileageInfo,
 
             HttpServletResponse httpServletResponse
     ) throws IOException {
@@ -203,8 +203,8 @@ public class MileageWebService {
 //        responseHeaders.add("Content-Type", "application/json;charset=UTF-8");
 //        return new ResponseEntity<>(mileageDateUpdateResponse.asJson(), responseHeaders, HttpStatus.OK);
 
-        if (mileageInfo.length() > 0) {
-            Map<String, ScrubbedInput> map = ParseJsonStringToMap.jsonStringToMap(mileageInfo);
+        if (mileageInfo.getText().length() > 0) {
+            Map<String, ScrubbedInput> map = ParseJsonStringToMap.jsonStringToMap(mileageInfo.getText());
             try {
                 String rid = ((ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getRid();
                 MileageEntity mileageEntity = mileageService.getMileage(map.get("id").getText(), rid);

@@ -12,6 +12,7 @@ import com.receiptofi.service.FileDBService;
 import com.receiptofi.service.ReceiptService;
 import com.receiptofi.utils.FileUtil;
 import com.receiptofi.utils.Formatter;
+import com.receiptofi.utils.ScrubbedInput;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
@@ -71,7 +72,7 @@ public class FileDownloadController {
     @RequestMapping (method = RequestMethod.GET, value = "/receiptimage/{imageId}")
     public void getDocumentImage(
             @PathVariable
-            String imageId,
+            ScrubbedInput imageId,
 
             HttpServletRequest request,
             HttpServletResponse response
@@ -79,7 +80,7 @@ public class FileDownloadController {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         try {
-            GridFSDBFile gridFSDBFile = fileDBService.getFile(imageId);
+            GridFSDBFile gridFSDBFile = fileDBService.getFile(imageId.getText());
 
             if (null == gridFSDBFile) {
                 LOG.warn("GridFSDBFile failed to find image={}", imageId);
@@ -106,11 +107,16 @@ public class FileDownloadController {
     }
 
     @RequestMapping (method = RequestMethod.GET, value = "/expensofi/{receiptId}")
-    public void getReport(@PathVariable String receiptId, HttpServletResponse response) {
+    public void getReport(
+            @PathVariable
+            ScrubbedInput receiptId,
+
+            HttpServletResponse response
+    ) {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         try {
-            ReceiptEntity receiptEntity = receiptService.findReceipt(receiptId, receiptUser.getRid());
+            ReceiptEntity receiptEntity = receiptService.findReceipt(receiptId.getText(), receiptUser.getRid());
             setHeaderForExcel(receiptEntity, response);
 
             InputStream inputStream = new FileInputStream(fileSystemProcess.getExcelFile(receiptEntity.getExpenseReportInFS()));

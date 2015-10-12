@@ -3,6 +3,7 @@ package com.receiptofi.web.controller.access;
 import com.receiptofi.domain.MileageEntity;
 import com.receiptofi.domain.site.ReceiptUser;
 import com.receiptofi.service.MileageService;
+import com.receiptofi.utils.ScrubbedInput;
 import com.receiptofi.web.form.MileageForm;
 
 import org.apache.commons.lang3.StringUtils;
@@ -46,7 +47,7 @@ public class MileageOdometerController {
     @RequestMapping (value = "/{mileageId}", method = RequestMethod.GET)
     public String loadForm(
             @PathVariable ("mileageId")
-            String mileageId,
+            ScrubbedInput mileageId,
 
             @ModelAttribute ("mileageForm")
             MileageForm mileageForm,
@@ -60,12 +61,12 @@ public class MileageOdometerController {
         if (model.asMap().containsKey("result")) {
             model.addAttribute("org.springframework.validation.BindingResult.mileageForm", model.asMap().get("result"));
 
-            MileageEntity mileageEntity = mileageService.getMileage(mileageId, receiptUser.getRid());
+            MileageEntity mileageEntity = mileageService.getMileage(mileageId.getText(), receiptUser.getRid());
 
             mileageForm = (MileageForm) model.asMap().get("mileageForm");
             mileageForm.setMileage(mileageEntity);
         } else {
-            MileageEntity mileageEntity = mileageService.getMileage(mileageId, receiptUser.getRid());
+            MileageEntity mileageEntity = mileageService.getMileage(mileageId.getText(), receiptUser.getRid());
             if (null == mileageEntity) {
                 //TODO check all get methods that can result in display sensitive data of other users to someone else fishing
                 //Possible condition of bookmark or trying to gain access to some unknown receipt

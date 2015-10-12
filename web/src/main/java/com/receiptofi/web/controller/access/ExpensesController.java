@@ -5,6 +5,7 @@ import com.receiptofi.domain.ItemEntity;
 import com.receiptofi.domain.site.ReceiptUser;
 import com.receiptofi.service.ExpensesService;
 import com.receiptofi.service.ItemService;
+import com.receiptofi.utils.ScrubbedInput;
 import com.receiptofi.web.form.ExpenseForm;
 
 import org.slf4j.Logger;
@@ -48,28 +49,30 @@ public class ExpensesController {
     @RequestMapping (value = "{tag}", method = RequestMethod.GET)
     public String forExpenseType(
             @PathVariable
-            String tag,
+            ScrubbedInput tag,
 
             @ModelAttribute ("expenseForm")
             ExpenseForm expenseForm
     ) {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        LOG.debug("rid={} expenseType={}", receiptUser.getRid(), tag);
+
+        String tagName = tag.getText();
+        LOG.debug("rid={} expenseType={}", receiptUser.getRid(), tagName);
         List<ExpenseTagEntity> expenseTags = expensesService.getExpenseTags(receiptUser.getRid());
         List<ItemEntity> items = new ArrayList<>();
 
-        if (!"Un-Assigned".equalsIgnoreCase(tag)) {
+        if (!"Un-Assigned".equalsIgnoreCase(tagName)) {
             for (ExpenseTagEntity expenseTagEntity : expenseTags) {
-                if (expenseTagEntity.getTagName().equalsIgnoreCase(tag)) {
+                if (expenseTagEntity.getTagName().equalsIgnoreCase(tagName)) {
                     items = itemService.itemsForExpenseType(expenseTagEntity);
                     break;
                 }
             }
-        } else if ("Un-Assigned".equalsIgnoreCase(tag)) {
+        } else if ("Un-Assigned".equalsIgnoreCase(tagName)) {
             items = itemService.itemsForUnAssignedExpenseType(receiptUser.getRid());
         }
 
-        expenseForm.setName(tag);
+        expenseForm.setName(tagName);
         expenseForm.setExpenseTags(expenseTags);
         expenseForm.setItems(items);
 
