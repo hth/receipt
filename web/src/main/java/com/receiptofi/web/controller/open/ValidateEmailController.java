@@ -4,6 +4,7 @@ import com.receiptofi.domain.EmailValidateEntity;
 import com.receiptofi.domain.UserAccountEntity;
 import com.receiptofi.service.AccountService;
 import com.receiptofi.service.EmailValidateService;
+import com.receiptofi.utils.ScrubbedInput;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -67,12 +68,12 @@ public class ValidateEmailController {
     @RequestMapping (method = RequestMethod.GET)
     public String validateEmail(
             @RequestParam ("authenticationKey")
-            String key,
+            ScrubbedInput key,
 
             RedirectAttributes redirectAttrs,
             HttpServletResponse httpServletResponse
     ) throws IOException {
-        EmailValidateEntity emailValidate = emailValidateService.findByAuthenticationKey(key);
+        EmailValidateEntity emailValidate = emailValidateService.findByAuthenticationKey(key.getText());
         if (null == emailValidate) {
             LOG.info("authentication failed for invalid auth={}", key);
             httpServletResponse.sendError(HttpServletResponse.SC_NOT_FOUND);
@@ -98,7 +99,7 @@ public class ValidateEmailController {
     @RequestMapping (method = RequestMethod.GET, value = "/result")
     public String success(
             @ModelAttribute ("success")
-            String success,
+            ScrubbedInput success,
 
             @ModelAttribute ("userRegisteredWhenRegistrationIsOff")
             boolean userRegisteredWhenRegistrationIsOff,
@@ -108,8 +109,8 @@ public class ValidateEmailController {
             HttpServletResponse httpServletResponse
     ) throws IOException {
         String nextPage = null;
-        if (StringUtils.isNotBlank(success)) {
-            nextPage =  Boolean.valueOf(success) ? validateSuccessPage : validateFailurePage;
+        if (StringUtils.isNotBlank(success.getText())) {
+            nextPage =  Boolean.valueOf(success.getText()) ? validateSuccessPage : validateFailurePage;
             if (userRegisteredWhenRegistrationIsOff && !registrationTurnedOn) {
                 modelMap.addAttribute(
                         "registrationMessage",

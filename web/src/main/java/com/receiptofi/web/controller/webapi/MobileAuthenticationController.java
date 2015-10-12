@@ -58,19 +58,19 @@ public class MobileAuthenticationController {
     )
     public String authenticateOrCreate(
             @RequestBody
-            String authenticationJson,
+            ScrubbedInput authenticationJson,
 
             @RequestHeader ("X-R-API-MOBILE")
-            String apiAccessToken,
+            ScrubbedInput apiAccessToken,
 
             HttpServletResponse httpServletResponse
     ) throws IOException {
         LOG.debug("authenticatedOrCreate initiated from mobile");
 
-        if (webApiAccessToken.equals(apiAccessToken)) {
+        if (webApiAccessToken.equalsIgnoreCase(apiAccessToken.getText())) {
             Map<String, ScrubbedInput> map = new HashMap<>();
             try {
-                map = ParseJsonStringToMap.jsonStringToMap(authenticationJson);
+                map = ParseJsonStringToMap.jsonStringToMap(authenticationJson.getText());
             } catch (IOException e) {
                 LOG.error("could not parse authenticationJson={} reason={}",
                         authenticationJson, e.getLocalizedMessage(), e);

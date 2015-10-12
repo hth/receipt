@@ -3,6 +3,7 @@ package com.receiptofi.web.controller.open;
 import com.receiptofi.security.OnLoginAuthenticationSuccessHandler;
 import com.receiptofi.service.LoginService;
 import com.receiptofi.service.RegistrationService;
+import com.receiptofi.utils.ScrubbedInput;
 import com.receiptofi.web.cache.CachedUserAgentStringParser;
 import com.receiptofi.web.form.UserLoginForm;
 
@@ -104,7 +105,7 @@ public class LoginController {
     @RequestMapping (method = {RequestMethod.GET, RequestMethod.HEAD})
     public String loadForm(
             @RequestHeader ("User-Agent")
-            String userAgent,
+            ScrubbedInput userAgent,
 
             Locale locale,
             ModelMap map,
@@ -112,7 +113,7 @@ public class LoginController {
     ) {
         LOG.info("Locale Type={}", locale);
 
-        UserAgentDetectionResult res = parser.parse(userAgent);
+        UserAgentDetectionResult res = parser.parse(userAgent.getText());
         Cookie[] cookies = request.getCookies();
         if (cookies != null && cookies.length > 0) {
             Cookie cookie = cookies[0];
@@ -129,7 +130,7 @@ public class LoginController {
             String operatingSystemVersion = res.getOperatingSystem().version;
 
             LOG.info("cookie={}, ip={}, user-agent={}", cookieId, ip, userAgent);
-            loginService.saveUpdateBrowserInfo(cookieId, ip, userAgent, browser, browserVersion, device, deviceBrand, operatingSystem, operatingSystemVersion);
+            loginService.saveUpdateBrowserInfo(cookieId, ip, userAgent.getText(), browser, browserVersion, device, deviceBrand, operatingSystem, operatingSystemVersion);
         }
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
