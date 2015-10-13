@@ -172,14 +172,14 @@ public class ForgotController {
     @RequestMapping (method = RequestMethod.GET, value = "recoverConfirm")
     public String showConfirmationPageForProcessingPasswordRecovery(
             @ModelAttribute (SUCCESS_EMAIL)
-            ScrubbedInput success,
+            String success,
 
             HttpServletRequest httpServletRequest,
             HttpServletResponse httpServletResponse
     ) throws IOException {
 
         //TODO(hth) strengthen the check here as this can be hacked to get a dummy confirmation page
-        if (StringUtils.isNotBlank(success.getText())) {
+        if (StringUtils.isNotBlank(success)) {
             return recoverConfirmPage;
         }
         LOG.warn(

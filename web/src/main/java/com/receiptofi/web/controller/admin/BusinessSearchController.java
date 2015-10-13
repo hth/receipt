@@ -176,7 +176,12 @@ public class BusinessSearchController {
      * @return
      */
     @RequestMapping (value = "/businessSearch", method = RequestMethod.POST, params = "delete_store")
-    public String deleteBizStore(@ModelAttribute ("bizForm") BizForm bizForm, RedirectAttributes redirectAttrs) {
+    public String deleteBizStore(
+            @ModelAttribute ("bizForm")
+            BizForm bizForm,
+
+            RedirectAttributes redirectAttrs
+    ) {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         redirectAttrs.addFlashAttribute("bizForm", bizForm);
