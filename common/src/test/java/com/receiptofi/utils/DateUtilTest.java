@@ -15,5 +15,13 @@ public class DateUtilTest {
         assertEquals(
                 DateUtil.getDateFromString("10/10/2015 4:00:00 PM"),
                 DateUtil.getDateFromString("10/10/2015 16:00:00"));
+
+        assertEquals(
+                DateUtil.getDateFromString("10/10/2015 4:00:00 pm"),
+                DateUtil.getDateFromString("10/10/2015 16:00:00"));
+
+        assertEquals(
+                DateUtil.getDateFromString("10/10/15 4:00:00 pm"),
+                DateUtil.getDateFromString("10/10/15 16:00:00"));
     }
 }
