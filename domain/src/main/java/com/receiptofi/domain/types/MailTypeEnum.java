@@ -13,5 +13,9 @@ package com.receiptofi.domain.types;
         "PMD.LongVariable"
 })
 public enum MailTypeEnum {
-    FAILURE, SUCCESS, ACCOUNT_NOT_VALIDATED, ACCOUNT_NOT_FOUND, SOCIAL_ACCOUNT
+    FAILURE,
+    SUCCESS,
+    ACCOUNT_NOT_VALIDATED,
+    ACCOUNT_NOT_FOUND,
+    SOCIAL_ACCOUNT
 }

@@ -137,7 +137,7 @@ public final class DateUtil {
     //todo add support for small AM|PM
     private enum DateType {
         FRM_1(
-                "\\d{1,2}/\\d{1,2}/\\d{4}\\s\\d{1,2}:\\d{2}(PM|AM)",
+                "\\d{1,2}/\\d{1,2}/\\d{4}\\s\\d{1,2}:\\d{2}(PM|pm|AM|am)",
                 "12/15/2012 02:13PM",
                 "MM/dd/yyyy hh:mma"
         ),
@@ -167,17 +167,17 @@ public final class DateUtil {
                 "MM/dd/yyyy a hh:mm:ss"
         ),
         FRM_7(
-                "\\d{1,2}/\\d{1,2}/\\d{4}\\s\\d{1,2}:\\d{2}\\s(PM|AM)",
+                "\\d{1,2}/\\d{1,2}/\\d{4}\\s\\d{1,2}:\\d{2}\\s(PM|pm|AM|am)",
                 "08/29/2012 03:07 PM",
                 "MM/dd/yyyy hh:mm a"
         ),
         FRM_8(
-                "\\d{1,2}/\\d{1,2}/\\d{4}\\s\\d{1,2}:\\d{2}:\\d{2}\\s(PM|AM)",
+                "\\d{1,2}/\\d{1,2}/\\d{4}\\s\\d{1,2}:\\d{2}:\\d{2}\\s(PM|pm|AM|am)",
                 "12/26/2012 5:29:44 PM",
                 "MM/dd/yyyy hh:mm:ss a"
         ),
         FRM_9(
-                "\\d{1,2}/\\d{1,2}/\\d{2}\\s\\d{1,2}:\\d{2}:\\d{2}\\s(PM|AM)",
+                "\\d{1,2}/\\d{1,2}/\\d{2}\\s\\d{1,2}:\\d{2}:\\d{2}\\s(PM|pm|AM|am)",
                 "12/26/12 5:29:44 PM",
                 "MM/dd/yy hh:mm:ss a"
         ),
@@ -192,12 +192,12 @@ public final class DateUtil {
                 "MM/dd/yy"
         ),
         FRM_12(
-                "\\d{1,2}/\\d{1,2}/\\d{2}\\s\\d{1,2}:\\d{2}\\s(PM|AM)",
+                "\\d{1,2}/\\d{1,2}/\\d{2}\\s\\d{1,2}:\\d{2}\\s(PM|pm|AM|am)",
                 "12/26/12 7:30 PM",
                 "MM/dd/yy hh:mm a"
         ),
         FRM_13(
-                "\\d{1,2}/\\d{1,2}/\\d{2}\\s\\d{1,2}:\\d{2}(PM|AM)",
+                "\\d{1,2}/\\d{1,2}/\\d{2}\\s\\d{1,2}:\\d{2}(PM|pm|AM|am)",
                 "12/26/12 7:30PM",
                 "MM/dd/yy hh:mma"
         );
