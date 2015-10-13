@@ -50,6 +50,8 @@ public final class DateUtil {
      * @return
      */
     public static Date getDateFromString(String dateAsStr) {
+        LOG.info("Supplied date={}", dateAsStr);
+
         if (StringUtils.isNotBlank(dateAsStr)) {
             String date = StringUtils.trim(dateAsStr.trim().replaceAll("-", "/")).replaceAll("[\\t\\n\\r]+", " ");
             for (DateType dateType : DateType.values()) {
@@ -133,7 +135,7 @@ public final class DateUtil {
     }
 
     //todo add support for small AM|PM
-    private static enum DateType {
+    private enum DateType {
         FRM_1(
                 "\\d{1,2}/\\d{1,2}/\\d{4}\\s\\d{1,2}:\\d{2}(PM|AM)",
                 "12/15/2012 02:13PM",
@@ -206,7 +208,7 @@ public final class DateUtil {
 
         private final DateTimeFormatter formatter;
 
-        private DateType(String regex, String example, String formatter) {
+        DateType(String regex, String example, String formatter) {
             this.regex = regex;
             this.example = example;
             this.formatter = DateTimeFormat.forPattern(formatter);
