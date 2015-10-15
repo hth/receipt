@@ -132,7 +132,7 @@
             <form:hidden path="receiptDocument.referenceDocumentId"/>
             <form:hidden path="receiptDocument.id"/>
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-            <button class="gd-button" name="delete" id="deletePendingDocument">DELETE</button>
+            <button class="gd-button" name="delete" id="deletePendingDocument" style="float: left !important;">DELETE</button>
         </form:form>
         </div>
     </c:when>
