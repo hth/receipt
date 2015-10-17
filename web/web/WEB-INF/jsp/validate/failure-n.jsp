@@ -23,7 +23,7 @@
 
     <script src="//receiptofi.com/js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script> <!-- Modernizr -->
 
-    <title>Receiptofi - ReceiptApp to park your Receipts</title>
+    <title>Receiptofi | Receipt App to park your Receipts</title>
 </head>
 <body>
 <!--[if lt IE 8]>
@@ -31,7 +31,7 @@
 <![endif]-->
 <header class="cd-header">
     <div id="cd-logo">
-        <a href="${pageContext.request.contextPath}/open/login.htm"><div id="cd-logo-img"></div></a>
+        <a href="//receiptofi.com"><div id="cd-logo-img"></div></a>
     </div>
 
     <h3>Receiptofi</h3>
@@ -48,75 +48,21 @@
 <section class="cd-fixed-background" style="background-color: #93a748" data-type="slider-item">
     <div class="cd-content">
         <fieldset class="cd-form floating-labels">
-            <h2><fmt:message key="account.recover.title" /></h2>
-            <p><fmt:message key="account.forgot.sub.title" /></p>
+            <legend>Account validation failed</legend>
+            <p>We apologize, but we could not validate your account.</p>
+            <p>&nbsp;</p>
+            <p></p>Please <a href="${pageContext.request.contextPath}/open/login.htm">click here</a> to return to the main page and start over.</p>
         </fieldset>
-
-        <form:form class="cd-form floating-labels"  method="post" modelAttribute="forgotRecoverForm" action="password.htm">
-            <p style="display:none;visibility:hidden;">
-                <form:label for="captcha" path="captcha" cssErrorClass="error">Captcha:</form:label>
-                <form:input path="captcha" />
-                <form:errors path="captcha" cssClass="error" />
-            </p>
-
-            <spring:hasBindErrors name="forgotRecoverForm">
-            <div class="r-validation" style="width: 100%; margin: 0 0 0 0;">
-                <ul>
-                    <c:if test="${errors.hasFieldErrors('mail')}">
-                        <li><form:errors path="mail" /></li>
-                    </c:if>
-                </ul>
-            </div>
-            </spring:hasBindErrors>
-
-            <fieldset>
-                <div class="icon">
-                    <form:label for="mail" path="mail" cssClass="cd-label">Email</form:label>
-                    <form:input path="mail" cssClass="email" required="required" type="email" cssErrorClass="email error" />
-                </div>
-            </fieldset>
-
-            <fieldset>
-                <div>
-                    <input type="submit" value="Send Recovery Email" name="forgot_password">
-                </div>
-            </fieldset>
-        </form:form>
     </div>
 </section>
 
 <div class="footer-container">
     <footer class="wrapper fine-print">
         &#169; 2015 Receiptofi, Inc. <a href="//receiptofi.com/termsofuse">Terms</a> and <a href="//receiptofi.com/privacypolicy">Privacy</a>.<br>
-        All other trademarks and logos belong to their respective owners.
+        All other trademarks and logos belong to their respective owners. (<fmt:message key="build.version" />)<br>
     </footer>
 </div>
 
-<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-<script>
-    jQuery(document).ready(function ($) {
-        if ($('.floating-labels').length > 0) {
-            floatLabels();
-        }
-
-        function floatLabels() {
-            var inputFields = $('.floating-labels .cd-label').next();
-            inputFields.each(function() {
-                var singleInput = $(this);
-                // check if user is filling one of the form fields
-                checkVal(singleInput);
-                singleInput.on('change keyup', function() {
-                    checkVal(singleInput);
-                });
-            });
-        }
-
-        function checkVal(inputField) {
-            (inputField.val() == '') ? inputField.prev('.cd-label').removeClass('float') : inputField.prev('.cd-label').addClass('float');
-        }
-    });
-</script>
-<script src="//receiptofi.com/js/main.min.js"></script>
 <script>
     (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
             function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;

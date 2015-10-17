@@ -61,7 +61,7 @@ public class InviteController {
     @Value ("${authenticateResult:redirect:/open/invite/result.htm}")
     private String authenticateResult;
 
-    @Value ("${authenticateConfirmPage:/invite/authenticateConfirm}")
+    @Value ("${authenticateConfirmPage:/invite/authenticateConfirm-n}")
     private String authenticateConfirmPage;
 
     @Value ("${registration.turned.on}")

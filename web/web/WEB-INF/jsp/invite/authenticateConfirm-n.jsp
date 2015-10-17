@@ -23,7 +23,7 @@
 
     <script src="//receiptofi.com/js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script> <!-- Modernizr -->
 
-    <title>Receiptofi - ReceiptApp to park your Receipts</title>
+    <title>Receiptofi | Receipt App to park your Receipts</title>
 </head>
 <body>
 <!--[if lt IE 8]>
@@ -31,7 +31,7 @@
 <![endif]-->
 <header class="cd-header">
     <div id="cd-logo">
-        <a href="${pageContext.request.contextPath}/open/login.htm"><div id="cd-logo-img"></div></a>
+        <a href="//receiptofi.com"><div id="cd-logo-img"></div></a>
     </div>
 
     <h3>Receiptofi</h3>
@@ -48,55 +48,33 @@
 <section class="cd-fixed-background" style="background-color: #93a748" data-type="slider-item">
     <div class="cd-content">
         <fieldset class="cd-form floating-labels">
-            <h2><fmt:message key="account.recover.title" /></h2>
-            <p><fmt:message key="account.recover.sub.title" /></p>
+            <c:if test="${success eq false}">
+                <legend>Account update failed</legend>
+                <p>Thanks For Signing Up!</p><br>
+                <p>Please check your email and click Activate Account in the message we just sent to <b><c:out value="${email}"/></b>.</p>
+                <p>&nbsp;</p>
+                <p>Click here for <span class="cd-link"><a href="${pageContext.request.contextPath}/open/login.htm">Sign In</a></span> page.</p>
+            </c:if>
+
+            <c:if test="${success eq true}">
+                <legend>Account successfully updated</legend>
+                <p>Thanks For Signing Up!</p>
+                <p>Please check your email and click Activate Account in the message we just sent to <b><c:out value="${email}"/></b>.</p>
+                <p>&nbsp;</p>
+                <p>Click here for <span class="cd-link"><a href="${pageContext.request.contextPath}/open/login.htm">Sign In</a></span> page.</p>
+            </c:if>
+
         </fieldset>
-
-        <form:form class="cd-form floating-labels"  method="post" modelAttribute="forgotRecoverForm" action="password.htm">
-            <form:hidden path="mail" />
-
-            <p style="display:none;visibility:hidden;">
-                <form:label for="captcha" path="captcha" cssErrorClass="error">Captcha:</form:label>
-                <form:input path="captcha" disabled="true" />
-                <form:errors path="captcha" cssClass="error" />
-            </p>
-
-            <spring:hasBindErrors name="forgotRecoverForm">
-            <div class="r-validation" style="width: 100%; margin: 0 0 0 0;">
-                <ul>
-                    <c:if test="${errors.hasFieldErrors('mail')}">
-                        <li><form:errors path="mail" /></li>
-                    </c:if>
-                </ul>
-            </div>
-            </spring:hasBindErrors>
-
-            <fieldset>
-                <div class="icon">
-                    <form:label for="mail" path="mail" cssClass="cd-label float">Email</form:label>
-                    <form:input path="mail" cssClass="email" readonly="true" disabled="true" required="required"
-                            cssStyle="background-color: inherit !important; color: #f2e6cd;" cssErrorClass="email error" />
-                </div>
-            </fieldset>
-
-            <fieldset>
-                <div>
-                    <input type="submit" value="Send Recovery Email" name="forgot_password">
-                </div>
-            </fieldset>
-        </form:form>
     </div>
 </section>
 
 <div class="footer-container">
     <footer class="wrapper fine-print">
         &#169; 2015 Receiptofi, Inc. <a href="//receiptofi.com/termsofuse">Terms</a> and <a href="//receiptofi.com/privacypolicy">Privacy</a>.<br>
-        All other trademarks and logos belong to their respective owners.
+        All other trademarks and logos belong to their respective owners. (<fmt:message key="build.version" />)<br>
     </footer>
 </div>
 
-<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-<script src="//receiptofi.com/js/main.min.js"></script>
 <script>
     (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
             function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;

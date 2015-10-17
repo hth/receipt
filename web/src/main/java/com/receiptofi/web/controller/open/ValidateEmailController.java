@@ -47,10 +47,10 @@ public class ValidateEmailController {
     @Value ("${emailValidate:redirect:/open/validate/result.htm}")
     private String validateResult;
 
-    @Value ("${emailValidatePage:validate/success}")
+    @Value ("${emailValidatePage:validate/success-n}")
     private String validateSuccessPage;
 
-    @Value ("${emailValidatePage:validate/failure}")
+    @Value ("${emailValidatePage:validate/failure-n}")
     private String validateFailurePage;
 
     @Value ("${registration.turned.on}")
