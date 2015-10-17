@@ -1,4 +1,4 @@
-<%@ include file="include.jsp"%>
+<%@ include file="../include.jsp"%>
 <!doctype html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
@@ -48,11 +48,22 @@
 <section class="cd-fixed-background" style="background-color: #93a748" data-type="slider-item">
     <div class="cd-content">
         <fieldset class="cd-form floating-labels">
-            <legend><fmt:message key="signup.success" /></legend>
-            <p>Thanks For Signing Up!</p><br>
-            <p>Please check your email and click Activate Account in the message we just sent to <b><c:out value="${email}"/></b>.</p>
-            <p>&nbsp;</p>
-            <p>Click here for <span class="cd-link"><a href="${pageContext.request.contextPath}/open/login.htm">Sign In</a></span> page.</p>
+            <c:if test="${success eq false}">
+                <legend>Account update failed</legend>
+                <p>Thanks For Signing Up!</p><br>
+                <p>Please check your email and click Activate Account in the message we just sent to <b><c:out value="${email}"/></b>.</p>
+                <p>&nbsp;</p>
+                <p>Click here for <span class="cd-link"><a href="${pageContext.request.contextPath}/open/login.htm">Sign In</a></span> page.</p>
+            </c:if>
+
+            <c:if test="${success eq true}">
+                <legend>Account successfully updated</legend>
+                <p>Thanks For Signing Up!</p>
+                <p>Please check your email and click Activate Account in the message we just sent to <b><c:out value="${email}"/></b>.</p>
+                <p>&nbsp;</p>
+                <p>Click here for <span class="cd-link"><a href="${pageContext.request.contextPath}/open/login.htm">Sign In</a></span> page.</p>
+            </c:if>
+
         </fieldset>
     </div>
 </section>
