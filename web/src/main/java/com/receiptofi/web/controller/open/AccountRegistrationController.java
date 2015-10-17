@@ -63,7 +63,7 @@ public class AccountRegistrationController {
     @Value ("${registrationSuccess:redirect:/open/registration/success.htm}")
     private String registrationSuccess;
 
-    @Value ("${registrationSuccessPage:registrationsuccess-n}")
+    @Value ("${registrationSuccessPage:registrationsuccess}")
     private String registrationSuccessPage;
 
     @Value ("${recover:redirect:/open/forgot/recover.htm}")

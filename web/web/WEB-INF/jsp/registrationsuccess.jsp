@@ -1,75 +1,77 @@
+
 <%@ include file="include.jsp"%>
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang=""> <!--<![endif]-->
 <head>
-    <meta charset="UTF-8">
-    <title><fmt:message key="signup.title"/></title>
+    <meta charset="utf-8">
+    <meta name="_csrf" content="${_csrf.token}"/>
+    <meta name="_csrf_header" content="${_csrf.headerName}"/>
+    <script>var ctx = "${pageContext.request.contextPath}"</script>
 
-    <link rel="icon" type="image/x-icon" href="${pageContext.request.contextPath}/static/images/circle-leaf-sized_small.png"/>
-    <link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/static/images/circle-leaf-sized_small.png"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
 
-    <link rel='stylesheet' type='text/css' href='${pageContext.request.contextPath}/static/jquery/css/receipt.css'>
+    <link href='//fonts.googleapis.com/css?family=Open+Sans:400,300|Merriweather' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="//receiptofi.com/css/reset.css"> <!-- CSS reset -->
+    <link rel="stylesheet" href="//receiptofi.com/css/style.css"> <!-- Resource style -->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/stylelogin-nn.css"> <!-- Resource style -->
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.css">
 
-    <style>
-        body {background: #e6e6e6;margin: 0; padding: 20px; text-align:center; font-family:Arial, Helvetica, sans-serif; font-size:14px; color:#666666;}
-        .error_page {width: 600px; padding: 50px; margin: auto;}
-        .error_page h1 {margin: 20px 0 0;}
-        .error_page p {margin: 10px 0; padding: 0;}
-        a {color: #9caa6d; text-decoration:none;}
-        a:hover {color: #9caa6d; text-decoration:underline;}
-    </style>
+    <script src="//receiptofi.com/js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script> <!-- Modernizr -->
+
+    <title>Receiptofi | Receipt App to park your Receipts</title>
 </head>
 <body>
-<div class="wrapper">
-    <div class="error_page">
-        <img alt="receipt-o-fi logo" src="${pageContext.request.contextPath}/static/images/receipt-o-fi.logo.jpg" height="45px" />
-        <h1><fmt:message key="signup.success" /></h1>
-        <p>Verification email has been sent to email <b><c:out value="${email}"/></b>.</p>
-        <p>Please follow the directions in the email to validated your account.</p>
-        <p>&nbsp;</p>
-        <p>Click here for <a href="${pageContext.request.contextPath}/open/login.htm">Login</a> page</p>
+<!--[if lt IE 8]>
+<p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+<![endif]-->
+<header class="cd-header">
+    <div id="cd-logo">
+        <a href="//receiptofi.com"><div id="cd-logo-img"></div></a>
     </div>
-</div>
 
-<div class="footer">
-    <p>
-        <a href="${pageContext.request.contextPath}/aboutus.html">About Us</a> -
-        <a href="${pageContext.request.contextPath}/tos.html">Terms of Service</a>
-    </p>
-    <p>&copy; 2015 Receiptofi Inc. All Rights Reserved.</p>
+    <h3>Receiptofi</h3>
+
+    <nav class="cd-main-nav">
+        <ul>
+            <!-- inser more links here -->
+            <li><a href="${pageContext.request.contextPath}/open/login.htm">Sign In</a></li>
+            <li><a href="${pageContext.request.contextPath}/open/registration.htm">Register</a></li>
+        </ul>
+    </nav> <!-- cd-main-nav -->
+</header>
+
+<section class="cd-fixed-background" style="background-color: #93a748" data-type="slider-item">
+    <div class="cd-content">
+        <fieldset class="cd-form floating-labels">
+            <legend><fmt:message key="signup.success" /></legend>
+            <p>Thanks For Signing Up!</p>
+            <p>Please check your email and click Activate Account in the message we just sent to <b><c:out value="${email}"/></b>.</p>
+            <p>&nbsp;</p>
+            <p>Click here for <span class="cd-link"><a href="${pageContext.request.contextPath}/open/login.htm">Sign In</a></span> page</p>
+        </fieldset>
+    </div>
+</section>
+
+<div class="footer-container">
+    <footer class="wrapper fine-print">
+        &#169; 2015 Receiptofi, Inc. <a href="//receiptofi.com/termsofuse">Terms</a> and <a href="//receiptofi.com/privacypolicy">Privacy</a>.<br>
+        All other trademarks and logos belong to their respective owners. (<fmt:message key="build.version" />)<br>
+    </footer>
 </div>
 
 <script>
-    $(function () {
-        $('.tooltip').each(function () {
-            var $this, id, t;
-
-            $this = $(this);
-            id = this.id;
-            t = $('<span />', {
-                title: $this.attr('title')
-            }).appendTo($this.parent()).tooltip({
-                position: {
-                    of: '#' + id,
-                    my: "left+190 center",
-                    at: "left center",
-                    collision: "fit"
-                }
-            });
-            // remove the title from the real element.
-            $this.attr('title', '');
-            $('#' + id).focusin(function () {
-                t.tooltip('open');
-            }).focusout(function () {
-                t.tooltip('close');
-            });
-        });
-    });
-
-    $(function () {
-        $(document).tooltip();
-    });
+    (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+            function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+        e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+        e.src='//www.google-analytics.com/analytics.js';
+        r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
+    ga('create','UA-65975717-1','auto');ga('send','pageview');
 </script>
-
 </body>
 </html>
