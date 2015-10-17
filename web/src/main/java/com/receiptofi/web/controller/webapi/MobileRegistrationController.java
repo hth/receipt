@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 import com.receiptofi.service.RegistrationService;
-import com.receiptofi.utils.ScrubbedInput;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,12 +42,12 @@ public class MobileRegistrationController {
     )
     public String isRegistrationTurnedOn(
             @RequestHeader ("X-R-API-MOBILE")
-            ScrubbedInput apiAccessToken,
+            String apiAccessToken,
 
             HttpServletResponse httpServletResponse
     ) throws IOException {
         LOG.debug("isRegistrationTurnedOn initiated");
-        if (webApiAccessToken.equalsIgnoreCase(apiAccessToken.getText())) {
+        if (webApiAccessToken.equals(apiAccessToken)) {
             boolean registrationTurnedOn = registrationService.isRegistrationTurnedOn();
             LOG.debug("registrationTurnedOn={}", registrationTurnedOn);
             JsonObject result = new JsonObject();

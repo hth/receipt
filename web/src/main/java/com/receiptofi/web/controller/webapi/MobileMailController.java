@@ -52,13 +52,13 @@ public class MobileMailController {
             String mailJson,
 
             @RequestHeader ("X-R-API-MOBILE")
-            ScrubbedInput apiAccessToken,
+            String apiAccessToken,
 
             HttpServletResponse httpServletResponse
     ) throws IOException {
         LOG.info("starting to send accountValidationMail");
 
-        if (webApiAccessToken.equalsIgnoreCase(apiAccessToken.getText())) {
+        if (webApiAccessToken.equals(apiAccessToken)) {
             Map<String, ScrubbedInput> map = new HashMap<>();
             try {
                 map = ParseJsonStringToMap.jsonStringToMap(mailJson);
@@ -89,13 +89,13 @@ public class MobileMailController {
             String recoverJson,
 
             @RequestHeader ("X-R-API-MOBILE")
-            ScrubbedInput apiAccessToken,
+            String apiAccessToken,
 
             HttpServletResponse httpServletResponse
     ) throws IOException {
         LOG.debug("accountRecover initiated from mobile");
 
-        if (webApiAccessToken.equalsIgnoreCase(apiAccessToken.getText())) {
+        if (webApiAccessToken.equals(apiAccessToken)) {
             Map<String, ScrubbedInput> map = new HashMap<>();
             try {
                 map = ParseJsonStringToMap.jsonStringToMap(recoverJson);
