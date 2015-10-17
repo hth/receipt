@@ -501,10 +501,6 @@ input:-webkit-autofill {
         margin: 1em auto;
     }
 
-    #login-title-fieldset {
-        display: none !important;
-    }
-
     .cd-form legend {
         font-size: inherit;
     }
