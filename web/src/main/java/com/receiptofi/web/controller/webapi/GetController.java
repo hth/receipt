@@ -1,7 +1,5 @@
 package com.receiptofi.web.controller.webapi;
 
-import com.receiptofi.utils.ScrubbedInput;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -47,12 +45,12 @@ public class GetController {
     )
     public String get(
             @RequestHeader ("X-R-API-MOBILE")
-            ScrubbedInput apiAccessToken,
+            String apiAccessToken,
 
             HttpServletResponse httpServletResponse
     ) throws IOException {
         LOG.debug("CSRF invoked to create token for Mobile");
-        if (webApiAccessToken.equalsIgnoreCase(apiAccessToken.getText())) {
+        if (webApiAccessToken.equals(apiAccessToken)) {
             return "{}";
         }
         LOG.warn("not matching X-R-API-MOBILE key={}", apiAccessToken);

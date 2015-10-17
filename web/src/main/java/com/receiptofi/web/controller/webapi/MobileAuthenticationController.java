@@ -61,13 +61,13 @@ public class MobileAuthenticationController {
             String authenticationJson,
 
             @RequestHeader ("X-R-API-MOBILE")
-            ScrubbedInput apiAccessToken,
+            String apiAccessToken,
 
             HttpServletResponse httpServletResponse
     ) throws IOException {
         LOG.debug("authenticatedOrCreate initiated from mobile");
 
-        if (webApiAccessToken.equalsIgnoreCase(apiAccessToken.getText())) {
+        if (webApiAccessToken.equals(apiAccessToken)) {
             Map<String, ScrubbedInput> map = new HashMap<>();
             try {
                 map = ParseJsonStringToMap.jsonStringToMap(authenticationJson);
