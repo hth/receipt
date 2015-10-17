@@ -58,7 +58,7 @@
 
             <c:if test="${success eq true}">
                 <legend>Account successfully updated</legend>
-                <p>Thanks For Signing Up!</p>
+                <p>Thanks For Signing Up!</p><br>
                 <p>Please check your email and click Activate Account in the message we just sent to <b><c:out value="${email}"/></b>.</p>
                 <p>&nbsp;</p>
                 <p>Click here for <span class="cd-link"><a href="${pageContext.request.contextPath}/open/login.htm">Sign In</a></span> page.</p>

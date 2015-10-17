@@ -52,7 +52,7 @@
             <p>Your email address has been successfully validated.</p><br>
             <p>${registrationMessage}</p>
             <p>&nbsp;</p>
-            <p>Click here for <span class="cd-link"><a href="${pageContext.request.contextPath}/open/login.htm">Sign In</a></span> page</p>
+            <p>Click here for <span class="cd-link"><a href="${pageContext.request.contextPath}/open/login.htm">Sign In</a></span> page.</p>
         </fieldset>
     </div>
 </section>
