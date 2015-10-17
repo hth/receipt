@@ -43,10 +43,10 @@ public class NotesAndCommentsWebService {
             value = "/rn",
             method = RequestMethod.POST,
             headers = "Accept=application/json")
-    public boolean saveReceiptNotes(@RequestBody ScrubbedInput body) throws IOException {
+    public boolean saveReceiptNotes(@RequestBody String body) throws IOException {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         LOG.info("Receipt notes updated by userProfileId={}", receiptUser.getRid());
-        Map<String, ScrubbedInput> map = ParseJsonStringToMap.jsonStringToMap(body.getText());
+        Map<String, ScrubbedInput> map = ParseJsonStringToMap.jsonStringToMap(body);
         return receiptService.updateReceiptNotes(
                 map.get("notes").getText(),
                 map.get("receiptId").getText(),
@@ -57,10 +57,10 @@ public class NotesAndCommentsWebService {
             value = "/mn",
             method = RequestMethod.POST,
             headers = "Accept=application/json")
-    public boolean saveMileageNotes(@RequestBody ScrubbedInput body) throws IOException {
+    public boolean saveMileageNotes(@RequestBody String body) throws IOException {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         LOG.info("Note updated by userProfileId={}", receiptUser.getRid());
-        Map<String, ScrubbedInput> map = ParseJsonStringToMap.jsonStringToMap(body.getText());
+        Map<String, ScrubbedInput> map = ParseJsonStringToMap.jsonStringToMap(body);
         return mileageService.updateMileageNotes(
                 map.get("notes").getText(),
                 map.get("mileageId").getText(),
@@ -71,10 +71,10 @@ public class NotesAndCommentsWebService {
             value = "/rc",
             method = RequestMethod.POST,
             headers = "Accept=application/json")
-    public boolean saveReceiptRecheckComment(@RequestBody ScrubbedInput body) throws IOException {
+    public boolean saveReceiptRecheckComment(@RequestBody String body) throws IOException {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         LOG.info("Receipt recheck comment updated by userProfileId={}", receiptUser.getRid());
-        Map<String, ScrubbedInput> map = ParseJsonStringToMap.jsonStringToMap(body.getText());
+        Map<String, ScrubbedInput> map = ParseJsonStringToMap.jsonStringToMap(body);
         return receiptService.updateReceiptComment(
                 map.get("notes").getText(),
                 map.get("receiptId").getText(),
@@ -85,10 +85,10 @@ public class NotesAndCommentsWebService {
             value = "/dc",
             method = RequestMethod.POST,
             headers = "Accept=application/json")
-    public boolean saveDocumentRecheckComment(@RequestBody ScrubbedInput body) throws IOException {
+    public boolean saveDocumentRecheckComment(@RequestBody String body) throws IOException {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         LOG.info("Document recheck comment updated by userProfileId={}", receiptUser.getRid());
-        Map<String, ScrubbedInput> map = ParseJsonStringToMap.jsonStringToMap(body.getText());
+        Map<String, ScrubbedInput> map = ParseJsonStringToMap.jsonStringToMap(body);
         return receiptService.updateDocumentComment(
                 map.get("notes").getText(),
                 map.get("documentId").getText());

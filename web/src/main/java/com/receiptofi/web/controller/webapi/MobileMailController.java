@@ -49,7 +49,7 @@ public class MobileMailController {
     )
     public void accountValidationMail(
             @RequestBody
-            ScrubbedInput mailJson,
+            String mailJson,
 
             @RequestHeader ("X-R-API-MOBILE")
             ScrubbedInput apiAccessToken,
@@ -61,7 +61,7 @@ public class MobileMailController {
         if (webApiAccessToken.equalsIgnoreCase(apiAccessToken.getText())) {
             Map<String, ScrubbedInput> map = new HashMap<>();
             try {
-                map = ParseJsonStringToMap.jsonStringToMap(mailJson.getText());
+                map = ParseJsonStringToMap.jsonStringToMap(mailJson);
             } catch (IOException e) {
                 LOG.error("could not parse mailJson={} reason={}", mailJson, e.getLocalizedMessage(), e);
             }
@@ -86,7 +86,7 @@ public class MobileMailController {
     )
     public void accountRecover(
             @RequestBody
-            ScrubbedInput recoverJson,
+            String recoverJson,
 
             @RequestHeader ("X-R-API-MOBILE")
             ScrubbedInput apiAccessToken,
@@ -98,7 +98,7 @@ public class MobileMailController {
         if (webApiAccessToken.equalsIgnoreCase(apiAccessToken.getText())) {
             Map<String, ScrubbedInput> map = new HashMap<>();
             try {
-                map = ParseJsonStringToMap.jsonStringToMap(recoverJson.getText());
+                map = ParseJsonStringToMap.jsonStringToMap(recoverJson);
             } catch (IOException e) {
                 LOG.error("could not parse mailJson={} reason={}", recoverJson, e.getLocalizedMessage(), e);
             }

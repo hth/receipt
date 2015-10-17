@@ -301,11 +301,11 @@ public class UserProfilePreferenceController {
     @ResponseBody
     public String deleteExpenseTag(
             @RequestBody
-            ScrubbedInput expenseTagDetail
+            String expenseTagDetail
     ) throws IOException {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        Map<String, ScrubbedInput> map = ParseJsonStringToMap.jsonStringToMap(expenseTagDetail.getText());
+        Map<String, ScrubbedInput> map = ParseJsonStringToMap.jsonStringToMap(expenseTagDetail);
         String tagId = map.get("tagId").getText();
         String tagName = map.get("tagName").getText();
 

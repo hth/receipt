@@ -82,13 +82,13 @@ public class ExpensofiController {
             produces = "application/json")
     public String updateExpenseTagOfItems(
             @RequestBody
-            ScrubbedInput itemIds,
+            String itemIds,
 
             Model model
     ) throws IOException {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        JsonArray jsonItems = getJsonElements(itemIds.getText());
+        JsonArray jsonItems = getJsonElements(itemIds);
         List<ItemEntity> items = getItemEntities(receiptUser.getRid(), jsonItems);
 
         if (!items.isEmpty()) {
