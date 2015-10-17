@@ -58,7 +58,7 @@ public class MobileAuthenticationController {
     )
     public String authenticateOrCreate(
             @RequestBody
-            ScrubbedInput authenticationJson,
+            String authenticationJson,
 
             @RequestHeader ("X-R-API-MOBILE")
             ScrubbedInput apiAccessToken,
@@ -70,7 +70,7 @@ public class MobileAuthenticationController {
         if (webApiAccessToken.equalsIgnoreCase(apiAccessToken.getText())) {
             Map<String, ScrubbedInput> map = new HashMap<>();
             try {
-                map = ParseJsonStringToMap.jsonStringToMap(authenticationJson.getText());
+                map = ParseJsonStringToMap.jsonStringToMap(authenticationJson);
             } catch (IOException e) {
                 LOG.error("could not parse authenticationJson={} reason={}",
                         authenticationJson, e.getLocalizedMessage(), e);

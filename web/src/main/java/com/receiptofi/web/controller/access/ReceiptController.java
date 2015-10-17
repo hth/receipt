@@ -214,11 +214,11 @@ public class ReceiptController {
     @ResponseBody
     public String recheckReceipt(
             @RequestBody
-            ScrubbedInput body
+            String body
     ) throws IOException {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        Map<String, ScrubbedInput> map = ParseJsonStringToMap.jsonStringToMap(body.getText());
+        Map<String, ScrubbedInput> map = ParseJsonStringToMap.jsonStringToMap(body);
         String receiptId = map.get("receiptId").getText();
         LOG.info("Initiating re-check on receiptId={}", receiptId);
 

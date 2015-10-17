@@ -217,8 +217,8 @@ public class AccountRegistrationController {
             produces = "application/json"
     )
     @ResponseBody
-    public String getAvailability(@RequestBody ScrubbedInput body) throws IOException {
-        String email = StringUtils.lowerCase(ParseJsonStringToMap.jsonStringToMap(body.getText()).get("mail").getText());
+    public String getAvailability(@RequestBody String body) throws IOException {
+        String email = StringUtils.lowerCase(ParseJsonStringToMap.jsonStringToMap(body).get("mail").getText());
         AvailabilityStatus availabilityStatus;
 
         UserProfileEntity userProfileEntity = accountService.doesUserExists(email);
