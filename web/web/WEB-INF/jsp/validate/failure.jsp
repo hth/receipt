@@ -51,7 +51,7 @@
             <legend>Account validation failed</legend>
             <p>We apologize, but we could not validate your account.</p>
             <p>&nbsp;</p>
-            <p>Please <a href="${pageContext.request.contextPath}/open/login.htm">click here</a> to return to the main page and start over.</p>
+            <p>Please <span class="cd-link"><a href="${pageContext.request.contextPath}/open/login.htm">click here</a></span> to return to the main page and start over.</p>
         </fieldset>
     </div>
 </section>

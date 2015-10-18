@@ -52,7 +52,7 @@
             <p><fmt:message key="account.recover.sub.title" /></p>
         </fieldset>
 
-        <form:form class="cd-form floating-labels"  method="post" modelAttribute="forgotRecoverForm" action="password.htm">
+        <form:form class="cd-form floating-labels" method="post" modelAttribute="forgotRecoverForm" action="password.htm">
             <form:hidden path="mail" />
 
             <p style="display:none;visibility:hidden;">

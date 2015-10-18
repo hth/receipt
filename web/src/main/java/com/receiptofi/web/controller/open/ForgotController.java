@@ -78,10 +78,10 @@ public class ForgotController {
     @Value ("${recoverConfirm:redirect:/open/forgot/recoverConfirm.htm}")
     private String recoverConfirm;
 
-    @Value ("${authenticatePage:/forgot/authenticate}")
+    @Value ("${authenticatePage:/forgot/authenticate-n}")
     private String authenticatePage;
 
-    @Value ("${authenticationConfirmPage:/forgot/authenticateConfirm}")
+    @Value ("${authenticationConfirmPage:/forgot/authenticateConfirm-n}")
     private String authenticateConfirm;
 
     private AccountService accountService;

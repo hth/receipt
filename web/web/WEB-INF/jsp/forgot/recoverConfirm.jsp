@@ -56,7 +56,7 @@
                     <legend>Confirmation Page</legend>
                     <p>An email has been sent with information regarding recovering your account password</p>
                     <p>&nbsp;</p>
-                    <p>Click here for <a href="${pageContext.request.contextPath}/open/login.htm">Sign In</a> page.</p>
+                    <p>Click here for <span class="cd-link"><a href="${pageContext.request.contextPath}/open/login.htm">Sign In</a></span> page.</p>
                 </c:when>
                 <c:when test="${socialAccount}">
                     <legend>Found Social Account</legend>
@@ -64,14 +64,14 @@
                     <p>Hence we cannot change the password. Please use these providers to login.</p><br>
                     <p>If you are having difficulties login, please contact us on support.</p>
                     <p>&nbsp;</p>
-                    <p>Click here for <a href="${pageContext.request.contextPath}/open/login.htm">Sign In</a> page.</p>
+                    <p>Click here for <span class="cd-link"><a href="${pageContext.request.contextPath}/open/login.htm">Sign In</a></span> page.</p>
                 </c:when>
                 <c:otherwise>
                     <legend>Confirmation Page</legend>
                     <p>Since your email address has not being verified, we have sent verification email.</p><br>
                     <p>Follow directions in email to validated your account and then resubmit new password reset request.</p>
                     <p>&nbsp;</p>
-                    <p>Click here for <a href="${pageContext.request.contextPath}/open/login.htm">Sign In</a> page.</p>
+                    <p>Click here for <span class="cd-link"><a href="${pageContext.request.contextPath}/open/login.htm">Sign In</a></span> page.</p>
                 </c:otherwise>
             </c:choose>
 
