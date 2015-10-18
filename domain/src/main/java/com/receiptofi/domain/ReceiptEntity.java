@@ -155,7 +155,7 @@ public class ReceiptEntity extends BaseEntity {
     private Double splitTax;
 
     @Field ("RF")
-    private String referToReceiptId;
+    private String referReceiptId;
 
     /** To keep bean happy. */
     public ReceiptEntity() {
@@ -403,12 +403,12 @@ public class ReceiptEntity extends BaseEntity {
         this.splitTax = splitTax;
     }
 
-    public String getReferToReceiptId() {
-        return referToReceiptId;
+    public String getReferReceiptId() {
+        return referReceiptId;
     }
 
-    private void setReferToReceiptId(String referToReceiptId) {
-        this.referToReceiptId = referToReceiptId;
+    private void setReferReceiptId(String referReceiptId) {
+        this.referReceiptId = referReceiptId;
     }
 
     @Transient
@@ -460,7 +460,7 @@ public class ReceiptEntity extends BaseEntity {
         friendReceipt.setSplitCount(splitCount);
         friendReceipt.setSplitTotal(splitTotal);
         friendReceipt.setSplitTax(splitTax);
-        friendReceipt.setReferToReceiptId(id);
+        friendReceipt.setReferReceiptId(id);
 
         return friendReceipt;
     }

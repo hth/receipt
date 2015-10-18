@@ -375,7 +375,7 @@
                     <span style="float: left; vertical-align: middle; width: 80px;">Splits Expenses:</span>
                     <div id="splits">
                         <c:choose>
-                        <c:when test="${empty receiptForm.receipt.referToReceiptId}">
+                        <c:when test="${empty receiptForm.receipt.referReceiptId}">
                             <c:forEach var="friend" items="${receiptForm.jsonSplitFriends}" varStatus="status">
                                 <div class="member" style="background-color: #00529B" id="${friend.rid}"
                                         onclick="updateReceiptSplit('${friend.rid}', '${receiptForm.receipt.id}');">
@@ -394,7 +394,7 @@
                     </div>
                 </label>
             </div>
-            <c:if test="${empty receiptForm.receipt.referToReceiptId}">
+            <c:if test="${empty receiptForm.receipt.referReceiptId}">
             <div class="row_field">
                 <label class="profile_label" style="!important; color: #606060; !important; font-weight: normal; !important; line-height: 30px; width: 360px;">
                     <span style="float: left; vertical-align: middle; width: 80px;">Friends:</span>
@@ -559,7 +559,7 @@
 
                     <input type="submit" value="DELETE" class="read_btn" name="delete" id="deleteBtnId"
                             style="background:#FC462A; margin: 77px 10px 0px 0px;" />
-                    <c:if test="${empty receiptForm.receipt.referToReceiptId}">
+                    <c:if test="${empty receiptForm.receipt.referReceiptId}">
                     <input type="submit" value="RE-CHECK" class="read_btn" name="re-check" id="recheckBtnId"
                             style="margin: 77px 10px 0px 0px; display: none;" />
                     </c:if>

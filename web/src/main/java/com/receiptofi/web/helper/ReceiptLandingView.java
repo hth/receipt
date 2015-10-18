@@ -61,7 +61,7 @@ public final class ReceiptLandingView {
         /** Remove all alpha numeric characters as it creates issues with 'id' */
         bizNameForId = StringUtils.deleteWhitespace(receipt.getBizName().getBusinessName()).replaceAll("[^a-zA-Z0-9]", "");
         billedStatus = receipt.getBilledStatus();
-        ownReceipt = StringUtils.isBlank(receipt.getReferToReceiptId());
+        ownReceipt = StringUtils.isBlank(receipt.getReferReceiptId());
     }
 
     public static ReceiptLandingView newInstance(ReceiptEntity receiptEntity) {

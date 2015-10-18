@@ -113,7 +113,7 @@ public class JsonReceipt {
         this.expenseReportInFS = receipt.getExpenseReportInFS();
         this.billedStatus = receipt.getBilledStatus().getName();
         this.expenseTagId = receipt.getExpenseTag() == null ? "" : receipt.getExpenseTag().getId();
-        this.referReceiptId = receipt.getReferToReceiptId();
+        this.referReceiptId = receipt.getReferReceiptId();
 
         this.active = receipt.isActive();
         this.deleted = receipt.isDeleted();
