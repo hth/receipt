@@ -78,8 +78,8 @@ public class JsonReceipt {
     @JsonProperty ("expenseTagId")
     private String expenseTagId;
 
-    @JsonProperty ("referToReceiptId")
-    private String referToReceiptId;
+    @JsonProperty ("referReceiptId")
+    private String referReceiptId;
 
     @JsonProperty ("a")
     private boolean active;
@@ -113,7 +113,7 @@ public class JsonReceipt {
         this.expenseReportInFS = receipt.getExpenseReportInFS();
         this.billedStatus = receipt.getBilledStatus().getName();
         this.expenseTagId = receipt.getExpenseTag() == null ? "" : receipt.getExpenseTag().getId();
-        this.referToReceiptId = receipt.getReferToReceiptId();
+        this.referReceiptId = receipt.getReferToReceiptId();
 
         this.active = receipt.isActive();
         this.deleted = receipt.isDeleted();
@@ -171,8 +171,8 @@ public class JsonReceipt {
         return expenseTagId;
     }
 
-    public String getReferToReceiptId() {
-        return referToReceiptId;
+    public String getReferReceiptId() {
+        return referReceiptId;
     }
 
     public boolean isActive() {
