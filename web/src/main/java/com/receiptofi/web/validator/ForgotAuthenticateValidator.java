@@ -47,14 +47,14 @@ public class ForgotAuthenticateValidator implements Validator {
                 errors.rejectValue("password",
                         "field.length",
                         new Object[]{"Password", passwordLength},
-                        "Minimum length of four characters");
+                        "Password minimum length is less than 6 characters");
             }
 
             if (faa.getPasswordSecond().length() < passwordLength) {
                 errors.rejectValue("passwordSecond",
                         "field.length",
-                        new Object[]{"passwordSecond", passwordLength},
-                        "Minimum length of four characters");
+                        new Object[]{"Retyped Password", passwordLength},
+                        "Retyped Password minimum length is less than 6 characters");
             }
 
             if (!faa.isEqual()) {

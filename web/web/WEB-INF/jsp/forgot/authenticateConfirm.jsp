@@ -30,7 +30,7 @@
             <h1>Password update failed</h1>
             <p>We apologize, but we were unable to update your account with new password.</p>
             <p>&nbsp;</p>
-            <p></p>Please <a href="${pageContext.request.contextPath}/open/login.htm">click here</a> to return to the main page and start over.</p>
+            <p>Please <a href="${pageContext.request.contextPath}/open/login.htm">click here</a> to return to the main page and start over.</p>
         </div>
     </c:if>
 
@@ -40,7 +40,7 @@
             <h1>Password successfully changed</h1>
             <p>Please log in with your new password.</p>
             <p>&nbsp;</p>
-            <p></p><a href="${pageContext.request.contextPath}/open/login.htm">Click here</a> to return to the login page.</p>
+            <p><a href="${pageContext.request.contextPath}/open/login.htm">Click here</a> to return to the login page.</p>
         </div>
     </c:if>
 </div>
