@@ -351,9 +351,14 @@ Custom icons
 
 /* --------------------------------
 
-FLoating labels
+Floating labels
 
 -------------------------------- */
+sup {
+    vertical-align: super;
+    font-size: smaller;
+}
+
 .js .floating-labels div {
     margin: 28px 0;
 }
