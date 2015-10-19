@@ -131,7 +131,7 @@ public class ReceiptService {
             return false;
         }
 
-        if (receipt.isActive() && StringUtils.isBlank(receipt.getReferToReceiptId())) {
+        if (receipt.isActive() && StringUtils.isBlank(receipt.getReferReceiptId())) {
 
             if (splitExpensesService.hasSettleProcessStarted(receiptId)) {
                 LOG.info("Receipt delete failed. Middle of transaction as settle process has started for rdid={}", receiptId);
@@ -169,7 +169,7 @@ public class ReceiptService {
             /** Added document deleted successfully. */
             notificationService.addNotification(md, NotificationTypeEnum.RECEIPT_DELETED, receipt);
             return true;
-        } else if (StringUtils.isNotBlank(receipt.getReferToReceiptId())) {
+        } else if (StringUtils.isNotBlank(receipt.getReferReceiptId())) {
             /**
              * User is deleting their split receipt or shared receipt. This is as good as original owner of the receipt
              * performing a delete operation. If this receipt is a split receipt, then user is removing self from split.
@@ -178,7 +178,7 @@ public class ReceiptService {
              * Delete will be successful only when settle transaction for split has not started. Otherwise nothing will
              * be change.
              */
-            return splitAction(rid, SplitActionEnum.R, receiptManager.findReceipt(receipt.getReferToReceiptId()));
+            return splitAction(rid, SplitActionEnum.R, receiptManager.findReceipt(receipt.getReferReceiptId()));
         } else {
             LOG.error("Attempt to delete inactive Receipt={}, Browser Back Action performed", receipt.getId());
             throw new RuntimeException("Receipt no longer exists");
@@ -476,7 +476,7 @@ public class ReceiptService {
     ) {
         boolean result = false;
 
-        String rdid = receipt.getReferToReceiptId();
+        String rdid = receipt.getReferReceiptId();
         if (StringUtils.isBlank(rdid)) {
             rdid = receipt.getId();
         }

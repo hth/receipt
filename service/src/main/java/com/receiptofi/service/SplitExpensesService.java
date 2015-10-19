@@ -44,7 +44,7 @@ public class SplitExpensesService {
         return splitExpensesManager.deleteHard(rdid, rid, fid);
     }
 
-    public List<JsonFriend> populateProfileOfFriends(String rdid, String rid, Map<String, JsonFriend> jsonFriends) {
+    public List<JsonFriend> populateProfileOfFriends(String rdid, Map<String, JsonFriend> jsonFriends) {
         List<SplitExpensesEntity> splitExpenses = splitExpensesManager.getSplitExpensesFriendsForReceipt(rdid);
 
         List<JsonFriend> jsonSplitFriends = new ArrayList<>();

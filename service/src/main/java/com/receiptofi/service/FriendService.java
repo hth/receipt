@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -152,7 +153,8 @@ public class FriendService {
         if (null == jsonFriends) {
             jsonFriends = updateJsonFriends(rid);
         }
-        return jsonFriends;
+
+        return new HashMap<>(jsonFriends);
     }
 
     private Map<String, JsonFriend> updateJsonFriends(String rid) {
