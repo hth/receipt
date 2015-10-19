@@ -47,10 +47,10 @@ public class JsonAwaitingAcceptance {
     @JsonProperty ("c")
     private Date created;
 
-    @JsonProperty ("in")
+    @JsonProperty ("initials")
     private String initials;
 
-    @JsonProperty ("na")
+    @JsonProperty ("name")
     private String name;
 
     @JsonProperty ("em")
