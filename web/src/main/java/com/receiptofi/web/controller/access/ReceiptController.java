@@ -114,7 +114,6 @@ public class ReceiptController {
                 if (receipt.getSplitCount() > 1) {
                     receiptForm.setJsonSplitFriends(splitExpensesService.populateProfileOfFriends(
                             fetchReceiptId,
-                            receipt.getReceiptUserId(),
                             receiptForm.getJsonFriends()
                     ));
                 }
@@ -125,7 +124,6 @@ public class ReceiptController {
 
                 receiptForm.setJsonSplitFriends(splitExpensesService.populateProfileOfFriends(
                         fetchReceiptId,
-                        originalReceipt.getReceiptUserId(),
                         receiptForm.getJsonFriends()
                 ));
 

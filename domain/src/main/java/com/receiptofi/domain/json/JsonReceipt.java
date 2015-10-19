@@ -11,8 +11,10 @@ import com.receiptofi.domain.types.BilledStatusEnum;
 
 import org.apache.commons.lang3.time.DateFormatUtils;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.TimeZone;
 import java.util.stream.Collectors;
 
@@ -81,6 +83,15 @@ public class JsonReceipt {
     @JsonProperty ("referReceiptId")
     private String referReceiptId;
 
+    @JsonProperty ("splitCount")
+    private int splitCount;
+
+    @JsonProperty ("splitTotal")
+    private Double splitTotal;
+
+    @JsonProperty ("splitTax")
+    private Double splitTax;
+
     @JsonProperty ("a")
     private boolean active;
 
@@ -114,6 +125,9 @@ public class JsonReceipt {
         this.billedStatus = receipt.getBilledStatus().getName();
         this.expenseTagId = receipt.getExpenseTag() == null ? "" : receipt.getExpenseTag().getId();
         this.referReceiptId = receipt.getReferReceiptId();
+        this.splitCount = receipt.getSplitCount();
+        this.splitTotal = receipt.getSplitTotal();
+        this.splitTax = receipt.getSplitTax();
 
         this.active = receipt.isActive();
         this.deleted = receipt.isDeleted();
@@ -173,6 +187,18 @@ public class JsonReceipt {
 
     public String getReferReceiptId() {
         return referReceiptId;
+    }
+
+    public int getSplitCount() {
+        return splitCount;
+    }
+
+    public Double getSplitTotal() {
+        return splitTotal;
+    }
+
+    public Double getSplitTax() {
+        return splitTax;
     }
 
     public boolean isActive() {

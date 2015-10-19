@@ -35,10 +35,10 @@ public class JsonFriend {
     @JsonProperty ("rid")
     private String rid;
 
-    @JsonProperty ("in")
+    @JsonProperty ("initials")
     private String initials;
 
-    @JsonProperty ("na")
+    @JsonProperty ("name")
     private String name;
 
     public JsonFriend(UserProfileEntity userProfile) {
