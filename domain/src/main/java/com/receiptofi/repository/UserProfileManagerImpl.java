@@ -64,7 +64,10 @@ public final class UserProfileManagerImpl implements UserProfileManager {
         try {
             mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
             if (object.getId() != null) {
-                object.setUpdated();
+                if (ObjectId.isValid(object.getId())) {
+                    LOG.error("UserProfileId is not valid id={} rid={}", object.getId(), object.getReceiptUserId());
+                    object.setUpdated();
+                }
             }
             mongoTemplate.save(object, TABLE);
         } catch (OptimisticLockingFailureException e) {
@@ -144,7 +147,7 @@ public final class UserProfileManagerImpl implements UserProfileManager {
     /**
      * Find any user matching with provider user id and email; ignore active or not active profile.
      *
-     * @param puid unique string from Google or Facebook
+     * @param puid  unique string from Google or Facebook
      * @param email unique email address
      * @return
      */

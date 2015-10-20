@@ -488,6 +488,7 @@ public class ConnectionServiceImpl implements ConnectionService {
         }
 
         deepCopy(facebookUserProfile, userProfile);
+        userProfile.setId(id);
 
         if (StringUtils.isEmpty(userProfile.getBirthday())) {
             int minAge = facebookUserProfile.getAgeRange().getMin();
@@ -497,7 +498,6 @@ public class ConnectionServiceImpl implements ConnectionService {
         userProfile.setProviderUserId(facebookUserProfile.getId());
         userProfile.setProviderId(ProviderEnum.FACEBOOK);
         userProfile.setReceiptUserId(userAccount.getReceiptUserId());
-        userProfile.setId(id);
         if (userAccount.isActive()) {
             userProfile.active();
         } else {
@@ -521,11 +521,11 @@ public class ConnectionServiceImpl implements ConnectionService {
         }
 
         deepCopy(googleUserProfile, userProfile);
+        userProfile.setId(id);
 
         userProfile.setProviderUserId(googleUserProfile.getId());
         userProfile.setProviderId(ProviderEnum.GOOGLE);
         userProfile.setReceiptUserId(userAccount.getReceiptUserId());
-        userProfile.setId(id);
         if (userAccount.isActive()) {
             userProfile.active();
         } else {
