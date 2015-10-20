@@ -102,7 +102,7 @@
                     </div>
 
                     <div class="icon">
-                        <form:label for="password" path="password" cssClass="cd-label">Password</form:label>
+                        <form:label for="password" path="password" cssClass="cd-label">Password:</form:label>
                         <form:password path="password" cssClass="password" required="required" cssErrorClass="password error" />
                     </div>
                 </fieldset>
