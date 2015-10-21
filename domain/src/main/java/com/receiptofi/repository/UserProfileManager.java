@@ -27,7 +27,7 @@ public interface UserProfileManager extends RepositoryManager<UserProfileEntity>
 
     UserProfileEntity findByProviderUserId(String puid);
 
-    UserProfileEntity findByProviderUserId(String puid, String email);
+    UserProfileEntity findByProviderUserIdOrEmail(String puid, String email);
 
     /**
      * Used for searching user based on name. Search could be based on First Name or Last Name.

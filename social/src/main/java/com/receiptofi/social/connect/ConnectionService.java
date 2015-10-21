@@ -39,4 +39,6 @@ public interface ConnectionService {
     UserProfileEntity copyToUserProfile(User facebookUserProfile, UserAccountEntity userAccount);
 
     UserProfileEntity copyToUserProfile(Person googleUserProfile, UserAccountEntity userAccount);
+
+    UserProfileEntity getUserProfileEntity(String accountEmail, String puid);
 }

@@ -7,6 +7,7 @@ import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
 import static org.springframework.data.mongodb.core.query.Update.update;
 
+import com.mongodb.DuplicateKeyException;
 import com.mongodb.WriteResult;
 
 import com.receiptofi.domain.BaseEntity;
@@ -67,7 +68,7 @@ public class UserAccountManagerImpl implements UserAccountManager {
             mongoTemplate.save(object, TABLE);
         } catch (DataIntegrityViolationException e) {
             LOG.error("Duplicate record entry for UserAuthenticationEntity={}", e.getLocalizedMessage(), e);
-            throw new RuntimeException(e.getMessage());
+            throw e;
         }
     }
 

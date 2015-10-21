@@ -10,9 +10,9 @@ import com.receiptofi.domain.UserPreferenceEntity;
 import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.domain.annotation.Mobile;
 import com.receiptofi.domain.site.ReceiptUser;
-import com.receiptofi.domain.types.BillingPlanEnum;
 import com.receiptofi.domain.types.AccountInactiveReasonEnum;
 import com.receiptofi.domain.types.BilledStatusEnum;
+import com.receiptofi.domain.types.BillingPlanEnum;
 import com.receiptofi.domain.types.ProviderEnum;
 import com.receiptofi.domain.types.RoleEnum;
 import com.receiptofi.domain.types.UserLevelEnum;
@@ -34,6 +34,7 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
@@ -81,7 +82,7 @@ public class AccountService {
     @Value ("${ExpenseTags.Default:HOME,BUSINESS}")
     private String[] expenseTags;
 
-    @Value("${ExpenseTagColors.Default:#1a9af9,#b492e8}")
+    @Value ("${ExpenseTagColors.Default:#1a9af9,#b492e8}")
     private String[] expenseTagColors;
 
     @Value ("${promotionalPeriod}")
@@ -222,7 +223,15 @@ public class AccountService {
     }
 
     public void save(UserAccountEntity userAccount) {
-        userAccountManager.save(userAccount);
+        try {
+            userAccountManager.save(userAccount);
+        } catch (DataIntegrityViolationException e) {
+            LOG.error("Duplicate record entry for UserAccountEntity={}", e.getLocalizedMessage(), e);
+            throw e;
+        } catch (Exception e) {
+            LOG.error("Saving UserAccount rid={} reason={}", userAccount.getReceiptUserId(), e.getLocalizedMessage(), e);
+            throw new RuntimeException("Error saving user account");
+        }
     }
 
     /**
@@ -232,6 +241,9 @@ public class AccountService {
         try {
             userProfileManager.save(userProfile);
             LOG.debug("Created UserProfileEntity={} id={}", userProfile.getReceiptUserId(), userProfile.getId());
+        } catch (DataIntegrityViolationException e) {
+            LOG.error("Duplicate record entry for UserProfileEntity={}", e.getLocalizedMessage(), e);
+            throw e;
         } catch (Exception e) {
             LOG.error("Saving UserProfile rid={} reason={}", userProfile.getReceiptUserId(), e.getLocalizedMessage(), e);
             throw new RuntimeException("Error saving user profile");
@@ -247,7 +259,7 @@ public class AccountService {
             userPreferenceManager.save(userPreferenceEntity);
             LOG.debug("Created UserPreferenceEntity={}", userPreferenceEntity.getReceiptUserId());
         } catch (Exception e) {
-            LOG.error("Saving UserPreferenceEntity rid={} reason={}", userProfile.getReceiptUserId(),  e.getLocalizedMessage(), e);
+            LOG.error("Saving UserPreferenceEntity rid={} reason={}", userProfile.getReceiptUserId(), e.getLocalizedMessage(), e);
             throw new RuntimeException("Error saving user preference");
         }
     }
@@ -536,5 +548,34 @@ public class AccountService {
 
     public List<UserAccountEntity> findAllTechnician() {
         return userAccountManager.findAllTechnician();
+    }
+
+    /**
+     * Should be called when from catch condition of DataIntegrityViolationException.
+     *
+     * @param userAccount
+     * @param e
+     */
+    public void deleteAllWhenAccountCreationFailedDueToDuplicate(UserAccountEntity userAccount, DataIntegrityViolationException e) {
+        Assert.notNull(e, "DataIntegrityViolationException is not set or not invoked properly");
+
+        List<ExpenseTagEntity> expenseTagEntities = expensesService.getAllExpenseTypes(userAccount.getReceiptUserId());
+        for (ExpenseTagEntity expenseTag : expenseTagEntities) {
+            expensesService.deleteHard(expenseTag, e);
+        }
+
+        userAuthenticationManager.deleteHard(userAccount.getUserAuthentication());
+        userAccountManager.deleteHard(userAccount);
+        billingService.deleteHardBillingWhenAccountCreationFails(userAccount.getReceiptUserId());
+
+        UserPreferenceEntity userPreference = userPreferenceManager.getByRid(userAccount.getReceiptUserId());
+        if (null != userPreference) {
+            userPreferenceManager.deleteHard(userPreference);
+        }
+
+        UserProfileEntity userProfile = userProfileManager.findByReceiptUserId(userAccount.getReceiptUserId());
+        if (null != userProfile) {
+            userProfileManager.deleteHard(userProfile);
+        }
     }
 }

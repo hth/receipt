@@ -66,6 +66,11 @@ public final class UserPreferenceManagerImpl implements UserPreferenceManager {
     }
 
     @Override
+    public UserPreferenceEntity getByRid(String rid) {
+        return mongoTemplate.findOne(query(where("RID").is(rid)), UserPreferenceEntity.class, TABLE);
+    }
+
+    @Override
     public void deleteHard(UserPreferenceEntity object) {
         mongoTemplate.remove(object, TABLE);
     }

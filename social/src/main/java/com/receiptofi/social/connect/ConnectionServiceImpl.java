@@ -30,6 +30,7 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -109,24 +110,34 @@ public class ConnectionServiceImpl implements ConnectionService {
             UserProfileEntity userProfile = userProfileManager.findByEmail(user.getEmail());
 
             if (userProfile == null) {
-                UserAccountEntity userAccount = createUserAccount(userId, userConn);
-                /** Social account, hence account is considered validated by default. */
-                userAccount.setAccountValidatedBeginDate();
-                userAccount.setAccountValidated(true);
-                accountService.createNewAccount(userAccount);
+                UserAccountEntity userAccount = null;
+                try {
+                    userAccount = createUserAccount(userId, userConn);
+                    /** Social account, hence account is considered validated by default. */
+                    userAccount.setAccountValidatedBeginDate();
+                    userAccount.setAccountValidated(true);
+                    accountService.createNewAccount(userAccount);
 
-                userProfile = copyToUserProfile(user, userAccount);
-                accountService.save(userProfile);
-                accountService.createPreferences(userProfile);
+                    userProfile = copyToUserProfile(user, userAccount);
+                    accountService.save(userProfile);
+                    accountService.createPreferences(userProfile);
 
-                /** Set the blank names in UserAccount from UserProfile. */
-                userAccount.setFirstName(userProfile.getFirstName());
-                userAccount.setLastName(userProfile.getLastName());
-                customUserDetailsService.updateUserIdWithEmailWhenPresent(userAccount, userProfile);
+                    /** Set the blank names in UserAccount from UserProfile. */
+                    userAccount.setFirstName(userProfile.getFirstName());
+                    userAccount.setLastName(userProfile.getLastName());
+                    customUserDetailsService.updateUserIdWithEmailWhenPresent(userAccount, userProfile);
+                } catch (DataIntegrityViolationException e) {
+                    if (userAccount != null && userProfile != null) {
+                        LOG.error("Account already exists rid={} email={} pid={}",
+                                userAccount.getReceiptUserId(), userProfile.getEmail(), userProfile.getProviderId());
+                        accountService.deleteAllWhenAccountCreationFailedDueToDuplicate(userAccount, e);
+                    }
+                    throw new UserAccountDuplicateException("Found existing user with similar login");
+                }
             } else if (!userProfile.isActive()) {
                 update(user.getEmail(), userConn);
             } else if (userProfile.getProviderId() != ProviderEnum.FACEBOOK) {
-                LOG.info("Account already exists rid={} email={} pid={}",
+                LOG.warn("Account already exists rid={} email={} pid={}",
                         userProfile.getReceiptUserId(), userProfile.getEmail(), userProfile.getProviderId());
                 throw new UserAccountDuplicateException("Found existing user with similar login");
             }
@@ -136,24 +147,34 @@ public class ConnectionServiceImpl implements ConnectionService {
             UserProfileEntity userProfile = userProfileManager.findByEmail(person.getAccountEmail());
 
             if (userProfile == null) {
-                UserAccountEntity userAccount = createUserAccount(userId, userConn);
-                /** Social account, hence account is considered validated by default. */
-                userAccount.setAccountValidatedBeginDate();
-                userAccount.setAccountValidated(true);
-                accountService.createNewAccount(userAccount);
+                UserAccountEntity userAccount = null;
+                try {
+                    userAccount = createUserAccount(userId, userConn);
+                    /** Social account, hence account is considered validated by default. */
+                    userAccount.setAccountValidatedBeginDate();
+                    userAccount.setAccountValidated(true);
+                    accountService.createNewAccount(userAccount);
 
-                userProfile = copyToUserProfile(person, userAccount);
-                accountService.save(userProfile);
-                accountService.createPreferences(userProfile);
+                    userProfile = copyToUserProfile(person, userAccount);
+                    accountService.save(userProfile);
+                    accountService.createPreferences(userProfile);
 
-                /** Set the blank names in UserAccount from UserProfile. */
-                userAccount.setFirstName(userProfile.getFirstName());
-                userAccount.setLastName(userProfile.getLastName());
-                customUserDetailsService.updateUserIdWithEmailWhenPresent(userAccount, userProfile);
+                    /** Set the blank names in UserAccount from UserProfile. */
+                    userAccount.setFirstName(userProfile.getFirstName());
+                    userAccount.setLastName(userProfile.getLastName());
+                    customUserDetailsService.updateUserIdWithEmailWhenPresent(userAccount, userProfile);
+                } catch (DataIntegrityViolationException e) {
+                    if (userAccount != null && userProfile != null) {
+                        LOG.error("Account already exists rid={} email={} pid={}",
+                                userAccount.getReceiptUserId(), userProfile.getEmail(), userProfile.getProviderId());
+                        accountService.deleteAllWhenAccountCreationFailedDueToDuplicate(userAccount, e);
+                    }
+                    throw new UserAccountDuplicateException("Found existing user with similar login");
+                }
             } else if (!userProfile.isActive()) {
                 update(person.getAccountEmail(), userConn);
             } else if (userProfile.getProviderId() != ProviderEnum.GOOGLE) {
-                LOG.info("Account already exists rid={} email={} pid={}",
+                LOG.warn("Account already exists rid={} email={} pid={}",
                         userProfile.getReceiptUserId(), userProfile.getEmail(), userProfile.getProviderId());
                 throw new UserAccountDuplicateException("Found existing user with similar login");
             }
@@ -260,7 +281,7 @@ public class ConnectionServiceImpl implements ConnectionService {
         ProviderEnum provider = ProviderEnum.valueOf(userConn.getKey().getProviderId().toUpperCase());
 
         if (DateUtil.getDuration(userProfile.getUpdated(), new Date()) > lastFetched) {
-            switch(provider) {
+            switch (provider) {
                 case FACEBOOK:
                     Facebook facebook = getFacebook(userAccountFromConnection);
                     User user = getFacebookUser(facebook);
@@ -289,7 +310,7 @@ public class ConnectionServiceImpl implements ConnectionService {
             LOG.info("Skipped social userProfile update as it was last fetched within seconds={}", lastFetched);
         }
 
-        switch(provider) {
+        switch (provider) {
             case FACEBOOK:
                 if (providerConfig.isPopulateFacebookFriendOn()) {
                     Facebook facebook = getFacebook(userAccountFromConnection);
@@ -534,12 +555,12 @@ public class ConnectionServiceImpl implements ConnectionService {
         return userProfile;
     }
 
-    private UserProfileEntity getUserProfileEntity(String accountEmail, String id) {
+    public UserProfileEntity getUserProfileEntity(String accountEmail, String puid) {
         UserProfileEntity userProfile;
         if (StringUtils.isBlank(accountEmail)) {
-            userProfile = userProfileManager.findByProviderUserId(id);
+            userProfile = userProfileManager.findByProviderUserId(puid);
         } else {
-            userProfile = userProfileManager.findByProviderUserId(id, accountEmail);
+            userProfile = userProfileManager.findByProviderUserIdOrEmail(puid, accountEmail);
         }
         return userProfile;
     }

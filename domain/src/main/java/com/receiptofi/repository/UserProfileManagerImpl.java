@@ -19,6 +19,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.WriteResultChecking;
@@ -64,10 +65,10 @@ public final class UserProfileManagerImpl implements UserProfileManager {
         try {
             mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
             if (object.getId() != null) {
-                if (ObjectId.isValid(object.getId())) {
+                if (!ObjectId.isValid(object.getId())) {
                     LOG.error("UserProfileId is not valid id={} rid={}", object.getId(), object.getReceiptUserId());
-                    object.setUpdated();
                 }
+                object.setUpdated();
             }
             mongoTemplate.save(object, TABLE);
         } catch (OptimisticLockingFailureException e) {
@@ -93,6 +94,9 @@ public final class UserProfileManagerImpl implements UserProfileManager {
             } else {
                 throw e;
             }
+        } catch (DataIntegrityViolationException e) {
+            LOG.error("Found existing userProfile rid={} email={}", object.getReceiptUserId(), object.getEmail());
+            throw e;
         }
     }
 
@@ -152,7 +156,7 @@ public final class UserProfileManagerImpl implements UserProfileManager {
      * @return
      */
     @Override
-    public UserProfileEntity findByProviderUserId(String puid, String email) {
+    public UserProfileEntity findByProviderUserIdOrEmail(String puid, String email) {
         Assert.hasLength(email, "Email should not be empty");
         return mongoTemplate.findOne(
                 query(new Criteria()

@@ -27,6 +27,7 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -251,8 +252,9 @@ public class CustomUserDetailsService implements UserDetailsService {
      * @param accessToken
      * @return
      */
+    @Mobile
     private UserAccountEntity connectFacebook(ProviderEnum provider, String accessToken) {
-        UserAccountEntity userAccount;
+        UserAccountEntity userAccount = null;
         UsersConnectionRepository userConnectionRepository;
         ConnectionRepository connectionRepository;
         List<Connection<?>> connections;
@@ -262,24 +264,41 @@ public class CustomUserDetailsService implements UserDetailsService {
         String facebookProfileId = user.getId();
         LOG.debug("facebook profile mail={}", facebook.userOperations().getUserProfile().getEmail());
 
-        userAccount = accountService.findByProviderUserId(facebookProfileId);
-        if (null == userAccount) {
-            userAccount = saveNewFacebookUserAccountEntity(
-                    accessToken,
-                    provider,
-                    facebook.userOperations().getUserProfile());
+        UserProfileEntity userProfile = connectionService.getUserProfileEntity(
+                facebook.userOperations().getUserProfile().getEmail(),
+                facebook.userOperations().getUserProfile().getId());
+        if (null == userProfile) {
+            try {
+                userAccount = saveNewFacebookUserAccountEntity(
+                        accessToken,
+                        provider,
+                        facebook.userOperations().getUserProfile());
 
-            /** Copy to user profile. */
-            UserProfileEntity userProfile = connectionService.copyToUserProfile(facebook.userOperations().getUserProfile(), userAccount);
-            accountService.save(userProfile);
-            accountService.createNewAccount(userAccount);
-            accountService.createPreferences(userProfile);
-            updateUserIdWithEmailWhenPresent(userAccount, userProfile);
+                /** Copy to user profile. */
+                userProfile = connectionService.copyToUserProfile(facebook.userOperations().getUserProfile(), userAccount);
+                accountService.save(userProfile);
+                accountService.createNewAccount(userAccount);
+                accountService.createPreferences(userProfile);
+                updateUserIdWithEmailWhenPresent(userAccount, userProfile);
+            } catch (DataIntegrityViolationException e) {
+                if (userAccount != null) {
+                    LOG.error("Account already exists rid={}", userAccount.getReceiptUserId());
+                    accountService.deleteAllWhenAccountCreationFailedDueToDuplicate(userAccount, e);
+                }
+                throw new UserAccountDuplicateException("Found existing user with similar login");
+            }
         } else {
-            LOG.info("access token different between old and new",
-                    StringUtils.difference(userAccount.getAccessToken(), accessToken));
-            userAccount.setAccessToken(accessToken);
-            accountService.saveUserAccount(userAccount);
+            userAccount = accountService.findByProviderUserId(facebookProfileId);
+            if (null == userAccount) {
+                LOG.warn("Account already exists rid={} email={} pid={}",
+                        userProfile.getReceiptUserId(), userProfile.getEmail(), userProfile.getProviderId());
+                throw new UserAccountDuplicateException("Found existing user with similar login");
+            } else {
+                LOG.info("access token different between old and new",
+                        StringUtils.difference(userAccount.getAccessToken(), accessToken));
+                userAccount.setAccessToken(accessToken);
+                accountService.saveUserAccount(userAccount);
+            }
         }
 
         userConnectionRepository = socialConfig.usersConnectionRepository();
@@ -302,13 +321,14 @@ public class CustomUserDetailsService implements UserDetailsService {
      * @return
      * @link https://developers.google.com/glass/develop/mirror/authorization
      */
+    @Mobile
     private UserAccountEntity connectGoogle(
             ProviderEnum provider,
             String authorizationCode,
             String accessToken,
             String refreshToken
     ) {
-        UserAccountEntity userAccount;
+        UserAccountEntity userAccount = null;
         UsersConnectionRepository userConnectionRepository;
         ConnectionRepository connectionRepository;
         List<Connection<?>> connections;
@@ -317,28 +337,46 @@ public class CustomUserDetailsService implements UserDetailsService {
         String googleProfileId = google.plusOperations().getGoogleProfile().getId();
         LOG.debug("google profile mail={}", google.plusOperations().getGoogleProfile().getAccountEmail());
 
-        userAccount = accountService.findByProviderUserId(googleProfileId);
-        if (null == userAccount) {
-            userAccount = saveNewGoogleUserAccountEntity(
-                    accessToken,
-                    refreshToken,
-                    authorizationCode,
-                    provider,
-                    google.plusOperations().getGoogleProfile());
+        UserProfileEntity userProfile = connectionService.getUserProfileEntity(
+                google.plusOperations().getGoogleProfile().getAccountEmail(),
+                google.plusOperations().getGoogleProfile().getId());
 
-            /** Copy to user profile. */
-            UserProfileEntity userProfile = connectionService.copyToUserProfile(google.plusOperations().getGoogleProfile(), userAccount);
-            accountService.save(userProfile);
-            accountService.createNewAccount(userAccount);
-            accountService.createPreferences(userProfile);
-            updateUserIdWithEmailWhenPresent(userAccount, userProfile);
+        if (null == userProfile) {
+            try {
+                userAccount = saveNewGoogleUserAccountEntity(
+                        accessToken,
+                        refreshToken,
+                        authorizationCode,
+                        provider,
+                        google.plusOperations().getGoogleProfile());
+
+                /** Copy to user profile. */
+                userProfile = connectionService.copyToUserProfile(google.plusOperations().getGoogleProfile(), userAccount);
+                accountService.save(userProfile);
+                accountService.createNewAccount(userAccount);
+                accountService.createPreferences(userProfile);
+                updateUserIdWithEmailWhenPresent(userAccount, userProfile);
+            } catch (DataIntegrityViolationException e) {
+                if (userAccount != null) {
+                    LOG.error("Account already exists rid={}", userAccount.getReceiptUserId());
+                    accountService.deleteAllWhenAccountCreationFailedDueToDuplicate(userAccount, e);
+                }
+                throw new UserAccountDuplicateException("Found existing user with similar login");
+            }
         } else {
-            LOG.info("access token different between old and new",
-                    StringUtils.difference(userAccount.getAccessToken(), accessToken));
-            userAccount.setAccessToken(accessToken);
-            userAccount.setAuthorizationCode(authorizationCode);
-            userAccount.setRefreshToken(refreshToken);
-            accountService.saveUserAccount(userAccount);
+            userAccount = accountService.findByProviderUserId(googleProfileId);
+            if (null == userAccount) {
+                LOG.warn("Account already exists rid={} email={} pid={}",
+                        userProfile.getReceiptUserId(), userProfile.getEmail(), userProfile.getProviderId());
+                throw new UserAccountDuplicateException("Found existing user with similar login");
+            } else {
+                LOG.info("access token different between old and new",
+                        StringUtils.difference(userAccount.getAccessToken(), accessToken));
+                userAccount.setAccessToken(accessToken);
+                userAccount.setAuthorizationCode(authorizationCode);
+                userAccount.setRefreshToken(refreshToken);
+                accountService.saveUserAccount(userAccount);
+            }
         }
 
         userConnectionRepository = socialConfig.usersConnectionRepository();
@@ -407,9 +445,9 @@ public class CustomUserDetailsService implements UserDetailsService {
             } else {
                 LOG.debug("found empty email, skipping update");
             }
-        } catch (DuplicateKeyException e) {
+        } catch (DataIntegrityViolationException e) {
             LOG.error(
-                    "account already exists userId={} with email={} reason={}",
+                    "Account already exists userId={} with email={} reason={}",
                     userAccount.getUserId(),
                     userProfile.getEmail(),
                     e.getLocalizedMessage(),
