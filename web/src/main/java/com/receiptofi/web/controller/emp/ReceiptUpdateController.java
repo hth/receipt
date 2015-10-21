@@ -26,6 +26,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -163,7 +164,7 @@ public class ReceiptUpdateController {
 
         receiptDocumentValidator.validate(receiptDocumentForm, result);
         if (result.hasErrors()) {
-            LOG.warn("validation error");
+            listBindingErrors(result);
             redirectAttrs.addFlashAttribute("result", result);
             redirectAttrs.addFlashAttribute("receiptDocumentForm", receiptDocumentForm);
             return "redirect:/emp" + NEXT_PAGE_UPDATE + "/" + receiptDocumentForm.getReceiptDocument().getId() + ".htm";
@@ -223,7 +224,7 @@ public class ReceiptUpdateController {
 
         mileageDocumentValidator.validate(receiptDocumentForm, result);
         if (result.hasErrors()) {
-            LOG.warn("validation error");
+            listBindingErrors(result);
             redirectAttrs.addFlashAttribute("result", result);
             redirectAttrs.addFlashAttribute("receiptDocumentForm", receiptDocumentForm);
             return "redirect:/emp" + NEXT_PAGE_UPDATE + "/" + receiptDocumentForm.getReceiptDocument().getId() + ".htm";
@@ -263,7 +264,7 @@ public class ReceiptUpdateController {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         documentRejectValidator.validate(receiptDocumentForm, result);
         if (result.hasErrors()) {
-            LOG.warn("validation error");
+            listBindingErrors(result);
             redirectAttrs.addFlashAttribute("result", result);
             redirectAttrs.addFlashAttribute("receiptDocumentForm", receiptDocumentForm);
             return "redirect:/emp" + NEXT_PAGE_UPDATE + "/" + receiptDocumentForm.getReceiptDocument().getId() + ".htm";
@@ -293,7 +294,7 @@ public class ReceiptUpdateController {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         documentRejectValidator.validate(receiptDocumentForm, result);
         if (result.hasErrors()) {
-            LOG.warn("validation error");
+            listBindingErrors(result);
             redirectAttrs.addFlashAttribute("result", result);
             redirectAttrs.addFlashAttribute("receiptDocumentForm", receiptDocumentForm);
             return "redirect:/emp" + NEXT_PAGE_UPDATE + "/" + receiptDocumentForm.getReceiptDocument().getId() + ".htm";
@@ -356,7 +357,7 @@ public class ReceiptUpdateController {
                 receiptDocumentForm.getReceiptDocument().getBizName().getBusinessName());
         receiptDocumentValidator.validate(receiptDocumentForm, result);
         if (result.hasErrors()) {
-            LOG.warn("validation error");
+            listBindingErrors(result);
             redirectAttrs.addFlashAttribute("result", result);
             redirectAttrs.addFlashAttribute("receiptDocumentForm", receiptDocumentForm);
             return "redirect:/emp" + NEXT_PAGE_RECHECK + "/" + receiptDocumentForm.getReceiptDocument().getId() + ".htm";
@@ -429,5 +430,18 @@ public class ReceiptUpdateController {
         } else {
             LOG.warn("Un-authorized access by user={} accessing receipt={}", receiptUser.getRid(), documentId);
         }
+    }
+
+    private void listBindingErrors(BindingResult bindingResult) {
+        List<FieldError> errors = bindingResult.getFieldErrors();
+        StringBuilder stringBuilder = new StringBuilder();
+        for (FieldError error : errors) {
+            stringBuilder
+                    .append(error.getObjectName())
+                    .append(" - ")
+                    .append(error.getDefaultMessage())
+                    .append(", ");
+        }
+        LOG.warn("validation error={}", stringBuilder.toString());
     }
 }
