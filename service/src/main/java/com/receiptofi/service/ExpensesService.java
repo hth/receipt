@@ -13,7 +13,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
 import java.util.List;
 
@@ -108,5 +110,10 @@ public class ExpensesService {
 
         LOG.info("Deleted expense tags from receipt={} and items={}", removedFromReceipts, removedFromItems);
         return expenseTagManager.softDeleteExpenseTag(expenseTypeId, expenseTagName, rid);
+    }
+
+    public void deleteHard(ExpenseTagEntity expenseTag, DataIntegrityViolationException e) {
+        Assert.notNull(e, "DataIntegrityViolationException is not set or not invoked properly");
+        expenseTagManager.deleteHard(expenseTag);
     }
 }

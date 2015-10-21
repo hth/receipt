@@ -98,7 +98,7 @@
                 </c:if>
                 <c:if test="${!empty param.error and param.error eq 'provider'}">
                     <div class="r-error" style="margin-left: 0; width: 100%">
-                        Login not successful. Reason: You seems to be already registered with one of the other social provider.
+                        Login not successful. Reason: You seems to be already registered with one of the other social provider or either signed up directly.
                     </div>
                 </c:if>
                 <c:if test="${!empty param.error and param.error eq 'multiple_users'}">

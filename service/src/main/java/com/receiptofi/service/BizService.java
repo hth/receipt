@@ -123,7 +123,7 @@ public class BizService {
                     bizNameManager.deleteHard(bizNameEntity);
                 }
 
-                throw new Exception("Address and Phone already registered with another Business Name: " +
+                throw new RuntimeException("Address and Phone already registered with another Business Name: " +
                         biz.getBizName().getBusinessName());
             }
         } else {
@@ -140,7 +140,8 @@ public class BizService {
                     BizStoreEntity biz = bizStoreManager.findOne(bizStoreEntity);
                     LOG.error("Address and Phone already registered with another Business Name={}, reason={}",
                             biz.getBizName().getBusinessName(), e.getLocalizedMessage(), e);
-                    throw new Exception("Address and Phone already registered with another Business Name: " +
+
+                    throw new RuntimeException("Address and Phone already registered with another Business Name: " +
                             biz.getBizName().getBusinessName());
                 }
             } else if (!bizStore.isValidatedUsingExternalAPI()) {
