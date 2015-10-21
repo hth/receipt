@@ -478,7 +478,7 @@ public class LandingController {
                         userProfile.isDeleted());
 
                 responseStatus = Boolean.TRUE;
-                responseMessage = StringUtils.abbreviate(invitedUserEmail, 26) + ", already registered. Thanks!";
+                responseMessage = "Friend request sent to " + StringUtils.abbreviate(invitedUserEmail, 26);
             } else {
                 LOG.info("{}, already registered but no longer with us. Appreciate! active={} deleted={}",
                         invitedUserEmail,
