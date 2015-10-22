@@ -2,6 +2,9 @@ package com.receiptofi.service;
 
 import static org.springframework.ui.freemarker.FreeMarkerTemplateUtils.processTemplateIntoString;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+
 import com.receiptofi.domain.EmailValidateEntity;
 import com.receiptofi.domain.ForgotRecoverEntity;
 import com.receiptofi.domain.FriendEntity;
@@ -11,12 +14,14 @@ import com.receiptofi.domain.UserAuthenticationEntity;
 import com.receiptofi.domain.UserPreferenceEntity;
 import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.domain.types.MailTypeEnum;
+import com.receiptofi.domain.types.NotificationTypeEnum;
 import com.receiptofi.repository.UserAccountManager;
 import com.receiptofi.repository.UserAuthenticationManager;
 import com.receiptofi.utils.HashText;
 import com.receiptofi.utils.RandomString;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.validator.routines.EmailValidator;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -69,6 +74,7 @@ public class MailService {
     private UserAccountManager userAccountManager;
     private UserProfilePreferenceService userProfilePreferenceService;
     private FriendService friendService;
+    private NotificationService notificationService;
 
     @Value ("${do.not.reply.email}")
     private String doNotReplyEmail;
@@ -116,7 +122,8 @@ public class MailService {
                        LoginService loginService,
                        UserAuthenticationManager userAuthenticationManager,
                        UserAccountManager userAccountManager,
-                       UserProfilePreferenceService userProfilePreferenceService
+                       UserProfilePreferenceService userProfilePreferenceService,
+                       NotificationService notificationService
     ) {
         this.accountService = accountService;
         this.inviteService = inviteService;
@@ -128,6 +135,7 @@ public class MailService {
         this.userAuthenticationManager = userAuthenticationManager;
         this.userAccountManager = userAccountManager;
         this.userProfilePreferenceService = userProfilePreferenceService;
+        this.notificationService = notificationService;
     }
 
     public boolean registrationCompleteEmail(String userId, String name) {
@@ -321,7 +329,7 @@ public class MailService {
      * @param invitedByRid     Existing users email address
      * @return
      */
-    public boolean sendInvitation(String invitedUserEmail, String invitedByRid) {
+    private boolean sendInvitation(String invitedUserEmail, String invitedByRid) {
         UserAccountEntity invitedBy = accountService.findByReceiptUserId(invitedByRid);
         if (invitedBy != null) {
             InviteEntity inviteEntity = null;
@@ -354,7 +362,7 @@ public class MailService {
      * @param invitedByRid Existing users email address
      * @return
      */
-    public boolean reSendInvitation(String emailId, String invitedByRid) {
+    private boolean reSendInvitation(String emailId, String invitedByRid) {
         UserAccountEntity invitedBy = accountService.findByReceiptUserId(invitedByRid);
         if (null != invitedBy) {
             FriendEntity friend = null;
@@ -509,5 +517,126 @@ public class MailService {
         userAccountManager.deleteHard(userAccount);
         userProfilePreferenceService.deleteHard(userProfile);
         inviteService.deleteHard(inviteEntity);
+    }
+
+    public String sendInvite(String invitedUserEmail, String rid, String uid) {
+        Boolean responseStatus = Boolean.FALSE;
+        String responseMessage;
+        boolean isValid = EmailValidator.getInstance().isValid(invitedUserEmail);
+        if (isValid && !invitedUserEmail.equals(uid)) {
+            UserProfileEntity userProfile = accountService.doesUserExists(invitedUserEmail);
+            /**
+             * Condition when the user does not exists then invite. Also allow re-invite if the user is not active and
+             * is not deleted. The second condition could result in a bug when administrator has made the user inactive.
+             * Best solution is to add automated re-invite using quartz/cron job. Make sure there is a count kept to
+             * limit the number of invite.
+             */
+            if (null == userProfile || !userProfile.isActive() && !userProfile.isDeleted()) {
+                responseStatus = invokeCorrectInvitation(invitedUserEmail, rid, userProfile);
+                if (responseStatus) {
+                    notificationService.addNotification(
+                            "Invitation sent to '" + invitedUserEmail + "'",
+                            NotificationTypeEnum.MESSAGE,
+                            rid);
+
+                    responseMessage = "Invitation Sent to: " + StringUtils.abbreviate(invitedUserEmail, 26);
+                } else {
+                    notificationService.addNotification(
+                            "Unsuccessful in sending invitation to '" + invitedUserEmail + "'",
+                            NotificationTypeEnum.MESSAGE,
+                            rid);
+
+                    responseMessage = "Unsuccessful in sending invitation: " + StringUtils.abbreviate(invitedUserEmail, 26);
+                }
+            } else if (userProfile.isActive() && !userProfile.isDeleted()) {
+                FriendEntity friend = friendService.getConnection(rid, userProfile.getReceiptUserId());
+                if (null != friend && !friend.isConnected()) {
+                    /** Auto connect if invited friend is connecting to invitee. */
+                    if (friend.getFriendUserId().equalsIgnoreCase(rid)) {
+                        friend.acceptConnection();
+                        friend.connect();
+                        friendService.save(friend);
+
+                        notificationService.addNotification(
+                                "New connection with " + userProfile.getName(),
+                                NotificationTypeEnum.MESSAGE,
+                                rid);
+
+                        notificationService.addNotification(
+                                "New connection with " + accountService.doesUserExists(uid).getName(),
+                                NotificationTypeEnum.MESSAGE,
+                                userProfile.getReceiptUserId());
+                    } else if (StringUtils.isNotBlank(friend.getUnfriendUser())) {
+                        friend.connect();
+                        friend.setUnfriendUser(null);
+                        friendService.save(friend);
+
+                        notificationService.addNotification(
+                                "Re-connection with " + userProfile.getName(),
+                                NotificationTypeEnum.MESSAGE,
+                                rid);
+
+                        notificationService.addNotification(
+                                "Re-connection with " + accountService.doesUserExists(uid).getName(),
+                                NotificationTypeEnum.MESSAGE,
+                                userProfile.getReceiptUserId());
+                    }
+                } else if (friend == null) {
+                    friend = new FriendEntity(rid, userProfile.getReceiptUserId());
+                    friendService.save(friend);
+
+                    notificationService.addNotification(
+                            "Sent friend request to " + userProfile.getName(),
+                            NotificationTypeEnum.MESSAGE,
+                            rid);
+
+                    notificationService.addNotification(
+                            "New friend request from " + accountService.doesUserExists(uid).getName(),
+                            NotificationTypeEnum.MESSAGE,
+                            userProfile.getReceiptUserId());
+                }
+
+                LOG.info("{}, already registered. Thanks! active={} deleted={}",
+                        invitedUserEmail,
+                        userProfile.isActive(),
+                        userProfile.isDeleted());
+
+                responseStatus = Boolean.TRUE;
+                responseMessage = "Friend request sent to " + StringUtils.abbreviate(invitedUserEmail, 26);
+            } else {
+                LOG.info("{}, already registered but no longer with us. Appreciate! active={} deleted={}",
+                        invitedUserEmail,
+                        userProfile.isActive(),
+                        userProfile.isDeleted());
+
+                // TODO can put a condition to check or if user is still in invitation mode or has completed registration
+                // TODO Based on either condition we can let user recover password or re-send invitation
+
+                //Have to send a positive message
+                responseStatus = Boolean.TRUE;
+                responseMessage = StringUtils.abbreviate(invitedUserEmail, 26) + ", already invited. Appreciate!";
+            }
+        } else {
+            if (!isValid) {
+                responseMessage = "Invalid Email: " + StringUtils.abbreviate(invitedUserEmail, 26);
+            } else {
+                responseMessage = "You are registered.";
+            }
+        }
+
+        JsonObject response = new JsonObject();
+        response.addProperty("status", responseStatus);
+        response.addProperty("message", responseMessage);
+        return new Gson().toJson(response);
+    }
+
+    private boolean invokeCorrectInvitation(String invitedUserEmail, String rid, UserProfileEntity userProfileEntity) {
+        boolean status;
+        if (null == userProfileEntity) {
+            status = sendInvitation(invitedUserEmail, rid);
+        } else {
+            status = reSendInvitation(invitedUserEmail, rid);
+        }
+        return status;
     }
 }

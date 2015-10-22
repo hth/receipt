@@ -3,21 +3,16 @@
  */
 package com.receiptofi.web.controller.access;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
-import com.receiptofi.domain.FriendEntity;
 import com.receiptofi.domain.MileageEntity;
 import com.receiptofi.domain.ReceiptEntity;
-import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.domain.shared.UploadDocumentImage;
 import com.receiptofi.domain.site.ReceiptUser;
 import com.receiptofi.domain.types.FileTypeEnum;
-import com.receiptofi.domain.types.NotificationTypeEnum;
 import com.receiptofi.domain.types.UserLevelEnum;
 import com.receiptofi.domain.value.ReceiptGrouped;
 import com.receiptofi.domain.value.ReceiptGroupedByBizLocation;
-import com.receiptofi.service.AccountService;
 import com.receiptofi.service.FriendService;
 import com.receiptofi.service.LandingService;
 import com.receiptofi.service.MailService;
@@ -35,8 +30,6 @@ import com.receiptofi.web.helper.ReceiptLandingView;
 import com.receiptofi.web.helper.json.Driven;
 
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.validator.routines.EmailValidator;
 
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -95,23 +88,10 @@ public class LandingController {
     @Value ("${LandingController.calendar.nextPage:/z/landingTabs}")
     private String calendarNextPage;
 
-    @Autowired
-    private LandingService landingService;
-
-    @Autowired
-    private MailService mailService;
-
-    @Autowired
-    private AccountService accountService;
-
-    @Autowired
-    private NotificationService notificationService;
-
-    @Autowired
-    private MileageService mileageService;
-
-    @Autowired
-    private FriendService friendService;
+    @Autowired private LandingService landingService;
+    @Autowired private NotificationService notificationService;
+    @Autowired private MileageService mileageService;
+    @Autowired private MailService mailService;
 
     private static final DateTimeFormatter DTF = DateTimeFormat.forPattern("MMM, yyyy");
 
@@ -395,125 +375,7 @@ public class LandingController {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         LOG.info("Invitation being sent to mail={}", invitedUserEmail);
-
-        Boolean responseStatus = Boolean.FALSE;
-        String responseMessage;
-        boolean isValid = EmailValidator.getInstance().isValid(invitedUserEmail);
-        if (isValid && !invitedUserEmail.equals(receiptUser.getUsername())) {
-            UserProfileEntity userProfile = accountService.doesUserExists(invitedUserEmail);
-            /**
-             * Condition when the user does not exists then invite. Also allow re-invite if the user is not active and
-             * is not deleted. The second condition could result in a bug when administrator has made the user inactive.
-             * Best solution is to add automated re-invite using quartz/cron job. Make sure there is a count kept to
-             * limit the number of invite.
-             */
-            if (null == userProfile || !userProfile.isActive() && !userProfile.isDeleted()) {
-                responseStatus = invokeCorrectInvitation(invitedUserEmail, receiptUser, userProfile);
-                if (responseStatus) {
-                    notificationService.addNotification(
-                            "Invitation sent to '" + invitedUserEmail + "'",
-                            NotificationTypeEnum.MESSAGE,
-                            receiptUser.getRid());
-
-                    responseMessage = "Invitation Sent to: " + StringUtils.abbreviate(invitedUserEmail, 26);
-                } else {
-                    notificationService.addNotification(
-                            "Unsuccessful in sending invitation to '" + invitedUserEmail + "'",
-                            NotificationTypeEnum.MESSAGE,
-                            receiptUser.getRid());
-
-                    responseMessage = "Unsuccessful in sending invitation: " + StringUtils.abbreviate(invitedUserEmail, 26);
-                }
-            } else if (userProfile.isActive() && !userProfile.isDeleted()) {
-                FriendEntity friend = friendService.getConnection(receiptUser.getRid(), userProfile.getReceiptUserId());
-                if (null != friend && !friend.isConnected()) {
-                    /** Auto connect if invited friend is connecting to invitee. */
-                    if (friend.getFriendUserId().equalsIgnoreCase(receiptUser.getRid())) {
-                        friend.acceptConnection();
-                        friend.connect();
-                        friendService.save(friend);
-
-                        notificationService.addNotification(
-                                "New connection with " + userProfile.getName(),
-                                NotificationTypeEnum.MESSAGE,
-                                receiptUser.getRid());
-
-                        notificationService.addNotification(
-                                "New connection with " + accountService.doesUserExists(receiptUser.getUsername()).getName(),
-                                NotificationTypeEnum.MESSAGE,
-                                userProfile.getReceiptUserId());
-                    } else if (StringUtils.isNotBlank(friend.getUnfriendUser())) {
-                        friend.connect();
-                        friend.setUnfriendUser(null);
-                        friendService.save(friend);
-
-                        notificationService.addNotification(
-                                "Re-connection with " + userProfile.getName(),
-                                NotificationTypeEnum.MESSAGE,
-                                receiptUser.getRid());
-
-                        notificationService.addNotification(
-                                "Re-connection with " + accountService.doesUserExists(receiptUser.getUsername()).getName(),
-                                NotificationTypeEnum.MESSAGE,
-                                userProfile.getReceiptUserId());
-                    }
-                } else if (friend == null) {
-                    friend = new FriendEntity(receiptUser.getRid(), userProfile.getReceiptUserId());
-                    friendService.save(friend);
-
-                    notificationService.addNotification(
-                            "Sent friend request to " + userProfile.getName(),
-                            NotificationTypeEnum.MESSAGE,
-                            receiptUser.getRid());
-
-                    notificationService.addNotification(
-                            "New friend request from " + accountService.doesUserExists(receiptUser.getUsername()).getName(),
-                            NotificationTypeEnum.MESSAGE,
-                            userProfile.getReceiptUserId());
-                }
-
-                LOG.info("{}, already registered. Thanks! active={} deleted={}",
-                        invitedUserEmail,
-                        userProfile.isActive(),
-                        userProfile.isDeleted());
-
-                responseStatus = Boolean.TRUE;
-                responseMessage = "Friend request sent to " + StringUtils.abbreviate(invitedUserEmail, 26);
-            } else {
-                LOG.info("{}, already registered but no longer with us. Appreciate! active={} deleted={}",
-                        invitedUserEmail,
-                        userProfile.isActive(),
-                        userProfile.isDeleted());
-
-                // TODO can put a condition to check or if user is still in invitation mode or has completed registration
-                // TODO Based on either condition we can let user recover password or re-send invitation
-
-                //Have to send a positive message
-                responseStatus = Boolean.TRUE;
-                responseMessage = StringUtils.abbreviate(invitedUserEmail, 26) + ", already invited. Appreciate!";
-            }
-        } else {
-            if (!isValid) {
-                responseMessage = "Invalid Email: " + StringUtils.abbreviate(invitedUserEmail, 26);
-            } else {
-                responseMessage = "You are registered.";
-            }
-        }
-
-        JsonObject response = new JsonObject();
-        response.addProperty("status", responseStatus);
-        response.addProperty("message", responseMessage);
-        return new Gson().toJson(response);
-    }
-
-    protected boolean invokeCorrectInvitation(String invitedUserEmail, ReceiptUser receiptUser, UserProfileEntity userProfileEntity) {
-        boolean status;
-        if (null == userProfileEntity) {
-            status = mailService.sendInvitation(invitedUserEmail, receiptUser.getRid());
-        } else {
-            status = mailService.reSendInvitation(invitedUserEmail, receiptUser.getRid());
-        }
-        return status;
+        return mailService.sendInvite(invitedUserEmail, receiptUser.getRid(), receiptUser.getUsername());
     }
 
     /**
