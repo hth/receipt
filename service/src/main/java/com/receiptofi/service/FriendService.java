@@ -9,6 +9,9 @@ import com.receiptofi.domain.json.JsonAwaitingAcceptance;
 import com.receiptofi.domain.json.JsonFriend;
 import com.receiptofi.repository.FriendManager;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,6 +36,8 @@ import java.util.concurrent.TimeUnit;
 })
 @Service
 public class FriendService {
+    private static final Logger LOG = LoggerFactory.getLogger(FriendService.class);
+
     private static final int SIZE_1000 = 1_000;
     private final Cache<String, Map<String, JsonFriend>> friends;
 
