@@ -99,6 +99,7 @@ public class ReceiptController {
         if (null == receipt) {
             LOG.warn("User={}, tried submitting an invalid receipt={}", receiptUser.getRid(), receiptId);
         } else {
+            //TODO match with ReceiptMobileService.getReceiptAndItemUpdates
             String fetchReceiptId = null == receipt.getReferReceiptId() ? receipt.getId() : receipt.getReferReceiptId();
             List<ItemEntity> items = itemService.getAllItemsOfReceipt(fetchReceiptId);
             List<ExpenseTagEntity> expenseTags = expensesService.getExpenseTags(receiptUser.getRid());
