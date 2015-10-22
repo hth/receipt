@@ -1,6 +1,11 @@
 package com.receiptofi.web.controller.webapi;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
+import com.receiptofi.domain.UserAccountEntity;
 import com.receiptofi.domain.types.MailTypeEnum;
+import com.receiptofi.service.AccountService;
 import com.receiptofi.service.MailService;
 import com.receiptofi.utils.ParseJsonStringToMap;
 import com.receiptofi.utils.ScrubbedInput;
@@ -42,6 +47,7 @@ public class MobileMailController {
     private String webApiAccessToken;
 
     @Autowired private MailService mailService;
+    @Autowired private AccountService accountService;
 
     @RequestMapping (
             value = "/accountSignup",
@@ -119,6 +125,49 @@ public class MobileMailController {
                 default:
                     LOG.error("Reached unsupported condition={}", mailType);
                     throw new UnsupportedOperationException("Reached unsupported condition " + mailType);
+            }
+        } else {
+            LOG.warn("not matching X-R-API-MOBILE key={}", apiAccessToken);
+            httpServletResponse.sendError(HttpServletResponse.SC_NOT_FOUND, "");
+        }
+    }
+
+    @RequestMapping (
+            value = "/invite",
+            method = RequestMethod.POST
+    )
+    public void invite(
+            @RequestBody
+            String recoverJson,
+
+            @RequestHeader ("X-R-API-MOBILE")
+            String apiAccessToken,
+
+            HttpServletResponse httpServletResponse
+    ) throws IOException {
+        LOG.debug("Invite initiated from mobile");
+
+        if (webApiAccessToken.equals(apiAccessToken)) {
+            Map<String, ScrubbedInput> map = new HashMap<>();
+            try {
+                map = ParseJsonStringToMap.jsonStringToMap(recoverJson);
+            } catch (IOException e) {
+                LOG.error("could not parse mailJson={} reason={}", recoverJson, e.getLocalizedMessage(), e);
+            }
+            Assert.notEmpty(map);
+            String inviteEmail = map.get("inviteEmail").getText();
+            String rid = map.get("rid").getText();
+            UserAccountEntity userAccount = accountService.findByReceiptUserId(rid);
+            String response = mailService.sendInvite(inviteEmail, rid, userAccount.getUserId());
+
+            JsonObject jsonObject = (JsonObject) new JsonParser().parse(response);
+
+            if (jsonObject.get("status").getAsBoolean()) {
+                LOG.info("Invite status={}", jsonObject.get("status").getAsString());
+                httpServletResponse.setStatus(HttpServletResponse.SC_OK);
+            } else {
+                LOG.warn("Invite failed sending 500 status={}", jsonObject.get("status").getAsString());
+                httpServletResponse.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Internal error occurred");
             }
         } else {
             LOG.warn("not matching X-R-API-MOBILE key={}", apiAccessToken);
