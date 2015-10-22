@@ -1,3 +1,9 @@
+#### Date Oct 21 2015 - Build 1401
+Update billing as it was causing issue when BS is NB and ABT is empty/null 
+
+    db.getCollection('BILLING_HISTORY').update({}, { $set: {BS: 'P'} }, {multi: true});
+    db.getCollection('BILLING_HISTORY').update({}, { $set: {ABT: 'P'} }, {multi: true});
+
 #### Date Sept 30 2015 - Build 1352
 Added split count and copied TOT and TAX to ST and SX    
 
