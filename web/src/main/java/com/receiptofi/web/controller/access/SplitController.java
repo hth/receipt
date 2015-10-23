@@ -144,28 +144,14 @@ public class SplitController {
             HttpServletResponse httpServletResponse
     ) {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-        boolean response;
-        switch (friendConnectionType) {
-            case A:
-                /** Accept connection. */
-                response = friendService.updateResponse(id.getText(), auth.getText(), true, receiptUser.getRid());
-                break;
-            case C:
-                /** Cancel invitation to friend by removing AUTH id. */
-                response = friendService.cancelInvite(id.getText(), auth.getText());
-                break;
-            case D:
-                /** Decline connection. */
-                response = friendService.updateResponse(id.getText(), auth.getText(), false, receiptUser.getRid());
-                break;
-            default:
-                LOG.error("FriendConnectionType={} not defined", friendConnectionType);
-                throw new UnsupportedOperationException("FriendConnectionType not supported " + friendConnectionType);
-        }
-
         JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty(LandingController.SUCCESS, response);
+        jsonObject.addProperty(
+                LandingController.SUCCESS,
+                friendService.updateFriendConnection(
+                        id.getText(),
+                        auth.getText(),
+                        friendConnectionType,
+                        receiptUser.getRid()));
         return jsonObject.toString();
     }
 

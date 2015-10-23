@@ -29,6 +29,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
 
 /**
+ * Invoke email from mobile. Cannot send email from mobile service hence need this controller to send email.
  * User: hitender
  * Date: 11/7/14 11:43 PM
  */

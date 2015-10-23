@@ -7,13 +7,17 @@ import com.receiptofi.domain.FriendEntity;
 import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.domain.json.JsonAwaitingAcceptance;
 import com.receiptofi.domain.json.JsonFriend;
+import com.receiptofi.domain.site.ReceiptUser;
+import com.receiptofi.domain.types.FriendConnectionTypeEnum;
 import com.receiptofi.repository.FriendManager;
+import com.receiptofi.utils.ScrubbedInput;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -148,8 +152,8 @@ public class FriendService {
         return friendManager.cancelInvite(id, authenticationKey);
     }
 
-    public boolean unfriend(String receiptUserId, String mail) {
-        UserProfileEntity userProfile = userProfilePreferenceService.findByEmail(mail);
+    public boolean unfriend(String receiptUserId, String unfriendUserId) {
+        UserProfileEntity userProfile = userProfilePreferenceService.findByEmail(unfriendUserId);
         return friendManager.unfriend(receiptUserId, userProfile.getReceiptUserId());
     }
 
@@ -172,5 +176,22 @@ public class FriendService {
 
         friends.put(rid, jsonFriends);
         return jsonFriends;
+    }
+
+    public boolean updateFriendConnection(String id, String auth, FriendConnectionTypeEnum friendConnectionType, String rid) {
+        switch (friendConnectionType) {
+            case A:
+                /** Accept connection. */
+                return updateResponse(id, auth, true, rid);
+            case C:
+                /** Cancel invitation to friend by removing AUTH id. */
+                return cancelInvite(id, auth);
+            case D:
+                /** Decline connection. */
+                return updateResponse(id, auth, false, rid);
+            default:
+                LOG.error("FriendConnectionType={} not defined", friendConnectionType);
+                throw new UnsupportedOperationException("FriendConnectionType not supported " + friendConnectionType);
+        }
     }
 }
