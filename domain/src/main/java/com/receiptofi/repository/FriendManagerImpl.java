@@ -145,8 +145,8 @@ public class FriendManagerImpl implements FriendManager {
     public boolean unfriend(String receiptUserId, String friendUserId) {
         WriteResult writeResult = this.mongoTemplate.updateFirst(
                 query(new Criteria().orOperator(
-                        Criteria.where("FID").is(receiptUserId).and("RID").is(friendUserId),
-                        Criteria.where("RID").is(receiptUserId).and("FID").is(friendUserId))),
+                        Criteria.where("FID").is(receiptUserId).and("RID").is(friendUserId).and("CON").is(true),
+                        Criteria.where("RID").is(receiptUserId).and("FID").is(friendUserId).and("CON").is(true))),
                 entityUpdate(update("CON", false).set("UNF", receiptUserId)),
                 FriendEntity.class
         );
