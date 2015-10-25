@@ -10,10 +10,13 @@ import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.domain.annotation.Mobile;
 import com.receiptofi.domain.types.ProviderEnum;
 
+import org.apache.commons.lang3.time.DateFormatUtils;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Date;
+import java.util.TimeZone;
 
 /**
  * User: hitender
@@ -45,7 +48,7 @@ public class JsonAwaitingAcceptance {
     private String authKey;
 
     @JsonProperty ("c")
-    private Date created;
+    private String created;
 
     @JsonProperty ("initials")
     private String initials;
@@ -76,7 +79,7 @@ public class JsonAwaitingAcceptance {
         if (null == friend) {
             LOG.error("Friend cannot be null");
         } else {
-            this.created = friend.getCreated();
+            this.created = DateFormatUtils.format(friend.getCreated(), JsonReceipt.ISO8601_FMT, TimeZone.getTimeZone("UTC"));
             this.id = friend.getId();
             this.authKey = friend.getAuthenticationKey();
         }
