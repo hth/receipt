@@ -323,7 +323,7 @@ public class LandingService {
 
             /** Added document uploaded successfully. */
             notificationService.addNotification(
-                    fileSystem.getOriginalFilename() + " upload successful. Please wait 24 hours for receipt to be processed.",
+                    fileSystem.getOriginalFilename() + " upload successful. Pending Receipt will be processed shortly.",
                     NotificationTypeEnum.DOCUMENT_UPLOADED,
                     documentEntity);
 
