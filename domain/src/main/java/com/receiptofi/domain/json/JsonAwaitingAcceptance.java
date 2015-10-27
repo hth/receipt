@@ -54,7 +54,7 @@ public class JsonAwaitingAcceptance {
     private String initials;
 
     @JsonProperty ("name")
-    private String name = "";
+    private String name;
 
     @JsonProperty ("em")
     private String email;
@@ -70,7 +70,7 @@ public class JsonAwaitingAcceptance {
             LOG.error("UserProfile cannot be null rid={} fid={}", friend.getReceiptUserId(), friend.getFriendUserId());
         } else {
             this.initials = userProfile.getInitials();
-            this.name = userProfile.getName();
+            this.name = userProfile.getName() == null ? "" : userProfile.getName();
             this.email = userProfile.getEmail();
             this.provider = userProfile.getProviderId() == null ? "" : userProfile.getProviderId().name();
             this.active = userProfile.isActive();
