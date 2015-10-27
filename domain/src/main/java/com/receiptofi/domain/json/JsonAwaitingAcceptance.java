@@ -8,14 +8,12 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.receiptofi.domain.FriendEntity;
 import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.domain.annotation.Mobile;
-import com.receiptofi.domain.types.ProviderEnum;
 
 import org.apache.commons.lang3.time.DateFormatUtils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Date;
 import java.util.TimeZone;
 
 /**
