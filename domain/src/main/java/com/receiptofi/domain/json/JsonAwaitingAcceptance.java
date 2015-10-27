@@ -93,7 +93,7 @@ public class JsonAwaitingAcceptance {
         return authKey;
     }
 
-    public Date getCreated() {
+    public String getCreated() {
         return created;
     }
 
