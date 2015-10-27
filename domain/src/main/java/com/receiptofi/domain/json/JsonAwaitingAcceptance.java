@@ -54,7 +54,7 @@ public class JsonAwaitingAcceptance {
     private String initials;
 
     @JsonProperty ("name")
-    private String name;
+    private String name = "";
 
     @JsonProperty ("em")
     private String email;
