@@ -8,14 +8,12 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.receiptofi.domain.FriendEntity;
 import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.domain.annotation.Mobile;
-import com.receiptofi.domain.types.ProviderEnum;
 
 import org.apache.commons.lang3.time.DateFormatUtils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Date;
 import java.util.TimeZone;
 
 /**
@@ -62,8 +60,8 @@ public class JsonAwaitingAcceptance {
     @JsonProperty ("pr")
     private String provider = "";
 
-    @JsonProperty ("a")
-    private boolean active;
+    @JsonProperty ("pa")
+    private boolean profileActive;
 
     public JsonAwaitingAcceptance(FriendEntity friend, UserProfileEntity userProfile) {
         if (null == userProfile) {
@@ -73,7 +71,7 @@ public class JsonAwaitingAcceptance {
             this.name = userProfile.getName() == null ? "" : userProfile.getName();
             this.email = userProfile.getEmail();
             this.provider = userProfile.getProviderId() == null ? "" : userProfile.getProviderId().name();
-            this.active = userProfile.isActive();
+            this.profileActive = userProfile.isActive();
         }
 
         if (null == friend) {
@@ -113,7 +111,7 @@ public class JsonAwaitingAcceptance {
         return provider;
     }
 
-    public boolean isActive() {
-        return active;
+    public boolean isProfileActive() {
+        return profileActive;
     }
 }

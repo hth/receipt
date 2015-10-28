@@ -11,10 +11,8 @@ import com.receiptofi.domain.types.BilledStatusEnum;
 
 import org.apache.commons.lang3.time.DateFormatUtils;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.TimeZone;
 import java.util.stream.Collectors;
 

@@ -8,7 +8,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.receiptofi.domain.BillingAccountEntity;
 import com.receiptofi.domain.BillingHistoryEntity;
 import com.receiptofi.domain.annotation.Mobile;
-import com.receiptofi.domain.types.BillingPlanEnum;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
