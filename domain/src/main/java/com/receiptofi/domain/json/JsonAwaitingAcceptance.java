@@ -60,8 +60,8 @@ public class JsonAwaitingAcceptance {
     @JsonProperty ("pr")
     private String provider = "";
 
-    @JsonProperty ("a")
-    private boolean active;
+    @JsonProperty ("pa")
+    private boolean profileActive;
 
     public JsonAwaitingAcceptance(FriendEntity friend, UserProfileEntity userProfile) {
         if (null == userProfile) {
@@ -71,7 +71,7 @@ public class JsonAwaitingAcceptance {
             this.name = userProfile.getName() == null ? "" : userProfile.getName();
             this.email = userProfile.getEmail();
             this.provider = userProfile.getProviderId() == null ? "" : userProfile.getProviderId().name();
-            this.active = userProfile.isActive();
+            this.profileActive = userProfile.isActive();
         }
 
         if (null == friend) {
@@ -111,7 +111,7 @@ public class JsonAwaitingAcceptance {
         return provider;
     }
 
-    public boolean isActive() {
-        return active;
+    public boolean isProfileActive() {
+        return profileActive;
     }
 }
