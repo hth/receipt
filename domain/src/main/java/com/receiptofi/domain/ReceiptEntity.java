@@ -154,6 +154,7 @@ public class ReceiptEntity extends BaseEntity {
     @Field ("SX")
     private Double splitTax;
 
+    /** Populated only in receipts that are split or shared. */
     @Field ("RF")
     private String referReceiptId;
 

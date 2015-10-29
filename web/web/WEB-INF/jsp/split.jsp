@@ -309,7 +309,7 @@
                         </label>
                         <label class="profile_label" style="!important; color: #606060; !important; font-weight: normal; !important; line-height: 30px; width: 150px;">
                             <c:choose>
-                                <c:when test="${profile.active}">
+                                <c:when test="${profile.profileActive}">
                                     <fmt:formatDate value="${profile.created}" pattern="MMM dd, yyyy" />
                                 </c:when>
                                 <c:otherwise>
