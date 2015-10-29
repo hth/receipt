@@ -266,7 +266,7 @@
                         </c:choose>
                         </label>
                         <label class="profile_label" style="!important; color: #606060; !important; font-weight: normal; !important; line-height: 30px; width: 150px;">
-                            <fmt:formatDate value="${profile.created}" pattern="MMM dd, yyyy" />
+                            <fmt:formatDate value="${profile.createdDate}" pattern="MMM dd, yyyy" />
                         </label>
                         <label class="profile_label" style="!important; color: #606060; !important; font-weight: normal; !important; line-height: 30px; width: 150px;">
                             <div class="cd-form" style="margin: 0; width: 100%;">
@@ -310,7 +310,7 @@
                         <label class="profile_label" style="!important; color: #606060; !important; font-weight: normal; !important; line-height: 30px; width: 150px;">
                             <c:choose>
                                 <c:when test="${profile.profileActive}">
-                                    <fmt:formatDate value="${profile.created}" pattern="MMM dd, yyyy" />
+                                    <fmt:formatDate value="${profile.createdDate}" pattern="MMM dd, yyyy" />
                                 </c:when>
                                 <c:otherwise>
                                     <c:choose>

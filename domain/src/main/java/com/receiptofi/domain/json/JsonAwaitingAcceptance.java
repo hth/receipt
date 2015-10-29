@@ -14,6 +14,9 @@ import org.apache.commons.lang3.time.DateFormatUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.springframework.data.annotation.Transient;
+
+import java.util.Date;
 import java.util.TimeZone;
 
 /**
@@ -63,6 +66,9 @@ public class JsonAwaitingAcceptance {
     @JsonProperty ("pa")
     private boolean profileActive;
 
+    @Transient
+    private Date createdDate;
+
     public JsonAwaitingAcceptance(FriendEntity friend, UserProfileEntity userProfile) {
         if (null == userProfile) {
             LOG.error("UserProfile cannot be null rid={} fid={}", friend.getReceiptUserId(), friend.getFriendUserId());
@@ -77,6 +83,7 @@ public class JsonAwaitingAcceptance {
         if (null == friend) {
             LOG.error("Friend cannot be null");
         } else {
+            this.createdDate = friend.getCreated();
             this.created = DateFormatUtils.format(friend.getCreated(), JsonReceipt.ISO8601_FMT, TimeZone.getTimeZone("UTC"));
             this.id = friend.getId();
             this.authKey = friend.getAuthenticationKey();
@@ -113,5 +120,9 @@ public class JsonAwaitingAcceptance {
 
     public boolean isProfileActive() {
         return profileActive;
+    }
+
+    public Date getCreatedDate() {
+        return createdDate;
     }
 }
