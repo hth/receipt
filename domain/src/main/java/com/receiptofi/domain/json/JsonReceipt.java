@@ -122,7 +122,7 @@ public class JsonReceipt {
         this.expenseReportInFS = receipt.getExpenseReportInFS();
         this.billedStatus = receipt.getBilledStatus().getName();
         this.expenseTagId = receipt.getExpenseTag() == null ? "" : receipt.getExpenseTag().getId();
-        this.referReceiptId = receipt.getReferReceiptId();
+        this.referReceiptId = receipt.getReferReceiptId() == null ? "" : receipt.getReferReceiptId();
         this.splitCount = receipt.getSplitCount();
         this.splitTotal = receipt.getSplitTotal();
         this.splitTax = receipt.getSplitTax();
