@@ -10,8 +10,6 @@ import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.NumberFormat;
 
-import junit.framework.Assert;
-
 import java.util.Date;
 
 import javax.validation.constraints.NotNull;
