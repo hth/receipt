@@ -7,7 +7,6 @@ import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
 import static org.springframework.data.mongodb.core.query.Update.update;
 
-import com.mongodb.DuplicateKeyException;
 import com.mongodb.WriteResult;
 
 import com.receiptofi.domain.BaseEntity;
