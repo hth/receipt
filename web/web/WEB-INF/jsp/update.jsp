@@ -559,8 +559,10 @@
                 </c:choose>
             </td>
             <td>&nbsp;</td>
-            <td style="vertical-align: top;">
+            <td style="vertical-align: top; text-align: center; font-size: 15px;">
                 <c:forEach items="${receiptDocumentForm.receiptDocument.fileSystemEntities}" var="arr" varStatus="status">
+                    <a href="${pageContext.request.contextPath}/access/filedownload/receiptimage/${arr.blobId}.htm" target="_blank">Full View of Receipt Image</a>
+
                     <div id="holder_${status.index}" style="height: 850px; border-color:#ff0000 #0000ff;">
                     </div>
                 </c:forEach>
