@@ -30,4 +30,11 @@ public interface NotificationManager extends RepositoryManager<NotificationEntit
      * @return
      */
     int setNotificationInactive(Date sinceDate);
+
+    /**
+     * Gets all the Notification that are marked as push notification.
+     *
+     * @return
+     */
+    List<NotificationEntity> getAllPushNotifications(Date sinceDate);
 }

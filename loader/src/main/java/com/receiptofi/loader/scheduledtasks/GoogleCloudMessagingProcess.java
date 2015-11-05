@@ -5,14 +5,17 @@ import com.mongodb.gridfs.GridFSDBFile;
 
 import com.receiptofi.domain.CronStatsEntity;
 import com.receiptofi.domain.DocumentEntity;
+import com.receiptofi.domain.NotificationEntity;
 import com.receiptofi.domain.ReceiptEntity;
 import com.receiptofi.domain.UserAccountEntity;
 import com.receiptofi.loader.service.GoogleCloudMessagingService;
+import com.receiptofi.repository.NotificationManager;
 import com.receiptofi.repository.ReceiptManager;
 import com.receiptofi.repository.StorageManager;
 import com.receiptofi.service.AccountService;
 import com.receiptofi.service.CronStatsService;
 import com.receiptofi.service.DocumentUpdateService;
+import com.receiptofi.utils.DateUtil;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,6 +49,7 @@ public class GoogleCloudMessagingProcess {
     private ReceiptManager receiptManager;
     private AccountService accountService;
     private CronStatsService cronStatsService;
+    private NotificationManager notificationManager;
 
     @Autowired
     public GoogleCloudMessagingProcess(
@@ -57,7 +61,8 @@ public class GoogleCloudMessagingProcess {
             StorageManager storageManager,
             ReceiptManager receiptManager,
             AccountService accountService,
-            CronStatsService cronStatsService
+            CronStatsService cronStatsService,
+            NotificationManager notificationManager
 
     ) {
         this.notifyUserSwitch = notifyUserSwitch;
@@ -67,16 +72,17 @@ public class GoogleCloudMessagingProcess {
         this.receiptManager = receiptManager;
         this.accountService = accountService;
         this.cronStatsService = cronStatsService;
+        this.notificationManager = notificationManager;
     }
 
     /**
      * Note: Cron string blow run every 5 minutes.
      */
-    @Scheduled (cron = "${loader.GoogleCloudMessagingProcess.notification}")
-    public void notification() {
+    @Scheduled (cron = "${loader.GoogleCloudMessagingProcess.documentNotification}")
+    public void documentNotification() {
         CronStatsEntity cronStats = new CronStatsEntity(
                 GoogleCloudMessagingProcess.class.getName(),
-                "GCM_Notify",
+                "GCM_Document_Notify",
                 notifyUserSwitch);
 
         if ("OFF".equalsIgnoreCase(notifyUserSwitch)) {
@@ -152,6 +158,40 @@ public class GoogleCloudMessagingProcess {
                 cronStatsService.save(cronStats);
 
                 LOG.info("Documents upload success={} skipped={} failure={} total={}", success, skipped, failure, documents.size());
+            }
+        }
+    }
+
+    @Scheduled (cron = "${loader.GoogleCloudMessagingProcess.notification}")
+    public void notification() {
+        CronStatsEntity cronStats = new CronStatsEntity(
+                GoogleCloudMessagingProcess.class.getName(),
+                "GCM_Notify",
+                notifyUserSwitch);
+
+        if ("OFF".equalsIgnoreCase(notifyUserSwitch)) {
+            LOG.info("feature is {}", notifyUserSwitch);
+            return;
+        }
+
+        int success = 0, failure = 0;
+        List<NotificationEntity> notificationEntities = notificationManager.getAllPushNotifications(DateUtil.getDateMinusMinutes(3));
+        for (NotificationEntity notification : notificationEntities) {
+            try {
+                googleCloudMessagingService.sendNotification(notification.getMessage(), notification.getReceiptUserId());
+                notification.markAsNotified();
+                notificationManager.save(notification);
+                success++;
+            } catch (Exception e) {
+                LOG.error("Notification failure notification={} reason={}", notification, e.getLocalizedMessage(), e);
+                failure++;
+            } finally {
+                cronStats.addStats("success", success);
+                cronStats.addStats("failure", failure);
+                cronStats.addStats("found", notificationEntities.size());
+                cronStatsService.save(cronStats);
+
+                LOG.info("Push Notification success={} failure={} total={}", success, failure, notificationEntities.size());
             }
         }
     }

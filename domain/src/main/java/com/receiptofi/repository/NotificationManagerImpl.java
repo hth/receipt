@@ -10,6 +10,7 @@ import static org.springframework.data.mongodb.core.query.Update.update;
 
 import com.receiptofi.domain.BaseEntity;
 import com.receiptofi.domain.NotificationEntity;
+import com.receiptofi.domain.types.NotificationTypeEnum;
 import com.receiptofi.domain.types.PaginationEnum;
 
 import org.slf4j.Logger;
@@ -79,11 +80,11 @@ public class NotificationManagerImpl implements NotificationManager {
     public long notificationCount(String rid) {
         return mongoTemplate.count(
                 query(where("RID").is(rid)
-                        .and("ND").is(true)
-                        .andOperator(
-                                isActive(),
-                                isNotDeleted()
-                        )
+                                .and("ND").is(true)
+                                .andOperator(
+                                        isActive(),
+                                        isNotDeleted()
+                                )
                 ),
                 NotificationEntity.class
         );
@@ -109,5 +110,19 @@ public class NotificationManagerImpl implements NotificationManager {
                 entityUpdate(update("A", false)),
                 NotificationEntity.class
         ).getN();
+    }
+
+    @Override
+    public List<NotificationEntity> getAllPushNotifications(Date sinceDate) {
+        return mongoTemplate.find(
+                query(where("ND").is(false)
+                        .and("NNE").is(NotificationTypeEnum.PUSH_NOTIFICATION)
+                        .and("C").lte(sinceDate)
+                        .andOperator(
+                                isActive(),
+                                isNotDeleted()
+                        )
+                ).with(new Sort(Sort.Direction.DESC, "C")),
+                NotificationEntity.class);
     }
 }

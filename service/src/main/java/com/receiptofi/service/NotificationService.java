@@ -73,6 +73,7 @@ public class NotificationService {
      * Show notification to the user.
      *
      * @param message
+     * @param notificationType either MESSAGE or PUSH_NOTIFICATION
      * @param rid
      */
     public void addNotification(
@@ -80,10 +81,15 @@ public class NotificationService {
             NotificationTypeEnum notificationType,
             String rid
     ) {
-        if (notificationType == NotificationTypeEnum.MESSAGE) {
-            addNotification(message, notificationType, null, rid, true);
-        } else {
-            throw new UnsupportedOperationException("Incorrect method call for Notification Type");
+        switch (notificationType) {
+            case PUSH_NOTIFICATION:
+                addNotification(message, notificationType, null, rid, false);
+                break;
+            case MESSAGE:
+                addNotification(message, notificationType, null, rid, true);
+                break;
+            default:
+                throw new UnsupportedOperationException("Incorrect method call for Notification Type");
         }
     }
 

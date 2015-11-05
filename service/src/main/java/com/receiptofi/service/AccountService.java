@@ -13,6 +13,7 @@ import com.receiptofi.domain.site.ReceiptUser;
 import com.receiptofi.domain.types.AccountInactiveReasonEnum;
 import com.receiptofi.domain.types.BilledStatusEnum;
 import com.receiptofi.domain.types.BillingPlanEnum;
+import com.receiptofi.domain.types.NotificationTypeEnum;
 import com.receiptofi.domain.types.ProviderEnum;
 import com.receiptofi.domain.types.RoleEnum;
 import com.receiptofi.domain.types.UserLevelEnum;
@@ -75,6 +76,7 @@ public class AccountService {
     private RegistrationService registrationService;
     private ExpensesService expensesService;
     private BillingService billingService;
+    private NotificationService notificationService;
 
     @Value ("${domain}")
     private String domain;
@@ -99,7 +101,8 @@ public class AccountService {
             EmailValidateService emailValidateService,
             RegistrationService registrationService,
             ExpensesService expensesService,
-            BillingService billingService
+            BillingService billingService,
+            NotificationService notificationService
     ) {
         this.userAccountManager = userAccountManager;
         this.userAuthenticationManager = userAuthenticationManager;
@@ -111,6 +114,7 @@ public class AccountService {
         this.registrationService = registrationService;
         this.expensesService = expensesService;
         this.billingService = billingService;
+        this.notificationService = notificationService;
     }
 
     public UserProfileEntity doesUserExists(String mail) {
@@ -200,6 +204,7 @@ public class AccountService {
 
         createPreferences(userProfile);
         addDefaultExpenseTag(rid);
+        addWelcomeNotification(userAccount);
         return userAccount;
     }
 
@@ -220,6 +225,7 @@ public class AccountService {
         billAccount(userAccount);
         save(userAccount);
         addDefaultExpenseTag(userAccount.getReceiptUserId());
+        addWelcomeNotification(userAccount);
     }
 
     public void save(UserAccountEntity userAccount) {
@@ -577,5 +583,12 @@ public class AccountService {
         if (null != userProfile) {
             userProfileManager.deleteHard(userProfile);
         }
+    }
+
+    private void addWelcomeNotification(UserAccountEntity userAccount) {
+        notificationService.addNotification(
+                userAccount.getDisplayName() + " welcome!",
+                NotificationTypeEnum.PUSH_NOTIFICATION,
+                userAccount.getReceiptUserId());
     }
 }

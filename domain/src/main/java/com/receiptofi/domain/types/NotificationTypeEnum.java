@@ -14,6 +14,7 @@ package com.receiptofi.domain.types;
 public enum NotificationTypeEnum {
 
     MESSAGE("MESSAGE", "Message"),
+    PUSH_NOTIFICATION("PUSH_NOTIFICATION", "Push Notification"),
     RECEIPT("RECEIPT", "Receipt"),
     RECEIPT_DELETED("RECEIPT_DELETED", "Receipt Deleted"),
     INVOICE("INVOICE", "Invoice"),
