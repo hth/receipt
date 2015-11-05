@@ -142,6 +142,9 @@ public class NotificationService {
                         ((DocumentEntity) supportedEntity).getReceiptUserId(),
                         true);
                 break;
+            case DOCUMENT_UPLOAD_FAILED:
+                LOG.error("Not supported Notification Type: {}", notificationType);
+                throw new UnsupportedOperationException("Not supported Notification Type: " + notificationType);
             default:
                 throw new UnsupportedOperationException("Incorrect method call for Notification Type");
         }

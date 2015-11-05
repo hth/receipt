@@ -20,6 +20,8 @@ public enum NotificationTypeEnum {
     MILEAGE("MILEAGE", "Mileage"),
     DOCUMENT("DOCUMENT", "Document"),
     EXPENSE_REPORT("EXPENSE_REPORT", "Expense Report"),
+    /** DOCUMENT_UPLOAD_FAILED is used in mobile to save local notification when document image fails to upload. */
+    DOCUMENT_UPLOAD_FAILED("DOCUMENT_UPLOAD_FAILED", "Document Upload Failed"),
     DOCUMENT_UPLOADED("DOCUMENT_UPLOADED", "Document Uploaded"),
     DOCUMENT_REJECTED("DOCUMENT_REJECTED", "Document Rejected"),
     DOCUMENT_DELETED("DOCUMENT_DELETED", "Document Deleted");
