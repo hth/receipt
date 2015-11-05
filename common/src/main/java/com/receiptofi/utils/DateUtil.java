@@ -13,7 +13,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.time.Duration;
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.temporal.TemporalAdjusters;
 import java.util.Date;
 
@@ -102,6 +105,12 @@ public final class DateUtil {
 
     public static long getDuration(Date begin, Date end) {
         return Duration.between(begin.toInstant(), end.toInstant()).getSeconds();
+    }
+
+    public static Date getDateMinusMinutes(int minutes) {
+        LocalDateTime localDateTime = LocalDateTime.now().minusMinutes(minutes);
+        Instant instant = localDateTime.atZone(ZoneId.systemDefault()).toInstant();
+        return Date.from(instant);
     }
 
     /**

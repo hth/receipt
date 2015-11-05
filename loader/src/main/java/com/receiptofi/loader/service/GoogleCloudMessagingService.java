@@ -51,6 +51,7 @@ public class GoogleCloudMessagingService {
     }
 
     public void sendNotification(String message, String rid) {
+        //TODO remove DeviceTypeEnum.A and invoke for both iOS and Android. Add switch to invoke right messaging.
         List<RegisteredDeviceEntity> registeredDevices = registeredDeviceManager.getDevicesForRid(rid, DeviceTypeEnum.A);
 
         for (RegisteredDeviceEntity registeredDevice : registeredDevices) {

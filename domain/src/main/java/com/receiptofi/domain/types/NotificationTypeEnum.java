@@ -14,12 +14,15 @@ package com.receiptofi.domain.types;
 public enum NotificationTypeEnum {
 
     MESSAGE("MESSAGE", "Message"),
+    PUSH_NOTIFICATION("PUSH_NOTIFICATION", "Push Notification"),
     RECEIPT("RECEIPT", "Receipt"),
     RECEIPT_DELETED("RECEIPT_DELETED", "Receipt Deleted"),
     INVOICE("INVOICE", "Invoice"),
     MILEAGE("MILEAGE", "Mileage"),
     DOCUMENT("DOCUMENT", "Document"),
     EXPENSE_REPORT("EXPENSE_REPORT", "Expense Report"),
+    /** DOCUMENT_UPLOAD_FAILED is used in mobile to save local notification when document image fails to upload. */
+    DOCUMENT_UPLOAD_FAILED("DOCUMENT_UPLOAD_FAILED", "Document Upload Failed"),
     DOCUMENT_UPLOADED("DOCUMENT_UPLOADED", "Document Uploaded"),
     DOCUMENT_REJECTED("DOCUMENT_REJECTED", "Document Rejected"),
     DOCUMENT_DELETED("DOCUMENT_DELETED", "Document Deleted");
