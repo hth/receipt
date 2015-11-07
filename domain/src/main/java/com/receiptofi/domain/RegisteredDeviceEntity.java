@@ -39,15 +39,20 @@ public class RegisteredDeviceEntity extends BaseEntity {
     @Field ("DT")
     private DeviceTypeEnum deviceType;
 
-    private RegisteredDeviceEntity(String receiptUserId, String deviceId, DeviceTypeEnum deviceType) {
+    /** Apple device token for sending push notification. */
+    @Field ("TK")
+    private String token;
+
+    private RegisteredDeviceEntity(String receiptUserId, String deviceId, DeviceTypeEnum deviceType, String token) {
         super();
         this.receiptUserId = receiptUserId;
         this.deviceId = deviceId;
         this.deviceType = deviceType;
+        this.token = token;
     }
 
-    public static RegisteredDeviceEntity newInstance(String userProfileId, String deviceId, DeviceTypeEnum deviceType) {
-        return new RegisteredDeviceEntity(userProfileId, deviceId, deviceType);
+    public static RegisteredDeviceEntity newInstance(String userProfileId, String deviceId, DeviceTypeEnum deviceType, String token) {
+        return new RegisteredDeviceEntity(userProfileId, deviceId, deviceType, token);
     }
 
     public String getReceiptUserId() {
@@ -62,15 +67,19 @@ public class RegisteredDeviceEntity extends BaseEntity {
         return deviceId;
     }
 
-    public void setDeviceId(String deviceId) {
-        this.deviceId = deviceId;
-    }
-
     public DeviceTypeEnum getDeviceType() {
         return deviceType;
     }
 
     public void setDeviceType(DeviceTypeEnum deviceType) {
         this.deviceType = deviceType;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }

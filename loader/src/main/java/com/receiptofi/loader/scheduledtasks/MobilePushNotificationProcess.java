@@ -8,7 +8,7 @@ import com.receiptofi.domain.DocumentEntity;
 import com.receiptofi.domain.NotificationEntity;
 import com.receiptofi.domain.ReceiptEntity;
 import com.receiptofi.domain.UserAccountEntity;
-import com.receiptofi.loader.service.GoogleCloudMessagingService;
+import com.receiptofi.loader.service.MobilePushNotificationService;
 import com.receiptofi.repository.NotificationManager;
 import com.receiptofi.repository.ReceiptManager;
 import com.receiptofi.repository.StorageManager;
@@ -39,11 +39,11 @@ import java.util.List;
         "PMD.LongVariable"
 })
 @Component
-public class GoogleCloudMessagingProcess {
-    private static final Logger LOG = LoggerFactory.getLogger(GoogleCloudMessagingProcess.class);
+public class MobilePushNotificationProcess {
+    private static final Logger LOG = LoggerFactory.getLogger(MobilePushNotificationProcess.class);
 
     private String notifyUserSwitch;
-    private GoogleCloudMessagingService googleCloudMessagingService;
+    private MobilePushNotificationService mobilePushNotificationService;
     private DocumentUpdateService documentUpdateService;
     private StorageManager storageManager;
     private ReceiptManager receiptManager;
@@ -52,11 +52,11 @@ public class GoogleCloudMessagingProcess {
     private NotificationManager notificationManager;
 
     @Autowired
-    public GoogleCloudMessagingProcess(
-            @Value ("${GoogleCloudMessagingProcess.notifyUserSwitch}")
+    public MobilePushNotificationProcess(
+            @Value ("${MobilePushNotificationProcess.notifyUserSwitch}")
             String notifyUserSwitch,
 
-            GoogleCloudMessagingService googleCloudMessagingService,
+            MobilePushNotificationService mobilePushNotificationService,
             DocumentUpdateService documentUpdateService,
             StorageManager storageManager,
             ReceiptManager receiptManager,
@@ -66,7 +66,7 @@ public class GoogleCloudMessagingProcess {
 
     ) {
         this.notifyUserSwitch = notifyUserSwitch;
-        this.googleCloudMessagingService = googleCloudMessagingService;
+        this.mobilePushNotificationService = mobilePushNotificationService;
         this.documentUpdateService = documentUpdateService;
         this.storageManager = storageManager;
         this.receiptManager = receiptManager;
@@ -78,10 +78,10 @@ public class GoogleCloudMessagingProcess {
     /**
      * Note: Cron string blow run every 5 minutes.
      */
-    @Scheduled (cron = "${loader.GoogleCloudMessagingProcess.documentNotification}")
+    @Scheduled (cron = "${loader.MobilePushNotificationProcess.documentNotification}")
     public void documentNotification() {
         CronStatsEntity cronStats = new CronStatsEntity(
-                GoogleCloudMessagingProcess.class.getName(),
+                MobilePushNotificationProcess.class.getName(),
                 "GCM_Document_Notify",
                 notifyUserSwitch);
 
@@ -108,7 +108,7 @@ public class GoogleCloudMessagingProcess {
                                 document.getDocumentStatus(), document.getId(), document.getReceiptUserId());
 
                         for (UserAccountEntity userAccount : userAccountEntities) {
-                            googleCloudMessagingService.sendNotification(
+                            mobilePushNotificationService.sendNotification(
                                     "New document received.",
                                     userAccount.getReceiptUserId());
                         }
@@ -116,7 +116,7 @@ public class GoogleCloudMessagingProcess {
                         break;
                     case PROCESSED:
                         receipt = receiptManager.findReceipt(document.getReferenceDocumentId(), document.getReceiptUserId());
-                        googleCloudMessagingService.sendNotification(
+                        mobilePushNotificationService.sendNotification(
                                 documentUpdateService.getNotificationMessageForReceiptProcess(receipt),
                                 document.getReceiptUserId());
                         success++;
@@ -126,7 +126,7 @@ public class GoogleCloudMessagingProcess {
                                 document.getDocumentStatus(), document.getId(), document.getReceiptUserId());
 
                         for (UserAccountEntity userAccount : userAccountEntities) {
-                            googleCloudMessagingService.sendNotification(
+                            mobilePushNotificationService.sendNotification(
                                     "Re-check document received.",
                                     userAccount.getReceiptUserId());
                         }
@@ -135,7 +135,7 @@ public class GoogleCloudMessagingProcess {
                     case REJECT:
                         GridFSDBFile gridFSDBFile = storageManager.get(document.getFileSystemEntities().iterator().next().getBlobId());
                         DBObject dbObject = gridFSDBFile.getMetaData();
-                        googleCloudMessagingService.sendNotification(
+                        mobilePushNotificationService.sendNotification(
                                 documentUpdateService.getNotificationMessageForReceiptReject(dbObject, document.getDocumentRejectReason()),
                                 document.getReceiptUserId());
                         success++;
@@ -162,10 +162,10 @@ public class GoogleCloudMessagingProcess {
         }
     }
 
-    @Scheduled (cron = "${loader.GoogleCloudMessagingProcess.notification}")
+    @Scheduled (cron = "${loader.MobilePushNotificationProcess.notification}")
     public void notification() {
         CronStatsEntity cronStats = new CronStatsEntity(
-                GoogleCloudMessagingProcess.class.getName(),
+                MobilePushNotificationProcess.class.getName(),
                 "GCM_Notify",
                 notifyUserSwitch);
 
@@ -178,7 +178,7 @@ public class GoogleCloudMessagingProcess {
         List<NotificationEntity> notificationEntities = notificationManager.getAllPushNotifications(DateUtil.getDateMinusMinutes(3));
         for (NotificationEntity notification : notificationEntities) {
             try {
-                googleCloudMessagingService.sendNotification(notification.getMessage(), notification.getReceiptUserId());
+                mobilePushNotificationService.sendNotification(notification.getMessage(), notification.getReceiptUserId());
                 notification.markAsNotified();
                 notificationManager.save(notification);
                 success++;
