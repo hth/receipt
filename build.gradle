@@ -11,6 +11,7 @@ ext {
     lib = file("$webInf/lib")
     classes = file("$webInf/classes")
     conf = file("$classes/conf")
+    cert = file("$classes/cert")
     images = file("$classes/images")
 
     warDir = file("$buildDir/explodedWar/$env")
@@ -18,6 +19,7 @@ ext {
     warLibDir = file("$warDir$lib")
     warClassesDir = file("$warDir$classes")
     warConfDir = file("$warDir$conf")
+    warCertDir = file("$warDir$cert")
     warWebInfClassesImagesDir = file("$warDir$images")
 
     activeProfilewarDir = file("$buildDir/activeProfile/$env")
@@ -32,7 +34,7 @@ ext {
     passFileTest = file(passwordTestFileLocation)
     passFileProd = file(passwordProdFileLocation)
 
-    apnsCertLocal = file('web/resources/conf/Certificates.p12')
+    apnsCertLocal = file('web/resources/cert/Certificates.p12')
     apnsCertTest = file(apnsCertificateTestFileLocation)
     apnsCertProd = file(apnsCertificateProdFileLocation)
 
@@ -572,34 +574,60 @@ task prepWar(dependsOn: [unzip, copyJars, individualCssMinify, individualJsMinif
         from 'web/resources/conf/redis.properties'
 
         if (env == 'prod') {
-            if (passFileProd.exists() && apnsCertProd.exists()) {
+            if (passFileProd.exists()) {
                 from passwordProdFileLocation
-                from apnsCertificateProdFileLocation
             } else {
-                throw new Exception("Required pass or cert file does not exists: $passFileProd.canonicalPath")
+                throw new Exception("Required pass file does not exists: $passFileProd.canonicalPath")
             }
         }
 
         if (env == 'test') {
-            if (passFileTest.exists() && apnsCertTest.exists()) {
+            if (passFileTest.exists()) {
                 from passwordTestFileLocation
-                from apnsCertificateTestFileLocation
             } else {
-                throw new Exception("Required pass or cert file does not exists: $passFileTest.canonicalPath")
+                throw new Exception("Required pass file does not exists: $passFileTest.canonicalPath")
             }
         }
 
         if (env == 'dev') {
             println "Development environment, getting local pass file $passFileLocal.canonicalPath"
-            if (passFileLocal.exists() && apnsCertLocal.exists()) {
+            if (passFileLocal.exists()) {
                 from 'web/resources/conf/pass.properties'
-                from 'web/resources/conf/Certificates.p12'
             } else {
-                throw new Exception("Required pass or cert file does not exists: $passFileLocal.canonicalPath")
+                throw new Exception("Required pass file does not exists: $passFileLocal.canonicalPath")
             }
         }
 
         into warConfDir
+    }
+
+    copy {
+        if (env == 'prod') {
+            if (apnsCertProd.exists()) {
+                from apnsCertificateProdFileLocation
+            } else {
+                throw new Exception("Required cert file does not exists: $passFileProd.canonicalPath")
+            }
+        }
+
+        if (env == 'test') {
+            if (apnsCertTest.exists()) {
+                from apnsCertificateTestFileLocation
+            } else {
+                throw new Exception("Required cert file does not exists: $passFileTest.canonicalPath")
+            }
+        }
+
+        if (env == 'dev') {
+            println "Development environment, getting local pass file $passFileLocal.canonicalPath"
+            if (apnsCertLocal.exists()) {
+                from 'web/resources/conf/Certificates.p12'
+            } else {
+                throw new Exception("Required cert file does not exists: $passFileLocal.canonicalPath")
+            }
+        }
+
+        into warCertDir
     }
 
     copy {
