@@ -33,10 +33,12 @@
               <element id="file-copy" path="$PROJECT_DIR$/web/resources/conf/pass.properties" />
               <element id="file-copy" path="$PROJECT_DIR$/web/resources/conf/redis.properties" />
               <element id="file-copy" path="$PROJECT_DIR$/web/environment/dev/dev.properties" />
-              <element id="file-copy" path="$PROJECT_DIR$/web/resources/conf/Certificates.p12" />
             </element>
             <element id="module-output" name="web" />
             <element id="module-output" name="loader" />
+            <element id="directory" name="cert">
+              <element id="file-copy" path="$PROJECT_DIR$/web/resources/cert/Certificates.p12" />
+            </element>
           </element>
           <element id="directory" name="lib">
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/javax.validation/validation-api/1.1.0.Final/8613ae82954779d518631e05daa73a6a954817d5/validation-api-1.1.0.Final.jar" />
