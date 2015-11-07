@@ -43,7 +43,7 @@ public interface RegisteredDeviceManager extends RepositoryManager<RegisteredDev
      */
     @SuppressWarnings ("unused")
     @Mobile
-    RegisteredDeviceEntity registerDevice(String rid, String did, DeviceTypeEnum deviceType);
+    RegisteredDeviceEntity registerDevice(String rid, String did, DeviceTypeEnum deviceType, String token);
 
     /**
      * Get registered devices for RID.
@@ -51,5 +51,5 @@ public interface RegisteredDeviceManager extends RepositoryManager<RegisteredDev
      * @param rid
      * @return
      */
-    List<RegisteredDeviceEntity> getDevicesForRid(String rid, DeviceTypeEnum deviceType);
+    List<RegisteredDeviceEntity> getDevicesForRid(String rid);
 }

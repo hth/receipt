@@ -8,6 +8,8 @@ import com.receiptofi.domain.BaseEntity;
 import com.receiptofi.domain.RegisteredDeviceEntity;
 import com.receiptofi.domain.types.DeviceTypeEnum;
 
+import org.apache.commons.lang3.StringUtils;
+
 import org.joda.time.DateTime;
 
 import org.slf4j.Logger;
@@ -64,13 +66,20 @@ public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
     }
 
     @Override
-    public RegisteredDeviceEntity registerDevice(String rid, String did, DeviceTypeEnum deviceType) {
-        RegisteredDeviceEntity registeredDevice = RegisteredDeviceEntity.newInstance(rid, did, deviceType);
-        if (null == find(rid, did)) {
-            save(registeredDevice);
+    public RegisteredDeviceEntity registerDevice(String rid, String did, DeviceTypeEnum deviceType, String token) {
+        RegisteredDeviceEntity newRegisteredDevice = RegisteredDeviceEntity.newInstance(rid, did, deviceType, token);
+        RegisteredDeviceEntity registeredDevice = find(rid, did);
+
+        if (null == registeredDevice) {
+            save(newRegisteredDevice);
             LOG.info("registered device for rid={} did={}", rid, did);
+        } else if (StringUtils.isNotBlank(token)) {
+            registeredDevice.setDeviceType(deviceType);
+            registeredDevice.setToken(token);
+            save(newRegisteredDevice);
+            LOG.info("updated registered device for rid={} did={} token={}", rid, did, token);
         }
-        return registeredDevice;
+        return newRegisteredDevice;
     }
 
     /**
@@ -96,12 +105,9 @@ public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
      * @param rid
      * @return
      */
-    public List<RegisteredDeviceEntity> getDevicesForRid(String rid, DeviceTypeEnum deviceType) {
+    public List<RegisteredDeviceEntity> getDevicesForRid(String rid) {
         return mongoTemplate.find(
-                query(where("RID").is(rid).orOperator(
-                        where("DT").is(deviceType),
-                        where("DT").exists(false)
-                )),
+                query(where("RID").is(rid).and("DT").exists(false)),
                 RegisteredDeviceEntity.class,
                 TABLE);
     }

@@ -33,6 +33,7 @@
               <element id="file-copy" path="$PROJECT_DIR$/web/resources/conf/pass.properties" />
               <element id="file-copy" path="$PROJECT_DIR$/web/resources/conf/redis.properties" />
               <element id="file-copy" path="$PROJECT_DIR$/web/environment/dev/dev.properties" />
+              <element id="file-copy" path="$PROJECT_DIR$/web/resources/conf/Certificates.p12" />
             </element>
             <element id="module-output" name="web" />
             <element id="module-output" name="loader" />
@@ -3365,6 +3366,7 @@
     <dictionary name="hitender">
       <words>
         <w>IntelliJ</w>
+        <w>apns</w>
         <w>beanvalidation</w>
         <w>cdnjs</w>
         <w>classie</w>
