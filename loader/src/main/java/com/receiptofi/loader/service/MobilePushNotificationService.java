@@ -75,6 +75,7 @@ public class MobilePushNotificationService {
         List<RegisteredDeviceEntity> registeredDevices = registeredDeviceManager.getDevicesForRid(rid);
 
         for (RegisteredDeviceEntity registeredDevice : registeredDevices) {
+            LOG.info("Invoked notification for rid={} deviceType={}", registeredDevice.getReceiptUserId(), registeredDevice.getDeviceType());
             switch (registeredDevice.getDeviceType()) {
                 case A:
                     invokeGoogleNotification(message, rid, registeredDevice) ;
@@ -139,6 +140,7 @@ public class MobilePushNotificationService {
     }
 
     private void invokeAppleNotification(String message, String rid, RegisteredDeviceEntity registeredDevice) {
+        LOG.info("Invoked apple notification");
         String payload = APNS.newPayload().alertBody("Can't be simpler than this!").build();
         apnsService.push(registeredDevice.getToken(), payload);
     }
