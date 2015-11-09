@@ -76,7 +76,7 @@ public class MobilePushNotificationProcess {
     }
 
     /**
-     * Note: Cron string blow run every 5 minutes.
+     * Note: Cron string below runs every 5 minutes.
      */
     @Scheduled (cron = "${loader.MobilePushNotificationProcess.documentNotification}")
     public void documentNotification() {
@@ -162,6 +162,9 @@ public class MobilePushNotificationProcess {
         }
     }
 
+    /**
+     * Note: Cron string below runs every 1 minute.
+     */
     @Scheduled (cron = "${loader.MobilePushNotificationProcess.notification}")
     public void notification() {
         CronStatsEntity cronStats = new CronStatsEntity(
@@ -175,7 +178,7 @@ public class MobilePushNotificationProcess {
         }
 
         int success = 0, failure = 0;
-        List<NotificationEntity> notificationEntities = notificationManager.getAllPushNotifications(DateUtil.getDateMinusMinutes(3));
+        List<NotificationEntity> notificationEntities = notificationManager.getAllPushNotifications(DateUtil.getDateMinusMinutes(1));
         for (NotificationEntity notification : notificationEntities) {
             try {
                 mobilePushNotificationService.sendNotification(notification.getMessage(), notification.getReceiptUserId());
