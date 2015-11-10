@@ -90,7 +90,7 @@ public class MobilePushNotificationProcess {
             return;
         }
 
-        List<UserAccountEntity> userAccountEntities = new ArrayList<>();
+        List<UserAccountEntity> userAccountEntities;
         List<DocumentEntity> documents = documentUpdateService.getDocumentsForNotification(5);
         if (!documents.isEmpty()) {
             userAccountEntities = accountService.findAllTechnician();

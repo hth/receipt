@@ -1,3 +1,35 @@
+I use PKCS#12 (a .p12 file). To create it I do:
+
+Export the private key from the Keychain and name it `aps_private-key.p12`.
+
+Convert the key with the following command 
+
+    openssl pkcs12 -nocerts -out aps_private-key.pem -in aps_private-key.p12
+    
+make sure to enter a PEM pass phrase of at least 4 characters.
+
+Download the certificate for your app from https://developer.apple.com/account/ios/identifiers/bundle/bundleList.action. 
+The downloaded file should be called something like `aps_development.cer`.
+
+Convert the certificate with the following command 
+
+    openssl x509 -in aps_development.cer -inform der -out aps_development.pem
+
+Generate the credentials using 
+
+    openssl pkcs12 -export -in aps_development.pem -out aps_dev_credentials.p12 -inkey aps_private-key.pem.
+
+And I'm ready to use the credentials generated in step 5 (aps_dev_credentials.p12).
+
+final InputStream certificate = Thread.currentThread().getContextClassLoader()
+        .getResourceAsStream("aps_dev_credentials.p12");
+final char[] passwd = {'1','2','3','4'};
+final ApnsService apnsService = com.notnoop.apns.APNS.newService()
+        .withCert(certificate, new String(passwd))
+        .withSandboxDestination().build();
+apnsService.testConnection();
+
+
 ### Adding password to APNS Certificate
 
 Things taken for granted in this post:
