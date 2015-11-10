@@ -71,25 +71,30 @@ public class MobilePushNotificationService {
         }
     }
 
-    public void sendNotification(String message, String rid) {
+    public boolean sendNotification(String message, String rid) {
         List<RegisteredDeviceEntity> registeredDevices = registeredDeviceManager.getDevicesForRid(rid);
 
+        boolean sentNotification = false;
         for (RegisteredDeviceEntity registeredDevice : registeredDevices) {
             LOG.info("Invoked notification for rid={} deviceType={}", registeredDevice.getReceiptUserId(), registeredDevice.getDeviceType());
             switch (registeredDevice.getDeviceType()) {
                 case A:
-                    invokeGoogleNotification(message, rid, registeredDevice) ;
+                    sentNotification = invokeGoogleNotification(message, rid, registeredDevice);
                     break;
                 case I:
-                    invokeAppleNotification(message, rid, registeredDevice) ;
+                    sentNotification = invokeAppleNotification(message, rid, registeredDevice);
                     break;
                 default:
-
+                    LOG.error("DeviceTypeEnum={} not defined", registeredDevice.getDeviceType());
+                    throw new UnsupportedOperationException("DeviceTypeEnum not supported " + registeredDevice.getDeviceType());
             }
         }
+
+        return sentNotification;
     }
 
-    private void invokeGoogleNotification(String message, String rid, RegisteredDeviceEntity registeredDevice) {
+    private boolean invokeGoogleNotification(String message, String rid, RegisteredDeviceEntity registeredDevice) {
+        boolean sentNotification = false;
         try {
             // Prepare JSON containing the GCM message content. What to send and where to send.
             JSONObject jGcmData = new JSONObject();
@@ -127,6 +132,8 @@ public class MobilePushNotificationService {
                     if (jo.has("message_id")) {
                         LOG.info("Success sending notification messageId={} deviceId={} rid={}",
                                 jo.getInt("message_id"), registeredDevice.getDeviceId(), rid);
+
+                        sentNotification = true;
                     }
                 } catch (JSONException e) {
                     LOG.error("Failed parsing JSON string={}", resp);
@@ -137,11 +144,15 @@ public class MobilePushNotificationService {
         } catch (IOException e) {
             LOG.error("Unable to send GCM message. Reason={}", e.getLocalizedMessage(), e);
         }
+
+        return sentNotification;
     }
 
-    private void invokeAppleNotification(String message, String rid, RegisteredDeviceEntity registeredDevice) {
+    private boolean invokeAppleNotification(String message, String rid, RegisteredDeviceEntity registeredDevice) {
         LOG.info("Invoked apple notification");
         String payload = APNS.newPayload().alertBody("Can't be simpler than this!").build();
         apnsService.push(registeredDevice.getToken(), payload);
+
+        return true;
     }
 }
