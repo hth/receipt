@@ -95,6 +95,9 @@ public class MobilePushNotificationProcess {
         if (!documents.isEmpty()) {
             userAccountEntities = accountService.findAllTechnician();
             LOG.info("Notification to be send, count={}", documents.size());
+        } else {
+            LOG.debug("Nothing to be sent, count={}", documents.size());
+            return;
         }
 
         ReceiptEntity receipt;
@@ -181,8 +184,13 @@ public class MobilePushNotificationProcess {
             return;
         }
 
-        int success = 0, failure = 0;
         List<NotificationEntity> notificationEntities = notificationManager.getAllPushNotifications(DateUtil.getDateMinusMinutes(1));
+        if (notificationEntities.isEmpty()) {
+            LOG.debug("Nothing to be sent, count={}", notificationEntities.size());
+            return;
+        }
+
+        int success = 0, failure = 0;
         try {
             for (NotificationEntity notification : notificationEntities) {
                 try {
