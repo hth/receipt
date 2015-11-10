@@ -15,7 +15,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import com.notnoop.apns.APNS;
+import com.notnoop.apns.ApnsDelegate;
+import com.notnoop.apns.ApnsNotification;
 import com.notnoop.apns.ApnsService;
+import com.notnoop.apns.DeliveryError;
 import org.json.JSONException;
 import org.json.simple.JSONObject;
 
@@ -62,11 +65,52 @@ public class MobilePushNotificationService {
             this.apnsService = APNS.newService()
                     .withCert(this.getClass().getClassLoader().getResourceAsStream("/cert/Certificate.p12"), apnsCertificatePassword)
                     .withSandboxDestination()
+                    .withDelegate(new ApnsDelegate() {
+                        public void notificationsResent(int resendCount) {
+                            LOG.info("resendCount={}", resendCount);
+                        }
+
+                        public void messageSent(ApnsNotification message, boolean resent) {
+                            LOG.info("Message sent.  Payload={}" + message);
+                        }
+
+                        public void messageSendFailed(ApnsNotification message, Throwable e) {
+                            LOG.info("Message send failed.  Message={} token={} {}", message.toString(), message.getDeviceToken().toString(), message.getPayload().toString());
+                        }
+
+                        public void connectionClosed(DeliveryError e, int messageIdentifier) {
+                            LOG.info("Connection closed.  Message={}" + e.toString());
+                        }
+
+                        public void cacheLengthExceeded(int newCacheLength) {
+                            LOG.info("{}", newCacheLength);
+                        }
+                    })
                     .build();
         } else {
             this.apnsService = APNS.newService()
                     .withCert(this.getClass().getClassLoader().getResourceAsStream("/cert/aps_dev_credentials.p12"), apnsCertificatePassword)
-                    .withProductionDestination()
+                    .withProductionDestination().withDelegate(new ApnsDelegate() {
+                        public void notificationsResent(int resendCount) {
+                            LOG.info("resendCount={}", resendCount);
+                        }
+
+                        public void messageSent(ApnsNotification message, boolean resent) {
+                            LOG.info("Message sent.  Payload={}" + message);
+                        }
+
+                        public void messageSendFailed(ApnsNotification message, Throwable e) {
+                            LOG.info("Message send failed.  Message={} token={} {}", message.toString(), message.getDeviceToken().toString(), message.getPayload().toString());
+                        }
+
+                        public void connectionClosed(DeliveryError e, int messageIdentifier) {
+                            LOG.info("Connection closed.  Message={}" + e.toString());
+                        }
+
+                        public void cacheLengthExceeded(int newCacheLength) {
+                            LOG.info("{}", newCacheLength);
+                        }
+                    })
                     .build();
         }
     }
