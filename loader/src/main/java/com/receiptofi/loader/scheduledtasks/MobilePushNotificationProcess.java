@@ -164,7 +164,6 @@ public class MobilePushNotificationProcess {
 
             LOG.info("Documents upload success={} skipped={} failure={} total={}", success, skipped, failure, documents.size());
         }
-
     }
 
     /**
