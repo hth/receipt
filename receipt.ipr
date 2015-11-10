@@ -37,7 +37,7 @@
             <element id="module-output" name="web" />
             <element id="module-output" name="loader" />
             <element id="directory" name="cert">
-              <element id="file-copy" path="$PROJECT_DIR$/web/resources/cert/Certificates.p12" />
+              <element id="file-copy" path="$PROJECT_DIR$/web/resources/cert/aps_dev_credentials.p12" />
             </element>
           </element>
           <element id="directory" name="lib">
