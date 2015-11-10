@@ -107,7 +107,7 @@ public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
      */
     public List<RegisteredDeviceEntity> getDevicesForRid(String rid) {
         return mongoTemplate.find(
-                query(where("RID").is(rid).and("DT").exists(false)),
+                query(where("RID").is(rid)),
                 RegisteredDeviceEntity.class,
                 TABLE);
     }

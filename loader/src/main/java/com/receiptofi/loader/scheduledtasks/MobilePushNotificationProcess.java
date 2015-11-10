@@ -99,66 +99,70 @@ public class MobilePushNotificationProcess {
 
         ReceiptEntity receipt;
         int success = 0, failure = 0, skipped = 0;
-        for (DocumentEntity document : documents) {
-            try {
-                documentUpdateService.markNotified(document.getId());
-                switch (document.getDocumentStatus()) {
-                    case PENDING:
-                        LOG.info("Notifying technicians on documents={} documentId={} rid={}",
-                                document.getDocumentStatus(), document.getId(), document.getReceiptUserId());
+        try {
+            for (DocumentEntity document : documents) {
+                try {
+                    documentUpdateService.markNotified(document.getId());
+                    switch (document.getDocumentStatus()) {
+                        case PENDING:
+                            LOG.info("Notifying technicians on documents={} documentId={} rid={}",
+                                    document.getDocumentStatus(), document.getId(), document.getReceiptUserId());
 
-                        for (UserAccountEntity userAccount : userAccountEntities) {
+                            for (UserAccountEntity userAccount : userAccountEntities) {
+                                mobilePushNotificationService.sendNotification(
+                                        "New document received.",
+                                        userAccount.getReceiptUserId());
+                            }
+                            success++;
+                            break;
+                        case PROCESSED:
+                            receipt = receiptManager.findReceipt(document.getReferenceDocumentId(), document.getReceiptUserId());
                             mobilePushNotificationService.sendNotification(
-                                    "New document received.",
-                                    userAccount.getReceiptUserId());
-                        }
-                        success++;
-                        break;
-                    case PROCESSED:
-                        receipt = receiptManager.findReceipt(document.getReferenceDocumentId(), document.getReceiptUserId());
-                        mobilePushNotificationService.sendNotification(
-                                documentUpdateService.getNotificationMessageForReceiptProcess(receipt),
-                                document.getReceiptUserId());
-                        success++;
-                        break;
-                    case REPROCESS:
-                        LOG.info("Notifying technicians on documents={} documentId={} rid={}",
-                                document.getDocumentStatus(), document.getId(), document.getReceiptUserId());
+                                    documentUpdateService.getNotificationMessageForReceiptProcess(receipt),
+                                    document.getReceiptUserId());
+                            success++;
+                            break;
+                        case REPROCESS:
+                            LOG.info("Notifying technicians on documents={} documentId={} rid={}",
+                                    document.getDocumentStatus(), document.getId(), document.getReceiptUserId());
 
-                        for (UserAccountEntity userAccount : userAccountEntities) {
+                            for (UserAccountEntity userAccount : userAccountEntities) {
+                                mobilePushNotificationService.sendNotification(
+                                        "Re-check document received.",
+                                        userAccount.getReceiptUserId());
+                            }
+                            success++;
+                            break;
+                        case REJECT:
+                            GridFSDBFile gridFSDBFile = storageManager.get(document.getFileSystemEntities().iterator().next().getBlobId());
+                            DBObject dbObject = gridFSDBFile.getMetaData();
                             mobilePushNotificationService.sendNotification(
-                                    "Re-check document received.",
-                                    userAccount.getReceiptUserId());
-                        }
-                        success++;
-                        break;
-                    case REJECT:
-                        GridFSDBFile gridFSDBFile = storageManager.get(document.getFileSystemEntities().iterator().next().getBlobId());
-                        DBObject dbObject = gridFSDBFile.getMetaData();
-                        mobilePushNotificationService.sendNotification(
-                                documentUpdateService.getNotificationMessageForReceiptReject(dbObject, document.getDocumentRejectReason()),
-                                document.getReceiptUserId());
-                        success++;
-                        break;
-                    case DUPLICATE:
-                        skipped++;
-                        break;
-                    default:
-                        LOG.error("DocumentStatus not defined {}", document.getDocumentStatus());
-                        throw new UnsupportedOperationException("DocumentStatus not defined " + document.getDocumentStatus());
+                                    documentUpdateService.getNotificationMessageForReceiptReject(dbObject, document.getDocumentRejectReason()),
+                                    document.getReceiptUserId());
+                            success++;
+                            break;
+                        case DUPLICATE:
+                            skipped++;
+                            break;
+                        default:
+                            LOG.error("DocumentStatus not defined {}", document.getDocumentStatus());
+                            throw new UnsupportedOperationException("DocumentStatus not defined " + document.getDocumentStatus());
+                    }
+                } catch (Exception e) {
+                    LOG.error("Notification failure document={} reason={}", document, e.getLocalizedMessage(), e);
+                    failure++;
                 }
-            } catch (Exception e) {
-                LOG.error("Notification failure document={} reason={}", document, e.getLocalizedMessage(), e);
-                failure++;
-            } finally {
-                cronStats.addStats("success", success);
-                cronStats.addStats("skipped", skipped);
-                cronStats.addStats("failure", failure);
-                cronStats.addStats("found", documents.size());
-                cronStatsService.save(cronStats);
-
-                LOG.info("Documents upload success={} skipped={} failure={} total={}", success, skipped, failure, documents.size());
             }
+        } catch (Exception e) {
+            LOG.error("Error sending document notification reason={}", e.getLocalizedMessage(), e);
+        } finally {
+            cronStats.addStats("success", success);
+            cronStats.addStats("skipped", skipped);
+            cronStats.addStats("failure", failure);
+            cronStats.addStats("found", documents.size());
+            cronStatsService.save(cronStats);
+
+            LOG.info("Documents upload success={} skipped={} failure={} total={}", success, skipped, failure, documents.size());
         }
     }
 
@@ -179,23 +183,33 @@ public class MobilePushNotificationProcess {
 
         int success = 0, failure = 0;
         List<NotificationEntity> notificationEntities = notificationManager.getAllPushNotifications(DateUtil.getDateMinusMinutes(1));
-        for (NotificationEntity notification : notificationEntities) {
-            try {
-                mobilePushNotificationService.sendNotification(notification.getMessage(), notification.getReceiptUserId());
-                notification.markAsNotified();
-                notificationManager.save(notification);
-                success++;
-            } catch (Exception e) {
-                LOG.error("Notification failure notification={} reason={}", notification, e.getLocalizedMessage(), e);
-                failure++;
-            } finally {
-                cronStats.addStats("success", success);
-                cronStats.addStats("failure", failure);
-                cronStats.addStats("found", notificationEntities.size());
-                cronStatsService.save(cronStats);
+        try {
+            for (NotificationEntity notification : notificationEntities) {
+                try {
+                    if (mobilePushNotificationService.sendNotification(
+                            notification.getMessage(),
+                            notification.getReceiptUserId())) {
 
-                LOG.info("Push Notification success={} failure={} total={}", success, failure, notificationEntities.size());
+                        notification.markAsNotified();
+                        notificationManager.save(notification);
+                        success++;
+                    } else {
+                        failure++;
+                    }
+                } catch (Exception e) {
+                    LOG.error("Notification failure notification={} reason={}", notification, e.getLocalizedMessage(), e);
+                    failure++;
+                }
             }
+        } catch (Exception e) {
+            LOG.error("Error sending notification reason={}", e.getLocalizedMessage(), e);
+        } finally {
+            cronStats.addStats("success", success);
+            cronStats.addStats("failure", failure);
+            cronStats.addStats("found", notificationEntities.size());
+            cronStatsService.save(cronStats);
+
+            LOG.info("Push Notification success={} failure={} total={}", success, failure, notificationEntities.size());
         }
     }
 }

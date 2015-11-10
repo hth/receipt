@@ -123,94 +123,98 @@ public class FilesUploadToS3 {
         }
 
         int success = 0, failure = 0, skipped = 0;
-        for (DocumentEntity document : documents) {
-            try {
-                Collection<FileSystemEntity> fileSystemEntities = document.getFileSystemEntities();
-                for (FileSystemEntity fileSystem : fileSystemEntities) {
-                    if (0L == fileSystem.getScaledFileLength()) {
+        try {
+            for (DocumentEntity document : documents) {
+                try {
+                    Collection<FileSystemEntity> fileSystemEntities = document.getFileSystemEntities();
+                    for (FileSystemEntity fileSystem : fileSystemEntities) {
+                        if (0L == fileSystem.getScaledFileLength()) {
 
-                        GridFSDBFile fs = fileDBService.getFile(fileSystem.getBlobId());
-                        if (null != fs) {
-                            File scaledImage = FileUtil.createTempFile(
-                                    FilenameUtils.getBaseName(fileSystem.getOriginalFilename()),
-                                    FileUtil.getFileExtension(fileSystem.getOriginalFilename()));
+                            GridFSDBFile fs = fileDBService.getFile(fileSystem.getBlobId());
+                            if (null != fs) {
+                                File scaledImage = FileUtil.createTempFile(
+                                        FilenameUtils.getBaseName(fileSystem.getOriginalFilename()),
+                                        FileUtil.getFileExtension(fileSystem.getOriginalFilename()));
 
-                            imageSplitService.decreaseResolution(fs.getInputStream(), new FileOutputStream(scaledImage));
-                            LOG.info("fileSystemID={} filename={} newFilename={} originalLength={} newLength={}",
-                                    fileSystem.getId(),
-                                    fileSystem.getOriginalFilename(),
-                                    fileSystem.getBlobId(),
-                                    FileUtil.fileSizeInMB(fileSystem.getFileLength()),
-                                    FileUtil.fileSizeInMB(scaledImage.length()));
+                                imageSplitService.decreaseResolution(fs.getInputStream(), new FileOutputStream(scaledImage));
+                                LOG.info("fileSystemID={} filename={} newFilename={} originalLength={} newLength={}",
+                                        fileSystem.getId(),
+                                        fileSystem.getOriginalFilename(),
+                                        fileSystem.getBlobId(),
+                                        FileUtil.fileSizeInMB(fileSystem.getFileLength()),
+                                        FileUtil.fileSizeInMB(scaledImage.length()));
 
-                            File fileForS3;
-                            if (fileSystem.getImageOrientation() == FileSystemEntity.DEFAULT_ORIENTATION_ANGLE) {
-                                fileForS3 = scaledImage;
+                                File fileForS3;
+                                if (fileSystem.getImageOrientation() == FileSystemEntity.DEFAULT_ORIENTATION_ANGLE) {
+                                    fileForS3 = scaledImage;
+                                } else {
+                                    fileForS3 = rotate(fileSystem.getImageOrientation(), scaledImage);
+                                }
+                                updateFileSystemWithScaledImageForS3(fileSystem, fileForS3);
+                                PutObjectRequest putObject = getPutObjectRequest(document, fileSystem, fileForS3);
+                                amazonS3Service.getS3client().putObject(putObject);
+                                success++;
                             } else {
-                                fileForS3 = rotate(fileSystem.getImageOrientation(), scaledImage);
+                                //TODO keep an eye on this issue. Should not happen.
+                                skipped++;
+                                LOG.error("Skipped file={} as it does not exists in GridFSDBFile", fileSystem.getBlobId());
                             }
-                            updateFileSystemWithScaledImageForS3(fileSystem, fileForS3);
-                            PutObjectRequest putObject = getPutObjectRequest(document, fileSystem, fileForS3);
-                            amazonS3Service.getS3client().putObject(putObject);
-                            success++;
                         } else {
-                            //TODO keep an eye on this issue. Should not happen.
                             skipped++;
-                            LOG.error("Skipped file={} as it does not exists in GridFSDBFile", fileSystem.getBlobId());
+                            LOG.info("Skipped file={} as it exists in S3 SNL={}",
+                                    fileSystem.getBlobId(),
+                                    fileSystem.getScaledFileLength());
                         }
-                    } else {
-                        skipped++;
-                        LOG.info("Skipped file={} as it exists in S3 SNL={}",
-                                fileSystem.getBlobId(),
-                                fileSystem.getScaledFileLength());
+                    }
+                    documentUpdateService.cloudUploadSuccessful(document.getId());
+                    fileDBService.deleteHard(document.getFileSystemEntities());
+                } catch (AmazonServiceException e) {
+                    LOG.error("Amazon S3 rejected request with an error response for some reason " +
+                                    "document:{} " +
+                                    "Error Message:{} " +
+                                    "HTTP Status Code:{} " +
+                                    "AWS Error Code:{} " +
+                                    "Error Type:{} " +
+                                    "Request ID:{}",
+                            document,
+                            e.getLocalizedMessage(),
+                            e.getStatusCode(),
+                            e.getErrorCode(),
+                            e.getErrorType(),
+                            e.getRequestId(),
+                            e);
+
+                    failure++;
+                } catch (AmazonClientException e) {
+                    LOG.error("Client encountered an internal error while trying to communicate with S3 " +
+                                    "document:{} " +
+                                    "reason={}",
+                            document,
+                            e.getLocalizedMessage(),
+                            e);
+
+                    failure++;
+                } catch (Exception e) {
+                    LOG.error("Image upload failure document={} reason={}", document, e.getLocalizedMessage(), e);
+
+                    failure++;
+
+                    for (FileSystemEntity fileSystem : document.getFileSystemEntities()) {
+                        amazonS3Service.getS3client().deleteObject(bucketName, folderName + "/" + fileSystem.getKey());
+                        LOG.warn("On failure removed files from cloud filename={}", fileSystem.getKey());
                     }
                 }
-                documentUpdateService.cloudUploadSuccessful(document.getId());
-                fileDBService.deleteHard(document.getFileSystemEntities());
-            } catch (AmazonServiceException e) {
-                LOG.error("Amazon S3 rejected request with an error response for some reason " +
-                                "document:{} " +
-                                "Error Message:{} " +
-                                "HTTP Status Code:{} " +
-                                "AWS Error Code:{} " +
-                                "Error Type:{} " +
-                                "Request ID:{}",
-                        document,
-                        e.getLocalizedMessage(),
-                        e.getStatusCode(),
-                        e.getErrorCode(),
-                        e.getErrorType(),
-                        e.getRequestId(),
-                        e);
-
-                failure++;
-            } catch (AmazonClientException e) {
-                LOG.error("Client encountered an internal error while trying to communicate with S3 " +
-                                "document:{} " +
-                                "reason={}",
-                        document,
-                        e.getLocalizedMessage(),
-                        e);
-
-                failure++;
-            } catch (Exception e) {
-                LOG.error("Image upload failure document={} reason={}", document, e.getLocalizedMessage(), e);
-
-                failure++;
-
-                for (FileSystemEntity fileSystem : document.getFileSystemEntities()) {
-                    amazonS3Service.getS3client().deleteObject(bucketName, folderName + "/" + fileSystem.getKey());
-                    LOG.warn("On failure removed files from cloud filename={}", fileSystem.getKey());
-                }
-            } finally {
-                cronStats.addStats("success", success);
-                cronStats.addStats("skipped", skipped);
-                cronStats.addStats("failure", failure);
-                cronStats.addStats("found", documents.size());
-                cronStatsService.save(cronStats);
-
-                LOG.info("Documents upload success={} skipped={} failure={} total={}", success, skipped, failure, documents.size());
             }
+        } catch (Exception e) {
+            LOG.error("Error uploading document to S3 reason={}", e.getLocalizedMessage(), e);
+        } finally {
+            cronStats.addStats("success", success);
+            cronStats.addStats("skipped", skipped);
+            cronStats.addStats("failure", failure);
+            cronStats.addStats("found", documents.size());
+            cronStatsService.save(cronStats);
+
+            LOG.info("Documents upload success={} skipped={} failure={} total={}", success, skipped, failure, documents.size());
         }
     }
 
