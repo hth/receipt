@@ -65,54 +65,39 @@ public class MobilePushNotificationService {
             this.apnsService = APNS.newService()
                     .withCert(this.getClass().getClassLoader().getResourceAsStream("/cert/Certificate.p12"), apnsCertificatePassword)
                     .withSandboxDestination()
-                    .withDelegate(new ApnsDelegate() {
-                        public void notificationsResent(int resendCount) {
-                            LOG.info("resendCount={}", resendCount);
-                        }
-
-                        public void messageSent(ApnsNotification message, boolean resent) {
-                            LOG.info("Message sent.  Payload={}" + message);
-                        }
-
-                        public void messageSendFailed(ApnsNotification message, Throwable e) {
-                            LOG.info("Message send failed.  Message={} token={} {}", message.toString(), message.getDeviceToken().toString(), message.getPayload().toString());
-                        }
-
-                        public void connectionClosed(DeliveryError e, int messageIdentifier) {
-                            LOG.info("Connection closed.  Message={}" + e.toString());
-                        }
-
-                        public void cacheLengthExceeded(int newCacheLength) {
-                            LOG.info("{}", newCacheLength);
-                        }
-                    })
+                    .withDelegate(getDelegate())
                     .build();
         } else {
             this.apnsService = APNS.newService()
                     .withCert(this.getClass().getClassLoader().getResourceAsStream("/cert/aps_dev_credentials.p12"), apnsCertificatePassword)
-                    .withProductionDestination().withDelegate(new ApnsDelegate() {
-                        public void notificationsResent(int resendCount) {
-                            LOG.info("resendCount={}", resendCount);
-                        }
-
-                        public void messageSent(ApnsNotification message, boolean resent) {
-                            LOG.info("Message sent.  Payload={}" + message);
-                        }
-
-                        public void messageSendFailed(ApnsNotification message, Throwable e) {
-                            LOG.info("Message send failed.  Message={} token={} {}", message.toString(), message.getDeviceToken().toString(), message.getPayload().toString());
-                        }
-
-                        public void connectionClosed(DeliveryError e, int messageIdentifier) {
-                            LOG.info("Connection closed.  Message={}" + e.toString());
-                        }
-
-                        public void cacheLengthExceeded(int newCacheLength) {
-                            LOG.info("{}", newCacheLength);
-                        }
-                    })
+                    .withProductionDestination().withDelegate(getDelegate())
                     .build();
         }
+    }
+
+    private ApnsDelegate getDelegate() {
+        return new ApnsDelegate() {
+            public void notificationsResent(int resendCount) {
+                LOG.info("resendCount={}", resendCount);
+            }
+
+            public void messageSent(ApnsNotification message, boolean resent) {
+                LOG.info("Message sent. Payload={}" + message);
+            }
+
+            public void messageSendFailed(ApnsNotification message, Throwable e) {
+                LOG.error("Message send failed. Message={} token={} {} reason={}",
+                        message.toString(), message.getDeviceToken().toString(), message.getPayload().toString(), e.getLocalizedMessage(), e);
+            }
+
+            public void connectionClosed(DeliveryError e, int messageIdentifier) {
+                LOG.error("Connection closed. Message={}" + e.toString());
+            }
+
+            public void cacheLengthExceeded(int newCacheLength) {
+                LOG.error("{}", newCacheLength);
+            }
+        };
     }
 
     public boolean sendNotification(String message, String rid) {
@@ -193,8 +178,8 @@ public class MobilePushNotificationService {
     }
 
     private boolean invokeAppleNotification(String message, String rid, RegisteredDeviceEntity registeredDevice) {
-        LOG.info("Invoked apple notification");
-        String payload = APNS.newPayload().alertBody("Can't be simpler than this!").build();
+        LOG.info("Invoked apple notification rid={}", rid);
+        String payload = APNS.newPayload().alertBody(message).build();
         apnsService.push(registeredDevice.getToken(), payload);
 
         return true;
