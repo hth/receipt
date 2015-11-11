@@ -179,7 +179,11 @@ public class MobilePushNotificationService {
 
     private boolean invokeAppleNotification(String message, String rid, RegisteredDeviceEntity registeredDevice) {
         LOG.info("Invoked apple notification rid={}", rid);
-        String payload = APNS.newPayload().alertBody(message).build();
+        String payload = APNS.newPayload()
+                .alertBody(message)
+                .alertTitle("test alert title")
+                .sound("default")
+                .build();
         apnsService.push(registeredDevice.getToken(), payload);
 
         return true;
