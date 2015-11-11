@@ -18,6 +18,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.validation.constraints.Null;
+
 /**
  * User: hitender
  * Date: 4/19/15 3:12 PM
@@ -55,6 +57,8 @@ public class JsonBilling {
         } else {
             this.billingPlan = billingAccount.getBillingPlan().getDescription();
         }
+
+        Assert.notNull(billings, "Billings should not be Null");
         this.billingHistories.addAll(billings.stream().map(JsonBillingHistory::new).collect(Collectors.toList()));
     }
 }

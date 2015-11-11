@@ -181,7 +181,6 @@ public class MobilePushNotificationService {
         LOG.info("Invoked apple notification rid={}", rid);
         String payload = APNS.newPayload()
                 .alertBody(message)
-                .alertTitle("test alert title")
                 .sound("default")
                 .build();
         apnsService.push(registeredDevice.getToken(), payload);
