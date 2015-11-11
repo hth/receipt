@@ -3158,7 +3158,9 @@
   <component name="DependencyValidationManager">
     <option name="SKIP_IMPORT_STATEMENTS" value="false" />
   </component>
-  <component name="Encoding" useUTFGuessing="true" native2AsciiForPropertiesFiles="false" />
+  <component name="Encoding" useUTFGuessing="true" native2AsciiForPropertiesFiles="false">
+    <file url="PROJECT" charset="UTF-8" />
+  </component>
   <component name="EntryPointsManager">
     <entry_points version="2.0" />
   </component>
@@ -3173,6 +3175,18 @@
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
         <option name="gradleHome" value="$PROJECT_DIR$/gradle/wrapper" />
         <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/common" />
+            <option value="$PROJECT_DIR$/domain" />
+            <option value="$PROJECT_DIR$/loader" />
+            <option value="$PROJECT_DIR$/security" />
+            <option value="$PROJECT_DIR$/service" />
+            <option value="$PROJECT_DIR$/social" />
+            <option value="$PROJECT_DIR$/web" />
+          </set>
+        </option>
+        <option name="myModules">
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/common" />
@@ -3418,7 +3432,6 @@
     <option name="mySupportsUserInfoFilter" value="true" />
   </component>
   <component name="VcsDirectoryMappings">
-    <mapping directory="" vcs="" />
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
   </component>
   <component name="libraryTable">
