@@ -63,7 +63,7 @@ public class MobilePushNotificationService {
 
         if ("PRODUCTION".equals(brainTreeEnvironment)) {
             this.apnsService = APNS.newService()
-                    .withCert(this.getClass().getClassLoader().getResourceAsStream("/cert/Certificate.p12"), apnsCertificatePassword)
+                    .withCert(this.getClass().getClassLoader().getResourceAsStream("/cert/aps_prod_credentials.p12"), apnsCertificatePassword)
                     .withSandboxDestination()
                     .withDelegate(getDelegate())
                     .build();
