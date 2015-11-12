@@ -179,11 +179,16 @@ public class MobilePushNotificationService {
 
     private boolean invokeAppleNotification(String message, String rid, RegisteredDeviceEntity registeredDevice) {
         LOG.info("Invoked apple notification rid={}", rid);
-        String payload = APNS.newPayload()
-                .alertBody(message)
-                .sound("default")
-                .build();
-        apnsService.push(registeredDevice.getToken(), payload);
+
+        if (null == registeredDevice.getToken()) {
+            LOG.info("Skipped notifying as token is missing rid={}", rid);
+        } else {
+            String payload = APNS.newPayload()
+                    .alertBody(message)
+                    .sound("default")
+                    .build();
+            apnsService.push(registeredDevice.getToken(), payload);
+        }
 
         return true;
     }
