@@ -73,13 +73,14 @@ public class MobilePushNotificationService {
         if ("PRODUCTION".equals(brainTreeEnvironment)) {
             this.apnsService = APNS.newService()
                     .withCert(this.getClass().getClassLoader().getResourceAsStream("/cert/aps_prod_credentials.p12"), apnsCertificatePassword)
-                    .withSandboxDestination()
+                    .withProductionDestination()
                     .withDelegate(getDelegate())
                     .build();
         } else {
             this.apnsService = APNS.newService()
                     .withCert(this.getClass().getClassLoader().getResourceAsStream("/cert/aps_dev_credentials.p12"), apnsCertificatePassword)
-                    .withProductionDestination().withDelegate(getDelegate())
+                    .withSandboxDestination()
+                    .withDelegate(getDelegate())
                     .build();
 
             try {
@@ -209,28 +210,11 @@ public class MobilePushNotificationService {
         if (null == registeredDevice.getToken()) {
             LOG.info("Skipped notifying as token is missing rid={}", rid);
         } else {
-//            String payload = APNS.newPayload()
-//                    .alertBody(message)
-//                    .sound("default")
-//                    .build();
-//            apnsService.push(registeredDevice.getToken(), payload);
-
-
-            final ApnsPayloadBuilder payloadBuilder = new ApnsPayloadBuilder();
-
-            payloadBuilder.setAlertBody(message);
-            payloadBuilder.setSoundFileName("ring-ring.aiff");
-
-            final String payloadPushy = payloadBuilder.buildWithDefaultMaximumLength();
-
-            final byte[] token;
-            try {
-                token = TokenUtil.tokenStringToByteArray(registeredDevice.getToken());
-                pushManager.getQueue().put(new SimpleApnsPushNotification(token, payloadPushy));
-            } catch (MalformedTokenStringException | InterruptedException e) {
-                LOG.error(e.getLocalizedMessage());
-            }
-
+            String payload = APNS.newPayload()
+                    .alertBody(message)
+                    .sound("default")
+                    .build();
+            apnsService.push(registeredDevice.getToken(), payload);
         }
 
         return true;
