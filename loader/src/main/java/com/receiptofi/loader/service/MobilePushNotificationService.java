@@ -216,20 +216,20 @@ public class MobilePushNotificationService {
             apnsService.push(registeredDevice.getToken(), payload);
 
 
-            final ApnsPayloadBuilder payloadBuilder = new ApnsPayloadBuilder();
-
-            payloadBuilder.setAlertBody(message);
-            payloadBuilder.setSoundFileName("ring-ring.aiff");
-
-            final String payloadPushy = payloadBuilder.buildWithDefaultMaximumLength();
-
-            final byte[] token;
-            try {
-                token = TokenUtil.tokenStringToByteArray(registeredDevice.getToken());
-                pushManager.getQueue().put(new SimpleApnsPushNotification(token, payloadPushy));
-            } catch (MalformedTokenStringException | InterruptedException e) {
-                LOG.error(e.getLocalizedMessage());
-            }
+//            final ApnsPayloadBuilder payloadBuilder = new ApnsPayloadBuilder();
+//
+//            payloadBuilder.setAlertBody(message);
+//            payloadBuilder.setSoundFileName("ring-ring.aiff");
+//
+//            final String payloadPushy = payloadBuilder.buildWithDefaultMaximumLength();
+//
+//            final byte[] token;
+//            try {
+//                token = TokenUtil.tokenStringToByteArray(registeredDevice.getToken());
+//                pushManager.getQueue().put(new SimpleApnsPushNotification(token, payloadPushy));
+//            } catch (MalformedTokenStringException | InterruptedException e) {
+//                LOG.error(e.getLocalizedMessage());
+//            }
 
         }
 
