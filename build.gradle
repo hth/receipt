@@ -34,7 +34,7 @@ ext {
     passFileTest = file(passwordTestFileLocation)
     passFileProd = file(passwordProdFileLocation)
 
-    apnsCertLocal = file('web/resources/cert/Certificates.p12')
+    apnsCertLocal = file('web/resources/cert/aps_dev_credentials.p12')
     apnsCertTest = file(apnsCertificateTestFileLocation)
     apnsCertProd = file(apnsCertificateProdFileLocation)
 
@@ -621,7 +621,7 @@ task prepWar(dependsOn: [unzip, copyJars, individualCssMinify, individualJsMinif
         if (env == 'dev') {
             println "Development environment, getting local pass file $passFileLocal.canonicalPath"
             if (apnsCertLocal.exists()) {
-                from 'web/resources/conf/Certificates.p12'
+                from 'web/resources/conf/aps_dev_credentials.p12'
             } else {
                 throw new Exception("Required cert file does not exists: $passFileLocal.canonicalPath")
             }
