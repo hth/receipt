@@ -118,7 +118,10 @@ public class FilesUploadToS3 {
         }
 
         List<DocumentEntity> documents = documentUpdateService.getAllProcessedDocuments();
-        if (!documents.isEmpty()) {
+        if (documents.isEmpty()) {
+            /** No documents to upload. */
+            return;
+        } else {
             LOG.info("Documents to upload to cloud, count={}", documents.size());
         }
 
