@@ -19,14 +19,6 @@ import com.notnoop.apns.ApnsDelegate;
 import com.notnoop.apns.ApnsNotification;
 import com.notnoop.apns.ApnsService;
 import com.notnoop.apns.DeliveryError;
-import com.relayrides.pushy.apns.ApnsEnvironment;
-import com.relayrides.pushy.apns.PushManager;
-import com.relayrides.pushy.apns.PushManagerConfiguration;
-import com.relayrides.pushy.apns.util.ApnsPayloadBuilder;
-import com.relayrides.pushy.apns.util.MalformedTokenStringException;
-import com.relayrides.pushy.apns.util.SSLContextUtil;
-import com.relayrides.pushy.apns.util.SimpleApnsPushNotification;
-import com.relayrides.pushy.apns.util.TokenUtil;
 import org.json.JSONException;
 import org.json.simple.JSONObject;
 
@@ -50,7 +42,6 @@ public class MobilePushNotificationService {
     private String googleServerApiKey;
     private RegisteredDeviceManager registeredDeviceManager;
     private ApnsService apnsService;
-    private PushManager<SimpleApnsPushNotification> pushManager;
 
     @Autowired
     public MobilePushNotificationService(
@@ -82,23 +73,6 @@ public class MobilePushNotificationService {
                     .withSandboxDestination()
                     .withDelegate(getDelegate())
                     .build();
-
-            try {
-                pushManager = new PushManager<>(
-                        ApnsEnvironment.getSandboxEnvironment(),
-                        SSLContextUtil.createDefaultSSLContext(
-                                this.getClass().getClassLoader().getResourceAsStream("/cert/aps_dev_credentials.p12"),
-                                apnsCertificatePassword),
-                        null, // Optional: custom event loop group
-                        null, // Optional: custom ExecutorService for calling listeners
-                        null, // Optional: custom BlockingQueue implementation
-                        new PushManagerConfiguration(),
-                        "ExamplePushManager");
-
-                pushManager.start();
-            } catch (Exception e) {
-                LOG.error("Pushy error. Stop pushing reason={}", e.getLocalizedMessage(), e);
-            }
         }
     }
 
