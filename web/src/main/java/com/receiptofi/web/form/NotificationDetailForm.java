@@ -95,6 +95,7 @@ public class NotificationDetailForm {
     @SuppressWarnings ("unused")
     public String getNotificationMessage() {
         switch (notificationType) {
+            case PUSH_NOTIFICATION:
             case MESSAGE:
             case DOCUMENT_DELETED:
             case RECEIPT_DELETED:
