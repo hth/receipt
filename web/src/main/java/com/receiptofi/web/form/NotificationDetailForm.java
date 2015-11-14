@@ -62,6 +62,7 @@ public class NotificationDetailForm {
      */
     public String getNotificationMessageForDisplay() {
         switch (notificationType) {
+            case PUSH_NOTIFICATION:
             case MESSAGE:
             case DOCUMENT_DELETED:
             case RECEIPT_DELETED:
