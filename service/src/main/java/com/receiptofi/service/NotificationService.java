@@ -83,7 +83,7 @@ public class NotificationService {
     ) {
         switch (notificationType) {
             case PUSH_NOTIFICATION:
-                addNotification(message, notificationType, null, rid, false);
+                addNotification(message, notificationType, null, rid, true);
                 break;
             case MESSAGE:
                 addNotification(message, notificationType, null, rid, true);
