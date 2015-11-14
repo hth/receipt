@@ -197,8 +197,6 @@ public class MobilePushNotificationProcess {
                     if (mobilePushNotificationService.sendNotification(
                             notification.getMessage(),
                             notification.getReceiptUserId())) {
-
-                        notification.markAsNotified();
                         notificationManager.save(notification);
                         success++;
                     } else {

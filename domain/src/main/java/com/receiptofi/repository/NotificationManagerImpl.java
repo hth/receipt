@@ -115,9 +115,9 @@ public class NotificationManagerImpl implements NotificationManager {
     @Override
     public List<NotificationEntity> getAllPushNotifications(Date sinceDate) {
         return mongoTemplate.find(
-                query(where("ND").is(false)
-                        .and("NNE").is(NotificationTypeEnum.PUSH_NOTIFICATION)
+                query(where("NNE").is(NotificationTypeEnum.PUSH_NOTIFICATION)
                         .and("C").lte(sinceDate)
+                        .and("V").is(0)
                         .andOperator(
                                 isActive(),
                                 isNotDeleted()
