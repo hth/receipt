@@ -142,6 +142,20 @@ public class ReceiptManagerImpl implements ReceiptManager {
         return results.iterator();
     }
 
+    /**
+     * db.getCollection('RECEIPT').aggregate( [
+     * { $match: { "RID": "10000000077" } },
+     * { $group: { _id: {year : "$Y", month : "$M"}, splitTotal: { $sum: "$ST" } } },
+     * { $sort: {"_id.month": 1}}
+     * ] );
+     *
+     * db.getCollection('RECEIPT').aggregate( [
+     * { $match: { "RID": "10000000077" } },
+     * { $group: { _id: {year: { $year: "$RTXD" }, month: { $month: "$RTXD" },}, splitTotal: { $sum: "$ST" } } },
+     * { $sort: {"_id.month": 1}}
+     * ] );
+     */
+
     @Override
     public List<ReceiptGrouped> getReceiptGroupedByMonth(String rid) {
         DateTime date = DateUtil.now().minusMonths(displayMonths);
@@ -161,30 +175,17 @@ public class ReceiptManagerImpl implements ReceiptManager {
         );
 
         return mongoTemplate.aggregate(agg, TABLE, ReceiptGrouped.class).getMappedResults();
-
-        /** Another way to populate ReceiptEntity instead. */
-//        TypedAggregation<ReceiptEntity> agg = newAggregation(ReceiptEntity.class,
-//                match(where("RID").is(rid)),
-//                group("year", "month")
-//                        .first("year").as("Y")
-//                        .first("month").as("M")
-//                        .sum("total").as("TOT"),
-//                sort(DESC, previousOperation())
-//        );
-//
-//        AggregationResults<ReceiptEntity> result = mongoTemplate.aggregate(agg, ReceiptEntity.class);
-//        List<ReceiptEntity> stateStatsList = result.getMappedResults();
     }
 
     public List<ReceiptListViewGrouped> getReceiptForGroupedByMonth(String rid, int month, int year) {
         return mongoTemplate.find(
                 query(where("RID").is(rid)
-                                .and("M").is(month)
-                                .and("Y").is(year)
-                                .andOperator(
-                                        isActive(),
-                                        isNotDeleted()
-                                )
+                        .and("M").is(month)
+                        .and("Y").is(year)
+                        .andOperator(
+                                isActive(),
+                                isNotDeleted()
+                        )
                 ).with(new Sort(DESC, "RTXD")),
                 ReceiptListViewGrouped.class,
                 TABLE
@@ -245,7 +246,6 @@ public class ReceiptManagerImpl implements ReceiptManager {
     }
 
     /**
-     *
      * @param id
      * @return
      */
@@ -254,17 +254,16 @@ public class ReceiptManagerImpl implements ReceiptManager {
         Assert.hasText(id, "Id is empty");
         return mongoTemplate.findOne(
                 query(where("id").is(id)
-                                .andOperator(
-                                        isActive(),
-                                        isNotDeleted()
-                                )
+                        .andOperator(
+                                isActive(),
+                                isNotDeleted()
+                        )
                 ),
                 ReceiptEntity.class,
                 TABLE);
     }
 
     /**
-     *
      * @param id
      * @param rid
      * @return
@@ -295,17 +294,16 @@ public class ReceiptManagerImpl implements ReceiptManager {
         Assert.hasText(id, "Id is empty");
         return mongoTemplate.findOne(
                 query(where("id").is(id).and("RID").is(rid)
-                                .andOperator(
-                                        isNotActive(),
-                                        isNotDeleted()
-                                )
+                        .andOperator(
+                                isNotActive(),
+                                isNotDeleted()
+                        )
                 ),
                 ReceiptEntity.class,
                 TABLE);
     }
 
     /**
-     *
      * @param id
      * @param rid
      * @return
@@ -450,12 +448,12 @@ public class ReceiptManagerImpl implements ReceiptManager {
     private Query checksumQueryIfDuplicateExists(String checksum, String id) {
         Query query = checksumQuery(checksum)
                 .addCriteria(isNotDeleted()
-                                .orOperator(
-                                        where("DS").is(DocumentStatusEnum.REPROCESS.name()),
-                                        where("DS").is(DocumentStatusEnum.PROCESSED.name()),
-                                        where("A").is(true),
-                                        where("A").is(false)
-                                )
+                        .orOperator(
+                                where("DS").is(DocumentStatusEnum.REPROCESS.name()),
+                                where("DS").is(DocumentStatusEnum.PROCESSED.name()),
+                                where("A").is(true),
+                                where("A").is(false)
+                        )
                 );
 
         if (!StringUtils.isBlank(id)) {
@@ -476,11 +474,11 @@ public class ReceiptManagerImpl implements ReceiptManager {
     public long countReceiptsUsingExpenseType(String expenseTypeId, String rid) {
         return mongoTemplate.count(
                 query(where("EXPENSE_TAG.$id").is(new ObjectId(expenseTypeId))
-                                .and("RID").is(rid)
-                                .andOperator(
-                                        isActive(),
-                                        isNotDeleted()
-                                )
+                        .and("RID").is(rid)
+                        .andOperator(
+                                isActive(),
+                                isNotDeleted()
+                        )
                 ),
                 ReceiptEntity.class
         );
