@@ -10,6 +10,9 @@ import com.receiptofi.domain.annotation.Mobile;
 
 import org.apache.commons.lang3.time.DateFormatUtils;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.TimeZone;
 
 /**
@@ -33,6 +36,7 @@ import java.util.TimeZone;
 //@JsonInclude(JsonInclude.Include.NON_NULL)
 @Mobile
 public class JsonBillingHistory {
+    private static final Logger LOG = LoggerFactory.getLogger(JsonBillingHistory.class);
 
     @JsonProperty ("id")
     private String id;
@@ -55,7 +59,12 @@ public class JsonBillingHistory {
     public JsonBillingHistory(BillingHistoryEntity billingHistory) {
         this.id = billingHistory.getId();
         this.billedStatus = billingHistory.getBilledStatus().name();
-        this.billingPlan = billingHistory.getBillingPlan().getDescription();
+        if (billingHistory.getBillingPlan() != null) {
+            this.billingPlan = billingHistory.getBillingPlan().getDescription();
+        } else {
+            LOG.warn("Billing plan is empty rid={} id={}", billingHistory.getRid(), billingHistory.getId());
+            this.billingPlan = "";
+        }
         this.billedForMonth = billingHistory.getBilledForMonth();
         this.transactionStatus = billingHistory.getTransactionStatus().name();
         this.billedDate = DateFormatUtils.format(billingHistory.getUpdated(), JsonReceipt.ISO8601_FMT, TimeZone.getTimeZone("UTC"));
