@@ -70,6 +70,7 @@ public class ReceiptDocumentValidator implements Validator {
 
         try {
             DateUtil.getDateFromString(receiptDocumentForm.getReceiptDocument().getReceiptDate());
+            //TODO add condition to check date in future and past
         } catch (IllegalArgumentException exce) {
             errors.rejectValue(
                     "receiptDocument.receiptDate", "field.date",
