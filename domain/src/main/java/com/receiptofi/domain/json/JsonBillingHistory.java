@@ -56,6 +56,8 @@ public class JsonBillingHistory {
     @JsonProperty ("bd")
     private String billedDate;
 
+    //TODO add billing history inactive for delete
+
     public JsonBillingHistory(BillingHistoryEntity billingHistory) {
         this.id = billingHistory.getId();
         this.billedStatus = billingHistory.getBilledStatus().name();
