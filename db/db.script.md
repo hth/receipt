@@ -1,3 +1,11 @@
+#### Date Nov 16 2015 - Build 1456
+Update records with BS as NB to Promotional for all the receipts
+
+    db.getCollection('RECEIPT').find({"BS": {$ne : "P"}})
+    db.getCollection('RECEIPT').update({},              { $set: {BS: 'P'} },                    {multi: true});
+    db.getCollection('RECEIPT').update({"BS" : "NB"},   { $set: {BS: 'P', U : new ISODate()} }, {multi: true});
+    db.getCollection('RECEIPT').update({},              { $set: {U : new ISODate()} },          {multi: true});
+
 #### Date Nov 14 2015 - Build 1450
 Delete Device Id for complete refresh for a user
 
