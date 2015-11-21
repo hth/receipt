@@ -51,7 +51,18 @@ public interface MessageDocumentManager extends RepositoryManager<MessageDocumen
 
     /**
      * Resets document to state before assigning to technician.
+     *
      * @param receiptUserId
      */
     void resetDocumentsToInitialState(String receiptUserId);
+
+    /**
+     * Used for auto rejecting when find existing document with similar name.
+     *
+     * @param did
+     * @param emailId
+     * @param rid
+     * @param documentStatus
+     */
+    void markMessageForReceiptAsDuplicate(String did, String emailId, String rid, DocumentStatusEnum documentStatus);
 }

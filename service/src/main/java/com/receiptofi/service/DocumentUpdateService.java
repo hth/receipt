@@ -596,16 +596,17 @@ public class DocumentUpdateService {
     }
 
     public String getNotificationMessageForReceiptReject(DBObject dbObject, DocumentRejectReasonEnum documentRejectReason) {
+        return getNotificationMessageForReceiptReject(dbObject.get("ORIGINAL_FILENAME").toString(), documentRejectReason);
+    }
+
+    public String getNotificationMessageForReceiptReject(String originalFilename, DocumentRejectReasonEnum documentRejectReason) {
         switch (documentRejectReason) {
             case C:
             case D:
             case E:
             case M:
             case V:
-                return "Document '" +
-                        dbObject.get("ORIGINAL_FILENAME") +
-                        "' " +
-                        documentRejectReason.getInSentence();
+                return "Document '" + originalFilename + "' " + documentRejectReason.getInSentence();
             default:
                 LOG.error("Document Reject Reason is not defined");
                 throw new IllegalStateException("Document Reject Reason is not defined");

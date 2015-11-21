@@ -5,17 +5,22 @@ package com.receiptofi.web.controller.access;
 
 import com.google.gson.JsonObject;
 
+import com.receiptofi.domain.DocumentEntity;
 import com.receiptofi.domain.MileageEntity;
 import com.receiptofi.domain.ReceiptEntity;
 import com.receiptofi.domain.shared.UploadDocumentImage;
 import com.receiptofi.domain.site.ReceiptUser;
+import com.receiptofi.domain.types.DocumentOfTypeEnum;
+import com.receiptofi.domain.types.DocumentRejectReasonEnum;
 import com.receiptofi.domain.types.FileTypeEnum;
 import com.receiptofi.domain.types.UserLevelEnum;
 import com.receiptofi.domain.value.ReceiptGrouped;
 import com.receiptofi.domain.value.ReceiptGroupedByBizLocation;
-import com.receiptofi.service.FriendService;
+import com.receiptofi.service.DocumentUpdateService;
+import com.receiptofi.service.FileSystemService;
 import com.receiptofi.service.LandingService;
 import com.receiptofi.service.MailService;
+import com.receiptofi.service.MessageDocumentService;
 import com.receiptofi.service.MileageService;
 import com.receiptofi.service.NotificationService;
 import com.receiptofi.utils.DateUtil;
@@ -92,6 +97,9 @@ public class LandingController {
     @Autowired private NotificationService notificationService;
     @Autowired private MileageService mileageService;
     @Autowired private MailService mailService;
+    @Autowired private FileSystemService fileSystemService;
+    @Autowired private DocumentUpdateService documentUpdateService;
+    @Autowired private MessageDocumentService messageDocumentService;
 
     private static final DateTimeFormatter DTF = DateTimeFormat.forPattern("MMM, yyyy");
 
@@ -100,6 +108,12 @@ public class LandingController {
      */
     @Value ("${nextPage:/landing}")
     private String nextPage;
+
+    @Value ("${duplicate.document.reject.user}")
+    private String documentRejectUserId;
+
+    @Value ("${duplicate.document.reject.rid}")
+    private String documentRejectRid;
 
     @Timed
     @ExceptionMetered
@@ -278,7 +292,19 @@ public class LandingController {
                 uploadReceiptImage.setRid(rid);
                 uploadReceiptImage.setFileType(FileTypeEnum.RECEIPT);
                 try {
-                    landingService.uploadDocument(uploadReceiptImage);
+                    boolean duplicateFile = fileSystemService.fileWithSimilarNameDoesNotExists(rid, uploadReceiptImage.getOriginalFileName());
+                    DocumentEntity document = landingService.uploadDocument(uploadReceiptImage);
+
+                    if (!duplicateFile) {
+                        LOG.info("Found existing file with name={} rid={}", uploadReceiptImage.getOriginalFileName(), rid);
+                        messageDocumentService.markMessageForReceiptAsDuplicate(document.getId(), documentRejectUserId, documentRejectRid);
+                        documentUpdateService.processDocumentForReject(
+                                documentRejectRid,
+                                document.getId(),
+                                DocumentOfTypeEnum.RECEIPT,
+                                DocumentRejectReasonEnum.D);
+                    }
+
                     jsonObject.addProperty(SUCCESS, true);
                     jsonObject.addProperty(UPLOAD_MESSAGE, FILE_UPLOADED_SUCCESSFULLY);
                 } catch (Exception exce) {

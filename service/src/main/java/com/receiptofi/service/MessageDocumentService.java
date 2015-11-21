@@ -1,6 +1,7 @@
 package com.receiptofi.service;
 
 import com.receiptofi.domain.MessageDocumentEntity;
+import com.receiptofi.domain.types.DocumentStatusEnum;
 import com.receiptofi.repository.MessageDocumentManager;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,5 +35,9 @@ public class MessageDocumentService {
 
     public int deleteAllForReceiptOCR(String did) {
         return messageDocumentManager.deleteAllForReceiptOCR(did);
+    }
+
+    public void markMessageForReceiptAsDuplicate(String did, String emailId, String rid) {
+        messageDocumentManager.markMessageForReceiptAsDuplicate(did, emailId, rid, DocumentStatusEnum.REJECT);
     }
 }

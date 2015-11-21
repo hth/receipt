@@ -116,13 +116,28 @@ public final class FileSystemManagerImpl implements FileSystemManager {
     @Override
     public List<FileSystemEntity> filesPending(String rid) {
         return mongoTemplate.find(
-                query(where("RID").is(rid).and("SLN").is(0)
+                query(where("RID").is(rid)
+                        .and("SLN").is(0)
                         .andOperator(
-                            isActive(),
-                            isNotDeleted()
+                                isActive(),
+                                isNotDeleted()
                         )
                 ),
                 FileSystemEntity.class,
                 TABLE);
+    }
+
+    @Override
+    public boolean fileWithSimilarNameDoesNotExists(String rid, String originalFilename) {
+        /** Better than using findOne as I read its slower than find. */
+        return mongoTemplate.find(
+                query(where("RID").is(rid)
+                        .and("OFN").is(originalFilename)
+                        .andOperator(
+                                isActive(),
+                                isNotDeleted()
+                        )).limit(1),
+                FileSystemEntity.class
+        ).isEmpty();
     }
 }

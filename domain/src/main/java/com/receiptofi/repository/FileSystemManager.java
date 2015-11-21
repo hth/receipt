@@ -20,4 +20,6 @@ public interface FileSystemManager extends RepositoryManager<FileSystemEntity> {
     List<FileSystemEntity> filesPending(String rid);
 
     List<DiskUsageGrouped> diskUsage(String rid);
+
+    boolean fileWithSimilarNameDoesNotExists(String rid, String originalFilename);
 }
