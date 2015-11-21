@@ -278,7 +278,7 @@ public class LandingService {
      * @param documentImage
      * @throws Exception
      */
-    public void uploadDocument(UploadDocumentImage documentImage) {
+    public DocumentEntity uploadDocument(UploadDocumentImage documentImage) {
         String documentBlobId = null;
         DocumentEntity documentEntity = null;
         FileSystemEntity fileSystem = null;
@@ -330,6 +330,7 @@ public class LandingService {
             LOG.info("Upload complete document={} rid={}", documentEntity.getId(), documentEntity.getReceiptUserId());
             UserProfileEntity userProfile = userProfileManager.findByReceiptUserId(documentEntity.getReceiptUserId());
             senderJMS.send(documentEntity, userProfile);
+            return documentEntity;
         } catch (Exception exce) {
             LOG.error("Exception occurred during saving receipt={}", exce.getLocalizedMessage(), exce);
             LOG.warn("Undo all the saves");

@@ -50,14 +50,14 @@ jQuery(document).ready(function ($) {
     });
 });
 
-function runCounter(max) {
+function runCounter(max, field) {
     "use strict";
     incCounter();
 
     function incCounter() {
-        var currCount = parseInt($('#pendingCountValue').html());
+        var currCount = parseInt($(field).html());
         if (currCount < max) {
-            $('#pendingCountValue').text(currCount + 1);
+            $(field).text(currCount + 1);
             setTimeout(incCounter, 1);
         }
     }

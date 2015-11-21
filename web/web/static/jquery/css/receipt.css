@@ -277,6 +277,7 @@ html, body {
 /* End */
 
 .pendingCounter { font-family: Georgia,'Times New Roman',Times; font-size: 21px; font-weight: 400; color: #065c14; margin-top: -5px; }
+.rejectedCounter { font-family: Georgia,'Times New Roman',Times; font-size: 21px; font-weight: 400; color: #FD462A; margin-top: -5px; }
 
 /** This is set for input text field size */
 input { font-size: 13px; }

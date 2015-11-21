@@ -187,11 +187,12 @@
             </div>
         </div>
         <div class="sidebar-top-summary-lower clearfix">
-            <h1>
+            <h1 id="rejectedCountInitial">
                 <a href='${pageContext. request. contextPath}/access/document/rejected.htm' class="big-view-lower">
                     ${documentStatsForm.rejectedCount}
                 </a>
             </h1>
+            <h1 id="rejectedCountId"></h1>
 
             <div class="sts-upper-right">
 				<span class="top-summary-textb">
@@ -201,7 +202,7 @@
                     </c:choose>
                 </span>
 				<span class="general-text">
-                    Last sync: <span class="timestamp"></span>
+                    Last sync: <span class="timestamp" id="rejectedCountSyncedId"></span>
                 </span>
             </div>
         </div>

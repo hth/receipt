@@ -64,4 +64,8 @@ public class FileSystemService {
 
         return pendingFileSize;
     }
+
+    public boolean fileWithSimilarNameDoesNotExists(String rid, String originalFilename) {
+        return fileSystemManager.fileWithSimilarNameDoesNotExists(rid, originalFilename);
+    }
 }

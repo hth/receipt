@@ -3,6 +3,8 @@ package com.receiptofi.web.controller.ajax;
 import static javax.servlet.http.HttpServletResponse.SC_FORBIDDEN;
 import static javax.servlet.http.HttpServletResponse.SC_NOT_FOUND;
 
+import com.google.gson.JsonObject;
+
 import com.receiptofi.domain.ExpenseTagEntity;
 import com.receiptofi.domain.ItemEntity;
 import com.receiptofi.domain.ReceiptEntity;
@@ -73,7 +75,7 @@ public class ReceiptWebService {
     ) {
         this.fetcherService = fetcherService;
         this.landingService = landingService;
-        this.documentUpdateService =  documentUpdateService;
+        this.documentUpdateService = documentUpdateService;
         this.receiptService = receiptService;
         this.itemService = itemService;
     }
@@ -202,14 +204,20 @@ public class ReceiptWebService {
             method = RequestMethod.POST,
             headers = "Accept=application/json",
             produces = "application/json")
-    public long pendingReceipts() {
+    public String pendingReceipts() {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         try {
-            return landingService.pendingReceipt(receiptUser.getRid());
+            JsonObject jsonObject = new JsonObject();
+            jsonObject.addProperty("PENDING", landingService.pendingReceipt(receiptUser.getRid()));
+            jsonObject.addProperty("REJECTED", landingService.rejectedReceipt(receiptUser.getRid()));
+            return jsonObject.toString();
         } catch (Exception pendingReceipt) {
             LOG.error("Error fetching items, error={}", pendingReceipt);
-            return 0;
+            JsonObject jsonObject = new JsonObject();
+            jsonObject.addProperty("PENDING", 0);
+            jsonObject.addProperty("REJECTED", 0);
+            return jsonObject.toString();
         }
     }
 

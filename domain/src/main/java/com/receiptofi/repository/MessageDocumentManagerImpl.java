@@ -27,6 +27,8 @@ import org.springframework.data.mongodb.core.WriteResultChecking;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.stereotype.Repository;
 
+import junit.framework.Assert;
+
 import java.util.Date;
 import java.util.List;
 
@@ -196,6 +198,19 @@ public final class MessageDocumentManagerImpl implements MessageDocumentManager 
                         update("LOK", false)
                                 .unset("EM")
                                 .unset("RID")),
+                MessageDocumentEntity.class);
+    }
+
+    @Override
+    public void markMessageForReceiptAsDuplicate(String did, String emailId, String rid, DocumentStatusEnum documentStatus) {
+        Assert.assertEquals("Can only set to reject", DocumentStatusEnum.REJECT, documentStatus);
+        mongoTemplate.updateFirst(
+                query(where("DID").is(did)),
+                update("LOK", true)
+                        .set("DS", documentStatus)
+                        .set("EM", emailId)
+                        .set("RID", rid)
+                        .set("A", false),
                 MessageDocumentEntity.class);
     }
 }
