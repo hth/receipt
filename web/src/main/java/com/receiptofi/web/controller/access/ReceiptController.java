@@ -258,10 +258,11 @@ public class ReceiptController {
     ) throws IOException {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         LOG.info("Loading Receipts by bizName={} monthYear={}", bizName, monthYear);
-        receiptByBizForm.setMonthYear(monthYear.getText());
-        receiptByBizForm.setBizName(bizName.getText());
 
         try {
+            receiptByBizForm.setMonthYear(monthYear.getText());
+            receiptByBizForm.setBizName(bizName.getText());
+
             List<BizNameEntity> bizNames = bizNameManager.findAllBizWithMatchingName(bizName.getText());
             for (BizNameEntity bizNameEntity : bizNames) {
                 List<ReceiptEntity> receipts = receiptService.findReceipt(
