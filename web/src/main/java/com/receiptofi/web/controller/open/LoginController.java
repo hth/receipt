@@ -3,7 +3,6 @@ package com.receiptofi.web.controller.open;
 import com.receiptofi.security.OnLoginAuthenticationSuccessHandler;
 import com.receiptofi.service.LoginService;
 import com.receiptofi.service.RegistrationService;
-import com.receiptofi.utils.ScrubbedInput;
 import com.receiptofi.web.cache.CachedUserAgentStringParser;
 import com.receiptofi.web.form.UserLoginForm;
 
