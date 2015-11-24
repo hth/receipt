@@ -47,7 +47,7 @@ public class ImageSplitService {
         LOG.debug("W={} H={}", image.getWidth(), image.getHeight());
         double aspectRatio = (double) image.getWidth(null) / (double) image.getHeight(null);
 
-        BufferedImage bufferedImage = resizeImage(image, 750, (int) (750 / aspectRatio));
+        BufferedImage bufferedImage = resizeImage(image, 950, (int) (950 / aspectRatio));
         File scaledFile = FileUtil.createTempFile(
                 FilenameUtils.getBaseName(file.getName()) + "_Scaled",
                 FilenameUtils.getExtension(file.getName()));
@@ -68,7 +68,7 @@ public class ImageSplitService {
         LOG.debug("W={} H={}", image.getWidth(), image.getHeight());
         double aspectRatio = (double) image.getWidth(null) / (double) image.getHeight(null);
 
-        BufferedImage bufferedImage = resizeImage(image, 750, (int) (750 / aspectRatio));
+        BufferedImage bufferedImage = resizeImage(image, 950, (int) (950 / aspectRatio));
         ImageIO.write(bufferedImage, PNG_FORMAT, outputStream);
     }
 
