@@ -257,19 +257,23 @@ public class ReceiptController {
             ReceiptByBizForm receiptByBizForm
     ) throws IOException {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        LOG.info("Loading Receipts by Biz Name id={}", bizName);
+        LOG.info("Loading Receipts by bizName={} monthYear={}", bizName, monthYear);
         receiptByBizForm.setMonthYear(monthYear.getText());
         receiptByBizForm.setBizName(bizName.getText());
 
-        List<BizNameEntity> bizNames = bizNameManager.findAllBizWithMatchingName(bizName.getText());
-        for (BizNameEntity bizNameEntity : bizNames) {
-            List<ReceiptEntity> receipts = receiptService.findReceipt(
-                    bizNameEntity,
-                    receiptUser.getRid(),
-                    ReceiptForMonth.MMM_YYYY.parseDateTime(monthYear.getText()));
-            for (ReceiptEntity receiptEntity : receipts) {
-                receiptByBizForm.getReceiptLandingViews().add(ReceiptLandingView.newInstance(receiptEntity));
+        try {
+            List<BizNameEntity> bizNames = bizNameManager.findAllBizWithMatchingName(bizName.getText());
+            for (BizNameEntity bizNameEntity : bizNames) {
+                List<ReceiptEntity> receipts = receiptService.findReceipt(
+                        bizNameEntity,
+                        receiptUser.getRid(),
+                        ReceiptForMonth.MMM_YYYY.parseDateTime(monthYear.getText()));
+                for (ReceiptEntity receiptEntity : receipts) {
+                    receiptByBizForm.getReceiptLandingViews().add(ReceiptLandingView.newInstance(receiptEntity));
+                }
             }
+        } catch (Exception e) {
+            LOG.error("Error reason={}", e.getLocalizedMessage(), e);
         }
 
         return nextPageByBiz;
