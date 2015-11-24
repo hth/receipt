@@ -103,7 +103,7 @@
                 </c:choose>
                 <span class="rightside-li-right-text" style="width: 140px;">
                     <c:choose>
-                        <c:when test="${receipt.tax gt 0}">
+                        <c:when test="${receipt.splitTax gt 0}">
                             <spring:eval expression='receipt.splitTax'/>&nbsp;&nbsp;&nbsp;(T)
                         </c:when>
                         <c:otherwise>
