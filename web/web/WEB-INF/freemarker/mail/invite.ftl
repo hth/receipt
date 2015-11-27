@@ -28,7 +28,10 @@
 	}
 </style>
 <body>
-<img src="cid:headerReceiptApp.logo" alt="ReceiptApp for Receipts" />
+<object data="../ReceiptApp.svg" type="image/svg+xml">
+	<img src="cid:headerReceiptApp.logo" alt="ReceiptApp" />
+</object>
+<#include "../ReceiptApp.svg">
 <p>
 	Hey,
 </p>
