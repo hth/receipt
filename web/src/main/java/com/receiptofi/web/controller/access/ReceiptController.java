@@ -307,12 +307,15 @@ public class ReceiptController {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         LOG.debug("Receipt id={} fid={} splitAction={}", receiptId, fid, splitAction);
 
-        boolean result = false;
-        Double splitTotal = 0.00;
+        boolean result;
+        Double splitTotal;
 
-        String rid = receiptUser.getRid();
-        ReceiptEntity receipt = receiptService.findReceipt(receiptId.getText(), rid);
-        if (null != receipt) {
+        ReceiptEntity receipt = receiptService.findReceipt(receiptId.getText(), receiptUser.getRid());
+        if (null == receipt) {
+            LOG.warn("No Receipt found to Split with receiptId={}", receiptId);
+            httpServletResponse.sendError(HttpServletResponse.SC_NOT_FOUND, "NotFound");
+            return null;
+        } else {
             result = receiptService.splitAction(fid.getText(), splitAction, receipt);
             splitTotal = receipt.getSplitTotal();
         }
