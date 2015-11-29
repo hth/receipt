@@ -52,6 +52,7 @@ import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -503,9 +504,10 @@ public class ReceiptManagerImpl implements ReceiptManager {
     }
 
     @Override
-    public boolean deleteFriendReceipt(String receiptId, String rid) {
-        return mongoTemplate.remove(
+    public boolean softDeleteFriendReceipt(String receiptId, String rid) {
+        return mongoTemplate.updateFirst(
                 query(where("RF").is(receiptId).and("RID").is(rid)),
+                entityUpdate(update("A", false).set("D", true).set("U", new Date())),
                 TABLE
         ).getN() > 0;
     }
