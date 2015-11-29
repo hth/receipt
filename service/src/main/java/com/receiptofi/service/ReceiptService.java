@@ -185,8 +185,8 @@ public class ReceiptService {
         }
     }
 
-    public boolean deleteFriendReceipt(String receiptId, String rid) {
-        return receiptManager.deleteFriendReceipt(receiptId, rid);
+    public boolean softDeleteFriendReceipt(String receiptId, String rid) {
+        return receiptManager.softDeleteFriendReceipt(receiptId, rid);
     }
 
     /**
@@ -518,7 +518,7 @@ public class ReceiptService {
                     updateFriendReceipt(receipt);
 
                     /** Remove entry. */
-                    deleteFriendReceipt(receipt.getId(), fid);
+                    softDeleteFriendReceipt(receipt.getId(), fid);
                     result = true;
                 } else {
                     LOG.warn("Not found split expenses between fid={} rid={} OR SplitStatus is not Unsettled. Skipping.",

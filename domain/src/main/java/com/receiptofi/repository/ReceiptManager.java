@@ -228,7 +228,7 @@ public interface ReceiptManager extends RepositoryManager<ReceiptEntity> {
      * @param rid
      * @return
      */
-    boolean deleteFriendReceipt(String receiptId, String rid);
+    boolean softDeleteFriendReceipt(String receiptId, String rid);
 
     /**
      * Collection size.
