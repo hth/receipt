@@ -187,6 +187,7 @@ public class MobilePushNotificationService {
             String payload = APNS.newPayload()
                     .alertBody(message)
                     .sound("default")
+                    .instantDeliveryOrSilentNotification()
                     .build();
             apnsService.push(registeredDevice.getToken(), payload);
         }
