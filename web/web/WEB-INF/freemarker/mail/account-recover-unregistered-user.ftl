@@ -28,12 +28,7 @@
 	}
 </style>
 <body>
-<p style="background: rgba(255, 255, 255, 0.95);">
-	<object data="../ReceiptApp.svg" type="image/svg+xml">
-		<img src="cid:headerReceiptApp.logo" alt="ReceiptApp" />
-	</object>
-    <#include "../ReceiptApp.svg">
-</p>
+<#include "../ReceiptApp.svg">
 <p style="padding-top: 10px;">
 	Hey,
 </p>
