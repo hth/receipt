@@ -455,11 +455,6 @@ public class MailService {
         helper.setSubject(subject);
 
         //Attach image always at the end
-        URL headerUrl = Thread.currentThread().getContextClassLoader().getResource("../jsp/images/headerReceiptApp.jpg");
-        Assert.notNull(headerUrl);
-        FileSystemResource headerRes = new FileSystemResource(headerUrl.getPath());
-        helper.addInline("headerReceiptApp.logo", headerRes);
-
         if (subject.startsWith(mailInviteSubject)) {
             //Attach image always at the end
             URL googleUrl = Thread.currentThread().getContextClassLoader().getResource("../jsp/images/smallGoogle.jpg");
