@@ -47,7 +47,7 @@ public class RestoreBizStoreDataProcess {
             @Value ("${restoreAddresses:ON}")
             String restoreAddresses,
 
-            @Value ("${recordFetchLimit:100}")
+            @Value ("${recordFetchLimit:1000}")
             int recordFetchLimit,
 
             BizStoreManager bizStoreManager,

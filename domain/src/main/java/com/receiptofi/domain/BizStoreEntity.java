@@ -52,8 +52,14 @@ public class BizStoreEntity extends BaseEntity {
     @Field ("COR")
     private Coordinate coordinate;
 
-    @Field ("PL")
+    @Field ("PI")
     private String placeId;
+
+    @Field ("PT")
+    private String[] placeType;
+
+    @Field ("PR")
+    private float placeRating;
 
     @DBRef
     @Field ("BIZ_NAME")
@@ -176,5 +182,21 @@ public class BizStoreEntity extends BaseEntity {
 
     public void setPlaceId(String placeId) {
         this.placeId = placeId;
+    }
+
+    public String[] getPlaceType() {
+        return placeType;
+    }
+
+    public void setPlaceType(String[] placeType) {
+        this.placeType = placeType;
+    }
+
+    public float getPlaceRating() {
+        return placeRating;
+    }
+
+    public void setPlaceRating(float placeRating) {
+        this.placeRating = placeRating;
     }
 }
