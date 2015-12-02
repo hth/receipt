@@ -52,6 +52,9 @@ public class BizStoreEntity extends BaseEntity {
     @Field ("COR")
     private Coordinate coordinate;
 
+    @Field ("PL")
+    private String placeId;
+
     @DBRef
     @Field ("BIZ_NAME")
     private BizNameEntity bizName;
@@ -165,5 +168,13 @@ public class BizStoreEntity extends BaseEntity {
 
     public void setCoordinate(Coordinate coordinate) {
         this.coordinate = coordinate;
+    }
+
+    public String getPlaceId() {
+        return placeId;
+    }
+
+    public void setPlaceId(String placeId) {
+        this.placeId = placeId;
     }
 }

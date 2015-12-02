@@ -59,6 +59,7 @@ public class ExternalService {
                 double lng = results[0].geometry.location.lng;
 
                 bizStore.setCoordinate(new Coordinate(lat, lng));
+                bizStore.setPlaceId(results[0].placeId);
                 bizStore.setValidatedUsingExternalAPI(true);
             } else {
                 LOG.error("Geocoding result from address is empty for bizStoreId={} bizStoreAddress={}",
