@@ -2,10 +2,14 @@ package com.receiptofi.service;
 
 import com.google.maps.GeoApiContext;
 import com.google.maps.GeocodingApi;
+import com.google.maps.PlacesApi;
 import com.google.maps.model.GeocodingResult;
+import com.google.maps.model.PlaceDetails;
 
 import com.receiptofi.domain.BizStoreEntity;
 import com.receiptofi.domain.value.Coordinate;
+
+import org.apache.commons.lang3.StringUtils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -60,6 +64,15 @@ public class ExternalService {
 
                 bizStore.setCoordinate(new Coordinate(lat, lng));
                 bizStore.setPlaceId(results[0].placeId);
+
+                PlaceDetails placeDetails = PlacesApi.placeDetails(context, results[0].placeId).await();
+                bizStore.setPlaceType(placeDetails.types);
+                bizStore.setPlaceRating(placeDetails.rating);
+
+                if (StringUtils.isNotEmpty(placeDetails.formattedPhoneNumber)) {
+                    bizStore.setPhone(placeDetails.formattedPhoneNumber);
+                }
+
                 bizStore.setValidatedUsingExternalAPI(true);
             } else {
                 LOG.error("Geocoding result from address is empty for bizStoreId={} bizStoreAddress={}",

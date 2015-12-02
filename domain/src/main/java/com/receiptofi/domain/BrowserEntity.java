@@ -49,6 +49,9 @@ public class BrowserEntity extends BaseEntity {
     @Field ("OSV")
     private String operatingSystemVersion;
 
+    @SuppressWarnings("unused")
+    private BrowserEntity() {}
+
     private BrowserEntity(
             String cookieId,
             String ipAddress,
