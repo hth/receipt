@@ -240,11 +240,11 @@ public class MailService {
 
                 String sentTo = StringUtils.isEmpty(devSentTo) ? mail : devSentTo;
                 if (sentTo.equalsIgnoreCase(devSentTo)) {
-                    helper.setTo(new InternetAddress(devSentTo, emailAddressName));
                     LOG.info("Mail account not found send to={}", devSentTo);
+                    helper.setTo(new InternetAddress(devSentTo, emailAddressName));
                 } else {
-                    helper.setTo(new InternetAddress(mail, userAccount.getName()));
                     LOG.info("Mail account not found send to={}", mail);
+                    helper.setTo(new InternetAddress(mail, ""));
                 }
 
                 sendMail(
