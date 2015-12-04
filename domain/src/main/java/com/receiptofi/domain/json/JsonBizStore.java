@@ -8,6 +8,8 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.receiptofi.domain.BizStoreEntity;
 import com.receiptofi.domain.annotation.Mobile;
 
+import java.util.Arrays;
+
 /**
  * User: hitender
  * Date: 8/25/14 12:17 AM
@@ -42,6 +44,12 @@ public class JsonBizStore {
     @JsonProperty ("lng")
     private String lng = "";
 
+    @JsonProperty ("type")
+    private String type = "";
+
+    @JsonProperty ("rating")
+    private float rating;
+
     private JsonBizStore(BizStoreEntity bizStoreEntity) {
         this.address = bizStoreEntity.getAddress();
         this.phone = bizStoreEntity.getPhoneFormatted();
@@ -49,6 +57,8 @@ public class JsonBizStore {
             this.lat = Double.toString(bizStoreEntity.getCoordinate().getLat());
             this.lng = Double.toString(bizStoreEntity.getCoordinate().getLng());
         }
+        this.type = Arrays.toString(bizStoreEntity.getPlaceType());
+        this.rating = bizStoreEntity.getPlaceRating();
     }
 
     public static JsonBizStore newInstance(BizStoreEntity bizStoreEntity) {
