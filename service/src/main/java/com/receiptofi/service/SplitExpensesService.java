@@ -45,7 +45,7 @@ public class SplitExpensesService {
     }
 
     public List<JsonFriend> populateProfileOfFriends(String rdid, Map<String, JsonFriend> jsonFriends) {
-        List<SplitExpensesEntity> splitExpenses = splitExpensesManager.getSplitExpensesFriendsForReceipt(rdid);
+        List<SplitExpensesEntity> splitExpenses = getSplitExpensesFriendsForReceipt(rdid);
 
         List<JsonFriend> jsonSplitFriends = new ArrayList<>();
         for (SplitExpensesEntity splitExpense : splitExpenses) {
@@ -60,6 +60,10 @@ public class SplitExpensesService {
 
     public boolean doesExists(String rdid, String rid, String fid) {
         return splitExpensesManager.doesExists(rdid, rid, fid);
+    }
+
+    public List<SplitExpensesEntity> getSplitExpensesFriendsForReceipt(String rdid) {
+        return splitExpensesManager.getSplitExpensesFriendsForReceipt(rdid);
     }
 
     /**
