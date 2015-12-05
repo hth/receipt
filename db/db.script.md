@@ -1,3 +1,6 @@
+#### Date Dec 04 2015 - Build 1477
+    db.getCollection('BIZ_STORE').update({},              { $set: {EA: false} },                    {multi: true});
+
 #### Date Nov 16 2015 - Build 1456
 Update records with BS as NB to Promotional for all the receipts
 
@@ -10,7 +13,6 @@ Update records with BS as NB to Promotional for all the receipts
 Delete Device Id for complete refresh for a user
 
     db.getCollection('REGISTERED_DEVICE').remove({"RID" : "10000000003"})
-
 
 #### Date Oct 21 2015 - Build 1401
 Update billing as it was causing issue when BS is NB and ABT is empty/null 
