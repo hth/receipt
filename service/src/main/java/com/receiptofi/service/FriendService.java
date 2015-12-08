@@ -7,17 +7,14 @@ import com.receiptofi.domain.FriendEntity;
 import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.domain.json.JsonAwaitingAcceptance;
 import com.receiptofi.domain.json.JsonFriend;
-import com.receiptofi.domain.site.ReceiptUser;
 import com.receiptofi.domain.types.FriendConnectionTypeEnum;
 import com.receiptofi.repository.FriendManager;
-import com.receiptofi.utils.ScrubbedInput;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.HashMap;
