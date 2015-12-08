@@ -1,5 +1,5 @@
 #### Date Dec 04 2015 - Build 1477
-    db.getCollection('BIZ_STORE').update({},              { $set: {EA: false} },                    {multi: true});
+    db.getCollection('BIZ_STORE').update({},            { $set: {EA: false} },                  {multi: true});
 
 #### Date Nov 16 2015 - Build 1456
 Update records with BS as NB to Promotional for all the receipts
