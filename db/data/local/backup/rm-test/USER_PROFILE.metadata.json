@@ -1,0 +1,1 @@
+{"options":{},"indexes":[{"v":1,"key":{"_id":1},"name":"_id_","ns":"rm-test.USER_PROFILE"},{"v":1,"unique":true,"key":{"RID":-1,"PUID":-1,"PID":1,"EM":1},"name":"user_profile_rid_puid_pid_em_idx","ns":"rm-test.USER_PROFILE"},{"v":1,"unique":true,"key":{"EM":1},"name":"user_profile_em_idx","ns":"rm-test.USER_PROFILE"}]}

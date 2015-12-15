@@ -1,0 +1,1 @@
+{"options":{},"indexes":[{"v":1,"key":{"_id":1},"name":"_id_","ns":"rm-test.SPLIT_EXPENSES"},{"v":1,"unique":true,"key":{"RDID":-1,"RID":1,"FID":1},"name":"split_expenses_rid_fid_idx","ns":"rm-test.SPLIT_EXPENSES","background":true}]}

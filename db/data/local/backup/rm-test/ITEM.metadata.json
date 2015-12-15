@@ -1,0 +1,1 @@
+{"options":{},"indexes":[{"v":1,"key":{"_id":1},"name":"_id_","ns":"rm-test.ITEM"},{"v":1,"key":{"RI":-1,"BI":-1,"RID":-1},"name":"item_ri_bi_rid_idx","ns":"rm-test.ITEM"}]}
