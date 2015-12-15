@@ -498,9 +498,17 @@ public class ReceiptService {
                         /** Update all existing friend receipt. */
                         updateFriendReceipt(receipt);
 
-                        /** Create new entry for friend. */
-                        ReceiptEntity friendReceipt = receipt.createReceiptForFriend(fid);
-                        save(friendReceipt);
+                        /** Create new receipt for friend or update existing receipt for friend. */
+                        ReceiptEntity friendReceipt = receiptManager.findOne(fid, receipt.getReceiptDate(), receipt.getTotal());
+                        if (friendReceipt == null) {
+                            friendReceipt = receipt.createReceiptForFriend(fid);
+                            save(friendReceipt);
+                        } else {
+                            ReceiptEntity copyOfReceipt = receipt.createReceiptForFriend(fid);
+                            copyOfReceipt.setId(friendReceipt.getId());
+                            copyOfReceipt.setVersion(friendReceipt.getVersion());
+                            save(copyOfReceipt);
+                        }
                     } else {
                         LOG.warn("Already split expenses with fid={} rid={} skipping split", fid, receipt.getReceiptUserId());
                     }

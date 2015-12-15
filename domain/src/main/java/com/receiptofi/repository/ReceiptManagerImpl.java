@@ -417,13 +417,16 @@ public class ReceiptManagerImpl implements ReceiptManager {
     }
 
     @Override
-    public ReceiptEntity findNotDeletedChecksumDuplicate(String checksum, String id) {
-        return mongoTemplate.findOne(checksumQueryIfDuplicateExists(checksum, id), ReceiptEntity.class, TABLE);
+    public boolean hasRecordWithSimilarChecksum(String checksum) {
+        return !mongoTemplate.find(checksumQuery(checksum).addCriteria(isActive()), ReceiptEntity.class, TABLE).isEmpty();
     }
 
     @Override
-    public boolean hasRecordWithSimilarChecksum(String checksum) {
-        return !mongoTemplate.find(checksumQuery(checksum).addCriteria(isActive()), ReceiptEntity.class, TABLE).isEmpty();
+    public ReceiptEntity findOne(String rid, Date receiptDate, Double total) {
+        return mongoTemplate.findOne(
+                query(where("RID").is(rid).and("RTXD").is(receiptDate).and("TOT").is(total)),
+                ReceiptEntity.class
+        );
     }
 
     @Override
@@ -497,7 +500,12 @@ public class ReceiptManagerImpl implements ReceiptManager {
     @Override
     public boolean updateFriendReceipt(String referToReceiptId, int splitCount, Double splitTotal, Double splitTax) {
         return mongoTemplate.updateMulti(
-                query(where("RF").is(referToReceiptId)),
+                query(where("RF").is(referToReceiptId)
+                        .andOperator(
+                                isActive(),
+                                isNotDeleted()
+                        )
+                ),
                 entityUpdate(update("SC", splitCount).set("ST", splitTotal).set("SX", splitTax)),
                 TABLE
         ).getN() > 0;
