@@ -2,9 +2,12 @@ package com.receiptofi.domain.json;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import com.receiptofi.domain.annotation.Mobile;
+
+import javax.validation.constraints.Null;
 
 /**
  * User: hitender
@@ -27,9 +30,21 @@ import com.receiptofi.domain.annotation.Mobile;
 //@JsonInclude (JsonInclude.Include.NON_NULL)
 @Mobile
 public class JsonOweExpenses {
+
+    /** When object used for OwesOther then RID is not null and FID is null. */
+    @Null
+    @JsonProperty ("rid")
     private String receiptUserId;
+
+    /** When object used for OweMe then RID is not and FID is not null. */
+    @Null
+    @JsonProperty ("fid")
     private String friendUserId;
+
+    @JsonProperty ("splitTotal")
     private Double splitTotal;
+
+    @JsonProperty ("name")
     private String name;
 
     public JsonOweExpenses(String receiptUserId, String friendUserId, Double splitTotal, String name) {
