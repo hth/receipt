@@ -1,7 +1,9 @@
 package com.receiptofi.service;
 
 import com.receiptofi.domain.SplitExpensesEntity;
+import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.domain.json.JsonFriend;
+import com.receiptofi.domain.json.JsonOweExpenses;
 import com.receiptofi.domain.types.SplitStatusEnum;
 import com.receiptofi.repository.SplitExpensesManager;
 import com.receiptofi.utils.Maths;
@@ -27,6 +29,7 @@ import java.util.Map;
 @Service
 public class SplitExpensesService {
     @Autowired private SplitExpensesManager splitExpensesManager;
+    @Autowired private UserProfilePreferenceService userProfilePreferenceService;
 
     public SplitExpensesEntity getById(String id, String rid) {
         return splitExpensesManager.getById(id, rid);
@@ -129,5 +132,41 @@ public class SplitExpensesService {
 
     public boolean hasSettleProcessStarted(String rdid) {
         return splitExpensesManager.hasSettleProcessStarted(rdid);
+    }
+
+    public List<JsonOweExpenses> getJsonOweOthersExpenses(String rid) {
+        List<JsonOweExpenses> jsonOweOthers = new ArrayList<>();
+        List<SplitExpensesEntity> splitExpenses = getOwesOthers(rid);
+        for (SplitExpensesEntity splitExpense : splitExpenses) {
+            if (splitExpense.getSplitTotal() > 0) {
+                UserProfileEntity userProfile = userProfilePreferenceService.findByReceiptUserId(splitExpense.getReceiptUserId());
+                JsonOweExpenses jsonOweExpense = new JsonOweExpenses(
+                        splitExpense.getReceiptUserId(),
+                        splitExpense.getFriendUserId(),
+                        splitExpense.getSplitTotal(),
+                        userProfile.getName());
+
+                jsonOweOthers.add(jsonOweExpense);
+            }
+        }
+        return jsonOweOthers;
+    }
+
+    public List<JsonOweExpenses> getJsonOweExpenses(String rid) {
+        List<JsonOweExpenses> jsonOweMe = new ArrayList<>();
+        List<SplitExpensesEntity> splitExpenses = getOwesMe(rid);
+        for (SplitExpensesEntity splitExpense : splitExpenses) {
+            if (splitExpense.getSplitTotal() > 0) {
+                UserProfileEntity userProfile = userProfilePreferenceService.findByReceiptUserId(splitExpense.getFriendUserId());
+                JsonOweExpenses jsonOweExpense = new JsonOweExpenses(
+                        splitExpense.getReceiptUserId(),
+                        splitExpense.getFriendUserId(),
+                        splitExpense.getSplitTotal(),
+                        userProfile.getName());
+
+                jsonOweMe.add(jsonOweExpense);
+            }
+        }
+        return jsonOweMe;
     }
 }

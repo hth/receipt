@@ -70,20 +70,7 @@ public class SplitController {
     ) {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        List<JsonOweExpenses> jsonOweMe = new ArrayList<>();
-        List<SplitExpensesEntity> splitExpenses = splitExpensesService.getOwesMe(receiptUser.getRid());
-        for (SplitExpensesEntity splitExpense : splitExpenses) {
-            if (splitExpense.getSplitTotal() > 0) {
-                UserProfileEntity userProfile = userProfilePreferenceService.findByReceiptUserId(splitExpense.getFriendUserId());
-                JsonOweExpenses jsonOweExpense = new JsonOweExpenses(
-                        splitExpense.getReceiptUserId(),
-                        splitExpense.getFriendUserId(),
-                        splitExpense.getSplitTotal(),
-                        userProfile.getName());
-
-                jsonOweMe.add(jsonOweExpense);
-            }
-        }
+        List<JsonOweExpenses> jsonOweMe = splitExpensesService.getJsonOweExpenses(receiptUser.getRid());
         splitForm.setJsonOweMe(jsonOweMe);
 
         for (JsonOweExpenses jsonOweExpense : splitForm.getJsonOweMe()) {
@@ -92,20 +79,7 @@ public class SplitController {
                     splitExpensesService.getSplitExpenses(receiptUser.getRid(), jsonOweExpense.getFriendUserId()));
         }
 
-        List<JsonOweExpenses> jsonOweOthers = new ArrayList<>();
-        splitExpenses = splitExpensesService.getOwesOthers(receiptUser.getRid());
-        for (SplitExpensesEntity splitExpense : splitExpenses) {
-            if (splitExpense.getSplitTotal() > 0) {
-                UserProfileEntity userProfile = userProfilePreferenceService.findByReceiptUserId(splitExpense.getReceiptUserId());
-                JsonOweExpenses jsonOweExpense = new JsonOweExpenses(
-                        splitExpense.getReceiptUserId(),
-                        splitExpense.getFriendUserId(),
-                        splitExpense.getSplitTotal(),
-                        userProfile.getName());
-
-                jsonOweOthers.add(jsonOweExpense);
-            }
-        }
+        List<JsonOweExpenses> jsonOweOthers = splitExpensesService.getJsonOweOthersExpenses(receiptUser.getRid());
         splitForm.setJsonOweOthers(jsonOweOthers);
 
         for (JsonOweExpenses jsonOweExpense : splitForm.getJsonOweOthers()) {
