@@ -49,6 +49,10 @@ public class NotificationEntity extends BaseEntity {
     @Field ("REF")
     private String referenceId;
 
+    @NotNull
+    @Field ("CN")
+    private int count = 0;
+
     @SuppressWarnings ("unused")
     private NotificationEntity() {
         super();
@@ -83,7 +87,7 @@ public class NotificationEntity extends BaseEntity {
         return notified;
     }
 
-    public void setNotified(boolean notified) {
+    private void setNotified(boolean notified) {
         this.notified = notified;
     }
 
@@ -105,5 +109,13 @@ public class NotificationEntity extends BaseEntity {
 
     public void setReferenceId(String referenceId) {
         this.referenceId = referenceId;
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    public void addCount() {
+        this.count++;
     }
 }

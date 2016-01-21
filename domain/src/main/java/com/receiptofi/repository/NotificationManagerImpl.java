@@ -17,6 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -44,6 +45,9 @@ public class NotificationManagerImpl implements NotificationManager {
             NotificationEntity.class,
             Document.class,
             "collection");
+
+    @Value ("${MobilePushNotificationProcess.notification_retry_count:5}")
+    int notificationRetryCount;
 
     @Autowired private MongoTemplate mongoTemplate;
 
@@ -117,7 +121,8 @@ public class NotificationManagerImpl implements NotificationManager {
         return mongoTemplate.find(
                 query(where("NNE").is(NotificationTypeEnum.PUSH_NOTIFICATION)
                         .and("C").lte(sinceDate)
-                        .and("V").is(0)
+                        .and("ND").is(false)
+                        .and("CN").lt(notificationRetryCount)
                         .andOperator(
                                 isActive(),
                                 isNotDeleted()
