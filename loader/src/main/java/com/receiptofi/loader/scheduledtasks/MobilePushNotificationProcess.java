@@ -201,7 +201,6 @@ public class MobilePushNotificationProcess {
                     if (mobilePushNotificationService.sendNotification(
                             notification.getMessage(),
                             notification.getReceiptUserId())) {
-                        notification.markAsNotified();
                         success++;
                     } else {
                         notification.addCount();
