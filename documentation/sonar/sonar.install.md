@@ -7,6 +7,10 @@ After this execute command
 
     mysql --user=root mysql
     
+Shows `sonar` db
+    
+    mysql -uroot  
+    
 Followed by command [here](https://github.com/SonarSource/sonar-examples/tree/master/scripts/database/mysql "Create Sonar DB")
 
     CREATE DATABASE sonar CHARACTER SET utf8 COLLATE utf8_general_ci;
