@@ -55,7 +55,7 @@ public class NotificationService {
         notificationEntity.setMessage(message);
         notificationEntity.setReceiptUserId(rid);
         if (notified) {
-            notificationEntity.markAsNotified();
+            notificationEntity.markThisToSendNotification();
         }
         notificationEntity.setReferenceId(id);
 

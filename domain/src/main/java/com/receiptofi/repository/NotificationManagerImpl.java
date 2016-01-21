@@ -121,7 +121,6 @@ public class NotificationManagerImpl implements NotificationManager {
         return mongoTemplate.find(
                 query(where("NNE").is(NotificationTypeEnum.PUSH_NOTIFICATION)
                         .and("C").lte(sinceDate)
-                        .and("ND").is(false)
                         .and("CN").lt(notificationRetryCount)
                         .andOperator(
                                 isActive(),

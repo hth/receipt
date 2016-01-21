@@ -35,6 +35,7 @@ public class NotificationEntity extends BaseEntity {
     @Field ("RID")
     private String receiptUserId;
 
+    /** Notify this notification when true otherwise do not notify using messaging. */
     @NotNull
     @Field ("ND")
     private boolean notified = false;
@@ -91,7 +92,7 @@ public class NotificationEntity extends BaseEntity {
         this.notified = notified;
     }
 
-    public void markAsNotified() {
+    public void markThisToSendNotification() {
         setNotified(true);
     }
 
