@@ -42,7 +42,6 @@ public class MobilePushNotificationProcess {
     private static final Logger LOG = LoggerFactory.getLogger(MobilePushNotificationProcess.class);
 
     private String notifyUserSwitch;
-    private int notificationRetryCount;
     private MobilePushNotificationService mobilePushNotificationService;
     private DocumentUpdateService documentUpdateService;
     private StorageManager storageManager;
@@ -56,9 +55,6 @@ public class MobilePushNotificationProcess {
             @Value ("${MobilePushNotificationProcess.notifyUserSwitch}")
             String notifyUserSwitch,
 
-            @Value ("${MobilePushNotificationProcess.notification_retry_count:5}")
-            int notificationRetryCount,
-
             MobilePushNotificationService mobilePushNotificationService,
             DocumentUpdateService documentUpdateService,
             StorageManager storageManager,
@@ -69,7 +65,6 @@ public class MobilePushNotificationProcess {
 
     ) {
         this.notifyUserSwitch = notifyUserSwitch;
-        this.notificationRetryCount = notificationRetryCount;
         this.mobilePushNotificationService = mobilePushNotificationService;
         this.documentUpdateService = documentUpdateService;
         this.storageManager = storageManager;
@@ -203,12 +198,11 @@ public class MobilePushNotificationProcess {
                             notification.getReceiptUserId())) {
                         success++;
                     } else {
-                        notification.addCount();
-                        if (notification.getCount() >= notificationRetryCount) {
-                            notification.inActive();
-                        }
                         failure++;
                     }
+
+                    /** Increase count when success or failure. */
+                    notification.addCount();
                     notificationManager.save(notification);
                 } catch (Exception e) {
                     LOG.error("Notification failure notification={} reason={}", notification, e.getLocalizedMessage(), e);
