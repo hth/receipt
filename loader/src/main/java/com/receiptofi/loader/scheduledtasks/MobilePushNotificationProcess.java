@@ -203,6 +203,7 @@ public class MobilePushNotificationProcess {
 
                     /** Increase count when success or failure. */
                     notification.addCount();
+                    LOG.info("Push notification try count={}", notification.getCount());
                     notificationManager.save(notification);
                 } catch (Exception e) {
                     LOG.error("Notification failure notification={} reason={}", notification, e.getLocalizedMessage(), e);
