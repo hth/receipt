@@ -117,6 +117,6 @@ public class NotificationEntity extends BaseEntity {
     }
 
     public void addCount() {
-        this.count++;
+        this.count += 1;
     }
 }
