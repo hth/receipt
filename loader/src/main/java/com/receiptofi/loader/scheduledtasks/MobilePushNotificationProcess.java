@@ -196,8 +196,16 @@ public class MobilePushNotificationProcess {
                     if (mobilePushNotificationService.sendNotification(
                             notification.getMessage(),
                             notification.getReceiptUserId())) {
+
+                        notification.setNotificationStateToSuccess();
                         success++;
                     } else {
+                        LOG.warn("Push failure rid={} id={} message={}",
+                                notification.getReceiptUserId(),
+                                notification.getId(),
+                                notification.getMessage());
+
+                        notification.setNotificationStateToFailure();
                         failure++;
                     }
 

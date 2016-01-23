@@ -10,6 +10,8 @@ import static org.springframework.data.mongodb.core.query.Update.update;
 
 import com.receiptofi.domain.BaseEntity;
 import com.receiptofi.domain.NotificationEntity;
+import com.receiptofi.domain.types.NotificationMarkerEnum;
+import com.receiptofi.domain.types.NotificationStateEnum;
 import com.receiptofi.domain.types.NotificationTypeEnum;
 import com.receiptofi.domain.types.PaginationEnum;
 
@@ -68,7 +70,7 @@ public class NotificationManagerImpl implements NotificationManager {
     public List<NotificationEntity> getNotifications(String rid, int start, int limit) {
         Query query = query(
                 where("RID").is(rid)
-                        .and("ND").is(true)
+                        .and("NM").is(NotificationMarkerEnum.N)
                         .andOperator(
                                 isActive(),
                                 isNotDeleted()
@@ -84,7 +86,7 @@ public class NotificationManagerImpl implements NotificationManager {
     public long notificationCount(String rid) {
         return mongoTemplate.count(
                 query(where("RID").is(rid)
-                                .and("ND").is(true)
+                                .and("NM").is(NotificationMarkerEnum.N)
                                 .andOperator(
                                         isActive(),
                                         isNotDeleted()
@@ -121,6 +123,8 @@ public class NotificationManagerImpl implements NotificationManager {
         return mongoTemplate.find(
                 query(where("NNE").is(NotificationTypeEnum.PUSH_NOTIFICATION)
                         .and("C").lte(sinceDate)
+                        .and("NM").is(NotificationMarkerEnum.N)
+                        .and("NS").exists(true).andOperator(where("NS").is(NotificationStateEnum.F))
                         .and("CN").lt(notificationRetryCount)
                         .andOperator(
                                 isActive(),
