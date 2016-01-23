@@ -41,7 +41,7 @@ public class JsonNotification {
     private String message;
 
     @JsonProperty ("n")
-    private boolean notified = false;
+    private boolean notify;
 
     @JsonProperty ("nt")
     private String notificationType;
@@ -64,7 +64,7 @@ public class JsonNotification {
     private JsonNotification(NotificationEntity notification) {
         this.id = notification.getId();
         this.message = notification.getMessage();
-        this.notified = notification.isNotified();
+        this.notify = notification.isNotify();
         this.notificationType = notification.getNotificationType().getName();
         this.referenceId = notification.getReferenceId() == null ? "" : notification.getReferenceId();
         this.created = DateFormatUtils.format(notification.getCreated(), JsonReceipt.ISO8601_FMT, TimeZone.getTimeZone("UTC"));

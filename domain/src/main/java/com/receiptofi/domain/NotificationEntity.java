@@ -1,5 +1,7 @@
 package com.receiptofi.domain;
 
+import com.receiptofi.domain.types.NotificationMarkerEnum;
+import com.receiptofi.domain.types.NotificationStateEnum;
 import com.receiptofi.domain.types.NotificationTypeEnum;
 
 import org.springframework.data.mongodb.core.index.CompoundIndex;
@@ -37,8 +39,8 @@ public class NotificationEntity extends BaseEntity {
 
     /** Notify this notification when true otherwise do not notify using messaging. */
     @NotNull
-    @Field ("ND")
-    private boolean notified = false;
+    @Field ("NM")
+    private NotificationMarkerEnum notificationMarkerEnum;
 
     @NotNull
     @Field ("NNE")
@@ -53,6 +55,10 @@ public class NotificationEntity extends BaseEntity {
     @NotNull
     @Field ("CN")
     private int count = 0;
+
+    @NotNull
+    @Field ("NS")
+    private NotificationStateEnum notificationStateEnum;
 
     @SuppressWarnings ("unused")
     private NotificationEntity() {
@@ -84,16 +90,16 @@ public class NotificationEntity extends BaseEntity {
         this.receiptUserId = receiptUserId;
     }
 
-    public boolean isNotified() {
-        return notified;
+    public NotificationMarkerEnum getNotificationMarkerEnum() {
+        return notificationMarkerEnum;
     }
 
-    private void setNotified(boolean notified) {
-        this.notified = notified;
+    public void setNotificationMarkerEnum(NotificationMarkerEnum notificationMarkerEnum) {
+        this.notificationMarkerEnum = notificationMarkerEnum;
     }
 
-    public void markThisToSendNotification() {
-        setNotified(true);
+    public boolean isNotify() {
+        return notificationMarkerEnum == NotificationMarkerEnum.N;
     }
 
     public NotificationTypeEnum getNotificationType() {
@@ -118,5 +124,17 @@ public class NotificationEntity extends BaseEntity {
 
     public void addCount() {
         this.count += 1;
+    }
+
+    public NotificationStateEnum getNotificationStateEnum() {
+        return notificationStateEnum;
+    }
+
+    public void setNotificationStateToSuccess() {
+        this.notificationStateEnum = NotificationStateEnum.S;
+    }
+
+    public void setNotificationStateToFailure() {
+        this.notificationStateEnum = NotificationStateEnum.F;
     }
 }
