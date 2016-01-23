@@ -58,7 +58,7 @@ public class NotificationEntity extends BaseEntity {
 
     @NotNull
     @Field ("NS")
-    private NotificationStateEnum notificationStateEnum;
+    private NotificationStateEnum notificationStateEnum = NotificationStateEnum.F;
 
     @SuppressWarnings ("unused")
     private NotificationEntity() {
