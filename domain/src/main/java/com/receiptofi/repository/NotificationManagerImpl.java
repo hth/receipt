@@ -124,7 +124,7 @@ public class NotificationManagerImpl implements NotificationManager {
                 query(where("NNE").is(NotificationTypeEnum.PUSH_NOTIFICATION)
                         .and("C").lte(sinceDate)
                         .and("NM").is(NotificationMarkerEnum.N)
-                        .and("NS").exists(true).andOperator(where("NS").is(NotificationStateEnum.F))
+                        .and("NS").is(NotificationStateEnum.F)
                         .and("CN").lt(notificationRetryCount)
                         .andOperator(
                                 isActive(),
