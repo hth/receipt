@@ -116,6 +116,12 @@ public class NotificationService {
                         NotificationMarkerEnum.P);
                 break;
             case RECEIPT_DELETED:
+                addNotification(
+                        message,
+                        notificationType,
+                        supportedEntity.getId(),
+                        ((ReceiptEntity) supportedEntity).getReceiptUserId(),
+                        NotificationMarkerEnum.S);
             case RECEIPT:
                 addNotification(
                         message,
