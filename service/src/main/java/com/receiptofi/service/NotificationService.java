@@ -138,8 +138,16 @@ public class NotificationService {
                 break;
             case DOCUMENT:
             case DOCUMENT_UPLOADED:
-            case DOCUMENT_REJECTED:
             case DOCUMENT_DELETED:
+                addNotification(
+                        message,
+                        notificationType,
+                        supportedEntity.getId(),
+                        ((DocumentEntity) supportedEntity).getReceiptUserId(),
+                        NotificationMarkerEnum.I);
+                break;
+            case DOCUMENT_REJECTED:
+                LOG.info("DOCUMENT_REJECTED message={}", message);
                 addNotification(
                         message,
                         notificationType,
