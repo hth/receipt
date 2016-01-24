@@ -137,13 +137,13 @@ public class MobilePushNotificationProcess {
                             break;
                         case REJECT:
                             //Remove REJECT since cron will take care for it
-                            GridFSDBFile gridFSDBFile = storageManager.get(document.getFileSystemEntities().iterator().next().getBlobId());
-                            DBObject dbObject = gridFSDBFile.getMetaData();
-                            String message = documentUpdateService.getNotificationMessageForReceiptReject(dbObject, document.getDocumentRejectReason());
-                            LOG.info("REJECT message={}", message);
-                            mobilePushNotificationService.sendNotification(
-                                    documentUpdateService.getNotificationMessageForReceiptReject(dbObject, document.getDocumentRejectReason()),
-                                    document.getReceiptUserId());
+//                            GridFSDBFile gridFSDBFile = storageManager.get(document.getFileSystemEntities().iterator().next().getBlobId());
+//                            DBObject dbObject = gridFSDBFile.getMetaData();
+//                            String message = documentUpdateService.getNotificationMessageForReceiptReject(dbObject, document.getDocumentRejectReason());
+//                            LOG.info("REJECT message={}", message);
+//                            mobilePushNotificationService.sendNotification(
+//                                    documentUpdateService.getNotificationMessageForReceiptReject(dbObject, document.getDocumentRejectReason()),
+//                                    document.getReceiptUserId());
                             success++;
                             break;
                         case DUPLICATE:

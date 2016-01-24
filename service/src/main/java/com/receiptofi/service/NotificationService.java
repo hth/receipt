@@ -144,7 +144,7 @@ public class NotificationService {
                         notificationType,
                         supportedEntity.getId(),
                         ((DocumentEntity) supportedEntity).getReceiptUserId(),
-                        NotificationMarkerEnum.I);
+                        NotificationMarkerEnum.S);
                 break;
             case DOCUMENT_REJECTED:
                 LOG.info("DOCUMENT_REJECTED message={}", message);
