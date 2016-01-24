@@ -44,7 +44,6 @@ public class MobilePushNotificationProcess {
     private String notifyUserSwitch;
     private MobilePushNotificationService mobilePushNotificationService;
     private DocumentUpdateService documentUpdateService;
-    private StorageManager storageManager;
     private ReceiptManager receiptManager;
     private AccountService accountService;
     private CronStatsService cronStatsService;
@@ -57,7 +56,6 @@ public class MobilePushNotificationProcess {
 
             MobilePushNotificationService mobilePushNotificationService,
             DocumentUpdateService documentUpdateService,
-            StorageManager storageManager,
             ReceiptManager receiptManager,
             AccountService accountService,
             CronStatsService cronStatsService,
@@ -67,7 +65,6 @@ public class MobilePushNotificationProcess {
         this.notifyUserSwitch = notifyUserSwitch;
         this.mobilePushNotificationService = mobilePushNotificationService;
         this.documentUpdateService = documentUpdateService;
-        this.storageManager = storageManager;
         this.receiptManager = receiptManager;
         this.accountService = accountService;
         this.cronStatsService = cronStatsService;
@@ -136,15 +133,7 @@ public class MobilePushNotificationProcess {
                             success++;
                             break;
                         case REJECT:
-                            //Remove REJECT since cron will take care for it
-//                            GridFSDBFile gridFSDBFile = storageManager.get(document.getFileSystemEntities().iterator().next().getBlobId());
-//                            DBObject dbObject = gridFSDBFile.getMetaData();
-//                            String message = documentUpdateService.getNotificationMessageForReceiptReject(dbObject, document.getDocumentRejectReason());
-//                            LOG.info("REJECT message={}", message);
-//                            mobilePushNotificationService.sendNotification(
-//                                    documentUpdateService.getNotificationMessageForReceiptReject(dbObject, document.getDocumentRejectReason()),
-//                                    document.getReceiptUserId());
-                            success++;
+                            skipped++;
                             break;
                         case DUPLICATE:
                             skipped++;
