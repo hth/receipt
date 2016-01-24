@@ -122,7 +122,7 @@ public class NotificationManagerImpl implements NotificationManager {
     public List<NotificationEntity> getAllPushNotifications(Date sinceDate) {
         return mongoTemplate.find(
                 query(where("C").lte(sinceDate)
-                        .and("NM").ne(NotificationMarkerEnum.P)
+                        .and("NM").is(NotificationMarkerEnum.P)
                         .and("NS").is(NotificationStateEnum.F)
                         .and("CN").lt(notificationRetryCount)
                         .andOperator(
