@@ -43,20 +43,18 @@ public class NotificationService {
      * @param notificationType
      * @param id
      * @param rid
-     * @param notificationMarker
      */
     public void addNotification(
             String message,
             NotificationTypeEnum notificationType,
             String id,
-            String rid,
-            NotificationMarkerEnum notificationMarker
+            String rid
     ) {
         NotificationEntity notificationEntity = NotificationEntity.newInstance(notificationType);
         notificationEntity.setMessage(message);
         notificationEntity.setReceiptUserId(rid);
-        notificationEntity.setNotificationMarkerEnum(notificationMarker);
-        if (notificationMarker != NotificationMarkerEnum.P) {
+        notificationEntity.setNotificationMarkerEnum(notificationType.getNotificationMarker());
+        if (notificationType.getNotificationMarker() != NotificationMarkerEnum.P) {
             /** Defaults to success as its not going to be sent through Push Notification. */
             notificationEntity.setNotificationStateToSuccess();
         }
@@ -86,10 +84,18 @@ public class NotificationService {
     ) {
         switch (notificationType) {
             case PUSH_NOTIFICATION:
-                addNotification(message, notificationType, null, rid, NotificationMarkerEnum.P);
+                addNotification(
+                        message,
+                        notificationType,
+                        null,
+                        rid);
                 break;
             case MESSAGE:
-                addNotification(message, notificationType, null, rid, NotificationMarkerEnum.S);
+                addNotification(
+                        message,
+                        notificationType,
+                        null,
+                        rid);
                 break;
             default:
                 throw new UnsupportedOperationException("Incorrect method call for Notification Type");
@@ -112,39 +118,34 @@ public class NotificationService {
                         message,
                         notificationType,
                         supportedEntity.getId(),
-                        ((ReceiptEntity) supportedEntity).getReceiptUserId(),
-                        NotificationMarkerEnum.P);
+                        ((ReceiptEntity) supportedEntity).getReceiptUserId());
                 break;
             case RECEIPT_DELETED:
                 addNotification(
                         message,
                         notificationType,
                         supportedEntity.getId(),
-                        ((ReceiptEntity) supportedEntity).getReceiptUserId(),
-                        NotificationMarkerEnum.S);
+                        ((ReceiptEntity) supportedEntity).getReceiptUserId());
             case RECEIPT:
                 addNotification(
                         message,
                         notificationType,
                         supportedEntity.getId(),
-                        ((ReceiptEntity) supportedEntity).getReceiptUserId(),
-                        NotificationMarkerEnum.P);
+                        ((ReceiptEntity) supportedEntity).getReceiptUserId());
                 break;
             case INVOICE:
                 addNotification(
                         message,
                         notificationType,
                         supportedEntity.getId(),
-                        ((ReceiptEntity) supportedEntity).getReceiptUserId(),
-                        NotificationMarkerEnum.S);
+                        ((ReceiptEntity) supportedEntity).getReceiptUserId());
                 break;
             case MILEAGE:
                 addNotification(
                         message,
                         notificationType,
                         supportedEntity.getId(),
-                        ((MileageEntity) supportedEntity).getReceiptUserId(),
-                        NotificationMarkerEnum.S);
+                        ((MileageEntity) supportedEntity).getReceiptUserId());
                 break;
             case DOCUMENT:
             case DOCUMENT_UPLOADED:
@@ -153,16 +154,14 @@ public class NotificationService {
                         message,
                         notificationType,
                         supportedEntity.getId(),
-                        ((DocumentEntity) supportedEntity).getReceiptUserId(),
-                        NotificationMarkerEnum.S);
+                        ((DocumentEntity) supportedEntity).getReceiptUserId());
                 break;
             case DOCUMENT_REJECTED:
                 addNotification(
                         message,
                         notificationType,
                         supportedEntity.getId(),
-                        ((DocumentEntity) supportedEntity).getReceiptUserId(),
-                        NotificationMarkerEnum.P);
+                        ((DocumentEntity) supportedEntity).getReceiptUserId());
                 break;
             case DOCUMENT_UPLOAD_FAILED:
                 LOG.error("Not supported Notification Type: {}", notificationType);

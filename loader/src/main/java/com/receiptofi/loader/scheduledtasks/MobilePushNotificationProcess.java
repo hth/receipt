@@ -44,7 +44,6 @@ public class MobilePushNotificationProcess {
     private String notifyUserSwitch;
     private MobilePushNotificationService mobilePushNotificationService;
     private DocumentUpdateService documentUpdateService;
-    private ReceiptManager receiptManager;
     private AccountService accountService;
     private CronStatsService cronStatsService;
     private NotificationManager notificationManager;
@@ -56,7 +55,6 @@ public class MobilePushNotificationProcess {
 
             MobilePushNotificationService mobilePushNotificationService,
             DocumentUpdateService documentUpdateService,
-            ReceiptManager receiptManager,
             AccountService accountService,
             CronStatsService cronStatsService,
             NotificationManager notificationManager
@@ -65,7 +63,6 @@ public class MobilePushNotificationProcess {
         this.notifyUserSwitch = notifyUserSwitch;
         this.mobilePushNotificationService = mobilePushNotificationService;
         this.documentUpdateService = documentUpdateService;
-        this.receiptManager = receiptManager;
         this.accountService = accountService;
         this.cronStatsService = cronStatsService;
         this.notificationManager = notificationManager;
@@ -166,7 +163,7 @@ public class MobilePushNotificationProcess {
             return;
         }
 
-        List<NotificationEntity> notificationEntities = notificationManager.getAllPushNotifications(DateUtil.getDateMinusMinutes(1));
+        List<NotificationEntity> notificationEntities = notificationManager.getAllPushNotifications();
         if (notificationEntities.isEmpty()) {
             /** No notification to be sent. */
             return;

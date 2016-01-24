@@ -13,26 +13,32 @@ package com.receiptofi.domain.types;
 })
 public enum NotificationTypeEnum {
 
-    MESSAGE("MESSAGE", "Message"),
-    PUSH_NOTIFICATION("PUSH_NOTIFICATION", "Push Notification"),
-    RECEIPT("RECEIPT", "Receipt"),
-    RECEIPT_DELETED("RECEIPT_DELETED", "Receipt Deleted"),
-    INVOICE("INVOICE", "Invoice"),
-    MILEAGE("MILEAGE", "Mileage"),
-    DOCUMENT("DOCUMENT", "Document"),
-    EXPENSE_REPORT("EXPENSE_REPORT", "Expense Report"),
+    PUSH_NOTIFICATION("PUSH_NOTIFICATION", "Push Notification", NotificationMarkerEnum.P),
+    MESSAGE("MESSAGE", "Message", NotificationMarkerEnum.S),
+
+    EXPENSE_REPORT("EXPENSE_REPORT", "Expense Report", NotificationMarkerEnum.P),
+    RECEIPT_DELETED("RECEIPT_DELETED", "Receipt Deleted", NotificationMarkerEnum.S),
+    RECEIPT("RECEIPT", "Receipt", NotificationMarkerEnum.P),
+
+    INVOICE("INVOICE", "Invoice", NotificationMarkerEnum.S),
+    MILEAGE("MILEAGE", "Mileage", NotificationMarkerEnum.S),
+
+    DOCUMENT("DOCUMENT", "Document", NotificationMarkerEnum.S),
+    DOCUMENT_UPLOADED("DOCUMENT_UPLOADED", "Document Uploaded", NotificationMarkerEnum.S),
+    DOCUMENT_DELETED("DOCUMENT_DELETED", "Document Deleted", NotificationMarkerEnum.S),
+    DOCUMENT_REJECTED("DOCUMENT_REJECTED", "Document Rejected", NotificationMarkerEnum.P),
+
     /** DOCUMENT_UPLOAD_FAILED is used in mobile to save local notification when document image fails to upload. */
-    DOCUMENT_UPLOAD_FAILED("DOCUMENT_UPLOAD_FAILED", "Document Upload Failed"),
-    DOCUMENT_UPLOADED("DOCUMENT_UPLOADED", "Document Uploaded"),
-    DOCUMENT_REJECTED("DOCUMENT_REJECTED", "Document Rejected"),
-    DOCUMENT_DELETED("DOCUMENT_DELETED", "Document Deleted");
+    DOCUMENT_UPLOAD_FAILED("DOCUMENT_UPLOAD_FAILED", "Document Upload Failed", NotificationMarkerEnum.I);
 
     private final String description;
     private final String name;
+    private final NotificationMarkerEnum notificationMarker;
 
-    NotificationTypeEnum(String name, String description) {
+    NotificationTypeEnum(String name, String description, NotificationMarkerEnum notificationMarker) {
         this.name = name;
         this.description = description;
+        this.notificationMarker = notificationMarker;
     }
 
     public String getName() {
@@ -41,6 +47,10 @@ public enum NotificationTypeEnum {
 
     public String getDescription() {
         return description;
+    }
+
+    public NotificationMarkerEnum getNotificationMarker() {
+        return notificationMarker;
     }
 
     @Override
