@@ -56,6 +56,7 @@ public class NotificationEntity extends BaseEntity {
     @Field ("CN")
     private int count = 0;
 
+    /** Success or Failure in notifying. */
     @NotNull
     @Field ("NS")
     private NotificationStateEnum notificationStateEnum = NotificationStateEnum.F;
@@ -99,7 +100,7 @@ public class NotificationEntity extends BaseEntity {
     }
 
     public boolean isNotify() {
-        return notificationMarkerEnum == NotificationMarkerEnum.N;
+        return notificationMarkerEnum != NotificationMarkerEnum.I;
     }
 
     public NotificationTypeEnum getNotificationType() {

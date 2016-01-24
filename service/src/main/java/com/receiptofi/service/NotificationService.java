@@ -82,10 +82,10 @@ public class NotificationService {
     ) {
         switch (notificationType) {
             case PUSH_NOTIFICATION:
-                addNotification(message, notificationType, null, rid, NotificationMarkerEnum.N);
+                addNotification(message, notificationType, null, rid, NotificationMarkerEnum.P);
                 break;
             case MESSAGE:
-                addNotification(message, notificationType, null, rid, NotificationMarkerEnum.N);
+                addNotification(message, notificationType, null, rid, NotificationMarkerEnum.S);
                 break;
             default:
                 throw new UnsupportedOperationException("Incorrect method call for Notification Type");
@@ -109,7 +109,7 @@ public class NotificationService {
                         notificationType,
                         supportedEntity.getId(),
                         ((ReceiptEntity) supportedEntity).getReceiptUserId(),
-                        NotificationMarkerEnum.N);
+                        NotificationMarkerEnum.P);
                 break;
             case RECEIPT_DELETED:
             case RECEIPT:
@@ -118,7 +118,7 @@ public class NotificationService {
                         notificationType,
                         supportedEntity.getId(),
                         ((ReceiptEntity) supportedEntity).getReceiptUserId(),
-                        NotificationMarkerEnum.N);
+                        NotificationMarkerEnum.P);
                 break;
             case INVOICE:
                 addNotification(
@@ -126,7 +126,7 @@ public class NotificationService {
                         notificationType,
                         supportedEntity.getId(),
                         ((ReceiptEntity) supportedEntity).getReceiptUserId(),
-                        NotificationMarkerEnum.N);
+                        NotificationMarkerEnum.P);
                 break;
             case MILEAGE:
                 addNotification(
@@ -134,7 +134,7 @@ public class NotificationService {
                         notificationType,
                         supportedEntity.getId(),
                         ((MileageEntity) supportedEntity).getReceiptUserId(),
-                        NotificationMarkerEnum.N);
+                        NotificationMarkerEnum.P);
                 break;
             case DOCUMENT:
             case DOCUMENT_UPLOADED:
@@ -153,7 +153,7 @@ public class NotificationService {
                         notificationType,
                         supportedEntity.getId(),
                         ((DocumentEntity) supportedEntity).getReceiptUserId(),
-                        NotificationMarkerEnum.N);
+                        NotificationMarkerEnum.P);
                 break;
             case DOCUMENT_UPLOAD_FAILED:
                 LOG.error("Not supported Notification Type: {}", notificationType);
