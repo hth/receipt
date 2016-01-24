@@ -14,6 +14,7 @@ import com.receiptofi.domain.types.NotificationMarkerEnum;
 import com.receiptofi.domain.types.NotificationStateEnum;
 import com.receiptofi.domain.types.NotificationTypeEnum;
 import com.receiptofi.domain.types.PaginationEnum;
+import com.receiptofi.utils.DateUtil;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -119,10 +120,15 @@ public class NotificationManagerImpl implements NotificationManager {
     }
 
     @Override
-    public List<NotificationEntity> getAllPushNotifications(Date sinceDate) {
+    public List<NotificationEntity> getAllPushNotifications() {
         return mongoTemplate.find(
-                query(where("C").lte(sinceDate)
-                        .and("NM").is(NotificationMarkerEnum.P)
+                query(where("NM").is(NotificationMarkerEnum.P)
+                        .orOperator(
+                                where("C").lte(DateUtil.getDateMinusMinutes(1)).and("NNE").is(NotificationTypeEnum.PUSH_NOTIFICATION),
+                                where("C").lte(DateUtil.getDateMinusMinutes(5)).and("NNE").is(NotificationTypeEnum.EXPENSE_REPORT),
+                                where("C").lte(DateUtil.getDateMinusMinutes(1)).and("NNE").is(NotificationTypeEnum.DOCUMENT_REJECTED),
+                                where("C").lte(DateUtil.getDateMinusMinutes(10)).and("NNE").is(NotificationTypeEnum.RECEIPT)
+                        )
                         .and("NS").is(NotificationStateEnum.F)
                         .and("CN").lt(notificationRetryCount)
                         .andOperator(

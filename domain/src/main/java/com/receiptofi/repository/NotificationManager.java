@@ -36,5 +36,5 @@ public interface NotificationManager extends RepositoryManager<NotificationEntit
      *
      * @return
      */
-    List<NotificationEntity> getAllPushNotifications(Date sinceDate);
+    List<NotificationEntity> getAllPushNotifications();
 }
