@@ -56,6 +56,10 @@ public class NotificationService {
         notificationEntity.setMessage(message);
         notificationEntity.setReceiptUserId(rid);
         notificationEntity.setNotificationMarkerEnum(notificationMarker);
+        if (notificationMarker != NotificationMarkerEnum.P) {
+            /** Defaults to success as its not going to be sent through Push Notification. */
+            notificationEntity.setNotificationStateToSuccess();
+        }
         notificationEntity.setReferenceId(id);
 
         try {
@@ -126,7 +130,7 @@ public class NotificationService {
                         notificationType,
                         supportedEntity.getId(),
                         ((ReceiptEntity) supportedEntity).getReceiptUserId(),
-                        NotificationMarkerEnum.P);
+                        NotificationMarkerEnum.S);
                 break;
             case MILEAGE:
                 addNotification(
@@ -134,7 +138,7 @@ public class NotificationService {
                         notificationType,
                         supportedEntity.getId(),
                         ((MileageEntity) supportedEntity).getReceiptUserId(),
-                        NotificationMarkerEnum.P);
+                        NotificationMarkerEnum.S);
                 break;
             case DOCUMENT:
             case DOCUMENT_UPLOADED:
@@ -147,7 +151,6 @@ public class NotificationService {
                         NotificationMarkerEnum.S);
                 break;
             case DOCUMENT_REJECTED:
-                LOG.info("DOCUMENT_REJECTED message={}", message);
                 addNotification(
                         message,
                         notificationType,
