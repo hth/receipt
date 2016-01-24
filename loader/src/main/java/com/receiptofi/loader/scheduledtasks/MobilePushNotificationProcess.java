@@ -96,7 +96,6 @@ public class MobilePushNotificationProcess {
             return;
         }
 
-        ReceiptEntity receipt;
         int success = 0, failure = 0, skipped = 0;
         try {
             for (DocumentEntity document : documents) {
@@ -114,13 +113,6 @@ public class MobilePushNotificationProcess {
                             }
                             success++;
                             break;
-                        case PROCESSED:
-                            receipt = receiptManager.findReceipt(document.getReferenceDocumentId(), document.getReceiptUserId());
-                            mobilePushNotificationService.sendNotification(
-                                    documentUpdateService.getNotificationMessageForReceiptProcess(receipt),
-                                    document.getReceiptUserId());
-                            success++;
-                            break;
                         case REPROCESS:
                             LOG.info("Notifying technicians on documents={} documentId={} rid={}",
                                     document.getDocumentStatus(), document.getId(), document.getReceiptUserId());
@@ -132,9 +124,8 @@ public class MobilePushNotificationProcess {
                             }
                             success++;
                             break;
+                        case PROCESSED:
                         case REJECT:
-                            skipped++;
-                            break;
                         case DUPLICATE:
                             skipped++;
                             break;
