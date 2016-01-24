@@ -5,7 +5,8 @@ package com.receiptofi.domain.types;
  * Date: 1/22/16 2:46 PM
  */
 public enum NotificationMarkerEnum {
-    N("N", "Notify"),
+    S("S", "Simple Notify"),
+    P("p", "Push Notify"),
     I("I", "Ignore Notifying");
 
     private final String description;

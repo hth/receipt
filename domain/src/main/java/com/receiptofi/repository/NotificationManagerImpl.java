@@ -70,7 +70,7 @@ public class NotificationManagerImpl implements NotificationManager {
     public List<NotificationEntity> getNotifications(String rid, int start, int limit) {
         Query query = query(
                 where("RID").is(rid)
-                        .and("NM").is(NotificationMarkerEnum.N)
+                        .and("NM").ne(NotificationMarkerEnum.I)
                         .andOperator(
                                 isActive(),
                                 isNotDeleted()
@@ -86,7 +86,7 @@ public class NotificationManagerImpl implements NotificationManager {
     public long notificationCount(String rid) {
         return mongoTemplate.count(
                 query(where("RID").is(rid)
-                                .and("NM").is(NotificationMarkerEnum.N)
+                                .and("NM").ne(NotificationMarkerEnum.I)
                                 .andOperator(
                                         isActive(),
                                         isNotDeleted()
@@ -123,7 +123,7 @@ public class NotificationManagerImpl implements NotificationManager {
         return mongoTemplate.find(
                 query(where("NNE").is(NotificationTypeEnum.PUSH_NOTIFICATION)
                         .and("C").lte(sinceDate)
-                        .and("NM").is(NotificationMarkerEnum.N)
+                        .and("NM").is(NotificationMarkerEnum.P)
                         .and("NS").is(NotificationStateEnum.F)
                         .and("CN").lt(notificationRetryCount)
                         .andOperator(
