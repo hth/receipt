@@ -36,6 +36,18 @@ import java.util.List;
 public class ItemAnalyticService {
     private static final Logger LOG = LoggerFactory.getLogger(ItemAnalyticService.class);
 
+    private static Ordering<ItemEntity> ascendingOrderForItems = new Ordering<ItemEntity>() {
+        public int compare(ItemEntity left, ItemEntity right) {
+            return Longs.compare(left.getReceipt().getReceiptDate().getTime(), right.getReceipt().getReceiptDate().getTime());
+        }
+    };
+
+    private static Ordering<ItemEntity> descendingOrderForItems = new Ordering<ItemEntity>() {
+        public int compare(ItemEntity left, ItemEntity right) {
+            return Longs.compare(right.getReceipt().getReceiptDate().getTime(), left.getReceipt().getReceiptDate().getTime());
+        }
+    };
+
     @Autowired private ItemManager itemManager;
 
     public ItemEntity findItemById(String itemId, String receiptUserId) {
@@ -74,7 +86,7 @@ public class ItemAnalyticService {
     public List<ItemEntity> findAllByNameLimitByDays(String itemName, final DateTime untilThisDay) {
         List<ItemEntity> items = itemManager.findAllByNameLimitByDays(itemName, untilThisDay);
         List<ItemEntity> filteredItems = filterItemsByUntilThisDay(untilThisDay, items);
-        return callAscendingOrdering(filteredItems);
+        return ascendingOrderForItems.sortedCopy(filteredItems);
     }
 
     /**
@@ -89,7 +101,7 @@ public class ItemAnalyticService {
     public List<ItemEntity> findAllByNameLimitByDays(String itemName, String userProfileId, final DateTime untilThisDay) {
         List<ItemEntity> items = itemManager.findAllByNameLimitByDays(itemName, userProfileId, untilThisDay);
         List<ItemEntity> filteredItems = filterItemsByUntilThisDay(untilThisDay, items);
-        return callAscendingOrdering(filteredItems);
+        return ascendingOrderForItems.sortedCopy(filteredItems);
     }
 
     /**
@@ -121,7 +133,7 @@ public class ItemAnalyticService {
      */
     public List<ItemEntity> findAllByName(ItemEntity item, String userProfileId, int itemLimit) {
         List<ItemEntity> items = itemManager.findAllByName(item, userProfileId, itemLimit);
-        return descendingOrderForItems().sortedCopy(items);
+        return descendingOrderForItems.sortedCopy(items);
     }
 
     public long findAllByNameCount(ItemEntity item, String userProfileId) {
@@ -130,28 +142,6 @@ public class ItemAnalyticService {
 
     @SuppressWarnings ("unused")
     private List<ItemEntity> callDescendingOrdering(List<ItemEntity> items) {
-        Ordering<ItemEntity> ordered = descendingOrderForItems();
-        return ordered.sortedCopy(items);
-    }
-
-    private Ordering<ItemEntity> descendingOrderForItems() {
-        return new Ordering<ItemEntity>() {
-            public int compare(ItemEntity left, ItemEntity right) {
-                return Longs.compare(right.getReceipt().getReceiptDate().getTime(), left.getReceipt().getReceiptDate().getTime());
-            }
-        };
-    }
-
-    private List<ItemEntity> callAscendingOrdering(List<ItemEntity> items) {
-        Ordering<ItemEntity> ordered = ascendingOrderForItems();
-        return ordered.sortedCopy(items);
-    }
-
-    private Ordering<ItemEntity> ascendingOrderForItems() {
-        return new Ordering<ItemEntity>() {
-            public int compare(ItemEntity left, ItemEntity right) {
-                return Longs.compare(left.getReceipt().getReceiptDate().getTime(), right.getReceipt().getReceiptDate().getTime());
-            }
-        };
+        return descendingOrderForItems.sortedCopy(items);
     }
 }
