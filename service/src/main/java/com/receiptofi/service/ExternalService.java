@@ -65,7 +65,9 @@ public class ExternalService {
                 //TODO simplify and improve
                 for (AddressComponent addressComponent : results[0].addressComponents) {
                     String types = Arrays.toString(addressComponent.types);
+                    LOG.info("types={}", types);
                     if (types.contains("country")) {
+                        LOG.info("country code={}", addressComponent.shortName);
                         bizStore.setCountryShortName(addressComponent.shortName);
                     }
                 }
