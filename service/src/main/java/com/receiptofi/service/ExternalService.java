@@ -3,6 +3,7 @@ package com.receiptofi.service;
 import com.google.maps.GeoApiContext;
 import com.google.maps.GeocodingApi;
 import com.google.maps.PlacesApi;
+import com.google.maps.model.AddressComponent;
 import com.google.maps.model.GeocodingResult;
 import com.google.maps.model.PlaceDetails;
 
@@ -18,6 +19,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
+
+import java.util.Arrays;
 
 /**
  * User: hitender
@@ -58,7 +61,14 @@ public class ExternalService {
 
                 String formattedAddress = results[0].formattedAddress;
                 bizStore.setAddress(formattedAddress);
-                bizStore.setCountryShortName(results[0].addressComponents[5].shortName);
+
+                //TODO simplify and improve
+                for (AddressComponent addressComponent : results[0].addressComponents) {
+                    String types = Arrays.toString(addressComponent.types);
+                    if (types.contains("country")) {
+                        bizStore.setCountryShortName(addressComponent.shortName);
+                    }
+                }
 
                 double lat = results[0].geometry.location.lat;
                 double lng = results[0].geometry.location.lng;
