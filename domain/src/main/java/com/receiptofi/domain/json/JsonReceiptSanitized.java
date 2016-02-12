@@ -7,11 +7,11 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import com.receiptofi.domain.ReceiptEntity;
 import com.receiptofi.domain.annotation.Mobile;
+import com.receiptofi.domain.util.LocaleUtil;
 
 import org.apache.commons.lang3.time.DateFormatUtils;
 
 import java.util.TimeZone;
-import java.util.stream.Collectors;
 
 /**
  * User: hitender
@@ -36,6 +36,9 @@ import java.util.stream.Collectors;
 public class JsonReceiptSanitized {
     public static final String ISO8601_FMT = "yyyy-MM-dd'T'HH:mm:ss.sssZZZ";
 
+    @JsonProperty ("code")
+    private String currencyCode;
+
     @JsonProperty ("total")
     private Double total;
 
@@ -58,6 +61,7 @@ public class JsonReceiptSanitized {
     }
 
     public JsonReceiptSanitized(ReceiptEntity receipt) {
+        this.currencyCode = LocaleUtil.getCurrencySymbol(receipt.getBizStore().getCountryShortName());
         this.total = receipt.getTotal();
         this.jsonBizName = JsonBizName.newInstance(receipt.getBizName());
         this.jsonBizStore = JsonBizStore.newInstance(receipt.getBizStore());
