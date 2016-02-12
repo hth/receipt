@@ -31,7 +31,7 @@ Replace default **[nginx.conf](nginx.conf.md)** file with the contents listed at
 
 ### Firewall Configuration
 
-Its prefered to set **root** access for firewall configuration
+Its preferred to set **root** access for firewall configuration
 
 ##### Create directory
     /usr/local/startup/firewall
