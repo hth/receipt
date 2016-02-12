@@ -14,6 +14,7 @@ import com.receiptofi.domain.ReceiptEntity;
 import com.receiptofi.domain.SplitExpensesEntity;
 import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.domain.annotation.Mobile;
+import com.receiptofi.domain.json.JsonReceipt;
 import com.receiptofi.domain.types.CommentTypeEnum;
 import com.receiptofi.domain.types.DocumentStatusEnum;
 import com.receiptofi.domain.types.NotificationTypeEnum;
@@ -37,7 +38,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * User: hitender
@@ -557,5 +561,9 @@ public class ReceiptService {
                 LOG.debug("Failure update split total with new price");
             }
         }
+    }
+
+    public List<JsonReceipt> getRecentReceipts(int limit) {
+        return receiptManager.getRecentReceipts(limit).stream().map(JsonReceipt::new).collect(Collectors.toList());
     }
 }

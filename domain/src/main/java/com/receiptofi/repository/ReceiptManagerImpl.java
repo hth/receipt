@@ -149,7 +149,6 @@ public class ReceiptManagerImpl implements ReceiptManager {
      * { $group: { _id: {year : "$Y", month : "$M"}, splitTotal: { $sum: "$ST" } } },
      * { $sort: {"_id.month": 1}}
      * ] );
-     *
      * db.getCollection('RECEIPT').aggregate( [
      * { $match: { "RID": "10000000077" } },
      * { $group: { _id: {year: { $year: "$RTXD" }, month: { $month: "$RTXD" },}, splitTotal: { $sum: "$ST" } } },
@@ -518,5 +517,18 @@ public class ReceiptManagerImpl implements ReceiptManager {
                 entityUpdate(update("A", false).set("D", true).set("U", new Date())),
                 TABLE
         ).getN() > 0;
+    }
+
+    @Override
+    public List<ReceiptEntity> getRecentReceipts(int limit) {
+        return mongoTemplate.find(
+                query(new Criteria()
+                        .andOperator(
+                                isActive(),
+                                isNotDeleted()
+                        )
+                ).with(new Sort(DESC, "U")).limit(limit),
+                ReceiptEntity.class,
+                TABLE);
     }
 }
