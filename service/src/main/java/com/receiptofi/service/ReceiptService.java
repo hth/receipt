@@ -15,6 +15,7 @@ import com.receiptofi.domain.SplitExpensesEntity;
 import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.domain.annotation.Mobile;
 import com.receiptofi.domain.json.JsonReceipt;
+import com.receiptofi.domain.json.JsonReceiptSanitized;
 import com.receiptofi.domain.types.CommentTypeEnum;
 import com.receiptofi.domain.types.DocumentStatusEnum;
 import com.receiptofi.domain.types.NotificationTypeEnum;
@@ -563,7 +564,8 @@ public class ReceiptService {
         }
     }
 
-    public List<JsonReceipt> getRecentReceipts(int limit) {
-        return receiptManager.getRecentReceipts(limit).stream().map(JsonReceipt::new).collect(Collectors.toList());
+    @Mobile
+    public List<JsonReceiptSanitized> getRecentReceipts(int limit) {
+        return receiptManager.getRecentReceipts(limit).stream().map(JsonReceiptSanitized::new).collect(Collectors.toList());
     }
 }
