@@ -1,4 +1,4 @@
-package com.receiptofi.domain.util;
+package com.receiptofi.util;
 
 import java.text.NumberFormat;
 import java.util.HashMap;
