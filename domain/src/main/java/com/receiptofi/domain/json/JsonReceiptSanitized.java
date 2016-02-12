@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import com.receiptofi.domain.ReceiptEntity;
 import com.receiptofi.domain.annotation.Mobile;
-import com.receiptofi.util.LocaleUtil;
+import com.receiptofi.utils.LocaleUtil;
 
 import org.apache.commons.lang3.time.DateFormatUtils;
 
