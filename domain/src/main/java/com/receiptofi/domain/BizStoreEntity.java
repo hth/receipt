@@ -46,6 +46,10 @@ public class BizStoreEntity extends BaseEntity {
     private String address;
 
     @NotNull
+    @Field ("CS")
+    private String countryShortName;
+
+    @NotNull
     @Field ("PH")
     private String phone;
 
@@ -111,6 +115,14 @@ public class BizStoreEntity extends BaseEntity {
 
     public void setAddress(String address) {
         this.address = StringUtils.strip(address);
+    }
+
+    public String getCountryShortName() {
+        return countryShortName;
+    }
+
+    public void setCountryShortName(String countryShortName) {
+        this.countryShortName = countryShortName;
     }
 
     public String getPhone() {

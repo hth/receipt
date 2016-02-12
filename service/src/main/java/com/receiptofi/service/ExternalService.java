@@ -58,6 +58,7 @@ public class ExternalService {
 
                 String formattedAddress = results[0].formattedAddress;
                 bizStore.setAddress(formattedAddress);
+                bizStore.setCountryShortName(results[0].addressComponents[5].shortName);
 
                 double lat = results[0].geometry.location.lat;
                 double lng = results[0].geometry.location.lng;
