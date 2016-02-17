@@ -1,21 +1,14 @@
 package com.receiptofi.loader.scheduledtasks;
 
-import com.mongodb.DBObject;
-import com.mongodb.gridfs.GridFSDBFile;
-
 import com.receiptofi.domain.CronStatsEntity;
 import com.receiptofi.domain.DocumentEntity;
 import com.receiptofi.domain.NotificationEntity;
-import com.receiptofi.domain.ReceiptEntity;
 import com.receiptofi.domain.UserAccountEntity;
 import com.receiptofi.loader.service.MobilePushNotificationService;
 import com.receiptofi.repository.NotificationManager;
-import com.receiptofi.repository.ReceiptManager;
-import com.receiptofi.repository.StorageManager;
 import com.receiptofi.service.AccountService;
 import com.receiptofi.service.CronStatsService;
 import com.receiptofi.service.DocumentUpdateService;
-import com.receiptofi.utils.DateUtil;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
