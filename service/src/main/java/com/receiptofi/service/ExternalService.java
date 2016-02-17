@@ -4,6 +4,7 @@ import com.google.maps.GeoApiContext;
 import com.google.maps.GeocodingApi;
 import com.google.maps.PlacesApi;
 import com.google.maps.model.AddressComponent;
+import com.google.maps.model.AddressComponentType;
 import com.google.maps.model.GeocodingResult;
 import com.google.maps.model.PlaceDetails;
 
@@ -19,8 +20,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
-
-import java.util.Arrays;
 
 /**
  * User: hitender
@@ -62,13 +61,14 @@ public class ExternalService {
                 String formattedAddress = results[0].formattedAddress;
                 bizStore.setAddress(formattedAddress);
 
-                //TODO simplify and improve
                 for (AddressComponent addressComponent : results[0].addressComponents) {
-                    String types = Arrays.toString(addressComponent.types);
-                    LOG.info("types={}", types);
-                    if (types.contains("COUNTRY")) {
-                        LOG.info("country code={}", addressComponent.shortName);
-                        bizStore.setCountryShortName(addressComponent.shortName);
+                    for (AddressComponentType addressComponentType : addressComponent.types) {
+                        switch (addressComponentType) {
+                            case COUNTRY:
+                                LOG.debug("country code={}", addressComponent.shortName);
+                                bizStore.setCountryShortName(addressComponent.shortName);
+                                break;
+                        }
                     }
                 }
 
