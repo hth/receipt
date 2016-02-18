@@ -14,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -39,17 +40,21 @@ import java.util.concurrent.TimeUnit;
 public class FriendService {
     private static final Logger LOG = LoggerFactory.getLogger(FriendService.class);
 
-    private static final int SIZE_1000 = 1_000;
-    private final Cache<String, Map<String, JsonFriend>> friends;
+    @Value("${FriendService.friendCacheSize}")
+    private int friendCacheSize;
 
+    @Value("${FriendService.friendCachePeriod}")
+    private int friendCachePeriod;
+
+    private final Cache<String, Map<String, JsonFriend>> friends;
     private FriendManager friendManager;
     private UserProfilePreferenceService userProfilePreferenceService;
 
     @Autowired
     public FriendService(FriendManager friendManager, UserProfilePreferenceService userProfilePreferenceService) {
         friends = CacheBuilder.newBuilder()
-                .maximumSize(SIZE_1000)
-                .expireAfterWrite(3, TimeUnit.MINUTES)
+                .maximumSize(friendCacheSize)
+                .expireAfterWrite(friendCachePeriod, TimeUnit.MINUTES)
                 .build();
 
         this.friendManager = friendManager;
