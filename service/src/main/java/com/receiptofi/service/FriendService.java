@@ -49,7 +49,7 @@ public class FriendService {
     public FriendService(FriendManager friendManager, UserProfilePreferenceService userProfilePreferenceService) {
         friends = CacheBuilder.newBuilder()
                 .maximumSize(SIZE_1000)
-                .expireAfterWrite(30, TimeUnit.MINUTES)
+                .expireAfterWrite(3, TimeUnit.MINUTES)
                 .build();
 
         this.friendManager = friendManager;
@@ -172,6 +172,20 @@ public class FriendService {
         }
 
         friends.put(rid, jsonFriends);
+
+        /** Update connection of friends too. Avoid recursive as the connection could span across multiple records. */
+        for (String fid : jsonFriends.keySet()) {
+
+            userProfiles = getActiveConnections(fid);
+
+            jsonFriends = new LinkedHashMap<>();
+            for (UserProfileEntity userProfile : userProfiles) {
+                jsonFriends.put(userProfile.getReceiptUserId(), new JsonFriend(userProfile));
+            }
+
+            friends.put(fid, jsonFriends);
+        }
+
         return jsonFriends;
     }
 
