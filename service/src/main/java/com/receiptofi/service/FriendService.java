@@ -40,18 +40,22 @@ import java.util.concurrent.TimeUnit;
 public class FriendService {
     private static final Logger LOG = LoggerFactory.getLogger(FriendService.class);
 
-    @Value("${FriendService.friendCacheSize}")
-    private int friendCacheSize;
-
-    @Value("${FriendService.friendCachePeriod}")
-    private int friendCachePeriod;
-
     private final Cache<String, Map<String, JsonFriend>> friends;
     private FriendManager friendManager;
     private UserProfilePreferenceService userProfilePreferenceService;
 
     @Autowired
-    public FriendService(FriendManager friendManager, UserProfilePreferenceService userProfilePreferenceService) {
+    public FriendService(
+            @Value ("${FriendService.friendCacheSize}")
+            int friendCacheSize,
+
+            @Value ("${FriendService.friendCachePeriod}")
+            int friendCachePeriod,
+
+            FriendManager friendManager,
+            UserProfilePreferenceService userProfilePreferenceService
+    ) {
+        /** Do not make static cache or @Value out of constructor as cache is not set until Constructor is called. */
         friends = CacheBuilder.newBuilder()
                 .maximumSize(friendCacheSize)
                 .expireAfterWrite(friendCachePeriod, TimeUnit.MINUTES)
@@ -183,12 +187,12 @@ public class FriendService {
 
             userProfiles = getActiveConnections(fid);
 
-            jsonFriends = new LinkedHashMap<>();
+            Map<String, JsonFriend> jsonFriendOfFriends = new LinkedHashMap<>();
             for (UserProfileEntity userProfile : userProfiles) {
-                jsonFriends.put(userProfile.getReceiptUserId(), new JsonFriend(userProfile));
+                jsonFriendOfFriends.put(userProfile.getReceiptUserId(), new JsonFriend(userProfile));
             }
 
-            friends.put(fid, jsonFriends);
+            friends.put(fid, jsonFriendOfFriends);
         }
 
         return jsonFriends;
