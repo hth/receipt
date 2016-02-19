@@ -14,7 +14,6 @@ import com.receiptofi.domain.ReceiptEntity;
 import com.receiptofi.domain.SplitExpensesEntity;
 import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.domain.annotation.Mobile;
-import com.receiptofi.domain.json.JsonReceipt;
 import com.receiptofi.domain.json.JsonReceiptSanitized;
 import com.receiptofi.domain.types.CommentTypeEnum;
 import com.receiptofi.domain.types.DocumentStatusEnum;
@@ -39,9 +38,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
