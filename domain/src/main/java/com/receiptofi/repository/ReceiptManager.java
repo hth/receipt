@@ -232,14 +232,6 @@ public interface ReceiptManager extends RepositoryManager<ReceiptEntity> {
     boolean softDeleteFriendReceipt(String receiptId, String rid);
 
     /**
-     * Gets recently processed receipts.
-     *
-     * @param limit
-     * @return
-     */
-    List<ReceiptEntity> getRecentReceipts(int limit);
-
-    /**
      * Collection size.
      */
     long collectionSize();

@@ -518,17 +518,4 @@ public class ReceiptManagerImpl implements ReceiptManager {
                 TABLE
         ).getN() > 0;
     }
-
-    @Override
-    public List<ReceiptEntity> getRecentReceipts(int limit) {
-        return mongoTemplate.find(
-                query(new Criteria()
-                        .andOperator(
-                                isActive(),
-                                isNotDeleted()
-                        )
-                ).with(new Sort(DESC, "U")).limit(limit),
-                ReceiptEntity.class,
-                TABLE);
-    }
 }

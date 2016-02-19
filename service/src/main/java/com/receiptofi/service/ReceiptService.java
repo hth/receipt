@@ -560,9 +560,4 @@ public class ReceiptService {
             }
         }
     }
-
-    @Mobile
-    public List<JsonReceiptSanitized> getRecentReceipts(int limit) {
-        return receiptManager.getRecentReceipts(limit).stream().map(JsonReceiptSanitized::new).collect(Collectors.toList());
-    }
 }
