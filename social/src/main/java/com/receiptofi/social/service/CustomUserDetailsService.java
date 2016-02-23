@@ -172,7 +172,7 @@ public class CustomUserDetailsService implements UserDetailsService {
             throw new UsernameNotFoundException("Error in retrieving user");
         } else {
             UserAccountEntity userAccount = loginService.findByReceiptUserId(userProfile.getReceiptUserId());
-            LOG.warn("user={} accountValidated={}", userAccount.getReceiptUserId(), userAccount.isAccountValidated());
+            LOG.info("user={} accountValidated={}", userAccount.getReceiptUserId(), userAccount.isAccountValidated());
 
             boolean condition = isUserActiveAndRegistrationTurnedOn(userAccount, userProfile);
             return new ReceiptUser(
