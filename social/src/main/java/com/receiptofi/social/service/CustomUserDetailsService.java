@@ -93,11 +93,11 @@ public class CustomUserDetailsService implements UserDetailsService {
         /** Always check user login with lower letter email case. */
         UserProfileEntity userProfile = userProfilePreferenceService.findByEmail(email);
         if (null == userProfile) {
-            LOG.warn("not found user={}", email);
+            LOG.warn("Not found user={}", email);
             throw new UsernameNotFoundException("Error in retrieving user");
         } else {
             UserAccountEntity userAccount = loginService.findByReceiptUserId(userProfile.getReceiptUserId());
-            LOG.warn("user={} accountValidated={}", userAccount.getReceiptUserId(), userAccount.isAccountValidated());
+            LOG.info("user={} accountValidated={}", userAccount.getReceiptUserId(), userAccount.isAccountValidated());
 
             boolean condition = isUserActiveAndRegistrationTurnedOn(userAccount, userProfile);
             if (!condition && null == userAccount.getProviderId()) {
@@ -168,11 +168,11 @@ public class CustomUserDetailsService implements UserDetailsService {
 
         UserProfileEntity userProfile = userProfilePreferenceService.findByProviderUserId(puid);
         if (null == userProfile) {
-            LOG.warn("not found provider user={}", puid);
+            LOG.warn("Not found provider user={}", puid);
             throw new UsernameNotFoundException("Error in retrieving user");
         } else {
             UserAccountEntity userAccount = loginService.findByReceiptUserId(userProfile.getReceiptUserId());
-            LOG.warn("user={} accountValidated={}", userAccount.getReceiptUserId(), userAccount.isAccountValidated());
+            LOG.info("user={} accountValidated={}", userAccount.getReceiptUserId(), userAccount.isAccountValidated());
 
             boolean condition = isUserActiveAndRegistrationTurnedOn(userAccount, userProfile);
             return new ReceiptUser(
