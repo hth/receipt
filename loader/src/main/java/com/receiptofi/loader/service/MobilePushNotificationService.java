@@ -83,16 +83,20 @@ public class MobilePushNotificationService {
             }
 
             public void messageSent(ApnsNotification message, boolean resent) {
-                LOG.info("Message sent. Payload={}" + message);
+                LOG.info("Message sent. Payload={}", message);
             }
 
             public void messageSendFailed(ApnsNotification message, Throwable e) {
                 LOG.error("Message send failed. Message={} token={} {} reason={}",
-                        message.toString(), message.getDeviceToken().toString(), message.getPayload().toString(), e.getLocalizedMessage(), e);
+                        message.toString(),
+                        message.getDeviceToken().toString(),
+                        message.getPayload().toString(),
+                        e.getLocalizedMessage(), e);
+                throw new RuntimeException("Failed to send Apple Notification");
             }
 
             public void connectionClosed(DeliveryError e, int messageIdentifier) {
-                LOG.error("Connection closed. Message={}" + e.toString());
+                LOG.error("Connection closed. Message={}", e.toString());
             }
 
             public void cacheLengthExceeded(int newCacheLength) {
@@ -189,7 +193,11 @@ public class MobilePushNotificationService {
                     .sound("default")
                     .instantDeliveryOrSilentNotification()
                     .build();
-            apnsService.push(registeredDevice.getToken(), payload);
+            try {
+                apnsService.push(registeredDevice.getToken(), payload);
+            } catch (RuntimeException e) {
+                LOG.error("Failed sending Apple Notification {} {} {} reason={}", rid, registeredDevice.getDeviceId(), message, e.getMessage(), e);
+            }
         }
 
         return true;
