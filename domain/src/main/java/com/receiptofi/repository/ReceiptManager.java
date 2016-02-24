@@ -232,6 +232,20 @@ public interface ReceiptManager extends RepositoryManager<ReceiptEntity> {
     boolean softDeleteFriendReceipt(String receiptId, String rid);
 
     /**
+     * Increase split count for matching receiptId
+     *
+     * @param receiptId
+     */
+    void increaseSplitCount(String receiptId);
+
+    /**
+     * Decrease split count for matching receiptId
+     *
+     * @param receiptId
+     */
+    void decreaseSplitCount(String receiptId);
+
+    /**
      * Collection size.
      */
     long collectionSize();
