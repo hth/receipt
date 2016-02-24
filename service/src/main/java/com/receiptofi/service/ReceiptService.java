@@ -14,7 +14,6 @@ import com.receiptofi.domain.ReceiptEntity;
 import com.receiptofi.domain.SplitExpensesEntity;
 import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.domain.annotation.Mobile;
-import com.receiptofi.domain.json.JsonReceiptSanitized;
 import com.receiptofi.domain.types.CommentTypeEnum;
 import com.receiptofi.domain.types.DocumentStatusEnum;
 import com.receiptofi.domain.types.NotificationTypeEnum;
@@ -39,7 +38,6 @@ import org.springframework.util.Assert;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * User: hitender
@@ -494,8 +492,8 @@ public class ReceiptService {
                 if (null != friend) {
                     if (!splitExpensesService.doesExists(receipt.getId(), receipt.getReceiptUserId(), fid)) {
                         splitExpensesService.save(new SplitExpensesEntity(fid, receipt));
-                        receipt.increaseSplitCount();
-                        save(receipt);
+                        receiptManager.increaseSplitCount(receipt.getId());
+                        receipt = receiptManager.findReceipt(receipt.getId());
 
                         /** Update all existing friend receipt. */
                         updateFriendReceipt(receipt);
@@ -521,8 +519,8 @@ public class ReceiptService {
                 break;
             case R:
                 if (splitExpensesService.deleteHard(receipt.getId(), receipt.getReceiptUserId(), fid)) {
-                    receipt.decreaseSplitCount();
-                    save(receipt);
+                    receiptManager.decreaseSplitCount(receipt.getId());
+                    receipt = receiptManager.findReceipt(receipt.getId());
 
                     /** Update all existing friend receipt. */
                     updateFriendReceipt(receipt);

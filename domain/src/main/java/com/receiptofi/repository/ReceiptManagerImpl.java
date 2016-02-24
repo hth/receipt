@@ -518,4 +518,22 @@ public class ReceiptManagerImpl implements ReceiptManager {
                 TABLE
         ).getN() > 0;
     }
+
+    @Override
+    public void increaseSplitCount(String receiptId) {
+        mongoTemplate.updateFirst(
+                query(where("id").is(receiptId)),
+                entityUpdate(new Update().inc("SC", 1)),
+                ReceiptEntity.class
+        );
+    }
+
+    @Override
+    public void decreaseSplitCount(String receiptId) {
+        mongoTemplate.updateFirst(
+                query(where("id").is(receiptId)),
+                entityUpdate(new Update().inc("SC", -1)),
+                ReceiptEntity.class
+        );
+    }
 }
