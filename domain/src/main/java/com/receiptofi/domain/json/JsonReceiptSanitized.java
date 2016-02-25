@@ -11,6 +11,7 @@ import com.receiptofi.utils.LocaleUtil;
 
 import org.apache.commons.lang3.time.DateFormatUtils;
 
+import java.text.NumberFormat;
 import java.util.TimeZone;
 
 /**
@@ -36,11 +37,8 @@ import java.util.TimeZone;
 public class JsonReceiptSanitized {
     public static final String ISO8601_FMT = "yyyy-MM-dd'T'HH:mm:ss.sssZZZ";
 
-    @JsonProperty ("code")
-    private String currencyCode;
-
     @JsonProperty ("total")
-    private Double total;
+    private String total;
 
     @JsonProperty ("bizName")
     private JsonBizName jsonBizName;
@@ -55,18 +53,19 @@ public class JsonReceiptSanitized {
     private String percentTax;
 
     @JsonProperty ("tax")
-    private Double tax;
+    private String tax;
 
     public JsonReceiptSanitized() {
     }
 
     public JsonReceiptSanitized(ReceiptEntity receipt) {
-        this.currencyCode = LocaleUtil.getCurrencySymbol(receipt.getBizStore().getCountryShortName());
-        this.total = receipt.getTotal();
+        NumberFormat numberFormat = LocaleUtil.getNumberFormat(receipt.getBizStore().getCountryShortName());
+
+        this.total = numberFormat.format(receipt.getTotal());
         this.jsonBizName = JsonBizName.newInstance(receipt.getBizName());
         this.jsonBizStore = JsonBizStore.newInstance(receipt.getBizStore());
         this.receiptDate = DateFormatUtils.format(receipt.getReceiptDate(), ISO8601_FMT, TimeZone.getTimeZone("UTC"));
-        this.tax = receipt.getTax();
+        this.tax = numberFormat.format(receipt.getTax());
         this.percentTax = receipt.getPercentTax();
     }
 }

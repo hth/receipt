@@ -30,12 +30,23 @@ public class LocaleUtil {
     }
 
     /**
-     * Currency symbol like $ or Rs.
+     * Currency symbol like $ or INR.
      *
      * @param countryCode
      * @return
      */
+    @SuppressWarnings("unused")
     public static String getCurrencySymbol(String countryCode) {
-        return NumberFormat.getCurrencyInstance(getCountrySpecificLocale(countryCode)).getCurrency().getSymbol();
+        return getNumberFormat(countryCode).getCurrency().getSymbol();
+    }
+
+    /**
+     * Number format for country code
+     *
+     * @param countryCode
+     * @return
+     */
+    public static NumberFormat getNumberFormat(String countryCode) {
+        return NumberFormat.getCurrencyInstance(getCountrySpecificLocale(countryCode));
     }
 }
