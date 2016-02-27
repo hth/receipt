@@ -396,17 +396,18 @@ public class ReceiptManagerImpl implements ReceiptManager {
 
     @Override
     public List<ReceiptEntity> findThisDayReceipts(int year, int month, int day, String receiptUserId) {
-        Criteria criteria = where("RID").is(receiptUserId)
-                .and("Y").is(year)
-                .and("M").is(month)
-                .and("T").is(day)
-                .andOperator(
-                        isActive(),
-                        isNotDeleted()
-                );
-
-        Sort sort = new Sort(DESC, "RTXD");
-        return mongoTemplate.find(query(criteria).with(sort), ReceiptEntity.class, TABLE);
+        return mongoTemplate.find(
+                query(where("RID").is(receiptUserId)
+                        .and("Y").is(year)
+                        .and("M").is(month)
+                        .and("T").is(day)
+                        .andOperator(
+                                isActive(),
+                                isNotDeleted()
+                        )
+                ).with(new Sort(DESC, "RTXD")),
+                ReceiptEntity.class,
+                TABLE);
     }
 
     @Override
