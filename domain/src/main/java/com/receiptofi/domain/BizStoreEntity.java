@@ -3,6 +3,7 @@ package com.receiptofi.domain;
 import com.receiptofi.domain.value.Coordinate;
 import com.receiptofi.utils.Formatter;
 
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -107,6 +108,15 @@ public class BizStoreEntity extends BaseEntity {
 
     public String getAddressWrappedMore() {
         return getAddressWrapped().replaceFirst(",", "<br/>");
+    }
+
+    /**
+     * Escape String for Java Script.
+     *
+     * @return
+     */
+    public String getSafeJSAddress() {
+        return StringEscapeUtils.escapeEcmaScript(address);
     }
 
     public String getAddress() {
