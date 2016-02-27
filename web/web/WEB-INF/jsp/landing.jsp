@@ -523,7 +523,7 @@ function drawExpenseByBusiness() {
                 '<div class="mapContainer">' +
                 '<div><h3>${loc.bizName.safeJSBusinessName} : <b>${loc.totalStr}</b></h3></div>' +
                 '<div>' +
-                '<div>${loc.bizStore.address}</div>' +
+                '<div>${loc.bizStore.safeJSAddress}</div>' +
                 '</div>' +
                 '</div>',
                 ${loc.bizStore.lat}, ${loc.bizStore.lng}, ${status.count}
