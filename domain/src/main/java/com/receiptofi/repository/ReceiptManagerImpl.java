@@ -521,20 +521,20 @@ public class ReceiptManagerImpl implements ReceiptManager {
     }
 
     @Override
-    public void increaseSplitCount(String receiptId) {
-        mongoTemplate.updateFirst(
+    public boolean increaseSplitCount(String receiptId, double splitTotal, double splitTax) {
+        return mongoTemplate.updateFirst(
                 query(where("id").is(receiptId)),
-                entityUpdate(new Update().inc("SC", 1)),
+                entityUpdate(update("ST", splitTotal).set("SX", splitTax).inc("SC", 1)),
                 ReceiptEntity.class
-        );
+        ).isUpdateOfExisting();
     }
 
     @Override
-    public void decreaseSplitCount(String receiptId) {
-        mongoTemplate.updateFirst(
+    public boolean decreaseSplitCount(String receiptId, double splitTotal, double splitTax) {
+        return mongoTemplate.updateFirst(
                 query(where("id").is(receiptId)),
-                entityUpdate(new Update().inc("SC", -1)),
+                entityUpdate(update("ST", splitTotal).set("SX", splitTax).inc("SC", -1)),
                 ReceiptEntity.class
-        );
+        ).isUpdateOfExisting();
     }
 }
