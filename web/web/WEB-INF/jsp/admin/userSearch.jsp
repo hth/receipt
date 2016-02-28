@@ -114,7 +114,7 @@
     <div class="mfooter_up">
     </div>
     <div class="mfooter_down">
-        <p class="fotter_copy">&#169; 2015 RECEIPTOFI, INC. ALL RIGHTS RESERVED. (<fmt:message key="build.version" />)
+        <p class="fotter_copy">&#169; 2016 RECEIPTOFI, INC. ALL RIGHTS RESERVED. (<fmt:message key="build.version" />)
     </div>
 </div>
 <script>
