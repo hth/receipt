@@ -449,6 +449,29 @@
               <element id="module-output" name="common" />
               <element id="dir-copy" path="$PROJECT_DIR$/common/build/resources/main" />
             </element>
+            <element id="library" level="project" name="Gradle: org.springframework.social:spring-social-core:1.1.4.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework.social:spring-social-web:1.1.4.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework.social:spring-social-security:1.1.4.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework.social:spring-social-facebook:2.0.3.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-aop:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-aspects:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-beans:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-context:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-context-support:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-core:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-expression:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-instrument:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-instrument-tomcat:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-jms:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-oxm:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-test:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-tx:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-web:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-webmvc:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: net.bull.javamelody:javamelody-core:1.59.0" />
+            <element id="library" level="project" name="Gradle: org.aspectj:aspectjweaver:1.8.8" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-messaging:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework.social:spring-social-config:1.1.4.RELEASE" />
             <element id="archive" name="com.receiptofi-domain-0.9.0.jar">
               <element id="module-output" name="domain" />
               <element id="dir-copy" path="$PROJECT_DIR$/domain/build/resources/main" />
@@ -458,29 +481,6 @@
               <element id="dir-copy" path="$PROJECT_DIR$/service/build/resources/main" />
             </element>
             <element id="file-copy" path="$PROJECT_DIR$/lib/user-agent-detector.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.social/spring-social-core/1.1.4.RELEASE/cb43c308fa99cbe16f476fabfd6ded2c6b8bb8ed/spring-social-core-1.1.4.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.social/spring-social-web/1.1.4.RELEASE/5e4686cfa221a5025a692b8759444e3cc443068f/spring-social-web-1.1.4.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.social/spring-social-security/1.1.4.RELEASE/b6c713ee977be55cdbf20e20356aa0dab2271035/spring-social-security-1.1.4.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.social/spring-social-facebook/2.0.3.RELEASE/b27e31d9c2a26ad5fdca30035a836c409fa6896f/spring-social-facebook-2.0.3.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-aop/4.2.5.RELEASE/858d6c70909b3ce7e07b59fc936f8ccfcd81c0aa/spring-aop-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-aspects/4.2.5.RELEASE/ed09517441a276db2a7e0e7b60a390c52b8093af/spring-aspects-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-beans/4.2.5.RELEASE/fa992ae40f6fc47117282164e0433b71da385e94/spring-beans-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-context/4.2.5.RELEASE/a75e18322c7b362fe1daa26a245ae672ec0f3138/spring-context-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-context-support/4.2.5.RELEASE/72db9c52e8bd2dc3290cd51114583731f818356b/spring-context-support-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-core/4.2.5.RELEASE/251207b29f0f38f61e3495a2f7fb053cf1bfe8c/spring-core-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-expression/4.2.5.RELEASE/a42bdfb833d0be6c18429aea3fb0fba81f85c6e8/spring-expression-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-instrument/4.2.5.RELEASE/a8c46177e3a0e057d228981aff60967c38c8bbf5/spring-instrument-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-instrument-tomcat/4.2.5.RELEASE/1b19193f05084b157ca316fbe83c4e129438bb69/spring-instrument-tomcat-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-jms/4.2.5.RELEASE/31050a9665e5d6fa0013d64f04eb653a4d557f6c/spring-jms-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-oxm/4.2.5.RELEASE/a557a238342412a2c8a238dc01fb735565d1d871/spring-oxm-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-test/4.2.5.RELEASE/60bd0ac25869d515717284b77644d0416d3a38c5/spring-test-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-tx/4.2.5.RELEASE/7395321fe937272d9b781a13985e04ab2dcd6210/spring-tx-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-web/4.2.5.RELEASE/49cd2430884b77172aa81e3fc33ef668ea1dab30/spring-web-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-webmvc/4.2.5.RELEASE/cf463cce3e4453eb4b9a69de2dcdfd60c3c57e0/spring-webmvc-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/net.bull.javamelody/javamelody-core/1.59.0/a62546ae063493041fe55b3b323f88ae06151e9a/javamelody-core-1.59.0.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.aspectj/aspectjweaver/1.8.8/969c8d3d3d56db1e1c8721a03ef07d0c9ac3a2e4/aspectjweaver-1.8.8.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-messaging/4.2.5.RELEASE/604103815489605ed609a742a6bbc708ae3db12c/spring-messaging-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.social/spring-social-config/1.1.4.RELEASE/c341d4dca239dbd2a50bc94cc294ea80b5658700/spring-social-config-1.1.4.RELEASE.jar" />
           </element>
         </element>
         <element id="directory" name="META-INF">
@@ -647,6 +647,29 @@
               <element id="module-output" name="common" />
               <element id="dir-copy" path="$PROJECT_DIR$/common/build/resources/main" />
             </element>
+            <element id="library" level="project" name="Gradle: org.springframework.social:spring-social-core:1.1.4.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework.social:spring-social-web:1.1.4.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework.social:spring-social-security:1.1.4.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework.social:spring-social-facebook:2.0.3.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-aop:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-aspects:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-beans:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-context:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-context-support:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-core:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-expression:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-instrument:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-instrument-tomcat:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-jms:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-oxm:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-test:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-tx:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-web:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-webmvc:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: net.bull.javamelody:javamelody-core:1.59.0" />
+            <element id="library" level="project" name="Gradle: org.aspectj:aspectjweaver:1.8.8" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-messaging:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework.social:spring-social-config:1.1.4.RELEASE" />
             <element id="archive" name="com.receiptofi-domain-0.9.0.jar">
               <element id="module-output" name="domain" />
               <element id="dir-copy" path="$PROJECT_DIR$/domain/build/resources/main" />
@@ -668,29 +691,6 @@
               <element id="dir-copy" path="$PROJECT_DIR$/loader/build/resources/main" />
             </element>
             <element id="file-copy" path="$PROJECT_DIR$/lib/user-agent-detector.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.social/spring-social-core/1.1.4.RELEASE/cb43c308fa99cbe16f476fabfd6ded2c6b8bb8ed/spring-social-core-1.1.4.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.social/spring-social-web/1.1.4.RELEASE/5e4686cfa221a5025a692b8759444e3cc443068f/spring-social-web-1.1.4.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.social/spring-social-security/1.1.4.RELEASE/b6c713ee977be55cdbf20e20356aa0dab2271035/spring-social-security-1.1.4.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.social/spring-social-facebook/2.0.3.RELEASE/b27e31d9c2a26ad5fdca30035a836c409fa6896f/spring-social-facebook-2.0.3.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-aop/4.2.5.RELEASE/858d6c70909b3ce7e07b59fc936f8ccfcd81c0aa/spring-aop-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-aspects/4.2.5.RELEASE/ed09517441a276db2a7e0e7b60a390c52b8093af/spring-aspects-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-beans/4.2.5.RELEASE/fa992ae40f6fc47117282164e0433b71da385e94/spring-beans-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-context/4.2.5.RELEASE/a75e18322c7b362fe1daa26a245ae672ec0f3138/spring-context-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-context-support/4.2.5.RELEASE/72db9c52e8bd2dc3290cd51114583731f818356b/spring-context-support-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-core/4.2.5.RELEASE/251207b29f0f38f61e3495a2f7fb053cf1bfe8c/spring-core-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-expression/4.2.5.RELEASE/a42bdfb833d0be6c18429aea3fb0fba81f85c6e8/spring-expression-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-instrument/4.2.5.RELEASE/a8c46177e3a0e057d228981aff60967c38c8bbf5/spring-instrument-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-instrument-tomcat/4.2.5.RELEASE/1b19193f05084b157ca316fbe83c4e129438bb69/spring-instrument-tomcat-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-jms/4.2.5.RELEASE/31050a9665e5d6fa0013d64f04eb653a4d557f6c/spring-jms-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-oxm/4.2.5.RELEASE/a557a238342412a2c8a238dc01fb735565d1d871/spring-oxm-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-test/4.2.5.RELEASE/60bd0ac25869d515717284b77644d0416d3a38c5/spring-test-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-tx/4.2.5.RELEASE/7395321fe937272d9b781a13985e04ab2dcd6210/spring-tx-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-web/4.2.5.RELEASE/49cd2430884b77172aa81e3fc33ef668ea1dab30/spring-web-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-webmvc/4.2.5.RELEASE/cf463cce3e4453eb4b9a69de2dcdfd60c3c57e0/spring-webmvc-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/net.bull.javamelody/javamelody-core/1.59.0/a62546ae063493041fe55b3b323f88ae06151e9a/javamelody-core-1.59.0.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.aspectj/aspectjweaver/1.8.8/969c8d3d3d56db1e1c8721a03ef07d0c9ac3a2e4/aspectjweaver-1.8.8.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-messaging/4.2.5.RELEASE/604103815489605ed609a742a6bbc708ae3db12c/spring-messaging-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.social/spring-social-config/1.1.4.RELEASE/c341d4dca239dbd2a50bc94cc294ea80b5658700/spring-social-config-1.1.4.RELEASE.jar" />
           </element>
         </element>
         <element id="directory" name="META-INF">
@@ -857,34 +857,34 @@
               <element id="module-output" name="common" />
               <element id="dir-copy" path="$PROJECT_DIR$/common/build/resources/main" />
             </element>
+            <element id="library" level="project" name="Gradle: org.springframework.social:spring-social-core:1.1.4.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework.social:spring-social-web:1.1.4.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework.social:spring-social-security:1.1.4.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework.social:spring-social-facebook:2.0.3.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-aop:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-aspects:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-beans:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-context:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-context-support:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-core:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-expression:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-instrument:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-instrument-tomcat:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-jms:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-oxm:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-test:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-tx:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-web:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-webmvc:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: net.bull.javamelody:javamelody-core:1.59.0" />
+            <element id="library" level="project" name="Gradle: org.aspectj:aspectjweaver:1.8.8" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-messaging:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework.social:spring-social-config:1.1.4.RELEASE" />
             <element id="archive" name="com.receiptofi-domain-0.9.0.jar">
               <element id="module-output" name="domain" />
               <element id="dir-copy" path="$PROJECT_DIR$/domain/build/resources/main" />
             </element>
             <element id="file-copy" path="$PROJECT_DIR$/lib/user-agent-detector.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.social/spring-social-core/1.1.4.RELEASE/cb43c308fa99cbe16f476fabfd6ded2c6b8bb8ed/spring-social-core-1.1.4.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.social/spring-social-web/1.1.4.RELEASE/5e4686cfa221a5025a692b8759444e3cc443068f/spring-social-web-1.1.4.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.social/spring-social-security/1.1.4.RELEASE/b6c713ee977be55cdbf20e20356aa0dab2271035/spring-social-security-1.1.4.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.social/spring-social-facebook/2.0.3.RELEASE/b27e31d9c2a26ad5fdca30035a836c409fa6896f/spring-social-facebook-2.0.3.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-aop/4.2.5.RELEASE/858d6c70909b3ce7e07b59fc936f8ccfcd81c0aa/spring-aop-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-aspects/4.2.5.RELEASE/ed09517441a276db2a7e0e7b60a390c52b8093af/spring-aspects-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-beans/4.2.5.RELEASE/fa992ae40f6fc47117282164e0433b71da385e94/spring-beans-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-context/4.2.5.RELEASE/a75e18322c7b362fe1daa26a245ae672ec0f3138/spring-context-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-context-support/4.2.5.RELEASE/72db9c52e8bd2dc3290cd51114583731f818356b/spring-context-support-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-core/4.2.5.RELEASE/251207b29f0f38f61e3495a2f7fb053cf1bfe8c/spring-core-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-expression/4.2.5.RELEASE/a42bdfb833d0be6c18429aea3fb0fba81f85c6e8/spring-expression-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-instrument/4.2.5.RELEASE/a8c46177e3a0e057d228981aff60967c38c8bbf5/spring-instrument-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-instrument-tomcat/4.2.5.RELEASE/1b19193f05084b157ca316fbe83c4e129438bb69/spring-instrument-tomcat-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-jms/4.2.5.RELEASE/31050a9665e5d6fa0013d64f04eb653a4d557f6c/spring-jms-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-oxm/4.2.5.RELEASE/a557a238342412a2c8a238dc01fb735565d1d871/spring-oxm-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-test/4.2.5.RELEASE/60bd0ac25869d515717284b77644d0416d3a38c5/spring-test-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-tx/4.2.5.RELEASE/7395321fe937272d9b781a13985e04ab2dcd6210/spring-tx-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-web/4.2.5.RELEASE/49cd2430884b77172aa81e3fc33ef668ea1dab30/spring-web-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-webmvc/4.2.5.RELEASE/cf463cce3e4453eb4b9a69de2dcdfd60c3c57e0/spring-webmvc-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/net.bull.javamelody/javamelody-core/1.59.0/a62546ae063493041fe55b3b323f88ae06151e9a/javamelody-core-1.59.0.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.aspectj/aspectjweaver/1.8.8/969c8d3d3d56db1e1c8721a03ef07d0c9ac3a2e4/aspectjweaver-1.8.8.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-messaging/4.2.5.RELEASE/604103815489605ed609a742a6bbc708ae3db12c/spring-messaging-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.social/spring-social-config/1.1.4.RELEASE/c341d4dca239dbd2a50bc94cc294ea80b5658700/spring-social-config-1.1.4.RELEASE.jar" />
           </element>
         </element>
         <element id="directory" name="META-INF">
@@ -1051,34 +1051,34 @@
               <element id="module-output" name="common" />
               <element id="dir-copy" path="$PROJECT_DIR$/common/build/resources/main" />
             </element>
+            <element id="library" level="project" name="Gradle: org.springframework.social:spring-social-core:1.1.4.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework.social:spring-social-web:1.1.4.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework.social:spring-social-security:1.1.4.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework.social:spring-social-facebook:2.0.3.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-aop:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-aspects:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-beans:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-context:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-context-support:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-core:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-expression:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-instrument:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-instrument-tomcat:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-jms:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-oxm:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-test:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-tx:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-web:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-webmvc:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: net.bull.javamelody:javamelody-core:1.59.0" />
+            <element id="library" level="project" name="Gradle: org.aspectj:aspectjweaver:1.8.8" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-messaging:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework.social:spring-social-config:1.1.4.RELEASE" />
             <element id="archive" name="com.receiptofi-domain-0.9.0.jar">
               <element id="module-output" name="domain" />
               <element id="dir-copy" path="$PROJECT_DIR$/domain/build/resources/main" />
             </element>
             <element id="file-copy" path="$PROJECT_DIR$/lib/user-agent-detector.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.social/spring-social-core/1.1.4.RELEASE/cb43c308fa99cbe16f476fabfd6ded2c6b8bb8ed/spring-social-core-1.1.4.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.social/spring-social-web/1.1.4.RELEASE/5e4686cfa221a5025a692b8759444e3cc443068f/spring-social-web-1.1.4.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.social/spring-social-security/1.1.4.RELEASE/b6c713ee977be55cdbf20e20356aa0dab2271035/spring-social-security-1.1.4.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.social/spring-social-facebook/2.0.3.RELEASE/b27e31d9c2a26ad5fdca30035a836c409fa6896f/spring-social-facebook-2.0.3.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-aop/4.2.5.RELEASE/858d6c70909b3ce7e07b59fc936f8ccfcd81c0aa/spring-aop-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-aspects/4.2.5.RELEASE/ed09517441a276db2a7e0e7b60a390c52b8093af/spring-aspects-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-beans/4.2.5.RELEASE/fa992ae40f6fc47117282164e0433b71da385e94/spring-beans-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-context/4.2.5.RELEASE/a75e18322c7b362fe1daa26a245ae672ec0f3138/spring-context-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-context-support/4.2.5.RELEASE/72db9c52e8bd2dc3290cd51114583731f818356b/spring-context-support-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-core/4.2.5.RELEASE/251207b29f0f38f61e3495a2f7fb053cf1bfe8c/spring-core-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-expression/4.2.5.RELEASE/a42bdfb833d0be6c18429aea3fb0fba81f85c6e8/spring-expression-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-instrument/4.2.5.RELEASE/a8c46177e3a0e057d228981aff60967c38c8bbf5/spring-instrument-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-instrument-tomcat/4.2.5.RELEASE/1b19193f05084b157ca316fbe83c4e129438bb69/spring-instrument-tomcat-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-jms/4.2.5.RELEASE/31050a9665e5d6fa0013d64f04eb653a4d557f6c/spring-jms-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-oxm/4.2.5.RELEASE/a557a238342412a2c8a238dc01fb735565d1d871/spring-oxm-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-test/4.2.5.RELEASE/60bd0ac25869d515717284b77644d0416d3a38c5/spring-test-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-tx/4.2.5.RELEASE/7395321fe937272d9b781a13985e04ab2dcd6210/spring-tx-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-web/4.2.5.RELEASE/49cd2430884b77172aa81e3fc33ef668ea1dab30/spring-web-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-webmvc/4.2.5.RELEASE/cf463cce3e4453eb4b9a69de2dcdfd60c3c57e0/spring-webmvc-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/net.bull.javamelody/javamelody-core/1.59.0/a62546ae063493041fe55b3b323f88ae06151e9a/javamelody-core-1.59.0.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.aspectj/aspectjweaver/1.8.8/969c8d3d3d56db1e1c8721a03ef07d0c9ac3a2e4/aspectjweaver-1.8.8.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-messaging/4.2.5.RELEASE/604103815489605ed609a742a6bbc708ae3db12c/spring-messaging-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.social/spring-social-config/1.1.4.RELEASE/c341d4dca239dbd2a50bc94cc294ea80b5658700/spring-social-config-1.1.4.RELEASE.jar" />
           </element>
         </element>
         <element id="directory" name="META-INF">
@@ -1245,6 +1245,29 @@
               <element id="module-output" name="common" />
               <element id="dir-copy" path="$PROJECT_DIR$/common/build/resources/main" />
             </element>
+            <element id="library" level="project" name="Gradle: org.springframework.social:spring-social-core:1.1.4.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework.social:spring-social-web:1.1.4.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework.social:spring-social-security:1.1.4.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework.social:spring-social-facebook:2.0.3.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-aop:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-aspects:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-beans:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-context:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-context-support:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-core:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-expression:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-instrument:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-instrument-tomcat:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-jms:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-oxm:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-test:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-tx:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-web:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-webmvc:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: net.bull.javamelody:javamelody-core:1.59.0" />
+            <element id="library" level="project" name="Gradle: org.aspectj:aspectjweaver:1.8.8" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-messaging:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework.social:spring-social-config:1.1.4.RELEASE" />
             <element id="archive" name="com.receiptofi-domain-0.9.0.jar">
               <element id="module-output" name="domain" />
               <element id="dir-copy" path="$PROJECT_DIR$/domain/build/resources/main" />
@@ -1254,29 +1277,6 @@
               <element id="dir-copy" path="$PROJECT_DIR$/service/build/resources/main" />
             </element>
             <element id="file-copy" path="$PROJECT_DIR$/lib/user-agent-detector.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.social/spring-social-core/1.1.4.RELEASE/cb43c308fa99cbe16f476fabfd6ded2c6b8bb8ed/spring-social-core-1.1.4.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.social/spring-social-web/1.1.4.RELEASE/5e4686cfa221a5025a692b8759444e3cc443068f/spring-social-web-1.1.4.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.social/spring-social-security/1.1.4.RELEASE/b6c713ee977be55cdbf20e20356aa0dab2271035/spring-social-security-1.1.4.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.social/spring-social-facebook/2.0.3.RELEASE/b27e31d9c2a26ad5fdca30035a836c409fa6896f/spring-social-facebook-2.0.3.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-aop/4.2.5.RELEASE/858d6c70909b3ce7e07b59fc936f8ccfcd81c0aa/spring-aop-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-aspects/4.2.5.RELEASE/ed09517441a276db2a7e0e7b60a390c52b8093af/spring-aspects-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-beans/4.2.5.RELEASE/fa992ae40f6fc47117282164e0433b71da385e94/spring-beans-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-context/4.2.5.RELEASE/a75e18322c7b362fe1daa26a245ae672ec0f3138/spring-context-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-context-support/4.2.5.RELEASE/72db9c52e8bd2dc3290cd51114583731f818356b/spring-context-support-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-core/4.2.5.RELEASE/251207b29f0f38f61e3495a2f7fb053cf1bfe8c/spring-core-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-expression/4.2.5.RELEASE/a42bdfb833d0be6c18429aea3fb0fba81f85c6e8/spring-expression-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-instrument/4.2.5.RELEASE/a8c46177e3a0e057d228981aff60967c38c8bbf5/spring-instrument-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-instrument-tomcat/4.2.5.RELEASE/1b19193f05084b157ca316fbe83c4e129438bb69/spring-instrument-tomcat-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-jms/4.2.5.RELEASE/31050a9665e5d6fa0013d64f04eb653a4d557f6c/spring-jms-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-oxm/4.2.5.RELEASE/a557a238342412a2c8a238dc01fb735565d1d871/spring-oxm-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-test/4.2.5.RELEASE/60bd0ac25869d515717284b77644d0416d3a38c5/spring-test-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-tx/4.2.5.RELEASE/7395321fe937272d9b781a13985e04ab2dcd6210/spring-tx-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-web/4.2.5.RELEASE/49cd2430884b77172aa81e3fc33ef668ea1dab30/spring-web-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-webmvc/4.2.5.RELEASE/cf463cce3e4453eb4b9a69de2dcdfd60c3c57e0/spring-webmvc-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/net.bull.javamelody/javamelody-core/1.59.0/a62546ae063493041fe55b3b323f88ae06151e9a/javamelody-core-1.59.0.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.aspectj/aspectjweaver/1.8.8/969c8d3d3d56db1e1c8721a03ef07d0c9ac3a2e4/aspectjweaver-1.8.8.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-messaging/4.2.5.RELEASE/604103815489605ed609a742a6bbc708ae3db12c/spring-messaging-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.social/spring-social-config/1.1.4.RELEASE/c341d4dca239dbd2a50bc94cc294ea80b5658700/spring-social-config-1.1.4.RELEASE.jar" />
           </element>
         </element>
         <element id="directory" name="META-INF">
@@ -1443,6 +1443,29 @@
               <element id="module-output" name="common" />
               <element id="dir-copy" path="$PROJECT_DIR$/common/build/resources/main" />
             </element>
+            <element id="library" level="project" name="Gradle: org.springframework.social:spring-social-core:1.1.4.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework.social:spring-social-web:1.1.4.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework.social:spring-social-security:1.1.4.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework.social:spring-social-facebook:2.0.3.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-aop:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-aspects:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-beans:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-context:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-context-support:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-core:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-expression:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-instrument:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-instrument-tomcat:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-jms:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-oxm:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-test:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-tx:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-web:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-webmvc:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: net.bull.javamelody:javamelody-core:1.59.0" />
+            <element id="library" level="project" name="Gradle: org.aspectj:aspectjweaver:1.8.8" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-messaging:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework.social:spring-social-config:1.1.4.RELEASE" />
             <element id="archive" name="com.receiptofi-domain-0.9.0.jar">
               <element id="module-output" name="domain" />
               <element id="dir-copy" path="$PROJECT_DIR$/domain/build/resources/main" />
@@ -1464,29 +1487,6 @@
               <element id="dir-copy" path="$PROJECT_DIR$/loader/build/resources/main" />
             </element>
             <element id="file-copy" path="$PROJECT_DIR$/lib/user-agent-detector.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.social/spring-social-core/1.1.4.RELEASE/cb43c308fa99cbe16f476fabfd6ded2c6b8bb8ed/spring-social-core-1.1.4.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.social/spring-social-web/1.1.4.RELEASE/5e4686cfa221a5025a692b8759444e3cc443068f/spring-social-web-1.1.4.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.social/spring-social-security/1.1.4.RELEASE/b6c713ee977be55cdbf20e20356aa0dab2271035/spring-social-security-1.1.4.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.social/spring-social-facebook/2.0.3.RELEASE/b27e31d9c2a26ad5fdca30035a836c409fa6896f/spring-social-facebook-2.0.3.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-aop/4.2.5.RELEASE/858d6c70909b3ce7e07b59fc936f8ccfcd81c0aa/spring-aop-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-aspects/4.2.5.RELEASE/ed09517441a276db2a7e0e7b60a390c52b8093af/spring-aspects-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-beans/4.2.5.RELEASE/fa992ae40f6fc47117282164e0433b71da385e94/spring-beans-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-context/4.2.5.RELEASE/a75e18322c7b362fe1daa26a245ae672ec0f3138/spring-context-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-context-support/4.2.5.RELEASE/72db9c52e8bd2dc3290cd51114583731f818356b/spring-context-support-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-core/4.2.5.RELEASE/251207b29f0f38f61e3495a2f7fb053cf1bfe8c/spring-core-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-expression/4.2.5.RELEASE/a42bdfb833d0be6c18429aea3fb0fba81f85c6e8/spring-expression-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-instrument/4.2.5.RELEASE/a8c46177e3a0e057d228981aff60967c38c8bbf5/spring-instrument-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-instrument-tomcat/4.2.5.RELEASE/1b19193f05084b157ca316fbe83c4e129438bb69/spring-instrument-tomcat-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-jms/4.2.5.RELEASE/31050a9665e5d6fa0013d64f04eb653a4d557f6c/spring-jms-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-oxm/4.2.5.RELEASE/a557a238342412a2c8a238dc01fb735565d1d871/spring-oxm-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-test/4.2.5.RELEASE/60bd0ac25869d515717284b77644d0416d3a38c5/spring-test-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-tx/4.2.5.RELEASE/7395321fe937272d9b781a13985e04ab2dcd6210/spring-tx-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-web/4.2.5.RELEASE/49cd2430884b77172aa81e3fc33ef668ea1dab30/spring-web-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-webmvc/4.2.5.RELEASE/cf463cce3e4453eb4b9a69de2dcdfd60c3c57e0/spring-webmvc-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/net.bull.javamelody/javamelody-core/1.59.0/a62546ae063493041fe55b3b323f88ae06151e9a/javamelody-core-1.59.0.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.aspectj/aspectjweaver/1.8.8/969c8d3d3d56db1e1c8721a03ef07d0c9ac3a2e4/aspectjweaver-1.8.8.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-messaging/4.2.5.RELEASE/604103815489605ed609a742a6bbc708ae3db12c/spring-messaging-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.social/spring-social-config/1.1.4.RELEASE/c341d4dca239dbd2a50bc94cc294ea80b5658700/spring-social-config-1.1.4.RELEASE.jar" />
           </element>
         </element>
         <element id="directory" name="META-INF">
@@ -1652,6 +1652,29 @@
               <element id="module-output" name="common" />
               <element id="dir-copy" path="$PROJECT_DIR$/common/build/resources/main" />
             </element>
+            <element id="library" level="project" name="Gradle: org.springframework.social:spring-social-core:1.1.4.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework.social:spring-social-web:1.1.4.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework.social:spring-social-security:1.1.4.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework.social:spring-social-facebook:2.0.3.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-aop:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-aspects:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-beans:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-context:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-context-support:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-core:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-expression:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-instrument:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-instrument-tomcat:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-jms:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-oxm:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-test:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-tx:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-web:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-webmvc:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: net.bull.javamelody:javamelody-core:1.59.0" />
+            <element id="library" level="project" name="Gradle: org.aspectj:aspectjweaver:1.8.8" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-messaging:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework.social:spring-social-config:1.1.4.RELEASE" />
             <element id="archive" name="com.receiptofi-service-0.9.0.jar">
               <element id="module-output" name="service" />
               <element id="dir-copy" path="$PROJECT_DIR$/service/build/resources/main" />
@@ -1661,29 +1684,6 @@
               <element id="dir-copy" path="$PROJECT_DIR$/domain/build/resources/main" />
             </element>
             <element id="file-copy" path="$PROJECT_DIR$/lib/user-agent-detector.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.social/spring-social-core/1.1.4.RELEASE/cb43c308fa99cbe16f476fabfd6ded2c6b8bb8ed/spring-social-core-1.1.4.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.social/spring-social-web/1.1.4.RELEASE/5e4686cfa221a5025a692b8759444e3cc443068f/spring-social-web-1.1.4.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.social/spring-social-security/1.1.4.RELEASE/b6c713ee977be55cdbf20e20356aa0dab2271035/spring-social-security-1.1.4.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.social/spring-social-facebook/2.0.3.RELEASE/b27e31d9c2a26ad5fdca30035a836c409fa6896f/spring-social-facebook-2.0.3.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-aop/4.2.5.RELEASE/858d6c70909b3ce7e07b59fc936f8ccfcd81c0aa/spring-aop-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-aspects/4.2.5.RELEASE/ed09517441a276db2a7e0e7b60a390c52b8093af/spring-aspects-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-beans/4.2.5.RELEASE/fa992ae40f6fc47117282164e0433b71da385e94/spring-beans-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-context/4.2.5.RELEASE/a75e18322c7b362fe1daa26a245ae672ec0f3138/spring-context-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-context-support/4.2.5.RELEASE/72db9c52e8bd2dc3290cd51114583731f818356b/spring-context-support-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-core/4.2.5.RELEASE/251207b29f0f38f61e3495a2f7fb053cf1bfe8c/spring-core-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-expression/4.2.5.RELEASE/a42bdfb833d0be6c18429aea3fb0fba81f85c6e8/spring-expression-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-instrument/4.2.5.RELEASE/a8c46177e3a0e057d228981aff60967c38c8bbf5/spring-instrument-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-instrument-tomcat/4.2.5.RELEASE/1b19193f05084b157ca316fbe83c4e129438bb69/spring-instrument-tomcat-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-jms/4.2.5.RELEASE/31050a9665e5d6fa0013d64f04eb653a4d557f6c/spring-jms-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-oxm/4.2.5.RELEASE/a557a238342412a2c8a238dc01fb735565d1d871/spring-oxm-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-test/4.2.5.RELEASE/60bd0ac25869d515717284b77644d0416d3a38c5/spring-test-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-tx/4.2.5.RELEASE/7395321fe937272d9b781a13985e04ab2dcd6210/spring-tx-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-web/4.2.5.RELEASE/49cd2430884b77172aa81e3fc33ef668ea1dab30/spring-web-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-webmvc/4.2.5.RELEASE/cf463cce3e4453eb4b9a69de2dcdfd60c3c57e0/spring-webmvc-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/net.bull.javamelody/javamelody-core/1.59.0/a62546ae063493041fe55b3b323f88ae06151e9a/javamelody-core-1.59.0.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.aspectj/aspectjweaver/1.8.8/969c8d3d3d56db1e1c8721a03ef07d0c9ac3a2e4/aspectjweaver-1.8.8.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-messaging/4.2.5.RELEASE/604103815489605ed609a742a6bbc708ae3db12c/spring-messaging-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.social/spring-social-config/1.1.4.RELEASE/c341d4dca239dbd2a50bc94cc294ea80b5658700/spring-social-config-1.1.4.RELEASE.jar" />
           </element>
         </element>
         <element id="directory" name="META-INF">
@@ -1849,6 +1849,29 @@
               <element id="module-output" name="common" />
               <element id="dir-copy" path="$PROJECT_DIR$/common/build/resources/main" />
             </element>
+            <element id="library" level="project" name="Gradle: org.springframework.social:spring-social-core:1.1.4.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework.social:spring-social-web:1.1.4.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework.social:spring-social-security:1.1.4.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework.social:spring-social-facebook:2.0.3.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-aop:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-aspects:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-beans:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-context:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-context-support:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-core:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-expression:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-instrument:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-instrument-tomcat:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-jms:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-oxm:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-test:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-tx:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-web:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-webmvc:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: net.bull.javamelody:javamelody-core:1.59.0" />
+            <element id="library" level="project" name="Gradle: org.aspectj:aspectjweaver:1.8.8" />
+            <element id="library" level="project" name="Gradle: org.springframework:spring-messaging:4.2.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: org.springframework.social:spring-social-config:1.1.4.RELEASE" />
             <element id="archive" name="com.receiptofi-service-0.9.0.jar">
               <element id="module-output" name="service" />
               <element id="dir-copy" path="$PROJECT_DIR$/service/build/resources/main" />
@@ -1858,29 +1881,6 @@
               <element id="dir-copy" path="$PROJECT_DIR$/domain/build/resources/main" />
             </element>
             <element id="file-copy" path="$PROJECT_DIR$/lib/user-agent-detector.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.social/spring-social-core/1.1.4.RELEASE/cb43c308fa99cbe16f476fabfd6ded2c6b8bb8ed/spring-social-core-1.1.4.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.social/spring-social-web/1.1.4.RELEASE/5e4686cfa221a5025a692b8759444e3cc443068f/spring-social-web-1.1.4.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.social/spring-social-security/1.1.4.RELEASE/b6c713ee977be55cdbf20e20356aa0dab2271035/spring-social-security-1.1.4.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.social/spring-social-facebook/2.0.3.RELEASE/b27e31d9c2a26ad5fdca30035a836c409fa6896f/spring-social-facebook-2.0.3.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-aop/4.2.5.RELEASE/858d6c70909b3ce7e07b59fc936f8ccfcd81c0aa/spring-aop-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-aspects/4.2.5.RELEASE/ed09517441a276db2a7e0e7b60a390c52b8093af/spring-aspects-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-beans/4.2.5.RELEASE/fa992ae40f6fc47117282164e0433b71da385e94/spring-beans-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-context/4.2.5.RELEASE/a75e18322c7b362fe1daa26a245ae672ec0f3138/spring-context-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-context-support/4.2.5.RELEASE/72db9c52e8bd2dc3290cd51114583731f818356b/spring-context-support-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-core/4.2.5.RELEASE/251207b29f0f38f61e3495a2f7fb053cf1bfe8c/spring-core-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-expression/4.2.5.RELEASE/a42bdfb833d0be6c18429aea3fb0fba81f85c6e8/spring-expression-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-instrument/4.2.5.RELEASE/a8c46177e3a0e057d228981aff60967c38c8bbf5/spring-instrument-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-instrument-tomcat/4.2.5.RELEASE/1b19193f05084b157ca316fbe83c4e129438bb69/spring-instrument-tomcat-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-jms/4.2.5.RELEASE/31050a9665e5d6fa0013d64f04eb653a4d557f6c/spring-jms-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-oxm/4.2.5.RELEASE/a557a238342412a2c8a238dc01fb735565d1d871/spring-oxm-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-test/4.2.5.RELEASE/60bd0ac25869d515717284b77644d0416d3a38c5/spring-test-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-tx/4.2.5.RELEASE/7395321fe937272d9b781a13985e04ab2dcd6210/spring-tx-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-web/4.2.5.RELEASE/49cd2430884b77172aa81e3fc33ef668ea1dab30/spring-web-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-webmvc/4.2.5.RELEASE/cf463cce3e4453eb4b9a69de2dcdfd60c3c57e0/spring-webmvc-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/net.bull.javamelody/javamelody-core/1.59.0/a62546ae063493041fe55b3b323f88ae06151e9a/javamelody-core-1.59.0.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.aspectj/aspectjweaver/1.8.8/969c8d3d3d56db1e1c8721a03ef07d0c9ac3a2e4/aspectjweaver-1.8.8.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-messaging/4.2.5.RELEASE/604103815489605ed609a742a6bbc708ae3db12c/spring-messaging-4.2.5.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.social/spring-social-config/1.1.4.RELEASE/c341d4dca239dbd2a50bc94cc294ea80b5658700/spring-social-config-1.1.4.RELEASE.jar" />
           </element>
         </element>
         <element id="directory" name="META-INF">
