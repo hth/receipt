@@ -113,9 +113,7 @@ public class SplitController {
             ScrubbedInput auth,
 
             @RequestParam ("ct")
-            FriendConnectionTypeEnum friendConnectionType,
-
-            HttpServletResponse httpServletResponse
+            FriendConnectionTypeEnum friendConnectionType
     ) {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         JsonObject jsonObject = new JsonObject();
@@ -141,9 +139,7 @@ public class SplitController {
     @ResponseBody
     public String unfriend(
             @RequestParam ("mail")
-            ScrubbedInput mail,
-
-            HttpServletResponse httpServletResponse
+            ScrubbedInput mail
     ) {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         JsonObject jsonObject = new JsonObject();
@@ -163,9 +159,7 @@ public class SplitController {
     @ResponseBody
     public String settle(
             @RequestParam ("id")
-            ScrubbedInput id,
-
-            HttpServletResponse httpServletResponse
+            ScrubbedInput id
     ) {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         SplitExpensesEntity splitExpenses = splitExpensesService.getById(id.getText(), receiptUser.getRid());
