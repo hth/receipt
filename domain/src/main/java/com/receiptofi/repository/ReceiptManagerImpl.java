@@ -361,7 +361,7 @@ public class ReceiptManagerImpl implements ReceiptManager {
     }
 
     /**
-     * When a receipt is marked as soft delete receipt then previously soft deleted receipt is completely removed
+     * When a receipt is marked as soft delete receipt then previously soft deleted receipt is completely removed.
      *
      * @param checksum
      */
@@ -396,17 +396,18 @@ public class ReceiptManagerImpl implements ReceiptManager {
 
     @Override
     public List<ReceiptEntity> findThisDayReceipts(int year, int month, int day, String receiptUserId) {
-        Criteria criteria = where("RID").is(receiptUserId)
-                .and("Y").is(year)
-                .and("M").is(month)
-                .and("T").is(day)
-                .andOperator(
-                        isActive(),
-                        isNotDeleted()
-                );
-
-        Sort sort = new Sort(DESC, "RTXD");
-        return mongoTemplate.find(query(criteria).with(sort), ReceiptEntity.class, TABLE);
+        return mongoTemplate.find(
+                query(where("RID").is(receiptUserId)
+                        .and("Y").is(year)
+                        .and("M").is(month)
+                        .and("T").is(day)
+                        .andOperator(
+                                isActive(),
+                                isNotDeleted()
+                        )
+                ).with(new Sort(DESC, "RTXD")),
+                ReceiptEntity.class,
+                TABLE);
     }
 
     @Override
@@ -432,7 +433,7 @@ public class ReceiptManagerImpl implements ReceiptManager {
     public void removeExpensofiFilenameReference(String filename) {
         mongoTemplate.findAndModify(
                 query(where("EXF").is(filename)),
-                update("EXF", StringUtils.EMPTY),
+                entityUpdate(new Update().unset("EXF")),
                 ReceiptEntity.class
         );
     }
@@ -514,26 +515,26 @@ public class ReceiptManagerImpl implements ReceiptManager {
     public boolean softDeleteFriendReceipt(String receiptId, String rid) {
         return mongoTemplate.updateFirst(
                 query(where("RF").is(receiptId).and("RID").is(rid)),
-                entityUpdate(update("A", false).set("D", true).set("U", new Date())),
+                entityUpdate(update("A", false).set("D", true)),
                 TABLE
         ).getN() > 0;
     }
 
     @Override
-    public void increaseSplitCount(String receiptId) {
-        mongoTemplate.updateFirst(
+    public boolean increaseSplitCount(String receiptId, double splitTotal, double splitTax) {
+        return mongoTemplate.updateFirst(
                 query(where("id").is(receiptId)),
-                entityUpdate(new Update().inc("SC", 1)),
+                entityUpdate(update("ST", splitTotal).set("SX", splitTax).inc("SC", 1)),
                 ReceiptEntity.class
-        );
+        ).isUpdateOfExisting();
     }
 
     @Override
-    public void decreaseSplitCount(String receiptId) {
-        mongoTemplate.updateFirst(
+    public boolean decreaseSplitCount(String receiptId, double splitTotal, double splitTax) {
+        return mongoTemplate.updateFirst(
                 query(where("id").is(receiptId)),
-                entityUpdate(new Update().inc("SC", -1)),
+                entityUpdate(update("ST", splitTotal).set("SX", splitTax).inc("SC", -1)),
                 ReceiptEntity.class
-        );
+        ).isUpdateOfExisting();
     }
 }

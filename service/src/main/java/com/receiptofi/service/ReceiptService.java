@@ -24,6 +24,7 @@ import com.receiptofi.repository.ItemOCRManager;
 import com.receiptofi.repository.ReceiptManager;
 import com.receiptofi.repository.UserProfileManager;
 import com.receiptofi.service.routes.FileUploadDocumentSenderJMS;
+import com.receiptofi.utils.Maths;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -492,22 +493,31 @@ public class ReceiptService {
                 if (null != friend) {
                     if (!splitExpensesService.doesExists(receipt.getId(), receipt.getReceiptUserId(), fid)) {
                         splitExpensesService.save(new SplitExpensesEntity(fid, receipt));
-                        receiptManager.increaseSplitCount(receipt.getId());
-                        receipt = receiptManager.findReceipt(receipt.getId());
 
-                        /** Update all existing friend receipt. */
-                        updateFriendReceipt(receipt);
+                        double splitTotal = Maths.divide(receipt.getTotal(), receipt.getSplitCount() + 1).doubleValue();
+                        double splitTax = Maths.divide(receipt.getTax(), receipt.getSplitCount() + 1).doubleValue();
 
-                        /** Create new receipt for friend or update existing receipt for friend. */
-                        ReceiptEntity friendReceipt = receiptManager.findOne(fid, receipt.getReceiptDate(), receipt.getTotal());
-                        if (friendReceipt == null) {
-                            friendReceipt = receipt.createReceiptForFriend(fid);
-                            save(friendReceipt);
+                        if (receiptManager.increaseSplitCount(receipt.getId(), splitTotal, splitTax)) {
+
+                            /** Refresh receipt. */
+                            ReceiptEntity receiptRefreshed = receiptManager.findReceipt(receipt.getId());
+
+                            /** Update all existing friend receipt. */
+                            updateFriendReceipt(receiptRefreshed);
+
+                            /** Create new receipt for friend or update existing receipt for friend. */
+                            ReceiptEntity friendReceipt = receiptManager.findOne(fid, receiptRefreshed.getReceiptDate(), receiptRefreshed.getTotal());
+                            if (friendReceipt == null) {
+                                friendReceipt = receiptRefreshed.createReceiptForFriend(fid);
+                                save(friendReceipt);
+                            } else {
+                                ReceiptEntity copyOfReceipt = receiptRefreshed.createReceiptForFriend(fid);
+                                copyOfReceipt.setId(friendReceipt.getId());
+                                copyOfReceipt.setVersion(friendReceipt.getVersion());
+                                save(copyOfReceipt);
+                            }
                         } else {
-                            ReceiptEntity copyOfReceipt = receipt.createReceiptForFriend(fid);
-                            copyOfReceipt.setId(friendReceipt.getId());
-                            copyOfReceipt.setVersion(friendReceipt.getVersion());
-                            save(copyOfReceipt);
+                            LOG.error("Failed to split={} fid={} rid={}", splitAction, fid, receipt.getReceiptUserId());
                         }
                     } else {
                         LOG.warn("Already split expenses with fid={} rid={} skipping split", fid, receipt.getReceiptUserId());
@@ -519,15 +529,28 @@ public class ReceiptService {
                 break;
             case R:
                 if (splitExpensesService.deleteHard(receipt.getId(), receipt.getReceiptUserId(), fid)) {
-                    receiptManager.decreaseSplitCount(receipt.getId());
-                    receipt = receiptManager.findReceipt(receipt.getId());
 
-                    /** Update all existing friend receipt. */
-                    updateFriendReceipt(receipt);
+                    if (receipt.getSplitCount() > 1) {
+                        double splitTotal = Maths.divide(receipt.getTotal(), receipt.getSplitCount() - 1).doubleValue();
+                        double splitTax = Maths.divide(receipt.getTax(), receipt.getSplitCount() - 1).doubleValue();
 
-                    /** Remove entry. */
-                    softDeleteFriendReceipt(receipt.getId(), fid);
-                    result = true;
+                        if (receiptManager.decreaseSplitCount(receipt.getId(), splitTotal, splitTax)) {
+
+                            /** Refresh receipt. */
+                            ReceiptEntity receiptRefreshed = receiptManager.findReceipt(receipt.getId());
+
+                            /** Update all existing friend receipt. */
+                            updateFriendReceipt(receiptRefreshed);
+
+                            /** Remove entry. */
+                            softDeleteFriendReceipt(receiptRefreshed.getId(), fid);
+                            result = true;
+                        } else {
+                            LOG.error("Failed to split={} fid={} rid={}", splitAction, fid, receipt.getReceiptUserId());
+                        }
+                    } else {
+                        LOG.error("Split expenses count going below 1 rid={} id={}", receipt.getReceiptUserId(), receipt.getId());
+                    }
                 } else {
                     LOG.warn("Not found split expenses between fid={} rid={} OR SplitStatus is not Unsettled. Skipping.",
                             fid, receipt.getReceiptUserId());
