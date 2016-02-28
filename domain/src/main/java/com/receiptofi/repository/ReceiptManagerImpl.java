@@ -361,7 +361,7 @@ public class ReceiptManagerImpl implements ReceiptManager {
     }
 
     /**
-     * When a receipt is marked as soft delete receipt then previously soft deleted receipt is completely removed
+     * When a receipt is marked as soft delete receipt then previously soft deleted receipt is completely removed.
      *
      * @param checksum
      */
@@ -433,7 +433,7 @@ public class ReceiptManagerImpl implements ReceiptManager {
     public void removeExpensofiFilenameReference(String filename) {
         mongoTemplate.findAndModify(
                 query(where("EXF").is(filename)),
-                update("EXF", StringUtils.EMPTY),
+                entityUpdate(new Update().unset("EXF")),
                 ReceiptEntity.class
         );
     }
@@ -515,7 +515,7 @@ public class ReceiptManagerImpl implements ReceiptManager {
     public boolean softDeleteFriendReceipt(String receiptId, String rid) {
         return mongoTemplate.updateFirst(
                 query(where("RF").is(receiptId).and("RID").is(rid)),
-                entityUpdate(update("A", false).set("D", true).set("U", new Date())),
+                entityUpdate(update("A", false).set("D", true)),
                 TABLE
         ).getN() > 0;
     }
