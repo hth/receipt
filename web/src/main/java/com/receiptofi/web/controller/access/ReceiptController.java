@@ -139,12 +139,12 @@ public class ReceiptController {
 
     /**
      * This method is not being used. Was suppose to support JSON representation of receipt data.
-     *
+     * Delete on 6/6/2016
      * @param receiptId
      * @return
      */
     @Deprecated
-    @RequestMapping (value = "/rest/{receiptId}", method = RequestMethod.GET)
+    @RequestMapping (value = "/rest/remove/me/{receiptId}", method = RequestMethod.GET)
     @ResponseBody
     public JsonReceiptDetail loadReceipt(
             @PathVariable
