@@ -18,6 +18,9 @@ import org.springframework.validation.Validator;
 
 import java.math.BigDecimal;
 import java.text.ParseException;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 
 /**
  * @author hitender
@@ -69,7 +72,16 @@ public class ReceiptDocumentValidator implements Validator {
         );
 
         try {
-            DateUtil.getDateFromString(receiptDocumentForm.getReceiptDocument().getReceiptDate());
+            Date receiptDate = DateUtil.getDateFromString(receiptDocumentForm.getReceiptDocument().getReceiptDate());
+            /** Since mid-night hence two days minus 6o seconds for previous day. */
+            Date nextDay = Date.from(LocalDate.now().plusDays(2).atStartOfDay(ZoneId.systemDefault()).toInstant().minusSeconds(60));
+            if (receiptDate.after(nextDay)) {
+                errors.rejectValue(
+                        "receiptDocument.receiptDate", "field.date.future",
+                        new Object[]{receiptDocumentForm.getReceiptDocument().getReceiptDate()},
+                        "Date is set in future. Format should be MM/dd/yyyy 11:59:59 PM. Check for month and day.");
+            }
+
             //TODO add condition to check date in future and past
         } catch (IllegalArgumentException exce) {
             errors.rejectValue(

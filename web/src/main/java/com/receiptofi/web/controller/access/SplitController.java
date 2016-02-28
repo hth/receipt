@@ -3,7 +3,6 @@ package com.receiptofi.web.controller.access;
 import com.google.gson.JsonObject;
 
 import com.receiptofi.domain.SplitExpensesEntity;
-import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.domain.json.JsonOweExpenses;
 import com.receiptofi.domain.site.ReceiptUser;
 import com.receiptofi.domain.types.FriendConnectionTypeEnum;
@@ -30,10 +29,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.codahale.metrics.annotation.ExceptionMetered;
 import com.codahale.metrics.annotation.Timed;
 
-import java.util.ArrayList;
 import java.util.List;
-
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * User: hitender
