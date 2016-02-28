@@ -367,23 +367,6 @@ public class ReceiptEntity extends BaseEntity {
         return splitCount;
     }
 
-    public void increaseSplitCount() {
-        //TODO add cron job to confirm if the number of users split with is matching the SplitExpenses count
-        this.splitCount++;
-        this.splitTotal = Maths.divide(total, splitCount).doubleValue();
-        this.splitTax = Maths.divide(tax, splitCount).doubleValue();
-    }
-
-    public void decreaseSplitCount() {
-        if (splitCount > 1) {
-            this.splitCount--;
-            this.splitTax = Maths.divide(tax, splitCount).doubleValue();
-            this.splitTotal = Maths.divide(total, splitCount).doubleValue();
-        } else {
-            LOG.error("Split expenses count going below 1 rid={} id={}", receiptUserId, id);
-        }
-    }
-
     private void setSplitCount(int splitCount) {
         this.splitCount = splitCount;
     }
