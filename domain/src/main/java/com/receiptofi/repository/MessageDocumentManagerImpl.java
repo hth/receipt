@@ -27,7 +27,7 @@ import org.springframework.data.mongodb.core.WriteResultChecking;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.stereotype.Repository;
 
-import junit.framework.Assert;
+import org.junit.Assert;
 
 import java.util.Date;
 import java.util.List;
