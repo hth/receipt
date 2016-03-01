@@ -14,6 +14,7 @@ import com.receiptofi.domain.UserAuthenticationEntity;
 import com.receiptofi.domain.UserPreferenceEntity;
 import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.domain.types.MailTypeEnum;
+import com.receiptofi.domain.types.NotificationGroupEnum;
 import com.receiptofi.domain.types.NotificationTypeEnum;
 import com.receiptofi.repository.UserAccountManager;
 import com.receiptofi.repository.UserAuthenticationManager;
@@ -532,6 +533,7 @@ public class MailService {
                     notificationService.addNotification(
                             "Invitation sent to '" + invitedUserEmail + "'",
                             NotificationTypeEnum.MESSAGE,
+                            NotificationGroupEnum.S,
                             rid);
 
                     responseMessage = "Invitation Sent to: " + StringUtils.abbreviate(invitedUserEmail, 26);
@@ -539,6 +541,7 @@ public class MailService {
                     notificationService.addNotification(
                             "Unsuccessful in sending invitation to '" + invitedUserEmail + "'",
                             NotificationTypeEnum.MESSAGE,
+                            NotificationGroupEnum.S,
                             rid);
 
                     responseMessage = "Unsuccessful in sending invitation: " + StringUtils.abbreviate(invitedUserEmail, 26);
@@ -555,11 +558,13 @@ public class MailService {
                         notificationService.addNotification(
                                 "New connection with " + userProfile.getName(),
                                 NotificationTypeEnum.MESSAGE,
+                                NotificationGroupEnum.S,
                                 rid);
 
                         notificationService.addNotification(
                                 "New connection with " + accountService.doesUserExists(uid).getName(),
                                 NotificationTypeEnum.MESSAGE,
+                                NotificationGroupEnum.S,
                                 userProfile.getReceiptUserId());
                     } else if (StringUtils.isNotBlank(friend.getUnfriendUser())) {
                         friend.connect();
@@ -569,11 +574,13 @@ public class MailService {
                         notificationService.addNotification(
                                 "Re-connection with " + userProfile.getName(),
                                 NotificationTypeEnum.MESSAGE,
+                                NotificationGroupEnum.S,
                                 rid);
 
                         notificationService.addNotification(
                                 "Re-connection with " + accountService.doesUserExists(uid).getName(),
                                 NotificationTypeEnum.MESSAGE,
+                                NotificationGroupEnum.S,
                                 userProfile.getReceiptUserId());
                     }
                 } else if (friend == null) {
@@ -583,11 +590,13 @@ public class MailService {
                     notificationService.addNotification(
                             "Sent friend request to " + userProfile.getName(),
                             NotificationTypeEnum.MESSAGE,
+                            NotificationGroupEnum.S,
                             rid);
 
                     notificationService.addNotification(
                             "New friend request from " + accountService.doesUserExists(uid).getName(),
                             NotificationTypeEnum.MESSAGE,
+                            NotificationGroupEnum.S,
                             userProfile.getReceiptUserId());
                 }
 

@@ -8,6 +8,7 @@ import com.receiptofi.domain.FileSystemEntity;
 import com.receiptofi.domain.ItemEntity;
 import com.receiptofi.domain.ReceiptEntity;
 import com.receiptofi.domain.site.ReceiptUser;
+import com.receiptofi.domain.types.NotificationGroupEnum;
 import com.receiptofi.domain.types.NotificationTypeEnum;
 import com.receiptofi.loader.scheduledtasks.FileSystemProcess;
 import com.receiptofi.service.ItemAnalyticService;
@@ -128,6 +129,7 @@ public class ExpensofiController {
                         receiptEntity.getBizName().getBusinessName() +
                                 " expense report created",
                         NotificationTypeEnum.EXPENSE_REPORT,
+                        NotificationGroupEnum.F,
                         receiptEntity);
                 return new ExcelFileName(filename).asJson();
             } catch (IOException e) {

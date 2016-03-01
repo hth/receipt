@@ -5,6 +5,7 @@ import com.receiptofi.domain.DocumentEntity;
 import com.receiptofi.domain.MileageEntity;
 import com.receiptofi.domain.NotificationEntity;
 import com.receiptofi.domain.ReceiptEntity;
+import com.receiptofi.domain.types.NotificationGroupEnum;
 import com.receiptofi.domain.types.NotificationMarkerEnum;
 import com.receiptofi.domain.types.NotificationTypeEnum;
 import com.receiptofi.domain.types.PaginationEnum;
@@ -47,21 +48,23 @@ public class NotificationService {
     public void addNotification(
             String message,
             NotificationTypeEnum notificationType,
+            NotificationGroupEnum notificationGroup,
             String id,
             String rid
     ) {
-        NotificationEntity notificationEntity = NotificationEntity.newInstance(notificationType);
-        notificationEntity.setMessage(message);
-        notificationEntity.setReceiptUserId(rid);
-        notificationEntity.setNotificationMarkerEnum(notificationType.getNotificationMarker());
+        NotificationEntity notification = NotificationEntity.newInstance(notificationType);
+        notification.setMessage(message);
+        notification.setReceiptUserId(rid);
+        notification.setNotificationMarkerEnum(notificationType.getNotificationMarker());
+        notification.setNotificationGroup(notificationGroup);
         if (notificationType.getNotificationMarker() != NotificationMarkerEnum.P) {
             /** Defaults to success as its not going to be sent through Push Notification. */
-            notificationEntity.setNotificationStateToSuccess();
+            notification.setNotificationStateToSuccess();
         }
-        notificationEntity.setReferenceId(id);
+        notification.setReferenceId(id);
 
         try {
-            notificationManager.save(notificationEntity);
+            notificationManager.save(notification);
         } catch (Exception exce) {
             LOG.error("Failed adding notification={}, with message={}, for user={}",
                     exce.getLocalizedMessage(),
@@ -75,11 +78,13 @@ public class NotificationService {
      *
      * @param message
      * @param notificationType either MESSAGE or PUSH_NOTIFICATION
+     * @param notificationGroup to group notification in types for picking right icons
      * @param rid
      */
     public void addNotification(
             String message,
             NotificationTypeEnum notificationType,
+            NotificationGroupEnum notificationGroup,
             String rid
     ) {
         switch (notificationType) {
@@ -87,6 +92,7 @@ public class NotificationService {
                 addNotification(
                         message,
                         notificationType,
+                        notificationGroup,
                         null,
                         rid);
                 break;
@@ -94,6 +100,7 @@ public class NotificationService {
                 addNotification(
                         message,
                         notificationType,
+                        notificationGroup,
                         null,
                         rid);
                 break;
@@ -110,6 +117,7 @@ public class NotificationService {
     public void addNotification(
             String message,
             NotificationTypeEnum notificationType,
+            NotificationGroupEnum notificationGroup,
             BaseEntity supportedEntity
     ) {
         switch (notificationType) {
@@ -117,6 +125,7 @@ public class NotificationService {
                 addNotification(
                         message,
                         notificationType,
+                        notificationGroup,
                         supportedEntity.getId(),
                         ((ReceiptEntity) supportedEntity).getReceiptUserId());
                 break;
@@ -124,12 +133,14 @@ public class NotificationService {
                 addNotification(
                         message,
                         notificationType,
+                        notificationGroup,
                         supportedEntity.getId(),
                         ((ReceiptEntity) supportedEntity).getReceiptUserId());
             case RECEIPT:
                 addNotification(
                         message,
                         notificationType,
+                        notificationGroup,
                         supportedEntity.getId(),
                         ((ReceiptEntity) supportedEntity).getReceiptUserId());
                 break;
@@ -137,6 +148,7 @@ public class NotificationService {
                 addNotification(
                         message,
                         notificationType,
+                        notificationGroup,
                         supportedEntity.getId(),
                         ((ReceiptEntity) supportedEntity).getReceiptUserId());
                 break;
@@ -144,6 +156,7 @@ public class NotificationService {
                 addNotification(
                         message,
                         notificationType,
+                        notificationGroup,
                         supportedEntity.getId(),
                         ((MileageEntity) supportedEntity).getReceiptUserId());
                 break;
@@ -153,6 +166,7 @@ public class NotificationService {
                 addNotification(
                         message,
                         notificationType,
+                        notificationGroup,
                         supportedEntity.getId(),
                         ((DocumentEntity) supportedEntity).getReceiptUserId());
                 break;
@@ -160,6 +174,7 @@ public class NotificationService {
                 addNotification(
                         message,
                         notificationType,
+                        notificationGroup,
                         supportedEntity.getId(),
                         ((DocumentEntity) supportedEntity).getReceiptUserId());
                 break;

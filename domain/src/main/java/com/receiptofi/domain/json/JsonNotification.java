@@ -46,6 +46,9 @@ public class JsonNotification {
     @JsonProperty ("nt")
     private String notificationType;
 
+    @JsonProperty ("ng")
+    private String notificationGroup;
+
     /**
      * Could be a receipt id or Document id
      */
@@ -66,6 +69,7 @@ public class JsonNotification {
         this.message = notification.getMessage();
         this.notify = notification.isNotify();
         this.notificationType = notification.getNotificationType().getName();
+        this.notificationGroup = notification.getNotificationGroup().getName();
         this.referenceId = notification.getReferenceId() == null ? "" : notification.getReferenceId();
         this.created = DateFormatUtils.format(notification.getCreated(), JsonReceipt.ISO8601_FMT, TimeZone.getTimeZone("UTC"));
         this.updated = DateFormatUtils.format(notification.getUpdated(), JsonReceipt.ISO8601_FMT, TimeZone.getTimeZone("UTC"));

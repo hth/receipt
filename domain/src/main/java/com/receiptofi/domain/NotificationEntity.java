@@ -1,5 +1,6 @@
 package com.receiptofi.domain;
 
+import com.receiptofi.domain.types.NotificationGroupEnum;
 import com.receiptofi.domain.types.NotificationMarkerEnum;
 import com.receiptofi.domain.types.NotificationStateEnum;
 import com.receiptofi.domain.types.NotificationTypeEnum;
@@ -45,6 +46,11 @@ public class NotificationEntity extends BaseEntity {
     @NotNull
     @Field ("NNE")
     private NotificationTypeEnum notificationType;
+
+    /** Grouped to match similar messages with respective icons. */
+    @NotNull
+    @Field ("NG")
+    private NotificationGroupEnum notificationGroup = NotificationGroupEnum.N;
 
     /**
      * Could be a receipt id or Document id or empty when its just an invite.
@@ -109,6 +115,14 @@ public class NotificationEntity extends BaseEntity {
 
     private void setNotificationType(NotificationTypeEnum notificationType) {
         this.notificationType = notificationType;
+    }
+
+    public NotificationGroupEnum getNotificationGroup() {
+        return notificationGroup;
+    }
+
+    public void setNotificationGroup(NotificationGroupEnum notificationGroup) {
+        this.notificationGroup = notificationGroup;
     }
 
     public String getReferenceId() {

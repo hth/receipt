@@ -20,6 +20,7 @@ import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.domain.types.DocumentOfTypeEnum;
 import com.receiptofi.domain.types.DocumentRejectReasonEnum;
 import com.receiptofi.domain.types.DocumentStatusEnum;
+import com.receiptofi.domain.types.NotificationGroupEnum;
 import com.receiptofi.domain.types.NotificationTypeEnum;
 import com.receiptofi.repository.DocumentManager;
 import com.receiptofi.repository.ItemManager;
@@ -141,6 +142,7 @@ public class DocumentUpdateService {
             notificationService.addNotification(
                     getNotificationMessageForReceiptProcess(receipt),
                     NotificationTypeEnum.RECEIPT,
+                    NotificationGroupEnum.R,
                     receipt);
 
         } catch (Exception exce) {
@@ -277,6 +279,7 @@ public class DocumentUpdateService {
             notificationService.addNotification(
                     getNotificationMessageForReceiptReCheck(receipt),
                     NotificationTypeEnum.RECEIPT,
+                    NotificationGroupEnum.R,
                     receipt);
 
         } catch (Exception exce) {
@@ -371,6 +374,7 @@ public class DocumentUpdateService {
                 notificationService.addNotification(
                         getNotificationMessageForReceiptReject(dbObject, document.getDocumentRejectReason()),
                         NotificationTypeEnum.DOCUMENT_REJECTED,
+                        NotificationGroupEnum.R,
                         document);
             } catch (Exception exce) {
                 LOG.error("Revert all the transaction for documentId={}. Rejection of a receipt failed, reason={}",
@@ -449,6 +453,7 @@ public class DocumentUpdateService {
         notificationService.addNotification(
                 fileDeleteMessage,
                 NotificationTypeEnum.DOCUMENT_DELETED,
+                NotificationGroupEnum.R,
                 document);
     }
 
@@ -533,6 +538,7 @@ public class DocumentUpdateService {
             notificationService.addNotification(
                     String.valueOf(mileage.getStart()) + ", " + "odometer reading processed",
                     NotificationTypeEnum.MILEAGE,
+                    NotificationGroupEnum.N,
                     mileage);
         } catch (DuplicateKeyException duplicateKeyException) {
             LOG.error(duplicateKeyException.getLocalizedMessage(), duplicateKeyException);

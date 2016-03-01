@@ -16,6 +16,7 @@ import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.domain.annotation.Mobile;
 import com.receiptofi.domain.types.CommentTypeEnum;
 import com.receiptofi.domain.types.DocumentStatusEnum;
+import com.receiptofi.domain.types.NotificationGroupEnum;
 import com.receiptofi.domain.types.NotificationTypeEnum;
 import com.receiptofi.domain.types.SplitActionEnum;
 import com.receiptofi.repository.DocumentManager;
@@ -168,7 +169,11 @@ public class ReceiptService {
             }
 
             /** Added document deleted successfully. */
-            notificationService.addNotification(md, NotificationTypeEnum.RECEIPT_DELETED, receipt);
+            notificationService.addNotification(
+                    md,
+                    NotificationTypeEnum.RECEIPT_DELETED,
+                    NotificationGroupEnum.R,
+                    receipt);
             return true;
         } else if (StringUtils.isNotBlank(receipt.getReferReceiptId())) {
             /**
