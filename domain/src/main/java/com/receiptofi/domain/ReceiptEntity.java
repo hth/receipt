@@ -6,7 +6,6 @@ package com.receiptofi.domain;
 import com.receiptofi.domain.types.BilledStatusEnum;
 import com.receiptofi.domain.types.DocumentStatusEnum;
 import com.receiptofi.utils.HashText;
-import com.receiptofi.utils.Maths;
 
 import org.apache.commons.lang3.StringUtils;
 
