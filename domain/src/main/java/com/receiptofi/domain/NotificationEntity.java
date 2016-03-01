@@ -47,6 +47,7 @@ public class NotificationEntity extends BaseEntity {
     @Field ("NNE")
     private NotificationTypeEnum notificationType;
 
+    //TODO remove default values after 90 days 06/06/2016
     /** Grouped to match similar messages with respective icons. */
     @NotNull
     @Field ("NG")
