@@ -46,6 +46,7 @@ public class JsonNotification {
     @JsonProperty ("nt")
     private String notificationType;
 
+    /** @since 1.0.3 */
     @JsonProperty ("ng")
     private String notificationGroup;
 
