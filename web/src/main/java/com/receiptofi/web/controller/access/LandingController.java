@@ -296,7 +296,7 @@ public class LandingController {
                     DocumentEntity document = landingService.uploadDocument(uploadReceiptImage);
 
                     if (!duplicateFile) {
-                        LOG.info("Found existing file with name={} rid={}", uploadReceiptImage.getOriginalFileName(), rid);
+                        LOG.info("{} receipt found, delete, name={} rid={}", DocumentRejectReasonEnum.D.getName(), uploadReceiptImage.getOriginalFileName(), rid);
                         messageDocumentService.markMessageForReceiptAsDuplicate(document.getId(), documentRejectUserId, documentRejectRid);
                         documentUpdateService.processDocumentForReject(
                                 documentRejectRid,
