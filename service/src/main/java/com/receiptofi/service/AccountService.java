@@ -13,6 +13,7 @@ import com.receiptofi.domain.site.ReceiptUser;
 import com.receiptofi.domain.types.AccountInactiveReasonEnum;
 import com.receiptofi.domain.types.BilledStatusEnum;
 import com.receiptofi.domain.types.BillingPlanEnum;
+import com.receiptofi.domain.types.NotificationGroupEnum;
 import com.receiptofi.domain.types.NotificationTypeEnum;
 import com.receiptofi.domain.types.ProviderEnum;
 import com.receiptofi.domain.types.RoleEnum;
@@ -589,6 +590,7 @@ public class AccountService {
         notificationService.addNotification(
                 "Welcome " + userAccount.getName() + ". Next step, take a picture of the receipt from app to process it.",
                 NotificationTypeEnum.PUSH_NOTIFICATION,
+                NotificationGroupEnum.N,
                 userAccount.getReceiptUserId());
     }
 }

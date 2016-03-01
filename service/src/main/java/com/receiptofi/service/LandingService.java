@@ -10,6 +10,7 @@ import com.receiptofi.domain.ReceiptEntity;
 import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.domain.shared.UploadDocumentImage;
 import com.receiptofi.domain.types.DocumentStatusEnum;
+import com.receiptofi.domain.types.NotificationGroupEnum;
 import com.receiptofi.domain.types.NotificationTypeEnum;
 import com.receiptofi.domain.value.ReceiptGrouped;
 import com.receiptofi.domain.value.ReceiptGroupedByBizLocation;
@@ -325,6 +326,7 @@ public class LandingService {
             notificationService.addNotification(
                     fileSystem.getOriginalFilename() + " upload successful. Pending Receipt will be processed shortly.",
                     NotificationTypeEnum.DOCUMENT_UPLOADED,
+                    NotificationGroupEnum.F,
                     documentEntity);
 
             LOG.info("Upload complete document={} rid={}", documentEntity.getId(), documentEntity.getReceiptUserId());

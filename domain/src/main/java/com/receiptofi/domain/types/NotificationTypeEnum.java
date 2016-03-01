@@ -55,6 +55,6 @@ public enum NotificationTypeEnum {
 
     @Override
     public String toString() {
-        return getDescription();
+        return description;
     }
 }
