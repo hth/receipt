@@ -287,17 +287,25 @@ public class LandingController {
             final List<MultipartFile> files = getMultipartFiles(multipartHttpRequest);
 
             for (MultipartFile multipartFile : files) {
-                UploadDocumentImage uploadReceiptImage = UploadDocumentImage.newInstance();
-                uploadReceiptImage.setFileData(multipartFile);
-                uploadReceiptImage.setRid(rid);
-                uploadReceiptImage.setFileType(FileTypeEnum.RECEIPT);
+                UploadDocumentImage image = UploadDocumentImage.newInstance();
+                image.setFileData(multipartFile);
+                image.setRid(rid);
+                image.setFileType(FileTypeEnum.RECEIPT);
                 try {
-                    boolean duplicateFile = fileSystemService.fileWithSimilarNameDoesNotExists(rid, uploadReceiptImage.getOriginalFileName());
-                    DocumentEntity document = landingService.uploadDocument(uploadReceiptImage);
+                    boolean duplicateFile = fileSystemService.fileWithSimilarNameDoesNotExists(rid, image.getOriginalFileName());
+                    DocumentEntity document = landingService.uploadDocument(image);
 
                     if (!duplicateFile) {
-                        LOG.info("{} receipt found, delete, name={} rid={}", DocumentRejectReasonEnum.D.getName(), uploadReceiptImage.getOriginalFileName(), rid);
-                        messageDocumentService.markMessageForReceiptAsDuplicate(document.getId(), documentRejectUserId, documentRejectRid);
+                        LOG.info("{} receipt found, delete, name={} rid={}",
+                                DocumentRejectReasonEnum.D.getName(),
+                                image.getOriginalFileName(),
+                                rid);
+
+                        messageDocumentService.markMessageForReceiptAsDuplicate(
+                                document.getId(),
+                                documentRejectUserId,
+                                documentRejectRid);
+
                         documentUpdateService.processDocumentForReject(
                                 documentRejectRid,
                                 document.getId(),
