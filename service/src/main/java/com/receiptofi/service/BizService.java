@@ -115,7 +115,7 @@ public class BizService {
                 receiptEntity.setBizName(bizNameEntity);
                 receiptEntity.setBizStore(bizStoreEntity);
             } catch (DuplicateKeyException e) {
-                BizStoreEntity biz = bizStoreManager.findOne(bizStoreEntity);
+                BizStoreEntity biz = bizStoreManager.findOne(bizStoreEntity.getAddress(), bizStoreEntity.getPhone());
                 LOG.error("Address and Phone already registered with another Business Name={}, reason={}",
                         biz.getBizName().getBusinessName(), e.getLocalizedMessage(), e);
 
@@ -127,7 +127,7 @@ public class BizService {
                         biz.getBizName().getBusinessName());
             }
         } else {
-            BizStoreEntity bizStore = bizStoreManager.findOne(bizStoreEntity);
+            BizStoreEntity bizStore = bizStoreManager.findOne(bizStoreEntity.getAddress(), bizStoreEntity.getPhone());
             if (null == bizStore) {
                 try {
                     bizStoreEntity.setBizName(bizName);
@@ -137,7 +137,7 @@ public class BizService {
                     receiptEntity.setBizName(bizName);
                     receiptEntity.setBizStore(bizStoreEntity);
                 } catch (DuplicateKeyException e) {
-                    BizStoreEntity biz = bizStoreManager.findOne(bizStoreEntity);
+                    BizStoreEntity biz = bizStoreManager.findOne(bizStoreEntity.getAddress(), bizStoreEntity.getPhone());
                     LOG.error("Address and Phone already registered with another Business Name={}, reason={}",
                             biz.getBizName().getBusinessName(), e.getLocalizedMessage(), e);
 

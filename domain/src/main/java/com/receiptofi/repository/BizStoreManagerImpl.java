@@ -72,14 +72,14 @@ public final class BizStoreManagerImpl implements BizStoreManager {
         return mongoTemplate.findOne(query(where("AD").is(StringUtils.EMPTY)), BizStoreEntity.class);
     }
 
-    public BizStoreEntity findOne(BizStoreEntity bizStoreEntity) {
+    public BizStoreEntity findOne(String address, String phone) {
         Criteria criteria = new Criteria();
-        if (StringUtils.isEmpty(bizStoreEntity.getPhone())) {
-            criteria = where("AD").is(bizStoreEntity.getAddress());
+        if (StringUtils.isEmpty(phone)) {
+            criteria = where("AD").is(address);
         } else {
             criteria.orOperator(
-                    where("AD").is(bizStoreEntity.getAddress()),
-                    where("PH").is(bizStoreEntity.getPhone())
+                    where("AD").is(address),
+                    where("PH").is(phone)
             );
         }
 
