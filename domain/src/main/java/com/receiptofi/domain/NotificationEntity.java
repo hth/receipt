@@ -38,7 +38,7 @@ public class NotificationEntity extends BaseEntity {
     @Field ("RID")
     private String receiptUserId;
 
-    /** Notify this notification when true otherwise do not notify using messaging. */
+    /** Various kinds of notifications. */
     @NotNull
     @Field ("NM")
     private NotificationMarkerEnum notificationMarkerEnum;
