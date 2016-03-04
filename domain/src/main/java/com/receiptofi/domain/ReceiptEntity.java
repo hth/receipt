@@ -6,6 +6,7 @@ package com.receiptofi.domain;
 import com.receiptofi.domain.types.BilledStatusEnum;
 import com.receiptofi.domain.types.DocumentStatusEnum;
 import com.receiptofi.utils.HashText;
+import com.receiptofi.utils.LocaleUtil;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -216,15 +217,14 @@ public class ReceiptEntity extends BaseEntity {
     }
 
     /**
-     * Used to show the value in notification.
+     * Used in showing the currency symbol and net amount in notification.
      *
      * @return
      */
     @Transient
     public String getTotalString() {
-        //TODO try using JODA currency
-        java.text.NumberFormat currencyFormatter = java.text.NumberFormat.getCurrencyInstance();
-        return currencyFormatter.format(getTotal());
+        java.text.NumberFormat numberFormat = LocaleUtil.getNumberFormat(getBizStore().getCountryShortName());
+        return numberFormat.format(total);
     }
 
     public Double getTax() {

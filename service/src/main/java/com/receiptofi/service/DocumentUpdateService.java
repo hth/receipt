@@ -140,7 +140,7 @@ public class DocumentUpdateService {
             updateMessageManager(document, PENDING, PROCESSED);
 
             notificationService.addNotification(
-                    getNotificationMessageForReceiptProcess(receipt),
+                    getNotificationMessageForReceiptProcess(receipt, "processed"),
                     NotificationTypeEnum.RECEIPT,
                     NotificationGroupEnum.R,
                     receipt);
@@ -277,7 +277,7 @@ public class DocumentUpdateService {
             updateMessageManager(document, REPROCESS, PROCESSED);
 
             notificationService.addNotification(
-                    getNotificationMessageForReceiptReCheck(receipt),
+                    getNotificationMessageForReceiptProcess(receipt, "re-checked"),
                     NotificationTypeEnum.RECEIPT,
                     NotificationGroupEnum.R,
                     receipt);
@@ -589,16 +589,12 @@ public class DocumentUpdateService {
         documentManager.markNotified(documentId);
     }
 
-    public String getNotificationMessageForReceiptProcess(ReceiptEntity receipt) {
-        return receipt.getTotalString() + " '" + receipt.getBizName().getBusinessName() + "' receipt processed";
-    }
-
-    public String getNotificationMessageForReceiptReCheck(ReceiptEntity receipt) {
+    protected String getNotificationMessageForReceiptProcess(ReceiptEntity receipt, String action) {
         return receipt.getTotalString() +
                 " '" +
                 receipt.getBizName().getBusinessName() +
-                "' " +
-                "receipt re-checked";
+                "' receipt " +
+                action;
     }
 
     public String getNotificationMessageForReceiptReject(DBObject dbObject, DocumentRejectReasonEnum documentRejectReason) {

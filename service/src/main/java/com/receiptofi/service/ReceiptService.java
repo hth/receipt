@@ -141,7 +141,7 @@ public class ReceiptService {
             }
 
             /** Notification message when receipt is deleted. */
-            String md = receipt.getTotalString() + " '" + receipt.getBizName().getBusinessName() + "' receipt deleted";
+            String md = documentUpdateService.getNotificationMessageForReceiptProcess(receipt, "deleted");
 
             itemManager.deleteSoft(receipt);
             fileSystemService.deleteSoft(receipt.getFileSystemEntities());
