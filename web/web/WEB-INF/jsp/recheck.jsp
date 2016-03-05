@@ -112,8 +112,30 @@
                         url: '${pageContext. request. contextPath}/ws/r/find_address.htm',
                         data: {
                             term: request.term,
-                            extraParam: $("#businessName").val()
+                            nameParam: $("#businessName").val()
                         },
+                        success: function (data) {
+                            console.log('response=', data);
+                            response(data);
+                        }
+                    });
+                }
+            });
+
+        });
+
+        $(document).ready(function() {
+            $("#phone").autocomplete({
+                source: function (request, response) {
+                    $.ajax({
+                        url: '${pageContext. request. contextPath}/ws/r/find_phone.htm',
+                        data: {
+                            term: request.term,
+                            nameParam: $("#businessName").val(),
+                            addressParam: $("#address").val()
+                        },
+                        contentType: "*/*",
+                        dataTypes: "application/json",
                         success: function (data) {
                             console.log('response=', data);
                             response(data);
