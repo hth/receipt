@@ -278,7 +278,7 @@ public class ReceiptDocumentValidator implements Validator {
                     "receiptDocument.bizName.businessName",
                     "field.businessName",
                     new Object[]{foundStore.getBizName().getBusinessName(), bizName.getBusinessName()},
-                    "Found " + foundStore.getBizName().getBusinessName() + " sharing the same address and phone number");
+                    foundStore.getBizName().getBusinessName() + " is sharing the same address and phone number as " + bizName.getBusinessName());
         }
     }
 }
