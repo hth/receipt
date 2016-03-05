@@ -153,7 +153,7 @@
                         url: '${pageContext. request. contextPath}/ws/r/find_item.htm',
                         data: {
                             term: request.term,
-                            extraParam: $("#businessName").val()
+                            nameParam: $("#businessName").val()
                         },
                         success: function (data) {
                             console.log('response=', data);
