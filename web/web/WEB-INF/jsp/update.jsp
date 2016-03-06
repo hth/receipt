@@ -149,7 +149,7 @@
 
         });
 
-        $(document).ready(function() {
+        $(document).ready(function () {
             $(".items").autocomplete({
                 source: function (request, response) {
                     $.ajax({

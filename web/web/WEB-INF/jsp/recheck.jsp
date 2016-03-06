@@ -146,8 +146,8 @@
 
         });
 
-        $(document).ready(function() {
-            $( ".items" ).autocomplete({
+        $(document).ready(function () {
+            $(".items").autocomplete({
                 source: function (request, response) {
                     $.ajax({
                         url: '${pageContext. request. contextPath}/ws/r/find_item.htm',
@@ -155,6 +155,8 @@
                             term: request.term,
                             nameParam: $("#businessName").val()
                         },
+                        contentType: "*/*",
+                        dataTypes: "application/json",
                         success: function (data) {
                             console.log('response=', data);
                             response(data);
@@ -432,7 +434,7 @@
                                         ${status.index + 1}
                                     </td>
                                     <td style="text-align: left">
-                                        <form:input path="items[${status.index}].name" size="64" />
+                                        <form:input path="items[${status.index}].name" cssClass="items" size="64" />
                                     </td>
                                     <td style="text-align: left">
                                         <form:input path="items[${status.index}].quantity" size="4" />
@@ -442,7 +444,7 @@
                                         <form:errors path="items[${status.index}].price" cssClass="error" />
                                     </td>
                                     <td>
-                                        <form:select path="items[${status.index}].taxed" id="itemId">
+                                        <form:select path="items[${status.index}].taxed">
                                             <form:option value="NONE" label="--- Select ---"/>
                                             <form:options itemValue="name" itemLabel="description" />
                                         </form:select>
