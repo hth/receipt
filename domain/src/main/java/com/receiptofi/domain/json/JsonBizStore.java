@@ -50,18 +50,22 @@ public class JsonBizStore {
     @JsonProperty ("rating")
     private float rating;
 
-    private JsonBizStore(BizStoreEntity bizStoreEntity) {
-        this.address = bizStoreEntity.getAddress();
-        this.phone = bizStoreEntity.getPhoneFormatted();
-        if (null != bizStoreEntity.getCoordinate()) {
-            this.lat = Double.toString(bizStoreEntity.getCoordinate().getLat());
-            this.lng = Double.toString(bizStoreEntity.getCoordinate().getLng());
+    @JsonProperty ("country")
+    private String country;
+
+    private JsonBizStore(BizStoreEntity bizStore) {
+        this.address = bizStore.getAddress();
+        this.phone = bizStore.getPhoneFormatted();
+        if (null != bizStore.getCoordinate()) {
+            this.lat = Double.toString(bizStore.getCoordinate().getLat());
+            this.lng = Double.toString(bizStore.getCoordinate().getLng());
         }
-        this.type = Arrays.toString(bizStoreEntity.getPlaceType());
-        this.rating = bizStoreEntity.getPlaceRating();
+        this.type = Arrays.toString(bizStore.getPlaceType());
+        this.rating = bizStore.getPlaceRating();
+        this.country = bizStore.getCountryShortName();
     }
 
-    public static JsonBizStore newInstance(BizStoreEntity bizStoreEntity) {
-        return new JsonBizStore(bizStoreEntity);
+    public static JsonBizStore newInstance(BizStoreEntity bizStore) {
+        return new JsonBizStore(bizStore);
     }
 }
