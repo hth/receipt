@@ -78,9 +78,7 @@ public class ExternalService {
                 bizStore.setCoordinate(new Coordinate(lat, lng));
                 bizStore.setPlaceId(results[0].placeId);
 
-                PlaceDetails placeDetails = PlacesApi.placeDetails(context, results[0].placeId).await();
-                bizStore.setPlaceType(placeDetails.types);
-                bizStore.setPlaceRating(placeDetails.rating);
+                PlaceDetails placeDetails = getPlaceDetails(bizStore, results[0]);
 
                 if (StringUtils.isNotEmpty(placeDetails.formattedPhoneNumber)) {
                     bizStore.setPhone(placeDetails.formattedPhoneNumber);
@@ -88,7 +86,7 @@ public class ExternalService {
 
                 bizStore.setValidatedUsingExternalAPI(true);
             } else {
-                LOG.error("Geocoding result from address is empty for bizStoreId={} bizStoreAddress={}",
+                LOG.warn("Geocoding result from address is empty for bizStoreId={} bizStoreAddress={}",
                         bizStore.getId(), bizStore.getAddress());
             }
         } catch (Exception e) {
@@ -96,4 +94,21 @@ public class ExternalService {
                     bizStore.getId(), bizStore.getAddress(), e.getLocalizedMessage(), e);
         }
     }
+
+    /**
+     * External call to find types and rating for a particular store.
+     *
+     * @param bizStore
+     * @param result
+     * @return
+     * @throws Exception
+     */
+    private PlaceDetails getPlaceDetails(BizStoreEntity bizStore, GeocodingResult result) throws Exception {
+        PlaceDetails placeDetails = PlacesApi.placeDetails(context, result.placeId).await();
+        bizStore.setPlaceType(placeDetails.types);
+        bizStore.setPlaceRating(placeDetails.rating);
+        return placeDetails;
+    }
+
+
 }
