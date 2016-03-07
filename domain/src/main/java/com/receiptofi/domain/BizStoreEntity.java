@@ -30,6 +30,7 @@ import javax.validation.constraints.NotNull;
 })
 @Document (collection = "BIZ_STORE")
 @CompoundIndexes (value = {
+        /** Business name with address and phone makes it a unique store. */
         @CompoundIndex (name = "biz_store_idx", def = "{'AD': 1, 'PH': 1}", unique = true),
 })
 public class BizStoreEntity extends BaseEntity {
