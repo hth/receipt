@@ -31,7 +31,7 @@ public class ReceiptofiInitializationCheckBean {
     public void checkActiveMQ() {
         try {
             jmsSenderTemplate.getConnectionFactory().createConnection();
-            LOG.info("ActiveMQ messaging is available");
+            LOG.info("ActiveMQ messaging is running");
         } catch (JMSException e) {
             LOG.error("ActiveMQ messaging is unavailable reason={}", e.getLocalizedMessage(), e);
             throw new RuntimeException(e.getMessage(), e);
