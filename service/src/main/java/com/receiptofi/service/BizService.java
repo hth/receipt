@@ -109,7 +109,9 @@ public class BizService {
                 bizNameManager.save(bizNameEntity);
 
                 bizStoreEntity.setBizName(bizNameEntity);
-                externalService.decodeAddress(bizStoreEntity);
+                if (!bizStoreEntity.isValidatedUsingExternalAPI()) {
+                    externalService.decodeAddress(bizStoreEntity);
+                }
                 bizStoreManager.save(bizStoreEntity);
 
                 receiptEntity.setBizName(bizNameEntity);
@@ -150,7 +152,9 @@ public class BizService {
     private void updateReceiptWithNewBizStore(BizStoreEntity bizStoreEntity, BizNameEntity bizName, ReceiptEntity receiptEntity) {
         try {
             bizStoreEntity.setBizName(bizName);
-            externalService.decodeAddress(bizStoreEntity);
+            if (!bizStoreEntity.isValidatedUsingExternalAPI()) {
+                externalService.decodeAddress(bizStoreEntity);
+            }
             bizStoreManager.save(bizStoreEntity);
 
             receiptEntity.setBizName(bizName);
