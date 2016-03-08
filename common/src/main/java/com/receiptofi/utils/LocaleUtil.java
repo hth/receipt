@@ -38,7 +38,7 @@ public class LocaleUtil {
     }
 
     /**
-     * Number format for country code
+     * Number format for country code.
      *
      * @param countryCode
      * @return
