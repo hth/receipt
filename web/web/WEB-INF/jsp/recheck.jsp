@@ -112,7 +112,7 @@
                         url: '${pageContext. request. contextPath}/ws/r/find_address.htm',
                         data: {
                             term: request.term,
-                            extraParam: $("#businessName").val()
+                            nameParam: $("#businessName").val()
                         },
                         success: function (data) {
                             console.log('response=', data);
@@ -125,14 +125,17 @@
         });
 
         $(document).ready(function() {
-            $( ".items" ).autocomplete({
+            $("#phone").autocomplete({
                 source: function (request, response) {
                     $.ajax({
-                        url: '${pageContext. request. contextPath}/ws/r/find_item.htm',
+                        url: '${pageContext. request. contextPath}/ws/r/find_phone.htm',
                         data: {
                             term: request.term,
-                            extraParam: $("#businessName").val()
+                            nameParam: $("#businessName").val(),
+                            addressParam: $("#address").val()
                         },
+                        contentType: "*/*",
+                        dataTypes: "application/json",
                         success: function (data) {
                             console.log('response=', data);
                             response(data);
@@ -141,6 +144,28 @@
                 }
             });
 
+        });
+
+        var itemAutocomplete = {
+            source: function (request, response) {
+                $.ajax({
+                    url: '${pageContext. request. contextPath}/ws/r/find_item.htm',
+                    data: {
+                        term: request.term,
+                        nameParam: $("#businessName").val()
+                    },
+                    contentType: "*/*",
+                    dataTypes: "application/json",
+                    success: function (data) {
+                        console.log('response=', data);
+                        response(data);
+                    }
+                });
+            }
+        };
+
+        $(document).ready(function () {
+            $(".items").autocomplete(itemAutocomplete);
         });
 
         $(document).ready(function() {
@@ -369,11 +394,11 @@
                             <tr>
                                 <td colspan="5">
                                     <div class="leftAlign">
-                                        <form:label for="receiptDocument.bizName.businessName" path="receiptDocument.bizName.businessName" cssErrorClass="error">Biz Name</form:label>
+                                        <form:label for="receiptDocument.bizName.businessName" path="receiptDocument.bizName.businessName" cssErrorClass="error">Biz Name: </form:label>
                                         <form:input path="receiptDocument.bizName.businessName" id="businessName" size="52"/>
                                     </div>
                                     <div class="rightAlign">
-                                        <form:label for="receiptDocument.receiptDate" path="receiptDocument.receiptDate" cssErrorClass="error">Date</form:label>
+                                        <form:label for="receiptDocument.receiptDate" path="receiptDocument.receiptDate" cssErrorClass="error">Date: </form:label>
                                         <form:input path="receiptDocument.receiptDate" id="date" size="32" class="tooltip" title="Accepted Date Format: 'MM/dd/yyyy 23:59:59', or 'MM/dd/yyyy 11:59:59 PM' or 'MM/dd/yyyy'"/>
                                     </div>
                                 </td>
@@ -387,7 +412,7 @@
                             <tr>
                                 <td colspan="5">
                                     <div class="leftAlign">
-                                        <form:label for="receiptDocument.bizStore.address" path="receiptDocument.bizStore.address" cssErrorClass="error">Address : </form:label>
+                                        <form:label for="receiptDocument.bizStore.address" path="receiptDocument.bizStore.address" cssErrorClass="error">Address: </form:label>
                                         <form:input path="receiptDocument.bizStore.address" id="address" size="70"/>
                                     </div>
                                     <div class="rightAlign">
@@ -410,7 +435,7 @@
                                         ${status.index + 1}
                                     </td>
                                     <td style="text-align: left">
-                                        <form:input path="items[${status.index}].name" size="64" />
+                                        <form:input path="items[${status.index}].name" cssClass="items" size="64" />
                                     </td>
                                     <td style="text-align: left">
                                         <form:input path="items[${status.index}].quantity" size="4" />
@@ -420,7 +445,7 @@
                                         <form:errors path="items[${status.index}].price" cssClass="error" />
                                     </td>
                                     <td>
-                                        <form:select path="items[${status.index}].taxed" id="itemId">
+                                        <form:select path="items[${status.index}].taxed">
                                             <form:option value="NONE" label="--- Select ---"/>
                                             <form:options itemValue="name" itemLabel="description" />
                                         </form:select>

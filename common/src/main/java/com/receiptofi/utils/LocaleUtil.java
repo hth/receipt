@@ -1,5 +1,10 @@
 package com.receiptofi.utils;
 
+import org.apache.commons.lang3.StringUtils;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.text.NumberFormat;
 import java.util.HashMap;
 import java.util.Locale;
@@ -10,6 +15,8 @@ import java.util.Map;
  * Date: 2/12/16 11:13 AM
  */
 public class LocaleUtil {
+    private static final Logger LOG = LoggerFactory.getLogger(LocaleUtil.class);
+
     private static Map<String, Locale> locales;
 
     /**
@@ -19,6 +26,7 @@ public class LocaleUtil {
      * @return
      */
     public static Locale getCountrySpecificLocale(String countryCode) {
+        LOG.debug("Country code={}", countryCode);
         if (locales == null) {
             locales = new HashMap<>();
             for (Locale locale : Locale.getAvailableLocales()) {
@@ -30,23 +38,17 @@ public class LocaleUtil {
     }
 
     /**
-     * Currency symbol like $ or INR.
-     *
-     * @param countryCode
-     * @return
-     */
-    @SuppressWarnings("unused")
-    public static String getCurrencySymbol(String countryCode) {
-        return getNumberFormat(countryCode).getCurrency().getSymbol();
-    }
-
-    /**
-     * Number format for country code
+     * Number format for country code.
      *
      * @param countryCode
      * @return
      */
     public static NumberFormat getNumberFormat(String countryCode) {
-        return NumberFormat.getCurrencyInstance(getCountrySpecificLocale(countryCode));
+        if (StringUtils.isNotBlank(countryCode)) {
+            return NumberFormat.getCurrencyInstance(getCountrySpecificLocale(countryCode));
+        } else {
+            LOG.info("Blank country code. Setting to US as default");
+            return NumberFormat.getCurrencyInstance(getCountrySpecificLocale(Locale.US.getCountry()));
+        }
     }
 }

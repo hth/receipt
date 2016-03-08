@@ -72,15 +72,13 @@ public final class BizStoreManagerImpl implements BizStoreManager {
         return mongoTemplate.findOne(query(where("AD").is(StringUtils.EMPTY)), BizStoreEntity.class);
     }
 
-    public BizStoreEntity findOne(BizStoreEntity bizStoreEntity) {
-        Criteria criteria = new Criteria();
-        if (StringUtils.isEmpty(bizStoreEntity.getPhone())) {
-            criteria = where("AD").is(bizStoreEntity.getAddress());
+    public BizStoreEntity findMatchingStore(String address, String phone) {
+        /** Constrain is based on address and if it has phone number which makes it unique. */
+        Criteria criteria;
+        if (StringUtils.isEmpty(phone)) {
+            criteria = where("AD").is(address);
         } else {
-            criteria.orOperator(
-                    where("AD").is(bizStoreEntity.getAddress()),
-                    where("PH").is(bizStoreEntity.getPhone())
-            );
+            criteria = where("AD").is(address).and("PH").is(phone);
         }
 
         return mongoTemplate.findOne(query(criteria), BizStoreEntity.class);

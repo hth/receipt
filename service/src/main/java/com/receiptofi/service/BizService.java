@@ -94,8 +94,8 @@ public class BizService {
     }
 
     /**
-     * This method is being used by Admin to create new Business and Stores. Also this method is being used by
-     * receipt update to do the same.
+     * This method is being used by Admin to create new Business and Stores and is being used by receipt update to do
+     * the same.
      *
      * @param receiptEntity
      */
@@ -109,13 +109,15 @@ public class BizService {
                 bizNameManager.save(bizNameEntity);
 
                 bizStoreEntity.setBizName(bizNameEntity);
-                externalService.decodeAddress(bizStoreEntity);
+                if (!bizStoreEntity.isValidatedUsingExternalAPI()) {
+                    externalService.decodeAddress(bizStoreEntity);
+                }
                 bizStoreManager.save(bizStoreEntity);
 
                 receiptEntity.setBizName(bizNameEntity);
                 receiptEntity.setBizStore(bizStoreEntity);
             } catch (DuplicateKeyException e) {
-                BizStoreEntity biz = bizStoreManager.findOne(bizStoreEntity);
+                BizStoreEntity biz = findMatchingStore(bizStoreEntity.getAddress(), bizStoreEntity.getPhone());
                 LOG.error("Address and Phone already registered with another Business Name={}, reason={}",
                         biz.getBizName().getBusinessName(), e.getLocalizedMessage(), e);
 
@@ -127,25 +129,15 @@ public class BizService {
                         biz.getBizName().getBusinessName());
             }
         } else {
-            BizStoreEntity bizStore = bizStoreManager.findOne(bizStoreEntity);
-            if (null == bizStore) {
-                try {
-                    bizStoreEntity.setBizName(bizName);
-                    externalService.decodeAddress(bizStoreEntity);
-                    bizStoreManager.save(bizStoreEntity);
+            BizStoreEntity bizStore = findMatchingStore(bizStoreEntity.getAddress(), bizStoreEntity.getPhone());
+            if (null == bizStore
+                    /** OR condition is when address or phones is corrected or updated during re-check. */
+                    || !bizStore.getAddress().equals(bizStoreEntity.getAddress())
+                    || !bizStore.getPhone().equals(bizStoreEntity.getPhone()))
+            {
+                updateReceiptWithNewBizStore(bizStoreEntity, bizName, receiptEntity);
 
-                    receiptEntity.setBizName(bizName);
-                    receiptEntity.setBizStore(bizStoreEntity);
-                } catch (DuplicateKeyException e) {
-                    BizStoreEntity biz = bizStoreManager.findOne(bizStoreEntity);
-                    LOG.error("Address and Phone already registered with another Business Name={}, reason={}",
-                            biz.getBizName().getBusinessName(), e.getLocalizedMessage(), e);
-
-                    throw new RuntimeException("Address and Phone already registered with another Business Name: " +
-                            biz.getBizName().getBusinessName());
-                }
             } else if (!bizStore.isValidatedUsingExternalAPI()) {
-                externalService.decodeAddress(bizStore);
                 bizStoreManager.save(bizStore);
 
                 receiptEntity.setBizName(bizName);
@@ -154,6 +146,26 @@ public class BizService {
                 receiptEntity.setBizName(bizName);
                 receiptEntity.setBizStore(bizStore);
             }
+        }
+    }
+
+    private void updateReceiptWithNewBizStore(BizStoreEntity bizStoreEntity, BizNameEntity bizName, ReceiptEntity receiptEntity) {
+        try {
+            bizStoreEntity.setBizName(bizName);
+            if (!bizStoreEntity.isValidatedUsingExternalAPI()) {
+                externalService.decodeAddress(bizStoreEntity);
+            }
+            bizStoreManager.save(bizStoreEntity);
+
+            receiptEntity.setBizName(bizName);
+            receiptEntity.setBizStore(bizStoreEntity);
+        } catch (DuplicateKeyException e) {
+            BizStoreEntity biz = findMatchingStore(bizStoreEntity.getAddress(), bizStoreEntity.getPhone());
+            LOG.error("Address and Phone already registered with another Business Name={}, reason={}",
+                    biz.getBizName().getBusinessName(), e.getLocalizedMessage(), e);
+
+            throw new RuntimeException("Address and Phone already registered with another Business Name: " +
+                    biz.getBizName().getBusinessName());
         }
     }
 
@@ -194,5 +206,9 @@ public class BizService {
 
     public void deleteBizName(BizNameEntity bizName) {
         bizNameManager.deleteHard(bizName);
+    }
+
+    public BizStoreEntity findMatchingStore(String address, String phone) {
+        return bizStoreManager.findMatchingStore(address, phone);
     }
 }

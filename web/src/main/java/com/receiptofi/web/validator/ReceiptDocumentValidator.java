@@ -1,6 +1,10 @@
 package com.receiptofi.web.validator;
 
+import com.receiptofi.domain.BizNameEntity;
+import com.receiptofi.domain.BizStoreEntity;
 import com.receiptofi.domain.ItemEntityOCR;
+import com.receiptofi.service.BizService;
+import com.receiptofi.service.ExternalService;
 import com.receiptofi.utils.DateUtil;
 import com.receiptofi.utils.Formatter;
 import com.receiptofi.utils.Maths;
@@ -11,6 +15,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
@@ -35,6 +40,12 @@ import java.util.Date;
 @Component
 public class ReceiptDocumentValidator implements Validator {
     private static final Logger LOG = LoggerFactory.getLogger(ReceiptDocumentValidator.class);
+
+    @Autowired
+    private ExternalService externalService;
+
+    @Autowired
+    private BizService bizService;
 
     @Override
     public boolean supports(Class<?> clazz) {
@@ -71,24 +82,8 @@ public class ReceiptDocumentValidator implements Validator {
                 new Object[]{"Sub Total"}
         );
 
-        try {
-            Date receiptDate = DateUtil.getDateFromString(receiptDocumentForm.getReceiptDocument().getReceiptDate());
-            /** Since mid-night hence two days minus 6o seconds for previous day. */
-            Date nextDay = Date.from(LocalDate.now().plusDays(2).atStartOfDay(ZoneId.systemDefault()).toInstant().minusSeconds(60));
-            if (receiptDate.after(nextDay)) {
-                errors.rejectValue(
-                        "receiptDocument.receiptDate", "field.date.future",
-                        new Object[]{receiptDocumentForm.getReceiptDocument().getReceiptDate()},
-                        "Date is set in future. Format should be MM/dd/yyyy 11:59:59 PM. Check for month and day.");
-            }
-
-            //TODO add condition to check date in future and past
-        } catch (IllegalArgumentException exce) {
-            errors.rejectValue(
-                    "receiptDocument.receiptDate", "field.date",
-                    new Object[]{receiptDocumentForm.getReceiptDocument().getReceiptDate()},
-                    "Unsupported date format");
-        }
+        validateDate(errors, receiptDocumentForm);
+        validateAddressAndPhone(errors, receiptDocumentForm);
 
         int count = 0;
         BigDecimal subTotal = BigDecimal.ZERO;
@@ -238,6 +233,52 @@ public class ReceiptDocumentValidator implements Validator {
                         "Unsupported currency format"
                 );
             }
+        }
+    }
+
+    private void validateDate(Errors errors, ReceiptDocumentForm receiptDocumentForm) {
+        try {
+            Date receiptDate = DateUtil.getDateFromString(receiptDocumentForm.getReceiptDocument().getReceiptDate());
+            /** Since mid-night hence two days minus 6o seconds for previous day. */
+            Date nextDay = Date.from(LocalDate.now().plusDays(2).atStartOfDay(ZoneId.systemDefault()).toInstant().minusSeconds(60));
+            if (receiptDate.after(nextDay)) {
+                errors.rejectValue(
+                        "receiptDocument.receiptDate",
+                        "field.date.future",
+                        new Object[]{receiptDocumentForm.getReceiptDocument().getReceiptDate()},
+                        "Date is set in future. Format should be MM/dd/yyyy 11:59:59 PM. Check for month and day.");
+            }
+        } catch (IllegalArgumentException exce) {
+            errors.rejectValue(
+                    "receiptDocument.receiptDate",
+                    "field.date",
+                    new Object[]{receiptDocumentForm.getReceiptDocument().getReceiptDate()},
+                    "Unsupported date format");
+        }
+    }
+
+    /**
+     * Validate if business address and phone exists for another business name.
+     *
+     * @param errors
+     * @param receiptDocumentForm
+     */
+    private void validateAddressAndPhone(Errors errors, ReceiptDocumentForm receiptDocumentForm) {
+        BizNameEntity bizName = receiptDocumentForm.getReceiptDocument().getBizName();
+        BizStoreEntity bizStore = receiptDocumentForm.getReceiptDocument().getBizStore();
+
+        BizStoreEntity foundStore = bizService.findMatchingStore(bizStore.getAddress(), bizStore.getPhone());
+        if (null == foundStore) {
+            externalService.decodeAddress(bizStore);
+            foundStore = bizService.findMatchingStore(bizStore.getAddress(), bizStore.getPhone());
+        }
+
+        if (null != foundStore && !foundStore.getBizName().getBusinessName().equals(bizName.getBusinessName())) {
+            errors.rejectValue(
+                    "receiptDocument.bizName.businessName",
+                    "field.businessName",
+                    new Object[]{foundStore.getBizName().getBusinessName(), bizName.getBusinessName()},
+                    foundStore.getBizName().getBusinessName() + " is sharing the same address and phone number as " + bizName.getBusinessName());
         }
     }
 }

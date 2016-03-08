@@ -149,25 +149,27 @@
 
         });
 
-        $(document).ready(function() {
-            $(".items").autocomplete({
-                source: function (request, response) {
-                    $.ajax({
-                        url: '${pageContext. request. contextPath}/ws/r/find_item.htm',
-                        data: {
-                            term: request.term,
-                            nameParam: $("#businessName").val()
-                        },
-                        contentType: "*/*",
-                        dataTypes: "application/json",
-                        success: function (data) {
-                            console.log('response=', data);
-                            response(data);
-                        }
-                    });
-                }
-            });
+        var itemAutocomplete = {
+            source: function (request, response) {
+                $.ajax({
+                    url: '${pageContext. request. contextPath}/ws/r/find_item.htm',
+                    data: {
+                        term: request.term,
+                        nameParam: $("#businessName").val()
+                    },
+                    contentType: "*/*",
+                    dataTypes: "application/json",
+                    success: function (data) {
+                        console.log('response=', data);
+                        response(data);
+                    }
+                });
+            }
+        };
 
+        $(document).ready(function () {
+            /** Need for first row. */
+            $(".items").autocomplete(itemAutocomplete);
         });
 
         $(document).ready(function() {
