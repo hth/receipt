@@ -17,7 +17,7 @@ import java.util.Map;
 public class LocaleUtil {
     private static final Logger LOG = LoggerFactory.getLogger(LocaleUtil.class);
 
-    private static Map<String, Locale> locales;
+    private static Map<String, Map<String, Locale>> locales;
 
     /**
      * Gets first available locale for specified country.
@@ -27,14 +27,35 @@ public class LocaleUtil {
      */
     public static Locale getCountrySpecificLocale(String countryCode) {
         LOG.debug("Country code={}", countryCode);
+        Map<String, Locale> supportedLocale;
         if (locales == null) {
             locales = new HashMap<>();
             for (Locale locale : Locale.getAvailableLocales()) {
-                locales.put(locale.getCountry(), locale);
+
+                if (locales.containsKey(locale.getCountry())) {
+                    supportedLocale = locales.get(locale.getCountry());
+                    supportedLocale.put(locale.getLanguage(), locale);
+                } else {
+                    supportedLocale = new HashMap<>();
+                    supportedLocale.put(locale.getLanguage(), locale);
+                }
+                locales.put(locale.getCountry(), supportedLocale);
             }
         }
 
-        return locales.get(countryCode);
+        if (StringUtils.isNotEmpty(countryCode)) {
+            supportedLocale = locales.get(countryCode);
+            if (supportedLocale != null && !supportedLocale.isEmpty()) {
+                if (supportedLocale.containsKey(Locale.US.getLanguage())) {
+                    return supportedLocale.get(Locale.US.getLanguage());
+                } else {
+                    return supportedLocale.get(supportedLocale.keySet().iterator().next());
+                }
+            }
+        }
+
+        LOG.warn("Returning default locale US as locale='{}' not found", countryCode);
+        return Locale.US;
     }
 
     /**
@@ -44,11 +65,6 @@ public class LocaleUtil {
      * @return
      */
     public static NumberFormat getNumberFormat(String countryCode) {
-        if (StringUtils.isNotBlank(countryCode)) {
-            return NumberFormat.getCurrencyInstance(getCountrySpecificLocale(countryCode));
-        } else {
-            LOG.info("Blank country code. Setting to US as default");
-            return NumberFormat.getCurrencyInstance(getCountrySpecificLocale(Locale.US.getCountry()));
-        }
+        return NumberFormat.getCurrencyInstance(getCountrySpecificLocale(countryCode));
     }
 }
