@@ -76,9 +76,11 @@ public class ExternalService {
                 double lng = results[0].geometry.location.lng;
 
                 bizStore.setCoordinate(new Coordinate(lat, lng));
-                bizStore.setPlaceId(results[0].placeId);
 
-                PlaceDetails placeDetails = getPlaceDetails(bizStore, results[0]);
+                String placeId = results[0].placeId;
+                bizStore.setPlaceId(placeId);
+
+                PlaceDetails placeDetails = getPlaceDetails(bizStore, placeId);
 
                 if (StringUtils.isNotEmpty(placeDetails.formattedPhoneNumber)) {
                     bizStore.setPhone(placeDetails.formattedPhoneNumber);
@@ -99,12 +101,12 @@ public class ExternalService {
      * External call to find types and rating for a particular store.
      *
      * @param bizStore
-     * @param result
+     * @param placeId
      * @return
      * @throws Exception
      */
-    private PlaceDetails getPlaceDetails(BizStoreEntity bizStore, GeocodingResult result) throws Exception {
-        PlaceDetails placeDetails = PlacesApi.placeDetails(context, result.placeId).await();
+    private PlaceDetails getPlaceDetails(BizStoreEntity bizStore, String placeId) throws Exception {
+        PlaceDetails placeDetails = PlacesApi.placeDetails(context, placeId).await();
         bizStore.setPlaceType(placeDetails.types);
         bizStore.setPlaceRating(placeDetails.rating);
         return placeDetails;
