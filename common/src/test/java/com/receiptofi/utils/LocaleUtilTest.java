@@ -35,5 +35,8 @@ public class LocaleUtilTest {
 
         numberFormat = LocaleUtil.getNumberFormat(null);
         assertEquals("$10.00", numberFormat.format(10.00));
+
+        numberFormat = LocaleUtil.getNumberFormat(Locale.US.getCountry());
+        assertEquals("$10.00", numberFormat.format(10.00));
     }
 }
