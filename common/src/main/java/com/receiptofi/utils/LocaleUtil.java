@@ -47,6 +47,7 @@ public class LocaleUtil {
         if (StringUtils.isNotBlank(countryCode)) {
             return NumberFormat.getCurrencyInstance(getCountrySpecificLocale(countryCode));
         } else {
+            LOG.info("Blank country code. Setting to US as default");
             return NumberFormat.getCurrencyInstance(getCountrySpecificLocale(Locale.US.getCountry()));
         }
     }
