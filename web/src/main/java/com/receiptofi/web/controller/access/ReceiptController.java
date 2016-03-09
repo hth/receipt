@@ -223,7 +223,7 @@ public class ReceiptController {
 
         JsonObject jsonObject = new JsonObject();
         try {
-            boolean result = receiptService.reopen(receiptId, receiptUser.getRid());
+            boolean result = receiptService.recheck(receiptId, receiptUser.getRid());
             jsonObject.addProperty("result", result);
             if (!result) {
                 jsonObject.addProperty("message", "Failed to Re-Check Receipt. This happens if receipt is being shared and is in middle of settling splits.");
