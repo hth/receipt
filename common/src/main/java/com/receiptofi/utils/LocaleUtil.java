@@ -25,7 +25,7 @@ public class LocaleUtil {
      * @param countryCode
      * @return
      */
-    public static Locale getCountrySpecificLocale(String countryCode) {
+    protected static Locale getCountrySpecificLocale(String countryCode) {
         LOG.debug("Country code={}", countryCode);
         Map<String, Locale> supportedLocale;
         if (locales == null) {
@@ -45,7 +45,7 @@ public class LocaleUtil {
 
         if (StringUtils.isNotEmpty(countryCode)) {
             supportedLocale = locales.get(countryCode);
-            if (supportedLocale != null && !supportedLocale.isEmpty()) {
+            if (supportedLocale != null) {
                 if (supportedLocale.containsKey(Locale.US.getLanguage())) {
                     return supportedLocale.get(Locale.US.getLanguage());
                 } else {

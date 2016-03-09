@@ -59,20 +59,54 @@ import java.util.stream.Collectors;
 public class DocumentUpdateService {
     private static final Logger LOG = LoggerFactory.getLogger(DocumentUpdateService.class);
 
-    @Autowired private DocumentManager documentManager;
-    @Autowired private ItemOCRManager itemOCRManager;
-    @Autowired private ReceiptManager receiptManager;
-    @Autowired private ItemManager itemManager;
-    @Autowired private MessageDocumentManager messageDocumentManager;
-    @Autowired private BizService bizService;
-    @Autowired private UserProfilePreferenceService userProfilePreferenceService;
-    @Autowired private CommentService commentService;
-    @Autowired private NotificationService notificationService;
-    @Autowired private StorageManager storageManager;
-    @Autowired private FileSystemService fileSystemService;
-    @Autowired private MileageService mileageService;
-    @Autowired private BillingService billingService;
-    @Autowired private ExpensesService expensesService;
+    private DocumentManager documentManager;
+    private ItemOCRManager itemOCRManager;
+    private ReceiptManager receiptManager;
+    private ItemManager itemManager;
+    private MessageDocumentManager messageDocumentManager;
+    private BizService bizService;
+    private UserProfilePreferenceService userProfilePreferenceService;
+    private CommentService commentService;
+    private NotificationService notificationService;
+    private StorageManager storageManager;
+    private FileSystemService fileSystemService;
+    private MileageService mileageService;
+    private BillingService billingService;
+    private ExpensesService expensesService;
+
+    @Autowired
+    public DocumentUpdateService(
+            DocumentManager documentManager,
+            ItemOCRManager itemOCRManager,
+            ReceiptManager receiptManager,
+            ItemManager itemManager,
+            MessageDocumentManager messageDocumentManager,
+            BizService bizService,
+            UserProfilePreferenceService userProfilePreferenceService,
+            CommentService commentService,
+            NotificationService notificationService,
+            StorageManager storageManager,
+            FileSystemService fileSystemService,
+            MileageService mileageService,
+            BillingService billingService,
+            ExpensesService expensesService
+    ) {
+
+        this.documentManager = documentManager;
+        this.itemOCRManager = itemOCRManager;
+        this.receiptManager = receiptManager;
+        this.itemManager = itemManager;
+        this.messageDocumentManager = messageDocumentManager;
+        this.bizService = bizService;
+        this.userProfilePreferenceService = userProfilePreferenceService;
+        this.commentService = commentService;
+        this.notificationService = notificationService;
+        this.storageManager = storageManager;
+        this.fileSystemService = fileSystemService;
+        this.mileageService = mileageService;
+        this.billingService = billingService;
+        this.expensesService = expensesService;
+    }
 
     public DocumentEntity loadActiveDocumentById(String documentId) {
         return documentManager.findActiveOne(documentId);

@@ -196,14 +196,14 @@ public class ReceiptService {
     }
 
     /**
-     * Inactive the receipt and active ReceiptOCR. Delete all the ItemOCR and recreate from Items.
+     * Inactive the receipt and actives ReceiptOCR. Delete all the ItemOCR and recreate from Items.
      * Then delete all the items.
      *
      * @param receiptId
      * @param rid
      * @throws Exception
      */
-    public boolean reopen(String receiptId, String rid) throws Exception {
+    public boolean recheck(String receiptId, String rid) throws Exception {
         try {
             ReceiptEntity receipt = receiptManager.getReceipt(receiptId, rid);
 

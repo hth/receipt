@@ -158,9 +158,7 @@ public class ReceiptUpdateController {
             RedirectAttributes redirectAttrs
     ) {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        LOG.info("Turk processing a receipt={} biz={}",
-                receiptDocumentForm.getReceiptDocument().getId(),
-                receiptDocumentForm.getReceiptDocument().getBizName().getBusinessName());
+        LOG.info("Turk processing a receipt={}", receiptDocumentForm.getReceiptDocument().getId());
 
         receiptDocumentValidator.validate(receiptDocumentForm, result);
         if (result.hasErrors()) {

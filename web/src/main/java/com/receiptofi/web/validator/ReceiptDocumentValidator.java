@@ -55,7 +55,7 @@ public class ReceiptDocumentValidator implements Validator {
     @Override
     public void validate(Object obj, Errors errors) {
         ReceiptDocumentForm receiptDocumentForm = (ReceiptDocumentForm) obj;
-        LOG.debug("Executing validation for new receiptDocument: " + receiptDocumentForm.getReceiptDocument().getId());
+        LOG.debug("Validating receiptDocument={}", receiptDocumentForm.getReceiptDocument().getId());
 
         ValidationUtils.rejectIfEmptyOrWhitespace(
                 errors,
@@ -89,7 +89,7 @@ public class ReceiptDocumentValidator implements Validator {
         BigDecimal subTotal = BigDecimal.ZERO;
         if (null == receiptDocumentForm.getItems()) {
             LOG.error(
-                    "Exception during update of receipt={}, as no items were found",
+                    "No items found for receipt={}",
                     receiptDocumentForm.getReceiptDocument().getId()
             );
             errors.rejectValue(

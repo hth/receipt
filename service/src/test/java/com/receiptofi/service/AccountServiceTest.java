@@ -9,6 +9,7 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import com.receiptofi.domain.DocumentEntity;
 import com.receiptofi.domain.ForgotRecoverEntity;
 import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.repository.ForgotRecoverManager;
@@ -82,7 +83,7 @@ public class AccountServiceTest {
 
     @Test (expected = Exception.class)
     public void testInitiateAccountRecovery_Fails_When_Saving() throws Exception {
-        doThrow(Exception.class).when(forgotRecoverManager).save((ForgotRecoverEntity) anyObject());
+        doThrow(Exception.class).when(forgotRecoverManager).save(anyObject());
         when(userProfileManager.findOneByMail(anyString())).thenReturn(new UserProfileEntity());
         accountService.initiateAccountRecovery(anyString());
 

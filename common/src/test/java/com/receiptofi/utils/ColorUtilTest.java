@@ -12,7 +12,7 @@ public class ColorUtilTest {
 
     @Test
     public void testGetRandomSize() throws Exception {
-        assertEquals(7, ColorUtil.getRandom().length());
+        assertEquals("#ABC123".length(), ColorUtil.getRandom().length());
     }
 
     @Test

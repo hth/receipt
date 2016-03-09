@@ -1,8 +1,10 @@
 package com.receiptofi;
 
 import com.mongodb.DBCollection;
-import com.mongodb.Mongo;
 import com.mongodb.MongoClient;
+import com.mongodb.client.MongoCollection;
+
+import org.bson.Document;
 
 import org.springframework.data.mongodb.core.MongoTemplate;
 
@@ -10,8 +12,8 @@ import de.flapdoodle.embed.mongo.Command;
 import de.flapdoodle.embed.mongo.MongodExecutable;
 import de.flapdoodle.embed.mongo.MongodProcess;
 import de.flapdoodle.embed.mongo.MongodStarter;
-import de.flapdoodle.embed.mongo.config.ArtifactStoreBuilder;
 import de.flapdoodle.embed.mongo.config.DownloadConfigBuilder;
+import de.flapdoodle.embed.mongo.config.ExtractedArtifactStoreBuilder;
 import de.flapdoodle.embed.mongo.config.MongodConfigBuilder;
 import de.flapdoodle.embed.mongo.config.Net;
 import de.flapdoodle.embed.mongo.config.RuntimeConfigBuilder;
@@ -36,8 +38,8 @@ import org.junit.BeforeClass;
 public abstract class RealMongoForTests {
     private static MongodExecutable mongodExecutable = null;
     private static MongodProcess mongodProcess = null;
-    private static Mongo mongo = null;
-    private static final String DATABASE_NAME = "receiptofi-test";
+    private static MongoClient mongo = null;
+    private static final String DATABASE_NAME = "rm-i-test";
 
     private MongoTemplate mongoTemplate;
 
@@ -51,7 +53,7 @@ public abstract class RealMongoForTests {
         IDirectory artifactStorePath = new FixedPath(System.getProperty("user.home") + "/.embeddedMongodbCustomPath");
         ITempNaming executableNaming = new UUIDTempNaming();
         IStreamProcessor stream = new NullProcessor();
-        IArtifactStore artifactStore = new ArtifactStoreBuilder()
+        IArtifactStore artifactStore = new ExtractedArtifactStoreBuilder()
                 .defaults(command)
                 .download(
                         new DownloadConfigBuilder()
