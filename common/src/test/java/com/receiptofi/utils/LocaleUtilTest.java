@@ -38,5 +38,11 @@ public class LocaleUtilTest {
 
         numberFormat = LocaleUtil.getNumberFormat(Locale.US.getCountry());
         assertEquals("$10.00", numberFormat.format(10.00));
+
+        numberFormat = LocaleUtil.getNumberFormat("12");
+        assertEquals("$10.00", numberFormat.format(10.00));
+
+        numberFormat = LocaleUtil.getNumberFormat("AL");
+        assertEquals("Lek10", numberFormat.format(10.00));
     }
 }

@@ -43,19 +43,20 @@ public class LocaleUtil {
             }
         }
 
+        Locale locale = Locale.US;
         if (StringUtils.isNotEmpty(countryCode)) {
             supportedLocale = locales.get(countryCode);
-            if (supportedLocale != null && !supportedLocale.isEmpty()) {
+            if (supportedLocale != null) {
                 if (supportedLocale.containsKey(Locale.US.getLanguage())) {
-                    return supportedLocale.get(Locale.US.getLanguage());
+                    locale = supportedLocale.get(Locale.US.getLanguage());
                 } else {
-                    return supportedLocale.get(supportedLocale.keySet().iterator().next());
+                    locale = supportedLocale.get(supportedLocale.keySet().iterator().next());
                 }
             }
         }
 
         LOG.warn("Returning default locale US as locale='{}' not found", countryCode);
-        return Locale.US;
+        return locale;
     }
 
     /**
