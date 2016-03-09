@@ -82,7 +82,7 @@ public class AccountServiceTest {
 
     @Test (expected = Exception.class)
     public void testInitiateAccountRecovery_Fails_When_Saving() throws Exception {
-        doThrow(Exception.class).when(forgotRecoverManager).save((ForgotRecoverEntity) anyObject());
+        doThrow(Exception.class).when(forgotRecoverManager).save(anyObject());
         when(userProfileManager.findOneByMail(anyString())).thenReturn(new UserProfileEntity());
         accountService.initiateAccountRecovery(anyString());
 
