@@ -1,8 +1,10 @@
 package com.receiptofi;
 
+import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
 
 import org.bson.Document;
 
@@ -94,6 +96,18 @@ public abstract class RealMongoForTests {
     }
 
     protected DBCollection getCollection(String name) {
-        return mongo.getDB(DATABASE_NAME).getCollection(name);
+        return getDB().getCollection(name);
+    }
+
+    protected DB getDB() {
+        return mongo.getDB(DATABASE_NAME);
+    }
+
+    protected MongoCollection<Document> getCollectionNew(String name) {
+        return getMongoDatabase().getCollection(name);
+    }
+
+    protected MongoDatabase getMongoDatabase() {
+        return mongo.getDatabase(DATABASE_NAME);
     }
 }
