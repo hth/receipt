@@ -9,7 +9,6 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import com.receiptofi.domain.DocumentEntity;
 import com.receiptofi.domain.ForgotRecoverEntity;
 import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.repository.ForgotRecoverManager;

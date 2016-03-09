@@ -39,6 +39,8 @@ import java.util.Properties;
 @Configuration
 @ActiveProfiles ({"dev", "test", "prod"})
 public class AmazonS3ServiceTest {
+    private static final Logger LOG = LoggerFactory.getLogger(AmazonS3ServiceTest.class);
+
     public static final String BUILD = "build" +
             File.separator +
             "activeProfile" +
@@ -50,8 +52,6 @@ public class AmazonS3ServiceTest {
             "classes" +
             File.separator +
             "conf";
-
-    private static final Logger LOG = LoggerFactory.getLogger(AmazonS3ServiceTest.class);
 
     public static final FileFilter profileF = new WildcardFileFilter(Arrays.asList("dev", "test", "prod"));
     public static final FileFilter propertiesF = new WildcardFileFilter(

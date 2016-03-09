@@ -56,21 +56,55 @@ import java.util.List;
 public class ReceiptService {
     private static final Logger LOG = LoggerFactory.getLogger(ReceiptService.class);
 
-    @Autowired private ReceiptManager receiptManager;
-    @Autowired private DocumentManager documentManager;
-    @Autowired private DocumentUpdateService documentUpdateService;
-    @Autowired private ItemManager itemManager;
-    @Autowired private ItemService itemService;
-    @Autowired private ItemOCRManager itemOCRManager;
-    @Autowired private UserProfileManager userProfileManager;
-    @Autowired private FileUploadDocumentSenderJMS senderJMS;
-    @Autowired private CommentService commentService;
-    @Autowired private FileSystemService fileSystemService;
-    @Autowired private CloudFileService cloudFileService;
-    @Autowired private ExpensesService expensesService;
-    @Autowired private NotificationService notificationService;
-    @Autowired private FriendService friendService;
-    @Autowired private SplitExpensesService splitExpensesService;
+    private ReceiptManager receiptManager;
+    private DocumentManager documentManager;
+    private DocumentUpdateService documentUpdateService;
+    private ItemManager itemManager;
+    private ItemService itemService;
+    private ItemOCRManager itemOCRManager;
+    private UserProfileManager userProfileManager;
+    private FileUploadDocumentSenderJMS senderJMS;
+    private CommentService commentService;
+    private FileSystemService fileSystemService;
+    private CloudFileService cloudFileService;
+    private ExpensesService expensesService;
+    private NotificationService notificationService;
+    private FriendService friendService;
+    private SplitExpensesService splitExpensesService;
+
+    @Autowired
+    public ReceiptService(
+            ReceiptManager receiptManager,
+            DocumentManager documentManager,
+            DocumentUpdateService documentUpdateService,
+            ItemManager itemManager,
+            ItemService itemService,
+            ItemOCRManager itemOCRManager,
+            UserProfileManager userProfileManager,
+            FileUploadDocumentSenderJMS senderJMS,
+            CommentService commentService,
+            FileSystemService fileSystemService,
+            CloudFileService cloudFileService,
+            ExpensesService expensesService,
+            NotificationService notificationService,
+            FriendService friendService,
+            SplitExpensesService splitExpensesService) {
+        this.receiptManager = receiptManager;
+        this.documentManager = documentManager;
+        this.documentUpdateService = documentUpdateService;
+        this.itemManager = itemManager;
+        this.itemService = itemService;
+        this.itemOCRManager = itemOCRManager;
+        this.userProfileManager = userProfileManager;
+        this.senderJMS = senderJMS;
+        this.commentService = commentService;
+        this.fileSystemService = fileSystemService;
+        this.cloudFileService = cloudFileService;
+        this.expensesService = expensesService;
+        this.notificationService = notificationService;
+        this.friendService = friendService;
+        this.splitExpensesService = splitExpensesService;
+    }
 
     /**
      * Do not use this query unless you are using during split.

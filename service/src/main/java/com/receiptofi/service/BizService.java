@@ -37,10 +37,22 @@ import java.util.Set;
 public class BizService {
     private static final Logger LOG = LoggerFactory.getLogger(BizService.class);
 
-    @Autowired private BizNameManager bizNameManager;
-    @Autowired private BizStoreManager bizStoreManager;
-    @Autowired private ExternalService externalService;
-    @Autowired private ReceiptService receiptService;
+    private BizNameManager bizNameManager;
+    private BizStoreManager bizStoreManager;
+    private ExternalService externalService;
+    private ReceiptService receiptService;
+
+    @Autowired
+    public BizService(
+            BizNameManager bizNameManager,
+            BizStoreManager bizStoreManager,
+            ExternalService externalService,
+            ReceiptService receiptService) {
+        this.bizNameManager = bizNameManager;
+        this.bizStoreManager = bizStoreManager;
+        this.externalService = externalService;
+        this.receiptService = receiptService;
+    }
 
     public BizNameEntity getByBizNameId(String bizId) {
         return bizNameManager.getById(bizId);
