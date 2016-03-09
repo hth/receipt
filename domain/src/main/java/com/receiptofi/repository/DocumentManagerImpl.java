@@ -58,8 +58,12 @@ public final class DocumentManagerImpl implements DocumentManager {
             Document.class,
             "collection");
 
-    @Autowired
     private MongoTemplate mongoTemplate;
+
+    @Autowired
+    public DocumentManagerImpl(MongoTemplate mongoTemplate) {
+        this.mongoTemplate = mongoTemplate;
+    }
 
     @Override
     public void save(DocumentEntity object) {

@@ -47,8 +47,12 @@ public final class FileSystemManagerImpl implements FileSystemManager {
             Document.class,
             "collection");
 
-    @Autowired
     private MongoTemplate mongoTemplate;
+
+    @Autowired
+    public FileSystemManagerImpl(MongoTemplate mongoTemplate) {
+        this.mongoTemplate = mongoTemplate;
+    }
 
     @Override
     public void save(FileSystemEntity object) {

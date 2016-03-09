@@ -63,8 +63,14 @@ public final class ItemManagerImpl implements ItemManager {
             Document.class,
             "collection");
 
-    @Autowired private MongoTemplate mongoTemplate;
-    @Autowired private BizNameManager bizNameManager;
+    private MongoTemplate mongoTemplate;
+    private BizNameManager bizNameManager;
+
+    @Autowired
+    public ItemManagerImpl(BizNameManager bizNameManager, MongoTemplate mongoTemplate) {
+        this.bizNameManager = bizNameManager;
+        this.mongoTemplate = mongoTemplate;
+    }
 
     @Override
     public void save(ItemEntity object) {

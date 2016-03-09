@@ -38,8 +38,12 @@ public final class BizNameManagerImpl implements BizNameManager {
             Document.class,
             "collection");
 
-    @Autowired
     private MongoTemplate mongoTemplate;
+
+    @Autowired
+    public BizNameManagerImpl(MongoTemplate mongoTemplate) {
+        this.mongoTemplate = mongoTemplate;
+    }
 
     @Override
     public void save(BizNameEntity object) {

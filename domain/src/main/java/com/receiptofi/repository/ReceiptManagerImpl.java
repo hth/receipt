@@ -77,10 +77,23 @@ public class ReceiptManagerImpl implements ReceiptManager {
     @Value ("${displayMonths:12}")
     private int displayMonths;
 
-    @Autowired private MongoTemplate mongoTemplate;
-    @Autowired private ItemManager itemManager;
-    @Autowired private FileSystemManager fileSystemManager;
-    @Autowired private StorageManager storageManager;
+    private MongoTemplate mongoTemplate;
+    private ItemManager itemManager;
+    private FileSystemManager fileSystemManager;
+    private StorageManager storageManager;
+
+    @Autowired
+    public ReceiptManagerImpl(
+            ItemManager itemManager,
+            FileSystemManager fileSystemManager,
+            StorageManager storageManager,
+            MongoTemplate mongoTemplate) {
+
+        this.itemManager = itemManager;
+        this.fileSystemManager = fileSystemManager;
+        this.storageManager = storageManager;
+        this.mongoTemplate = mongoTemplate;
+    }
 
     @Override
     public List<ReceiptEntity> getAllReceipts(String rid) {
