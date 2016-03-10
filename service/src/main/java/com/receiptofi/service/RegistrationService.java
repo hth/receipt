@@ -6,6 +6,7 @@ import com.receiptofi.domain.site.ReceiptUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
@@ -34,11 +35,20 @@ import org.springframework.ui.ModelMap;
 public class RegistrationService {
     private static final Logger LOG = LoggerFactory.getLogger(RegistrationService.class);
 
-    @Value ("${registration.turned.on}")
     private boolean registrationTurnedOn;
-
-    @Value ("${indexController:/open/login.htm}")
     private String loginController;
+
+    @Autowired
+    public RegistrationService(
+            @Value ("${registration.turned.on}")
+            boolean registrationTurnedOn,
+
+            @Value ("${indexController:/open/login.htm}")
+            String loginController
+    ) {
+        this.registrationTurnedOn = registrationTurnedOn;
+        this.loginController = loginController;
+    }
 
     public boolean validateIfRegistrationIsAllowed(ModelMap map, Authentication authentication) {
         if (!((UserDetails) authentication.getPrincipal()).isEnabled()) {
