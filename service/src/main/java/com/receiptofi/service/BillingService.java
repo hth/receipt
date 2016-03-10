@@ -42,10 +42,22 @@ import java.util.List;
 public class BillingService {
     private static final Logger LOG = LoggerFactory.getLogger(BillingService.class);
 
-    @Autowired private UserAccountManager userAccountManager;
-    @Autowired private BillingAccountManager billingAccountManager;
-    @Autowired private BillingHistoryManager billingHistoryManager;
-    @Autowired private PaymentGatewayService paymentGatewayService;
+    private UserAccountManager userAccountManager;
+    private BillingAccountManager billingAccountManager;
+    private BillingHistoryManager billingHistoryManager;
+    private PaymentGatewayService paymentGatewayService;
+
+    @Autowired
+    public BillingService(
+            UserAccountManager userAccountManager,
+            BillingAccountManager billingAccountManager,
+            BillingHistoryManager billingHistoryManager,
+            PaymentGatewayService paymentGatewayService) {
+        this.userAccountManager = userAccountManager;
+        this.billingAccountManager = billingAccountManager;
+        this.billingHistoryManager = billingHistoryManager;
+        this.paymentGatewayService = paymentGatewayService;
+    }
 
     public void save(BillingAccountEntity billingAccount) {
         billingAccountManager.save(billingAccount);

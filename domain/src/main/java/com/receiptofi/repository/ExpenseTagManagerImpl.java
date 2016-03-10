@@ -50,7 +50,12 @@ public class ExpenseTagManagerImpl implements ExpenseTagManager {
             Document.class,
             "collection");
 
-    @Autowired private MongoTemplate mongoTemplate;
+    private MongoTemplate mongoTemplate;
+
+    @Autowired
+    public ExpenseTagManagerImpl(MongoTemplate mongoTemplate) {
+        this.mongoTemplate = mongoTemplate;
+    }
 
     @Override
     public void save(ExpenseTagEntity object) {
