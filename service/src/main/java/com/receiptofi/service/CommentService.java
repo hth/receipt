@@ -19,7 +19,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class CommentService {
 
-    @Autowired private CommentManager commentManager;
+    private CommentManager commentManager;
+
+    @Autowired
+    public CommentService(CommentManager commentManager) {
+        this.commentManager = commentManager;
+    }
 
     public void save(CommentEntity comment) {
         commentManager.save(comment);

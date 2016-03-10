@@ -3,9 +3,6 @@ package com.receiptofi.service;
 import com.braintreegateway.BraintreeGateway;
 import com.braintreegateway.Environment;
 
-import com.receiptofi.repository.BillingAccountManager;
-import com.receiptofi.repository.BillingHistoryManager;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -41,10 +38,7 @@ public class PaymentGatewayService {
             String brainTreePublicKey,
 
             @Value ("${braintree.private_key}")
-            String brainTreePrivateKey,
-
-            BillingAccountManager billingAccountManager,
-            BillingHistoryManager billingHistoryManager
+            String brainTreePrivateKey
     ) {
         if ("PRODUCTION".equals(brainTreeEnvironment)) {
             gateway = new BraintreeGateway(

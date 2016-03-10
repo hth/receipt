@@ -34,8 +34,12 @@ public class BillingAccountManagerImpl implements BillingAccountManager {
             Document.class,
             "collection");
 
-    @Autowired
     private MongoTemplate mongoTemplate;
+
+    @Autowired
+    public BillingAccountManagerImpl(MongoTemplate mongoTemplate) {
+        this.mongoTemplate = mongoTemplate;
+    }
 
     @Override
     public void save(BillingAccountEntity object) {

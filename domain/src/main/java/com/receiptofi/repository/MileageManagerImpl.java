@@ -41,7 +41,12 @@ public class MileageManagerImpl implements MileageManager {
             Document.class,
             "collection");
 
-    @Autowired private MongoTemplate mongoTemplate;
+    private MongoTemplate mongoTemplate;
+
+    @Autowired
+    public MileageManagerImpl(MongoTemplate mongoTemplate) {
+        this.mongoTemplate = mongoTemplate;
+    }
 
     @Override
     public void save(MileageEntity object) {

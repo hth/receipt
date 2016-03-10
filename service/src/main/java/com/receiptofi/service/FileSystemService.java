@@ -22,7 +22,12 @@ import java.util.List;
 })
 @Service
 public class FileSystemService {
-    @Autowired private FileSystemManager fileSystemManager;
+    private FileSystemManager fileSystemManager;
+
+    @Autowired
+    public FileSystemService(FileSystemManager fileSystemManager) {
+        this.fileSystemManager = fileSystemManager;
+    }
 
     public void save(FileSystemEntity fileSystemEntity) throws Exception {
         fileSystemManager.save(fileSystemEntity);

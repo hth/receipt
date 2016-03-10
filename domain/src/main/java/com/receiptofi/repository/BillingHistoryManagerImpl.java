@@ -41,8 +41,12 @@ public class BillingHistoryManagerImpl implements BillingHistoryManager {
             Document.class,
             "collection");
 
-    @Autowired
     private MongoTemplate mongoTemplate;
+
+    @Autowired
+    public BillingHistoryManagerImpl(MongoTemplate mongoTemplate) {
+        this.mongoTemplate = mongoTemplate;
+    }
 
     @Override
     public void save(BillingHistoryEntity object) {

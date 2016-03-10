@@ -37,7 +37,11 @@ public final class EmailValidateManagerImpl implements EmailValidateManager {
             Document.class,
             "collection");
 
-    @Autowired private MongoTemplate mongoTemplate;
+    private MongoTemplate mongoTemplate;
+
+    public EmailValidateManagerImpl(MongoTemplate mongoTemplate) {
+        this.mongoTemplate = mongoTemplate;
+    }
 
     @Override
     public void save(EmailValidateEntity object) {

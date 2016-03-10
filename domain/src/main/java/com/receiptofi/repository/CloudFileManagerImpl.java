@@ -31,7 +31,12 @@ public class CloudFileManagerImpl implements CloudFileManager {
             Document.class,
             "collection");
 
-    @Autowired private MongoTemplate mongoTemplate;
+    private MongoTemplate mongoTemplate;
+
+    @Autowired
+    public CloudFileManagerImpl(MongoTemplate mongoTemplate) {
+        this.mongoTemplate = mongoTemplate;
+    }
 
     @Override
     public void save(CloudFileEntity object) {

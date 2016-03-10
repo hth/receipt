@@ -35,7 +35,12 @@ import java.util.List;
 public class NotificationService {
     private static final Logger LOG = LoggerFactory.getLogger(NotificationService.class);
 
-    @Autowired private NotificationManager notificationManager;
+    private NotificationManager notificationManager;
+
+    @Autowired
+    public NotificationService(NotificationManager notificationManager) {
+        this.notificationManager = notificationManager;
+    }
 
     /**
      * Hide notification from user.

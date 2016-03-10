@@ -25,8 +25,17 @@ import java.util.Date;
 @Service
 public class UserProfilePreferenceService {
 
-    @Autowired private UserProfileManager userProfileManager;
-    @Autowired private UserPreferenceManager userPreferenceManager;
+    private UserProfileManager userProfileManager;
+    private UserPreferenceManager userPreferenceManager;
+
+    @Autowired
+    public UserProfilePreferenceService(
+            UserProfileManager userProfileManager,
+            UserPreferenceManager userPreferenceManager) {
+
+        this.userProfileManager = userProfileManager;
+        this.userPreferenceManager = userPreferenceManager;
+    }
 
     public UserProfileEntity findByEmail(String email) {
         return userProfileManager.findByEmail(email);

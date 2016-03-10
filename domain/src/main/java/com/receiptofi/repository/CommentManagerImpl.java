@@ -30,13 +30,17 @@ public final class CommentManagerImpl implements CommentManager {
             Document.class,
             "collection");
 
-    @Autowired private MongoTemplate mongoTemplate;
+    private MongoTemplate mongoTemplate;
+
+    @Autowired
+    public CommentManagerImpl(MongoTemplate mongoTemplate) {
+        this.mongoTemplate = mongoTemplate;
+    }
 
     /**
      * Note: comment should not be marked updated with new date time as its already updated by Ajax.
      *
      * @param object
-     * @throws Exception
      */
     @Override
     public void save(CommentEntity object) {

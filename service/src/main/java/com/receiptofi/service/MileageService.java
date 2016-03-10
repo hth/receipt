@@ -35,11 +35,26 @@ import java.util.List;
 public class MileageService {
     private static final Logger LOG = LoggerFactory.getLogger(MileageService.class);
 
-    @Autowired private MileageManager mileageManager;
-    @Autowired private CommentService commentService;
-    @Autowired private DocumentManager documentManager;
-    @Autowired private FileSystemService fileSystemService;
-    @Autowired private CloudFileService cloudFileService;
+    private MileageManager mileageManager;
+    private CommentService commentService;
+    private DocumentManager documentManager;
+    private FileSystemService fileSystemService;
+    private CloudFileService cloudFileService;
+
+    @Autowired
+    public MileageService(
+            MileageManager mileageManager,
+            CommentService commentService,
+            DocumentManager documentManager,
+            FileSystemService fileSystemService,
+            CloudFileService cloudFileService) {
+
+        this.mileageManager = mileageManager;
+        this.commentService = commentService;
+        this.documentManager = documentManager;
+        this.fileSystemService = fileSystemService;
+        this.cloudFileService = cloudFileService;
+    }
 
     public void save(MileageEntity mileageEntity) throws Exception {
         mileageManager.save(mileageEntity);

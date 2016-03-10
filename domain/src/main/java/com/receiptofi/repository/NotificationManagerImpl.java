@@ -52,7 +52,12 @@ public class NotificationManagerImpl implements NotificationManager {
     @Value ("${MobilePushNotificationProcess.notification_retry_count:5}")
     int notificationRetryCount;
 
-    @Autowired private MongoTemplate mongoTemplate;
+    private MongoTemplate mongoTemplate;
+
+    @Autowired
+    public NotificationManagerImpl(MongoTemplate mongoTemplate) {
+        this.mongoTemplate = mongoTemplate;
+    }
 
     @Override
     public void save(NotificationEntity object) {
