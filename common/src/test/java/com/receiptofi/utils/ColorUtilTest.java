@@ -1,6 +1,8 @@
 package com.receiptofi.utils;
 
-import static org.junit.Assert.*;
+import static org.hamcrest.Matchers.lessThanOrEqualTo;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
 
 import org.junit.Test;
 
@@ -12,7 +14,7 @@ public class ColorUtilTest {
 
     @Test
     public void testGetRandomSize() throws Exception {
-        assertEquals("#ABC123".length(), ColorUtil.getRandom().length());
+        assertThat(ColorUtil.getRandom().length(), lessThanOrEqualTo(7));
     }
 
     @Test
