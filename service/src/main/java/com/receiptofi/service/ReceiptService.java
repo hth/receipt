@@ -59,10 +59,9 @@ public class ReceiptService {
     private ReceiptManager receiptManager;
     private DocumentManager documentManager;
     private DocumentUpdateService documentUpdateService;
-    private ItemManager itemManager;
     private ItemService itemService;
     private ItemOCRManager itemOCRManager;
-    private UserProfileManager userProfileManager;
+    private AccountService accountService;
     private FileUploadDocumentSenderJMS senderJMS;
     private CommentService commentService;
     private FileSystemService fileSystemService;
@@ -77,10 +76,9 @@ public class ReceiptService {
             ReceiptManager receiptManager,
             DocumentManager documentManager,
             DocumentUpdateService documentUpdateService,
-            ItemManager itemManager,
             ItemService itemService,
             ItemOCRManager itemOCRManager,
-            UserProfileManager userProfileManager,
+            AccountService accountService,
             FileUploadDocumentSenderJMS senderJMS,
             CommentService commentService,
             FileSystemService fileSystemService,
@@ -92,10 +90,9 @@ public class ReceiptService {
         this.receiptManager = receiptManager;
         this.documentManager = documentManager;
         this.documentUpdateService = documentUpdateService;
-        this.itemManager = itemManager;
         this.itemService = itemService;
         this.itemOCRManager = itemOCRManager;
-        this.userProfileManager = userProfileManager;
+        this.accountService = accountService;
         this.senderJMS = senderJMS;
         this.commentService = commentService;
         this.fileSystemService = fileSystemService;
@@ -177,7 +174,7 @@ public class ReceiptService {
             /** Notification message when receipt is deleted. */
             String md = documentUpdateService.getNotificationMessageForReceiptProcess(receipt, "deleted");
 
-            itemManager.deleteSoft(receipt);
+            itemService.deleteSoft(receipt);
             fileSystemService.deleteSoft(receipt.getFileSystemEntities());
 
             if (null != receipt.getRecheckComment() && !StringUtils.isEmpty(receipt.getRecheckComment().getId())) {
@@ -270,10 +267,10 @@ public class ReceiptService {
 
                     List<ItemEntityOCR> ocrItems = getItemEntityFromItemEntityOCR(items, receiptOCR);
                     itemOCRManager.saveObjects(ocrItems);
-                    itemManager.deleteWhereReceipt(receipt);
+                    itemService.deleteWhereReceipt(receipt);
 
                     LOG.info("DocumentEntity @Id after save: " + receiptOCR.getId());
-                    UserProfileEntity userProfile = userProfileManager.findByReceiptUserId(receiptOCR.getReceiptUserId());
+                    UserProfileEntity userProfile = accountService.findProfileByReceiptUserId(receiptOCR.getReceiptUserId());
                     senderJMS.send(receiptOCR, userProfile);
                     return true;
                 } else {

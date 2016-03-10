@@ -593,4 +593,9 @@ public class AccountService {
                 NotificationGroupEnum.N,
                 userAccount.getReceiptUserId());
     }
+
+    public UserProfileEntity findProfileByReceiptUserId(String receiptUserId) {
+        return userProfileManager.findByReceiptUserId(receiptUserId);
+    }
+
 }
