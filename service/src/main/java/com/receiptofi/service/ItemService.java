@@ -4,6 +4,7 @@ import static java.math.BigDecimal.ZERO;
 
 import com.receiptofi.domain.ExpenseTagEntity;
 import com.receiptofi.domain.ItemEntity;
+import com.receiptofi.domain.ReceiptEntity;
 import com.receiptofi.repository.ExpenseTagManager;
 import com.receiptofi.repository.ItemManager;
 import com.receiptofi.service.wrapper.ThisYearExpenseByTag;
@@ -31,8 +32,14 @@ import java.util.List;
 @Service
 public class ItemService {
 
-    @Autowired private ItemManager itemManager;
-    @Autowired private ExpenseTagManager expenseTagManager;
+    private ItemManager itemManager;
+    private ExpenseTagManager expenseTagManager;
+
+    @Autowired
+    public ItemService(ItemManager itemManager, ExpenseTagManager expenseTagManager) {
+        this.itemManager = itemManager;
+        this.expenseTagManager = expenseTagManager;
+    }
 
     public void updateAllItemWithExpenseTag(String receiptId, String expenseTagId) {
         itemManager.updateAllItemWithExpenseTag(receiptId, expenseTagId);
@@ -145,5 +152,13 @@ public class ItemService {
     public BigDecimal calculateTotalCost(BigDecimal sum, ItemEntity item) {
         Assert.notNull(sum);
         return Maths.add(sum, item.getTotalPriceWithTax());
+    }
+
+    public void deleteWhereReceipt(ReceiptEntity receipt) {
+        itemManager.deleteWhereReceipt(receipt);
+    }
+
+    public void deleteSoft(ReceiptEntity receipt) {
+        itemManager.deleteSoft(receipt);
     }
 }
