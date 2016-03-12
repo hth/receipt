@@ -50,6 +50,7 @@ public class CronStatsManagerImpl implements CronStatsManager {
     }
 
     @Override
+    @SuppressWarnings ("unchecked")
     public List<String> getUniqueCronTasks() {
         return mongoTemplate.getCollection(TABLE).distinct("TN");
     }
