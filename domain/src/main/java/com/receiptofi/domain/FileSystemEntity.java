@@ -267,4 +267,13 @@ public class FileSystemEntity extends BaseEntity {
     private ZonedDateTime getUTCZonedDateTime() {
         return getCreated().toInstant().atZone(ZoneId.of("UTC"));
     }
+
+    @Override
+    public String toString() {
+        return "FileSystemEntity{" +
+                "rid='" + rid + '\'' +
+                ", blobId='" + blobId + '\'' +
+                ", originalFilename='" + originalFilename + '\'' +
+                '}';
+    }
 }
