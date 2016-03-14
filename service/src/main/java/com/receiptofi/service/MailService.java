@@ -470,16 +470,16 @@ public class MailService {
             helper.addInline("facebook.logo", facebookRes);
 
             //Attach image always at the end
-            URL androidUrl = Thread.currentThread().getContextClassLoader().getResource("../jsp/images/googlePlay129x45.jpg");
-            Assert.notNull(androidUrl);
-            FileSystemResource androidRes = new FileSystemResource(androidUrl.getPath());
-            helper.addInline("android.logo", androidRes);
-
-            //Attach image always at the end
-            URL iosUrl = Thread.currentThread().getContextClassLoader().getResource("../jsp/images/app_store_coming_soon129x45.jpg");
+            URL iosUrl = Thread.currentThread().getContextClassLoader().getResource("../jsp/images/app-store151x48.jpg");
             Assert.notNull(iosUrl);
             FileSystemResource iosRes = new FileSystemResource(iosUrl.getPath());
             helper.addInline("ios.logo", iosRes);
+
+            //Attach image always at the end
+            URL androidUrl = Thread.currentThread().getContextClassLoader().getResource("../jsp/images/googlePlay151x47.jpg");
+            Assert.notNull(androidUrl);
+            FileSystemResource androidRes = new FileSystemResource(androidUrl.getPath());
+            helper.addInline("android.logo", androidRes);
         }
 
         try {

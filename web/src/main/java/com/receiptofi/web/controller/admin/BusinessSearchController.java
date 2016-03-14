@@ -285,7 +285,7 @@ public class BusinessSearchController {
             } else {
                 bizForm.setErrorMessage(
                         "Address uniquely identified with another Biz Name: " +
-                        receiptEntity.getBizStore().getBizName().getBusinessName());
+                                receiptEntity.getBizStore().getBizName().getBusinessName());
             }
             /** Re-direct to prevent resubmit. */
             return "redirect:" + nextPage + ".htm";
