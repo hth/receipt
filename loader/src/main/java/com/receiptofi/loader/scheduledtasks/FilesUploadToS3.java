@@ -153,7 +153,7 @@ public class FilesUploadToS3 {
                             }
                         } else {
                             skipped++;
-                            LOG.info("Skipped file={} as it exists in S3 SNL={}",
+                            LOG.warn("Skipped file={} as it exists in S3 SNL={}",
                                     fileSystem.getBlobId(),
                                     fileSystem.getScaledFileLength());
                         }
