@@ -93,7 +93,7 @@ public class MobilePushNotificationProcess {
                     documentUpdateService.markNotified(document.getId());
                     switch (document.getDocumentStatus()) {
                         case PENDING:
-                            LOG.info("Notifying technicians on documents={} documentId={} rid={}",
+                            LOG.info("Notifying technicians on received documents={} documentId={} rid={}",
                                     document.getDocumentStatus(), document.getId(), document.getReceiptUserId());
 
                             for (UserAccountEntity userAccount : userAccountEntities) {
@@ -104,7 +104,7 @@ public class MobilePushNotificationProcess {
                             success++;
                             break;
                         case REPROCESS:
-                            LOG.info("Notifying technicians on documents={} documentId={} rid={}",
+                            LOG.info("Notifying technicians on received documents={} documentId={} rid={}",
                                     document.getDocumentStatus(), document.getId(), document.getReceiptUserId());
 
                             for (UserAccountEntity userAccount : userAccountEntities) {
@@ -124,12 +124,12 @@ public class MobilePushNotificationProcess {
                             throw new UnsupportedOperationException("DocumentStatus not defined " + document.getDocumentStatus());
                     }
                 } catch (Exception e) {
-                    LOG.error("Notification failure document={} reason={}", document, e.getLocalizedMessage(), e);
+                    LOG.error("Received document notification failure document={} reason={}", document, e.getLocalizedMessage(), e);
                     failure++;
                 }
             }
         } catch (Exception e) {
-            LOG.error("Error sending document notification reason={}", e.getLocalizedMessage(), e);
+            LOG.error("Error sending received document notification reason={}", e.getLocalizedMessage(), e);
         } finally {
             cronStats.addStats("success", success);
             cronStats.addStats("skipped", skipped);
@@ -137,7 +137,7 @@ public class MobilePushNotificationProcess {
             cronStats.addStats("found", documents.size());
             cronStatsService.save(cronStats);
 
-            LOG.info("Documents upload success={} skipped={} failure={} total={}", success, skipped, failure, documents.size());
+            LOG.info("Received document success={} skipped={} failure={} total={}", success, skipped, failure, documents.size());
         }
     }
 
