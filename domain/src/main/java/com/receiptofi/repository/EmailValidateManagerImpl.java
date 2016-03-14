@@ -30,7 +30,7 @@ import org.springframework.stereotype.Repository;
         "PMD.LongVariable"
 })
 @Repository
-public final class EmailValidateManagerImpl implements EmailValidateManager {
+public class EmailValidateManagerImpl implements EmailValidateManager {
     private static final Logger LOG = LoggerFactory.getLogger(EmailValidateManagerImpl.class);
     private static final String TABLE = BaseEntity.getClassAnnotationValue(
             EmailValidateEntity.class,
@@ -39,6 +39,7 @@ public final class EmailValidateManagerImpl implements EmailValidateManager {
 
     private MongoTemplate mongoTemplate;
 
+    @Autowired
     public EmailValidateManagerImpl(MongoTemplate mongoTemplate) {
         this.mongoTemplate = mongoTemplate;
     }
