@@ -129,8 +129,8 @@ public class FilesUploadToS3 {
         try {
             for (DocumentEntity document : documents) {
                 try {
-                    Collection<FileSystemEntity> fileSystemEntities = document.getFileSystemEntities();
-                    for (FileSystemEntity fileSystem : fileSystemEntities) {
+                    Collection<FileSystemEntity> fileSystems = document.getFileSystemEntities();
+                    for (FileSystemEntity fileSystem : fileSystems) {
                         if (0L == fileSystem.getScaledFileLength()) {
 
                             GridFSDBFile fs = fileDBService.getFile(fileSystem.getBlobId());
@@ -198,7 +198,7 @@ public class FilesUploadToS3 {
 
                     failure++;
                 } catch (Exception e) {
-                    LOG.error("Image upload failure document={} reason={}", document, e.getLocalizedMessage(), e);
+                    LOG.error("S3 image upload failure document={} reason={}", document, e.getLocalizedMessage(), e);
 
                     failure++;
 
@@ -209,7 +209,7 @@ public class FilesUploadToS3 {
                 }
             }
         } catch (Exception e) {
-            LOG.error("Error uploading document to S3 reason={}", e.getLocalizedMessage(), e);
+            LOG.error("Error S3 uploading document reason={}", e.getLocalizedMessage(), e);
         } finally {
             cronStats.addStats("success", success);
             cronStats.addStats("skipped", skipped);
@@ -217,7 +217,7 @@ public class FilesUploadToS3 {
             cronStats.addStats("found", documents.size());
             cronStatsService.save(cronStats);
 
-            LOG.info("Documents upload success={} skipped={} failure={} total={}", success, skipped, failure, documents.size());
+            LOG.info("S3 upload success={} skipped={} failure={} total={}", success, skipped, failure, documents.size());
         }
     }
 

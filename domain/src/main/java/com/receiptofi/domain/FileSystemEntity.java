@@ -248,13 +248,12 @@ public class FileSystemEntity extends BaseEntity {
     @Transient
     private String computeFileYearMonthDayLocation() {
         ZonedDateTime zonedDateTime = getUTCZonedDateTime();
-        return new StringBuilder()
-                .append(zonedDateTime.getYear())
-                .append("-")
-                .append(TWO_DIGIT_FORMAT.format(zonedDateTime.getMonthValue()))
-                .append("/")
-                .append(TWO_DIGIT_FORMAT.format(zonedDateTime.getDayOfMonth()))
-                .append("/").toString();
+        return String.valueOf(zonedDateTime.getYear()) +
+                "-" +
+                TWO_DIGIT_FORMAT.format(zonedDateTime.getMonthValue()) +
+                "/" +
+                TWO_DIGIT_FORMAT.format(zonedDateTime.getDayOfMonth()) +
+                "/";
     }
 
     /**
@@ -266,5 +265,14 @@ public class FileSystemEntity extends BaseEntity {
      */
     private ZonedDateTime getUTCZonedDateTime() {
         return getCreated().toInstant().atZone(ZoneId.of("UTC"));
+    }
+
+    @Override
+    public String toString() {
+        return "FileSystemEntity{" +
+                "rid='" + rid + '\'' +
+                ", blobId='" + blobId + '\'' +
+                ", originalFilename='" + originalFilename + '\'' +
+                '}';
     }
 }
