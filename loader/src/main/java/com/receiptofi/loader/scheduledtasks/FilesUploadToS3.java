@@ -135,27 +135,16 @@ public class FilesUploadToS3 {
 
                             GridFSDBFile fs = fileDBService.getFile(fileSystem.getBlobId());
                             if (null != fs) {
-                                File scaledImage = FileUtil.createTempFile(
-                                        FilenameUtils.getBaseName(fileSystem.getOriginalFilename()),
-                                        FileUtil.getFileExtension(fileSystem.getOriginalFilename()));
-
-                                imageSplitService.decreaseResolution(fs.getInputStream(), new FileOutputStream(scaledImage));
-                                LOG.info("fileSystemID={} filename={} newFilename={} originalLength={} newLength={}",
-                                        fileSystem.getId(),
-                                        fileSystem.getOriginalFilename(),
-                                        fileSystem.getBlobId(),
-                                        FileUtil.fileSizeInMB(fileSystem.getFileLength()),
-                                        FileUtil.fileSizeInMB(scaledImage.length()));
-
-                                File fileForS3;
-                                if (fileSystem.getImageOrientation() == FileSystemEntity.DEFAULT_ORIENTATION_ANGLE) {
-                                    fileForS3 = scaledImage;
-                                } else {
-                                    fileForS3 = rotate(fileSystem.getImageOrientation(), scaledImage);
-                                }
-                                updateFileSystemWithScaledImageForS3(fileSystem, fileForS3);
-                                PutObjectRequest putObject = getPutObjectRequest(document, fileSystem, fileForS3);
+                                PutObjectRequest putObject = createPutObjectRequest(document, fileSystem, fs);
                                 amazonS3Service.getS3client().putObject(putObject);
+
+                                /**
+                                 * Reason: Your socket connection to the server was not read from or written to within
+                                 * the timeout period. Idle connections will be closed.
+                                 *
+                                 * On successful update persist changes to FileSystemEntity.
+                                 */
+                                fileSystemService.save(fileSystem);
                                 success++;
                             } else {
                                 //TODO keep an eye on this issue. Should not happen.
@@ -221,6 +210,29 @@ public class FilesUploadToS3 {
         }
     }
 
+    private PutObjectRequest createPutObjectRequest(DocumentEntity document, FileSystemEntity fileSystem, GridFSDBFile fs) throws IOException {
+        File scaledImage = FileUtil.createTempFile(
+                FilenameUtils.getBaseName(fileSystem.getOriginalFilename()),
+                FileUtil.getFileExtension(fileSystem.getOriginalFilename()));
+
+        imageSplitService.decreaseResolution(fs.getInputStream(), new FileOutputStream(scaledImage));
+        LOG.info("fileSystemID={} filename={} newFilename={} originalLength={} newLength={}",
+                fileSystem.getId(),
+                fileSystem.getOriginalFilename(),
+                fileSystem.getBlobId(),
+                FileUtil.fileSizeInMB(fileSystem.getFileLength()),
+                FileUtil.fileSizeInMB(scaledImage.length()));
+
+        File fileForS3;
+        if (fileSystem.getImageOrientation() == FileSystemEntity.DEFAULT_ORIENTATION_ANGLE) {
+            fileForS3 = scaledImage;
+        } else {
+            fileForS3 = rotate(fileSystem.getImageOrientation(), scaledImage);
+        }
+        updateFileSystemWithScaledImageForS3(fileSystem, fileForS3);
+        return getPutObjectRequest(document, fileSystem, fileForS3);
+    }
+
     /**
      * Updates FileSystemEntity with scaled image info.
      *
@@ -228,14 +240,13 @@ public class FilesUploadToS3 {
      * @param fileForS3
      * @throws IOException
      */
-    private void updateFileSystemWithScaledImageForS3(FileSystemEntity fileSystem, File fileForS3) throws Exception {
+    private void updateFileSystemWithScaledImageForS3(FileSystemEntity fileSystem, File fileForS3) throws IOException {
         BufferedImage bufferedImage = imageSplitService.bufferedImage(fileForS3);
 
         fileSystem.setImageOrientation(0);
         fileSystem.setScaledFileLength(fileForS3.length());
         fileSystem.setScaledHeight(bufferedImage.getHeight());
         fileSystem.setScaledWidth(bufferedImage.getWidth());
-        fileSystemService.save(fileSystem);
     }
 
     /**
