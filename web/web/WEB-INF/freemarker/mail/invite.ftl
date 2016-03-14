@@ -58,9 +58,9 @@
 	They are mobile too. Download free ReceiptApp on device of your choice.
 </p>
 <p>
-	<a href="https://play.google.com/store/apps/dev?id=5932546847029461866"><img src="cid:android.logo" alt="Google Play" /></a>
+	<a href="https://itunes.apple.com/us/app/receiptapp/id1044054989?ls=1&mt=8"><img src="cid:ios.logo" alt="iPhone App" /></a>
 	&nbsp;
-	<img src="cid:ios.logo" alt="App Store" />
+	<a href="https://play.google.com/store/apps/dev?id=5932546847029461866"><img src="cid:android.logo" alt="Android App" /></a>
 </p>
 <p>
     See you soon on friend's list.
@@ -78,7 +78,7 @@
 <br/><br/><br/>
 <hr/>
 <span class="tm">
-    TM &trade; and Copyright &copy; 2015 Receiptofi Inc. Sunnyvale, CA 94085 USA. <br/>
+    TM &trade; and Copyright &copy; 2016 Receiptofi Inc. Sunnyvale, CA 94085 USA. <br/>
     All Rights Reserved / <a href="https://www.receiptofi.com/privacypolicy">Privacy Policy</a>
 </span>
 <br/>
