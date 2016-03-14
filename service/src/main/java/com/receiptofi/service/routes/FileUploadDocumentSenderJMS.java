@@ -30,10 +30,18 @@ import javax.jms.MapMessage;
 public final class FileUploadDocumentSenderJMS {
     private static final Logger LOG = LoggerFactory.getLogger(FileUploadDocumentSenderJMS.class);
 
-    @Autowired private JmsTemplate jmsSenderTemplate;
-
-    @Value ("${queue-name}")
     private String queueName;
+    private JmsTemplate jmsSenderTemplate;
+
+    @Autowired
+    public FileUploadDocumentSenderJMS(
+            @Value ("${queue-name}")
+            String queueName,
+
+            JmsTemplate jmsSenderTemplate) {
+        this.queueName = queueName;
+        this.jmsSenderTemplate = jmsSenderTemplate;
+    }
 
     public void send(final DocumentEntity documentEntity, final UserProfileEntity userProfile) {
         jmsSenderTemplate.send(queueName,
