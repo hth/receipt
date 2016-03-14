@@ -16,10 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -40,18 +38,15 @@ public class BizService {
     private BizNameManager bizNameManager;
     private BizStoreManager bizStoreManager;
     private ExternalService externalService;
-    private ReceiptService receiptService;
 
     @Autowired
     public BizService(
             BizNameManager bizNameManager,
             BizStoreManager bizStoreManager,
-            ExternalService externalService,
-            ReceiptService receiptService) {
+            ExternalService externalService) {
         this.bizNameManager = bizNameManager;
         this.bizStoreManager = bizStoreManager;
         this.externalService = externalService;
-        this.receiptService = receiptService;
     }
 
     public BizNameEntity getByBizNameId(String bizId) {
@@ -90,19 +85,6 @@ public class BizService {
             bizStoreEntities.addAll(bizStores);
         }
         return bizStoreEntities;
-    }
-
-    public Map<String, Long> countReceiptForBizStore(Set<BizStoreEntity> bizStoreEntities) {
-        Map<String, Long> bizReceiptCount = new HashMap<>();
-        for (BizStoreEntity bizStoreEntity : bizStoreEntities) {
-            long count = receiptService.countAllReceiptForAStore(bizStoreEntity);
-            bizReceiptCount.put(bizStoreEntity.getId(), count);
-        }
-        return bizReceiptCount;
-    }
-
-    public long countReceiptForBizName(BizNameEntity bizNameEntity) {
-        return receiptService.countAllReceiptForABizName(bizNameEntity);
     }
 
     /**
@@ -145,8 +127,7 @@ public class BizService {
             if (null == bizStore
                     /** OR condition is when address or phones is corrected or updated during re-check. */
                     || !bizStore.getAddress().equals(bizStoreEntity.getAddress())
-                    || !bizStore.getPhone().equals(bizStoreEntity.getPhone()))
-            {
+                    || !bizStore.getPhone().equals(bizStoreEntity.getPhone())) {
                 updateReceiptWithNewBizStore(bizStoreEntity, bizName, receiptEntity);
 
             } else if (!bizStore.isValidatedUsingExternalAPI()) {

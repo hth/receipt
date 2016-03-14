@@ -6,6 +6,7 @@ import com.receiptofi.domain.ReceiptEntity;
 import com.receiptofi.domain.site.ReceiptUser;
 import com.receiptofi.service.BizService;
 import com.receiptofi.service.ExternalService;
+import com.receiptofi.service.ReceiptService;
 import com.receiptofi.web.form.BizForm;
 import com.receiptofi.web.validator.BizSearchValidator;
 import com.receiptofi.web.validator.BizValidator;
@@ -54,6 +55,7 @@ public class BusinessSearchController {
 
     @Autowired private ExternalService externalService;
     @Autowired private BizService bizService;
+    @Autowired private ReceiptService receiptService;
 
     @Autowired private BizValidator bizValidator;
     @Autowired private BizSearchValidator bizSearchValidator;
@@ -194,14 +196,14 @@ public class BusinessSearchController {
 
             Set<BizStoreEntity> bizStoreEntities = new HashSet<>();
             bizStoreEntities.add(bizStoreEntity);
-            bizForm.setReceiptCount(bizService.countReceiptForBizStore(bizStoreEntities));
+            bizForm.setReceiptCount(receiptService.countReceiptForBizStore(bizStoreEntities));
             if (bizForm.getReceiptCount().get(bizStoreEntity.getId()) == 0) {
                 bizService.deleteBizStore(bizStoreEntity);
                 bizForm.setSuccessMessage("Deleted store successfully");
                 LOG.info("Deleted stored: " + bizStoreEntity.getAddress() + ", id: " + bizStoreEntity.getId() + ", by user={}", receiptUser.getRid());
 
                 //To make sure no orphan biz name are lingering around
-                if (bizService.countReceiptForBizName(bizNameEntity) == 0) {
+                if (receiptService.countAllReceiptForABizName(bizNameEntity) == 0) {
                     bizService.deleteBizName(bizNameEntity);
                     bizForm.setSuccessMessage("Deleted biz name successfully");
                     LOG.info("Deleted biz name: " + bizNameEntity.getBusinessName() + ", id: " + bizNameEntity.getId() + ", by user={}", receiptUser.getRid());
@@ -332,7 +334,7 @@ public class BusinessSearchController {
         Set<BizStoreEntity> bizStoreEntities = bizService.bizSearch(businessName, address, phone);
         bizForm.setSuccessMessage("Found '" + bizStoreEntities.size() + "' matching business(es).");
 
-        bizForm.setReceiptCount(bizService.countReceiptForBizStore(bizStoreEntities));
+        bizForm.setReceiptCount(receiptService.countReceiptForBizStore(bizStoreEntities));
         return bizStoreEntities;
     }
 }

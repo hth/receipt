@@ -20,10 +20,8 @@ import com.receiptofi.domain.types.NotificationGroupEnum;
 import com.receiptofi.domain.types.NotificationTypeEnum;
 import com.receiptofi.domain.types.SplitActionEnum;
 import com.receiptofi.repository.DocumentManager;
-import com.receiptofi.repository.ItemManager;
 import com.receiptofi.repository.ItemOCRManager;
 import com.receiptofi.repository.ReceiptManager;
-import com.receiptofi.repository.UserProfileManager;
 import com.receiptofi.service.routes.FileUploadDocumentSenderJMS;
 import com.receiptofi.utils.Maths;
 
@@ -39,7 +37,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * User: hitender
@@ -616,5 +617,14 @@ public class ReceiptService {
                 LOG.debug("Failure update split total with new price");
             }
         }
+    }
+
+    public Map<String, Long> countReceiptForBizStore(Set<BizStoreEntity> bizStoreEntities) {
+        Map<String, Long> bizReceiptCount = new HashMap<>();
+        for (BizStoreEntity bizStoreEntity : bizStoreEntities) {
+            long count = countAllReceiptForAStore(bizStoreEntity);
+            bizReceiptCount.put(bizStoreEntity.getId(), count);
+        }
+        return bizReceiptCount;
     }
 }
