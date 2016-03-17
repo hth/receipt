@@ -101,7 +101,7 @@ public class FileDownloadController {
                 gridFSDBFile.writeTo(response.getOutputStream());
             }
         } catch (IOException e) {
-            LOG.error("Image retrieval error occurred for imageId={} rid={} reason={}",
+            LOG.error("Image retrieval failure occurred for imageId={} rid={} reason={}",
                     imageId, receiptUser.getRid(), e.getLocalizedMessage(), e);
         }
     }
