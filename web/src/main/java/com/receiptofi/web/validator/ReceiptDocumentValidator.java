@@ -111,8 +111,8 @@ public class ReceiptDocumentValidator implements Validator {
                                 Maths.multiply(Formatter.getCurrencyFormatted(item.getPrice()), item.getQuantity())
                         );
                     } catch (ParseException | NumberFormatException exception) {
-                        LOG.error(
-                                "Exception during update of receipt={}, with error message={}",
+                        LOG.warn(
+                                "Validation exception during update of receipt={}, with error message={}",
                                 receiptDocumentForm.getReceiptDocument().getId(),
                                 exception.getLocalizedMessage(),
                                 exception
@@ -134,8 +134,8 @@ public class ReceiptDocumentValidator implements Validator {
 
             /** This condition is added to make sure no receipt is added without at least one valid item in the list */
             if (conditionFailed && receiptDocumentForm.getItems().size() == conditionFailedCounter) {
-                LOG.error(
-                        "Exception during update of receipt={}, as no items were found",
+                LOG.warn(
+                        "Validation exception during update of receipt={}, as no items were found",
                         receiptDocumentForm.getReceiptDocument().getId()
                 );
                 errors.rejectValue(
@@ -220,8 +220,8 @@ public class ReceiptDocumentValidator implements Validator {
                     }
                 }
             } catch (ParseException | NumberFormatException exception) {
-                LOG.error(
-                        "Exception during update of receipt={}, with error message={}",
+                LOG.warn(
+                        "Validation exception during update of receipt={}, with error message={}",
                         receiptDocumentForm.getReceiptDocument().getId(),
                         exception.getLocalizedMessage(),
                         exception
