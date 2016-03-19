@@ -54,4 +54,13 @@ public interface FriendManager extends RepositoryManager<FriendEntity> {
     FriendEntity getConnection(String receiptUserId, String friendUserId);
 
     boolean unfriend(String receiptUserId, String friendUserId);
+
+    /**
+     * Re-invite friend after cancelling the invitation.
+     *
+     * @param id
+     * @param authKey
+     * @return
+     */
+    boolean inviteAgain(String id, String authKey);
 }

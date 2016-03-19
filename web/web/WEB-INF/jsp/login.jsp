@@ -49,7 +49,7 @@
 <section class="cd-fixed-background" style="background-color: #93a748; min-height: 1054px;" data-type="slider-item">
     <div class="cd-content">
         <fieldset class="cd-form floating-labels" id="login-title-fieldset">
-            <h2>ReceiptApp<span class="tm">&#8482;</span> for receipts</h2>
+            <h2>ReceiptApp for receipts</h2>
             <p>Traveling, Budgeting, Expensing. Just snap it and we do the rest. Paperless.</p>
         </fieldset>
 

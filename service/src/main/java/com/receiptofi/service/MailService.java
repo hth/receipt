@@ -368,20 +368,36 @@ public class MailService {
         if (null != invitedBy) {
             FriendEntity friend = null;
             try {
-                InviteEntity inviteEntity = inviteService.reInviteActiveInvite(emailId, invitedBy);
+                InviteEntity invite = inviteService.reInviteActiveInvite(emailId, invitedBy);
                 boolean isNewInvite = false;
-                if (null == inviteEntity) {
-                    //Means invite exist by another user. Better to create a new invite for the requesting user
-                    inviteEntity = reCreateAnotherInvite(emailId, invitedBy);
+                if (null == invite) {
+                    /**
+                     * Means invite may exists through another user.
+                     * Better to create a new invite for the requesting user.
+                     */
+                    invite = reCreateAnotherInvite(emailId, invitedBy);
                     isNewInvite = true;
 
-                    friend = new FriendEntity(invitedByRid, inviteEntity.getInvited().getReceiptUserId());
+                    friend = new FriendEntity(invitedByRid, invite.getInvited().getReceiptUserId());
                     friendService.save(friend);
+                } else {
+                    invite.isActive();
+                    inviteService.save(invite);
                 }
 
-                formulateInvitationMail(emailId, invitedBy, inviteEntity);
+                if (null == friend) {
+                    friend = friendService.getConnection(invitedByRid, invite.getInvited().getReceiptUserId());
+                    if (!friend.isConnected() && friend.getReceiptUserId().equalsIgnoreCase(invitedByRid)) {
+                        /** When invitee has cancelled interest in their friend and would like to re-invite. */
+                        if (friendService.inviteAgain(friend.getId(), RandomString.newInstance().nextString())) {
+                            LOG.info("Re-invite connection from {} to {}", invitedByRid, invite.getInvited().getReceiptUserId());
+                        }
+                    }
+                }
+
+                formulateInvitationMail(emailId, invitedBy, invite);
                 if (!isNewInvite) {
-                    inviteService.save(inviteEntity);
+                    inviteService.save(invite);
                 }
             } catch (Exception e) {
                 LOG.error("Error persisting InviteEntity, reason={}", e.getLocalizedMessage(), e);
@@ -439,7 +455,7 @@ public class MailService {
                     helper
             );
         } catch (TemplateException | IOException | MessagingException exception) {
-            LOG.error("Invitation failure email inviteId={}, for={}, exception={}",
+            LOG.error("Invitation failure email inviteId={}, for={}",
                     inviteEntity.getId(), inviteEntity.getEmail(), exception);
             throw new RuntimeException(exception);
         }
@@ -582,6 +598,14 @@ public class MailService {
                                 NotificationTypeEnum.MESSAGE,
                                 NotificationGroupEnum.S,
                                 userProfile.getReceiptUserId());
+                    } else {
+                        invokeCorrectInvitation(invitedUserEmail, rid, userProfile);
+
+                        notificationService.addNotification(
+                                "Invitation sent to '" + invitedUserEmail + "'",
+                                NotificationTypeEnum.MESSAGE,
+                                NotificationGroupEnum.S,
+                                rid);
                     }
                 } else if (friend == null) {
                     friend = new FriendEntity(rid, userProfile.getReceiptUserId());
@@ -628,15 +652,16 @@ public class MailService {
             }
         }
 
+        LOG.info("Invite mail={} status={} message={}", invitedUserEmail, responseStatus, responseMessage);
         JsonObject response = new JsonObject();
         response.addProperty("status", responseStatus);
         response.addProperty("message", responseMessage);
         return new Gson().toJson(response);
     }
 
-    private boolean invokeCorrectInvitation(String invitedUserEmail, String rid, UserProfileEntity userProfileEntity) {
+    private boolean invokeCorrectInvitation(String invitedUserEmail, String rid, UserProfileEntity userProfile) {
         boolean status;
-        if (null == userProfileEntity) {
+        if (null == userProfile) {
             status = sendInvitation(invitedUserEmail, rid);
         } else {
             status = reSendInvitation(invitedUserEmail, rid);

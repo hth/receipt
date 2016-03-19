@@ -153,4 +153,15 @@ public class FriendManagerImpl implements FriendManager {
 
         return writeResult.getN() > 0;
     }
+
+    @Override
+    public boolean inviteAgain(String id, String authKey) {
+        WriteResult writeResult = this.mongoTemplate.updateFirst(
+                query(where("id").is(id)),
+                entityUpdate(update("AUTH", authKey)),
+                FriendEntity.class
+        );
+
+        return writeResult.getN() > 0;
+    }
 }

@@ -51,9 +51,9 @@ public final class InviteManagerImpl implements InviteManager {
     }
 
     @Override
-    public void invalidateAllEntries(InviteEntity object) {
+    public void invalidateAllEntries(InviteEntity invite) {
         mongoTemplate.updateMulti(
-                query(where("IN.$id").is(new ObjectId(object.getInvited().getId()))),
+                query(where("IN.$id").is(new ObjectId(invite.getInvited().getId()))),
                 entityUpdate(update("A", false)),
                 InviteEntity.class
         );
@@ -74,9 +74,12 @@ public final class InviteManagerImpl implements InviteManager {
 
     @Override
     public InviteEntity reInviteActiveInvite(String emailId, UserAccountEntity invitedBy) {
-        Criteria criteria = where("EM").is(emailId).and("INV.$id").is(new ObjectId(invitedBy.getId()));
-        Query query = query(criteria).addCriteria(isActive()).addCriteria(isNotDeleted());
-        return mongoTemplate.findOne(query, InviteEntity.class, TABLE);
+        return mongoTemplate.findOne(
+                query(where("EM").is(emailId)
+                        .and("INV.$id").is(new ObjectId(invitedBy.getId()))
+                        .andOperator(isNotDeleted())),
+                InviteEntity.class,
+                TABLE);
     }
 
     @Override
