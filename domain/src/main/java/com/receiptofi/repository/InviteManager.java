@@ -21,9 +21,9 @@ public interface InviteManager extends RepositoryManager<InviteEntity> {
     /**
      * Make all the existing request invalid
      *
-     * @param object
+     * @param invite
      */
-    void invalidateAllEntries(InviteEntity object);
+    void invalidateAllEntries(InviteEntity invite);
 
     /**
      * Find the user who has been invited and the invite is active

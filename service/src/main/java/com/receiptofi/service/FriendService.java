@@ -55,6 +55,8 @@ public class FriendService {
             FriendManager friendManager,
             UserProfilePreferenceService userProfilePreferenceService
     ) {
+        LOG.info("Cache friends for {} {}", friendCachePeriod, TimeUnit.MINUTES.name());
+
         /** Do not make static cache or @Value out of constructor as cache is not set until Constructor is called. */
         friends = CacheBuilder.newBuilder()
                 .maximumSize(friendCacheSize)
@@ -213,5 +215,9 @@ public class FriendService {
                 LOG.error("FriendConnectionType={} not defined", friendConnectionType);
                 throw new UnsupportedOperationException("FriendConnectionType not supported " + friendConnectionType);
         }
+    }
+
+    public boolean inviteAgain(String id, String authKey) {
+        return friendManager.inviteAgain(id, authKey);
     }
 }
