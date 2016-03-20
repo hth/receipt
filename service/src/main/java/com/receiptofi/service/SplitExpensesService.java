@@ -28,8 +28,16 @@ import java.util.Map;
 })
 @Service
 public class SplitExpensesService {
-    @Autowired private SplitExpensesManager splitExpensesManager;
-    @Autowired private UserProfilePreferenceService userProfilePreferenceService;
+    private SplitExpensesManager splitExpensesManager;
+    private UserProfilePreferenceService userProfilePreferenceService;
+
+    @Autowired
+    public SplitExpensesService(
+            SplitExpensesManager splitExpensesManager,
+            UserProfilePreferenceService userProfilePreferenceService) {
+        this.splitExpensesManager = splitExpensesManager;
+        this.userProfilePreferenceService = userProfilePreferenceService;
+    }
 
     public SplitExpensesEntity getById(String id, String rid) {
         return splitExpensesManager.getById(id, rid);

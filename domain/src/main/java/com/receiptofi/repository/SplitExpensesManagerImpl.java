@@ -49,7 +49,12 @@ public class SplitExpensesManagerImpl implements SplitExpensesManager {
             Document.class,
             "collection");
 
-    @Autowired private MongoTemplate mongoTemplate;
+    private MongoTemplate mongoTemplate;
+
+    @Autowired
+    public SplitExpensesManagerImpl(MongoTemplate mongoTemplate) {
+        this.mongoTemplate = mongoTemplate;
+    }
 
     @Override
     public SplitExpensesEntity getById(String id, String rid) {
