@@ -432,21 +432,21 @@ public class ReceiptService {
     /**
      * Counts all the valid and invalid receipt that has referred the store.
      *
-     * @param bizStoreEntity
+     * @param bizStore
      * @return
      */
-    public long countAllReceiptForAStore(BizStoreEntity bizStoreEntity) {
-        return receiptManager.countAllReceiptForAStore(bizStoreEntity);
+    public long countAllReceiptForAStore(BizStoreEntity bizStore) {
+        return receiptManager.countAllReceiptForAStore(bizStore);
     }
 
     /**
      * Counts all the valid and invalid receipt that has referred the biz name.
      *
-     * @param bizNameEntity
+     * @param bizName
      * @return
      */
-    public long countAllReceiptForABizName(BizNameEntity bizNameEntity) {
-        return receiptManager.countAllReceiptForABizName(bizNameEntity);
+    public long countAllReceiptForABizName(BizNameEntity bizName) {
+        return receiptManager.countAllReceiptForABizName(bizName);
     }
 
     /**
@@ -458,11 +458,11 @@ public class ReceiptService {
     public boolean updateReceiptWithExpReportFilename(ReceiptEntity receipt) {
         try {
             save(receipt);
+            return true;
         } catch (Exception e) {
             LOG.error("Failed updating ReceiptEntity with Expense Report Filename, reason={}", e.getLocalizedMessage(), e);
             return false;
         }
-        return true;
     }
 
     public void removeExpensofiFilenameReference(String filename) {
