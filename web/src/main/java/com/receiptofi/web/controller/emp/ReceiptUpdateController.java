@@ -9,6 +9,7 @@ import com.receiptofi.domain.ItemEntityOCR;
 import com.receiptofi.domain.MileageEntity;
 import com.receiptofi.domain.ReceiptEntity;
 import com.receiptofi.domain.site.ReceiptUser;
+import com.receiptofi.service.DocumentService;
 import com.receiptofi.service.DocumentUpdateService;
 import com.receiptofi.utils.ScrubbedInput;
 import com.receiptofi.web.form.ReceiptDocumentForm;
@@ -63,6 +64,7 @@ public class ReceiptUpdateController {
     @Autowired private ReceiptDocumentValidator receiptDocumentValidator;
     @Autowired private DocumentRejectValidator documentRejectValidator;
     @Autowired private DocumentUpdateService documentUpdateService;
+    @Autowired private DocumentService documentService;
     @Autowired private MileageDocumentValidator mileageDocumentValidator;
 
     @Value ("${duplicate.receipt}")
@@ -397,7 +399,7 @@ public class ReceiptUpdateController {
         Assert.notNull(receiptDocumentForm, "ReceiptDocumentForm should not be null");
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        DocumentEntity document = documentUpdateService.loadActiveDocumentById(documentId);
+        DocumentEntity document = documentService.loadActiveDocumentById(documentId);
         if (null == document || document.isDeleted()) {
             if (request.isUserInRole("ROLE_ADMIN") ||
                     request.isUserInRole("ROLE_TECHNICIAN") ||
@@ -418,7 +420,7 @@ public class ReceiptUpdateController {
                 receiptDocumentForm.setReceiptDocument(document);
                 receiptDocumentForm.setProcessedBy(documentUpdateService.getProcessedByUserName(document.getProcessedBy()));
 
-                List<ItemEntityOCR> items = documentUpdateService.loadItemsOfReceipt(document);
+                List<ItemEntityOCR> items = documentService.loadItemsOfReceipt(document);
                 receiptDocumentForm.setItems(items);
             }
 

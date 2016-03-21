@@ -9,6 +9,7 @@ import com.receiptofi.domain.DocumentEntity;
 import com.receiptofi.domain.FileSystemEntity;
 import com.receiptofi.domain.site.ReceiptUser;
 import com.receiptofi.service.DocumentPendingService;
+import com.receiptofi.service.DocumentService;
 import com.receiptofi.service.DocumentUpdateService;
 import com.receiptofi.service.FileDBService;
 import com.receiptofi.utils.ScrubbedInput;
@@ -58,6 +59,7 @@ public class DocumentStatsController {
 
     @Autowired private DocumentPendingService documentPendingService;
     @Autowired private DocumentUpdateService documentUpdateService;
+    @Autowired private DocumentService documentService;
     @Autowired private FileDBService fileDBService;
 
     @RequestMapping (value = "/pending", method = RequestMethod.GET)
@@ -147,7 +149,7 @@ public class DocumentStatsController {
     ) {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        DocumentEntity documentEntity = documentUpdateService.findDocumentByRid(documentId.getText(), receiptUser.getRid());
+        DocumentEntity documentEntity = documentService.findDocumentByRid(documentId.getText(), receiptUser.getRid());
         receiptDocumentForm.setReceiptDocument(documentEntity);
 
         return new ModelAndView(showDocument);
