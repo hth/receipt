@@ -4,6 +4,7 @@ import com.receiptofi.domain.CronStatsEntity;
 import com.receiptofi.domain.DocumentEntity;
 import com.receiptofi.domain.MessageDocumentEntity;
 import com.receiptofi.service.CronStatsService;
+import com.receiptofi.service.DocumentService;
 import com.receiptofi.service.DocumentUpdateService;
 import com.receiptofi.service.MessageDocumentService;
 
@@ -38,7 +39,7 @@ public class MessageDocumentOrphanReport {
     private String messageDocumentOrphanReportSwitch;
     private int pendingSinceDays;
     private MessageDocumentService messageDocumentService;
-    private DocumentUpdateService documentUpdateService;
+    private DocumentService documentService;
     private CronStatsService cronStatsService;
 
     @Autowired
@@ -50,13 +51,13 @@ public class MessageDocumentOrphanReport {
             int pendingSinceDays,
 
             MessageDocumentService messageDocumentService,
-            DocumentUpdateService documentUpdateService,
+            DocumentService documentService,
             CronStatsService cronStatsService
     ) {
         this.messageDocumentOrphanReportSwitch = messageDocumentOrphanReportSwitch;
         this.pendingSinceDays = pendingSinceDays;
         this.messageDocumentService = messageDocumentService;
-        this.documentUpdateService = documentUpdateService;
+        this.documentService = documentService;
         this.cronStatsService = cronStatsService;
     }
 
@@ -75,7 +76,7 @@ public class MessageDocumentOrphanReport {
             int count = pendingDocuments.size(), success = 0, failure = 0, skipped = 0;
             try {
                 for (MessageDocumentEntity messageDocument : pendingDocuments) {
-                    DocumentEntity document = documentUpdateService.loadActiveDocumentById(messageDocument.getDocumentId());
+                    DocumentEntity document = documentService.loadActiveDocumentById(messageDocument.getDocumentId());
                     if (null == document) {
                         LOG.warn("Orphan Message DocumentId={} messageDocumentId={}",
                                 messageDocument.getDocumentId(), messageDocument.getId());

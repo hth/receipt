@@ -268,8 +268,8 @@ public class ReceiptEntity extends BaseEntity {
         return receiptUserId;
     }
 
-    public void setReceiptUserId(String userProfileId) {
-        this.receiptUserId = userProfileId;
+    public void setReceiptUserId(String receiptUserId) {
+        this.receiptUserId = receiptUserId;
     }
 
     public BizNameEntity getBizName() {

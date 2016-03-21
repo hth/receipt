@@ -26,6 +26,7 @@ import com.receiptofi.domain.FileSystemEntity;
 import com.receiptofi.loader.service.AffineTransformService;
 import com.receiptofi.loader.service.AmazonS3Service;
 import com.receiptofi.service.CronStatsService;
+import com.receiptofi.service.DocumentService;
 import com.receiptofi.service.DocumentUpdateService;
 import com.receiptofi.service.FileDBService;
 import com.receiptofi.service.FileSystemService;
@@ -75,7 +76,7 @@ public class FilesUploadToS3Test {
     private static final Logger LOG = LoggerFactory.getLogger(FilesUploadToS3Test.class);
 
     @Mock private AmazonS3 s3Client;
-    @Mock private DocumentUpdateService documentUpdateService;
+    @Mock private DocumentService documentService;
     @Mock private FileDBService fileDBService;
     @Mock private ImageSplitService imageSplitService;
     @Mock private FileSystemEntity fileSystemEntity1;
@@ -115,7 +116,7 @@ public class FilesUploadToS3Test {
                 prop.getProperty("aws.s3.bucketName"),
                 prop.getProperty("aws.s3.bucketName"),
                 prop.getProperty("filesUploadToS3"),
-                documentUpdateService,
+                documentService,
                 fileDBService,
                 imageSplitService,
                 amazonS3Service,
@@ -144,80 +145,80 @@ public class FilesUploadToS3Test {
 
     @Test
     public void testEmptyDocumentList() {
-        when(documentUpdateService.getAllProcessedDocuments()).thenReturn(new ArrayList<>());
+        when(documentService.getAllProcessedDocuments()).thenReturn(new ArrayList<>());
         filesUploadToS3.upload();
-        assertEquals(0, documentUpdateService.getAllProcessedDocuments().size());
-        verify(documentUpdateService, never()).cloudUploadSuccessful(any(String.class));
+        assertEquals(0, documentService.getAllProcessedDocuments().size());
+        verify(documentService, never()).cloudUploadSuccessful(any(String.class));
     }
 
     @Test
     public void testAmazonServiceException() throws IOException {
-        when(documentUpdateService.getAllProcessedDocuments()).thenReturn(Arrays.asList(documentEntity));
+        when(documentService.getAllProcessedDocuments()).thenReturn(Arrays.asList(documentEntity));
         when(amazonS3Service.getS3client()).thenReturn(s3Client);
         when(imageSplitService.bufferedImage(any(File.class))).thenReturn(bufferedImage);
         doThrow(AmazonServiceException.class).when(amazonS3Service).getS3client();
 
-        doNothing().when(documentUpdateService).cloudUploadSuccessful(anyString());
+        doNothing().when(documentService).cloudUploadSuccessful(anyString());
         doNothing().when(fileDBService).deleteHard(anyCollectionOf(FileSystemEntity.class));
 
         filesUploadToS3.upload();
-        assertNotEquals(0, documentUpdateService.getAllProcessedDocuments().size());
+        assertNotEquals(0, documentService.getAllProcessedDocuments().size());
         verify(s3Client, never()).putObject(any(PutObjectRequest.class));
-        verify(documentUpdateService, never()).cloudUploadSuccessful(anyString());
+        verify(documentService, never()).cloudUploadSuccessful(anyString());
         verify(fileDBService, never()).deleteHard(anyCollectionOf(FileSystemEntity.class));
     }
 
     @Test
     public void testAmazonClientException() throws IOException {
-        when(documentUpdateService.getAllProcessedDocuments()).thenReturn(Arrays.asList(documentEntity));
+        when(documentService.getAllProcessedDocuments()).thenReturn(Arrays.asList(documentEntity));
         when(amazonS3Service.getS3client()).thenReturn(s3Client);
         when(imageSplitService.bufferedImage(any(File.class))).thenReturn(bufferedImage);
         doThrow(AmazonClientException.class).when(amazonS3Service).getS3client();
 
-        doNothing().when(documentUpdateService).cloudUploadSuccessful(anyString());
+        doNothing().when(documentService).cloudUploadSuccessful(anyString());
         doNothing().when(fileDBService).deleteHard(anyCollectionOf(FileSystemEntity.class));
 
         filesUploadToS3.upload();
-        assertNotEquals(0, documentUpdateService.getAllProcessedDocuments().size());
+        assertNotEquals(0, documentService.getAllProcessedDocuments().size());
         verify(s3Client, never()).putObject(any(PutObjectRequest.class));
-        verify(documentUpdateService, never()).cloudUploadSuccessful(anyString());
+        verify(documentService, never()).cloudUploadSuccessful(anyString());
         verify(fileDBService, never()).deleteHard(anyCollectionOf(FileSystemEntity.class));
     }
 
     @Test
     public void testException() throws IOException {
-        when(documentUpdateService.getAllProcessedDocuments()).thenReturn(Arrays.asList(documentEntity));
+        when(documentService.getAllProcessedDocuments()).thenReturn(Arrays.asList(documentEntity));
         when(amazonS3Service.getS3client()).thenReturn(s3Client);
         when(imageSplitService.bufferedImage(any(File.class))).thenReturn(bufferedImage);
 
-        doThrow(Exception.class).when(documentUpdateService).cloudUploadSuccessful(anyString());
+        doThrow(Exception.class).when(documentService).cloudUploadSuccessful(anyString());
 
         filesUploadToS3.upload();
-        assertNotEquals(0, documentUpdateService.getAllProcessedDocuments().size());
+        assertNotEquals(0, documentService.getAllProcessedDocuments().size());
         verify(s3Client, atMost(2)).putObject(any(PutObjectRequest.class));
-        verify(documentUpdateService, times(1)).cloudUploadSuccessful(anyString());
+        verify(documentService, times(1)).cloudUploadSuccessful(anyString());
         verify(fileDBService, never()).deleteHard(anyCollectionOf(FileSystemEntity.class));
     }
 
     @Test
     public void testUpload() throws IOException {
-        when(documentUpdateService.getAllProcessedDocuments()).thenReturn(Arrays.asList(documentEntity));
+        when(documentService.getAllProcessedDocuments()).thenReturn(Arrays.asList(documentEntity));
         when(amazonS3Service.getS3client()).thenReturn(s3Client);
         when(imageSplitService.bufferedImage(any(File.class))).thenReturn(bufferedImage);
 
-        doNothing().when(documentUpdateService).cloudUploadSuccessful(anyString());
+        doNothing().when(documentService).cloudUploadSuccessful(anyString());
         doNothing().when(fileDBService).deleteHard(anyCollectionOf(FileSystemEntity.class));
 
         filesUploadToS3.upload();
-        assertNotEquals(0, documentUpdateService.getAllProcessedDocuments().size());
+        assertNotEquals(0, documentService.getAllProcessedDocuments().size());
         verify(s3Client, times(2)).putObject(any(PutObjectRequest.class));
-        verify(documentUpdateService, times(1)).cloudUploadSuccessful(documentEntity.getId());
+        verify(documentService, times(1)).cloudUploadSuccessful(documentEntity.getId());
         verify(fileDBService, times(1)).deleteHard(documentEntity.getFileSystemEntities());
     }
 
     @Test
     public void testImageRotation() throws IOException {
-        when(documentUpdateService.getAllProcessedDocuments()).thenReturn(Arrays.asList(documentEntity));
+        when(documentService.getAllProcessedDocuments()).thenReturn(Arrays.asList(documentEntity));
         when(amazonS3Service.getS3client()).thenReturn(s3Client);
         when(imageSplitService.bufferedImage(any(File.class))).thenReturn(bufferedImage);
         when(bufferedImage.getWidth()).thenReturn(100);
@@ -231,13 +232,13 @@ public class FilesUploadToS3Test {
                 any(BufferedImage.class),
                 any(BufferedImage.class),
                 any(AffineTransform.class));
-        doNothing().when(documentUpdateService).cloudUploadSuccessful(anyString());
+        doNothing().when(documentService).cloudUploadSuccessful(anyString());
         doNothing().when(fileDBService).deleteHard(anyCollectionOf(FileSystemEntity.class));
 
         filesUploadToS3.upload();
-        assertNotEquals(0, documentUpdateService.getAllProcessedDocuments().size());
+        assertNotEquals(0, documentService.getAllProcessedDocuments().size());
         verify(s3Client, times(2)).putObject(any(PutObjectRequest.class));
-        verify(documentUpdateService, times(1)).cloudUploadSuccessful(documentEntity.getId());
+        verify(documentService, times(1)).cloudUploadSuccessful(documentEntity.getId());
         verify(fileDBService, times(1)).deleteHard(documentEntity.getFileSystemEntities());
     }
 }

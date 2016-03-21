@@ -8,6 +8,7 @@ import com.receiptofi.domain.FileSystemEntity;
 import com.receiptofi.loader.service.AffineTransformService;
 import com.receiptofi.loader.service.AmazonS3Service;
 import com.receiptofi.service.CronStatsService;
+import com.receiptofi.service.DocumentService;
 import com.receiptofi.service.DocumentUpdateService;
 import com.receiptofi.service.FileDBService;
 import com.receiptofi.service.FileSystemService;
@@ -57,7 +58,7 @@ public class FilesUploadToS3 {
     private final String folderName;
     private final String filesUploadSwitch;
 
-    private DocumentUpdateService documentUpdateService;
+    private DocumentService documentService;
     private FileDBService fileDBService;
     private ImageSplitService imageSplitService;
     private AmazonS3Service amazonS3Service;
@@ -76,7 +77,7 @@ public class FilesUploadToS3 {
             @Value ("${FilesUploadToS3.filesUploadSwitch}")
             String filesUploadSwitch,
 
-            DocumentUpdateService documentUpdateService,
+            DocumentService documentService,
             FileDBService fileDBService,
             ImageSplitService imageSplitService,
             AmazonS3Service amazonS3Service,
@@ -88,7 +89,7 @@ public class FilesUploadToS3 {
         this.folderName = folderName;
         this.filesUploadSwitch = filesUploadSwitch;
 
-        this.documentUpdateService = documentUpdateService;
+        this.documentService = documentService;
         this.fileDBService = fileDBService;
         this.imageSplitService = imageSplitService;
         this.amazonS3Service = amazonS3Service;
@@ -117,7 +118,7 @@ public class FilesUploadToS3 {
             return;
         }
 
-        List<DocumentEntity> documents = documentUpdateService.getAllProcessedDocuments();
+        List<DocumentEntity> documents = documentService.getAllProcessedDocuments();
         if (documents.isEmpty()) {
             /** No documents to upload. */
             return;
@@ -158,7 +159,7 @@ public class FilesUploadToS3 {
                                     fileSystem.getScaledFileLength());
                         }
                     }
-                    documentUpdateService.cloudUploadSuccessful(document.getId());
+                    documentService.cloudUploadSuccessful(document.getId());
                     fileDBService.deleteHard(document.getFileSystemEntities());
                 } catch (AmazonServiceException e) {
                     LOG.error("Amazon S3 rejected request with an error response for some reason " +
