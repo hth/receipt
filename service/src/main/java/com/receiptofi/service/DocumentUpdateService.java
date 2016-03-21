@@ -13,7 +13,6 @@ import com.receiptofi.domain.DocumentEntity;
 import com.receiptofi.domain.ExpenseTagEntity;
 import com.receiptofi.domain.FileSystemEntity;
 import com.receiptofi.domain.ItemEntity;
-import com.receiptofi.domain.ItemEntityOCR;
 import com.receiptofi.domain.MileageEntity;
 import com.receiptofi.domain.ReceiptEntity;
 import com.receiptofi.domain.UserProfileEntity;
@@ -22,7 +21,6 @@ import com.receiptofi.domain.types.DocumentRejectReasonEnum;
 import com.receiptofi.domain.types.DocumentStatusEnum;
 import com.receiptofi.domain.types.NotificationGroupEnum;
 import com.receiptofi.domain.types.NotificationTypeEnum;
-import com.receiptofi.repository.DocumentManager;
 import com.receiptofi.repository.ItemManager;
 import com.receiptofi.repository.ItemOCRManager;
 import com.receiptofi.repository.MessageDocumentManager;
@@ -59,7 +57,7 @@ import java.util.stream.Collectors;
 public class DocumentUpdateService {
     private static final Logger LOG = LoggerFactory.getLogger(DocumentUpdateService.class);
 
-    private DocumentManager documentManager;
+    private DocumentService documentService;
     private ItemOCRManager itemOCRManager;
     private ReceiptManager receiptManager;
     private ItemManager itemManager;
@@ -76,7 +74,7 @@ public class DocumentUpdateService {
 
     @Autowired
     public DocumentUpdateService(
-            DocumentManager documentManager,
+            DocumentService documentService,
             ItemOCRManager itemOCRManager,
             ReceiptManager receiptManager,
             ItemManager itemManager,
@@ -92,7 +90,7 @@ public class DocumentUpdateService {
             ExpensesService expensesService
     ) {
 
-        this.documentManager = documentManager;
+        this.documentService = documentService;
         this.itemOCRManager = itemOCRManager;
         this.receiptManager = receiptManager;
         this.itemManager = itemManager;
@@ -106,34 +104,6 @@ public class DocumentUpdateService {
         this.mileageService = mileageService;
         this.billingService = billingService;
         this.expensesService = expensesService;
-    }
-
-    public DocumentEntity loadActiveDocumentById(String documentId) {
-        return documentManager.findActiveOne(documentId);
-    }
-
-    public DocumentEntity loadRejectedDocumentById(String documentId) {
-        return documentManager.findRejectedOne(documentId);
-    }
-
-    public DocumentEntity findDocumentByRid(String documentId, String rid) {
-        return documentManager.findDocumentByRid(documentId, rid);
-    }
-
-    public List<ItemEntityOCR> loadItemsOfReceipt(DocumentEntity receipt) {
-        return itemOCRManager.getWhereReceipt(receipt);
-    }
-
-    public List<DocumentEntity> getAllProcessedDocuments() {
-        return documentManager.getAllProcessedDocuments();
-    }
-
-    public List<DocumentEntity> getDocumentsForNotification(int delay) {
-        return documentManager.getDocumentsForNotification(delay);
-    }
-
-    public void cloudUploadSuccessful(String documentId) {
-        documentManager.cloudUploadSuccessful(documentId);
     }
 
     /**
@@ -152,7 +122,7 @@ public class DocumentUpdateService {
     ) {
         try {
             Date transaction = new Date();
-            DocumentEntity documentEntity = loadActiveDocumentById(document.getId());
+            DocumentEntity documentEntity = documentService.loadActiveDocumentById(document.getId());
             updateFileSystemEntityWithVersion(receipt, document, documentEntity);
 
             bizService.saveNewBusinessAndOrStore(receipt);
@@ -169,7 +139,7 @@ public class DocumentUpdateService {
             document.setReferenceDocumentId(receipt.getId());
             document.inActive();
             document.addProcessedBy(transaction, technicianId);
-            documentManager.save(document);
+            documentService.save(document);
 
             updateMessageManager(document, PENDING, PROCESSED);
 
@@ -209,7 +179,7 @@ public class DocumentUpdateService {
 
                 document.setDocumentStatus(PENDING);
                 document.setNotifyUser(true);
-                documentManager.save(document);
+                documentService.save(document);
                 //LOG.error("Failed to rollback Document: " + documentForm.getId() + ", error message: " + e.getLocalizedMessage());
 
                 messageDocumentManager.undoUpdateObject(document.getId(), false, PROCESSED, PENDING);
@@ -238,7 +208,7 @@ public class DocumentUpdateService {
         ReceiptEntity fetchedReceipt = null;
         try {
             Date transaction = new Date();
-            DocumentEntity documentEntity = loadActiveDocumentById(document.getId());
+            DocumentEntity documentEntity = documentService.loadActiveDocumentById(document.getId());
             updateFileSystemEntityWithVersion(receipt, document, documentEntity);
 
             bizService.saveNewBusinessAndOrStore(receipt);
@@ -306,7 +276,7 @@ public class DocumentUpdateService {
 
             document.setProcessedBy(documentEntity.getProcessedBy());
             document.addProcessedBy(transaction, technicianId);
-            documentManager.save(document);
+            documentService.save(document);
 
             updateMessageManager(document, REPROCESS, PROCESSED);
 
@@ -346,7 +316,7 @@ public class DocumentUpdateService {
 
                 document.setDocumentStatus(PENDING);
                 document.setNotifyUser(true);
-                documentManager.save(document);
+                documentService.save(document);
                 //LOG.error("Failed to rollback Document: " + documentForm.getId() + ", error message: " + e.getLocalizedMessage());
 
                 messageDocumentManager.undoUpdateObject(document.getId(), false, PROCESSED, REPROCESS);
@@ -381,7 +351,7 @@ public class DocumentUpdateService {
             DocumentOfTypeEnum documentOfType,
             DocumentRejectReasonEnum documentRejectReason
     ) {
-        DocumentEntity document = loadActiveDocumentById(documentId);
+        DocumentEntity document = documentService.loadActiveDocumentById(documentId);
         if (null == document) {
             LOG.warn("Rejected inactive or not found document id={} technicianId={}", documentId, technicianId);
         } else {
@@ -395,7 +365,7 @@ public class DocumentUpdateService {
                 document.inActive();
                 document.addProcessedBy(new Date(), technicianId);
                 document.markAsDeleted();
-                documentManager.save(document);
+                documentService.save(document);
 
                 updateMessageWithDocumentChanges(document);
                 itemOCRManager.deleteWhereReceipt(document);
@@ -417,7 +387,7 @@ public class DocumentUpdateService {
                 document.setDocumentStatus(PENDING);
                 document.setNotifyUser(true);
                 document.active();
-                documentManager.save(document);
+                documentService.save(document);
                 //LOG.error("Failed to rollback Document: " + documentForm.getId() + ", error message: " + e.getLocalizedMessage());
 
                 messageDocumentManager.undoUpdateObject(document.getId(), false, REJECT, PENDING);
@@ -446,7 +416,7 @@ public class DocumentUpdateService {
      * @param document
      */
     public void deletePendingDocument(DocumentEntity document) {
-        DocumentEntity documentEntity = loadActiveDocumentById(document.getId());
+        DocumentEntity documentEntity = documentService.loadActiveDocumentById(document.getId());
         if (null == documentEntity || !StringUtils.isEmpty(documentEntity.getReferenceDocumentId())) {
             LOG.warn("User trying to delete processed Document={}, Receipt={}",
                     document.getId(), document.getReferenceDocumentId());
@@ -463,7 +433,7 @@ public class DocumentUpdateService {
      * @param document
      */
     public void deleteRejectedDocument(DocumentEntity document) {
-        DocumentEntity documentEntity = loadRejectedDocumentById(document.getId());
+        DocumentEntity documentEntity = documentService.loadRejectedDocumentById(document.getId());
         if (null == documentEntity || !StringUtils.isEmpty(documentEntity.getReferenceDocumentId())) {
             LOG.warn("User trying to delete processed Document={}, Receipt={}",
                     document.getId(), document.getReferenceDocumentId());
@@ -477,7 +447,7 @@ public class DocumentUpdateService {
                 .map(FileSystemEntity::getOriginalFilename)
                 .collect(Collectors.joining(", ")) + " deleted";
 
-        documentManager.deleteHard(document);
+        documentService.deleteHard(document);
         itemOCRManager.deleteWhereReceipt(document);
         messageDocumentManager.deleteAllForReceiptOCR(document.getId());
         storageManager.deleteHard(document.getFileSystemEntities());
@@ -550,7 +520,7 @@ public class DocumentUpdateService {
     public void processDocumentForMileage(String technicianId, MileageEntity mileage, DocumentEntity document) {
         try {
             Date transaction = new Date();
-            DocumentEntity documentEntity = loadActiveDocumentById(document.getId());
+            DocumentEntity documentEntity = documentService.loadActiveDocumentById(document.getId());
 
             mileage.setFileSystemEntities(documentEntity.getFileSystemEntities());
             mileage.setDocumentId(documentEntity.getId());
@@ -565,7 +535,7 @@ public class DocumentUpdateService {
             document.setReferenceDocumentId(mileage.getId());
             document.inActive();
             document.addProcessedBy(transaction, technicianId);
-            documentManager.save(document);
+            documentService.save(document);
 
             updateMessageManager(document, PENDING, PROCESSED);
 
@@ -617,10 +587,6 @@ public class DocumentUpdateService {
             processedByUser.put(date, userProfilePreferenceService.findByReceiptUserId(processedBy.get(date)));
         }
         return processedByUser;
-    }
-
-    public void markNotified(String documentId) {
-        documentManager.markNotified(documentId);
     }
 
     protected String getNotificationMessageForReceiptProcess(ReceiptEntity receipt, String action) {

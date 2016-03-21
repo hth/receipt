@@ -8,6 +8,7 @@ import com.receiptofi.loader.service.MobilePushNotificationService;
 import com.receiptofi.repository.NotificationManager;
 import com.receiptofi.service.AccountService;
 import com.receiptofi.service.CronStatsService;
+import com.receiptofi.service.DocumentService;
 import com.receiptofi.service.DocumentUpdateService;
 
 import org.slf4j.Logger;
@@ -36,7 +37,7 @@ public class MobilePushNotificationProcess {
 
     private String notifyUserSwitch;
     private MobilePushNotificationService mobilePushNotificationService;
-    private DocumentUpdateService documentUpdateService;
+    private DocumentService documentService;
     private AccountService accountService;
     private CronStatsService cronStatsService;
     private NotificationManager notificationManager;
@@ -47,7 +48,7 @@ public class MobilePushNotificationProcess {
             String notifyUserSwitch,
 
             MobilePushNotificationService mobilePushNotificationService,
-            DocumentUpdateService documentUpdateService,
+            DocumentService documentService,
             AccountService accountService,
             CronStatsService cronStatsService,
             NotificationManager notificationManager
@@ -55,7 +56,7 @@ public class MobilePushNotificationProcess {
     ) {
         this.notifyUserSwitch = notifyUserSwitch;
         this.mobilePushNotificationService = mobilePushNotificationService;
-        this.documentUpdateService = documentUpdateService;
+        this.documentService = documentService;
         this.accountService = accountService;
         this.cronStatsService = cronStatsService;
         this.notificationManager = notificationManager;
@@ -77,7 +78,7 @@ public class MobilePushNotificationProcess {
         }
 
         List<UserAccountEntity> userAccountEntities;
-        List<DocumentEntity> documents = documentUpdateService.getDocumentsForNotification(5);
+        List<DocumentEntity> documents = documentService.getDocumentsForNotification(5);
         if (!documents.isEmpty()) {
             userAccountEntities = accountService.findAllTechnician();
             LOG.info("Notification to be send, count={}", documents.size());
@@ -90,7 +91,7 @@ public class MobilePushNotificationProcess {
         try {
             for (DocumentEntity document : documents) {
                 try {
-                    documentUpdateService.markNotified(document.getId());
+                    documentService.markNotified(document.getId());
                     switch (document.getDocumentStatus()) {
                         case PENDING:
                             LOG.info("Notifying technicians on received documents={} documentId={} rid={}",

@@ -38,7 +38,7 @@ import java.util.ArrayList;
  * Date: 3/8/16 7:07 PM
  */
 public class DocumentUpdateServiceTest {
-    @Mock private DocumentManager documentManager;
+    @Mock private DocumentService documentService;
     @Mock private ItemOCRManager itemOCRManager;
     @Mock private ReceiptManager receiptManager;
     @Mock private ItemManager itemManager;
@@ -63,7 +63,7 @@ public class DocumentUpdateServiceTest {
     public void setup() {
         MockitoAnnotations.initMocks(this);
         documentUpdateService = new DocumentUpdateService(
-                documentManager,
+                documentService,
                 itemOCRManager,
                 receiptManager,
                 itemManager,
@@ -83,7 +83,7 @@ public class DocumentUpdateServiceTest {
 
     @Test
     public void testProcessDocumentForReceipt() throws Exception {
-        when(documentManager.findActiveOne(anyString())).thenReturn(document);
+        when(documentService.loadActiveDocumentById(anyString())).thenReturn(document);
         when(receipt.getBizName()).thenReturn(bizName);
         documentUpdateService.processDocumentForReceipt("technicianId", receipt, new ArrayList<>(), document);
         verify(notificationService, atLeastOnce()).addNotification(

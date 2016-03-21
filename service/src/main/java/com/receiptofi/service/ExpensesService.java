@@ -34,9 +34,19 @@ import java.util.List;
 public class ExpensesService {
     private static final Logger LOG = LoggerFactory.getLogger(ExpensesService.class);
 
-    @Autowired private ExpenseTagManager expenseTagManager;
-    @Autowired private ReceiptManager receiptManager;
-    @Autowired private ItemManager itemManager;
+    private ExpenseTagManager expenseTagManager;
+    private ReceiptManager receiptManager;
+    private ItemManager itemManager;
+
+    @Autowired
+    public ExpensesService(
+            ExpenseTagManager expenseTagManager,
+            ReceiptManager receiptManager,
+            ItemManager itemManager) {
+        this.expenseTagManager = expenseTagManager;
+        this.receiptManager = receiptManager;
+        this.itemManager = itemManager;
+    }
 
     /**
      * Lists all the active expense types.
