@@ -58,8 +58,6 @@ public class ReceiptService {
     private static final Logger LOG = LoggerFactory.getLogger(ReceiptService.class);
 
     private ReceiptManager receiptManager;
-    private DocumentManager documentManager;
-    private DocumentUpdateService documentUpdateService;
     private ItemService itemService;
     private ItemOCRManager itemOCRManager;
     private AccountService accountService;
@@ -76,8 +74,7 @@ public class ReceiptService {
     @Autowired
     public ReceiptService(
             ReceiptManager receiptManager,
-            DocumentManager documentManager,
-            DocumentUpdateService documentUpdateService,
+            DocumentService documentService,
             ItemService itemService,
             ItemOCRManager itemOCRManager,
             AccountService accountService,
@@ -88,11 +85,9 @@ public class ReceiptService {
             ExpensesService expensesService,
             NotificationService notificationService,
             FriendService friendService,
-            SplitExpensesService splitExpensesService,
-            DocumentService documentService) {
+            SplitExpensesService splitExpensesService) {
         this.receiptManager = receiptManager;
-        this.documentManager = documentManager;
-        this.documentUpdateService = documentUpdateService;
+        this.documentService = documentService;
         this.itemService = itemService;
         this.itemOCRManager = itemOCRManager;
         this.accountService = accountService;
@@ -104,7 +99,6 @@ public class ReceiptService {
         this.notificationService = notificationService;
         this.friendService = friendService;
         this.splitExpensesService = splitExpensesService;
-        this.documentService = documentService;
     }
 
     /**
@@ -175,8 +169,9 @@ public class ReceiptService {
                 return false;
             }
 
+
             /** Notification message when receipt is deleted. */
-            String md = documentUpdateService.getNotificationMessageForReceiptProcess(receipt, "deleted");
+            String md = notificationService.getNotificationMessageForReceiptProcess(receipt, "deleted");
 
             itemService.deleteSoft(receipt);
             fileSystemService.deleteSoft(receipt.getFileSystemEntities());
@@ -189,10 +184,10 @@ public class ReceiptService {
             }
 
             if (!StringUtils.isEmpty(receipt.getDocumentId())) {
-                DocumentEntity document = documentManager.findDocumentByRid(receipt.getDocumentId(), rid);
+                DocumentEntity document = documentService.findDocumentByRid(receipt.getDocumentId(), rid);
                 if (null != document) {
                     itemOCRManager.deleteWhereReceipt(document);
-                    documentManager.deleteHard(document);
+                    documentService.deleteHard(document);
                     receipt.setDocumentId(null);
                 }
             }
@@ -255,7 +250,7 @@ public class ReceiptService {
                     receipt.inActive();
                     List<ItemEntity> items = itemService.getAllItemsOfReceipt(receipt.getId());
 
-                    DocumentEntity receiptOCR = documentManager.findDocumentByRid(receipt.getDocumentId(), rid);
+                    DocumentEntity receiptOCR = documentService.findDocumentByRid(receipt.getDocumentId(), rid);
                     receiptOCR.active();
                     receiptOCR.setDocumentStatus(DocumentStatusEnum.REPROCESS);
                     receiptOCR.setNotifyUser(false);
@@ -266,7 +261,7 @@ public class ReceiptService {
                     /** All activity at the end is better because you never know what could go wrong during populating other data */
                     receipt.setReceiptStatus(DocumentStatusEnum.REPROCESS);
                     receiptManager.save(receipt);
-                    documentManager.save(receiptOCR);
+                    documentService.save(receiptOCR);
                     itemOCRManager.deleteWhereReceipt(receiptOCR);
 
                     List<ItemEntityOCR> ocrItems = getItemEntityFromItemEntityOCR(items, receiptOCR);
@@ -414,7 +409,7 @@ public class ReceiptService {
             commentService.save(commentEntity);
             if (commentEntityBoolean) {
                 documentEntity.setRecheckComment(commentEntity);
-                documentManager.save(documentEntity);
+                documentService.save(documentEntity);
             }
             return true;
         } catch (Exception exce) {

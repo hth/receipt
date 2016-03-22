@@ -236,4 +236,12 @@ public class NotificationService {
     public int setNotificationInactive(Date sinceDate) {
         return notificationManager.setNotificationInactive(sinceDate);
     }
+
+    protected String getNotificationMessageForReceiptProcess(ReceiptEntity receipt, String action) {
+        return receipt.getTotalString() +
+                " '" +
+                receipt.getBizName().getBusinessName() +
+                "' receipt " +
+                action;
+    }
 }
