@@ -1,7 +1,5 @@
 package com.receiptofi.service;
 
-import static junit.framework.Assert.*;
-
 import com.receiptofi.IntegrationTests;
 import com.receiptofi.LoadProperties;
 import com.receiptofi.RealMongoForTests;
@@ -13,8 +11,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.jms.core.JmsTemplate;
+import org.springframework.test.context.ActiveProfiles;
 
-import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -33,6 +31,7 @@ import java.util.Properties;
         "PMD.LongVariable"
 })
 @Category (IntegrationTests.class)
+@ActiveProfiles ({"dev", "test", "prod"})
 public class DocumentUpdateServiceITest extends RealMongoForTests {
     private static final Logger LOG = LoggerFactory.getLogger(DocumentUpdateServiceITest.class);
 
@@ -105,7 +104,6 @@ public class DocumentUpdateServiceITest extends RealMongoForTests {
         storageManager = new StorageManagerImpl(getDB());
         fileSystemManager = new FileSystemManagerImpl(getMongoTemplate());
         fileSystemService = new FileSystemService(fileSystemManager);
-        commentManager = new CommentManagerImpl(getMongoTemplate());
         cloudFileManager = new CloudFileManagerImpl(getMongoTemplate());
         cloudFileService = new CloudFileService(cloudFileManager);
         expenseTagManager = new ExpenseTagManagerImpl(getMongoTemplate());
@@ -117,6 +115,7 @@ public class DocumentUpdateServiceITest extends RealMongoForTests {
         emailValidateManager = new EmailValidateManagerImpl(getMongoTemplate());
         emailValidateService = new EmailValidateService(emailValidateManager);
         friendManager = new FriendManagerImpl(getMongoTemplate());
+        userProfilePreferenceService = new UserProfilePreferenceService(userProfileManager, userPreferenceManager);
         friendService = new FriendService(10, 0, friendManager, userProfilePreferenceService);
         splitExpenseManager = new SplitExpensesManagerImpl(getMongoTemplate());
         splitExpensesService = new SplitExpensesService(splitExpenseManager, userProfilePreferenceService);
@@ -165,10 +164,10 @@ public class DocumentUpdateServiceITest extends RealMongoForTests {
         bizService = new BizService(bizNameManager, bizStoreManager, externalService);
         jmsTemplate = new JmsTemplate();
         senderJMS = new FileUploadDocumentSenderJMS("", jmsTemplate);
+        commentService = new CommentService(commentManager);
         receiptService = new ReceiptService(
                 receiptManager,
-                documentManager,
-                documentUpdateService,
+                documentService,
                 itemService,
                 itemOCRManager,
                 accountService,
@@ -179,12 +178,8 @@ public class DocumentUpdateServiceITest extends RealMongoForTests {
                 expensesService,
                 notificationService,
                 friendService,
-                splitExpensesService,
-                documentService);
-        userProfilePreferenceService = new UserProfilePreferenceService(userProfileManager, userPreferenceManager);
-        commentService = new CommentService(commentManager);
+                splitExpensesService);
         mileageManager = new MileageManagerImpl(getMongoTemplate());
-        commentService = new CommentService(commentManager);
         mileageService = new MileageService(mileageManager, commentService, documentManager, fileSystemService, cloudFileService);
 
         documentUpdateService = new DocumentUpdateService(
@@ -210,9 +205,8 @@ public class DocumentUpdateServiceITest extends RealMongoForTests {
     }
 
     @Test
-    public void processDocumentForReceiptTest() {
+    public void testProcessDocumentForReceipt() {
     }
-
 
 
     private ReceiptEntity populateReceipt() {

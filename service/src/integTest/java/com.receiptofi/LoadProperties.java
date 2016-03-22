@@ -2,9 +2,8 @@ package com.receiptofi;
 
 import static org.junit.Assert.assertTrue;
 
-import net.logstash.logback.encoder.org.apache.commons.lang.ArrayUtils;
-
 import org.apache.commons.io.filefilter.WildcardFileFilter;
+import org.apache.commons.lang3.ArrayUtils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
