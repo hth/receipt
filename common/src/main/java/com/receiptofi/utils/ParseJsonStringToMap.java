@@ -20,11 +20,13 @@ import java.util.Map;
 })
 public final class ParseJsonStringToMap {
 
+    private static final ObjectMapper objectMapper = new ObjectMapper();
+
     private ParseJsonStringToMap() {
     }
 
     public static Map<String, ScrubbedInput> jsonStringToMap(String ids) throws IOException {
-        return new ObjectMapper().readValue(ids, new TypeReference<HashMap<String, ScrubbedInput>>() {
+        return objectMapper.readValue(ids, new TypeReference<HashMap<String, ScrubbedInput>>() {
             //Blank
         });
     }
