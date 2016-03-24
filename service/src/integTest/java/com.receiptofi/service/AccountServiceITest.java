@@ -8,7 +8,6 @@ import static org.junit.Assert.assertThat;
 
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
-import com.mongodb.client.MongoCollection;
 import com.mongodb.util.JSON;
 
 import com.receiptofi.IntegrationTests;

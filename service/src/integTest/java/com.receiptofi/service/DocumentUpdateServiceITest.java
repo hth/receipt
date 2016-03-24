@@ -31,7 +31,6 @@ import java.util.Properties;
         "PMD.LongVariable"
 })
 @Category (IntegrationTests.class)
-@ActiveProfiles ({"dev", "test", "prod"})
 public class DocumentUpdateServiceITest extends RealMongoForTests {
     private static final Logger LOG = LoggerFactory.getLogger(DocumentUpdateServiceITest.class);
 
