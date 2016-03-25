@@ -1,5 +1,7 @@
 package com.receiptofi.service;
 
+import static org.junit.Assert.assertEquals;
+
 import com.receiptofi.IntegrationTests;
 import com.receiptofi.LoadProperties;
 import com.receiptofi.RealMongoForTests;
@@ -11,12 +13,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.jms.core.JmsTemplate;
-import org.springframework.test.context.ActiveProfiles;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.Properties;
 
@@ -83,18 +85,18 @@ public class DocumentUpdateServiceITest extends RealMongoForTests {
     private DocumentService documentService;
 
     private DocumentUpdateService documentUpdateService;
-    private Properties properties;
+    private Properties properties = new Properties();
 
     @Before
-    public void setup() {
-        LoadProperties loadProperties = new LoadProperties();
+    public void setup() throws IOException {
+        LoadProperties.loadProperties(properties);
 
         bizNameManager = new BizNameManagerImpl(getMongoTemplate());
         itemManager = new ItemManagerImpl(bizNameManager, getMongoTemplate());
         fileSystemManager = new FileSystemManagerImpl(getMongoTemplate());
         storageManager = new StorageManagerImpl(getDB());
         bizStoreManager = new BizStoreManagerImpl(getMongoTemplate());
-        externalService = new ExternalService(loadProperties.getProp().getProperty("google-server-api-key"));
+        externalService = new ExternalService(properties.getProperty("google-server-api-key"));
         userProfileManager = new UserProfileManagerImpl(getMongoTemplate());
         userPreferenceManager = new UserPreferenceManagerImpl(getMongoTemplate());
         commentManager = new CommentManagerImpl(getMongoTemplate());
@@ -122,17 +124,17 @@ public class DocumentUpdateServiceITest extends RealMongoForTests {
         documentService = new DocumentService(documentManager, itemOCRManager);
 
         registrationService = new RegistrationService(
-                Boolean.getBoolean(loadProperties.getProp().getProperty("registration.turned.on")),
+                Boolean.getBoolean(properties.getProperty("registration.turned.on")),
                 "/open/login.htm"
         );
         billingAccountManager = new BillingAccountManagerImpl(getMongoTemplate());
         billingHistoryManager = new BillingHistoryManagerImpl(getMongoTemplate());
 
         paymentGatewayService = new PaymentGatewayService(
-                loadProperties.getProp().getProperty("braintree.environment"),
-                loadProperties.getProp().getProperty("braintree.merchant_id"),
-                loadProperties.getProp().getProperty("braintree.public_key"),
-                loadProperties.getProp().getProperty("braintree.private_key")
+                properties.getProperty("braintree.environment"),
+                properties.getProperty("braintree.merchant_id"),
+                properties.getProperty("braintree.public_key"),
+                properties.getProperty("braintree.private_key")
         );
 
         billingService = new BillingService(
@@ -205,6 +207,7 @@ public class DocumentUpdateServiceITest extends RealMongoForTests {
 
     @Test
     public void testProcessDocumentForReceipt() {
+        assertEquals(true, true);
     }
 
 

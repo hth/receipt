@@ -533,6 +533,7 @@
             <element id="library" level="project" name="Gradle: org.hamcrest:hamcrest-core:1.3" />
             <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-redis:1.5.2.RELEASE" />
             <element id="library" level="project" name="Gradle: redis.clients:jedis:2.7.2" />
+            <element id="library" level="project" name="Gradle: org.apache.activemq:activemq-client:5.13.2" />
             <element id="archive" name="com.receiptofi-common-0.9.0.jar">
               <element id="module-output" name="common" />
               <element id="dir-copy" path="$PROJECT_DIR$/common/build/resources/main" />
@@ -546,7 +547,6 @@
               <element id="dir-copy" path="$PROJECT_DIR$/service/build/resources/main" />
             </element>
             <element id="file-copy" path="$PROJECT_DIR$/lib/user-agent-detector.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.activemq/activemq-client/5.13.2/bc66297bbb254df63a197ffe978765eca5947863/activemq-client-5.13.2.jar" />
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.social/spring-social-core/1.1.4.RELEASE/cb43c308fa99cbe16f476fabfd6ded2c6b8bb8ed/spring-social-core-1.1.4.RELEASE.jar" />
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.social/spring-social-google/1.0.0.RELEASE/a59c5c0358b465722f6359e6f5788acaca31cf42/spring-social-google-1.0.0.RELEASE.jar" />
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.social/spring-social-web/1.1.4.RELEASE/5e4686cfa221a5025a692b8759444e3cc443068f/spring-social-web-1.1.4.RELEASE.jar" />
@@ -614,6 +614,7 @@
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/javax.validation/validation-api/1.1.0.Final/8613ae82954779d518631e05daa73a6a954817d5/validation-api-1.1.0.Final.jar" />
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/commons-fileupload/commons-fileupload/1.3.1/c621b54583719ac0310404463d6d99db27e1052c/commons-fileupload-1.3.1.jar" />
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/javax.inject/javax.inject/1/6975da39a7040257bd51d21a231b76c915872d38/javax.inject-1.jar" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.activemq/activemq-client/5.13.2/bc66297bbb254df63a197ffe978765eca5947863/activemq-client-5.13.2.jar" />
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.tika/tika-parsers/1.11/355dc05d842ed223fc682da472229473ba706d68/tika-parsers-1.11.jar" />
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.tika/tika-core/1.11/d37a6b9080c8361e47b2050f69833fd61501ede9/tika-core-1.11.jar" />
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.httpcomponents/httpclient/4.5.2/733db77aa8d9b2d68015189df76ab06304406e50/httpclient-4.5.2.jar" />
@@ -919,6 +920,7 @@
             <element id="library" level="project" name="Gradle: org.hamcrest:hamcrest-core:1.3" />
             <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-redis:1.5.2.RELEASE" />
             <element id="library" level="project" name="Gradle: redis.clients:jedis:2.7.2" />
+            <element id="library" level="project" name="Gradle: org.apache.activemq:activemq-client:5.13.2" />
             <element id="archive" name="com.receiptofi-common-0.9.0.jar">
               <element id="module-output" name="common" />
               <element id="dir-copy" path="$PROJECT_DIR$/common/build/resources/main" />
@@ -944,7 +946,6 @@
               <element id="dir-copy" path="$PROJECT_DIR$/loader/build/resources/main" />
             </element>
             <element id="file-copy" path="$PROJECT_DIR$/lib/user-agent-detector.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.activemq/activemq-client/5.13.2/bc66297bbb254df63a197ffe978765eca5947863/activemq-client-5.13.2.jar" />
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.social/spring-social-core/1.1.4.RELEASE/cb43c308fa99cbe16f476fabfd6ded2c6b8bb8ed/spring-social-core-1.1.4.RELEASE.jar" />
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.social/spring-social-google/1.0.0.RELEASE/a59c5c0358b465722f6359e6f5788acaca31cf42/spring-social-google-1.0.0.RELEASE.jar" />
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.social/spring-social-web/1.1.4.RELEASE/5e4686cfa221a5025a692b8759444e3cc443068f/spring-social-web-1.1.4.RELEASE.jar" />
@@ -1012,6 +1013,7 @@
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/javax.validation/validation-api/1.1.0.Final/8613ae82954779d518631e05daa73a6a954817d5/validation-api-1.1.0.Final.jar" />
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/commons-fileupload/commons-fileupload/1.3.1/c621b54583719ac0310404463d6d99db27e1052c/commons-fileupload-1.3.1.jar" />
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/javax.inject/javax.inject/1/6975da39a7040257bd51d21a231b76c915872d38/javax.inject-1.jar" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.activemq/activemq-client/5.13.2/bc66297bbb254df63a197ffe978765eca5947863/activemq-client-5.13.2.jar" />
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.tika/tika-parsers/1.11/355dc05d842ed223fc682da472229473ba706d68/tika-parsers-1.11.jar" />
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.tika/tika-core/1.11/d37a6b9080c8361e47b2050f69833fd61501ede9/tika-core-1.11.jar" />
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.httpcomponents/httpclient/4.5.2/733db77aa8d9b2d68015189df76ab06304406e50/httpclient-4.5.2.jar" />
@@ -1317,6 +1319,7 @@
             <element id="library" level="project" name="Gradle: org.hamcrest:hamcrest-core:1.3" />
             <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-redis:1.5.2.RELEASE" />
             <element id="library" level="project" name="Gradle: redis.clients:jedis:2.7.2" />
+            <element id="library" level="project" name="Gradle: org.apache.activemq:activemq-client:5.13.2" />
             <element id="archive" name="com.receiptofi-common-0.9.0.jar">
               <element id="module-output" name="common" />
               <element id="dir-copy" path="$PROJECT_DIR$/common/build/resources/main" />
@@ -1326,7 +1329,6 @@
               <element id="dir-copy" path="$PROJECT_DIR$/domain/build/resources/main" />
             </element>
             <element id="file-copy" path="$PROJECT_DIR$/lib/user-agent-detector.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.activemq/activemq-client/5.13.2/bc66297bbb254df63a197ffe978765eca5947863/activemq-client-5.13.2.jar" />
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.social/spring-social-core/1.1.4.RELEASE/cb43c308fa99cbe16f476fabfd6ded2c6b8bb8ed/spring-social-core-1.1.4.RELEASE.jar" />
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.social/spring-social-google/1.0.0.RELEASE/a59c5c0358b465722f6359e6f5788acaca31cf42/spring-social-google-1.0.0.RELEASE.jar" />
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.social/spring-social-web/1.1.4.RELEASE/5e4686cfa221a5025a692b8759444e3cc443068f/spring-social-web-1.1.4.RELEASE.jar" />
@@ -1394,6 +1396,7 @@
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/javax.validation/validation-api/1.1.0.Final/8613ae82954779d518631e05daa73a6a954817d5/validation-api-1.1.0.Final.jar" />
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/commons-fileupload/commons-fileupload/1.3.1/c621b54583719ac0310404463d6d99db27e1052c/commons-fileupload-1.3.1.jar" />
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/javax.inject/javax.inject/1/6975da39a7040257bd51d21a231b76c915872d38/javax.inject-1.jar" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.activemq/activemq-client/5.13.2/bc66297bbb254df63a197ffe978765eca5947863/activemq-client-5.13.2.jar" />
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.tika/tika-parsers/1.11/355dc05d842ed223fc682da472229473ba706d68/tika-parsers-1.11.jar" />
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.tika/tika-core/1.11/d37a6b9080c8361e47b2050f69833fd61501ede9/tika-core-1.11.jar" />
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.httpcomponents/httpclient/4.5.2/733db77aa8d9b2d68015189df76ab06304406e50/httpclient-4.5.2.jar" />
@@ -1699,6 +1702,7 @@
             <element id="library" level="project" name="Gradle: org.hamcrest:hamcrest-core:1.3" />
             <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-redis:1.5.2.RELEASE" />
             <element id="library" level="project" name="Gradle: redis.clients:jedis:2.7.2" />
+            <element id="library" level="project" name="Gradle: org.apache.activemq:activemq-client:5.13.2" />
             <element id="archive" name="com.receiptofi-common-0.9.0.jar">
               <element id="module-output" name="common" />
               <element id="dir-copy" path="$PROJECT_DIR$/common/build/resources/main" />
@@ -1708,7 +1712,6 @@
               <element id="dir-copy" path="$PROJECT_DIR$/domain/build/resources/main" />
             </element>
             <element id="file-copy" path="$PROJECT_DIR$/lib/user-agent-detector.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.activemq/activemq-client/5.13.2/bc66297bbb254df63a197ffe978765eca5947863/activemq-client-5.13.2.jar" />
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.social/spring-social-core/1.1.4.RELEASE/cb43c308fa99cbe16f476fabfd6ded2c6b8bb8ed/spring-social-core-1.1.4.RELEASE.jar" />
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.social/spring-social-google/1.0.0.RELEASE/a59c5c0358b465722f6359e6f5788acaca31cf42/spring-social-google-1.0.0.RELEASE.jar" />
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.social/spring-social-web/1.1.4.RELEASE/5e4686cfa221a5025a692b8759444e3cc443068f/spring-social-web-1.1.4.RELEASE.jar" />
@@ -1776,6 +1779,7 @@
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/javax.validation/validation-api/1.1.0.Final/8613ae82954779d518631e05daa73a6a954817d5/validation-api-1.1.0.Final.jar" />
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/commons-fileupload/commons-fileupload/1.3.1/c621b54583719ac0310404463d6d99db27e1052c/commons-fileupload-1.3.1.jar" />
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/javax.inject/javax.inject/1/6975da39a7040257bd51d21a231b76c915872d38/javax.inject-1.jar" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.activemq/activemq-client/5.13.2/bc66297bbb254df63a197ffe978765eca5947863/activemq-client-5.13.2.jar" />
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.tika/tika-parsers/1.11/355dc05d842ed223fc682da472229473ba706d68/tika-parsers-1.11.jar" />
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.tika/tika-core/1.11/d37a6b9080c8361e47b2050f69833fd61501ede9/tika-core-1.11.jar" />
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.httpcomponents/httpclient/4.5.2/733db77aa8d9b2d68015189df76ab06304406e50/httpclient-4.5.2.jar" />
@@ -2081,6 +2085,7 @@
             <element id="library" level="project" name="Gradle: org.hamcrest:hamcrest-core:1.3" />
             <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-redis:1.5.2.RELEASE" />
             <element id="library" level="project" name="Gradle: redis.clients:jedis:2.7.2" />
+            <element id="library" level="project" name="Gradle: org.apache.activemq:activemq-client:5.13.2" />
             <element id="archive" name="com.receiptofi-common-0.9.0.jar">
               <element id="module-output" name="common" />
               <element id="dir-copy" path="$PROJECT_DIR$/common/build/resources/main" />
@@ -2094,7 +2099,6 @@
               <element id="dir-copy" path="$PROJECT_DIR$/service/build/resources/main" />
             </element>
             <element id="file-copy" path="$PROJECT_DIR$/lib/user-agent-detector.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.activemq/activemq-client/5.13.2/bc66297bbb254df63a197ffe978765eca5947863/activemq-client-5.13.2.jar" />
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.social/spring-social-core/1.1.4.RELEASE/cb43c308fa99cbe16f476fabfd6ded2c6b8bb8ed/spring-social-core-1.1.4.RELEASE.jar" />
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.social/spring-social-google/1.0.0.RELEASE/a59c5c0358b465722f6359e6f5788acaca31cf42/spring-social-google-1.0.0.RELEASE.jar" />
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.social/spring-social-web/1.1.4.RELEASE/5e4686cfa221a5025a692b8759444e3cc443068f/spring-social-web-1.1.4.RELEASE.jar" />
@@ -2162,6 +2166,7 @@
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/javax.validation/validation-api/1.1.0.Final/8613ae82954779d518631e05daa73a6a954817d5/validation-api-1.1.0.Final.jar" />
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/commons-fileupload/commons-fileupload/1.3.1/c621b54583719ac0310404463d6d99db27e1052c/commons-fileupload-1.3.1.jar" />
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/javax.inject/javax.inject/1/6975da39a7040257bd51d21a231b76c915872d38/javax.inject-1.jar" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.activemq/activemq-client/5.13.2/bc66297bbb254df63a197ffe978765eca5947863/activemq-client-5.13.2.jar" />
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.tika/tika-parsers/1.11/355dc05d842ed223fc682da472229473ba706d68/tika-parsers-1.11.jar" />
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.tika/tika-core/1.11/d37a6b9080c8361e47b2050f69833fd61501ede9/tika-core-1.11.jar" />
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.httpcomponents/httpclient/4.5.2/733db77aa8d9b2d68015189df76ab06304406e50/httpclient-4.5.2.jar" />
@@ -2467,6 +2472,7 @@
             <element id="library" level="project" name="Gradle: org.hamcrest:hamcrest-core:1.3" />
             <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-redis:1.5.2.RELEASE" />
             <element id="library" level="project" name="Gradle: redis.clients:jedis:2.7.2" />
+            <element id="library" level="project" name="Gradle: org.apache.activemq:activemq-client:5.13.2" />
             <element id="archive" name="com.receiptofi-common-0.9.0.jar">
               <element id="module-output" name="common" />
               <element id="dir-copy" path="$PROJECT_DIR$/common/build/resources/main" />
@@ -2492,7 +2498,6 @@
               <element id="dir-copy" path="$PROJECT_DIR$/loader/build/resources/main" />
             </element>
             <element id="file-copy" path="$PROJECT_DIR$/lib/user-agent-detector.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.activemq/activemq-client/5.13.2/bc66297bbb254df63a197ffe978765eca5947863/activemq-client-5.13.2.jar" />
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.social/spring-social-core/1.1.4.RELEASE/cb43c308fa99cbe16f476fabfd6ded2c6b8bb8ed/spring-social-core-1.1.4.RELEASE.jar" />
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.social/spring-social-google/1.0.0.RELEASE/a59c5c0358b465722f6359e6f5788acaca31cf42/spring-social-google-1.0.0.RELEASE.jar" />
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.social/spring-social-web/1.1.4.RELEASE/5e4686cfa221a5025a692b8759444e3cc443068f/spring-social-web-1.1.4.RELEASE.jar" />
@@ -2560,6 +2565,7 @@
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/javax.validation/validation-api/1.1.0.Final/8613ae82954779d518631e05daa73a6a954817d5/validation-api-1.1.0.Final.jar" />
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/commons-fileupload/commons-fileupload/1.3.1/c621b54583719ac0310404463d6d99db27e1052c/commons-fileupload-1.3.1.jar" />
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/javax.inject/javax.inject/1/6975da39a7040257bd51d21a231b76c915872d38/javax.inject-1.jar" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.activemq/activemq-client/5.13.2/bc66297bbb254df63a197ffe978765eca5947863/activemq-client-5.13.2.jar" />
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.tika/tika-parsers/1.11/355dc05d842ed223fc682da472229473ba706d68/tika-parsers-1.11.jar" />
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.tika/tika-core/1.11/d37a6b9080c8361e47b2050f69833fd61501ede9/tika-core-1.11.jar" />
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.httpcomponents/httpclient/4.5.2/733db77aa8d9b2d68015189df76ab06304406e50/httpclient-4.5.2.jar" />
@@ -2864,6 +2870,7 @@
             <element id="library" level="project" name="Gradle: org.hamcrest:hamcrest-core:1.3" />
             <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-redis:1.5.2.RELEASE" />
             <element id="library" level="project" name="Gradle: redis.clients:jedis:2.7.2" />
+            <element id="library" level="project" name="Gradle: org.apache.activemq:activemq-client:5.13.2" />
             <element id="archive" name="com.receiptofi-common-0.9.0.jar">
               <element id="module-output" name="common" />
               <element id="dir-copy" path="$PROJECT_DIR$/common/build/resources/main" />
@@ -2877,7 +2884,6 @@
               <element id="dir-copy" path="$PROJECT_DIR$/domain/build/resources/main" />
             </element>
             <element id="file-copy" path="$PROJECT_DIR$/lib/user-agent-detector.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.activemq/activemq-client/5.13.2/bc66297bbb254df63a197ffe978765eca5947863/activemq-client-5.13.2.jar" />
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.social/spring-social-core/1.1.4.RELEASE/cb43c308fa99cbe16f476fabfd6ded2c6b8bb8ed/spring-social-core-1.1.4.RELEASE.jar" />
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.social/spring-social-google/1.0.0.RELEASE/a59c5c0358b465722f6359e6f5788acaca31cf42/spring-social-google-1.0.0.RELEASE.jar" />
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.social/spring-social-web/1.1.4.RELEASE/5e4686cfa221a5025a692b8759444e3cc443068f/spring-social-web-1.1.4.RELEASE.jar" />
@@ -2945,6 +2951,7 @@
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/javax.validation/validation-api/1.1.0.Final/8613ae82954779d518631e05daa73a6a954817d5/validation-api-1.1.0.Final.jar" />
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/commons-fileupload/commons-fileupload/1.3.1/c621b54583719ac0310404463d6d99db27e1052c/commons-fileupload-1.3.1.jar" />
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/javax.inject/javax.inject/1/6975da39a7040257bd51d21a231b76c915872d38/javax.inject-1.jar" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.activemq/activemq-client/5.13.2/bc66297bbb254df63a197ffe978765eca5947863/activemq-client-5.13.2.jar" />
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.tika/tika-parsers/1.11/355dc05d842ed223fc682da472229473ba706d68/tika-parsers-1.11.jar" />
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.tika/tika-core/1.11/d37a6b9080c8361e47b2050f69833fd61501ede9/tika-core-1.11.jar" />
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.httpcomponents/httpclient/4.5.2/733db77aa8d9b2d68015189df76ab06304406e50/httpclient-4.5.2.jar" />
@@ -3248,6 +3255,7 @@
             <element id="library" level="project" name="Gradle: org.hamcrest:hamcrest-core:1.3" />
             <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-redis:1.5.2.RELEASE" />
             <element id="library" level="project" name="Gradle: redis.clients:jedis:2.7.2" />
+            <element id="library" level="project" name="Gradle: org.apache.activemq:activemq-client:5.13.2" />
             <element id="archive" name="com.receiptofi-common-0.9.0.jar">
               <element id="module-output" name="common" />
               <element id="dir-copy" path="$PROJECT_DIR$/common/build/resources/main" />
@@ -3261,7 +3269,6 @@
               <element id="dir-copy" path="$PROJECT_DIR$/domain/build/resources/main" />
             </element>
             <element id="file-copy" path="$PROJECT_DIR$/lib/user-agent-detector.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.activemq/activemq-client/5.13.2/bc66297bbb254df63a197ffe978765eca5947863/activemq-client-5.13.2.jar" />
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.social/spring-social-core/1.1.4.RELEASE/cb43c308fa99cbe16f476fabfd6ded2c6b8bb8ed/spring-social-core-1.1.4.RELEASE.jar" />
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.social/spring-social-google/1.0.0.RELEASE/a59c5c0358b465722f6359e6f5788acaca31cf42/spring-social-google-1.0.0.RELEASE.jar" />
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.social/spring-social-web/1.1.4.RELEASE/5e4686cfa221a5025a692b8759444e3cc443068f/spring-social-web-1.1.4.RELEASE.jar" />
@@ -3329,6 +3336,7 @@
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/javax.validation/validation-api/1.1.0.Final/8613ae82954779d518631e05daa73a6a954817d5/validation-api-1.1.0.Final.jar" />
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/commons-fileupload/commons-fileupload/1.3.1/c621b54583719ac0310404463d6d99db27e1052c/commons-fileupload-1.3.1.jar" />
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/javax.inject/javax.inject/1/6975da39a7040257bd51d21a231b76c915872d38/javax.inject-1.jar" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.activemq/activemq-client/5.13.2/bc66297bbb254df63a197ffe978765eca5947863/activemq-client-5.13.2.jar" />
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.tika/tika-parsers/1.11/355dc05d842ed223fc682da472229473ba706d68/tika-parsers-1.11.jar" />
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.tika/tika-core/1.11/d37a6b9080c8361e47b2050f69833fd61501ede9/tika-core-1.11.jar" />
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.httpcomponents/httpclient/4.5.2/733db77aa8d9b2d68015189df76ab06304406e50/httpclient-4.5.2.jar" />
@@ -5166,6 +5174,17 @@
         <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.gagravarr/vorbis-java-tika/0.6/367fba3e2225909c1cf529d659e745ec99ac5b35/vorbis-java-tika-0.6-sources.jar!/" />
       </SOURCES>
     </library>
+    <library name="Gradle: org.hamcrest:hamcrest-all:1.3">
+      <CLASSES>
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.hamcrest/hamcrest-all/1.3/63a21ebc981131004ad02e0434e799fd7f3a8d5a/hamcrest-all-1.3.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.hamcrest/hamcrest-all/1.3/3dc58dac8f7a74bb8c3c8cc579f2f773cc0fd9e9/hamcrest-all-1.3-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.hamcrest/hamcrest-all/1.3/47e033b7ab18c5dbd5fe29fc1bd5a40afe028818/hamcrest-all-1.3-sources.jar!/" />
+      </SOURCES>
+    </library>
     <library name="Gradle: org.hamcrest:hamcrest-core:1.3">
       <CLASSES>
         <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.hamcrest/hamcrest-core/1.3/42a25dc3219429f0e5d060061f71acb49bf010a0/hamcrest-core-1.3.jar!/" />
@@ -5175,17 +5194,6 @@
       </JAVADOC>
       <SOURCES>
         <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.hamcrest/hamcrest-core/1.3/1dc37250fbc78e23a65a67fbbaf71d2e9cbc3c0b/hamcrest-core-1.3-sources.jar!/" />
-      </SOURCES>
-    </library>
-    <library name="Gradle: org.hamcrest:hamcrest-library:1.3">
-      <CLASSES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.hamcrest/hamcrest-library/1.3/4785a3c21320980282f9f33d0d1264a69040538f/hamcrest-library-1.3.jar!/" />
-      </CLASSES>
-      <JAVADOC>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.hamcrest/hamcrest-library/1.3/4324046c5f99f3dc91b5370899fa3ae65fd137d2/hamcrest-library-1.3-javadoc.jar!/" />
-      </JAVADOC>
-      <SOURCES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.hamcrest/hamcrest-library/1.3/47a7ee46628ab7133129cd7cef1e92657bc275e/hamcrest-library-1.3-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="Gradle: org.hibernate:hibernate-validator:5.2.4.Final">

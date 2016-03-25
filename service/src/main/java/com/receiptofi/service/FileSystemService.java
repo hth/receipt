@@ -29,7 +29,7 @@ public class FileSystemService {
         this.fileSystemManager = fileSystemManager;
     }
 
-    public void save(FileSystemEntity fileSystemEntity) throws Exception {
+    public void save(FileSystemEntity fileSystemEntity) {
         fileSystemManager.save(fileSystemEntity);
     }
 
