@@ -2,17 +2,15 @@ package com.receiptofi;
 
 import static org.junit.Assert.assertTrue;
 
+import com.receiptofi.service.ReceiptServiceITest;
+
 import org.apache.commons.io.filefilter.WildcardFileFilter;
-import org.apache.commons.lang3.ArrayUtils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.ActiveProfiles;
-
-import org.junit.Before;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -59,22 +57,13 @@ public class LoadProperties {
             )
     );
 
-    private Properties prop = new Properties();
-
-    @Before
-    public void setUp() throws IOException {
-        AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext();
-        String[] activeProfiles = ctx.getEnvironment().getActiveProfiles();
-        LOG.info("activeProfiles={}", ArrayUtils.toString(activeProfiles));
-
-        /**
-         * Loading properties file for junit.
-         */
-        if (prop.keySet().isEmpty()) {
-            File[] profileDir = findFiles(LoadProperties.class.getResource("").getPath().split("loader")[0] + BUILD, profileF);
-            File[] propertiesFiles = findFiles(profileDir[0].getAbsolutePath() + CONF, propertiesF);
+    public static void loadProperties(Properties properties) throws IOException {
+        if (properties.keySet().isEmpty()) {
+            /** service is the path name for this class. */
+            File[] profileDir = findFiles(ReceiptServiceITest.class.getResource("").getPath().split("service")[0] + LoadProperties.BUILD, LoadProperties.profileF);
+            File[] propertiesFiles = findFiles(profileDir[0].getAbsolutePath() + LoadProperties.CONF, LoadProperties.propertiesF);
             for (File file : propertiesFiles) {
-                prop.load(new FileReader(file));
+                properties.load(new FileReader(file));
             }
         }
     }
@@ -84,9 +73,5 @@ public class LoadProperties {
         File[] files = directory.listFiles(fileFilter);
         assertTrue("number of files ", files.length > 0);
         return files;
-    }
-
-    public Properties getProp() {
-        return prop;
     }
 }

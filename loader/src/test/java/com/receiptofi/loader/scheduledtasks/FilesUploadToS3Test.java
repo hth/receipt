@@ -103,6 +103,7 @@ public class FilesUploadToS3Test {
          * Loading properties file for junit.
          */
         if (prop.keySet().isEmpty()) {
+            /** loader is the path name for this class. */
             File[] profileDir = findFiles(FilesUploadToS3Test.class.getResource("").getPath().split("loader")[0] + BUILD, profileF);
             File[] propertiesFiles = findFiles(profileDir[0].getAbsolutePath() + CONF, propertiesF);
             for (File file : propertiesFiles) {

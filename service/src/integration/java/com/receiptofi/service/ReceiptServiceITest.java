@@ -1,25 +1,41 @@
 package com.receiptofi.service;
 
-import static junit.framework.Assert.assertEquals;
+import static org.junit.Assert.assertEquals;
 
 import com.receiptofi.IntegrationTests;
 import com.receiptofi.LoadProperties;
 import com.receiptofi.RealMongoForTests;
 import com.receiptofi.domain.BizNameEntity;
 import com.receiptofi.domain.BizStoreEntity;
+import com.receiptofi.domain.FileSystemEntity;
 import com.receiptofi.domain.ReceiptEntity;
 import com.receiptofi.repository.*;
 import com.receiptofi.service.routes.FileUploadDocumentSenderJMS;
 
-import org.springframework.jms.core.JmsTemplate;
-import org.springframework.util.Assert;
+import org.apache.commons.io.IOUtils;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import org.springframework.jms.core.JmsTemplate;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.web.multipart.MultipartFile;
+
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Properties;
+
+import javax.imageio.ImageIO;
 
 /**
  * User: hitender
@@ -33,6 +49,7 @@ import java.util.Date;
 })
 @Category (IntegrationTests.class)
 public class ReceiptServiceITest extends RealMongoForTests {
+    private static final Logger LOG = LoggerFactory.getLogger(ReceiptServiceITest.class);
 
     private ReceiptManager receiptManager;
     private DocumentService documentService;
@@ -84,12 +101,12 @@ public class ReceiptServiceITest extends RealMongoForTests {
 
     private BizService bizService;
     private ReceiptService receiptService;
+    private Properties properties = new Properties();
 
     @Before
     public void setup() throws IOException {
-        LoadProperties loadProperties = new LoadProperties();
-        loadProperties.setUp();
-        Assert.notNull(loadProperties.getProp().getProperty("google-server-api-key"));
+        LoadProperties.loadProperties(properties);
+        Assert.assertNotNull(properties.getProperty("google-server-api-key"));
 
         bizNameManager = new BizNameManagerImpl(getMongoTemplate());
         itemManager = new ItemManagerImpl(bizNameManager, getMongoTemplate());
@@ -108,7 +125,7 @@ public class ReceiptServiceITest extends RealMongoForTests {
         emailValidateManager = new EmailValidateManagerImpl(getMongoTemplate());
         emailValidateService = new EmailValidateService(emailValidateManager);
         registrationService = new RegistrationService(
-                Boolean.getBoolean(loadProperties.getProp().getProperty("registration.turned.on")),
+                Boolean.getBoolean(properties.getProperty("registration.turned.on")),
                 "/open/login.htm"
         );
         expensesService = new ExpensesService(expenseTagManager, receiptManager, itemManager);
@@ -117,10 +134,10 @@ public class ReceiptServiceITest extends RealMongoForTests {
         billingHistoryManager = new BillingHistoryManagerImpl(getMongoTemplate());
 
         paymentGatewayService = new PaymentGatewayService(
-                loadProperties.getProp().getProperty("braintree.environment"),
-                loadProperties.getProp().getProperty("braintree.merchant_id"),
-                loadProperties.getProp().getProperty("braintree.public_key"),
-                loadProperties.getProp().getProperty("braintree.private_key")
+                properties.getProperty("braintree.environment"),
+                properties.getProperty("braintree.merchant_id"),
+                properties.getProperty("braintree.public_key"),
+                properties.getProperty("braintree.private_key")
         );
         billingService = new BillingService(
                 userAccountManager,
@@ -181,7 +198,7 @@ public class ReceiptServiceITest extends RealMongoForTests {
                 friendService,
                 splitExpensesService);
 
-        externalService = new ExternalService(loadProperties.getProp().getProperty("google-server-api-key"));
+        externalService = new ExternalService(properties.getProperty("google-server-api-key"));
         bizStoreManager = new BizStoreManagerImpl(getMongoTemplate());
         bizService = new BizService(bizNameManager, bizStoreManager, externalService);
     }
@@ -193,24 +210,50 @@ public class ReceiptServiceITest extends RealMongoForTests {
         receiptManager.save(receipt);
         receiptService.deleteReceipt(receipt.getId(), receipt.getReceiptUserId());
 
-        assertEquals("Deleted receipt", 0, receiptManager.collectionSize());
+        assertEquals("Deleted receipt", true, receiptManager.getReceipt(receipt.getId(), receipt.getReceiptUserId()).isDeleted());
     }
 
-    private ReceiptEntity populateReceipt() {
-        ReceiptEntity receiptEntity = new ReceiptEntity();
-        receiptEntity.setReceiptUserId("10000000001");
-        receiptEntity.setTotal(1.0);
-        receiptEntity.setReceiptDate(new Date());
+    private ReceiptEntity populateReceipt() throws IOException {
+        ReceiptEntity receipt = new ReceiptEntity();
+        receipt.setReceiptUserId("10000000001");
+        receipt.setTotal(1.0);
+        receipt.setReceiptDate(new Date());
 
         BizNameEntity bizNameEntity = BizNameEntity.newInstance();
         bizNameEntity.setBusinessName("Costco");
-        receiptEntity.setBizName(bizNameEntity);
+        receipt.setBizName(bizNameEntity);
 
         BizStoreEntity bizStoreEntity = BizStoreEntity.newInstance();
         bizStoreEntity.setAddress("150 Lawrence Station Rd, Sunnyvale, CA 94086");
         bizStoreEntity.setPhone("(408) 730-1892");
-        receiptEntity.setBizStore(bizStoreEntity);
+        receipt.setBizStore(bizStoreEntity);
 
-        return receiptEntity;
+        receipt.setFileSystemEntities(createFileSystemEntities(receipt));
+        return receipt;
+    }
+
+    private List<FileSystemEntity> createFileSystemEntities(ReceiptEntity receipt) throws IOException {
+        File file = new File("service/src/integration/resources/test-image.png");
+        Assert.assertTrue("File does not exists=" + file.getAbsolutePath(), file.exists());
+        BufferedImage bufferedImage = ImageIO.read(file);
+        FileInputStream input = new FileInputStream(file);
+        MultipartFile multipartFile = new MockMultipartFile(
+                receipt.getReceiptUserId() + "_" + file.getName(),
+                file.getName(),
+                "image/png",
+                IOUtils.toByteArray(input));
+
+        FileSystemEntity fileSystem = new FileSystemEntity(
+                "562f4904f320266bd916d89f",
+                receipt.getReceiptUserId(),
+                bufferedImage,
+                0,
+                0,
+                multipartFile);
+
+        fileSystemService.save(fileSystem);
+        List<FileSystemEntity> fileSystems = new ArrayList<>();
+        fileSystems.add(fileSystem);
+        return fileSystems;
     }
 }
