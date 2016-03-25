@@ -84,8 +84,9 @@ public abstract class RealMongoForTests {
 
     @AfterClass
     public static void tearDown() {
-        mongodProcess.stop();
-        mongodExecutable.stop();
+        /** On stop and delete, jenkins test fails as its not able to delete these files. */
+        //mongodProcess.stop();
+        //mongodExecutable.stop();
     }
 
     protected MongoTemplate getMongoTemplate() {
