@@ -141,6 +141,7 @@ public class NotificationService {
                         notificationGroup,
                         supportedEntity.getId(),
                         ((ReceiptEntity) supportedEntity).getReceiptUserId());
+                break;
             case RECEIPT:
                 addNotification(
                         message,
