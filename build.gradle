@@ -822,9 +822,6 @@ publishing {
     }
 }
 
-// Make sure 'check' task calls integration test
-//check.dependsOn integrationTest
-
 //Line below is not required because defaultTasks order is followed
 //testReport.mustRunAfter war
 //publishToMavenLocal for local
