@@ -234,6 +234,9 @@ public class ReceiptServiceITest extends RealMongoForTests {
 
     private List<FileSystemEntity> createFileSystemEntities(ReceiptEntity receipt) throws IOException {
         File file = new File("service/src/integration/resources/test-image.png");
+        if (!file.exists()) {
+            file = new File("build/resources/test/test-image.png");
+        }
         Assert.assertTrue("File does not exists=" + file.getAbsolutePath(), file.exists());
         BufferedImage bufferedImage = ImageIO.read(file);
         FileInputStream input = new FileInputStream(file);
