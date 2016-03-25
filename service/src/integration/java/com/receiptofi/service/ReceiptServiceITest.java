@@ -8,7 +8,11 @@ import com.receiptofi.RealMongoForTests;
 import com.receiptofi.domain.BizNameEntity;
 import com.receiptofi.domain.BizStoreEntity;
 import com.receiptofi.domain.FileSystemEntity;
+import com.receiptofi.domain.ItemEntity;
+import com.receiptofi.domain.NotificationEntity;
 import com.receiptofi.domain.ReceiptEntity;
+import com.receiptofi.domain.types.NotificationGroupEnum;
+import com.receiptofi.domain.types.NotificationTypeEnum;
 import com.receiptofi.repository.*;
 import com.receiptofi.service.routes.FileUploadDocumentSenderJMS;
 
@@ -205,12 +209,24 @@ public class ReceiptServiceITest extends RealMongoForTests {
 
     @Test
     public void testDeleteReceipt() throws Exception {
-        ReceiptEntity receipt = populateReceipt();
-        bizService.saveNewBusinessAndOrStore(receipt);
-        receiptManager.save(receipt);
+        ReceiptEntity receipt = getReceipt();
         receiptService.deleteReceipt(receipt.getId(), receipt.getReceiptUserId());
 
         assertEquals("Deleted receipt", true, receiptManager.getReceipt(receipt.getId(), receipt.getReceiptUserId()).isDeleted());
+        List<NotificationEntity> notifications = notificationService.getAllNotifications(receipt.getReceiptUserId());
+        assertEquals("Delete notification count", 1, notifications.size());
+
+        NotificationEntity notification = notifications.get(0);
+        assertEquals("Notification Type", NotificationTypeEnum.RECEIPT_DELETED, notification.getNotificationType());
+        assertEquals("Notification Group", NotificationGroupEnum.R, notification.getNotificationGroup());
+    }
+
+    private ReceiptEntity getReceipt() throws Exception {
+        ReceiptEntity receipt = populateReceipt();
+        bizService.saveNewBusinessAndOrStore(receipt);
+        receiptService.save(receipt);
+        itemManager.saveObjects(createItems(receipt));
+        return receipt;
     }
 
     private ReceiptEntity populateReceipt() throws IOException {
@@ -230,6 +246,19 @@ public class ReceiptServiceITest extends RealMongoForTests {
 
         receipt.setFileSystemEntities(createFileSystemEntities(receipt));
         return receipt;
+    }
+
+    private List<ItemEntity> createItems(ReceiptEntity receipt) {
+        ItemEntity item = new ItemEntity();
+        item.setBizName(receipt.getBizName());
+        item.setName("Milk");
+        item.setPrice(1.0);
+        item.setReceipt(receipt);
+        item.setReceiptUserId(receipt.getReceiptUserId());
+
+        List<ItemEntity> items = new ArrayList<>();
+        items.add(item);
+        return items;
     }
 
     private List<FileSystemEntity> createFileSystemEntities(ReceiptEntity receipt) throws IOException {

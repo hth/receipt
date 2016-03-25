@@ -258,7 +258,10 @@ public class ReceiptService {
                     receiptOCR.setNotes(receipt.getNotes());
                     receiptOCR.setProcessedBy(receipt.getProcessedBy());
 
-                    /** All activity at the end is better because you never know what could go wrong during populating other data */
+                    /**
+                     * All activity at the end is better because you never know what could go
+                     * wrong during populating other data.
+                     */
                     receipt.setReceiptStatus(DocumentStatusEnum.REPROCESS);
                     receiptManager.save(receipt);
                     documentService.save(receiptOCR);
