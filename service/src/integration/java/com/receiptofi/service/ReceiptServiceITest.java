@@ -1,16 +1,20 @@
 package com.receiptofi.service;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertNotNull;
 
 import com.receiptofi.IntegrationTests;
 import com.receiptofi.LoadProperties;
 import com.receiptofi.RealMongoForTests;
 import com.receiptofi.domain.BizNameEntity;
 import com.receiptofi.domain.BizStoreEntity;
+import com.receiptofi.domain.CommentEntity;
 import com.receiptofi.domain.FileSystemEntity;
 import com.receiptofi.domain.ItemEntity;
 import com.receiptofi.domain.NotificationEntity;
 import com.receiptofi.domain.ReceiptEntity;
+import com.receiptofi.domain.types.CommentTypeEnum;
 import com.receiptofi.domain.types.NotificationGroupEnum;
 import com.receiptofi.domain.types.NotificationTypeEnum;
 import com.receiptofi.repository.*;
@@ -210,12 +214,22 @@ public class ReceiptServiceITest extends RealMongoForTests {
     @Test
     public void testDeleteReceipt() throws Exception {
         ReceiptEntity receipt = getReceipt();
-        receiptService.deleteReceipt(receipt.getId(), receipt.getReceiptUserId());
+        assertNotNull("Re-Check comment is not null", commentService.getById(receipt.getRecheckComment().getId()));
+        assertNotNull("Notes is not null", commentService.getById(receipt.getNotes().getId()));
 
+        receiptService.deleteReceipt(receipt.getId(), receipt.getReceiptUserId());
         assertEquals("Deleted receipt", true, receiptManager.getReceipt(receipt.getId(), receipt.getReceiptUserId()).isDeleted());
+
+        List<ItemEntity> items = itemService.getAllItemsOfReceipt(receipt.getId());
+        assertEquals("Items count", 1, items.size());
+        ItemEntity item = items.get(0);
+        assertEquals("Item deleted", true, item.isDeleted());
+
+        assertNull("Re-Check comment null", commentService.getById(receipt.getRecheckComment().getId()));
+        assertNull("Notes null", commentService.getById(receipt.getNotes().getId()));
+
         List<NotificationEntity> notifications = notificationService.getAllNotifications(receipt.getReceiptUserId());
         assertEquals("Delete notification count", 1, notifications.size());
-
         NotificationEntity notification = notifications.get(0);
         assertEquals("Notification Type", NotificationTypeEnum.RECEIPT_DELETED, notification.getNotificationType());
         assertEquals("Notification Group", NotificationGroupEnum.R, notification.getNotificationGroup());
@@ -225,7 +239,7 @@ public class ReceiptServiceITest extends RealMongoForTests {
         ReceiptEntity receipt = populateReceipt();
         bizService.saveNewBusinessAndOrStore(receipt);
         receiptService.save(receipt);
-        itemManager.saveObjects(createItems(receipt));
+        itemManager.saveObjects(populateItems(receipt));
         return receipt;
     }
 
@@ -245,10 +259,19 @@ public class ReceiptServiceITest extends RealMongoForTests {
         receipt.setBizStore(bizStoreEntity);
 
         receipt.setFileSystemEntities(createFileSystemEntities(receipt));
+        receipt.setNotes(createComment(CommentTypeEnum.NOTES));
+        receipt.setRecheckComment(createComment(CommentTypeEnum.RECHECK));
         return receipt;
     }
 
-    private List<ItemEntity> createItems(ReceiptEntity receipt) {
+    private CommentEntity createComment(CommentTypeEnum commentType) {
+        CommentEntity commentEntity = CommentEntity.newInstance(commentType);
+        commentEntity.setText("This is notes");
+        commentService.save(commentEntity);
+        return commentEntity;
+    }
+
+    private List<ItemEntity> populateItems(ReceiptEntity receipt) {
         ItemEntity item = new ItemEntity();
         item.setBizName(receipt.getBizName());
         item.setName("Milk");
