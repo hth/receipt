@@ -26,6 +26,10 @@ public class CommentService {
         this.commentManager = commentManager;
     }
 
+    public CommentEntity getById(String id) {
+        return commentManager.getById(id);
+    }
+
     public void save(CommentEntity comment) {
         commentManager.save(comment);
     }
