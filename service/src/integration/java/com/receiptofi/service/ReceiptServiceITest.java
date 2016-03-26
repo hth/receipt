@@ -256,6 +256,10 @@ public class ReceiptServiceITest extends RealMongoForTests {
                 properties.getProperty("mail.validate.subject"),
                 properties.getProperty("mail.registration.active.subject"),
                 properties.getProperty("mail.account.not.found"),
+                "",
+                "",
+                "",
+                "",
                 accountService,
                 inviteService,
                 mailSender,
@@ -297,18 +301,6 @@ public class ReceiptServiceITest extends RealMongoForTests {
         NotificationEntity notification = notifications.get(0);
         assertEquals("Notification Type", NotificationTypeEnum.RECEIPT_DELETED, notification.getNotificationType());
         assertEquals("Notification Group", NotificationGroupEnum.R, notification.getNotificationGroup());
-    }
-
-    @Test
-    public void testDeleteSplitReceipt() throws Exception {
-        ReceiptEntity receipt = populateReceipt();
-        createReceipt(receipt);
-    }
-
-    @Test
-    public void testDeleteSharedReceipt() throws Exception {
-        ReceiptEntity receipt = populateReceipt();
-        createReceipt(receipt);
     }
 
     private void createReceipt(ReceiptEntity receipt) throws Exception {
