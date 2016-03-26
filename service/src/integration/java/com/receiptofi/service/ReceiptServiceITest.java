@@ -29,6 +29,7 @@ import com.receiptofi.domain.types.SplitActionEnum;
 import com.receiptofi.repository.*;
 import com.receiptofi.service.routes.FileUploadDocumentSenderJMS;
 import com.receiptofi.utils.DateUtil;
+import com.receiptofi.utils.Maths;
 
 import org.apache.commons.io.IOUtils;
 
@@ -333,9 +334,11 @@ public class ReceiptServiceITest extends RealMongoForTests {
         assertEquals("Number of pending friends", 1, friendService.getPendingConnections(userAccount.getReceiptUserId()).size());
 
         boolean splitAction = receiptService.splitAction("10000000002", SplitActionEnum.A, receipt);
+        ReceiptEntity receiptAfterSplit = receiptService.findReceipt(receipt.getId());
+        double expectingSplitTotal = Maths.divide(receipt.getTotal(), receipt.getSplitCount() + 1).doubleValue();
         assertEquals("Split Successful", true, splitAction);
-
-        assertEquals("Receipt count ", 1, receiptService.findAllReceipts("10000000002").size());
+        assertEquals("Receipt count", 1, receiptService.findAllReceipts("10000000002").size());
+        assertEquals("After split", expectingSplitTotal, receiptAfterSplit.getSplitTotal(), 0.00);
     }
 
     @Test
