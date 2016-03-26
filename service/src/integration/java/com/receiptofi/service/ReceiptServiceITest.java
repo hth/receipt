@@ -1,8 +1,10 @@
 package com.receiptofi.service;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.mockito.Mockito.when;
 
 import com.receiptofi.IntegrationTests;
 import com.receiptofi.LoadProperties;
@@ -14,11 +16,14 @@ import com.receiptofi.domain.FileSystemEntity;
 import com.receiptofi.domain.ItemEntity;
 import com.receiptofi.domain.NotificationEntity;
 import com.receiptofi.domain.ReceiptEntity;
+import com.receiptofi.domain.UserAccountEntity;
 import com.receiptofi.domain.types.CommentTypeEnum;
 import com.receiptofi.domain.types.NotificationGroupEnum;
 import com.receiptofi.domain.types.NotificationTypeEnum;
+import com.receiptofi.domain.types.SplitActionEnum;
 import com.receiptofi.repository.*;
 import com.receiptofi.service.routes.FileUploadDocumentSenderJMS;
+import com.receiptofi.utils.DateUtil;
 
 import org.apache.commons.io.IOUtils;
 
@@ -26,13 +31,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.jms.core.JmsTemplate;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.ui.freemarker.FreeMarkerConfigurationFactoryBean;
 import org.springframework.web.multipart.MultipartFile;
 
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -44,6 +53,7 @@ import java.util.List;
 import java.util.Properties;
 
 import javax.imageio.ImageIO;
+import javax.mail.internet.MimeMessage;
 
 /**
  * User: hitender
@@ -111,8 +121,20 @@ public class ReceiptServiceITest extends RealMongoForTests {
     private ReceiptService receiptService;
     private Properties properties = new Properties();
 
+    private InviteManager inviteManager;
+    private InviteService inviteService;
+    private LoginService loginService;
+    private BrowserManager browserManager;
+    private MailService mailService;
+
+    @Mock private JavaMailSenderImpl mailSender;
+    @Mock private FreeMarkerConfigurationFactoryBean freemarkerConfiguration;
+    @Mock private MimeMessage message;
+
+
     @Before
     public void setup() throws IOException {
+        MockitoAnnotations.initMocks(this);
         LoadProperties.loadProperties(properties);
         Assert.assertNotNull(properties.getProperty("google-server-api-key"));
 
@@ -154,10 +176,16 @@ public class ReceiptServiceITest extends RealMongoForTests {
                 paymentGatewayService
         );
 
+        notificationManager = new NotificationManagerImpl(getMongoTemplate());
+        notificationService = new NotificationService(notificationManager);
+
         receiptManager = new ReceiptManagerImpl(itemManager, fileSystemManager, storageManager, getMongoTemplate());
         documentService = new DocumentService(documentManager, itemOCRManager);
         itemService = new ItemService(itemManager, expenseTagManager);
         accountService = new AccountService(
+                new String[]{"HOME", "BUSINESS"},
+                new String[]{"#1a9af9", "#b492e8"},
+                3,
                 userAccountManager,
                 userAuthenticationManager,
                 userProfileManager,
@@ -180,9 +208,6 @@ public class ReceiptServiceITest extends RealMongoForTests {
 
         cloudFileManager = new CloudFileManagerImpl(getMongoTemplate());
         cloudFileService = new CloudFileService(cloudFileManager);
-
-        notificationManager = new NotificationManagerImpl(getMongoTemplate());
-        notificationService = new NotificationService(notificationManager);
 
         friendManager = new FriendManagerImpl(getMongoTemplate());
         userProfilePreferenceService = new UserProfilePreferenceService(userProfileManager, userPreferenceManager);
@@ -209,11 +234,46 @@ public class ReceiptServiceITest extends RealMongoForTests {
         externalService = new ExternalService(properties.getProperty("google-server-api-key"));
         bizStoreManager = new BizStoreManagerImpl(getMongoTemplate());
         bizService = new BizService(bizNameManager, bizStoreManager, externalService);
+
+        inviteManager = new InviteManagerImpl(getMongoTemplate());
+        inviteService = new InviteService(accountService, inviteManager, userProfileManager, userAccountManager);
+        loginService = new LoginService(userAuthenticationManager, userAccountManager, browserManager);
+        browserManager = new BrowserManagerImpl(getMongoTemplate());
+
+        mailService = new MailService(
+                properties.getProperty("do.not.reply.email"),
+                properties.getProperty("dev.sent.to"),
+                properties.getProperty("invitee.email"),
+                properties.getProperty("email.address.name"),
+                properties.getProperty("domain"),
+                properties.getProperty("https"),
+                properties.getProperty("mail.invite.subject") == null ? "" : properties.getProperty("mail.invite.subject"),
+                properties.getProperty("mail.recover.subject"),
+                properties.getProperty("mail.validate.subject"),
+                properties.getProperty("mail.registration.active.subject"),
+                properties.getProperty("mail.account.not.found"),
+                accountService,
+                inviteService,
+                mailSender,
+                freemarkerConfiguration,
+                emailValidateService,
+                friendService,
+                loginService,
+                userAuthenticationManager,
+                userAccountManager,
+                userProfilePreferenceService,
+                notificationService);
+    }
+
+    @Test
+    public void testDeleteReceiptUnAuthorized() throws Exception {
+        assertFalse("Cannot delete receipt not owned", receiptService.deleteReceipt("5620057df4a3b612d7018894", "10000000002"));
     }
 
     @Test
     public void testDeleteReceipt() throws Exception {
-        ReceiptEntity receipt = getReceipt();
+        ReceiptEntity receipt = populateReceiptWithComments();
+        createReceipt(receipt);
         assertNotNull("Re-Check comment is not null", commentService.getById(receipt.getRecheckComment().getId()));
         assertNotNull("Notes is not null", commentService.getById(receipt.getNotes().getId()));
 
@@ -235,12 +295,22 @@ public class ReceiptServiceITest extends RealMongoForTests {
         assertEquals("Notification Group", NotificationGroupEnum.R, notification.getNotificationGroup());
     }
 
-    private ReceiptEntity getReceipt() throws Exception {
+    @Test
+    public void testDeleteSplitReceipt() throws Exception {
         ReceiptEntity receipt = populateReceipt();
+        createReceipt(receipt);
+    }
+
+    @Test
+    public void testDeleteSharedReceipt() throws Exception {
+        ReceiptEntity receipt = populateReceipt();
+        createReceipt(receipt);
+    }
+
+    private void createReceipt(ReceiptEntity receipt) throws Exception {
         bizService.saveNewBusinessAndOrStore(receipt);
         receiptService.save(receipt);
         itemManager.saveObjects(populateItems(receipt));
-        return receipt;
     }
 
     private ReceiptEntity populateReceipt() throws IOException {
@@ -259,6 +329,11 @@ public class ReceiptServiceITest extends RealMongoForTests {
         receipt.setBizStore(bizStoreEntity);
 
         receipt.setFileSystemEntities(createFileSystemEntities(receipt));
+        return receipt;
+    }
+
+    private ReceiptEntity populateReceiptWithComments() throws IOException {
+        ReceiptEntity receipt = populateReceipt();
         receipt.setNotes(createComment(CommentTypeEnum.NOTES));
         receipt.setRecheckComment(createComment(CommentTypeEnum.RECHECK));
         return receipt;

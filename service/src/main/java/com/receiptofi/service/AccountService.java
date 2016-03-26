@@ -79,20 +79,20 @@ public class AccountService {
     private BillingService billingService;
     private NotificationService notificationService;
 
-    @Value ("${domain}")
-    private String domain;
-
-    @Value ("${ExpenseTags.Default:HOME,BUSINESS}")
     private String[] expenseTags;
-
-    @Value ("${ExpenseTagColors.Default:#1a9af9,#b492e8}")
     private String[] expenseTagColors;
-
-    @Value ("${promotionalPeriod}")
     private int promotionalPeriod;
 
-    @Autowired
     public AccountService(
+            @Value ("${ExpenseTags.Default:HOME,BUSINESS}")
+            String[] expenseTags,
+
+            @Value ("${ExpenseTagColors.Default:#1a9af9,#b492e8}")
+            String[] expenseTagColors,
+
+            @Value ("${promotionalPeriod}")
+            int promotionalPeriod,
+
             UserAccountManager userAccountManager,
             UserAuthenticationManager userAuthenticationManager,
             UserProfileManager userProfileManager,
@@ -105,6 +105,10 @@ public class AccountService {
             BillingService billingService,
             NotificationService notificationService
     ) {
+        this.expenseTags = expenseTags;
+        this.expenseTagColors = expenseTagColors;
+        this.promotionalPeriod = promotionalPeriod;
+
         this.userAccountManager = userAccountManager;
         this.userAuthenticationManager = userAuthenticationManager;
         this.userProfileManager = userProfileManager;

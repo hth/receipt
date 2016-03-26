@@ -77,55 +77,81 @@ public class MailService {
     private FriendService friendService;
     private NotificationService notificationService;
 
-    @Value ("${do.not.reply.email}")
     private String doNotReplyEmail;
-
-    @Value ("${dev.sent.to}")
     private String devSentTo;
-
-    @Value ("${invitee.email}")
     private String inviteeEmail;
-
-    @Value ("${email.address.name}")
     private String emailAddressName;
-
-    @Value ("${domain}")
     private String domain;
-
-    @Value ("${https}")
     private String https;
-
-    @Value ("${mail.invite.subject}")
     private String mailInviteSubject;
-
-    @Value ("${mail.recover.subject}")
     private String mailRecoverSubject;
-
-    @Value ("${mail.validate.subject}")
     private String mailValidateSubject;
-
-    @Value ("${mail.registration.active.subject}")
     private String mailRegistrationActiveSubject;
-
-    @Value ("${mail.account.not.found}")
     private String accountNotFound;
 
     @Autowired
-    public MailService(AccountService accountService,
-                       InviteService inviteService,
-                       JavaMailSenderImpl mailSender,
+    public MailService(
+            @Value ("${do.not.reply.email}")
+            String doNotReplyEmail,
 
-                       @SuppressWarnings ("SpringJavaAutowiringInspection")
-                       FreeMarkerConfigurationFactoryBean freemarkerConfiguration,
+            @Value ("${dev.sent.to}")
+            String devSentTo,
 
-                       EmailValidateService emailValidateService,
-                       FriendService friendService,
-                       LoginService loginService,
-                       UserAuthenticationManager userAuthenticationManager,
-                       UserAccountManager userAccountManager,
-                       UserProfilePreferenceService userProfilePreferenceService,
-                       NotificationService notificationService
+            @Value ("${invitee.email}")
+            String inviteeEmail,
+
+            @Value ("${email.address.name}")
+            String emailAddressName,
+
+            @Value ("${domain}")
+            String domain,
+
+            @Value ("${https}")
+            String https,
+
+            @Value ("${mail.invite.subject}")
+            String mailInviteSubject,
+
+            @Value ("${mail.recover.subject}")
+            String mailRecoverSubject,
+
+            @Value ("${mail.validate.subject}")
+            String mailValidateSubject,
+
+            @Value ("${mail.registration.active.subject}")
+            String mailRegistrationActiveSubject,
+
+            @Value ("${mail.account.not.found}")
+            String accountNotFound,
+
+            AccountService accountService,
+            InviteService inviteService,
+            JavaMailSenderImpl mailSender,
+
+            @SuppressWarnings ("SpringJavaAutowiringInspection")
+            FreeMarkerConfigurationFactoryBean freemarkerConfiguration,
+
+            EmailValidateService emailValidateService,
+            FriendService friendService,
+            LoginService loginService,
+            UserAuthenticationManager userAuthenticationManager,
+            UserAccountManager userAccountManager,
+            UserProfilePreferenceService userProfilePreferenceService,
+            NotificationService notificationService
     ) {
+
+        this.doNotReplyEmail = doNotReplyEmail;
+        this.devSentTo = devSentTo;
+        this.inviteeEmail = inviteeEmail;
+        this.emailAddressName = emailAddressName;
+        this.domain = domain;
+        this.https = https;
+        this.mailInviteSubject = mailInviteSubject;
+        this.mailRecoverSubject = mailRecoverSubject;
+        this.mailValidateSubject = mailValidateSubject;
+        this.mailRegistrationActiveSubject = mailRegistrationActiveSubject;
+        this.accountNotFound = accountNotFound;
+
         this.accountService = accountService;
         this.inviteService = inviteService;
         this.mailSender = mailSender;

@@ -28,9 +28,19 @@ import org.springframework.stereotype.Service;
 public class LoginService {
     private static final Logger LOG = LoggerFactory.getLogger(LoginService.class);
 
-    @Autowired private UserAuthenticationManager userAuthenticationManager;
-    @Autowired private UserAccountManager userAccountManager;
-    @Autowired private BrowserManager browserManager;
+    private UserAuthenticationManager userAuthenticationManager;
+    private UserAccountManager userAccountManager;
+    private BrowserManager browserManager;
+
+    @Autowired
+    public LoginService(
+            UserAuthenticationManager userAuthenticationManager,
+            UserAccountManager userAccountManager,
+            BrowserManager browserManager) {
+        this.userAuthenticationManager = userAuthenticationManager;
+        this.userAccountManager = userAccountManager;
+        this.browserManager = browserManager;
+    }
 
     public UserAccountEntity findByReceiptUserId(String rid) {
         return userAccountManager.findByReceiptUserId(rid);

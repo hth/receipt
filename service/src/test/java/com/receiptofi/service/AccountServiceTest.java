@@ -47,6 +47,9 @@ public class AccountServiceTest {
     public void setup() {
         MockitoAnnotations.initMocks(this);
         accountService = new AccountService(
+                new String[]{"HOME", "BUSINESS"},
+                new String[]{"#1a9af9", "#b492e8"},
+                3,
                 userAccountManager,
                 userAuthenticationManager,
                 userProfileManager,
