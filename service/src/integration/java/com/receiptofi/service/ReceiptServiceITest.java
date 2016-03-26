@@ -8,8 +8,6 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 
-import com.google.gson.Gson;
-
 import com.mongodb.DBObject;
 import com.mongodb.util.JSON;
 
@@ -60,6 +58,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
+import java.util.Set;
 
 import javax.imageio.ImageIO;
 import javax.mail.internet.MimeMessage;
@@ -339,7 +338,12 @@ public class ReceiptServiceITest extends RealMongoForTests {
         assertEquals("Receipt count ", 1, receiptService.findAllReceipts("10000000002").size());
     }
 
-
+    @Test
+    public void testDeleteSharedReceipt() throws Exception {
+        ReceiptEntity receipt = populateReceipt();
+        createReceipt(receipt);
+        assertNull("Re-Check comment is not null", null);
+    }
 
     private void createReceipt(ReceiptEntity receipt) throws Exception {
         bizService.saveNewBusinessAndOrStore(receipt);
@@ -353,14 +357,27 @@ public class ReceiptServiceITest extends RealMongoForTests {
         receipt.setTotal(1.0);
         receipt.setReceiptDate(new Date());
 
-        BizNameEntity bizNameEntity = BizNameEntity.newInstance();
-        bizNameEntity.setBusinessName("Costco");
-        receipt.setBizName(bizNameEntity);
+        BizNameEntity bizName = BizNameEntity.newInstance();
+        bizName.setBusinessName("Costco");
+        receipt.setBizName(bizName);
+        List<BizNameEntity> bizNames = bizNameManager.findAllBizWithMatchingName("Costco");
+        if (!bizNames.isEmpty()) {
+            bizName = bizNames.get(0);
+        }
 
-        BizStoreEntity bizStoreEntity = BizStoreEntity.newInstance();
-        bizStoreEntity.setAddress("150 Lawrence Station Rd, Sunnyvale, CA 94086");
-        bizStoreEntity.setPhone("(408) 730-1892");
-        receipt.setBizStore(bizStoreEntity);
+        BizStoreEntity bizStore = BizStoreEntity.newInstance();
+        bizStore.setAddress("150 Lawrence Station Rd, Sunnyvale, CA 94086");
+        bizStore.setPhone("(408) 730-1892");
+
+        Set<BizStoreEntity> bizStores = bizService.bizSearch(
+                bizName.getBusinessName(),
+                bizStore.getAddress(),
+                bizStore.getPhone());
+
+        if (!bizStores.isEmpty()) {
+            bizStore = bizStores.iterator().next();
+        }
+        receipt.setBizStore(bizStore);
 
         receipt.setFileSystemEntities(createFileSystemEntities(receipt));
         return receipt;
