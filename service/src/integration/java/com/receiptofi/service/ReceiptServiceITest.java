@@ -359,6 +359,19 @@ public class ReceiptServiceITest extends RealMongoForTests {
         assertNull("Re-Check comment is not null", null);
     }
 
+    @Test
+    public void testUpdateReceiptNotesAndComments() throws Exception {
+        ReceiptEntity receipt = populateReceiptWithComments();
+        createReceipt(receipt);
+        receiptService.updateReceiptNotes("My new receipt note", receipt.getId(), receipt.getReceiptUserId());
+        receiptService.updateReceiptComment("My new recheck comment", receipt.getId(), receipt.getReceiptUserId());
+        ReceiptEntity receiptAfterUpdateComment = receiptService.findReceipt(receipt.getId());
+        assertEquals("Receipt comment type", CommentTypeEnum.NOTES, receiptAfterUpdateComment.getNotes().getCommentType());
+        assertEquals("Receipt Note", "My new receipt note", receiptAfterUpdateComment.getNotes().getText());
+        assertEquals("Receipt comment type", CommentTypeEnum.RECHECK, receiptAfterUpdateComment.getRecheckComment().getCommentType());
+        assertEquals("Receipt Re-Check comment", "My new recheck comment", receiptAfterUpdateComment.getRecheckComment().getText());
+    }
+
     private void createReceipt(ReceiptEntity receipt) throws Exception {
         bizService.saveNewBusinessAndOrStore(receipt);
         receiptService.save(receipt);
