@@ -4,8 +4,14 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
+
+import com.google.gson.Gson;
+
+import com.mongodb.DBObject;
+import com.mongodb.util.JSON;
 
 import com.receiptofi.IntegrationTests;
 import com.receiptofi.LoadProperties;
@@ -302,6 +308,38 @@ public class ReceiptServiceITest extends RealMongoForTests {
         assertEquals("Notification Type", NotificationTypeEnum.RECEIPT_DELETED, notification.getNotificationType());
         assertEquals("Notification Group", NotificationGroupEnum.R, notification.getNotificationGroup());
     }
+
+    @Test
+    public void testDeleteSplitReceipt() throws Exception {
+        when(mailSender.createMimeMessage()).thenReturn(message);
+        when(freemarkerConfiguration.createConfiguration()).thenReturn(configuration);
+        when(configuration.getTemplate(anyString())).thenReturn(template);
+
+        /** Create New User. */
+        UserAccountEntity userAccount = accountService.createNewAccount(
+                "first@receiptofi.com",
+                "First",
+                "Name",
+                "testtest",
+                DateUtil.parseAgeForBirthday("25"));
+
+        ReceiptEntity receipt = populateReceipt();
+        createReceipt(receipt);
+
+        /** Send invite to another user. */
+        String inviteResponse = mailService.sendInvite("second@receiptofi.com", userAccount.getReceiptUserId(), userAccount.getUserId());
+        DBObject dbObject = (DBObject) JSON.parse(inviteResponse);
+        assertTrue("Sent invite successfully", (boolean) dbObject.get("status"));
+        assertEquals("Invitation message", "Invitation Sent to: second@receiptofi.com", dbObject.get("message"));
+        assertEquals("Number of pending friends", 1, friendService.getPendingConnections(userAccount.getReceiptUserId()).size());
+
+        boolean splitAction = receiptService.splitAction("10000000002", SplitActionEnum.A, receipt);
+        assertEquals("Split Successful", true, splitAction);
+
+        assertEquals("Receipt count ", 1, receiptService.findAllReceipts("10000000002").size());
+    }
+
+
 
     private void createReceipt(ReceiptEntity receipt) throws Exception {
         bizService.saveNewBusinessAndOrStore(receipt);
