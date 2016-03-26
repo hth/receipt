@@ -333,11 +333,22 @@ public class ReceiptServiceITest extends RealMongoForTests {
         assertEquals("Invitation message", "Invitation Sent to: second@receiptofi.com", dbObject.get("message"));
         assertEquals("Number of pending friends", 1, friendService.getPendingConnections(userAccount.getReceiptUserId()).size());
 
+        /** Split receipt with fid. */
         boolean splitAction = receiptService.splitAction("10000000002", SplitActionEnum.A, receipt);
         ReceiptEntity receiptAfterSplit = receiptService.findReceipt(receipt.getId());
         double expectingSplitTotal = Maths.divide(receipt.getTotal(), receipt.getSplitCount() + 1).doubleValue();
-        assertEquals("Split Successful", true, splitAction);
-        assertEquals("Receipt count", 1, receiptService.findAllReceipts("10000000002").size());
+        assertEquals("Split Added Successful", true, splitAction);
+        assertEquals("Split Count", 2, receiptAfterSplit.getSplitCount());
+        assertEquals("Receipt created", false, receiptService.findAllReceipts("10000000002").get(0).isDeleted());
+        assertEquals("After split", expectingSplitTotal, receiptAfterSplit.getSplitTotal(), 0.00);
+
+        /** Delete split receipt by fid. */
+        splitAction = receiptService.splitAction("10000000002", SplitActionEnum.R, receiptAfterSplit);
+        receiptAfterSplit = receiptService.findReceipt(receipt.getId());
+        expectingSplitTotal = Maths.divide(receipt.getTotal(), receipt.getSplitCount()).doubleValue();
+        assertEquals("Split Removed Successful", true, splitAction);
+        assertEquals("Split Count", 1, receiptAfterSplit.getSplitCount());
+        assertEquals("Receipt deleted", true, receiptService.findAllReceipts("10000000002").get(0).isDeleted());
         assertEquals("After split", expectingSplitTotal, receiptAfterSplit.getSplitTotal(), 0.00);
     }
 
