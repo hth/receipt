@@ -79,15 +79,11 @@ public class AccountService {
     private BillingService billingService;
     private NotificationService notificationService;
 
-    private String domain;
     private String[] expenseTags;
     private String[] expenseTagColors;
     private int promotionalPeriod;
 
     public AccountService(
-            @Value ("${domain}")
-            String domain,
-
             @Value ("${ExpenseTags.Default:HOME,BUSINESS}")
             String[] expenseTags,
 
@@ -109,7 +105,6 @@ public class AccountService {
             BillingService billingService,
             NotificationService notificationService
     ) {
-        this.domain = domain;
         this.expenseTags = expenseTags;
         this.expenseTagColors = expenseTagColors;
         this.promotionalPeriod = promotionalPeriod;
