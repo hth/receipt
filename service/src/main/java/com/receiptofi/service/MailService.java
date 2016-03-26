@@ -88,6 +88,10 @@ public class MailService {
     private String mailValidateSubject;
     private String mailRegistrationActiveSubject;
     private String accountNotFound;
+    private String googleSmall;
+    private String facebookSmall;
+    private String appStore;
+    private String googlePlay;
 
     @Autowired
     public MailService(
@@ -124,6 +128,18 @@ public class MailService {
             @Value ("${mail.account.not.found}")
             String accountNotFound,
 
+            @Value ("${mail.googleSmall:../jsp/images/smallGoogle.jpg}")
+            String googleSmall,
+
+            @Value ("${mail.googlePlay:../jsp/images/googlePlay151x47.jpg}")
+            String googlePlay,
+
+            @Value ("${mail.facebookSmall:../jsp/images/smallFacebook.jpg}")
+            String facebookSmall,
+
+            @Value ("${mail.appStore:../jsp/images/app-store151x48.jpg}")
+            String appStore,
+
             AccountService accountService,
             InviteService inviteService,
             JavaMailSenderImpl mailSender,
@@ -151,6 +167,10 @@ public class MailService {
         this.mailValidateSubject = mailValidateSubject;
         this.mailRegistrationActiveSubject = mailRegistrationActiveSubject;
         this.accountNotFound = accountNotFound;
+        this.googleSmall = googleSmall;
+        this.googlePlay = googlePlay;
+        this.facebookSmall = facebookSmall;
+        this.appStore = appStore;
 
         this.accountService = accountService;
         this.inviteService = inviteService;
@@ -500,28 +520,10 @@ public class MailService {
         //Attach image always at the end
         if (subject.startsWith(mailInviteSubject)) {
             //Attach image always at the end
-            URL googleUrl = Thread.currentThread().getContextClassLoader().getResource("../jsp/images/smallGoogle.jpg");
-            Assert.notNull(googleUrl);
-            FileSystemResource googleRes = new FileSystemResource(googleUrl.getPath());
-            helper.addInline("googlePlus.logo", googleRes);
-
-            //Attach image always at the end
-            URL facebookUrl = Thread.currentThread().getContextClassLoader().getResource("../jsp/images/smallFacebook.jpg");
-            Assert.notNull(facebookUrl);
-            FileSystemResource facebookRes = new FileSystemResource(facebookUrl.getPath());
-            helper.addInline("facebook.logo", facebookRes);
-
-            //Attach image always at the end
-            URL iosUrl = Thread.currentThread().getContextClassLoader().getResource("../jsp/images/app-store151x48.jpg");
-            Assert.notNull(iosUrl);
-            FileSystemResource iosRes = new FileSystemResource(iosUrl.getPath());
-            helper.addInline("ios.logo", iosRes);
-
-            //Attach image always at the end
-            URL androidUrl = Thread.currentThread().getContextClassLoader().getResource("../jsp/images/googlePlay151x47.jpg");
-            Assert.notNull(androidUrl);
-            FileSystemResource androidRes = new FileSystemResource(androidUrl.getPath());
-            helper.addInline("android.logo", androidRes);
+            helper.addInline("googlePlus.logo", getFileSystemResource(googleSmall));
+            helper.addInline("facebook.logo", getFileSystemResource(facebookSmall));
+            helper.addInline("ios.logo", getFileSystemResource(appStore));
+            helper.addInline("android.logo", getFileSystemResource(googlePlay));
         }
 
         try {
@@ -530,6 +532,12 @@ public class MailService {
             LOG.error("Mail send exception={}", mailSendException.getLocalizedMessage());
             throw new MessagingException(mailSendException.getLocalizedMessage(), mailSendException);
         }
+    }
+
+    private FileSystemResource getFileSystemResource(String location) {
+        URL url = Thread.currentThread().getContextClassLoader().getResource(".");
+        Assert.notNull(url, "File not found at location " + location);
+        return new FileSystemResource(url.getPath());
     }
 
     private String freemarkerToString(String ftl, Map<String, String> rootMap) throws IOException, TemplateException {

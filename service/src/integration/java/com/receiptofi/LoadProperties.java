@@ -17,6 +17,7 @@ import java.io.FileFilter;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Properties;
 
 /**
@@ -39,10 +40,12 @@ public class LoadProperties {
             "activeProfile" +
             File.separator;
 
-    public static final String CONF = File.separator +
+    public static final String CLASSES = File.separator +
             "WEB-INF" +
             File.separator +
-            "classes" +
+            "classes";
+
+    public static final String CONF = CLASSES +
             File.separator +
             "conf";
 
@@ -52,16 +55,26 @@ public class LoadProperties {
                     "dev.properties",
                     "test.properties",
                     "prod.properties",
+                    "application-messages.properties",
                     /** Prod passwords are in saved in pass.properties */
                     "pass.properties"
             )
+    );
+
+    public static final FileFilter message_propertiesF = new WildcardFileFilter(
+            Collections.singletonList("messages.properties")
     );
 
     public static void loadProperties(Properties properties) throws IOException {
         if (properties.keySet().isEmpty()) {
             /** service is the path name for this class. */
             File[] profileDir = findFiles(ReceiptServiceITest.class.getResource("").getPath().split("service")[0] + LoadProperties.BUILD, LoadProperties.profileF);
-            File[] propertiesFiles = findFiles(profileDir[0].getAbsolutePath() + LoadProperties.CONF, LoadProperties.propertiesF);
+            File[] propertiesFiles = findFiles(profileDir[0].getAbsolutePath() + CONF, propertiesF);
+            for (File file : propertiesFiles) {
+                properties.load(new FileReader(file));
+            }
+
+            propertiesFiles = findFiles(profileDir[0].getAbsolutePath() + CLASSES, message_propertiesF);
             for (File file : propertiesFiles) {
                 properties.load(new FileReader(file));
             }
