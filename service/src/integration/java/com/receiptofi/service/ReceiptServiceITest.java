@@ -1,6 +1,7 @@
 package com.receiptofi.service;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertNotNull;
 
@@ -212,8 +213,13 @@ public class ReceiptServiceITest extends RealMongoForTests {
     }
 
     @Test
+    public void testDeleteReceiptUnAuthorized() throws Exception {
+        assertFalse("Cannot delete receipt not owned", receiptService.deleteReceipt("5620057df4a3b612d7018894", "10000000002"));
+    }
+
+    @Test
     public void testDeleteReceipt() throws Exception {
-        ReceiptEntity receipt = getReceipt();
+        ReceiptEntity receipt = createReceipt();
         assertNotNull("Re-Check comment is not null", commentService.getById(receipt.getRecheckComment().getId()));
         assertNotNull("Notes is not null", commentService.getById(receipt.getNotes().getId()));
 
@@ -235,7 +241,7 @@ public class ReceiptServiceITest extends RealMongoForTests {
         assertEquals("Notification Group", NotificationGroupEnum.R, notification.getNotificationGroup());
     }
 
-    private ReceiptEntity getReceipt() throws Exception {
+    private ReceiptEntity createReceipt() throws Exception {
         ReceiptEntity receipt = populateReceipt();
         bizService.saveNewBusinessAndOrStore(receipt);
         receiptService.save(receipt);
