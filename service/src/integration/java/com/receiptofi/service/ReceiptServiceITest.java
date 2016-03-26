@@ -219,7 +219,8 @@ public class ReceiptServiceITest extends RealMongoForTests {
 
     @Test
     public void testDeleteReceipt() throws Exception {
-        ReceiptEntity receipt = createReceipt();
+        ReceiptEntity receipt = populateReceiptWithComments();
+        createReceipt(receipt);
         assertNotNull("Re-Check comment is not null", commentService.getById(receipt.getRecheckComment().getId()));
         assertNotNull("Notes is not null", commentService.getById(receipt.getNotes().getId()));
 
@@ -241,12 +242,22 @@ public class ReceiptServiceITest extends RealMongoForTests {
         assertEquals("Notification Group", NotificationGroupEnum.R, notification.getNotificationGroup());
     }
 
-    private ReceiptEntity createReceipt() throws Exception {
+    @Test
+    public void testDeleteSplitReceipt() throws Exception {
         ReceiptEntity receipt = populateReceipt();
+        createReceipt(receipt);
+    }
+
+    @Test
+    public void testDeleteSharedReceipt() throws Exception {
+        ReceiptEntity receipt = populateReceipt();
+        createReceipt(receipt);
+    }
+
+    private void createReceipt(ReceiptEntity receipt) throws Exception {
         bizService.saveNewBusinessAndOrStore(receipt);
         receiptService.save(receipt);
         itemManager.saveObjects(populateItems(receipt));
-        return receipt;
     }
 
     private ReceiptEntity populateReceipt() throws IOException {
@@ -265,6 +276,11 @@ public class ReceiptServiceITest extends RealMongoForTests {
         receipt.setBizStore(bizStoreEntity);
 
         receipt.setFileSystemEntities(createFileSystemEntities(receipt));
+        return receipt;
+    }
+
+    private ReceiptEntity populateReceiptWithComments() throws IOException {
+        ReceiptEntity receipt = populateReceipt();
         receipt.setNotes(createComment(CommentTypeEnum.NOTES));
         receipt.setRecheckComment(createComment(CommentTypeEnum.RECHECK));
         return receipt;

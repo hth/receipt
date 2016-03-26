@@ -42,7 +42,12 @@ public final class InviteManagerImpl implements InviteManager {
             Document.class,
             "collection");
 
-    @Autowired private MongoTemplate mongoTemplate;
+    private MongoTemplate mongoTemplate;
+
+    @Autowired
+    public InviteManagerImpl(MongoTemplate mongoTemplate) {
+        this.mongoTemplate = mongoTemplate;
+    }
 
     @Override
     public InviteEntity findByAuthenticationKey(String auth) {
