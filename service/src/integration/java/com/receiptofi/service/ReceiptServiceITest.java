@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 
 import com.receiptofi.IntegrationTests;
@@ -36,6 +37,8 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.ui.freemarker.FreeMarkerConfigurationFactoryBean;
 import org.springframework.web.multipart.MultipartFile;
 
+import freemarker.template.Configuration;
+import freemarker.template.Template;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -130,7 +133,8 @@ public class ReceiptServiceITest extends RealMongoForTests {
     @Mock private JavaMailSenderImpl mailSender;
     @Mock private FreeMarkerConfigurationFactoryBean freemarkerConfiguration;
     @Mock private MimeMessage message;
-
+    @Mock private Configuration configuration;
+    @Mock private Template template;
 
     @Before
     public void setup() throws IOException {
@@ -247,7 +251,7 @@ public class ReceiptServiceITest extends RealMongoForTests {
                 properties.getProperty("email.address.name"),
                 properties.getProperty("domain"),
                 properties.getProperty("https"),
-                properties.getProperty("mail.invite.subject") == null ? "" : properties.getProperty("mail.invite.subject"),
+                properties.getProperty("mail.invite.subject"),
                 properties.getProperty("mail.recover.subject"),
                 properties.getProperty("mail.validate.subject"),
                 properties.getProperty("mail.registration.active.subject"),

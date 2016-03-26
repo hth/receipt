@@ -22,6 +22,7 @@ import java.io.FileFilter;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Properties;
 
 /**
@@ -46,10 +47,12 @@ public class AmazonS3ServiceTest {
             "activeProfile" +
             File.separator;
 
-    public static final String CONF = File.separator +
+    public static final String CLASSES = File.separator +
             "WEB-INF" +
             File.separator +
-            "classes" +
+            "classes";
+
+    public static final String CONF = CLASSES +
             File.separator +
             "conf";
 
@@ -59,12 +62,17 @@ public class AmazonS3ServiceTest {
                     "dev.properties",
                     "test.properties",
                     "prod.properties",
+                    "application-messages.properties",
                     /** Prod passwords are in saved in pass.properties */
                     "pass.properties"
             )
     );
 
-    private Properties prop = new Properties();
+    public static final FileFilter message_propertiesF = new WildcardFileFilter(
+            Collections.singletonList("messages.properties")
+    );
+
+    private Properties properties = new Properties();
     private AmazonS3Service amazonS3Service;
 
     @Before
@@ -76,21 +84,26 @@ public class AmazonS3ServiceTest {
         /**
          * Loading properties file for junit.
          */
-        if (prop.keySet().isEmpty()) {
+        if (properties.keySet().isEmpty()) {
             /** loader is the path name for this class. */
             File[] profileDir = findFiles(AmazonS3ServiceTest.class.getResource("").getPath().split("loader")[0] + BUILD, profileF);
             File[] propertiesFiles = findFiles(profileDir[0].getAbsolutePath() + CONF, propertiesF);
             for (File file : propertiesFiles) {
-                prop.load(new FileReader(file));
+                properties.load(new FileReader(file));
+            }
+
+            propertiesFiles = findFiles(profileDir[0].getAbsolutePath() + CLASSES, message_propertiesF);
+            for (File file : propertiesFiles) {
+                properties.load(new FileReader(file));
             }
         }
 
-        LOG.info("bucketName={}", prop.getProperty("aws.s3.bucketName"));
-        assertTrue("properties populated", !prop.keySet().isEmpty());
+        LOG.info("bucketName={}", properties.getProperty("aws.s3.bucketName"));
+        assertTrue("properties populated", !properties.keySet().isEmpty());
         amazonS3Service = new AmazonS3Service(
-                prop.getProperty("aws.s3.accessKey"),
-                prop.getProperty("aws.s3.secretKey"),
-                prop.getProperty("aws.s3.bucketName")
+                properties.getProperty("aws.s3.accessKey"),
+                properties.getProperty("aws.s3.secretKey"),
+                properties.getProperty("aws.s3.bucketName")
         );
     }
 
@@ -101,7 +114,7 @@ public class AmazonS3ServiceTest {
 
     @Test
     public void testIfBucketExists() {
-        assertTrue("exists", amazonS3Service.getS3client().doesBucketExist(prop.getProperty("aws.s3.bucketName")));
+        assertTrue("exists", amazonS3Service.getS3client().doesBucketExist(properties.getProperty("aws.s3.bucketName")));
     }
 
     public static File[] findFiles(String location, FileFilter fileFilter) {
