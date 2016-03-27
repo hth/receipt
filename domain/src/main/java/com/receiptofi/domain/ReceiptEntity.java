@@ -49,7 +49,7 @@ import javax.validation.constraints.NotNull;
         @CompoundIndex (name = "receipt_idx", def = "{'RTXD': -1, 'RID': 1}", background = true),
         @CompoundIndex (name = "receipt_unique_idx", def = "{'CS': -1}", unique = true, background = true),
         @CompoundIndex (name = "receipt_expense_report_idx", def = "{'EXF': -1}", background = true),
-        @CompoundIndex (name = "receipt_friend_reference_idx", def = "{'RD': -1}", background = true)
+        @CompoundIndex (name = "receipt_friend_reference_idx", def = "{'RF': -1}", background = true)
 })
 public class ReceiptEntity extends BaseEntity {
     private static final Logger LOG = LoggerFactory.getLogger(ReceiptEntity.class);

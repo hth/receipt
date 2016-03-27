@@ -252,6 +252,14 @@ public interface ReceiptManager extends RepositoryManager<ReceiptEntity> {
     boolean decreaseSplitCount(String receiptId, double splitTotal, double splitTax);
 
     /**
+     * Find all receipt that are referred with matching receipt id.
+     *
+     * @param receiptId
+     * @return
+     */
+    List<ReceiptEntity> findAllReceiptWithMatchingReferReceiptId(String receiptId);
+
+    /**
      * Collection size.
      */
     long collectionSize();

@@ -12,6 +12,7 @@ import com.receiptofi.domain.ItemEntity;
 import com.receiptofi.domain.ItemEntityOCR;
 import com.receiptofi.domain.ReceiptEntity;
 import com.receiptofi.domain.SplitExpensesEntity;
+import com.receiptofi.domain.UserAccountEntity;
 import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.domain.annotation.Mobile;
 import com.receiptofi.domain.types.CommentTypeEnum;
@@ -158,6 +159,7 @@ public class ReceiptService {
     public boolean deleteReceipt(String receiptId, String rid) {
         ReceiptEntity receipt = receiptManager.getReceipt(receiptId, rid);
         if (null == receipt) {
+            LOG.warn("Could not find receipt with id={} rid={}", receiptId, rid);
             return false;
         }
 
@@ -168,6 +170,9 @@ public class ReceiptService {
                 return false;
             }
 
+            //TODO find if it has a referrer or original receipt
+            deleteAllReferredReceipt(receipt);
+            //TODO Add notification when sharing and when decline to share
 
             /** Notification message when receipt is deleted. */
             String md = notificationService.getNotificationMessageForReceiptProcess(receipt, "deleted");
@@ -218,6 +223,35 @@ public class ReceiptService {
             LOG.error("Attempt to delete inactive Receipt={}, Browser Back Action performed", receipt.getId());
             throw new RuntimeException("Receipt no longer exists");
         }
+    }
+
+    /**
+     * Delete all referred receipt matching receipt id.
+     *
+     * @param receipt
+     */
+    private void deleteAllReferredReceipt(ReceiptEntity receipt) {
+        if (receipt.getSplitCount() > 1) {
+            UserAccountEntity userAccount = accountService.findByReceiptUserId(receipt.getReceiptUserId());
+            List<ReceiptEntity> receipts = findAllReceiptWithMatchingReferReceiptId(receipt.getId());
+            for (ReceiptEntity referredReceipt : receipts) {
+                boolean status = splitAction(referredReceipt.getReceiptUserId(), SplitActionEnum.R, receipt);
+                LOG.info("Delete referred receipt status={} fid={}", status, referredReceipt.getReceiptUserId());
+                if (status) {
+                    notificationService.addNotification(
+                            notificationService.getNotificationMessageForReceiptProcess(
+                                    referredReceipt,
+                                    "removed from split by " + userAccount.getName()),
+                            NotificationTypeEnum.RECEIPT_DELETED,
+                            NotificationGroupEnum.R,
+                            referredReceipt);
+                }
+            }
+        }
+    }
+
+    public List<ReceiptEntity> findAllReceiptWithMatchingReferReceiptId(String receiptId) {
+        return receiptManager.findAllReceiptWithMatchingReferReceiptId(receiptId);
     }
 
     public boolean softDeleteFriendReceipt(String receiptId, String rid) {
@@ -547,11 +581,13 @@ public class ReceiptService {
                             if (friendReceipt == null) {
                                 friendReceipt = receiptRefreshed.createReceiptForFriend(fid);
                                 save(friendReceipt);
+                                addNotificationWhenShared(friendReceipt, receipt.getReceiptUserId());
                             } else {
                                 ReceiptEntity copyOfReceipt = receiptRefreshed.createReceiptForFriend(fid);
                                 copyOfReceipt.setId(friendReceipt.getId());
                                 copyOfReceipt.setVersion(friendReceipt.getVersion());
                                 save(copyOfReceipt);
+                                addNotificationWhenShared(copyOfReceipt, receipt.getReceiptUserId());
                             }
                         } else {
                             LOG.error("Failed to split={} fid={} rid={}", splitAction, fid, receipt.getReceiptUserId());
@@ -581,6 +617,8 @@ public class ReceiptService {
 
                             /** Remove entry. */
                             softDeleteFriendReceipt(receiptRefreshed.getId(), fid);
+
+                            addNotificationWhenSharedDeclined(receiptRefreshed, fid);
                             result = true;
                         } else {
                             LOG.error("Failed to split={} fid={} rid={}", splitAction, fid, receipt.getReceiptUserId());
@@ -626,5 +664,27 @@ public class ReceiptService {
             bizReceiptCount.put(bizStoreEntity.getId(), count);
         }
         return bizReceiptCount;
+    }
+
+    private void addNotificationWhenShared(ReceiptEntity receipt, String rid) {
+        UserAccountEntity userAccount = accountService.findByReceiptUserId(rid);
+        notificationService.addNotification(
+                notificationService.getNotificationMessageForReceiptProcess(
+                        receipt,
+                        "shared by " + userAccount.getName()),
+                NotificationTypeEnum.RECEIPT,
+                NotificationGroupEnum.R,
+                receipt);
+    }
+
+    private void addNotificationWhenSharedDeclined(ReceiptEntity receipt, String fid) {
+        UserAccountEntity userAccount = accountService.findByReceiptUserId(fid);
+        notificationService.addNotification(
+                notificationService.getNotificationMessageForReceiptProcess(
+                        receipt,
+                        "declined by " + userAccount.getName()),
+                NotificationTypeEnum.RECEIPT,
+                NotificationGroupEnum.R,
+                receipt);
     }
 }
