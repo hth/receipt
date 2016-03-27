@@ -392,6 +392,10 @@ public class ReceiptServiceITest extends RealMongoForTests {
 
     @Test
     public void testDeleteSharedReceipt() throws Exception {
+        when(mailSender.createMimeMessage()).thenReturn(message);
+        when(freemarkerConfiguration.createConfiguration()).thenReturn(configuration);
+        when(configuration.getTemplate(anyString())).thenReturn(template);
+
         /** Create New User. */
         UserAccountEntity primaryUserAccount = accountService.createNewAccount(
                 "deleteShared@receiptofi.com",
@@ -412,6 +416,21 @@ public class ReceiptServiceITest extends RealMongoForTests {
 
         UserAccountEntity userAccount = inviteNewUser("third@receiptofi.com", primaryUserAccount);
 
+        /** Split receipt with fid. */
+        boolean splitAction = receiptService.splitAction(userAccount.getReceiptUserId(), SplitActionEnum.A, receipt);
+        ReceiptEntity receiptAfterSplit = receiptService.findReceipt(receipt.getId());
+        assertEquals("Split Added Successful", true, splitAction);
+        assertEquals("Split Count", 2, receiptAfterSplit.getSplitCount());
+        assertEquals("Receipt created", false, receiptService.findAllReceipts(userAccount.getReceiptUserId()).get(0).isDeleted());
+        assertEquals("After split",
+                Maths.divide(receipt.getTotal(), receipt.getSplitCount() + 1).doubleValue(),
+                receiptAfterSplit.getSplitTotal(),
+                0.00);
+        List<ReceiptEntity> receipts = receiptService.findAllReceipts(userAccount.getReceiptUserId());
+        assertEquals("Found receipt for " + userAccount.getUserId(), 1, receipts.size());
+        compareReceiptAfterSplit(receiptAfterSplit, receipts.get(0));
+
+        /** Delete the original receipt. */
         receiptService.deleteReceipt(receipt.getId(), receipt.getReceiptUserId());
     }
 
@@ -579,14 +598,14 @@ public class ReceiptServiceITest extends RealMongoForTests {
         String inviteResponse = mailService.sendInvite(invitedUserEmail, userAccount.getReceiptUserId(), userAccount.getUserId());
         DBObject dbObject = (DBObject) JSON.parse(inviteResponse);
         assertTrue("Sent invite successfully", (boolean) dbObject.get("status"));
-        assertEquals("Invitation message", "Invitation Sent to: second@receiptofi.com", dbObject.get("message"));
+        assertEquals("Invitation message", "Invitation Sent to: " + invitedUserEmail, dbObject.get("message"));
         assertEquals("Number of pending friends", 1, friendService.getPendingConnections(userAccount.getReceiptUserId()).size());
 
         /** Re-Send invite to same new user. */
         inviteResponse = mailService.sendInvite(invitedUserEmail, userAccount.getReceiptUserId(), userAccount.getUserId());
         dbObject = (DBObject) JSON.parse(inviteResponse);
         assertTrue("Sent invite successfully", (boolean) dbObject.get("status"));
-        assertEquals("Invitation message", "Invitation Sent to: second@receiptofi.com", dbObject.get("message"));
+        assertEquals("Invitation message", "Invitation Sent to: " + invitedUserEmail, dbObject.get("message"));
         assertEquals("Number of pending friends", 1, friendService.getPendingConnections(userAccount.getReceiptUserId()).size());
 
         /** Validate and activate second user. */
