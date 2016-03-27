@@ -99,6 +99,7 @@ public class InviteController {
      * Completes user invitation sent through email
      *
      * @param form
+     * @param model
      * @param redirectAttrs
      * @param result
      * @return
