@@ -17,6 +17,7 @@ import com.receiptofi.RealMongoForTests;
 import com.receiptofi.domain.BizNameEntity;
 import com.receiptofi.domain.BizStoreEntity;
 import com.receiptofi.domain.CommentEntity;
+import com.receiptofi.domain.EmailValidateEntity;
 import com.receiptofi.domain.FileSystemEntity;
 import com.receiptofi.domain.ItemEntity;
 import com.receiptofi.domain.NotificationEntity;
@@ -286,27 +287,49 @@ public class ReceiptServiceITest extends RealMongoForTests {
 
     @Test
     public void testDeleteReceipt() throws Exception {
-        ReceiptEntity receipt = populateReceiptWithComments();
+        /** Create New User. */
+        UserAccountEntity primaryUserAccount = accountService.createNewAccount(
+                "delete@receiptofi.com",
+                "First",
+                "Name",
+                "testtest",
+                DateUtil.parseAgeForBirthday("25"));
+        assertFalse("Account validated", primaryUserAccount.isAccountValidated());
+        EmailValidateEntity emailValidate = emailValidateService.saveAccountValidate(primaryUserAccount.getReceiptUserId(), primaryUserAccount.getUserId());
+        accountService.validateAccount(emailValidate, primaryUserAccount);
+        primaryUserAccount = accountService.findByUserId(primaryUserAccount.getUserId());
+        assertTrue("Account validated", primaryUserAccount.isAccountValidated());
+
+        ReceiptEntity receipt = populateReceiptWithComments(primaryUserAccount);
         createReceipt(receipt);
         assertNotNull("Re-Check comment is not null", commentService.getById(receipt.getRecheckComment().getId()));
         assertNotNull("Notes is not null", commentService.getById(receipt.getNotes().getId()));
 
         receiptService.deleteReceipt(receipt.getId(), receipt.getReceiptUserId());
         assertEquals("Deleted receipt", true, receiptManager.getReceipt(receipt.getId(), receipt.getReceiptUserId()).isDeleted());
+        assertNull("Re-Check comment null", commentService.getById(receipt.getRecheckComment().getId()));
+        assertNull("Notes null", commentService.getById(receipt.getNotes().getId()));
 
         List<ItemEntity> items = itemService.getAllItemsOfReceipt(receipt.getId());
         assertEquals("Items count", 1, items.size());
         ItemEntity item = items.get(0);
         assertEquals("Item deleted", true, item.isDeleted());
 
-        assertNull("Re-Check comment null", commentService.getById(receipt.getRecheckComment().getId()));
-        assertNull("Notes null", commentService.getById(receipt.getNotes().getId()));
-
         List<NotificationEntity> notifications = notificationService.getAllNotifications(receipt.getReceiptUserId());
-        assertEquals("Delete notification count", 1, notifications.size());
+        assertEquals("Delete notification count", 2, notifications.size());
         NotificationEntity notification = notifications.get(0);
         assertEquals("Notification Type", NotificationTypeEnum.RECEIPT_DELETED, notification.getNotificationType());
         assertEquals("Notification Group", NotificationGroupEnum.R, notification.getNotificationGroup());
+        assertEquals("Notification Text",
+                "$1.00 'Costco' receipt deleted",
+                notification.getMessage());
+
+        notification = notifications.get(1);
+        assertEquals("Notification Type", NotificationTypeEnum.PUSH_NOTIFICATION, notification.getNotificationType());
+        assertEquals("Notification Group", NotificationGroupEnum.N, notification.getNotificationGroup());
+        assertEquals("Notification Text",
+                "Welcome First Name. Next step, take a picture of the receipt from app to process it.",
+                notification.getMessage());
     }
 
     @Test
@@ -316,46 +339,61 @@ public class ReceiptServiceITest extends RealMongoForTests {
         when(configuration.getTemplate(anyString())).thenReturn(template);
 
         /** Create New User. */
-        UserAccountEntity userAccount = accountService.createNewAccount(
-                "first@receiptofi.com",
+        UserAccountEntity primaryUserAccount = accountService.createNewAccount(
+                "deleteSplit@receiptofi.com",
                 "First",
                 "Name",
                 "testtest",
                 DateUtil.parseAgeForBirthday("25"));
+        assertFalse("Account validated", primaryUserAccount.isAccountValidated());
+        EmailValidateEntity emailValidate = emailValidateService.saveAccountValidate(primaryUserAccount.getReceiptUserId(), primaryUserAccount.getUserId());
+        accountService.validateAccount(emailValidate, primaryUserAccount);
+        primaryUserAccount = accountService.findByUserId(primaryUserAccount.getUserId());
+        assertTrue("Account validated", primaryUserAccount.isAccountValidated());
 
-        ReceiptEntity receipt = populateReceipt();
+        ReceiptEntity receipt = populateReceiptWithComments(primaryUserAccount);
         createReceipt(receipt);
+        assertNotNull("Re-Check comment is not null", commentService.getById(receipt.getRecheckComment().getId()));
+        assertNotNull("Notes is not null", commentService.getById(receipt.getNotes().getId()));
 
         /** Send invite to new user. */
-        String inviteResponse = mailService.sendInvite("second@receiptofi.com", userAccount.getReceiptUserId(), userAccount.getUserId());
+        String inviteResponse = mailService.sendInvite("second@receiptofi.com", primaryUserAccount.getReceiptUserId(), primaryUserAccount.getUserId());
         DBObject dbObject = (DBObject) JSON.parse(inviteResponse);
         assertTrue("Sent invite successfully", (boolean) dbObject.get("status"));
         assertEquals("Invitation message", "Invitation Sent to: second@receiptofi.com", dbObject.get("message"));
-        assertEquals("Number of pending friends", 1, friendService.getPendingConnections(userAccount.getReceiptUserId()).size());
+        assertEquals("Number of pending friends", 1, friendService.getPendingConnections(primaryUserAccount.getReceiptUserId()).size());
 
         /** Re-Send invite to same new user. */
-        inviteResponse = mailService.sendInvite("second@receiptofi.com", userAccount.getReceiptUserId(), userAccount.getUserId());
+        inviteResponse = mailService.sendInvite("second@receiptofi.com", primaryUserAccount.getReceiptUserId(), primaryUserAccount.getUserId());
         dbObject = (DBObject) JSON.parse(inviteResponse);
         assertTrue("Sent invite successfully", (boolean) dbObject.get("status"));
         assertEquals("Invitation message", "Invitation Sent to: second@receiptofi.com", dbObject.get("message"));
-        assertEquals("Number of pending friends", 1, friendService.getPendingConnections(userAccount.getReceiptUserId()).size());
+        assertEquals("Number of pending friends", 1, friendService.getPendingConnections(primaryUserAccount.getReceiptUserId()).size());
+
+        /** Validate and activate second user. */
+        UserAccountEntity userAccount = accountService.findByUserId("second@receiptofi.com");
+        assertFalse("Account validated", userAccount.isAccountValidated());
+        emailValidate = emailValidateService.saveAccountValidate(userAccount.getReceiptUserId(), userAccount.getUserId());
+        accountService.validateAccount(emailValidate, userAccount);
+        userAccount = accountService.findByUserId("second@receiptofi.com");
+        assertTrue("Account validated", userAccount.isAccountValidated());
 
         /** Split receipt with fid. */
-        boolean splitAction = receiptService.splitAction("10000000002", SplitActionEnum.A, receipt);
+        boolean splitAction = receiptService.splitAction(userAccount.getReceiptUserId(), SplitActionEnum.A, receipt);
         ReceiptEntity receiptAfterSplit = receiptService.findReceipt(receipt.getId());
         double expectingSplitTotal = Maths.divide(receipt.getTotal(), receipt.getSplitCount() + 1).doubleValue();
         assertEquals("Split Added Successful", true, splitAction);
         assertEquals("Split Count", 2, receiptAfterSplit.getSplitCount());
-        assertEquals("Receipt created", false, receiptService.findAllReceipts("10000000002").get(0).isDeleted());
+        assertEquals("Receipt created", false, receiptService.findAllReceipts(userAccount.getReceiptUserId()).get(0).isDeleted());
         assertEquals("After split", expectingSplitTotal, receiptAfterSplit.getSplitTotal(), 0.00);
 
         /** Delete split receipt by fid. */
-        splitAction = receiptService.splitAction("10000000002", SplitActionEnum.R, receiptAfterSplit);
+        splitAction = receiptService.splitAction(userAccount.getReceiptUserId(), SplitActionEnum.R, receiptAfterSplit);
         receiptAfterSplit = receiptService.findReceipt(receipt.getId());
         expectingSplitTotal = Maths.divide(receipt.getTotal(), receipt.getSplitCount()).doubleValue();
         assertEquals("Split Removed Successful", true, splitAction);
         assertEquals("Split Count", 1, receiptAfterSplit.getSplitCount());
-        assertEquals("Receipt deleted", true, receiptService.findAllReceipts("10000000002").get(0).isDeleted());
+        assertEquals("Receipt deleted", true, receiptService.findAllReceipts(userAccount.getReceiptUserId()).get(0).isDeleted());
         assertEquals("After split", expectingSplitTotal, receiptAfterSplit.getSplitTotal(), 0.00);
 
         receiptService.deleteReceipt(receipt.getId(), receipt.getReceiptUserId());
@@ -363,7 +401,20 @@ public class ReceiptServiceITest extends RealMongoForTests {
 
     @Test
     public void testDeleteSharedReceipt() throws Exception {
-        ReceiptEntity receipt = populateReceipt();
+        /** Create New User. */
+        UserAccountEntity primaryUserAccount = accountService.createNewAccount(
+                "deleteShared@receiptofi.com",
+                "First",
+                "Name",
+                "testtest",
+                DateUtil.parseAgeForBirthday("25"));
+        assertFalse("Account validated", primaryUserAccount.isAccountValidated());
+        EmailValidateEntity emailValidate = emailValidateService.saveAccountValidate(primaryUserAccount.getReceiptUserId(), primaryUserAccount.getUserId());
+        accountService.validateAccount(emailValidate, primaryUserAccount);
+        primaryUserAccount = accountService.findByUserId(primaryUserAccount.getUserId());
+        assertTrue("Account validated", primaryUserAccount.isAccountValidated());
+
+        ReceiptEntity receipt = populateReceipt(primaryUserAccount);
         createReceipt(receipt);
         assertNull("Re-Check comment is not null", null);
 
@@ -372,7 +423,20 @@ public class ReceiptServiceITest extends RealMongoForTests {
 
     @Test
     public void testUpdateReceiptNotes() throws Exception {
-        ReceiptEntity receipt = populateReceipt();
+        /** Create New User. */
+        UserAccountEntity primaryUserAccount = accountService.createNewAccount(
+                "notes@receiptofi.com",
+                "First",
+                "Name",
+                "testtest",
+                DateUtil.parseAgeForBirthday("25"));
+        assertFalse("Account validated", primaryUserAccount.isAccountValidated());
+        EmailValidateEntity emailValidate = emailValidateService.saveAccountValidate(primaryUserAccount.getReceiptUserId(), primaryUserAccount.getUserId());
+        accountService.validateAccount(emailValidate, primaryUserAccount);
+        primaryUserAccount = accountService.findByUserId(primaryUserAccount.getUserId());
+        assertTrue("Account validated", primaryUserAccount.isAccountValidated());
+
+        ReceiptEntity receipt = populateReceipt(primaryUserAccount);
         createReceipt(receipt);
 
         receiptService.updateReceiptNotes("My new receipt note", receipt.getId(), receipt.getReceiptUserId());
@@ -390,7 +454,20 @@ public class ReceiptServiceITest extends RealMongoForTests {
 
     @Test
     public void testUpdateReceiptComments() throws Exception {
-        ReceiptEntity receipt = populateReceipt();
+        /** Create New User. */
+        UserAccountEntity primaryUserAccount = accountService.createNewAccount(
+                "comments@receiptofi.com",
+                "First",
+                "Name",
+                "testtest",
+                DateUtil.parseAgeForBirthday("25"));
+        assertFalse("Account validated", primaryUserAccount.isAccountValidated());
+        EmailValidateEntity emailValidate = emailValidateService.saveAccountValidate(primaryUserAccount.getReceiptUserId(), primaryUserAccount.getUserId());
+        accountService.validateAccount(emailValidate, primaryUserAccount);
+        primaryUserAccount = accountService.findByUserId(primaryUserAccount.getUserId());
+        assertTrue("Account validated", primaryUserAccount.isAccountValidated());
+
+        ReceiptEntity receipt = populateReceipt(primaryUserAccount);
         createReceipt(receipt);
 
         receiptService.updateReceiptComment("My new recheck comment", receipt.getId(), receipt.getReceiptUserId());
@@ -412,9 +489,9 @@ public class ReceiptServiceITest extends RealMongoForTests {
         itemManager.saveObjects(populateItems(receipt));
     }
 
-    private ReceiptEntity populateReceipt() throws IOException {
+    private ReceiptEntity populateReceipt(UserAccountEntity userAccount) throws IOException {
         ReceiptEntity receipt = new ReceiptEntity();
-        receipt.setReceiptUserId("10000000001");
+        receipt.setReceiptUserId(userAccount.getReceiptUserId());
         receipt.setTotal(1.0);
         receipt.setReceiptDate(new Date());
 
@@ -444,8 +521,8 @@ public class ReceiptServiceITest extends RealMongoForTests {
         return receipt;
     }
 
-    private ReceiptEntity populateReceiptWithComments() throws IOException {
-        ReceiptEntity receipt = populateReceipt();
+    private ReceiptEntity populateReceiptWithComments(UserAccountEntity userAccount) throws IOException {
+        ReceiptEntity receipt = populateReceipt(userAccount);
         receipt.setNotes(createComment(CommentTypeEnum.NOTES));
         receipt.setRecheckComment(createComment(CommentTypeEnum.RECHECK));
         return receipt;

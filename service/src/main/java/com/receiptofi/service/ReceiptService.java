@@ -328,11 +328,11 @@ public class ReceiptService {
      *
      * @param notes
      * @param receiptId
-     * @param userProfileId
+     * @param rid
      * @return
      */
-    public boolean updateReceiptNotes(String notes, String receiptId, String userProfileId) {
-        ReceiptEntity receiptEntity = receiptManager.findReceipt(receiptId, userProfileId);
+    public boolean updateReceiptNotes(String notes, String receiptId, String rid) {
+        ReceiptEntity receiptEntity = receiptManager.findReceipt(receiptId, rid);
         CommentEntity commentEntity = receiptEntity.getNotes();
         boolean commentEntityBoolean = false;
         if (null == commentEntity) {
@@ -361,12 +361,12 @@ public class ReceiptService {
      *
      * @param comment
      * @param receiptId
-     * @param userProfileId
+     * @param rid
      * @return
      */
-    public boolean updateReceiptComment(String comment, String receiptId, String userProfileId) {
-        ReceiptEntity receiptEntity = receiptManager.findReceipt(receiptId, userProfileId);
-        CommentEntity commentEntity = receiptEntity.getRecheckComment();
+    public boolean updateReceiptComment(String comment, String receiptId, String rid) {
+        ReceiptEntity receipt = receiptManager.findReceipt(receiptId, rid);
+        CommentEntity commentEntity = receipt.getRecheckComment();
         boolean commentEntityBoolean = false;
         if (null == commentEntity) {
             commentEntityBoolean = true;
@@ -379,8 +379,8 @@ public class ReceiptService {
             commentEntity.setUpdated();
             commentService.save(commentEntity);
             if (commentEntityBoolean) {
-                receiptEntity.setRecheckComment(commentEntity);
-                receiptManager.save(receiptEntity);
+                receipt.setRecheckComment(commentEntity);
+                receiptManager.save(receipt);
             }
             return true;
         } catch (Exception exce) {
