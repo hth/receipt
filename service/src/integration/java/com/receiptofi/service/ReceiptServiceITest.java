@@ -358,6 +358,11 @@ public class ReceiptServiceITest extends RealMongoForTests {
         assertNotNull("Notes is not null", commentService.getById(receipt.getNotes().getId()));
 
         UserAccountEntity userAccount = inviteNewUser("second@receiptofi.com", primaryUserAccount);
+        List<NotificationEntity> notifications = notificationService.getAllNotifications(userAccount.getReceiptUserId());
+        assertEquals("Number of notification", 1, notifications.size());
+        assertEquals("First notification",
+                "Welcome second@receiptofi.com. Next step, take a picture of the receipt from app to process it.",
+                notifications.get(0).getMessage());
 
         /** Split receipt with fid. */
         boolean splitAction = receiptService.splitAction(userAccount.getReceiptUserId(), SplitActionEnum.A, receipt);
@@ -372,6 +377,11 @@ public class ReceiptServiceITest extends RealMongoForTests {
         List<ReceiptEntity> receipts = receiptService.findAllReceipts(userAccount.getReceiptUserId());
         assertEquals("Found receipt for " + userAccount.getUserId(), 1, receipts.size());
         compareReceiptAfterSplit(receiptAfterSplit, receipts.get(0));
+        notifications = notificationService.getAllNotifications(userAccount.getReceiptUserId());
+        assertEquals("Number of notification", 2, notifications.size());
+        assertEquals("First notification",
+                "$1.00 'Costco' receipt shared by First Name",
+                notifications.get(0).getMessage());
 
         /** Delete split receipt by fid. */
         splitAction = receiptService.splitAction(userAccount.getReceiptUserId(), SplitActionEnum.R, receiptAfterSplit);
@@ -387,6 +397,7 @@ public class ReceiptServiceITest extends RealMongoForTests {
         assertEquals("Found receipt for " + userAccount.getUserId(), 1, receipts.size());
         compareReceiptAfterSplitDelete(receiptAfterSplit, receipts.get(0));
 
+        /** Delete the original receipt. Clean Up. */
         receiptService.deleteReceipt(receipt.getId(), receipt.getReceiptUserId());
     }
 
@@ -415,6 +426,11 @@ public class ReceiptServiceITest extends RealMongoForTests {
         assertNull("Notes is not null", receipt.getNotes());
 
         UserAccountEntity userAccount = inviteNewUser("third@receiptofi.com", primaryUserAccount);
+        List<NotificationEntity> notifications = notificationService.getAllNotifications(userAccount.getReceiptUserId());
+        assertEquals("Number of notification", 1, notifications.size());
+        assertEquals("First notification",
+                "Welcome third@receiptofi.com. Next step, take a picture of the receipt from app to process it.",
+                notifications.get(0).getMessage());
 
         /** Split receipt with fid. */
         boolean splitAction = receiptService.splitAction(userAccount.getReceiptUserId(), SplitActionEnum.A, receipt);
@@ -429,9 +445,20 @@ public class ReceiptServiceITest extends RealMongoForTests {
         List<ReceiptEntity> receipts = receiptService.findAllReceipts(userAccount.getReceiptUserId());
         assertEquals("Found receipt for " + userAccount.getUserId(), 1, receipts.size());
         compareReceiptAfterSplit(receiptAfterSplit, receipts.get(0));
+        notifications = notificationService.getAllNotifications(userAccount.getReceiptUserId());
+        assertEquals("Number of notification", 2, notifications.size());
+        assertEquals("First notification",
+                "$1.00 'Costco' receipt shared by First Name",
+                notifications.get(0).getMessage());
 
         /** Delete the original receipt. */
         receiptService.deleteReceipt(receipt.getId(), receipt.getReceiptUserId());
+        assertEquals("None of the referred receipt", 0, receiptService.findAllReceiptWithMatchingReferReceiptId(receipt.getId()).size());
+        notifications = notificationService.getAllNotifications(userAccount.getReceiptUserId());
+        assertEquals("Number of notification", 3, notifications.size());
+        assertEquals("Unshared receipt notification",
+                "$1.00 'Costco' receipt removed from split by First Name",
+                notifications.get(0).getMessage());
     }
 
     @Test
@@ -464,6 +491,7 @@ public class ReceiptServiceITest extends RealMongoForTests {
         assertEquals("Receipt comment type", CommentTypeEnum.NOTES, receiptAfterCommentUpdate.getNotes().getCommentType());
         assertEquals("Receipt Note", "Updated receipt note", receiptAfterCommentUpdate.getNotes().getText());
 
+        /** Delete the original receipt. Clean Up. */
         receiptService.deleteReceipt(receipt.getId(), receipt.getReceiptUserId());
     }
 
@@ -497,6 +525,7 @@ public class ReceiptServiceITest extends RealMongoForTests {
         assertEquals("Receipt comment type", CommentTypeEnum.RECHECK, receiptAfterCommentUpdate.getRecheckComment().getCommentType());
         assertEquals("Receipt Re-Check comment", "Updated recheck comment", receiptAfterCommentUpdate.getRecheckComment().getText());
 
+        /** Delete the original receipt. Clean Up. */
         receiptService.deleteReceipt(receipt.getId(), receipt.getReceiptUserId());
     }
 
@@ -612,6 +641,8 @@ public class ReceiptServiceITest extends RealMongoForTests {
         UserAccountEntity createdUserAccount = accountService.findByUserId(invitedUserEmail);
         assertFalse("Account validated", createdUserAccount.isAccountValidated());
         emailValidate = emailValidateService.saveAccountValidate(createdUserAccount.getReceiptUserId(), createdUserAccount.getUserId());
+        userAccount.setFirstName("Blue");
+        userAccount.setLastName("Whale");
         accountService.validateAccount(emailValidate, createdUserAccount);
         createdUserAccount = accountService.findByUserId(invitedUserEmail);
         assertTrue("Account validated", createdUserAccount.isAccountValidated());

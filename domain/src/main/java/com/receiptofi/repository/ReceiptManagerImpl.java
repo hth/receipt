@@ -550,4 +550,17 @@ public class ReceiptManagerImpl implements ReceiptManager {
                 ReceiptEntity.class
         ).isUpdateOfExisting();
     }
+
+    @Override
+    public List<ReceiptEntity> findAllReceiptWithMatchingReferReceiptId(String receiptId) {
+        return mongoTemplate.find(
+                query(where("RF").is(receiptId)
+                        .andOperator(
+                                isActive(),
+                                isNotDeleted()
+                        )
+                ),
+                ReceiptEntity.class,
+                TABLE);
+    }
 }
