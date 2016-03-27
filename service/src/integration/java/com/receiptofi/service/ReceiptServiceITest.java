@@ -416,7 +416,8 @@ public class ReceiptServiceITest extends RealMongoForTests {
 
         ReceiptEntity receipt = populateReceipt(primaryUserAccount);
         createReceipt(receipt);
-        assertNull("Re-Check comment is not null", null);
+        assertNull("Re-Check comment is not null", receipt.getRecheckComment());
+        assertNull("Notes is not null", receipt.getNotes());
 
         receiptService.deleteReceipt(receipt.getId(), receipt.getReceiptUserId());
     }
@@ -438,6 +439,8 @@ public class ReceiptServiceITest extends RealMongoForTests {
 
         ReceiptEntity receipt = populateReceipt(primaryUserAccount);
         createReceipt(receipt);
+        assertNull("Re-Check comment is not null", receipt.getRecheckComment());
+        assertNull("Notes is not null", receipt.getNotes());
 
         receiptService.updateReceiptNotes("My new receipt note", receipt.getId(), receipt.getReceiptUserId());
         ReceiptEntity receiptAfterCommentUpdate = receiptService.findReceipt(receipt.getId());
@@ -469,6 +472,8 @@ public class ReceiptServiceITest extends RealMongoForTests {
 
         ReceiptEntity receipt = populateReceipt(primaryUserAccount);
         createReceipt(receipt);
+        assertNull("Re-Check comment is not null", receipt.getRecheckComment());
+        assertNull("Notes is not null", receipt.getNotes());
 
         receiptService.updateReceiptComment("My new recheck comment", receipt.getId(), receipt.getReceiptUserId());
         ReceiptEntity receiptAfterCommentUpdate = receiptService.findReceipt(receipt.getId());
