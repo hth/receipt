@@ -397,6 +397,12 @@ public class ReceiptServiceITest extends RealMongoForTests {
         assertEquals("Found receipt for " + userAccount.getUserId(), 1, receipts.size());
         compareReceiptAfterSplitDelete(receiptAfterSplit, receipts.get(0));
 
+        notifications = notificationService.getAllNotifications(primaryUserAccount.getReceiptUserId());
+        assertEquals("Number of notification", 4, notifications.size());
+        assertEquals("Delcine split receipt",
+                "$1.00 'Costco' receipt declined by second@receiptofi.com",
+                notifications.get(0).getMessage());
+
         /** Delete the original receipt. Clean Up. */
         receiptService.deleteReceipt(receipt.getId(), receipt.getReceiptUserId());
     }
