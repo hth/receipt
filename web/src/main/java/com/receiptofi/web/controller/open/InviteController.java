@@ -99,6 +99,7 @@ public class InviteController {
      * Completes user invitation sent through email
      *
      * @param form
+     * @param model
      * @param redirectAttrs
      * @param result
      * @return
@@ -128,25 +129,25 @@ public class InviteController {
                 userProfile.setLastName(form.getLastName().getText());
                 userProfile.active();
 
-                UserAuthenticationEntity userAuthenticationEntity = UserAuthenticationEntity.newInstance(
+                UserAuthenticationEntity userAuthentication = UserAuthenticationEntity.newInstance(
                         HashText.computeBCrypt(form.getForgotAuthenticateForm().getPassword()),
                         HashText.computeBCrypt(RandomString.newInstance().nextString())
                 );
 
                 UserAccountEntity userAccount = loginService.findByReceiptUserId(userProfile.getReceiptUserId());
 
-                userAuthenticationEntity.setId(userAccount.getUserAuthentication().getId());
-                userAuthenticationEntity.setVersion(userAccount.getUserAuthentication().getVersion());
-                userAuthenticationEntity.setCreated(userAccount.getUserAuthentication().getCreated());
+                userAuthentication.setId(userAccount.getUserAuthentication().getId());
+                userAuthentication.setVersion(userAccount.getUserAuthentication().getVersion());
+                userAuthentication.setCreated(userAccount.getUserAuthentication().getCreated());
                 try {
                     userProfileManager.save(userProfile);
-                    accountService.updateAuthentication(userAuthenticationEntity);
+                    accountService.updateAuthentication(userAuthentication);
 
                     userAccount.setFirstName(userProfile.getFirstName());
                     userAccount.setLastName(userProfile.getLastName());
                     userAccount.active();
                     userAccount.setAccountValidated(true);
-                    userAccount.setUserAuthentication(userAuthenticationEntity);
+                    userAccount.setUserAuthentication(userAuthentication);
                     accountService.saveUserAccount(userAccount);
 
                     inviteService.invalidateAllEntries(invite);
