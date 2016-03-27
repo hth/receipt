@@ -357,27 +357,7 @@ public class ReceiptServiceITest extends RealMongoForTests {
         assertNotNull("Re-Check comment is not null", commentService.getById(receipt.getRecheckComment().getId()));
         assertNotNull("Notes is not null", commentService.getById(receipt.getNotes().getId()));
 
-        /** Send invite to new user. */
-        String inviteResponse = mailService.sendInvite("second@receiptofi.com", primaryUserAccount.getReceiptUserId(), primaryUserAccount.getUserId());
-        DBObject dbObject = (DBObject) JSON.parse(inviteResponse);
-        assertTrue("Sent invite successfully", (boolean) dbObject.get("status"));
-        assertEquals("Invitation message", "Invitation Sent to: second@receiptofi.com", dbObject.get("message"));
-        assertEquals("Number of pending friends", 1, friendService.getPendingConnections(primaryUserAccount.getReceiptUserId()).size());
-
-        /** Re-Send invite to same new user. */
-        inviteResponse = mailService.sendInvite("second@receiptofi.com", primaryUserAccount.getReceiptUserId(), primaryUserAccount.getUserId());
-        dbObject = (DBObject) JSON.parse(inviteResponse);
-        assertTrue("Sent invite successfully", (boolean) dbObject.get("status"));
-        assertEquals("Invitation message", "Invitation Sent to: second@receiptofi.com", dbObject.get("message"));
-        assertEquals("Number of pending friends", 1, friendService.getPendingConnections(primaryUserAccount.getReceiptUserId()).size());
-
-        /** Validate and activate second user. */
-        UserAccountEntity userAccount = accountService.findByUserId("second@receiptofi.com");
-        assertFalse("Account validated", userAccount.isAccountValidated());
-        emailValidate = emailValidateService.saveAccountValidate(userAccount.getReceiptUserId(), userAccount.getUserId());
-        accountService.validateAccount(emailValidate, userAccount);
-        userAccount = accountService.findByUserId("second@receiptofi.com");
-        assertTrue("Account validated", userAccount.isAccountValidated());
+        UserAccountEntity userAccount = inviteNewUser("second@receiptofi.com", primaryUserAccount);
 
         /** Split receipt with fid. */
         boolean splitAction = receiptService.splitAction(userAccount.getReceiptUserId(), SplitActionEnum.A, receipt);
@@ -429,6 +409,8 @@ public class ReceiptServiceITest extends RealMongoForTests {
         createReceipt(receipt);
         assertNull("Re-Check comment is not null", receipt.getRecheckComment());
         assertNull("Notes is not null", receipt.getNotes());
+
+        UserAccountEntity userAccount = inviteNewUser("third@receiptofi.com", primaryUserAccount);
 
         receiptService.deleteReceipt(receipt.getId(), receipt.getReceiptUserId());
     }
@@ -590,6 +572,31 @@ public class ReceiptServiceITest extends RealMongoForTests {
         List<FileSystemEntity> fileSystems = new ArrayList<>();
         fileSystems.add(fileSystem);
         return fileSystems;
+    }
+
+    private UserAccountEntity inviteNewUser(String invitedUserEmail, UserAccountEntity userAccount) {
+        EmailValidateEntity emailValidate; /** Send invite to new user. */
+        String inviteResponse = mailService.sendInvite(invitedUserEmail, userAccount.getReceiptUserId(), userAccount.getUserId());
+        DBObject dbObject = (DBObject) JSON.parse(inviteResponse);
+        assertTrue("Sent invite successfully", (boolean) dbObject.get("status"));
+        assertEquals("Invitation message", "Invitation Sent to: second@receiptofi.com", dbObject.get("message"));
+        assertEquals("Number of pending friends", 1, friendService.getPendingConnections(userAccount.getReceiptUserId()).size());
+
+        /** Re-Send invite to same new user. */
+        inviteResponse = mailService.sendInvite(invitedUserEmail, userAccount.getReceiptUserId(), userAccount.getUserId());
+        dbObject = (DBObject) JSON.parse(inviteResponse);
+        assertTrue("Sent invite successfully", (boolean) dbObject.get("status"));
+        assertEquals("Invitation message", "Invitation Sent to: second@receiptofi.com", dbObject.get("message"));
+        assertEquals("Number of pending friends", 1, friendService.getPendingConnections(userAccount.getReceiptUserId()).size());
+
+        /** Validate and activate second user. */
+        UserAccountEntity createdUserAccount = accountService.findByUserId(invitedUserEmail);
+        assertFalse("Account validated", createdUserAccount.isAccountValidated());
+        emailValidate = emailValidateService.saveAccountValidate(createdUserAccount.getReceiptUserId(), createdUserAccount.getUserId());
+        accountService.validateAccount(emailValidate, createdUserAccount);
+        createdUserAccount = accountService.findByUserId(invitedUserEmail);
+        assertTrue("Account validated", createdUserAccount.isAccountValidated());
+        return createdUserAccount;
     }
 
     private void compareReceiptAfterSplit(ReceiptEntity original, ReceiptEntity split) {
