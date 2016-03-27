@@ -2,6 +2,7 @@ package com.receiptofi.service;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -381,20 +382,30 @@ public class ReceiptServiceITest extends RealMongoForTests {
         /** Split receipt with fid. */
         boolean splitAction = receiptService.splitAction(userAccount.getReceiptUserId(), SplitActionEnum.A, receipt);
         ReceiptEntity receiptAfterSplit = receiptService.findReceipt(receipt.getId());
-        double expectingSplitTotal = Maths.divide(receipt.getTotal(), receipt.getSplitCount() + 1).doubleValue();
         assertEquals("Split Added Successful", true, splitAction);
         assertEquals("Split Count", 2, receiptAfterSplit.getSplitCount());
         assertEquals("Receipt created", false, receiptService.findAllReceipts(userAccount.getReceiptUserId()).get(0).isDeleted());
-        assertEquals("After split", expectingSplitTotal, receiptAfterSplit.getSplitTotal(), 0.00);
+        assertEquals("After split",
+                Maths.divide(receipt.getTotal(), receipt.getSplitCount() + 1).doubleValue(),
+                receiptAfterSplit.getSplitTotal(),
+                0.00);
+        List<ReceiptEntity> receipts = receiptService.findAllReceipts(userAccount.getReceiptUserId());
+        assertEquals("Found receipt for " + userAccount.getUserId(), 1, receipts.size());
+        compareReceiptAfterSplit(receiptAfterSplit, receipts.get(0));
 
         /** Delete split receipt by fid. */
         splitAction = receiptService.splitAction(userAccount.getReceiptUserId(), SplitActionEnum.R, receiptAfterSplit);
         receiptAfterSplit = receiptService.findReceipt(receipt.getId());
-        expectingSplitTotal = Maths.divide(receipt.getTotal(), receipt.getSplitCount()).doubleValue();
         assertEquals("Split Removed Successful", true, splitAction);
         assertEquals("Split Count", 1, receiptAfterSplit.getSplitCount());
         assertEquals("Receipt deleted", true, receiptService.findAllReceipts(userAccount.getReceiptUserId()).get(0).isDeleted());
-        assertEquals("After split", expectingSplitTotal, receiptAfterSplit.getSplitTotal(), 0.00);
+        assertEquals("After split",
+                Maths.divide(receipt.getTotal(), receipt.getSplitCount()).doubleValue(),
+                receiptAfterSplit.getSplitTotal(),
+                0.00);
+        receipts = receiptService.findAllReceipts(userAccount.getReceiptUserId());
+        assertEquals("Found receipt for " + userAccount.getUserId(), 1, receipts.size());
+        compareReceiptAfterSplitDelete(receiptAfterSplit, receipts.get(0));
 
         receiptService.deleteReceipt(receipt.getId(), receipt.getReceiptUserId());
     }
@@ -416,7 +427,8 @@ public class ReceiptServiceITest extends RealMongoForTests {
 
         ReceiptEntity receipt = populateReceipt(primaryUserAccount);
         createReceipt(receipt);
-        assertNull("Re-Check comment is not null", null);
+        assertNull("Re-Check comment is not null", receipt.getRecheckComment());
+        assertNull("Notes is not null", receipt.getNotes());
 
         receiptService.deleteReceipt(receipt.getId(), receipt.getReceiptUserId());
     }
@@ -438,6 +450,8 @@ public class ReceiptServiceITest extends RealMongoForTests {
 
         ReceiptEntity receipt = populateReceipt(primaryUserAccount);
         createReceipt(receipt);
+        assertNull("Re-Check comment is not null", receipt.getRecheckComment());
+        assertNull("Notes is not null", receipt.getNotes());
 
         receiptService.updateReceiptNotes("My new receipt note", receipt.getId(), receipt.getReceiptUserId());
         ReceiptEntity receiptAfterCommentUpdate = receiptService.findReceipt(receipt.getId());
@@ -469,6 +483,8 @@ public class ReceiptServiceITest extends RealMongoForTests {
 
         ReceiptEntity receipt = populateReceipt(primaryUserAccount);
         createReceipt(receipt);
+        assertNull("Re-Check comment is not null", receipt.getRecheckComment());
+        assertNull("Notes is not null", receipt.getNotes());
 
         receiptService.updateReceiptComment("My new recheck comment", receipt.getId(), receipt.getReceiptUserId());
         ReceiptEntity receiptAfterCommentUpdate = receiptService.findReceipt(receipt.getId());
@@ -574,5 +590,27 @@ public class ReceiptServiceITest extends RealMongoForTests {
         List<FileSystemEntity> fileSystems = new ArrayList<>();
         fileSystems.add(fileSystem);
         return fileSystems;
+    }
+
+    private void compareReceiptAfterSplit(ReceiptEntity original, ReceiptEntity split) {
+        assertEquals(original.getSplitCount(), split.getSplitCount());
+        assertEquals(original.getId(), split.getReferReceiptId());
+        assertEquals(original.getBizName().getBusinessName(), split.getBizName().getBusinessName());
+        assertEquals(original.getBizStore().getAddress(), split.getBizStore().getAddress());
+        assertEquals(original.getTotal(), split.getTotal());
+        assertEquals(original.getSplitTotal(), split.getSplitTotal());
+        assertEquals(original.isActive(), split.isActive());
+        assertEquals(original.isDeleted(), split.isDeleted());
+    }
+
+    private void compareReceiptAfterSplitDelete(ReceiptEntity original, ReceiptEntity split) {
+        assertNotEquals(original.getSplitCount(), split.getSplitCount());
+        assertEquals(original.getId(), split.getReferReceiptId());
+        assertEquals(original.getBizName().getBusinessName(), split.getBizName().getBusinessName());
+        assertEquals(original.getBizStore().getAddress(), split.getBizStore().getAddress());
+        assertEquals(original.getTotal(), split.getTotal());
+        assertNotEquals(original.getSplitTotal(), split.getSplitTotal());
+        assertNotEquals(original.isActive(), split.isActive());
+        assertNotEquals(original.isDeleted(), split.isDeleted());
     }
 }
