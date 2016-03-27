@@ -326,9 +326,16 @@ public class ReceiptServiceITest extends RealMongoForTests {
         ReceiptEntity receipt = populateReceipt();
         createReceipt(receipt);
 
-        /** Send invite to another user. */
+        /** Send invite to new user. */
         String inviteResponse = mailService.sendInvite("second@receiptofi.com", userAccount.getReceiptUserId(), userAccount.getUserId());
         DBObject dbObject = (DBObject) JSON.parse(inviteResponse);
+        assertTrue("Sent invite successfully", (boolean) dbObject.get("status"));
+        assertEquals("Invitation message", "Invitation Sent to: second@receiptofi.com", dbObject.get("message"));
+        assertEquals("Number of pending friends", 1, friendService.getPendingConnections(userAccount.getReceiptUserId()).size());
+
+        /** Re-Send invite to same new user. */
+        inviteResponse = mailService.sendInvite("second@receiptofi.com", userAccount.getReceiptUserId(), userAccount.getUserId());
+        dbObject = (DBObject) JSON.parse(inviteResponse);
         assertTrue("Sent invite successfully", (boolean) dbObject.get("status"));
         assertEquals("Invitation message", "Invitation Sent to: second@receiptofi.com", dbObject.get("message"));
         assertEquals("Number of pending friends", 1, friendService.getPendingConnections(userAccount.getReceiptUserId()).size());
