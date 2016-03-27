@@ -350,6 +350,8 @@ public class ReceiptServiceITest extends RealMongoForTests {
         assertEquals("Split Count", 1, receiptAfterSplit.getSplitCount());
         assertEquals("Receipt deleted", true, receiptService.findAllReceipts("10000000002").get(0).isDeleted());
         assertEquals("After split", expectingSplitTotal, receiptAfterSplit.getSplitTotal(), 0.00);
+
+        receiptService.deleteReceipt(receipt.getId(), receipt.getReceiptUserId());
     }
 
     @Test
@@ -357,19 +359,44 @@ public class ReceiptServiceITest extends RealMongoForTests {
         ReceiptEntity receipt = populateReceipt();
         createReceipt(receipt);
         assertNull("Re-Check comment is not null", null);
+
+        receiptService.deleteReceipt(receipt.getId(), receipt.getReceiptUserId());
     }
 
     @Test
-    public void testUpdateReceiptNotesAndComments() throws Exception {
-        ReceiptEntity receipt = populateReceiptWithComments();
+    public void testUpdateReceiptNotes() throws Exception {
+        ReceiptEntity receipt = populateReceipt();
         createReceipt(receipt);
+
         receiptService.updateReceiptNotes("My new receipt note", receipt.getId(), receipt.getReceiptUserId());
+        ReceiptEntity receiptAfterCommentUpdate = receiptService.findReceipt(receipt.getId());
+        assertEquals("Receipt comment type", CommentTypeEnum.NOTES, receiptAfterCommentUpdate.getNotes().getCommentType());
+        assertEquals("Receipt Note", "My new receipt note", receiptAfterCommentUpdate.getNotes().getText());
+
+        receiptService.updateReceiptNotes("Updated receipt note", receipt.getId(), receipt.getReceiptUserId());
+        receiptAfterCommentUpdate = receiptService.findReceipt(receipt.getId());
+        assertEquals("Receipt comment type", CommentTypeEnum.NOTES, receiptAfterCommentUpdate.getNotes().getCommentType());
+        assertEquals("Receipt Note", "Updated receipt note", receiptAfterCommentUpdate.getNotes().getText());
+
+        receiptService.deleteReceipt(receipt.getId(), receipt.getReceiptUserId());
+    }
+
+    @Test
+    public void testUpdateReceiptComments() throws Exception {
+        ReceiptEntity receipt = populateReceipt();
+        createReceipt(receipt);
+
         receiptService.updateReceiptComment("My new recheck comment", receipt.getId(), receipt.getReceiptUserId());
-        ReceiptEntity receiptAfterUpdateComment = receiptService.findReceipt(receipt.getId());
-        assertEquals("Receipt comment type", CommentTypeEnum.NOTES, receiptAfterUpdateComment.getNotes().getCommentType());
-        assertEquals("Receipt Note", "My new receipt note", receiptAfterUpdateComment.getNotes().getText());
-        assertEquals("Receipt comment type", CommentTypeEnum.RECHECK, receiptAfterUpdateComment.getRecheckComment().getCommentType());
-        assertEquals("Receipt Re-Check comment", "My new recheck comment", receiptAfterUpdateComment.getRecheckComment().getText());
+        ReceiptEntity receiptAfterCommentUpdate = receiptService.findReceipt(receipt.getId());
+        assertEquals("Receipt comment type", CommentTypeEnum.RECHECK, receiptAfterCommentUpdate.getRecheckComment().getCommentType());
+        assertEquals("Receipt Re-Check comment", "My new recheck comment", receiptAfterCommentUpdate.getRecheckComment().getText());
+
+        receiptService.updateReceiptComment("Updated recheck comment", receipt.getId(), receipt.getReceiptUserId());
+        receiptAfterCommentUpdate = receiptService.findReceipt(receipt.getId());
+        assertEquals("Receipt comment type", CommentTypeEnum.RECHECK, receiptAfterCommentUpdate.getRecheckComment().getCommentType());
+        assertEquals("Receipt Re-Check comment", "Updated recheck comment", receiptAfterCommentUpdate.getRecheckComment().getText());
+
+        receiptService.deleteReceipt(receipt.getId(), receipt.getReceiptUserId());
     }
 
     private void createReceipt(ReceiptEntity receipt) throws Exception {
