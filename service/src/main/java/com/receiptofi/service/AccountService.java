@@ -83,6 +83,7 @@ public class AccountService {
     private String[] expenseTagColors;
     private int promotionalPeriod;
 
+    @Autowired
     public AccountService(
             @Value ("${ExpenseTags.Default:HOME,BUSINESS}")
             String[] expenseTags,
