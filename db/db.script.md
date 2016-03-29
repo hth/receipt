@@ -1,3 +1,6 @@
+#### Date Mar 27 2016 - Build 1585
+    fixed index 'receipt_friend_reference_idx' by updating the field name from RD to RD (referredId) 
+
 #### Date Dec 04 2015 - Build 1477
     db.getCollection('BIZ_STORE').update({},            { $set: {EA: false} },                  {multi: true});
 
