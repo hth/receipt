@@ -128,16 +128,16 @@ public class MailService {
             @Value ("${mail.account.not.found}")
             String accountNotFound,
 
-            @Value ("${mail.googleSmall:../jsp/images/smallGoogle.jpg}")
+            @Value ("${mail.googleSmall:..//jsp//images//smallGoogle.jpg}")
             String googleSmall,
 
-            @Value ("${mail.googlePlay:../jsp/images/googlePlay151x47.jpg}")
+            @Value ("${mail.googlePlay:..//jsp//images//googlePlay151x47.jpg}")
             String googlePlay,
 
-            @Value ("${mail.facebookSmall:../jsp/images/smallFacebook.jpg}")
+            @Value ("${mail.facebookSmall:..//jsp//images//smallFacebook.jpg}")
             String facebookSmall,
 
-            @Value ("${mail.appStore:../jsp/images/app-store151x48.jpg}")
+            @Value ("${mail.appStore:..//jsp//images//app-store151x48.jpg}")
             String appStore,
 
             AccountService accountService,
@@ -535,7 +535,7 @@ public class MailService {
     }
 
     private FileSystemResource getFileSystemResource(String location) {
-        URL url = Thread.currentThread().getContextClassLoader().getResource(".");
+        URL url = Thread.currentThread().getContextClassLoader().getResource(location);
         Assert.notNull(url, "File not found at location " + location);
         return new FileSystemResource(url.getPath());
     }
