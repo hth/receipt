@@ -81,7 +81,7 @@ public class MobilePushNotificationProcess {
         List<DocumentEntity> documents = documentService.getDocumentsForNotification(5);
         if (!documents.isEmpty()) {
             userAccountEntities = accountService.findAllTechnician();
-            LOG.info("Notification for document upload to be send, count={}", documents.size());
+            LOG.info("Notification for received new document upload to be sent, count={}", documents.size());
         } else {
             /** No notification on documents to be sent. */
             return;
@@ -94,7 +94,7 @@ public class MobilePushNotificationProcess {
                     documentService.markNotified(document.getId());
                     switch (document.getDocumentStatus()) {
                         case PENDING:
-                            LOG.info("Notifying technicians on received documents={} documentId={} rid={}",
+                            LOG.info("Notifying technicians on received new documents={} documentId={} rid={}",
                                     document.getDocumentStatus(), document.getId(), document.getReceiptUserId());
 
                             for (UserAccountEntity userAccount : userAccountEntities) {
@@ -105,7 +105,7 @@ public class MobilePushNotificationProcess {
                             success++;
                             break;
                         case REPROCESS:
-                            LOG.info("Notifying technicians on received documents={} documentId={} rid={}",
+                            LOG.info("Notifying technicians on received new documents={} documentId={} rid={}",
                                     document.getDocumentStatus(), document.getId(), document.getReceiptUserId());
 
                             for (UserAccountEntity userAccount : userAccountEntities) {
@@ -125,12 +125,12 @@ public class MobilePushNotificationProcess {
                             throw new UnsupportedOperationException("DocumentStatus not defined " + document.getDocumentStatus());
                     }
                 } catch (Exception e) {
-                    LOG.error("Received document notification failure document={} reason={}", document, e.getLocalizedMessage(), e);
+                    LOG.error("Received new document notification failure document={} reason={}", document, e.getLocalizedMessage(), e);
                     failure++;
                 }
             }
         } catch (Exception e) {
-            LOG.error("Error sending received document notification reason={}", e.getLocalizedMessage(), e);
+            LOG.error("Error sending received new document notification reason={}", e.getLocalizedMessage(), e);
         } finally {
             cronStats.addStats("success", success);
             cronStats.addStats("skipped", skipped);
@@ -138,7 +138,7 @@ public class MobilePushNotificationProcess {
             cronStats.addStats("found", documents.size());
             cronStatsService.save(cronStats);
 
-            LOG.info("Received document success={} skipped={} failure={} total={}", success, skipped, failure, documents.size());
+            LOG.info("Received new document success={} skipped={} failure={} total={}", success, skipped, failure, documents.size());
         }
     }
 
