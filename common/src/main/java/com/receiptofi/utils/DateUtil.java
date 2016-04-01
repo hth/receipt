@@ -31,8 +31,8 @@ import java.util.Date;
         "PMD.LongVariable"
 })
 public final class DateUtil {
-    public static final int MINUTE_IN_SECONDS = 60;
-    public static final int HOUR_IN_SECONDS = MINUTE_IN_SECONDS * MINUTE_IN_SECONDS;
+    private static final int MINUTE_IN_SECONDS = 60;
+    private static final int HOUR_IN_SECONDS = MINUTE_IN_SECONDS * MINUTE_IN_SECONDS;
     public static final int HOURS = 24;
     public static final int DAY_IN_SECONDS = HOUR_IN_SECONDS * 24;
     private static final Logger LOG = LoggerFactory.getLogger(DateUtil.class);
@@ -119,7 +119,7 @@ public final class DateUtil {
      * @param age any number greater than zero
      * @return start of the year as birthday
      */
-    public static String covertAgeToBirthday(String age) {
+    private static String covertAgeToBirthday(String age) {
         long years = Long.parseLong(age);
         if (years <= 0) {
             return "";
@@ -144,7 +144,7 @@ public final class DateUtil {
     }
 
     //todo add support for small AM|PM
-    private enum DateType {
+    public enum DateType {
         FRM_1(
                 "\\d{1,2}/\\d{1,2}/\\d{4}\\s\\d{1,2}:\\d{2}(PM|pm|AM|am)",
                 "12/15/2012 02:13PM",
