@@ -112,7 +112,6 @@ public class DocumentUpdateService {
      * @param receipt
      * @param items
      * @param document
-     * @throws Exception
      */
     public void processDocumentForReceipt(
             String technicianId,

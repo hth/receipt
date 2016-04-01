@@ -98,7 +98,7 @@ public class DocumentEntity extends BaseEntity {
     @Field ("PB")
     private Map<Date, String> processedBy = new LinkedHashMap<>();
 
-    @Field("NU")
+    @Field ("NU")
     private boolean notifyUser;
 
     public static DocumentEntity newInstance() {
