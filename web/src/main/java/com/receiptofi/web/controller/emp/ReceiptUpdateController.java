@@ -9,6 +9,7 @@ import com.receiptofi.domain.ItemEntityOCR;
 import com.receiptofi.domain.MileageEntity;
 import com.receiptofi.domain.ReceiptEntity;
 import com.receiptofi.domain.site.ReceiptUser;
+import com.receiptofi.domain.util.DeepCopy;
 import com.receiptofi.service.DocumentService;
 import com.receiptofi.service.DocumentUpdateService;
 import com.receiptofi.utils.ScrubbedInput;
@@ -171,7 +172,7 @@ public class ReceiptUpdateController {
         }
 
         try {
-            ReceiptEntity receipt = receiptDocumentForm.getReceiptEntity();
+            ReceiptEntity receipt = DeepCopy.getReceiptEntity(receiptDocumentForm.getReceiptDocument());
             if (documentUpdateService.hasReceiptWithSimilarChecksum(receipt.getChecksum())) {
                 LOG.info("Found pre-existing receipt with similar information for the selected date. Could be rejected and marked as duplicate.");
                 receiptDocumentForm.setErrorMessage(duplicateReceiptMessage);
@@ -180,7 +181,7 @@ public class ReceiptUpdateController {
             }
 
             //TODO add validate receipt entity as this can some times be invalid and add logic to recover a broken receipts by admin
-            List<ItemEntity> items = receiptDocumentForm.getItemEntity(receipt);
+            List<ItemEntity> items = DeepCopy.getItemEntity(receipt, receiptDocumentForm.getItems());
             receiptDocumentForm.updateItemWithTaxAmount(items, receipt);
             DocumentEntity document = receiptDocumentForm.getReceiptDocument();
 
@@ -364,10 +365,10 @@ public class ReceiptUpdateController {
         }
 
         try {
-            ReceiptEntity receipt = receiptDocumentForm.getReceiptEntity();
+            ReceiptEntity receipt = DeepCopy.getReceiptEntity(receiptDocumentForm.getReceiptDocument());
             //TODO: Note should not happen as the condition to check for duplicate has already been satisfied when receipt was first processed.
             // Unless Technician has changed the date or some data. Date change should be exclude during re-check. Something to think about.
-            if (documentUpdateService.checkIfDuplicate(receipt.getChecksum(), receiptDocumentForm.getReceiptEntity().getId())) {
+            if (documentUpdateService.checkIfDuplicate(receipt.getChecksum(), receipt.getId())) {
                 LOG.info("Found pre-existing receipt with similar information for the selected date. Could be rejected and marked as duplicate.");
 
                 receiptDocumentForm.setErrorMessage(duplicateReceiptMessage);
@@ -376,7 +377,7 @@ public class ReceiptUpdateController {
             }
 
             //TODO add validate receipt entity as this can some times be invalid and add logic to recover a broken receipts by admin
-            List<ItemEntity> items = receiptDocumentForm.getItemEntity(receipt);
+            List<ItemEntity> items = DeepCopy.getItemEntity(receipt, receiptDocumentForm.getItems());
             receiptDocumentForm.updateItemWithTaxAmount(items, receipt);
             DocumentEntity document = receiptDocumentForm.getReceiptDocument();
 

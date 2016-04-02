@@ -241,7 +241,7 @@ public class ReceiptService {
                     notificationService.addNotification(
                             notificationService.getNotificationMessageForReceiptProcess(
                                     referredReceipt,
-                                    "removed from split by " + userAccount.getName()),
+                                    "removed from splitting with you by " + userAccount.getName()),
                             NotificationTypeEnum.RECEIPT_DELETED,
                             NotificationGroupEnum.R,
                             referredReceipt);
@@ -280,6 +280,9 @@ public class ReceiptService {
                 throw new RuntimeException("Receipt could not be requested for Re-Check. Contact administrator with Receipt # " + receipt.getId() + ", contact Administrator with the Id");
             } else {
                 if (receipt.isActive()) {
+                    deleteAllReferredReceipt(receipt);
+                    /** Fetch new version as the version number has changed because of deleting referred receipt. */
+                    receipt = receiptManager.findReceipt(receipt.getId());
                     receipt.inActive();
                     List<ItemEntity> items = itemService.getAllItemsOfReceipt(receipt.getId());
 
@@ -303,6 +306,13 @@ public class ReceiptService {
                     List<ItemEntityOCR> ocrItems = getItemEntityFromItemEntityOCR(items, receiptOCR);
                     itemOCRManager.saveObjects(ocrItems);
                     itemService.deleteWhereReceipt(receipt);
+
+                    /** Add notification for recheck. */
+                    notificationService.addNotification(
+                            notificationService.getNotificationMessageForReceiptProcess(receipt, "sent for verification"),
+                            NotificationTypeEnum.RECEIPT,
+                            NotificationGroupEnum.R,
+                            receipt);
 
                     LOG.info("DocumentEntity @Id after save: " + receiptOCR.getId());
                     UserProfileEntity userProfile = accountService.findProfileByReceiptUserId(receiptOCR.getReceiptUserId());

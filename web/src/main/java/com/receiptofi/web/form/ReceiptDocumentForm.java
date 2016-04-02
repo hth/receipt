@@ -9,23 +9,16 @@ import com.receiptofi.domain.ItemEntityOCR;
 import com.receiptofi.domain.MileageEntity;
 import com.receiptofi.domain.ReceiptEntity;
 import com.receiptofi.domain.UserProfileEntity;
-import com.receiptofi.domain.types.DocumentStatusEnum;
 import com.receiptofi.domain.types.TaxEnum;
 import com.receiptofi.utils.DateUtil;
-import com.receiptofi.utils.Formatter;
 import com.receiptofi.utils.Maths;
-
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.text.WordUtils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
-import java.text.ParseException;
 import java.util.Date;
 import java.util.LinkedHashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -114,67 +107,6 @@ public final class ReceiptDocumentForm {
     @Override
     public String toString() {
         return "ReceiptDocumentForm [receiptDocument=" + receiptDocument + ", items=" + items + "]";
-    }
-
-    public ReceiptEntity getReceiptEntity() throws NumberFormatException, ParseException {
-        ReceiptEntity receipt = ReceiptEntity.newInstance();
-        receipt.setReceiptDate(DateUtil.getDateFromString(receiptDocument.getReceiptDate()));
-        receipt.setTotal(Formatter.getCurrencyFormatted(receiptDocument.getTotal()).doubleValue());
-        receipt.setTax(Formatter.getCurrencyFormatted(receiptDocument.getTax()).doubleValue());
-        receipt.setReceiptStatus(DocumentStatusEnum.PROCESSED);
-        receipt.setReceiptUserId(receiptDocument.getReceiptUserId());
-        receipt.setCreated(receiptDocument.getCreated());
-        receipt.setUpdated();
-        receipt.setBizName(receiptDocument.getBizName());
-        receipt.setBizStore(receiptDocument.getBizStore());
-        receipt.computeChecksum();
-
-        //If this is not set then user cannot reopen the a receipt for re-check.
-        //TODO When deleting historical receiptDocument make sure to remove this id from receipt referencing Document
-        receipt.setDocumentId(receiptDocument.getId());
-        receipt.setRecheckComment(receiptDocument.getRecheckComment());
-        receipt.setNotes(receiptDocument.getNotes());
-
-        //This condition is mostly true for receipt when re-checked
-        if (StringUtils.isNotEmpty(receiptDocument.getReferenceDocumentId())) {
-            receipt.setId(receiptDocument.getReferenceDocumentId());
-        }
-
-        return receipt;
-    }
-
-    /**
-     * @param receipt - Required receipt with Id
-     * @return
-     * @throws ParseException
-     */
-    public List<ItemEntity> getItemEntity(ReceiptEntity receipt) throws ParseException, NumberFormatException {
-        List<ItemEntity> listOfItems = new LinkedList<>();
-
-        for (ItemEntityOCR itemOCR : items) {
-            if (itemOCR.getName().length() != 0) {
-                String name = itemOCR.getName().trim();
-                name = StringUtils.replace(name, "\t", " ");
-                name = name.replaceAll("\\s+", " ");
-
-                ItemEntity item = new ItemEntity();
-                item.setName(WordUtils.capitalize(WordUtils.capitalizeFully(name), '.', '(', ')'));
-                item.setPrice(Formatter.getCurrencyFormatted(itemOCR.getPrice()).doubleValue());
-                item.setQuantity(itemOCR.getQuantity());
-                item.setTaxed(itemOCR.getTaxed());
-                item.setSequence(itemOCR.getSequence());
-                item.setReceipt(receipt);
-                item.setReceiptUserId(receipt.getReceiptUserId());
-                item.setExpenseTag(itemOCR.getExpenseTag());
-                item.setCreated(itemOCR.getCreated());
-                item.setUpdated();
-
-                item.setBizName(receipt.getBizName());
-                listOfItems.add(item);
-            }
-        }
-
-        return listOfItems;
     }
 
     public MileageEntity getMileageEntity() {

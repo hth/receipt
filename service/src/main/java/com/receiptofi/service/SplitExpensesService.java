@@ -2,6 +2,7 @@ package com.receiptofi.service;
 
 import com.receiptofi.domain.SplitExpensesEntity;
 import com.receiptofi.domain.UserProfileEntity;
+import com.receiptofi.domain.annotation.Mobile;
 import com.receiptofi.domain.json.JsonFriend;
 import com.receiptofi.domain.json.JsonOweExpenses;
 import com.receiptofi.domain.types.SplitStatusEnum;
@@ -73,7 +74,8 @@ public class SplitExpensesService {
         return splitExpensesManager.doesExists(rdid, rid, fid);
     }
 
-    private List<SplitExpensesEntity> getSplitExpensesFriendsForReceipt(String rdid) {
+    @Mobile
+    public List<SplitExpensesEntity> getSplitExpensesFriendsForReceipt(String rdid) {
         return splitExpensesManager.getSplitExpensesFriendsForReceipt(rdid);
     }
 
