@@ -164,7 +164,7 @@ public class DocumentUpdateServiceITest extends RealMongoForTests {
         documentManager = new DocumentManagerImpl(getMongoTemplate());
         itemOCRManager = new ItemOCRManagerImpl(getMongoTemplate());
         receiptManager = new ReceiptManagerImpl(itemManager, fileSystemManager, storageManager, getMongoTemplate());
-        messageDocumentManager = new MessageDocumentManagerImpl(getMongoTemplate());
+        messageDocumentManager = new MessageDocumentManagerImpl(10, getMongoTemplate());
         bizService = new BizService(bizNameManager, bizStoreManager, externalService);
         jmsTemplate = new JmsTemplate();
         senderJMS = new FileUploadDocumentSenderJMS("", jmsTemplate);
