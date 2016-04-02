@@ -20,6 +20,8 @@ import java.util.List;
  * Date: 3/31/16 4:43 PM
  */
 public class DeepCopy {
+    private DeepCopy() {
+    }
 
     public static ReceiptEntity getReceiptEntity(DocumentEntity document) throws NumberFormatException, ParseException {
         ReceiptEntity receipt = ReceiptEntity.newInstance();
