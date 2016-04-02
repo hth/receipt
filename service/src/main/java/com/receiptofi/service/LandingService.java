@@ -66,19 +66,49 @@ import java.util.Map;
 public class LandingService {
     private static final Logger LOG = LoggerFactory.getLogger(LandingService.class);
 
-    @Autowired private ReceiptManager receiptManager;
-    @Autowired private DocumentManager documentManager;
-    @Autowired private ItemOCRManager itemOCRManager;
-    @Autowired private BizNameManager bizNameManager;
-    @Autowired private BizStoreManager bizStoreManager;
-    @Autowired private UserProfileManager userProfileManager;
-    @Autowired private FileDBService fileDBService;
-    @Autowired private FileUploadDocumentSenderJMS senderJMS;
-    @Autowired private ItemService itemService;
-    @Autowired private NotificationService notificationService;
-    @Autowired private FileSystemService fileSystemService;
-    @Autowired private ImageSplitService imageSplitService;
-    @Autowired private ReceiptParserService receiptParserService;
+    private ReceiptManager receiptManager;
+    private DocumentManager documentManager;
+    private ItemOCRManager itemOCRManager;
+    private BizNameManager bizNameManager;
+    private BizStoreManager bizStoreManager;
+    private UserProfileManager userProfileManager;
+    private FileDBService fileDBService;
+    private FileUploadDocumentSenderJMS senderJMS;
+    private ItemService itemService;
+    private NotificationService notificationService;
+    private FileSystemService fileSystemService;
+    private ImageSplitService imageSplitService;
+    private ReceiptParserService receiptParserService;
+
+    @Autowired
+    public LandingService(
+            ReceiptManager receiptManager,
+            DocumentManager documentManager,
+            ItemOCRManager itemOCRManager,
+            BizNameManager bizNameManager,
+            BizStoreManager bizStoreManager,
+            UserProfileManager userProfileManager,
+            FileDBService fileDBService,
+            FileUploadDocumentSenderJMS senderJMS,
+            ItemService itemService,
+            NotificationService notificationService,
+            FileSystemService fileSystemService,
+            ImageSplitService imageSplitService,
+            ReceiptParserService receiptParserService) {
+        this.receiptManager = receiptManager;
+        this.documentManager = documentManager;
+        this.itemOCRManager = itemOCRManager;
+        this.bizNameManager = bizNameManager;
+        this.bizStoreManager = bizStoreManager;
+        this.userProfileManager = userProfileManager;
+        this.fileDBService = fileDBService;
+        this.senderJMS = senderJMS;
+        this.itemService = itemService;
+        this.notificationService = notificationService;
+        this.fileSystemService = fileSystemService;
+        this.imageSplitService = imageSplitService;
+        this.receiptParserService = receiptParserService;
+    }
 
     public long pendingReceipt(String rid) {
         return documentManager.numberOfPendingReceipts(rid);

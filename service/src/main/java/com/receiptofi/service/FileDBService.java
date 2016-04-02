@@ -30,7 +30,12 @@ import java.util.Collection;
 public class FileDBService {
     private static final Logger LOG = LoggerFactory.getLogger(FileDBService.class);
 
-    @Autowired private StorageManager storageManager;
+    private StorageManager storageManager;
+
+    @Autowired
+    public FileDBService(StorageManager storageManager) {
+        this.storageManager = storageManager;
+    }
 
     /**
      * Load file from database

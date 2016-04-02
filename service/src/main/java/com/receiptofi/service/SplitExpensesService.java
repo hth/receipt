@@ -69,11 +69,11 @@ public class SplitExpensesService {
         return jsonSplitFriends;
     }
 
-    public boolean doesExists(String rdid, String rid, String fid) {
+    boolean doesExists(String rdid, String rid, String fid) {
         return splitExpensesManager.doesExists(rdid, rid, fid);
     }
 
-    public List<SplitExpensesEntity> getSplitExpensesFriendsForReceipt(String rdid) {
+    private List<SplitExpensesEntity> getSplitExpensesFriendsForReceipt(String rdid) {
         return splitExpensesManager.getSplitExpensesFriendsForReceipt(rdid);
     }
 
@@ -84,15 +84,15 @@ public class SplitExpensesService {
      * @param splitTotal Total amount
      * @return
      */
-    public boolean updateSplitTotal(String rdid, Double splitTotal) {
+    boolean updateSplitTotal(String rdid, Double splitTotal) {
         return splitExpensesManager.updateSplitTotal(rdid, splitTotal);
     }
 
-    public List<SplitExpensesEntity> getOwesMe(String rid) {
+    private List<SplitExpensesEntity> getOwesMe(String rid) {
         return splitExpensesManager.getOwesMe(rid);
     }
 
-    public List<SplitExpensesEntity> getOwesOthers(String rid) {
+    private List<SplitExpensesEntity> getOwesOthers(String rid) {
         return splitExpensesManager.getOwesOthers(rid);
     }
 

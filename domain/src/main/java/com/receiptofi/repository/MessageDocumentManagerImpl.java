@@ -51,13 +51,16 @@ public final class MessageDocumentManagerImpl implements MessageDocumentManager 
             Document.class,
             "collection");
 
-    @Value ("${messageQueryLimit:10}")
     private int messageQueryLimit;
-
     private MongoTemplate mongoTemplate;
 
     @Autowired
-    public MessageDocumentManagerImpl(MongoTemplate mongoTemplate) {
+    public MessageDocumentManagerImpl(
+            @Value ("${messageQueryLimit:10}")
+            int messageQueryLimit,
+
+            MongoTemplate mongoTemplate) {
+        this.messageQueryLimit = messageQueryLimit;
         this.mongoTemplate = mongoTemplate;
     }
 

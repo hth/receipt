@@ -238,7 +238,7 @@ public class NotificationService {
         return notificationManager.setNotificationInactive(sinceDate);
     }
 
-    protected String getNotificationMessageForReceiptProcess(ReceiptEntity receipt, String action) {
+    String getNotificationMessageForReceiptProcess(ReceiptEntity receipt, String action) {
         return receipt.getTotalString() +
                 " '" +
                 receipt.getBizName().getBusinessName() +
