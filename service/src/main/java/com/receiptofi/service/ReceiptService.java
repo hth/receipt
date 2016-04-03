@@ -681,7 +681,7 @@ public class ReceiptService {
         notificationService.addNotification(
                 notificationService.getNotificationMessageForReceiptProcess(
                         receipt,
-                        "shared by " + userAccount.getName()),
+                        "was split by " + userAccount.getName() + " with you"),
                 NotificationTypeEnum.RECEIPT,
                 NotificationGroupEnum.R,
                 receipt);

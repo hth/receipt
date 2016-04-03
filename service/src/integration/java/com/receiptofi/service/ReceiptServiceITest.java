@@ -432,7 +432,7 @@ public class ReceiptServiceITest extends RealMongoForTests {
         notifications = notificationService.getAllNotifications(userAccount.getReceiptUserId());
         assertEquals("Number of notification", 2, notifications.size());
         assertEquals("First notification",
-                "$1.00 'Costco' receipt shared by First Name",
+                "$1.00 'Costco' receipt was split by First Name with you",
                 notifications.get(0).getMessage());
 
         /** Delete split receipt by fid. */
@@ -507,7 +507,7 @@ public class ReceiptServiceITest extends RealMongoForTests {
         notifications = notificationService.getAllNotifications(userAccount.getReceiptUserId());
         assertEquals("Number of notification", 2, notifications.size());
         assertEquals("First notification",
-                "$1.00 'Costco' receipt shared by Delete Shared",
+                "$1.00 'Costco' receipt was split by Delete Shared with you",
                 notifications.get(0).getMessage());
 
         /** Delete the original receipt. */
@@ -582,7 +582,7 @@ public class ReceiptServiceITest extends RealMongoForTests {
         notifications = notificationService.getAllNotifications(userAccount.getReceiptUserId());
         assertEquals("Number of notification", 2, notifications.size());
         assertEquals("First notification",
-                "$1.00 'Costco' receipt shared by Test Recheck",
+                "$1.00 'Costco' receipt was split by Test Recheck with you",
                 notifications.get(0).getMessage());
 
         /** Recheck receipt. */
