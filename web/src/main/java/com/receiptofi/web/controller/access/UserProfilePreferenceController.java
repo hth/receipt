@@ -328,20 +328,20 @@ public class UserProfilePreferenceController {
             );
 
             if (action) {
-                message.append("Deleted Expense Tag: ").append(tagName).append(" successfully.");
+                message.append("Deleted Expense Tag: ").append(tagName).append(" successfully. ");
                 if (tagReceiptCount > 0) {
-                    message.append("Removed expense tag from ").append(tagReceiptCount).append(" receipt(s).");
+                    message.append("Removed expense tag from ").append(tagReceiptCount).append(" receipt(s). ");
                     if (tagItemCount > 0) {
-                        message.append("And, removed expense tag from ").append(tagItemCount).append(" item(s).");
+                        message.append("And, removed expense tag from ").append(tagItemCount).append(" item(s). ");
                     }
                 } else if (tagItemCount > 0) {
-                    message.append("Removed expense tag from ").append(tagItemCount).append(" item(s).");
+                    message.append("Removed expense tag from ").append(tagItemCount).append(" item(s). ");
                 }
             } else {
                 message.append("Failed to delete Expense Tag: ").append(tagName);
             }
         } else {
-            message.append("Expense Tag ").append(tagName).append(" not found.");
+            message.append("Expense Tag ").append(tagName).append(" not found. ");
         }
 
         JsonObject jsonObject = new JsonObject();
@@ -395,7 +395,6 @@ public class UserProfilePreferenceController {
      *
      * @param expenseTagForm
      * @param profileForm
-     * @param redirectAttrs
      * @return
      * @throws IOException
      */
@@ -409,9 +408,7 @@ public class UserProfilePreferenceController {
             ProfileForm profileForm,
 
             @ModelAttribute ("billingForm")
-            BillingForm billingForm,
-
-            RedirectAttributes redirectAttrs
+            BillingForm billingForm
     ) throws IOException {
         UserProfileEntity userProfile = userProfilePreferenceService.forProfilePreferenceFindByReceiptUserId(profileForm.getRid());
 
