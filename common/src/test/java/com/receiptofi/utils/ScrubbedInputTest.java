@@ -11,7 +11,8 @@ import org.junit.Test;
 public class ScrubbedInputTest {
     @Test
     public void getText() throws Exception {
-
+        ScrubbedInput scrubbedInput = new ScrubbedInput("Golden Circle 25% DR 2 Litre");
+        assertEquals("", scrubbedInput.getText());
     }
 
 }
