@@ -23,7 +23,7 @@ public class DeepCopy {
     private DeepCopy() {
     }
 
-    public static ReceiptEntity getReceiptEntity(DocumentEntity document) throws NumberFormatException, ParseException {
+    public static ReceiptEntity getReceiptEntity(final DocumentEntity document) throws NumberFormatException, ParseException {
         ReceiptEntity receipt = ReceiptEntity.newInstance();
         receipt.setReceiptDate(DateUtil.getDateFromString(document.getReceiptDate()));
         receipt.setTotal(Formatter.getCurrencyFormatted(document.getTotal()).doubleValue());
@@ -55,7 +55,7 @@ public class DeepCopy {
      * @return
      * @throws ParseException
      */
-    public static List<ItemEntity> getItemEntity(ReceiptEntity receipt, List<ItemEntityOCR> items) throws ParseException, NumberFormatException {
+    public static List<ItemEntity> getItemEntity(final ReceiptEntity receipt, final List<ItemEntityOCR> items) throws ParseException, NumberFormatException {
         List<ItemEntity> listOfItems = new LinkedList<>();
 
         for (ItemEntityOCR itemOCR : items) {
