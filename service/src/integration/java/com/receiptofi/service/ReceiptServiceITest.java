@@ -611,7 +611,7 @@ public class ReceiptServiceITest extends RealMongoForTests {
         compareReceiptAfterSplitRecheck(receipt, recheckReceipt);
 
         List<ItemEntity> recheckItems = itemService.getAllItemsOfReceipt(receipt.getId());
-        assertTrue("Empty when reweceipt under recheck", recheckItems.isEmpty());
+        assertTrue("Empty when receipt is under recheck", recheckItems.isEmpty());
     }
 
     @Test
