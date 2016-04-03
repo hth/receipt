@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.owasp.html.HtmlPolicyBuilder;
 import org.owasp.html.PolicyFactory;
 
+import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 
 /**
@@ -63,6 +64,16 @@ public class TextInputScrubber {
 
         try {
             return URLDecoder.decode(input, "UTF-8");
+        } catch (IllegalArgumentException e) {
+            LOG.error("Unable to decode the input={} trying replacing text.", input, e);
+            input = input.replaceAll("%(?![0-9a-fA-F]{2})", "%25");
+            input = input.replaceAll("\\+", "%2B");
+            try {
+                return URLDecoder.decode(input, "UTF-8");
+            } catch (UnsupportedEncodingException e1) {
+                LOG.error("Unable to decode the input={}", input, e);
+                return "";
+            }
         } catch (Exception e) {
             LOG.error("Unable to decode the input={}", input, e);
             return "";
