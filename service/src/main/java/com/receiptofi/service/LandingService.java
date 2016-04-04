@@ -189,18 +189,30 @@ public class LandingService {
             DateTime dateTime = receiptGrouped.getDateTime();
 
             dateTime = dateTime.minusMonths(1);
-            ReceiptGrouped r1 = ReceiptGrouped.newInstance(BigDecimal.ZERO, dateTime.getYear(), dateTime.getMonthOfYear(), dateTime.getDayOfMonth());
+            ReceiptGrouped r1 = ReceiptGrouped.newInstance(
+                    BigDecimal.ZERO,
+                    dateTime.getYear(),
+                    dateTime.getMonthOfYear(),
+                    dateTime.getDayOfMonth());
             copiedList.add(r1);
 
             dateTime = dateTime.minusMonths(1);
-            ReceiptGrouped r2 = ReceiptGrouped.newInstance(BigDecimal.ZERO, dateTime.getYear(), dateTime.getMonthOfYear(), dateTime.getDayOfMonth());
+            ReceiptGrouped r2 = ReceiptGrouped.newInstance(
+                    BigDecimal.ZERO,
+                    dateTime.getYear(),
+                    dateTime.getMonthOfYear(),
+                    dateTime.getDayOfMonth());
             copiedList.add(r2);
         } else if (size == 2) {
             ReceiptGrouped receiptGrouped = copiedList.get(1);
             DateTime dateTime = receiptGrouped.getDateTime();
 
             dateTime = dateTime.minusMonths(1);
-            ReceiptGrouped r1 = ReceiptGrouped.newInstance(BigDecimal.ZERO, dateTime.getYear(), dateTime.getMonthOfYear(), dateTime.getDayOfMonth());
+            ReceiptGrouped r1 = ReceiptGrouped.newInstance(
+                    BigDecimal.ZERO,
+                    dateTime.getYear(),
+                    dateTime.getMonthOfYear(),
+                    dateTime.getDayOfMonth());
             copiedList.add(r1);
         }
 
@@ -208,8 +220,7 @@ public class LandingService {
     }
 
     public List<ReceiptGroupedByBizLocation> getAllObjectsGroupedByBizLocation(String userProfileId) {
-        Iterator<ReceiptGroupedByBizLocation> grpIterator = receiptManager.getAllReceiptGroupedByBizLocation(userProfileId);
-        return Lists.newArrayList(grpIterator);
+        return Lists.newArrayList(receiptManager.getAllReceiptGroupedByBizLocation(userProfileId));
     }
 
     /**
@@ -311,7 +322,7 @@ public class LandingService {
      */
     public DocumentEntity uploadDocument(UploadDocumentImage documentImage) {
         String documentBlobId = null;
-        DocumentEntity documentEntity = null;
+        DocumentEntity document = null;
         FileSystemEntity fileSystem = null;
         List<ItemEntityOCR> items;
         try {
@@ -326,8 +337,8 @@ public class LandingService {
             documentBlobId = fileDBService.saveFile(documentImage);
             documentImage.setBlobId(documentBlobId);
 
-            documentEntity = DocumentEntity.newInstance();
-            documentEntity.setDocumentStatus(DocumentStatusEnum.PENDING);
+            document = DocumentEntity.newInstance();
+            document.setDocumentStatus(DocumentStatusEnum.PENDING);
 
             fileSystem = new FileSystemEntity(
                     documentBlobId,
@@ -338,18 +349,18 @@ public class LandingService {
                     documentImage.getFileData());
             fileSystemService.save(fileSystem);
 
-            documentEntity.addReceiptBlobId(fileSystem);
-            documentEntity.setReceiptUserId(documentImage.getRid());
+            document.addReceiptBlobId(fileSystem);
+            document.setReceiptUserId(documentImage.getRid());
             //Cannot pre-select it for now
             //receiptOCR.setReceiptOf(ReceiptOfEnum.EXPENSE);
 
-            setEmptyBiz(documentEntity);
+            setEmptyBiz(document);
 
             items = new LinkedList<>();
-            receiptParserService.read(receiptOCRTranslation, documentEntity, items);
+            receiptParserService.read(receiptOCRTranslation, document, items);
 
             /** Save Document, Items and the Send JMS. */
-            documentManager.save(documentEntity);
+            documentManager.save(document);
             itemOCRManager.saveObjects(items);
 
             /** Added document uploaded successfully. */
@@ -357,12 +368,12 @@ public class LandingService {
                     fileSystem.getOriginalFilename() + " upload successful. Pending Receipt will be processed shortly.",
                     NotificationTypeEnum.DOCUMENT_UPLOADED,
                     NotificationGroupEnum.F,
-                    documentEntity);
+                    document);
 
-            LOG.info("Upload complete document={} rid={}", documentEntity.getId(), documentEntity.getReceiptUserId());
-            UserProfileEntity userProfile = userProfileManager.findByReceiptUserId(documentEntity.getReceiptUserId());
-            senderJMS.send(documentEntity, userProfile);
-            return documentEntity;
+            LOG.info("Upload complete document={} rid={}", document.getId(), document.getReceiptUserId());
+            UserProfileEntity userProfile = userProfileManager.findByReceiptUserId(document.getReceiptUserId());
+            senderJMS.send(document, userProfile);
+            return document;
         } catch (Exception exce) {
             LOG.error("Exception occurred during saving receipt={}", exce.getLocalizedMessage(), exce);
             LOG.warn("Undo all the saves");
@@ -380,23 +391,23 @@ public class LandingService {
 
             long sizeReceiptInitial = documentManager.collectionSize();
             long sizeItemInitial = itemOCRManager.collectionSize();
-            if (null != documentEntity) {
-                itemOCRManager.deleteWhereReceipt(documentEntity);
-                documentManager.deleteHard(documentEntity);
+            if (null != document) {
+                itemOCRManager.deleteWhereReceipt(document);
+                documentManager.deleteHard(document);
             }
             long sizeReceiptFinal = documentManager.collectionSize();
             long sizeItemFinal = itemOCRManager.collectionSize();
 
             if (sizeReceiptInitial == sizeReceiptFinal) {
-                LOG.warn("Initial receipt size and Final receipt size are same: '" + sizeReceiptInitial + "' : '" + sizeReceiptFinal + "'");
+                LOG.warn("Initial receipt size and Final receipt size are same: '{}' : '{}'", sizeReceiptInitial, sizeReceiptFinal);
             } else {
-                LOG.warn("Initial receipt size: " + sizeReceiptInitial + ", Final receipt size: " + sizeReceiptFinal + ". Removed Document: " + documentEntity.getId());
+                LOG.warn("Initial receipt size: {}, Final receipt size: {}. Removed Document: {}", sizeReceiptInitial, sizeReceiptFinal, document.getId());
             }
 
             if (sizeItemInitial == sizeItemFinal) {
-                LOG.warn("Initial item size and Final item size are same: '" + sizeItemInitial + "' : '" + sizeItemFinal + "'");
+                LOG.warn("Initial item size and Final item size are same: '{}' : '{}'", sizeItemInitial, sizeItemFinal);
             } else {
-                LOG.warn("Initial item size: " + sizeItemInitial + ", Final item size: " + sizeItemFinal);
+                LOG.warn("Initial item size: {}, Final item size: {}", sizeItemInitial, sizeItemFinal);
             }
 
             LOG.warn("Complete with rollback: throwing exception");
