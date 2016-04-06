@@ -81,7 +81,7 @@ public class MobilePushNotificationProcess {
         List<DocumentEntity> documents = documentService.getDocumentsForNotification(5);
         if (!documents.isEmpty()) {
             userAccounts = accountService.findAllTechnician();
-            LOG.info("Notification for received new document upload to be sent, count={}", documents.size());
+            LOG.info("Notification for received new document upload to be sent, document count={}", documents.size());
         } else {
             /** No notification on documents to be sent. */
             return;
