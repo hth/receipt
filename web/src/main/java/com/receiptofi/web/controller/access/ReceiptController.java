@@ -184,7 +184,7 @@ public class ReceiptController {
 
         Map<String, ScrubbedInput> map = ParseJsonStringToMap.jsonStringToMap(body);
         String receiptId = map.get("receiptId").getText();
-        LOG.info("Delete receiptId={}", receiptId);
+        LOG.info("Delete receiptId={} rid={}", receiptId, receiptUser.getRid());
 
         JsonObject jsonObject = new JsonObject();
         try {
