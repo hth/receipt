@@ -4,6 +4,7 @@
 package com.receiptofi.domain.value;
 
 import com.receiptofi.utils.DateUtil;
+import com.receiptofi.utils.Maths;
 
 import org.joda.time.DateTime;
 
@@ -117,7 +118,7 @@ public class ReceiptGrouped implements Serializable {
     }
 
     public BigDecimal getSplitTotal() {
-        return splitTotal;
+        return Maths.adjustScale(splitTotal);
     }
 
     @Override
