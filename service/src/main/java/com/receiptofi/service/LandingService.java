@@ -114,34 +114,34 @@ public class LandingService {
         return documentManager.numberOfPendingReceipts(rid);
     }
 
-    public long rejectedReceipt(String profileId) {
-        return documentManager.numberOfRejectedReceipts(profileId);
+    public long rejectedReceipt(String rid) {
+        return documentManager.numberOfRejectedReceipts(rid);
     }
 
     /**
      * Do not use this open end query.
      *
-     * @param profileId
+     * @param rid
      * @return
      */
-    public List<ReceiptEntity> getAllReceipts(String profileId) {
-        return receiptManager.getAllReceipts(profileId);
+    public List<ReceiptEntity> getAllReceipts(String rid) {
+        return receiptManager.getAllReceipts(rid);
     }
 
-    public List<ReceiptEntity> getAllReceiptsForTheYear(String profileId, DateTime startOfTheYear) {
-        return receiptManager.getAllReceiptsForTheYear(profileId, startOfTheYear);
+    public List<ReceiptEntity> getAllReceiptsForTheYear(String rid, DateTime startOfTheYear) {
+        return receiptManager.getAllReceiptsForTheYear(rid, startOfTheYear);
     }
 
-    public List<ReceiptEntity> getAllReceiptsForThisMonth(String profileId, DateTime monthYear) {
-        return receiptManager.getAllReceiptsForThisMonth(profileId, monthYear);
+    public List<ReceiptEntity> getAllReceiptsForThisMonth(String rid, DateTime monthYear) {
+        return receiptManager.getAllReceiptsForThisMonth(rid, monthYear);
     }
 
-    public Iterator<ReceiptGrouped> getReceiptGroupedByDate(String profileId) {
-        return receiptManager.getAllObjectsGroupedByDate(profileId);
+    public Iterator<ReceiptGrouped> getReceiptGroupedByDate(String rid) {
+        return receiptManager.getAllObjectsGroupedByDate(rid);
     }
 
-    public List<ThisYearExpenseByTag> getAllItemExpenseForTheYear(String profileId) {
-        return itemService.getAllItemExpenseForTheYear(profileId);
+    public List<ThisYearExpenseByTag> getAllItemExpenseForTheYear(String rid) {
+        return itemService.getAllItemExpenseForTheYear(rid);
     }
 
     public List<ReceiptGrouped> getReceiptGroupedByMonth(String rid) {
@@ -283,33 +283,38 @@ public class LandingService {
     /**
      * Computes all the expenses user has.
      *
-     * @param userProfileId
+     * Not being used.
+     * @param rid
      */
-    public Map<String, BigDecimal> computeTotalExpense(String userProfileId) {
-        return computeToDateExpense(getAllReceipts(userProfileId));
+    @Deprecated
+    public Map<String, BigDecimal> computeTotalExpense(String rid) {
+        return computeToDateExpense(getAllReceipts(rid));
     }
 
     /**
      * Computes YTD expenses.
      *
-     * @param userProfileId
+     * Not being used.
+     * @param rid
      */
-    public Map<String, BigDecimal> computeYearToDateExpense(String userProfileId) {
-        return computeToDateExpense(getAllReceiptsForTheYear(userProfileId, DateUtil.startOfYear()));
+    @Deprecated
+    public Map<String, BigDecimal> computeYearToDateExpense(String rid) {
+        return computeToDateExpense(getAllReceiptsForTheYear(rid, DateUtil.startOfYear()));
     }
 
+    @Deprecated
     private Map<String, BigDecimal> computeToDateExpense(List<ReceiptEntity> receipts) {
         BigDecimal tax = BigDecimal.ZERO;
         BigDecimal total = BigDecimal.ZERO;
         for (ReceiptEntity receipt : receipts) {
-            tax = Maths.add(tax, receipt.getTax());
-            total = Maths.add(total, receipt.getTotal());
+            tax = Maths.add(tax, receipt.getSplitTax());
+            total = Maths.add(total, receipt.getSplitTotal());
         }
 
         Map<String, BigDecimal> map = new HashMap<>();
-        map.put("tax", tax);
-        map.put("totalWithoutTax", Maths.subtract(total, tax));
-        map.put("total", total);
+        map.put("tax", Maths.adjustScale(tax));
+        map.put("totalWithoutTax", Maths.adjustScale(Maths.subtract(total, tax)));
+        map.put("total", Maths.adjustScale(total));
 
         return map;
     }

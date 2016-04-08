@@ -93,7 +93,7 @@ public class BizService {
      *
      * @param receiptEntity
      */
-    public void saveNewBusinessAndOrStore(ReceiptEntity receiptEntity) throws Exception {
+    public void saveNewBusinessAndOrStore(ReceiptEntity receiptEntity) {
         BizNameEntity bizNameEntity = receiptEntity.getBizName();
         BizStoreEntity bizStoreEntity = receiptEntity.getBizStore();
 
