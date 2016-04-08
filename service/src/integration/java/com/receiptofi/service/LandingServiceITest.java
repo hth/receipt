@@ -10,6 +10,8 @@ import com.receiptofi.domain.EmailValidateEntity;
 import com.receiptofi.domain.ReceiptEntity;
 import com.receiptofi.domain.UserAccountEntity;
 import com.receiptofi.domain.value.ReceiptGrouped;
+import com.receiptofi.domain.value.ReceiptListView;
+import com.receiptofi.domain.value.ReceiptListViewGrouped;
 import com.receiptofi.utils.DateUtil;
 import com.receiptofi.utils.Maths;
 
@@ -22,6 +24,7 @@ import org.junit.experimental.categories.Category;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -129,12 +132,22 @@ public class LandingServiceITest extends ITest {
 
     @Test
     public void getReceiptGroupedByMonth() throws Exception {
-
+        List<ReceiptGrouped> receipts = landingService.getReceiptGroupedByMonth(primaryUserAccount.getReceiptUserId());
+        assertEquals("Number of months", 1, receipts.size());
+        assertEquals("Month of the year", DateTime.now().getMonthOfYear(), receipts.get(0).getMonth());
+        assertEquals("SplitTotal for the month", Maths.adjustScale(new BigDecimal(5.30)), receipts.get(0).getSplitTotal());
     }
 
     @Test
     public void getReceiptsForMonths() throws Exception {
+        List<ReceiptGrouped> receipts = landingService.getReceiptGroupedByMonth(primaryUserAccount.getReceiptUserId());
+        List<ReceiptListView> receiptListViews = landingService.getReceiptsForMonths(primaryUserAccount.getReceiptUserId(), receipts);
+        assertEquals("Grouped receipts for the month", 1, receiptListViews.size());
+        assertEquals("Month of the year", DateTime.now().getMonthOfYear(), receiptListViews.get(0).getMonth());
+        assertEquals("SplitTotal for the month", Maths.adjustScale(new BigDecimal(5.30)), receiptListViews.get(0).getSplitTotal());
 
+        List<ReceiptListViewGrouped> receiptListViewGroupedList = receiptListViews.get(0).getReceiptListViewGroupedList();
+        assertEquals("Size of receipts", 2, receiptListViewGroupedList.size());
     }
 
     @Test
