@@ -170,8 +170,8 @@ public class LandingController {
         /** bizNames and bizByExpenseTypes added below to landingForm. */
         populateReceiptExpenseDonutChartDetails(landingForm, allReceiptsForThisMonth);
 
-        Map<String, BigDecimal> ytdExpenseMap = landingService.computeYearToDateExpense(receiptUser.getRid());
-        modelAndView.addAllObjects(ytdExpenseMap);
+        //Map<String, BigDecimal> ytdExpenseMap = landingService.computeYearToDateExpense(receiptUser.getRid());
+        //modelAndView.addAllObjects(ytdExpenseMap);
 
         /** Notification. */
         notificationForm.setNotifications(notificationService.getNotifications(receiptUser.getRid()));

@@ -137,38 +137,6 @@ public class ReceiptController {
         return nextPage;
     }
 
-    /**
-     * This method is not being used. Was suppose to support JSON representation of receipt data.
-     * Delete on 6/6/2016
-     * @param receiptId
-     * @return
-     */
-    @Deprecated
-    @RequestMapping (value = "/rest/remove/me/{receiptId}", method = RequestMethod.GET)
-    @ResponseBody
-    public JsonReceiptDetail loadReceipt(
-            @PathVariable
-            ScrubbedInput receiptId
-    ) {
-        LOG.info("Loading Receipt Item with id={}", receiptId);
-        ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-        JsonReceiptDetail jsonReceiptDetail = new JsonReceiptDetail();
-        ReceiptEntity receipt = receiptService.findReceipt(receiptId.getText(), receiptUser.getRid());
-        if (null == receipt) {
-            LOG.warn("User={}, tried submitting an invalid receipt={}", receiptUser.getRid(), receiptId);
-        } else {
-            List<ItemEntity> items = itemService.getAllItemsOfReceipt(receipt.getId());
-            List<ExpenseTagEntity> expenseTags = expensesService.getExpenseTags(receiptUser.getRid());
-
-            jsonReceiptDetail.setJsonReceipt(new JsonReceipt(receipt));
-            jsonReceiptDetail.setItems(items.stream().map(JsonReceiptItem::newInstance).collect(Collectors.toCollection(LinkedList::new)));
-            jsonReceiptDetail.setJsonExpenseTags(expenseTags.stream().map(JsonExpenseTag::newInstance).collect(Collectors.toList()));
-            LOG.info("populate receipt json for id={}", receiptId);
-        }
-        return jsonReceiptDetail;
-    }
-
     @RequestMapping (
             value = "/delete",
             method = RequestMethod.POST,
@@ -184,7 +152,7 @@ public class ReceiptController {
 
         Map<String, ScrubbedInput> map = ParseJsonStringToMap.jsonStringToMap(body);
         String receiptId = map.get("receiptId").getText();
-        LOG.info("Delete receiptId={}", receiptId);
+        LOG.info("Delete receiptId={} rid={}", receiptId, receiptUser.getRid());
 
         JsonObject jsonObject = new JsonObject();
         try {
