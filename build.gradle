@@ -8,6 +8,7 @@ println "Building for environment: $env"
 
 ext {
     webInf = file('/WEB-INF')
+    freemarker = file("$webInf/freemarker")
     lib = file("$webInf/lib")
     classes = file("$webInf/classes")
     conf = file("$classes/conf")
@@ -26,6 +27,7 @@ ext {
     activeProfilewarWebInfDir = file("$activeProfilewarDir$webInf")
     activeProfilewarClassesDir = file("$activeProfilewarDir$classes")
     activeProfilewarConfDir = file("$activeProfilewarDir$conf")
+    activeProfilewarFreemarkerDir = file("$activeProfilewarDir$freemarker")
 
     unzipDir = file("${buildDir}/unpacked/dist")
     unzipLibDir = file("$unzipDir$lib")
@@ -438,6 +440,7 @@ task unzip(type: Copy, dependsOn: [':web:war']) {
 task setUpProfileForJunit(dependsOn: [':clean']) << {
     activeProfilewarClassesDir.mkdirs()
     activeProfilewarConfDir.mkdirs()
+    activeProfilewarFreemarkerDir.mkdirs();
 
     copy {
         from file("web/environment/$env/$env" + ".properties")
@@ -491,6 +494,11 @@ task setUpProfileForJunit(dependsOn: [':clean']) << {
     copy {
         from "web/environment/$env/mongo-config.xml"
         into activeProfilewarWebInfDir
+    }
+
+    copy {
+        from "web/web$freemarker"
+        into activeProfilewarFreemarkerDir
     }
 }
 

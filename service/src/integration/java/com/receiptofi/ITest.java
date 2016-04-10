@@ -357,7 +357,7 @@ public class ITest extends RealMongoForTests {
         return commentEntity;
     }
 
-    private File getFile() {
+    public File getFile() {
         File file = new File("service/src/integration/resources/test-image.png");
         if (!file.exists()) {
             file = new File("build/resources/test/test-image.png");

@@ -40,10 +40,16 @@ public class LoadProperties {
             "activeProfile" +
             File.separator;
 
-    public static final String CLASSES = File.separator +
-            "WEB-INF" +
+    public static final String WEBINF = File.separator +
+            "WEB-INF";
+
+    public static final String CLASSES = WEBINF +
             File.separator +
             "classes";
+
+    public static final String FREEMARKER = WEBINF +
+            File.separator +
+            "freemarker";
 
     public static final String CONF = CLASSES +
             File.separator +
@@ -56,11 +62,12 @@ public class LoadProperties {
                     "test.properties",
                     "prod.properties",
                     "application-messages.properties",
+                    "config.properties",
                     /** Prod passwords are in saved in pass.properties */
                     "pass.properties"
             )
     );
-
+    public static final FileFilter applicationServlet = new WildcardFileFilter(Arrays.asList("receipt-servlet.xml"));
     public static final FileFilter message_propertiesF = new WildcardFileFilter(
             Collections.singletonList("messages.properties")
     );
@@ -81,7 +88,23 @@ public class LoadProperties {
         }
     }
 
-    public static File[] findFiles(String location, FileFilter fileFilter) {
+    @SuppressWarnings ("unused")
+    public static String getApplicationServletLocation() throws IOException {
+        File[] profileDir = findFiles(ReceiptServiceITest.class.getResource("").getPath().split("service")[0] + LoadProperties.BUILD, LoadProperties.profileF);
+        File[] propertiesFiles = findFiles(profileDir[0].getAbsolutePath() + WEBINF, applicationServlet);
+        assertTrue("Application Servlet exists", propertiesFiles[0].exists());
+        String fileLocation = propertiesFiles[0].getCanonicalPath();
+        return File.separator + fileLocation.split("/receipt/")[1];
+    }
+
+    public static File getFreemarkerLocation() throws IOException {
+        File[] profileDir = findFiles(ReceiptServiceITest.class.getResource("").getPath().split("service")[0] + LoadProperties.BUILD, LoadProperties.profileF);
+        File file  = new File(profileDir[0].getAbsolutePath() + FREEMARKER);
+        assertTrue("Freemarker exists", file.exists());
+        return file;
+    }
+
+    private static File[] findFiles(String location, FileFilter fileFilter) {
         File directory = new File(location);
         File[] files = directory.listFiles(fileFilter);
         assertTrue("number of files ", files.length > 0);
