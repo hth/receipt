@@ -56,10 +56,10 @@ public class MailServiceITest extends ITest {
                 properties.getProperty("email.address.name"),
                 properties.getProperty("domain"),
                 properties.getProperty("https"),
-                properties.getProperty("mail.invite.subject"),
-                properties.getProperty("mail.recover.subject"),
-                properties.getProperty("mail.validate.subject"),
-                properties.getProperty("mail.registration.active.subject"),
+                "TEST::" + properties.getProperty("mail.invite.subject"),
+                "TEST::" + properties.getProperty("mail.recover.subject"),
+                "TEST::" + properties.getProperty("mail.validate.subject"),
+                "TEST::" + properties.getProperty("mail.registration.active.subject"),
                 properties.getProperty("mail.account.not.found"),
                 getFile().getPath(),
                 getFile().getPath(),
@@ -81,12 +81,12 @@ public class MailServiceITest extends ITest {
 
     @Test
     public void registrationCompleteEmail() throws Exception {
-        assertTrue("Send invitation", mailService.registrationCompleteEmail("test@receiptofi.com", "Test"));
+        assertTrue("Sent invitation", mailService.registrationCompleteEmail("test@receiptofi.com", "Test"));
     }
 
     @Test
     public void accountValidationMail() throws Exception {
-
+        assertTrue("Account Validation", mailService.accountValidationMail("test@receiptofi.com", "Test", "$someCodeForAuth"));
     }
 
     @Test
