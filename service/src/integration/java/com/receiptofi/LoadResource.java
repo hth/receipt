@@ -32,8 +32,8 @@ import java.util.Properties;
 })
 @Configuration
 @ActiveProfiles ({"dev", "test", "prod"})
-public class LoadProperties {
-    private static final Logger LOG = LoggerFactory.getLogger(LoadProperties.class);
+public class LoadResource {
+    private static final Logger LOG = LoggerFactory.getLogger(LoadResource.class);
 
     public static final String BUILD = "build" +
             File.separator +
@@ -75,7 +75,7 @@ public class LoadProperties {
     public static void loadProperties(Properties properties) throws IOException {
         if (properties.keySet().isEmpty()) {
             /** service is the path name for this class. */
-            File[] profileDir = findFiles(ReceiptServiceITest.class.getResource("").getPath().split("service")[0] + LoadProperties.BUILD, LoadProperties.profileF);
+            File[] profileDir = findFiles(ReceiptServiceITest.class.getResource("").getPath().split("service")[0] + LoadResource.BUILD, LoadResource.profileF);
             File[] propertiesFiles = findFiles(profileDir[0].getAbsolutePath() + CONF, propertiesF);
             for (File file : propertiesFiles) {
                 properties.load(new FileReader(file));
@@ -90,7 +90,7 @@ public class LoadProperties {
 
     @SuppressWarnings ("unused")
     public static String getApplicationServletLocation() throws IOException {
-        File[] profileDir = findFiles(ReceiptServiceITest.class.getResource("").getPath().split("service")[0] + LoadProperties.BUILD, LoadProperties.profileF);
+        File[] profileDir = findFiles(ReceiptServiceITest.class.getResource("").getPath().split("service")[0] + LoadResource.BUILD, LoadResource.profileF);
         File[] propertiesFiles = findFiles(profileDir[0].getAbsolutePath() + WEBINF, applicationServlet);
         assertTrue("Application Servlet exists", propertiesFiles[0].exists());
         String fileLocation = propertiesFiles[0].getCanonicalPath();
@@ -98,7 +98,7 @@ public class LoadProperties {
     }
 
     public static File getFreemarkerLocation() throws IOException {
-        File[] profileDir = findFiles(ReceiptServiceITest.class.getResource("").getPath().split("service")[0] + LoadProperties.BUILD, LoadProperties.profileF);
+        File[] profileDir = findFiles(ReceiptServiceITest.class.getResource("").getPath().split("service")[0] + LoadResource.BUILD, LoadResource.profileF);
         File file  = new File(profileDir[0].getAbsolutePath() + FREEMARKER);
         assertTrue("Freemarker exists", file.exists());
         return file;

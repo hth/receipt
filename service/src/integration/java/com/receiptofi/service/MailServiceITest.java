@@ -1,7 +1,7 @@
 package com.receiptofi.service;
 
 import com.receiptofi.ITest;
-import com.receiptofi.LoadProperties;
+import com.receiptofi.LoadResource;
 
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.ui.freemarker.FreeMarkerConfigurationFactory;
@@ -48,7 +48,7 @@ public class MailServiceITest extends ITest {
         }
 
         freemarkerConfiguration = new FreeMarkerConfigurationFactory();
-        TemplateLoader templateLoader = new FileTemplateLoader(LoadProperties.getFreemarkerLocation());
+        TemplateLoader templateLoader = new FileTemplateLoader(LoadResource.getFreemarkerLocation());
         freemarkerConfiguration.setPreTemplateLoaders(templateLoader);
 
         mailService = new MailService(

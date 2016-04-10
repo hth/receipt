@@ -113,7 +113,7 @@ public class ITest extends RealMongoForTests {
     @Before
     public void setup() throws IOException {
         MockitoAnnotations.initMocks(this);
-        LoadProperties.loadProperties(properties);
+        LoadResource.loadProperties(properties);
         Assert.assertNotNull(properties.getProperty("google-server-api-key"));
 
         bizNameManager = new BizNameManagerImpl(getMongoTemplate());
