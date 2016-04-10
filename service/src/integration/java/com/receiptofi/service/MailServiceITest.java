@@ -1,5 +1,7 @@
 package com.receiptofi.service;
 
+import static org.junit.Assert.assertTrue;
+
 import com.receiptofi.ITest;
 import com.receiptofi.LoadResource;
 
@@ -83,7 +85,7 @@ public class MailServiceITest extends ITest {
 
     @Test
     public void registrationCompleteEmail() throws Exception {
-        mailService.registrationCompleteEmail("test@receiptofi.com", "Test");
+        assertTrue("Send invitation", mailService.registrationCompleteEmail("test@receiptofi.com", "Test"));
     }
 
     @Test
