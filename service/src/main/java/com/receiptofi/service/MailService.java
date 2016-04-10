@@ -34,7 +34,7 @@ import org.springframework.mail.MailSendException;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.freemarker.FreeMarkerConfigurationFactoryBean;
+import org.springframework.ui.freemarker.FreeMarkerConfigurationFactory;
 import org.springframework.util.Assert;
 
 import freemarker.template.Configuration;
@@ -68,7 +68,7 @@ public class MailService {
     private AccountService accountService;
     private InviteService inviteService;
     private JavaMailSenderImpl mailSender;
-    private FreeMarkerConfigurationFactoryBean freemarkerConfiguration;
+    private FreeMarkerConfigurationFactory freemarkerConfiguration;
     private EmailValidateService emailValidateService;
     private LoginService loginService;
     private UserAuthenticationManager userAuthenticationManager;
@@ -145,7 +145,7 @@ public class MailService {
             JavaMailSenderImpl mailSender,
 
             @SuppressWarnings ("SpringJavaAutowiringInspection")
-            FreeMarkerConfigurationFactoryBean freemarkerConfiguration,
+            FreeMarkerConfigurationFactory freemarkerConfiguration,
 
             EmailValidateService emailValidateService,
             FriendService friendService,

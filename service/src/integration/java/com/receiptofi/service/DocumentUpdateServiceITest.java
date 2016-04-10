@@ -3,7 +3,7 @@ package com.receiptofi.service;
 import static org.junit.Assert.assertEquals;
 
 import com.receiptofi.IntegrationTests;
-import com.receiptofi.LoadProperties;
+import com.receiptofi.LoadResource;
 import com.receiptofi.RealMongoForTests;
 import com.receiptofi.domain.ReceiptEntity;
 import com.receiptofi.repository.*;
@@ -89,7 +89,7 @@ public class DocumentUpdateServiceITest extends RealMongoForTests {
 
     @Before
     public void setup() throws IOException {
-        LoadProperties.loadProperties(properties);
+        LoadResource.loadProperties(properties);
 
         bizNameManager = new BizNameManagerImpl(getMongoTemplate());
         itemManager = new ItemManagerImpl(bizNameManager, getMongoTemplate());

@@ -113,7 +113,7 @@ public class ITest extends RealMongoForTests {
     @Before
     public void setup() throws IOException {
         MockitoAnnotations.initMocks(this);
-        LoadProperties.loadProperties(properties);
+        LoadResource.loadProperties(properties);
         Assert.assertNotNull(properties.getProperty("google-server-api-key"));
 
         bizNameManager = new BizNameManagerImpl(getMongoTemplate());
@@ -357,7 +357,7 @@ public class ITest extends RealMongoForTests {
         return commentEntity;
     }
 
-    private File getFile() {
+    public File getFile() {
         File file = new File("service/src/integration/resources/test-image.png");
         if (!file.exists()) {
             file = new File("build/resources/test/test-image.png");
