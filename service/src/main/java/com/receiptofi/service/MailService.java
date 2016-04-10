@@ -194,7 +194,6 @@ public class MailService {
 
         try {
             MimeMessage message = mailSender.createMimeMessage();
-            Assert.notNull(message, "Message is not empty");
 
             // use the true flag to indicate you need a multipart message
             MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
