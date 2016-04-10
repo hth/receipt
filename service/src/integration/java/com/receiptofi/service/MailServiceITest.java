@@ -29,25 +29,21 @@ public class MailServiceITest extends ITest {
 
     @Before
     public void classSetup() throws IOException {
-        if (!properties.getProperty("braintree.environment").equalsIgnoreCase("PRODUCTION")) {
-            mailSender = new JavaMailSenderImpl();
-            Properties mailProperties = new Properties();
-            mailProperties.put("mail.transport.protocol", properties.get("smtpProtocol"));
-            mailProperties.put("mail.smtp.auth", true);
-            mailProperties.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
-            mailProperties.put("mail.smtp.port", properties.get("sslMailPort"));
-            mailProperties.put("mail.smtp.socketFactory.port", properties.get("sslMailPort"));
-            mailProperties.put("mail.debug", true);
-            mailSender.setJavaMailProperties(mailProperties);
+        mailSender = new JavaMailSenderImpl();
+        Properties mailProperties = new Properties();
+        mailProperties.put("mail.transport.protocol", properties.get("smtpProtocol"));
+        mailProperties.put("mail.smtp.auth", true);
+        mailProperties.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+        mailProperties.put("mail.smtp.port", properties.get("sslMailPort"));
+        mailProperties.put("mail.smtp.socketFactory.port", properties.get("sslMailPort"));
+        mailProperties.put("mail.debug", true);
+        mailSender.setJavaMailProperties(mailProperties);
 
-            mailSender.setPort(Integer.parseInt(properties.getProperty("sslMailPort")));
-            mailSender.setDefaultEncoding(properties.getProperty("mailEncoding"));
-            mailSender.setHost(properties.getProperty("goDaddyMailHost"));
-            mailSender.setUsername(properties.getProperty("goDaddyUsername"));
-            mailSender.setPassword(properties.getProperty("goDaddy"));
-        } else {
-            mailSender = super.mailSender;
-        }
+        mailSender.setPort(Integer.parseInt(properties.getProperty("sslMailPort")));
+        mailSender.setDefaultEncoding(properties.getProperty("mailEncoding"));
+        mailSender.setHost(properties.getProperty("goDaddyMailHost"));
+        mailSender.setUsername(properties.getProperty("goDaddyUsername"));
+        mailSender.setPassword(properties.getProperty("goDaddy"));
 
         freemarkerConfiguration = new FreeMarkerConfigurationFactory();
         TemplateLoader templateLoader = new FileTemplateLoader(LoadResource.getFreemarkerLocation());
