@@ -30,6 +30,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
+import org.springframework.mail.MailAuthenticationException;
 import org.springframework.mail.MailSendException;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -527,7 +528,29 @@ public class MailService {
         }
 
         try {
-            mailSender.send(message);
+            int count = 0;
+            boolean connected = false;
+            while (!connected && count < 10) {
+                count ++;
+                try {
+                    mailSender.testConnection();
+                    connected = true;
+                } catch (MessagingException m) {
+                    LOG.error("Failed to connect with mail server count={} reason={}", count, m.getLocalizedMessage(), m);
+                }
+            }
+
+            count = 0;
+            boolean noAuthenticationException = false;
+            while (!noAuthenticationException && count < 10) {
+                count ++;
+                try {
+                    mailSender.send(message);
+                    noAuthenticationException = true;
+                } catch (MailAuthenticationException e) {
+                    LOG.error("Failed to send mail server count={} reason={}", count, e.getLocalizedMessage(), e);
+                }
+            }
         } catch (MailSendException mailSendException) {
             LOG.error("Mail send exception={}", mailSendException.getLocalizedMessage());
             throw new MessagingException(mailSendException.getLocalizedMessage(), mailSendException);
