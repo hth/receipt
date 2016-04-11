@@ -572,11 +572,11 @@ public class MailService {
     /**
      * When invitation fails remove all the reference to the Invitation and the new user.
      *
-     * @param inviteEntity
+     * @param invite
      */
-    private void deleteInvite(InviteEntity inviteEntity) {
+    private void deleteInvite(InviteEntity invite) {
         LOG.info("Deleting: Profile, Auth, Preferences, Invite as the invitation message failed to sent");
-        UserProfileEntity userProfile = accountService.doesUserExists(inviteEntity.getEmail());
+        UserProfileEntity userProfile = accountService.doesUserExists(invite.getEmail());
         UserAccountEntity userAccount = loginService.findByReceiptUserId(userProfile.getReceiptUserId());
         UserAuthenticationEntity userAuthenticationEntity = userAccount.getUserAuthentication();
         UserPreferenceEntity userPreferenceEntity = accountService.getPreference(userProfile);
@@ -585,7 +585,7 @@ public class MailService {
         userAuthenticationManager.deleteHard(userAuthenticationEntity);
         userAccountManager.deleteHard(userAccount);
         userProfilePreferenceService.deleteHard(userProfile);
-        inviteService.deleteHard(inviteEntity);
+        inviteService.deleteHard(invite);
     }
 
     public String sendInvite(String invitedUserEmail, String rid, String uid) {
