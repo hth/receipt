@@ -53,6 +53,8 @@ public class MailServiceITest extends ITest {
         TemplateLoader templateLoader = new FileTemplateLoader(LoadResource.getFreemarkerLocation());
         freemarkerConfiguration.setPreTemplateLoaders(templateLoader);
 
+        String appendToSubject = "::" + properties.getProperty("braintree.environment") + ":: ";
+
         mailService = new MailService(
                 properties.getProperty("do.not.reply.email"),
                 properties.getProperty("dev.sent.to"),
@@ -60,11 +62,11 @@ public class MailServiceITest extends ITest {
                 properties.getProperty("email.address.name"),
                 properties.getProperty("domain"),
                 properties.getProperty("https"),
-                "TEST::" + properties.getProperty("mail.invite.subject"),
-                "TEST::" + properties.getProperty("mail.recover.subject"),
-                "TEST::" + properties.getProperty("mail.validate.subject"),
-                "TEST::" + properties.getProperty("mail.registration.active.subject"),
-                "TEST::" + properties.getProperty("mail.account.not.found"),
+                appendToSubject + properties.getProperty("mail.invite.subject"),
+                appendToSubject + properties.getProperty("mail.recover.subject"),
+                appendToSubject + properties.getProperty("mail.validate.subject"),
+                appendToSubject + properties.getProperty("mail.registration.active.subject"),
+                appendToSubject + properties.getProperty("mail.account.not.found"),
                 getFile().getPath(),
                 getFile().getPath(),
                 getFile().getPath(),
@@ -95,6 +97,7 @@ public class MailServiceITest extends ITest {
 
     @Test
     public void mailRecoverLink() throws Exception {
+        /** Account does not exists. Send invite. */
         assertEquals("Account not found but success in sending email",
                 MailTypeEnum.SUCCESS,
                 mailService.mailRecoverLink("delete@receiptofi.com"));
