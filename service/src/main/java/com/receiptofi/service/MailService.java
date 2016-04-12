@@ -547,9 +547,12 @@ public class MailService {
                 try {
                     mailSender.send(message);
                     noAuthenticationException = true;
-                } catch (MailAuthenticationException e) {
+                    LOG.info("Mail success... subject={}", subject);
+                    return;
+                } catch (MailAuthenticationException | MailSendException e) {
                     LOG.error("Failed to send mail server count={} reason={}", count, e.getLocalizedMessage(), e);
                 }
+                LOG.warn("Mail fail... subject={}", subject);
             }
         } catch (MailSendException mailSendException) {
             LOG.error("Mail send exception={}", mailSendException.getLocalizedMessage());
