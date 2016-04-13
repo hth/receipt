@@ -490,7 +490,7 @@ public class MailService {
         try {
             MimeMessage message = mailSender.createMimeMessage();
 
-            // use the true flag to indicate you need a multipart message
+            /** Use the true flag to indicate you need a multipart message. */
             MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
             helper.setFrom(new InternetAddress(inviteeEmail, emailAddressName));
             helper.setTo(StringUtils.isEmpty(devSentTo) ? email : devSentTo);
@@ -514,13 +514,12 @@ public class MailService {
             MimeMessage message,
             MimeMessageHelper helper
     ) throws MessagingException {
-        // use the true flag to indicate the text included is HTML
+        /** Use the true flag to indicate the text included is HTML. */
         helper.setText(text, true);
         helper.setSubject(subject);
 
-        //Attach image always at the end
         if (subject.startsWith(mailInviteSubject)) {
-            //Attach image always at the end
+            /** Attach image always at the end. */
             helper.addInline("googlePlus.logo", getFileSystemResource(googleSmall));
             helper.addInline("facebook.logo", getFileSystemResource(facebookSmall));
             helper.addInline("ios.logo", getFileSystemResource(appStore));
