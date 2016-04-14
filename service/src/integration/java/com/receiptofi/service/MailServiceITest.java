@@ -1,9 +1,10 @@
 package com.receiptofi.service;
 
-import static com.receiptofi.domain.types.MailTypeEnum.ACCOUNT_NOT_FOUND;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+
+import com.google.gson.Gson;
 
 import com.receiptofi.ITest;
 import com.receiptofi.LoadResource;
@@ -17,6 +18,7 @@ import org.springframework.ui.freemarker.FreeMarkerConfigurationFactory;
 
 import freemarker.cache.FileTemplateLoader;
 import freemarker.cache.TemplateLoader;
+import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -126,6 +128,27 @@ public class MailServiceITest extends ITest {
 
     @Test
     public void sendInvite() throws Exception {
+        UserAccountEntity primaryUserAccount = accountService.findByUserId("delete@receiptofi.com");
+        if (primaryUserAccount == null) {
+            /** Create New User. */
+            primaryUserAccount = accountService.createNewAccount(
+                    "delete@receiptofi.com",
+                    "First",
+                    "Name",
+                    "testtest",
+                    DateUtil.parseAgeForBirthday("25"));
+        }
+
+        String json = mailService.sendInvite("delete@receiptofi.com", primaryUserAccount.getReceiptUserId(), primaryUserAccount.getUserId());
+        JSONObject jsonObject = new JSONObject(json);
+        assertFalse("Failed to send invite to yourself", jsonObject.getBoolean("status"));
+        assertEquals("User registering them self", "You are registered.", jsonObject.getString("message"));
+
+        json = mailService.sendInvite("delete@receiptofi", primaryUserAccount.getReceiptUserId(), primaryUserAccount.getUserId());
+        jsonObject = new JSONObject(json);
+        assertFalse("Failed to send invite to yourself", jsonObject.getBoolean("status"));
+        assertEquals("User registering with invalid email", "Invalid Email: delete@receiptofi", jsonObject.getString("message"));
+
 
     }
 }
