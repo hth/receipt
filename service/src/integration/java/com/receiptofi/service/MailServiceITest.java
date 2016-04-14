@@ -4,8 +4,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import com.google.gson.Gson;
-
 import com.receiptofi.ITest;
 import com.receiptofi.LoadResource;
 import com.receiptofi.domain.EmailValidateEntity;
@@ -149,6 +147,11 @@ public class MailServiceITest extends ITest {
         assertFalse("Failed to send invite to yourself", jsonObject.getBoolean("status"));
         assertEquals("User registering with invalid email", "Invalid Email: delete@receiptofi", jsonObject.getString("message"));
 
-
+        json = mailService.sendInvite("friend@receiptofi.com", primaryUserAccount.getReceiptUserId(), primaryUserAccount.getUserId());
+        jsonObject = new JSONObject(json);
+        assertFalse("Failed to send invite to yourself", jsonObject.getBoolean("status"));
+        assertEquals("User registering with invalid email",
+                "Unsuccessful in sending invitation: friend@receiptofi.com",
+                jsonObject.getString("message"));
     }
 }
