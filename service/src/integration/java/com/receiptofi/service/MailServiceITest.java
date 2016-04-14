@@ -2,6 +2,7 @@ package com.receiptofi.service;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import com.receiptofi.ITest;
@@ -21,6 +22,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.Properties;
 
 /**
@@ -67,10 +69,10 @@ public class MailServiceITest extends ITest {
                 appendToSubject + properties.getProperty("mail.validate.subject"),
                 appendToSubject + properties.getProperty("mail.registration.active.subject"),
                 appendToSubject + properties.getProperty("mail.account.not.found"),
-                getFile().getPath(),
-                getFile().getPath(),
-                getFile().getPath(),
-                getFile().getPath(),
+                "resources/test-image.png",
+                "resources/test-image.png",
+                "resources/test-image.png",
+                "resources/test-image.png",
                 accountService,
                 inviteService,
                 mailSender,
@@ -153,5 +155,9 @@ public class MailServiceITest extends ITest {
         assertEquals("User registering with invalid email",
                 "Unsuccessful in sending invitation: friend@receiptofi.com",
                 jsonObject.getString("message"));
+        assertEquals(
+                "Unsuccessful in sending invitation to 'friend@receiptofi.com'",
+                notificationService.getAllNotifications(primaryUserAccount.getReceiptUserId()).get(0).getMessage());
+        assertNull("Friend does not exists", accountService.findByUserId("friend@receiptofi.com"));
     }
 }

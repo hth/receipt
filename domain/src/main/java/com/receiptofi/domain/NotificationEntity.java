@@ -153,4 +153,18 @@ public class NotificationEntity extends BaseEntity {
     public void setNotificationStateToFailure() {
         this.notificationStateEnum = NotificationStateEnum.F;
     }
+
+    @Override
+    public String toString() {
+        return "NotificationEntity{" +
+                "message='" + message + '\'' +
+                ", receiptUserId='" + receiptUserId + '\'' +
+                ", notificationMarkerEnum=" + notificationMarkerEnum +
+                ", notificationType=" + notificationType +
+                ", notificationGroup=" + notificationGroup +
+                ", referenceId='" + referenceId + '\'' +
+                ", count=" + count +
+                ", notificationStateEnum=" + notificationStateEnum +
+                '}';
+    }
 }
