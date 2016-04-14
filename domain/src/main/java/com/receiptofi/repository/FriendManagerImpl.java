@@ -108,7 +108,10 @@ public class FriendManagerImpl implements FriendManager {
 
     @Override
     public void deleteHard(String receiptUserId, String friendUserId) {
-        this.mongoTemplate.remove(query(where("RID").is(receiptUserId).and("FID").is(friendUserId)));
+        this.mongoTemplate.remove(
+                query(where("RID").is(receiptUserId).and("FID").is(friendUserId)),
+                FriendEntity.class,
+                TABLE);
     }
 
     @Override
