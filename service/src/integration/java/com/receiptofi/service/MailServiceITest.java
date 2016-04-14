@@ -100,11 +100,11 @@ public class MailServiceITest extends ITest {
         /** Account does not exists. Send invite. */
         assertEquals("Account not found but success in sending email",
                 MailTypeEnum.SUCCESS,
-                mailService.mailRecoverLink("delete@receiptofi.com"));
+                mailService.mailRecoverLink("delete-mail-recover@receiptofi.com"));
 
         /** Create New User. */
         UserAccountEntity primaryUserAccount = accountService.createNewAccount(
-                "delete@receiptofi.com",
+                "delete-mail-recover@receiptofi.com",
                 "First",
                 "Name",
                 "testtest",
@@ -112,7 +112,7 @@ public class MailServiceITest extends ITest {
         assertFalse("Account validated", primaryUserAccount.isAccountValidated());
         assertEquals("Account not validated",
                 MailTypeEnum.ACCOUNT_NOT_VALIDATED,
-                mailService.mailRecoverLink("delete@receiptofi.com"));
+                mailService.mailRecoverLink("delete-mail-recover@receiptofi.com"));
 
         /** Validated account. */
         EmailValidateEntity emailValidate = emailValidateService.saveAccountValidate(primaryUserAccount.getReceiptUserId(), primaryUserAccount.getUserId());
@@ -121,7 +121,7 @@ public class MailServiceITest extends ITest {
         assertTrue("Account validated", primaryUserAccount.isAccountValidated());
         assertEquals("Account recovery link sent",
                 MailTypeEnum.SUCCESS,
-                mailService.mailRecoverLink("delete@receiptofi.com"));
+                mailService.mailRecoverLink("delete-mail-recover@receiptofi.com"));
     }
 
     @Test
