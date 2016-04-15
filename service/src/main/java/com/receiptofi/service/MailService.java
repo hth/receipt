@@ -42,7 +42,9 @@ import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 
+import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
@@ -530,7 +532,7 @@ public class MailService {
             int count = 0;
             boolean connected = false;
             while (!connected && count < 10) {
-                count ++;
+                count++;
                 try {
                     mailSender.testConnection();
                     connected = true;
@@ -542,7 +544,7 @@ public class MailService {
             count = 0;
             boolean noAuthenticationException = false;
             while (!noAuthenticationException && count < 10) {
-                count ++;
+                count++;
                 try {
                     mailSender.send(message);
                     noAuthenticationException = true;
@@ -561,6 +563,16 @@ public class MailService {
 
     private FileSystemResource getFileSystemResource(String location) {
         URL url = Thread.currentThread().getContextClassLoader().getResource(location);
+        if (url == null) {
+            try {
+                File file = new File(location);
+                if (file.exists()) {
+                    url = file.toURI().toURL();
+                }
+            } catch (MalformedURLException e) {
+                LOG.error("URL for file at location={} reason={}", location, e.getLocalizedMessage(), e);
+            }
+        }
         Assert.notNull(url, "File not found at location " + location);
         return new FileSystemResource(url.getPath());
     }
