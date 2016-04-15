@@ -10,6 +10,7 @@ import org.springframework.util.Assert;
 import java.io.File;
 import java.io.IOException;
 import java.net.InetAddress;
+import java.net.URL;
 import java.net.UnknownHostException;
 import java.nio.file.AccessDeniedException;
 import java.util.Properties;
@@ -46,6 +47,8 @@ public class ReceiptofiServletContextListener implements ServletContextListener 
         try {
             messages.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("messages.properties"));
             config.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("conf/config.properties"));
+            URL url = Thread.currentThread().getContextClassLoader().getResource("..//jsp//images//smallGoogle.jpg");
+            Assert.notNull(url, "Images for email exists");
         } catch (IOException e) {
             LOG.error("could not load config properties file reason={}", e.getLocalizedMessage(), e);
         }

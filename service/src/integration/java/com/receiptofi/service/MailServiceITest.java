@@ -2,6 +2,8 @@ package com.receiptofi.service;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import com.receiptofi.ITest;
@@ -21,6 +23,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.Properties;
 
 /**
@@ -54,6 +57,7 @@ public class MailServiceITest extends ITest {
         freemarkerConfiguration.setPreTemplateLoaders(templateLoader);
 
         String appendToSubject = "::" + properties.getProperty("braintree.environment") + ":: ";
+        String baseDirectory = this.getClass().getResource(".").getPath().split("classes")[0];
 
         mailService = new MailService(
                 properties.getProperty("do.not.reply.email"),
@@ -67,10 +71,10 @@ public class MailServiceITest extends ITest {
                 appendToSubject + properties.getProperty("mail.validate.subject"),
                 appendToSubject + properties.getProperty("mail.registration.active.subject"),
                 appendToSubject + properties.getProperty("mail.account.not.found"),
-                getFile().getPath(),
-                getFile().getPath(),
-                getFile().getPath(),
-                getFile().getPath(),
+                baseDirectory + "resources/test/smallGoogle.jpg",
+                baseDirectory + "resources/test/googlePlay151x47.jpg",
+                baseDirectory + "resources/test/smallFacebook.jpg",
+                baseDirectory + "resources/test/app-store151x48.jpg",
                 accountService,
                 inviteService,
                 mailSender,
@@ -149,9 +153,11 @@ public class MailServiceITest extends ITest {
 
         json = mailService.sendInvite("friend@receiptofi.com", primaryUserAccount.getReceiptUserId(), primaryUserAccount.getUserId());
         jsonObject = new JSONObject(json);
-        assertFalse("Failed to send invite to yourself", jsonObject.getBoolean("status"));
-        assertEquals("User registering with invalid email",
-                "Unsuccessful in sending invitation: friend@receiptofi.com",
-                jsonObject.getString("message"));
+        assertTrue("Success in sending invite", jsonObject.getBoolean("status"));
+        assertEquals("Invitation sent", "Invitation Sent to: friend@receiptofi.com", jsonObject.getString("message"));
+        assertEquals(
+                "Invitation sent to 'friend@receiptofi.com'",
+                notificationService.getAllNotifications(primaryUserAccount.getReceiptUserId()).get(0).getMessage());
+        assertNotNull("Friend does not exists", accountService.findByUserId("friend@receiptofi.com"));
     }
 }
