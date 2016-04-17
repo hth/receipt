@@ -80,15 +80,15 @@ public final class Formatter {
                     Object object = FormatterSingleton.INSTANCE.engine().eval(value);
                     d = new BigDecimal(object.toString()).setScale(Maths.SCALE_FOUR, BigDecimal.ROUND_HALF_UP);
                 } catch (ScriptException se) {
-                    LOG.error("Error parsing number value: " + value + ", exception: " + se);
-                    throw new NumberFormatException("Error parsing number value: " + value + ", exception: " + se.getLocalizedMessage());
+                    LOG.warn("Failed parsing number value={} reason={}", value, se.getLocalizedMessage(), se);
+                    throw new NumberFormatException("Failed parsing number value: " + value + ", exception: " + se.getLocalizedMessage());
                 }
                 //d = new BigDecimal(value).setScale(Maths.SCALE_FOUR, BigDecimal.ROUND_HALF_UP);
             }
             return d;
         } catch (NumberFormatException nfe) {
-            LOG.error("Error parsing number value: " + value + ", exception: " + nfe);
-            throw new NumberFormatException("Error parsing number value: " + value + ", exception: " + nfe);
+            LOG.warn("Failed parsing number value={} reason={}", value, nfe.getLocalizedMessage(), nfe);
+            throw new NumberFormatException("Failed parsing number value: " + value + ", exception: " + nfe);
         }
     }
 
@@ -109,7 +109,7 @@ public final class Formatter {
             PhoneNumber phoneNumber = FormatterSingleton.INSTANCE.phoneInstance().parse(phone, FORMAT_TO_US);
             return FormatterSingleton.INSTANCE.phoneInstance().format(phoneNumber, PhoneNumberFormat.NATIONAL);
         } catch (NumberParseException e) {
-            LOG.error("NumberParseException was thrown while parsing the phone number : " + e.toString());
+            LOG.warn("Failed parsing phone number={} reason={}", phone, e.getLocalizedMessage(), e);
             return StringUtils.EMPTY;
         }
     }
