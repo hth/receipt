@@ -115,7 +115,7 @@ public class InviteController {
     ) {
         inviteAuthenticateValidator.validate(form, result);
         if (result.hasErrors()) {
-            LOG.error("validation error");
+            LOG.warn("validation fail");
             model.addAttribute("registrationTurnedOn", registrationTurnedOn);
             return authenticatePage;
         } else {
