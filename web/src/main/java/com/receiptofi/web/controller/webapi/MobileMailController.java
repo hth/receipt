@@ -146,7 +146,7 @@ public class MobileMailController {
 
             HttpServletResponse httpServletResponse
     ) throws IOException {
-        LOG.debug("Invite initiated from mobile");
+        LOG.info("Invite initiated from mobile");
 
         if (webApiAccessToken.equals(apiAccessToken)) {
             Map<String, ScrubbedInput> map = new HashMap<>();
@@ -155,7 +155,7 @@ public class MobileMailController {
             } catch (IOException e) {
                 LOG.error("could not parse mailJson={} reason={}", recoverJson, e.getLocalizedMessage(), e);
             }
-            Assert.notEmpty(map);
+            Assert.notEmpty(map, "Invite data in map");
             String inviteEmail = map.get("inviteEmail").getText();
             String rid = map.get("rid").getText();
             UserAccountEntity userAccount = accountService.findByReceiptUserId(rid);
