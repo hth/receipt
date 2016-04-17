@@ -105,7 +105,7 @@ public class ReceiptUpdateController {
     ) {
         /** Gymnastic to show BindingResult errors if any or any special receipt document containing error message. */
         if (model.asMap().containsKey("result")) {
-            /** result contains validation errors. */
+            /** result contains validation failure. */
             model.addAttribute("org.springframework.validation.BindingResult.receiptDocumentForm", model.asMap().get("result"));
             receiptDocumentForm = (ReceiptDocumentForm) model.asMap().get("receiptDocumentForm");
             loadBasedOnAppropriateUserLevel(documentId, receiptDocumentForm, httpServletRequest);
@@ -443,6 +443,6 @@ public class ReceiptUpdateController {
                     .append(error.getDefaultMessage())
                     .append(", ");
         }
-        LOG.warn("validation error={}", stringBuilder.toString());
+        LOG.warn("validation fail={}", stringBuilder.toString());
     }
 }

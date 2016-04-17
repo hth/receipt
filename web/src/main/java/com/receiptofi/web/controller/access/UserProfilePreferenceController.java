@@ -179,7 +179,7 @@ public class UserProfilePreferenceController {
 
         profileValidator.validate(profileForm, result);
         if (result.hasErrors()) {
-            LOG.warn("validation error");
+            LOG.warn("validation fail");
             redirectAttrs.addFlashAttribute("result", result);
             /** Re-direct to prevent resubmit. */
             return "redirect:/access" + nextPage + "/i" + ".htm";
@@ -247,7 +247,7 @@ public class UserProfilePreferenceController {
 
         expenseTagValidator.validate(expenseTagForm, result);
         if (result.hasErrors()) {
-            LOG.warn("validation error");
+            LOG.warn("validation fail");
             redirectAttrs.addFlashAttribute("result", result);
             /** Re-direct to prevent resubmit. */
             return "redirect:/access" + nextPage + "/i" + ".htm";

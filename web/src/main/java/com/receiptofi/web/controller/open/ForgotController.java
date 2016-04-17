@@ -134,7 +134,7 @@ public class ForgotController {
     ) throws IOException {
         forgotRecoverValidator.validate(forgotRecoverForm, result);
         if (result.hasErrors()) {
-            LOG.error("validation error");
+            LOG.warn("validation fail");
             return passwordPage;
         }
 
@@ -248,7 +248,7 @@ public class ForgotController {
     ) {
         forgotAuthenticateValidator.validate(forgotAuthenticateForm, result);
         if (result.hasErrors()) {
-            LOG.warn("validation error");
+            LOG.warn("validation fail");
             return authenticatePage;
         } else {
             ForgotRecoverEntity forgotRecover = accountService.findByAuthenticationKey(
