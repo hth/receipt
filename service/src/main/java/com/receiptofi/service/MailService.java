@@ -603,6 +603,7 @@ public class MailService {
     }
 
     public String sendInvite(String invitedUserEmail, String rid, String uid) {
+        LOG.info("invitedUserEmail={} rid={} uid={}", invitedUserEmail, rid, uid);
         Boolean responseStatus = Boolean.FALSE;
         String responseMessage;
         boolean isValid = EmailValidator.getInstance().isValid(invitedUserEmail);
