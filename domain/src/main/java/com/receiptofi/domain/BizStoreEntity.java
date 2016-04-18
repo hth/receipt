@@ -154,7 +154,7 @@ public class BizStoreEntity extends BaseEntity {
     }
 
     public String getPhoneFormatted() {
-        return Formatter.phone(phone);
+        return Formatter.phone(phone, countryShortName);
     }
 
     @NumberFormat (style = NumberFormat.Style.NUMBER)

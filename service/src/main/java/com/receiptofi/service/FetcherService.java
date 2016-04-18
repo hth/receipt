@@ -94,7 +94,7 @@ public class FetcherService {
                     bizNameEntity,
                     BizStoreEntity.PHONE_FIELD_NAME);
 
-            phone.addAll(list.stream().map(bizStoreEntity -> Formatter.phone(bizStoreEntity.getPhone())).collect(Collectors.toList()));
+            phone.addAll(list.stream().map(bizStore -> Formatter.phone(bizStore.getPhone(), bizStore.getCountryShortName())).collect(Collectors.toList()));
             LOG.info("found phones count={} unique count={}", list.size(), phone.size());
         }
         return phone;
