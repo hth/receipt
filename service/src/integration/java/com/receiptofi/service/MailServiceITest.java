@@ -3,7 +3,6 @@ package com.receiptofi.service;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import com.receiptofi.ITest;
@@ -23,8 +22,14 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.net.URL;
+import java.util.LinkedHashSet;
 import java.util.Properties;
+import java.util.Set;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 /**
  * User: hitender
@@ -85,7 +90,8 @@ public class MailServiceITest extends ITest {
                 userAuthenticationManager,
                 userAccountManager,
                 userProfilePreferenceService,
-                notificationService
+                notificationService,
+                1
         );
     }
 
@@ -159,5 +165,77 @@ public class MailServiceITest extends ITest {
                 "Invitation sent to 'friend@receiptofi.com'",
                 notificationService.getAllNotifications(primaryUserAccount.getReceiptUserId()).get(0).getMessage());
         assertNotNull("Friend does not exists", accountService.findByUserId("friend@receiptofi.com"));
+    }
+
+    /**
+     * Asynchronous mobile invite can lead to multiple quick invite from same user.
+     * //TODO add similar for expense tag
+     *
+     * @throws InterruptedException
+     * @throws ExecutionException
+     */
+    @Test
+    public void testMultipleInviteFromSameEmailInQuickSuccession() throws InterruptedException, ExecutionException {
+        UserAccountEntity primaryUserAccount = accountService.findByUserId("delete@receiptofi.com");
+        if (primaryUserAccount == null) {
+            /** Create New User. */
+            primaryUserAccount = accountService.createNewAccount(
+                    "delete@receiptofi.com",
+                    "First",
+                    "Name",
+                    "testtest",
+                    DateUtil.parseAgeForBirthday("25"));
+        }
+
+        ExecutorService executor = Executors.newFixedThreadPool(2);
+        Set<Future<String>> set = new LinkedHashSet<>();
+        for (int i = 0; i < 2; i++) {
+            InviteCallable worker = new InviteCallable(
+                    primaryUserAccount.getReceiptUserId(),
+                    primaryUserAccount.getUserId(),
+                    mailService);
+            Future<String> s = executor.submit(worker);
+            set.add(s);
+            Thread.sleep(1000);
+        }
+
+        executor.shutdown();
+        // Wait until all threads are finish
+        while (!executor.isTerminated()) {
+
+        }
+
+        int count = 0;
+        for (Future<String> s : set) {
+            JSONObject jsonObject;
+            if (0 == count) {
+                jsonObject = new JSONObject(s.get());
+                assertTrue("Send invite successfully", jsonObject.getBoolean("status"));
+                assertEquals("When user has sticky finger", "Invitation Sent to: anotheruser@receiptofi.com", jsonObject.getString("message"));
+            } else {
+                jsonObject = new JSONObject(s.get());
+                assertFalse("Fail to send invite when one is in process", jsonObject.getBoolean("status"));
+                assertEquals("When user has sticky finger", "Almost ready, sending invitee to 'anotheruser@receiptofi.com'", jsonObject.getString("message"));
+            }
+
+            count++;
+        }
+
+    }
+
+    private class InviteCallable implements Callable<String> {
+        private final String rid;
+        private final String uid;
+        private final MailService mailService;
+
+        InviteCallable(String rid, String uid, MailService mailService) {
+            this.rid = rid;
+            this.uid = uid;
+            this.mailService = mailService;
+        }
+
+        public String call() {
+            return mailService.sendInvite("anotheruser@receiptofi.com", rid, uid);
+        }
     }
 }

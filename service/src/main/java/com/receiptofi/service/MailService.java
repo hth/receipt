@@ -2,6 +2,8 @@ package com.receiptofi.service;
 
 import static org.springframework.ui.freemarker.FreeMarkerTemplateUtils.processTemplateIntoString;
 
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
@@ -48,6 +50,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.InternetAddress;
@@ -67,6 +70,9 @@ import javax.mail.internet.MimeMessage;
 @Service
 public class MailService {
     private static final Logger LOG = LoggerFactory.getLogger(MailService.class);
+
+    /** Not expecting more than 100 invites in a minute. */
+    private static final int SIZE_100 = 100;
 
     private AccountService accountService;
     private InviteService inviteService;
@@ -95,6 +101,8 @@ public class MailService {
     private String facebookSmall;
     private String appStore;
     private String googlePlay;
+
+    private final Cache<String, String> invitees;
 
     @Autowired
     public MailService(
@@ -156,7 +164,10 @@ public class MailService {
             UserAuthenticationManager userAuthenticationManager,
             UserAccountManager userAccountManager,
             UserProfilePreferenceService userProfilePreferenceService,
-            NotificationService notificationService
+            NotificationService notificationService,
+
+            @Value ("${MailService.inviteCachePeriod}")
+            int inviteCachePeriod
     ) {
 
         this.doNotReplyEmail = doNotReplyEmail;
@@ -186,6 +197,11 @@ public class MailService {
         this.userAccountManager = userAccountManager;
         this.userProfilePreferenceService = userProfilePreferenceService;
         this.notificationService = notificationService;
+
+        invitees = CacheBuilder.newBuilder()
+                .maximumSize(SIZE_100)
+                .expireAfterWrite(inviteCachePeriod, TimeUnit.MINUTES)
+                .build();
     }
 
     public boolean registrationCompleteEmail(String userId, String name) {
@@ -607,8 +623,22 @@ public class MailService {
         Boolean responseStatus = Boolean.FALSE;
         String responseMessage;
         boolean isValid = EmailValidator.getInstance().isValid(invitedUserEmail);
+
         if (isValid && !invitedUserEmail.equals(uid)) {
             UserProfileEntity userProfile = accountService.doesUserExists(invitedUserEmail);
+
+            if (StringUtils.isNotBlank(invitees.getIfPresent(invitedUserEmail))) {
+                LOG.info("Duplicate invite={}, list max={} actual={}", invitedUserEmail, SIZE_100, invitees.size());
+
+                /**
+                 * In case users is impatient and hits invite twice for same user. This will ensure same records
+                 * are not created twice.
+                 */
+
+                return generateInviteResponse(false, "Almost ready, sending invitee to '" + invitedUserEmail + "'");
+            }
+            invitees.put(invitedUserEmail, invitedUserEmail);
+
             /**
              * Condition when the user does not exists then invite. Also allow re-invite if the user is not active and
              * is not deleted. The second condition could result in a bug when administrator has made the user inactive.
@@ -625,6 +655,7 @@ public class MailService {
                             rid);
 
                     responseMessage = "Invitation Sent to: " + StringUtils.abbreviate(invitedUserEmail, 26);
+                    invitees.invalidate(invitedUserEmail);
                 } else {
                     notificationService.addNotification(
                             "Unsuccessful in sending invitation to '" + invitedUserEmail + "'",
@@ -633,6 +664,7 @@ public class MailService {
                             rid);
 
                     responseMessage = "Unsuccessful in sending invitation: " + StringUtils.abbreviate(invitedUserEmail, 26);
+                    invitees.invalidate(invitedUserEmail);
                 }
             } else if (userProfile.isActive() && !userProfile.isDeleted()) {
                 FriendEntity friend = friendService.getConnection(rid, userProfile.getReceiptUserId());
@@ -678,6 +710,8 @@ public class MailService {
                                 NotificationTypeEnum.MESSAGE,
                                 NotificationGroupEnum.S,
                                 rid);
+
+                        invitees.invalidate(invitedUserEmail);
                     }
                 } else if (friend == null) {
                     friend = new FriendEntity(rid, userProfile.getReceiptUserId());
@@ -712,7 +746,7 @@ public class MailService {
                 // TODO can put a condition to check or if user is still in invitation mode or has completed registration
                 // TODO Based on either condition we can let user recover password or re-send invitation
 
-                //Have to send a positive message
+                /** Have to send a positive message. */
                 responseStatus = Boolean.TRUE;
                 responseMessage = StringUtils.abbreviate(invitedUserEmail, 26) + ", already invited. Appreciate!";
             }
@@ -725,6 +759,10 @@ public class MailService {
         }
 
         LOG.info("Invite mail={} status={} message={}", invitedUserEmail, responseStatus, responseMessage);
+        return generateInviteResponse(responseStatus, responseMessage);
+    }
+
+    private String generateInviteResponse(Boolean responseStatus, String responseMessage) {
         JsonObject response = new JsonObject();
         response.addProperty("status", responseStatus);
         response.addProperty("message", responseMessage);

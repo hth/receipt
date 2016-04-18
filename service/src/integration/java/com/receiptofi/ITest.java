@@ -243,7 +243,8 @@ public class ITest extends RealMongoForTests {
                 userAuthenticationManager,
                 userAccountManager,
                 userProfilePreferenceService,
-                notificationService);
+                notificationService,
+                1);
 
 
         imageSplitService = new ImageSplitService();
