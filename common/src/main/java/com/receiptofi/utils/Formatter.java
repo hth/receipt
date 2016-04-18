@@ -63,6 +63,10 @@ public final class Formatter {
     //Defaults to US
     private static final String FORMAT_TO_US = "US";
 
+    private static final PhoneNumberUtil PHONE_INSTANCE = FormatterSingleton.INSTANCE.phoneInstance();
+    private static final NumberFormat CURRENCY_INSTANCE = FormatterSingleton.INSTANCE.currencyInstance();
+    private static final ScriptEngine SCRIPT_INSTANCE = FormatterSingleton.INSTANCE.engine();
+
     private Formatter() {
     }
 
@@ -73,43 +77,48 @@ public final class Formatter {
         BigDecimal d;
         try {
             if (value.startsWith("$")) {
-                Number number = FormatterSingleton.INSTANCE.currencyInstance().parse(value);
+                Number number = CURRENCY_INSTANCE.parse(value);
                 d = new BigDecimal(number.doubleValue()).setScale(Maths.SCALE_FOUR, BigDecimal.ROUND_HALF_UP);
             } else {
                 try {
-                    Object object = FormatterSingleton.INSTANCE.engine().eval(value);
+                    Object object = SCRIPT_INSTANCE.eval(value);
                     d = new BigDecimal(object.toString()).setScale(Maths.SCALE_FOUR, BigDecimal.ROUND_HALF_UP);
                 } catch (ScriptException se) {
-                    LOG.error("Error parsing number value: " + value + ", exception: " + se);
-                    throw new NumberFormatException("Error parsing number value: " + value + ", exception: " + se.getLocalizedMessage());
+                    LOG.warn("Failed parsing number value={} reason={}", value, se.getLocalizedMessage(), se);
+                    throw new NumberFormatException("Failed parsing number value: " + value + ", exception: " + se.getLocalizedMessage());
                 }
                 //d = new BigDecimal(value).setScale(Maths.SCALE_FOUR, BigDecimal.ROUND_HALF_UP);
             }
             return d;
         } catch (NumberFormatException nfe) {
-            LOG.error("Error parsing number value: " + value + ", exception: " + nfe);
-            throw new NumberFormatException("Error parsing number value: " + value + ", exception: " + nfe);
+            LOG.warn("Failed parsing number value={} reason={}", value, nfe.getLocalizedMessage(), nfe);
+            throw new NumberFormatException("Failed parsing number value: " + value + ", exception: " + nfe);
         }
     }
 
     /**
-     * Helps format phone numbers
+     * Helps format phone numbers.
      *
-     * @param phone
-     * @return
+     * @param phone Phone number
+     * @param formatToCountry Format phone to a country type
+     * @return Formatted phone string
      */
-    public static String phone(String phone) {
+    public static String phone(String phone, String formatToCountry) {
         try {
-            //Currently defaults to US
-            //TODO set using locale
             if (StringUtils.isBlank(phone)) {
                 LOG.debug("phone number blank");
                 return "";
             }
-            PhoneNumber phoneNumber = FormatterSingleton.INSTANCE.phoneInstance().parse(phone, FORMAT_TO_US);
-            return FormatterSingleton.INSTANCE.phoneInstance().format(phoneNumber, PhoneNumberFormat.NATIONAL);
+
+            PhoneNumber phoneNumber;
+            if (StringUtils.isBlank(formatToCountry)) {
+                phoneNumber = PHONE_INSTANCE.parse(phone, FORMAT_TO_US);
+            } else {
+                phoneNumber = PHONE_INSTANCE.parse(phone, formatToCountry);
+            }
+            return PHONE_INSTANCE.format(phoneNumber, PhoneNumberFormat.NATIONAL);
         } catch (NumberParseException e) {
-            LOG.error("NumberParseException was thrown while parsing the phone number : " + e.toString());
+            LOG.warn("Failed parsing phone number={} reason={}", phone, e.getLocalizedMessage(), e);
             return StringUtils.EMPTY;
         }
     }
