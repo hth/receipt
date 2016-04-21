@@ -311,9 +311,9 @@ public class ReceiptWebService {
                         blobId.getText()
                 );
                 return true;
-            } catch (Exception failedToChangeImageOrientation) {
+            } catch (Exception e) {
                 //Do nothing with the error message
-                LOG.error("Failed to change orientation of the image, error={}", failedToChangeImageOrientation);
+                LOG.error("Failed to change orientation of the image, error={}", e.getLocalizedMessage(), e);
                 return false;
             }
         } else {
