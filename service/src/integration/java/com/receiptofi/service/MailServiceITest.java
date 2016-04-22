@@ -12,6 +12,8 @@ import com.receiptofi.domain.UserAccountEntity;
 import com.receiptofi.domain.types.MailTypeEnum;
 import com.receiptofi.utils.DateUtil;
 
+import org.joda.time.DateTime;
+
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.ui.freemarker.FreeMarkerConfigurationFactory;
 
@@ -165,6 +167,87 @@ public class MailServiceITest extends ITest {
                 "Invitation sent to 'friend@receiptofi.com'",
                 notificationService.getAllNotifications(primaryUserAccount.getReceiptUserId()).get(0).getMessage());
         assertNotNull("Friend does not exists", accountService.findByUserId("friend@receiptofi.com"));
+    }
+
+    @Test
+    public void inviteExistingUserToBeFriend() {
+        UserAccountEntity primaryUserAccount = accountService.findByUserId("delete@receiptofi.com");
+        if (primaryUserAccount == null) {
+            /** Create New User. */
+            primaryUserAccount = accountService.createNewAccount(
+                    "delete@receiptofi.com",
+                    "First",
+                    "Name",
+                    "testtest",
+                    DateUtil.parseAgeForBirthday("25"));
+        }
+
+        UserAccountEntity existing = accountService.findByUserId("invite-existing@receiptofi.com");
+        if (existing == null) {
+            /** Create New User. */
+            existing = accountService.createNewAccount(
+                    "invite-existing@receiptofi.com",
+                    "First",
+                    "Name",
+                    "testtest",
+                    DateUtil.parseAgeForBirthday("25"));
+        }
+
+        EmailValidateEntity emailValidate = emailValidateService.saveAccountValidate(existing.getReceiptUserId(), existing.getUserId());
+        accountService.validateAccount(emailValidate, existing);
+        existing = accountService.findByUserId(existing.getUserId());
+        assertTrue("Account validated", existing.isAccountValidated());
+
+        String json = mailService.sendInvite("invite-existing@receiptofi.com", primaryUserAccount.getReceiptUserId(), primaryUserAccount.getUserId());
+        JSONObject jsonObject = new JSONObject(json);
+        assertTrue("Success in sending invite", jsonObject.getBoolean("status"));
+        assertEquals("Friend request sent", "Friend request sent to invite-existing@receipt...", jsonObject.getString("message"));
+
+        assertEquals(
+                "Sent friend request to First Name",
+                notificationService.getAllNotifications(primaryUserAccount.getReceiptUserId()).get(0).getMessage());
+
+        assertEquals(
+                "New friend request from First Name",
+                notificationService.getAllNotifications(existing.getReceiptUserId()).get(0).getMessage());
+    }
+
+    @Test
+    public void inviteInactiveUserToBeFriend() {
+        UserAccountEntity primaryUserAccount = accountService.findByUserId("delete@receiptofi.com");
+        if (primaryUserAccount == null) {
+            /** Create New User. */
+            primaryUserAccount = accountService.createNewAccount(
+                    "delete@receiptofi.com",
+                    "First",
+                    "Name",
+                    "testtest",
+                    DateUtil.parseAgeForBirthday("25"));
+        }
+        EmailValidateEntity emailValidate = emailValidateService.saveAccountValidate(primaryUserAccount.getReceiptUserId(), primaryUserAccount.getUserId());
+        accountService.validateAccount(emailValidate, primaryUserAccount);
+
+        UserAccountEntity existing = accountService.findByUserId("invite-inactive@receiptofi.com");
+        if (existing == null) {
+            /** Create New User. */
+            existing = accountService.createNewAccount(
+                    "invite-inactive@receiptofi.com",
+                    "First",
+                    "Name",
+                    "testtest",
+                    DateUtil.parseAgeForBirthday("25"));
+        }
+        assertFalse("Account validated", existing.isAccountValidated());
+        int inactiveAccount = accountService.inactiveNonValidatedAccount(DateTime.now().plusDays(2).toDate());
+        assertEquals("Marked one account inactive", 1, inactiveAccount);
+        existing = accountService.findByUserId("invite-inactive@receiptofi.com");
+        assertFalse("Account Active", existing.isActive());
+        assertFalse("Account Deleted", existing.isDeleted());
+
+        String json = mailService.sendInvite("invite-inactive@receiptofi.com", primaryUserAccount.getReceiptUserId(), primaryUserAccount.getUserId());
+        JSONObject jsonObject = new JSONObject(json);
+        assertTrue("Success in sending invite", jsonObject.getBoolean("status"));
+        assertEquals("Friend request sent", "Invitation Sent to: invite-inactive@receipt...", jsonObject.getString("message"));
     }
 
     /**
