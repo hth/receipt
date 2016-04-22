@@ -424,25 +424,28 @@ public class MailService {
     /**
      * Re-send invite or send new invitation to existing (pending) invite to user.
      *
-     * @param emailId      Invited users email address
-     * @param invitedByRid Existing users email address
+     * @param email        Invited users email address
+     * @param invitedByRid Existing users rid
      * @return
      */
-    private boolean reSendInvitation(String emailId, String invitedByRid) {
+    private boolean reSendInvitation(String email, String invitedByRid) {
         UserAccountEntity invitedBy = accountService.findByReceiptUserId(invitedByRid);
         if (null != invitedBy) {
             FriendEntity friend = null;
             try {
-                InviteEntity invite = inviteService.reInviteActiveInvite(emailId, invitedBy);
+                InviteEntity invite = inviteService.reInviteActiveInvite(email, invitedBy);
                 boolean isNewInvite = false;
                 if (null == invite) {
                     /**
                      * Means invite may exists through another user.
                      * Better to create a new invite for the requesting user.
                      */
-                    invite = reCreateAnotherInvite(emailId, invitedBy);
-                    isNewInvite = true;
+                    invite = reCreateAnotherInvite(email, invitedBy);
+                    if (null == invite) {
+                        return false;
+                    }
 
+                    isNewInvite = true;
                     friend = new FriendEntity(invitedByRid, invite.getInvited().getReceiptUserId());
                     friendService.save(friend);
                 } else {
@@ -460,7 +463,7 @@ public class MailService {
                     }
                 }
 
-                formulateInvitationMail(emailId, invitedBy, invite);
+                formulateInvitationMail(email, invitedBy, invite);
                 if (!isNewInvite) {
                     inviteService.save(invite);
                 }
@@ -621,7 +624,7 @@ public class MailService {
     public String sendInvite(String invitedUserEmail, String rid, String uid) {
         LOG.info("invitedUserEmail={} rid={} uid={}", invitedUserEmail, rid, uid);
         Boolean responseStatus = Boolean.FALSE;
-        String responseMessage;
+        String responseMessage = null;
         boolean isValid = EmailValidator.getInstance().isValid(invitedUserEmail);
 
         if (isValid && !invitedUserEmail.equals(uid)) {
@@ -659,7 +662,6 @@ public class MailService {
                             rid);
 
                     responseMessage = "Invitation Sent to: " + StringUtils.abbreviate(invitedUserEmail, 26);
-                    invitees.invalidate(invitedUserEmail);
                 } else {
                     notificationService.addNotification(
                             "Unsuccessful in sending invitation to '" + invitedUserEmail + "'",
@@ -668,7 +670,6 @@ public class MailService {
                             rid);
 
                     responseMessage = "Unsuccessful in sending invitation: " + StringUtils.abbreviate(invitedUserEmail, 26);
-                    invitees.invalidate(invitedUserEmail);
                 }
             } else {
                 FriendEntity friend = friendService.getConnection(rid, userProfile.getReceiptUserId());
@@ -690,6 +691,9 @@ public class MailService {
                                 NotificationTypeEnum.MESSAGE,
                                 NotificationGroupEnum.S,
                                 userProfile.getReceiptUserId());
+
+                        responseStatus = Boolean.TRUE;
+                        responseMessage = "Connected with " + StringUtils.abbreviate(invitedUserEmail, 26);
                     } else if (StringUtils.isNotBlank(friend.getUnfriendUser())) {
                         friend.connect();
                         friend.setUnfriendUser(null);
@@ -706,6 +710,9 @@ public class MailService {
                                 NotificationTypeEnum.MESSAGE,
                                 NotificationGroupEnum.S,
                                 userProfile.getReceiptUserId());
+
+                        responseStatus = Boolean.TRUE;
+                        responseMessage = "Connected with " + StringUtils.abbreviate(invitedUserEmail, 26);
                     } else {
                         invokeCorrectInvitation(invitedUserEmail, rid, userProfile);
 
@@ -715,7 +722,8 @@ public class MailService {
                                 NotificationGroupEnum.S,
                                 rid);
 
-                        invitees.invalidate(invitedUserEmail);
+                        responseStatus = Boolean.TRUE;
+                        responseMessage = "Connected with " + StringUtils.abbreviate(invitedUserEmail, 26);
                     }
                 } else if (friend == null) {
                     friend = new FriendEntity(rid, userProfile.getReceiptUserId());
@@ -732,16 +740,18 @@ public class MailService {
                             NotificationTypeEnum.MESSAGE,
                             NotificationGroupEnum.S,
                             userProfile.getReceiptUserId());
+
+                    responseStatus = Boolean.TRUE;
+                    responseMessage = "Friend request sent to " + StringUtils.abbreviate(invitedUserEmail, 26);
                 }
 
-                LOG.info("{}, already registered. Thanks! active={} deleted={}",
+                LOG.info("{}, already registered. Setting invite. Thanks! active={} deleted={}",
                         invitedUserEmail,
                         userProfile.isActive(),
                         userProfile.isDeleted());
-
-                responseStatus = Boolean.TRUE;
-                responseMessage = "Friend request sent to " + StringUtils.abbreviate(invitedUserEmail, 26);
             }
+
+            invitees.invalidate(invitedUserEmail);
         } else {
             if (!isValid) {
                 responseMessage = "Invalid Email: " + StringUtils.abbreviate(invitedUserEmail, 26);

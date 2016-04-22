@@ -8,6 +8,7 @@ import static org.junit.Assert.assertTrue;
 import com.receiptofi.ITest;
 import com.receiptofi.LoadResource;
 import com.receiptofi.domain.EmailValidateEntity;
+import com.receiptofi.domain.FriendEntity;
 import com.receiptofi.domain.UserAccountEntity;
 import com.receiptofi.domain.types.MailTypeEnum;
 import com.receiptofi.utils.DateUtil;
@@ -198,7 +199,8 @@ public class MailServiceITest extends ITest {
         existing = accountService.findByUserId(existing.getUserId());
         assertTrue("Account validated", existing.isAccountValidated());
 
-        String json = mailService.sendInvite("invite-existing@receiptofi.com", primaryUserAccount.getReceiptUserId(), primaryUserAccount.getUserId());
+        /** Send invite to user. */
+        String json = mailService.sendInvite(existing.getUserId(), primaryUserAccount.getReceiptUserId(), primaryUserAccount.getUserId());
         JSONObject jsonObject = new JSONObject(json);
         assertTrue("Success in sending invite", jsonObject.getBoolean("status"));
         assertEquals("Friend request sent", "Friend request sent to invite-existing@receipt...", jsonObject.getString("message"));
@@ -210,6 +212,29 @@ public class MailServiceITest extends ITest {
         assertEquals(
                 "New friend request from First Name",
                 notificationService.getAllNotifications(existing.getReceiptUserId()).get(0).getMessage());
+
+        FriendEntity friend = friendService.getConnection(primaryUserAccount.getReceiptUserId(), existing.getReceiptUserId());
+        assertFalse("Friends not yet connected", friend.isConnected());
+        assertFalse("Friend not yet accepted connection", friend.isAcceptConnection());
+
+        /** Now do a reverse invite. Which default to auto connection between two. */
+        json = mailService.sendInvite(primaryUserAccount.getUserId(), existing.getReceiptUserId(), existing.getUserId());
+        jsonObject = new JSONObject(json);
+        assertTrue("Success in sending invite", jsonObject.getBoolean("status"));
+        assertEquals("Friends are now connected", "Connected with delete@receiptofi.com", jsonObject.getString("message"));
+
+        assertEquals(
+                "New connection with First Name",
+                notificationService.getAllNotifications(primaryUserAccount.getReceiptUserId()).get(0).getMessage());
+
+        assertEquals(
+                "New connection with First Name",
+                notificationService.getAllNotifications(existing.getReceiptUserId()).get(0).getMessage());
+
+        friend = friendService.getConnection(primaryUserAccount.getReceiptUserId(), existing.getReceiptUserId());
+        assertTrue("Friends connected", friend.isConnected());
+        assertTrue("Friend accepted connection", friend.isAcceptConnection());
+
     }
 
     @Test
