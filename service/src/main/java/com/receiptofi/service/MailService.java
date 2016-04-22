@@ -483,12 +483,12 @@ public class MailService {
      * @return
      */
     private InviteEntity reCreateAnotherInvite(String email, UserAccountEntity invitedBy) {
-        InviteEntity inviteEntity = inviteService.find(email);
+        UserProfileEntity userProfile = accountService.doesUserExists(email);
         try {
             String auth = HashText.computeBCrypt(RandomString.newInstance().nextString());
-            inviteEntity = InviteEntity.newInstance(email, auth, inviteEntity.getInvited(), invitedBy);
-            inviteService.save(inviteEntity);
-            return inviteEntity;
+            InviteEntity invite = InviteEntity.newInstance(email, auth, userProfile, invitedBy);
+            inviteService.save(invite);
+            return invite;
         } catch (Exception exception) {
             LOG.error("Error occurred during creation of invited user={} reason={}",
                     email, exception.getLocalizedMessage(), exception);
@@ -626,6 +626,10 @@ public class MailService {
 
         if (isValid && !invitedUserEmail.equals(uid)) {
             UserProfileEntity userProfile = accountService.doesUserExists(invitedUserEmail);
+            UserAccountEntity userAccount = null;
+            if (userProfile != null) {
+                userAccount = accountService.findByReceiptUserId(userProfile.getReceiptUserId());
+            }
 
             if (StringUtils.isNotBlank(invitees.getIfPresent(invitedUserEmail))) {
                 LOG.info("Duplicate invite={}, list max={} actual={}", invitedUserEmail, SIZE_100, invitees.size());
@@ -645,7 +649,7 @@ public class MailService {
              * Best solution is to add automated re-invite using quartz/cron job. Make sure there is a count kept to
              * limit the number of invite.
              */
-            if (null == userProfile || !userProfile.isActive() && !userProfile.isDeleted()) {
+            if (null == userProfile || null == userAccount || (!userAccount.isActive() && !userAccount.isDeleted())) {
                 responseStatus = invokeCorrectInvitation(invitedUserEmail, rid, userProfile);
                 if (responseStatus) {
                     notificationService.addNotification(
@@ -666,7 +670,7 @@ public class MailService {
                     responseMessage = "Unsuccessful in sending invitation: " + StringUtils.abbreviate(invitedUserEmail, 26);
                     invitees.invalidate(invitedUserEmail);
                 }
-            } else if (userProfile.isActive() && !userProfile.isDeleted()) {
+            } else {
                 FriendEntity friend = friendService.getConnection(rid, userProfile.getReceiptUserId());
                 if (null != friend && !friend.isConnected()) {
                     /** Auto connect if invited friend is connecting to invitee. */
@@ -737,18 +741,6 @@ public class MailService {
 
                 responseStatus = Boolean.TRUE;
                 responseMessage = "Friend request sent to " + StringUtils.abbreviate(invitedUserEmail, 26);
-            } else {
-                LOG.info("{}, already registered but no longer with us. Appreciate! active={} deleted={}",
-                        invitedUserEmail,
-                        userProfile.isActive(),
-                        userProfile.isDeleted());
-
-                // TODO can put a condition to check or if user is still in invitation mode or has completed registration
-                // TODO Based on either condition we can let user recover password or re-send invitation
-
-                /** Have to send a positive message. */
-                responseStatus = Boolean.TRUE;
-                responseMessage = StringUtils.abbreviate(invitedUserEmail, 26) + ", already invited. Appreciate!";
             }
         } else {
             if (!isValid) {
