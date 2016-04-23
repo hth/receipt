@@ -91,11 +91,11 @@ public class BizService {
      * This method is being used by Admin to create new Business and Stores and is being used by receipt update to do
      * the same.
      *
-     * @param receiptEntity
+     * @param receipt
      */
-    public void saveNewBusinessAndOrStore(ReceiptEntity receiptEntity) {
-        BizNameEntity bizNameEntity = receiptEntity.getBizName();
-        BizStoreEntity bizStoreEntity = receiptEntity.getBizStore();
+    public void saveNewBusinessAndOrStore(ReceiptEntity receipt) {
+        BizNameEntity bizNameEntity = receipt.getBizName();
+        BizStoreEntity bizStoreEntity = receipt.getBizStore();
 
         BizNameEntity bizName = bizNameManager.findOneByName(bizNameEntity.getBusinessName());
         if (null == bizName) {
@@ -108,8 +108,8 @@ public class BizService {
                 }
                 bizStoreManager.save(bizStoreEntity);
 
-                receiptEntity.setBizName(bizNameEntity);
-                receiptEntity.setBizStore(bizStoreEntity);
+                receipt.setBizName(bizNameEntity);
+                receipt.setBizStore(bizStoreEntity);
             } catch (DuplicateKeyException e) {
                 BizStoreEntity biz = findMatchingStore(bizStoreEntity.getAddress(), bizStoreEntity.getPhone());
                 LOG.error("Address and Phone already registered with another Business Name={}, reason={}",
@@ -128,16 +128,16 @@ public class BizService {
                     /** OR condition is when address or phones is corrected or updated during re-check. */
                     || !bizStore.getAddress().equals(bizStoreEntity.getAddress())
                     || !bizStore.getPhone().equals(bizStoreEntity.getPhone())) {
-                updateReceiptWithNewBizStore(bizStoreEntity, bizName, receiptEntity);
+                updateReceiptWithNewBizStore(bizStoreEntity, bizName, receipt);
 
             } else if (!bizStore.isValidatedUsingExternalAPI()) {
                 bizStoreManager.save(bizStore);
 
-                receiptEntity.setBizName(bizName);
-                receiptEntity.setBizStore(bizStore);
+                receipt.setBizName(bizName);
+                receipt.setBizStore(bizStore);
             } else {
-                receiptEntity.setBizName(bizName);
-                receiptEntity.setBizStore(bizStore);
+                receipt.setBizName(bizName);
+                receipt.setBizStore(bizStore);
             }
         }
     }
