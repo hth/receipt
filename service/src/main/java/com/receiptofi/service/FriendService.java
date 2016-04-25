@@ -160,8 +160,15 @@ public class FriendService {
         return friendManager.cancelInvite(id, authenticationKey);
     }
 
-    public boolean unfriend(String receiptUserId, String unfriendUserId) {
-        UserProfileEntity userProfile = userProfilePreferenceService.findByEmail(unfriendUserId);
+    /**
+     * Unfriend performed by rid against email id of the user rid is trying to unfriend.
+     *
+     * @param receiptUserId rid is un-friends from email address sent
+     * @param unfriendEmail email of the person who is being unfriend
+     * @return
+     */
+    public boolean unfriend(String receiptUserId, String unfriendEmail) {
+        UserProfileEntity userProfile = userProfilePreferenceService.findByEmail(unfriendEmail);
         return friendManager.unfriend(receiptUserId, userProfile.getReceiptUserId());
     }
 

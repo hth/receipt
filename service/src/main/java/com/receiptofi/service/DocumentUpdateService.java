@@ -149,11 +149,12 @@ public class DocumentUpdateService {
                     receipt);
 
         } catch (Exception exce) {
-            LOG.error("Revert all the transaction for Receipt={}, ReceiptOCR={}, reason={}",
+            LOG.error("Failed processing for Receipt={}, ReceiptOCR={}, reason={}",
                     receipt.getId(), document.getId(), exce.getLocalizedMessage(), exce);
 
             //For rollback
             if (StringUtils.isNotEmpty(receipt.getId())) {
+                LOG.error("Rolling back Receipt={}", receipt.getId());
                 long sizeReceiptInitial = receiptManager.collectionSize();
                 long sizeItemInitial = itemManager.collectionSize();
 
@@ -286,11 +287,12 @@ public class DocumentUpdateService {
                     receipt);
 
         } catch (Exception exce) {
-            LOG.error("Revert all the transaction for Receipt={}, ReceiptOCR={}, reason={}",
+            LOG.error("Failed processing for Receipt={}, ReceiptOCR={}, reason={}",
                     receipt.getId(), document.getId(), exce.getLocalizedMessage(), exce);
 
             //For rollback
             if (StringUtils.isNotEmpty(receipt.getId())) {
+                LOG.error("Rolling back Receipt={}", receipt.getId());
                 long sizeReceiptInitial = receiptManager.collectionSize();
                 long sizeItemInitial = itemManager.collectionSize();
 
