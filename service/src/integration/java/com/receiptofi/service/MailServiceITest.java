@@ -26,6 +26,7 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Properties;
 import java.util.Set;
 import java.util.concurrent.Callable;
@@ -188,7 +189,7 @@ public class MailServiceITest extends ITest {
             /** Create New User. */
             existing = accountService.createNewAccount(
                     "invite-existing@receiptofi.com",
-                    "First",
+                    "Invite",
                     "Name",
                     "testtest",
                     DateUtil.parseAgeForBirthday("25"));
@@ -199,14 +200,43 @@ public class MailServiceITest extends ITest {
         existing = accountService.findByUserId(existing.getUserId());
         assertTrue("Account validated", existing.isAccountValidated());
 
-        /** Send invite to user. */
+        /** primaryUserAccount send's invite to existing user. */
+        inviteFriend(primaryUserAccount, existing);
+
+        /** Now do a reverse invite. Which defaults to auto connection between two. */
+        inviteInviteeToBeFriend(primaryUserAccount, existing);
+
+        /** Get total notification to primary. */
+        int notificationPrimary = notificationService.getAllNotifications(primaryUserAccount.getReceiptUserId()).size();
+
+        /** Primary unfriend's existing. */
+        friendService.unfriend(primaryUserAccount.getReceiptUserId(), existing.getUserId());
+        FriendEntity friend = friendService.getConnection(primaryUserAccount.getReceiptUserId(), existing.getReceiptUserId());
+        assertFalse("Friends not connected", friend.isConnected());
+
+        /** Existing friend tries reconnecting by sending the invite to primary. */
+        unfriendAndReInviteSentByUnfriend(primaryUserAccount, existing);
+
+        /** Increased notification count by one for primary user. */
+        assertEquals(
+                notificationPrimary + 1,
+                notificationService.getAllNotifications(primaryUserAccount.getReceiptUserId()).size());
+
+        /**
+         * Re-connect with existing user by primaryUserAccount. Only the one who
+         * has initiated disconnect can perform an auto re-connect.
+         */
+        reInvite(primaryUserAccount, existing);
+    }
+
+    private void inviteFriend(UserAccountEntity primaryUserAccount, UserAccountEntity existing) {
         String json = mailService.sendInvite(existing.getUserId(), primaryUserAccount.getReceiptUserId(), primaryUserAccount.getUserId());
         JSONObject jsonObject = new JSONObject(json);
         assertTrue("Success in sending invite", jsonObject.getBoolean("status"));
         assertEquals("Friend request sent", "Friend request sent to invite-existing@receipt...", jsonObject.getString("message"));
 
         assertEquals(
-                "Sent friend request to First Name",
+                "Sent friend request to Invite Name",
                 notificationService.getAllNotifications(primaryUserAccount.getReceiptUserId()).get(0).getMessage());
 
         assertEquals(
@@ -216,25 +246,65 @@ public class MailServiceITest extends ITest {
         FriendEntity friend = friendService.getConnection(primaryUserAccount.getReceiptUserId(), existing.getReceiptUserId());
         assertFalse("Friends not yet connected", friend.isConnected());
         assertFalse("Friend not yet accepted connection", friend.isAcceptConnection());
+    }
 
-        /** Now do a reverse invite. Which default to auto connection between two. */
-        json = mailService.sendInvite(primaryUserAccount.getUserId(), existing.getReceiptUserId(), existing.getUserId());
-        jsonObject = new JSONObject(json);
+    private void inviteInviteeToBeFriend(UserAccountEntity primaryUserAccount, UserAccountEntity existing) {
+        String json = mailService.sendInvite(primaryUserAccount.getUserId(), existing.getReceiptUserId(), existing.getUserId());
+        JSONObject jsonObject = new JSONObject(json);
         assertTrue("Success in sending invite", jsonObject.getBoolean("status"));
         assertEquals("Friends are now connected", "Connected with delete@receiptofi.com", jsonObject.getString("message"));
 
         assertEquals(
-                "New connection with First Name",
+                "New connection with Invite Name",
                 notificationService.getAllNotifications(primaryUserAccount.getReceiptUserId()).get(0).getMessage());
 
         assertEquals(
                 "New connection with First Name",
                 notificationService.getAllNotifications(existing.getReceiptUserId()).get(0).getMessage());
 
-        friend = friendService.getConnection(primaryUserAccount.getReceiptUserId(), existing.getReceiptUserId());
+        FriendEntity friend = friendService.getConnection(primaryUserAccount.getReceiptUserId(), existing.getReceiptUserId());
         assertTrue("Friends connected", friend.isConnected());
         assertTrue("Friend accepted connection", friend.isAcceptConnection());
+    }
 
+    private void unfriendAndReInviteSentByUnfriend(UserAccountEntity primaryUserAccount, UserAccountEntity existing) {
+        /** Unfriend existing sent's invite to primary. */
+        String json = mailService.sendInvite(primaryUserAccount.getUserId(), existing.getReceiptUserId(), existing.getUserId());
+        JSONObject jsonObject = new JSONObject(json);
+        assertTrue("Success in sending invite", jsonObject.getBoolean("status"));
+        assertEquals("Friends are now connected", "Invitation sent to delete@receiptofi.com", jsonObject.getString("message"));
+
+        assertEquals(
+                "Re-connection requested by Invite Name. Submit email 'invite-existing@receiptofi.com' in invite to connect.",
+                notificationService.getAllNotifications(primaryUserAccount.getReceiptUserId()).get(0).getMessage());
+
+        assertEquals(
+                "Invitation sent to 'delete@receiptofi.com'",
+                notificationService.getAllNotifications(existing.getReceiptUserId()).get(0).getMessage());
+
+        FriendEntity friend = friendService.getConnection(primaryUserAccount.getReceiptUserId(), existing.getReceiptUserId());
+        assertFalse("Friends not connected", friend.isConnected());
+        assertTrue("Friend accepted connection from before", friend.isAcceptConnection());
+    }
+
+    private void reInvite(UserAccountEntity primaryUserAccount, UserAccountEntity existing) {
+        /** Primary sent's invite to existing. This should results in reconnect. */
+        String json = mailService.sendInvite(existing.getUserId(), primaryUserAccount.getReceiptUserId(), primaryUserAccount.getUserId());
+        JSONObject jsonObject = new JSONObject(json);
+        assertTrue("Success in sending invite", jsonObject.getBoolean("status"));
+        assertEquals("Friends are now connected", "Connected with invite-existing@receipt...", jsonObject.getString("message"));
+
+        assertEquals(
+                "Re-connection with Invite Name",
+                notificationService.getAllNotifications(primaryUserAccount.getReceiptUserId()).get(0).getMessage());
+
+        assertEquals(
+                "Re-connection with First Name",
+                notificationService.getAllNotifications(existing.getReceiptUserId()).get(0).getMessage());
+
+        FriendEntity friend = friendService.getConnection(primaryUserAccount.getReceiptUserId(), existing.getReceiptUserId());
+        assertTrue("Friends connected", friend.isConnected());
+        assertTrue("Friend accepted connection", friend.isAcceptConnection());
     }
 
     @Test

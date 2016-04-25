@@ -17,11 +17,6 @@
         <element id="file-copy" path="$PROJECT_DIR$/web/web/robots.txt" />
         <element id="directory" name="WEB-INF">
           <element id="directory" name="classes">
-            <element id="module-output" name="common" />
-            <element id="module-output" name="domain" />
-            <element id="module-output" name="security" />
-            <element id="module-output" name="social" />
-            <element id="module-output" name="service" />
             <element id="file-copy" path="$PROJECT_DIR$/web/resources/conf/messages.properties" />
             <element id="file-copy" path="$PROJECT_DIR$/web/environment/dev/logback.xml" />
             <element id="directory" name="images">
@@ -34,11 +29,16 @@
               <element id="file-copy" path="$PROJECT_DIR$/web/resources/conf/redis.properties" />
               <element id="file-copy" path="$PROJECT_DIR$/web/environment/dev/dev.properties" />
             </element>
-            <element id="module-output" name="web" />
-            <element id="module-output" name="loader" />
             <element id="directory" name="cert">
               <element id="file-copy" path="$PROJECT_DIR$/web/resources/cert/aps_dev_credentials.p12" />
             </element>
+            <element id="module-output" name="common_main" />
+            <element id="module-output" name="domain_main" />
+            <element id="module-output" name="loader_main" />
+            <element id="module-output" name="security_main" />
+            <element id="module-output" name="service_main" />
+            <element id="module-output" name="social_main" />
+            <element id="module-output" name="web_main" />
           </element>
           <element id="directory" name="lib">
             <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/javax.validation/validation-api/1.1.0.Final/8613ae82954779d518631e05daa73a6a954817d5/validation-api-1.1.0.Final.jar" />

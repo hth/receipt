@@ -621,8 +621,16 @@ public class MailService {
         inviteService.deleteHard(invite);
     }
 
+    /**
+     * Send Invite to user.
+     *
+     * @param invitedUserEmail Invitee's email address
+     * @param rid              RID of person inviting
+     * @param uid              UID of person inviting
+     * @return
+     */
     public String sendInvite(String invitedUserEmail, String rid, String uid) {
-        LOG.info("invitedUserEmail={} rid={} uid={}", invitedUserEmail, rid, uid);
+        LOG.info("invitedUserEmail={} by rid={} uid={}", invitedUserEmail, rid, uid);
         Boolean responseStatus = Boolean.FALSE;
         String responseMessage = null;
         boolean isValid = EmailValidator.getInstance().isValid(invitedUserEmail);
@@ -675,7 +683,7 @@ public class MailService {
                 FriendEntity friend = friendService.getConnection(rid, userProfile.getReceiptUserId());
                 if (null != friend && !friend.isConnected()) {
                     /** Auto connect if invited friend is connecting to invitee. */
-                    if (friend.getFriendUserId().equalsIgnoreCase(rid)) {
+                    if (friend.getFriendUserId().equalsIgnoreCase(rid) && StringUtils.isBlank(friend.getUnfriendUser())) {
                         friend.acceptConnection();
                         friend.connect();
                         friendService.save(friend);
@@ -694,7 +702,7 @@ public class MailService {
 
                         responseStatus = Boolean.TRUE;
                         responseMessage = "Connected with " + StringUtils.abbreviate(invitedUserEmail, 26);
-                    } else if (StringUtils.isNotBlank(friend.getUnfriendUser())) {
+                    } else if (friend.getUnfriendUser().equalsIgnoreCase(rid) && StringUtils.isNotBlank(friend.getUnfriendUser())) {
                         friend.connect();
                         friend.setUnfriendUser(null);
                         friendService.save(friend);
@@ -714,16 +722,25 @@ public class MailService {
                         responseStatus = Boolean.TRUE;
                         responseMessage = "Connected with " + StringUtils.abbreviate(invitedUserEmail, 26);
                     } else {
-                        invokeCorrectInvitation(invitedUserEmail, rid, userProfile);
-
                         notificationService.addNotification(
                                 "Invitation sent to '" + invitedUserEmail + "'",
                                 NotificationTypeEnum.MESSAGE,
                                 NotificationGroupEnum.S,
                                 rid);
 
+                        UserProfileEntity userProfileOfInvitee = accountService.doesUserExists(uid);
+                        notificationService.addNotification(
+                                "Re-connection requested by "
+                                        + (userProfileOfInvitee == null ? uid : userProfileOfInvitee.getName())
+                                        + ". Submit email '"
+                                        + uid
+                                        + "' in invite to connect.",
+                                NotificationTypeEnum.MESSAGE,
+                                NotificationGroupEnum.S,
+                                userProfile.getReceiptUserId());
+
                         responseStatus = Boolean.TRUE;
-                        responseMessage = "Connected with " + StringUtils.abbreviate(invitedUserEmail, 26);
+                        responseMessage = "Invitation sent to " + StringUtils.abbreviate(invitedUserEmail, 26);
                     }
                 } else if (friend == null) {
                     friend = new FriendEntity(rid, userProfile.getReceiptUserId());
