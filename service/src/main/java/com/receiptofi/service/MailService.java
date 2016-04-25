@@ -46,6 +46,7 @@ import freemarker.template.TemplateException;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
@@ -213,18 +214,8 @@ public class MailService {
 
         try {
             MimeMessage message = mailSender.createMimeMessage();
-
-            // use the true flag to indicate you need a multipart message
-            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
-            helper.setFrom(new InternetAddress(doNotReplyEmail, emailAddressName));
-
-            String sentTo = StringUtils.isEmpty(devSentTo) ? userId : devSentTo;
-            if (sentTo.equalsIgnoreCase(devSentTo)) {
-                helper.setTo(new InternetAddress(devSentTo, emailAddressName));
-            } else {
-                helper.setTo(new InternetAddress(userId, name));
-            }
-            LOG.info("Account validation sent to={}", StringUtils.isEmpty(devSentTo) ? userId : devSentTo);
+            LOG.info("Account registration sent to={}", StringUtils.isEmpty(devSentTo) ? userId : devSentTo);
+            MimeMessageHelper helper = populateMessageBody(userId, name, message);
             sendMail(
                     name + ": " + mailRegistrationActiveSubject,
                     freemarkerToString("mail/registration-active.ftl", rootMap),
@@ -232,7 +223,7 @@ public class MailService {
                     helper
             );
         } catch (IOException | TemplateException | MessagingException exception) {
-            LOG.error("Validation failure email for={}", userId, exception);
+            LOG.error("Registration failure email for={}", userId, exception);
             return false;
         }
         return true;
@@ -256,18 +247,8 @@ public class MailService {
 
         try {
             MimeMessage message = mailSender.createMimeMessage();
-
-            // use the true flag to indicate you need a multipart message
-            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
-            helper.setFrom(new InternetAddress(doNotReplyEmail, emailAddressName));
-
-            String sentTo = StringUtils.isEmpty(devSentTo) ? userId : devSentTo;
-            if (sentTo.equalsIgnoreCase(devSentTo)) {
-                helper.setTo(new InternetAddress(devSentTo, emailAddressName));
-            } else {
-                helper.setTo(new InternetAddress(userId, name));
-            }
             LOG.info("Account validation sent to={}", StringUtils.isEmpty(devSentTo) ? userId : devSentTo);
+            MimeMessageHelper helper = populateMessageBody(userId, name, message);
             sendMail(
                     name + ": " + mailValidateSubject,
                     freemarkerToString("mail/self-signup.ftl", rootMap),
@@ -279,6 +260,20 @@ public class MailService {
             return false;
         }
         return true;
+    }
+
+    private MimeMessageHelper populateMessageBody(String userId, String name, MimeMessage message) throws MessagingException, UnsupportedEncodingException {
+        // use the true flag to indicate you need a multipart message
+        MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+        helper.setFrom(new InternetAddress(doNotReplyEmail, emailAddressName));
+
+        String sentTo = StringUtils.isEmpty(devSentTo) ? userId : devSentTo;
+        if (sentTo.equalsIgnoreCase(devSentTo)) {
+            helper.setTo(new InternetAddress(devSentTo, emailAddressName));
+        } else {
+            helper.setTo(new InternetAddress(userId, name));
+        }
+        return helper;
     }
 
     /**
