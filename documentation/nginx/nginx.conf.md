@@ -111,7 +111,7 @@
             access_log  /var/logs/nginx/access.log main;       
     
             location / {
-                expires 30d;
+                expires 7d;
                 root /data/www;
                 index index.html;
     
@@ -165,7 +165,7 @@
             }
     
             location / {
-                expires 30d;
+                expires 7d;
                 proxy_buffers 16 4k;
                 proxy_buffer_size 2k;
     
