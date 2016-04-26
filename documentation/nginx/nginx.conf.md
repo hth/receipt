@@ -1,4 +1,4 @@
-    # Date: Aug 07 05:00 AM
+    # Date: Apr 26 08:50 AM
     # https://www.digitalocean.com/community/tutorials/how-to-optimize-nginx-configuration
     # user  nobody;
     # IP Address 192.168.1.71 is related to the nginx installed ip
@@ -131,6 +131,7 @@
                 deny    192.168.1.1;
                 # allow anyone in 192.168.1.0/24
                 allow   192.168.1.0/24; 
+                allow   63.145.59.92;
                 # drop rest of the world
                 deny    all;
                 
@@ -150,6 +151,7 @@
                 deny    192.168.1.1;
                 # allow anyone in 192.168.1.0/24
                 allow   192.168.1.0/24; 
+                allow   63.145.59.92;
                 # drop rest of the world
                 deny    all;
                 
@@ -189,6 +191,7 @@
                 deny    192.168.1.1;
                 # allow anyone in 192.168.1.0/24
                 allow   192.168.1.0/24; 
+                allow   63.145.59.92;
                 # drop rest of the world
                 deny    all;
                 
@@ -208,6 +211,7 @@
                 deny    192.168.1.1;
                 # allow anyone in 192.168.1.0/24
                 allow   192.168.1.0/24; 
+                allow   63.145.59.92;
                 # drop rest of the world
                 deny    all;
                 
@@ -255,6 +259,7 @@
                 deny    192.168.1.1;
                 # allow anyone in 192.168.1.0/24
                 allow   192.168.1.0/24;
+                allow   63.145.59.92;
                 # drop rest of the world
                 deny    all;
     
@@ -281,6 +286,7 @@
                 deny    192.168.1.1;
                 # allow anyone in 192.168.1.0/24
                 allow   192.168.1.0/24;
+                allow   63.145.59.92;
                 # drop rest of the world
                 deny    all;
     
@@ -310,7 +316,7 @@
                 deny    192.168.1.1;
                 # allow anyone in 192.168.1.0/24
                 allow   192.168.1.0/24;
-                allow   76.77.190.191;
+                allow   63.145.59.92;
                 # drop rest of the world
                 deny    all;
     
