@@ -9,7 +9,6 @@ import com.receiptofi.repository.NotificationManager;
 import com.receiptofi.service.AccountService;
 import com.receiptofi.service.CronStatsService;
 import com.receiptofi.service.DocumentService;
-import com.receiptofi.service.DocumentUpdateService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,6 +35,7 @@ public class MobilePushNotificationProcess {
     private static final Logger LOG = LoggerFactory.getLogger(MobilePushNotificationProcess.class);
 
     private String notifyUserSwitch;
+    private int documentLastUpdated;
     private MobilePushNotificationService mobilePushNotificationService;
     private DocumentService documentService;
     private AccountService accountService;
@@ -47,6 +47,9 @@ public class MobilePushNotificationProcess {
             @Value ("${MobilePushNotificationProcess.notifyUserSwitch}")
             String notifyUserSwitch,
 
+            @Value ("${MobilePushNotificationProcess.how.long.ago.document.updated}")
+            int documentLastUpdated,
+
             MobilePushNotificationService mobilePushNotificationService,
             DocumentService documentService,
             AccountService accountService,
@@ -55,6 +58,7 @@ public class MobilePushNotificationProcess {
 
     ) {
         this.notifyUserSwitch = notifyUserSwitch;
+        this.documentLastUpdated = documentLastUpdated;
         this.mobilePushNotificationService = mobilePushNotificationService;
         this.documentService = documentService;
         this.accountService = accountService;
@@ -78,7 +82,7 @@ public class MobilePushNotificationProcess {
         }
 
         List<UserAccountEntity> userAccounts;
-        List<DocumentEntity> documents = documentService.getDocumentsForNotification(5);
+        List<DocumentEntity> documents = documentService.getDocumentsForNotification(documentLastUpdated);
         if (!documents.isEmpty()) {
             userAccounts = accountService.findAllTechnician();
             LOG.info("Notification for received new document upload to be sent, document count={}", documents.size());
