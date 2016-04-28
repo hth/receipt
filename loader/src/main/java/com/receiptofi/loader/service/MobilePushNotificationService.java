@@ -27,7 +27,9 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * User: hitender
@@ -195,6 +197,11 @@ public class MobilePushNotificationService {
                     .build();
             try {
                 apnsService.push(registeredDevice.getToken(), payload);
+                Map<String, Date> inactiveDevices = apnsService.getInactiveDevices();
+                for (String id : inactiveDevices.keySet()) {
+                    //TODO delete inactive devices
+                    LOG.info("Apple inactive id={} date={}", id, inactiveDevices.get(id));
+                }
             } catch (RuntimeException e) {
                 LOG.error("Failed sending Apple Notification {} {} {} reason={}", rid, registeredDevice.getDeviceId(), message, e.getMessage(), e);
             }
