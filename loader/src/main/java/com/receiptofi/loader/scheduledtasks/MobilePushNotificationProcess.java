@@ -67,7 +67,7 @@ public class MobilePushNotificationProcess {
     }
 
     /**
-     * Note: Cron string below runs every 5 minutes.
+     * Note: Cron string below runs every 1 minutes.
      */
     @Scheduled (cron = "${loader.MobilePushNotificationProcess.documentNotification}")
     public void documentNotification() {
