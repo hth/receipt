@@ -36,8 +36,14 @@ import java.util.Map;
 public class NotesAndCommentsWebService {
     private static final Logger LOG = LoggerFactory.getLogger(NotesAndCommentsWebService.class);
 
-    @Autowired private ReceiptService receiptService;
-    @Autowired private MileageService mileageService;
+    private ReceiptService receiptService;
+    private MileageService mileageService;
+
+    @Autowired
+    public NotesAndCommentsWebService(ReceiptService receiptService, MileageService mileageService) {
+        this.receiptService = receiptService;
+        this.mileageService = mileageService;
+    }
 
     @RequestMapping (
             value = "/rn",
@@ -91,6 +97,7 @@ public class NotesAndCommentsWebService {
         Map<String, ScrubbedInput> map = ParseJsonStringToMap.jsonStringToMap(body);
         return receiptService.updateDocumentComment(
                 map.get("notes").getText(),
-                map.get("documentId").getText());
+                map.get("documentId").getText(),
+                receiptUser.getRid());
     }
 }

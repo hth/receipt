@@ -26,16 +26,32 @@ public class CommentEntity extends BaseEntity {
     @Value ("${textLength:250}")
     private int textLength = 250;
 
+    @Field ("RID")
+    private String receiptUserId;
+
     @Field ("T")
     private String text;
 
     @Field ("CT")
     private CommentTypeEnum commentType;
 
+    private CommentEntity(String receiptUserId, CommentTypeEnum commentType) {
+        super();
+        this.receiptUserId = receiptUserId;
+        this.commentType = commentType;
+    }
+
+    private CommentEntity(CommentTypeEnum commentType) {
+        super();
+        this.commentType = commentType;
+    }
+
+    public static CommentEntity newInstance(String receiptUserId, CommentTypeEnum commentType) {
+        return new CommentEntity(receiptUserId, commentType);
+    }
+
     public static CommentEntity newInstance(CommentTypeEnum commentType) {
-        CommentEntity commentEntity = new CommentEntity();
-        commentEntity.setCommentType(commentType);
-        return commentEntity;
+        return new CommentEntity(commentType);
     }
 
     public String getText() {
@@ -50,8 +66,8 @@ public class CommentEntity extends BaseEntity {
         return commentType;
     }
 
-    public void setCommentType(CommentTypeEnum commentType) {
-        this.commentType = commentType;
+    public String getReceiptUserId() {
+        return receiptUserId;
     }
 
     @Override

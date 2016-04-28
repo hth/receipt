@@ -165,13 +165,13 @@ public class MileageService {
      * @param userProfileId
      * @return
      */
-    public boolean updateMileageNotes(String notes, String mileageId, String userProfileId) {
-        MileageEntity mileageEntity = mileageManager.findOne(mileageId, userProfileId);
+    public boolean updateMileageNotes(String notes, String mileageId, String rid) {
+        MileageEntity mileageEntity = mileageManager.findOne(mileageId, rid);
         CommentEntity commentEntity = mileageEntity.getMileageNotes();
         boolean commentEntityBoolean = false;
         if (null == commentEntity) {
             commentEntityBoolean = true;
-            commentEntity = CommentEntity.newInstance(CommentTypeEnum.NOTES);
+            commentEntity = CommentEntity.newInstance(rid, CommentTypeEnum.NOTES);
             commentEntity.setText(notes);
         } else {
             commentEntity.setText(notes);
