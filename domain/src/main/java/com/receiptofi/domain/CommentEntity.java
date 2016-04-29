@@ -35,6 +35,13 @@ public class CommentEntity extends BaseEntity {
     @Field ("CT")
     private CommentTypeEnum commentType;
 
+    /**
+     * To keep bean happy
+     */
+    public CommentEntity() {
+        super();
+    }
+
     private CommentEntity(String receiptUserId, CommentTypeEnum commentType) {
         super();
         this.receiptUserId = receiptUserId;
