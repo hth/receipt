@@ -380,7 +380,7 @@ public class ReceiptService {
         boolean commentEntityBoolean = false;
         if (null == commentEntity) {
             commentEntityBoolean = true;
-            commentEntity = CommentEntity.newInstance(CommentTypeEnum.NOTES);
+            commentEntity = CommentEntity.newInstance(rid, CommentTypeEnum.NOTES);
             commentEntity.setText(notes);
         } else {
             commentEntity.setText(notes);
@@ -413,7 +413,7 @@ public class ReceiptService {
         boolean commentEntityBoolean = false;
         if (null == commentEntity) {
             commentEntityBoolean = true;
-            commentEntity = CommentEntity.newInstance(CommentTypeEnum.RECHECK);
+            commentEntity = CommentEntity.newInstance(rid, CommentTypeEnum.RECHECK);
             commentEntity.setText(comment);
         } else {
             commentEntity.setText(comment);
@@ -439,13 +439,13 @@ public class ReceiptService {
      * @param documentId
      * @return
      */
-    public boolean updateDocumentComment(String comment, String documentId) {
+    public boolean updateDocumentComment(String comment, String documentId, String rid) {
         DocumentEntity documentEntity = documentService.loadActiveDocumentById(documentId);
         CommentEntity commentEntity = documentEntity.getRecheckComment();
         boolean commentEntityBoolean = false;
         if (null == commentEntity) {
             commentEntityBoolean = true;
-            commentEntity = CommentEntity.newInstance(CommentTypeEnum.RECHECK);
+            commentEntity = CommentEntity.newInstance(rid, CommentTypeEnum.RECHECK);
             commentEntity.setText(comment);
         } else {
             commentEntity.setText(comment);

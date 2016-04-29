@@ -116,4 +116,12 @@ public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
     public void deleteHard(RegisteredDeviceEntity object) {
         mongoTemplate.remove(object);
     }
+
+    @Override
+    public void deleteHard(String rid, String token) {
+        mongoTemplate.remove(
+                query(where("RID").is(rid).and("TK").is(token)),
+                RegisteredDeviceEntity.class,
+                TABLE);
+    }
 }

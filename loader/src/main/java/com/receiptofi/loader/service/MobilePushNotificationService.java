@@ -199,8 +199,8 @@ public class MobilePushNotificationService {
                 apnsService.push(registeredDevice.getToken(), payload);
                 Map<String, Date> inactiveDevices = apnsService.getInactiveDevices();
                 for (String id : inactiveDevices.keySet()) {
-                    //TODO delete inactive devices
-                    LOG.info("Apple inactive id={} date={}", id, inactiveDevices.get(id));
+                    LOG.info("Apple inactive id={} rid={} date={}", id, rid, inactiveDevices.get(id));
+                    registeredDeviceManager.deleteHard(rid, id);
                 }
             } catch (RuntimeException e) {
                 LOG.error("Failed sending Apple Notification {} {} {} reason={}", rid, registeredDevice.getDeviceId(), message, e.getMessage(), e);

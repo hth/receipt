@@ -52,4 +52,12 @@ public interface RegisteredDeviceManager extends RepositoryManager<RegisteredDev
      * @return
      */
     List<RegisteredDeviceEntity> getDevicesForRid(String rid);
+
+    /**
+     * Delete device info.
+     *
+     * @param rid
+     * @param token
+     */
+    void deleteHard(String rid, String token);
 }
