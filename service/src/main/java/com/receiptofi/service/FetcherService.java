@@ -47,9 +47,9 @@ public class FetcherService {
      * @return
      */
     public Set<String> findDistinctBizName(String bizName) {
-        LOG.info("Search for Biz Name={}", bizName);
+        LOG.debug("Search for Biz Name={}", bizName);
         Set<String> titles = bizNameManager.findAllDistinctBizStr(bizName);
-        LOG.info("found business count={}", titles.size());
+        LOG.debug("found business count={}", titles.size());
         return titles;
     }
 
@@ -59,7 +59,7 @@ public class FetcherService {
      * @return
      */
     public Set<String> findDistinctBizAddress(String bizAddress, String bizName) {
-        LOG.info("Search for Biz address={} within name={}", bizAddress, bizName);
+        LOG.debug("Search for Biz address={} within name={}", bizAddress, bizName);
         Set<String> address = new HashSet<>();
 
         BizNameEntity bizNameEntity = bizNameManager.findOneByName(bizName);
@@ -70,7 +70,7 @@ public class FetcherService {
                     BizStoreEntity.ADDRESS_FIELD_NAME);
 
             address.addAll(list.stream().map(BizStoreEntity::getAddress).collect(Collectors.toList()));
-            LOG.info("found addresses count={} unique count={}", list.size(), address.size());
+            LOG.debug("found addresses count={} unique count={}", list.size(), address.size());
         }
         return address;
     }
@@ -83,7 +83,7 @@ public class FetcherService {
      * @return
      */
     public Set<String> findDistinctBizPhone(String bizPhone, String bizAddress, String bizName) {
-        LOG.info("Search for Biz address={} within name={}", bizAddress, bizName);
+        LOG.debug("Search for Biz address={} within name={}", bizAddress, bizName);
         Set<String> phone = new HashSet<>();
 
         BizNameEntity bizNameEntity = bizNameManager.findOneByName(bizName);
@@ -95,7 +95,7 @@ public class FetcherService {
                     BizStoreEntity.PHONE_FIELD_NAME);
 
             phone.addAll(list.stream().map(bizStore -> Formatter.phone(bizStore.getPhone(), bizStore.getCountryShortName())).collect(Collectors.toList()));
-            LOG.info("found phones count={} unique count={}", list.size(), phone.size());
+            LOG.debug("found phones count={} unique count={}", list.size(), phone.size());
         }
         return phone;
     }
@@ -109,10 +109,10 @@ public class FetcherService {
      * @return
      */
     public Set<String> findDistinctItems(String itemName, String bizName) {
-        LOG.info("Search for item name={} Biz Name={}", itemName, bizName);
+        LOG.debug("Search for item name={} Biz Name={}", itemName, bizName);
         List<ItemEntity> itemList = itemManager.findItems(itemName, bizName);
         Set<String> itemSet = itemList.stream().map(ItemEntity::getName).collect(Collectors.toSet());
-        LOG.info("found item count={} unique count={}", itemList.size(), itemSet.size());
+        LOG.debug("found item count={} unique count={}", itemList.size(), itemSet.size());
         return itemSet;
     }
 
