@@ -199,7 +199,9 @@ public class MobilePushNotificationService {
                 apnsService.push(registeredDevice.getToken(), payload);
                 Map<String, Date> inactiveDevices = apnsService.getInactiveDevices();
                 for (String id : inactiveDevices.keySet()) {
-                    LOG.info("Apple inactive token={} rid={} date={}", registeredDevice.getToken(), rid, inactiveDevices.get(id));
+                    LOG.info("Apple inactive rid={} token={} id={} date={}",
+                            rid, registeredDevice.getToken(), id, inactiveDevices.get(id));
+
                     registeredDeviceManager.deleteHard(rid, registeredDevice.getToken());
                 }
             } catch (RuntimeException e) {
