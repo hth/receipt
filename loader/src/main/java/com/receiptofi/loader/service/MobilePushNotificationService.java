@@ -89,7 +89,7 @@ public class MobilePushNotificationService {
             }
 
             public void messageSendFailed(ApnsNotification message, Throwable e) {
-                LOG.error("Message send failed. Message={} token={} {} reason={}",
+                LOG.warn("Message send failed. Message={} token={} {} reason={}",
                         message.toString(),
                         message.getDeviceToken().toString(),
                         message.getPayload().toString(),
