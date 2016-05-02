@@ -30,7 +30,14 @@ import java.util.Map;
 public final class FileUploadDocumentListenerJMS {
     private static final Logger LOG = LoggerFactory.getLogger(FileUploadDocumentListenerJMS.class);
 
-    @Autowired private MessageDocumentManager messageDocumentManager;
+    private MessageDocumentManager messageDocumentManager;
+
+    private FileUploadDocumentListenerJMS() {}
+
+    @Autowired
+    public FileUploadDocumentListenerJMS(MessageDocumentManager messageDocumentManager) {
+        this.messageDocumentManager = messageDocumentManager;
+    }
 
     public void receive(Map<String, Object> message) throws Exception {
         String documentId = (String) message.get("id");
