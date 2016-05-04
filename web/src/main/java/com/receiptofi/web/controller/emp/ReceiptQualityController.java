@@ -1,8 +1,9 @@
 package com.receiptofi.web.controller.emp;
 
+import com.receiptofi.domain.ReceiptEntity;
+import com.receiptofi.service.ItemService;
 import com.receiptofi.service.ReceiptService;
 import com.receiptofi.web.form.ReceiptQualityForm;
-import com.receiptofi.web.form.UserSearchForm;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +15,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
+import java.util.List;
 
 /**
  * User: hitender
@@ -33,7 +36,14 @@ public class ReceiptQualityController {
     @Value ("${nextPage:/emp/receiptQuality}")
     private String nextPage;
 
-    @Autowired private ReceiptService receiptService;
+    private ReceiptService receiptService;
+    private ItemService itemService;
+
+    @Autowired
+    public ReceiptQualityController(ReceiptService receiptService, ItemService itemService) {
+        this.receiptService = receiptService;
+        this.itemService = itemService;
+    }
 
     @PreAuthorize ("hasAnyRole('ROLE_SUPERVISOR')")
     @RequestMapping (
@@ -43,6 +53,10 @@ public class ReceiptQualityController {
             @ModelAttribute ("receiptQualityForm")
             ReceiptQualityForm receiptQualityForm
     ) {
+        List<ReceiptEntity> receipts = receiptService.getReceiptsWithoutQC();
+        for (ReceiptEntity receipt : receipts) {
+            receiptQualityForm.setReceiptAndItems(receipt, itemService.getAllItemsOfReceipt(receipt.getId()));
+        }
         return nextPage;
     }
 }

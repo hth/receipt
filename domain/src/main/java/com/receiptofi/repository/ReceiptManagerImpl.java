@@ -552,6 +552,28 @@ public class ReceiptManagerImpl implements ReceiptManager {
     }
 
     @Override
+    public List<ReceiptEntity> getReceiptsWithoutQC() {
+        return mongoTemplate.find(
+                query(new Criteria()
+                        .orOperator(
+                                where("QC").exists(false),
+                                where("QC").is(false)
+                        )
+                        .andOperator(
+                                new Criteria()
+                                        .orOperator(
+                                                where("RF").exists(false),
+                                                where("RF").is("")
+                                        ),
+                                isActive(),
+                                isNotDeleted()
+                        )
+                ),
+                ReceiptEntity.class,
+                TABLE);
+    }
+
+    @Override
     public List<ReceiptEntity> findAllReceiptWithMatchingReferReceiptId(String receiptId) {
         return mongoTemplate.find(
                 query(where("RF").is(receiptId)
