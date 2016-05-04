@@ -259,6 +259,8 @@ public interface ReceiptManager extends RepositoryManager<ReceiptEntity> {
      */
     List<ReceiptEntity> findAllReceiptWithMatchingReferReceiptId(String receiptId);
 
+    List<ReceiptEntity> getReceiptsWithoutQC();
+
     /**
      * Collection size.
      */

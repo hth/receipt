@@ -158,6 +158,9 @@ public class ReceiptEntity extends BaseEntity {
     @Field ("RF")
     private String referReceiptId;
 
+    @Field ("QC")
+    private boolean qualityCheck = false;
+
     /** To keep bean happy. */
     public ReceiptEntity() {
         super();
@@ -392,6 +395,14 @@ public class ReceiptEntity extends BaseEntity {
 
     private void setReferReceiptId(String referReceiptId) {
         this.referReceiptId = referReceiptId;
+    }
+
+    public boolean isQualityCheck() {
+        return qualityCheck;
+    }
+
+    public void setQualityCheck(boolean qualityCheck) {
+        this.qualityCheck = qualityCheck;
     }
 
     @Transient

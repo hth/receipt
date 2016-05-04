@@ -676,6 +676,10 @@ public class ReceiptService {
         return bizReceiptCount;
     }
 
+    public List<ReceiptEntity> getReceiptsWithoutQC() {
+        return receiptManager.getReceiptsWithoutQC();
+    }
+
     private void addNotificationWhenShared(ReceiptEntity receipt, String rid) {
         UserAccountEntity userAccount = accountService.findByReceiptUserId(rid);
         notificationService.addNotification(
