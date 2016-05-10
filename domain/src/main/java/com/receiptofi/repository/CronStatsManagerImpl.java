@@ -38,7 +38,6 @@ public class CronStatsManagerImpl implements CronStatsManager {
     @Autowired
     private MongoTemplate mongoTemplate;
 
-
     @Override
     public void save(CronStatsEntity object) {
         mongoTemplate.save(object, TABLE);
