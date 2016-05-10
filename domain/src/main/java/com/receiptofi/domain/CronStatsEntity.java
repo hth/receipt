@@ -24,7 +24,6 @@ import java.util.Map;
         "PMD.LongVariable"
 })
 @Document (collection = "CRON_STATS")
-/** Updated index. */
 @CompoundIndexes (value = {
         @CompoundIndex (name = "cron_stats_idx", def = "{'C': -1}", background = true)
 })
