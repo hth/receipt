@@ -1200,7 +1200,7 @@ a.view-more-text:hover, a.view-more-text:visited, a.view-more-text {
 }
 
 /*Footer */
-.maha_footer {
+.big_footer {
     float: left;
     width: 100%;
     /*Float to bottom*/
@@ -1215,12 +1215,12 @@ a.view-more-text:hover, a.view-more-text:visited, a.view-more-text {
     margin-top: 55px;
 }
 
-.fotter_row {
+.footer_row {
     width: 960px;
     margin: 0 auto;
 }
 
-.fotter_column {
+.footer_column {
     float: left;
     width: 20%;
     padding: 27px 0px 40px 0px;
@@ -1235,7 +1235,7 @@ a.view-more-text:hover, a.view-more-text:visited, a.view-more-text {
     color: #fff;
 }
 
-.fotter_copy {
+.footer_copy {
     width: 71%;
     margin: 0 auto;
     font-size: 11px;
