@@ -287,7 +287,7 @@ public class LandingController {
                 UploadDocumentImage image = UploadDocumentImage.newInstance();
                 image.setFileData(multipartFile);
                 image.setRid(rid);
-                image.setFileType(FileTypeEnum.RECEIPT);
+                image.setFileType(FileTypeEnum.R);
                 try {
                     boolean duplicateFile = fileSystemService.fileWithSimilarNameDoesNotExists(rid, image.getOriginalFileName());
                     DocumentEntity document = landingService.uploadDocument(image);
@@ -362,7 +362,7 @@ public class LandingController {
                 UploadDocumentImage uploadReceiptImage = UploadDocumentImage.newInstance();
                 uploadReceiptImage.setFileData(multipartFile);
                 uploadReceiptImage.setRid(receiptUser.getRid());
-                uploadReceiptImage.setFileType(FileTypeEnum.MILEAGE);
+                uploadReceiptImage.setFileType(FileTypeEnum.M);
                 try {
                     landingService.appendMileage(documentId.getText(), receiptUser.getRid(), uploadReceiptImage);
                     outcome = "{\"success\" : true, \"uploadMessage\" : \"File uploaded successfully\"}";

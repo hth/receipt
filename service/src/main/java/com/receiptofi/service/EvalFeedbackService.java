@@ -39,7 +39,7 @@ public class EvalFeedbackService {
                 UploadDocumentImage uploadReceiptImage = UploadDocumentImage.newInstance();
                 uploadReceiptImage.setFileData(fileData);
                 uploadReceiptImage.setRid(receiptUserId);
-                uploadReceiptImage.setFileType(FileTypeEnum.FEEDBACK);
+                uploadReceiptImage.setFileType(FileTypeEnum.F);
 
                 blobId = fileDBService.saveFile(uploadReceiptImage);
             }

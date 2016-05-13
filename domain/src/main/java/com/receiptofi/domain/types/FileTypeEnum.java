@@ -13,10 +13,11 @@ package com.receiptofi.domain.types;
         "PMD.LongVariable"
 })
 public enum FileTypeEnum {
-    RECEIPT("RECEIPT", "Receipt"),
-    INVOICE("INVOICE", "Invoice"),
-    MILEAGE("MILEAGE", "Mileage"),
-    FEEDBACK("FEEDBACK", "Feedback");
+    R("R", "Receipt"),
+    I("I", "Invoice"),
+    M("M", "Mileage"),
+    F("F", "Feedback"),
+    C("C", "Coupon");
 
     private final String description;
     private final String name;

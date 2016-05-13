@@ -1,5 +1,6 @@
 package com.receiptofi.domain;
 
+import com.receiptofi.domain.types.FileTypeEnum;
 import com.receiptofi.utils.FileUtil;
 
 import org.apache.commons.lang3.StringUtils;
@@ -100,6 +101,9 @@ public class FileSystemEntity extends BaseEntity {
     @NotNull
     @Field ("OFN")
     private String originalFilename;
+
+    @Field ("FT")
+    private FileTypeEnum fileType = FileTypeEnum.R;
 
     /** To keep bean happy. */
     public FileSystemEntity() {
@@ -211,6 +215,14 @@ public class FileSystemEntity extends BaseEntity {
 
     public String getOriginalFilename() {
         return originalFilename;
+    }
+
+    public FileTypeEnum getFileType() {
+        return fileType;
+    }
+
+    public void setFileType(FileTypeEnum fileType) {
+        this.fileType = fileType;
     }
 
     @Transient
