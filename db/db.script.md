@@ -3,7 +3,7 @@ Simplified data to smaller name to save space.
     
     db.getCollection('fs.files').update(
         {'FILE_TYPE' : 'RECEIPT'},            
-        { $set: {'FILE_TYPE': 'R'} },                  
+        {$set: {'FILE_TYPE': 'R'}},                  
         {multi: true}
     );
     
@@ -11,7 +11,7 @@ Added File Type to FILE_SYSTEM to support coupons.
  
     db.getCollection('FILE_SYSTEM').update(
         {},            
-        { $set: {FT: 'R'} },                  
+        {$set: {FT: 'R'} },                  
         {multi: true}
     );
 
