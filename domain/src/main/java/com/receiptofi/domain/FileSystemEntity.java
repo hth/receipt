@@ -103,7 +103,7 @@ public class FileSystemEntity extends BaseEntity {
     private String originalFilename;
 
     @Field ("FT")
-    private FileTypeEnum fileType = FileTypeEnum.RECEIPT;
+    private FileTypeEnum fileType = FileTypeEnum.R;
 
     /** To keep bean happy. */
     public FileSystemEntity() {

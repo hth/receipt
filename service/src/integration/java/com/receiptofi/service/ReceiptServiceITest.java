@@ -268,7 +268,7 @@ public class ReceiptServiceITest extends ITest {
         UploadDocumentImage image = UploadDocumentImage.newInstance();
         image.setFileData(getMultipartFile(primaryUserAccount.getReceiptUserId()));
         image.setRid(primaryUserAccount.getReceiptUserId());
-        image.setFileType(FileTypeEnum.RECEIPT);
+        image.setFileType(FileTypeEnum.R);
         DocumentEntity document = landingService.uploadDocument(image);
 
         /** Process Document to Receipt. */
