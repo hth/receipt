@@ -16,7 +16,8 @@ public enum FileTypeEnum {
     RECEIPT("RECEIPT", "Receipt"),
     INVOICE("INVOICE", "Invoice"),
     MILEAGE("MILEAGE", "Mileage"),
-    FEEDBACK("FEEDBACK", "Feedback");
+    FEEDBACK("FEEDBACK", "Feedback"),
+    COUPON("COUPON", "Coupon");
 
     private final String description;
     private final String name;
