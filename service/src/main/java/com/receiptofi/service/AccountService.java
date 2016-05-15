@@ -403,10 +403,20 @@ public class AccountService {
             case USER:
             case USER_COMMUNITY:
             case USER_PAID:
-            case EMPLOYER:
-            case EMPLOYER_COMMUNITY:
-            case EMPLOYER_PAID:
                 roles.add(RoleEnum.ROLE_USER);
+                userAccountEntity.setRoles(roles);
+                break;
+            case ENTERPRISE:
+            case ENTERPRISE_COMMUNITY:
+            case ENTERPRISE_PAID:
+                roles.add(RoleEnum.ROLE_ENTERPRISE);
+                userAccountEntity.setRoles(roles);
+                break;
+            case BUSINESS_SMALL:
+                roles.add(RoleEnum.ROLE_USER);
+                roles.add(RoleEnum.ROLE_ENTERPRISE);
+            case BUSINESS_LARGE:
+                roles.add(RoleEnum.ROLE_ENTERPRISE);
                 userAccountEntity.setRoles(roles);
                 break;
             default:

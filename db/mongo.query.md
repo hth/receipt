@@ -1,3 +1,11 @@
+## Find User with Biz Name
+
+    db.getCollection('RECEIPT').find(  
+        {
+            "RID" : "10000000147", "BIZ_NAME.$id" : ObjectId('57029f44f4a3b6aed3fa2221')
+        }
+    )
+
 ## Using And with multiple OR with showing selected field    
     
     db.getCollection('RECEIPT').find(    

@@ -161,7 +161,7 @@ public class ReceiptUpdateController {
             RedirectAttributes redirectAttrs
     ) {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        LOG.info("Turk processing a receipt={}", receiptDocumentForm.getReceiptDocument().getId());
+        LOG.info("Processed receipt={}", receiptDocumentForm.getReceiptDocument().getId());
 
         receiptDocumentValidator.validate(receiptDocumentForm, result);
         if (result.hasErrors()) {
@@ -353,7 +353,7 @@ public class ReceiptUpdateController {
             RedirectAttributes redirectAttrs
     ) {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        LOG.info("Turk processing a receipt id={} biz={}",
+        LOG.info("Processed receipt={} biz={}",
                 receiptDocumentForm.getReceiptDocument().getId(),
                 receiptDocumentForm.getReceiptDocument().getBizName().getBusinessName());
         receiptDocumentValidator.validate(receiptDocumentForm, result);

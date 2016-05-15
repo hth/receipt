@@ -1,0 +1,30 @@
+/* Another one for receipt item table */
+/*
+* http://css-tricks.com/responsive-data-tables/
+* Generic Styling, for Desktops/Laptops
+*/
+.down_form .etable {
+    width: 100%;
+    border-collapse: collapse;
+}
+/* Zebra striping */
+.down_form .etable tr:nth-of-type(odd) {
+    background: #eee;
+}
+.down_form .etable th {
+    background: #333;
+    color: white;
+    font-weight: bold;
+}
+.down_form .etable td, th {
+    padding: 10px;
+    border: 1px solid #ccc;
+    text-align: left;
+}
+.down_form .etable.hover tr {
+    background-color: lightblue;
+}
+.down_form .etable tr.highlight{
+    background-color: #7DBD00;
+}
+/* End */

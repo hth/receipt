@@ -4,8 +4,8 @@
 package com.receiptofi.domain.types;
 
 /**
- * User level defines the roles set for a user in UserAccountEntity. Roles in UserAccountEntity sets authorities in
- * ReceiptUser.
+ * User level defines the roles set for a user in UserAccountEntity.
+ * Roles in UserAccountEntity sets authorities in ReceiptUser.
  *
  * @see com.receiptofi.domain.UserAccountEntity
  * @see com.receiptofi.domain.site.ReceiptUser
@@ -24,13 +24,15 @@ public enum UserLevelEnum {
     USER("User", 10),
     USER_COMMUNITY("User Community", 20),
     USER_PAID("User Paid", 20),
-    EMPLOYER("Employer", 30),
-    EMPLOYER_COMMUNITY("Employer Community", 40),
-    EMPLOYER_PAID("Employer Paid", 40),
-    TECHNICIAN("Technician", 50),
-    SUPERVISOR("Supervisor", 60),
-    ANALYSIS_READ("Analysis Read", 70),
-    ADMIN("Admin", 80);
+    ENTERPRISE("Enterprise", 30),
+    ENTERPRISE_COMMUNITY("Enterprise Community", 40),
+    ENTERPRISE_PAID("Enterprise Paid", 40),
+    BUSINESS_SMALL("Business Small", 50),
+    BUSINESS_LARGE("Business Large", 60),
+    TECHNICIAN("Technician", 70),
+    SUPERVISOR("Supervisor", 80),
+    ANALYSIS_READ("Analysis Read", 90),
+    ADMIN("Admin", 100);
 
     private final String description;
     private final int value;
