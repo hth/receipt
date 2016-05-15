@@ -37,7 +37,7 @@ import java.util.stream.Collectors;
 //@JsonInclude (JsonInclude.Include.NON_NULL)
 @Mobile
 public class JsonReceipt {
-    public static final String ISO8601_FMT = "yyyy-MM-dd'T'HH:mm:ss.sssZZZ";
+    public static final String ISO8601_FMT = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
 
     @JsonProperty ("id")
     private String id;

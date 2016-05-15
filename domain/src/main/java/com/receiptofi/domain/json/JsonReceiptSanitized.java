@@ -35,7 +35,6 @@ import java.util.TimeZone;
 //@JsonInclude (JsonInclude.Include.NON_NULL)
 @Mobile
 public class JsonReceiptSanitized {
-    public static final String ISO8601_FMT = "yyyy-MM-dd'T'HH:mm:ss.sssZZZ";
 
     @JsonProperty ("total")
     private String total;
@@ -64,7 +63,7 @@ public class JsonReceiptSanitized {
         this.total = numberFormat.format(receipt.getTotal());
         this.jsonBizName = JsonBizName.newInstance(receipt.getBizName());
         this.jsonBizStore = JsonBizStore.newInstance(receipt.getBizStore());
-        this.receiptDate = DateFormatUtils.format(receipt.getReceiptDate(), ISO8601_FMT, TimeZone.getTimeZone("UTC"));
+        this.receiptDate = DateFormatUtils.format(receipt.getReceiptDate(), JsonReceipt.ISO8601_FMT, TimeZone.getTimeZone("UTC"));
         this.tax = numberFormat.format(receipt.getTax());
         this.percentTax = receipt.getPercentTax();
     }
