@@ -1091,6 +1091,7 @@ a.view-more-text:hover, a.view-more-text:visited, a.view-more-text {
 #logo h1 {
     float: left;
     font-size: 32px;
+    width: 200px;
 }
 
 .styled-select select {
