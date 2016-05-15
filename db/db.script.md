@@ -1,5 +1,22 @@
+#### Date May 12 2016 - Build 1638
+Simplified data to smaller name to save space.
+    
+    db.getCollection('fs.files').update(
+        {'FILE_TYPE' : 'RECEIPT'},            
+        {$set: {'FILE_TYPE': 'R'}},                  
+        {multi: true}
+    );
+    
+Added File Type to FILE_SYSTEM to support coupons.
+ 
+    db.getCollection('FILE_SYSTEM').update(
+        {},            
+        {$set: {FT: 'R'} },                  
+        {multi: true}
+    );
+
 #### Date Mar 27 2016 - Build 1585
-    fixed index 'receipt_friend_reference_idx' by updating the field name from RD to RD (referredId) 
+    fixed index 'receipt_friend_reference_idx' by updating the field name from RF to RD (referredId) 
 
 #### Date Dec 04 2015 - Build 1477
     db.getCollection('BIZ_STORE').update({},            { $set: {EA: false} },                  {multi: true});
