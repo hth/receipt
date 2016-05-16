@@ -48,6 +48,12 @@ public class OnLoginAuthenticationSuccessHandler extends SimpleUrlAuthentication
     @Value ("${displayLanding:/display/landing.htm}")
     private String displayLanding;
 
+    @Value ("${businessLanding:/business/landing.htm}")
+    private String businessLanding;
+
+    @Value ("${enterpriseLanding:/enterprise/landing.htm}")
+    private String enterpriseLanding;
+
     private final RequestCache requestCache = new HttpSessionRequestCache();
     private final RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 
@@ -115,6 +121,10 @@ public class OnLoginAuthenticationSuccessHandler extends SimpleUrlAuthentication
                 return adminLanding;
             case ROLE_ANALYSIS_READ:
                 return displayLanding;
+            case ROLE_BUSINESS:
+                return businessLanding;
+            case ROLE_ENTERPRISE:
+                return enterpriseLanding;
             default:
                 LOG.error("Role set is not defined");
                 throw new IllegalStateException("Role set is not defined");

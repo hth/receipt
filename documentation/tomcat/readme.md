@@ -53,10 +53,22 @@ correct indentation.
 
 #### Set JAVA 8 symb link from above step
 
+For anyone else having this problem you need to reboot your mac and press cmd+r when booting up. 
+Then go into utilities > terminal and type the following commands:
+
+    csrutil disable
+    reboot 
+
+After reboot
+
     sudo rm /usr/bin/java
-    sudo ln -s /Library/Java/JavaVirtualMachines/jdk1.8.0_51.jdk/Contents/Home/bin/java /usr/bin/java
+    sudo ln -s /Library/Java/JavaVirtualMachines/jdk1.8.0_92.jdk/Contents/Home/bin/java /usr/bin/java
     sudo rm /Library/Java/Home
-    sudo ln -s /Library/Java/JavaVirtualMachines/jdk1.8.0_51.jdk/Contents/Home /Library/Java/Home
+    sudo ln -s /Library/Java/JavaVirtualMachines/jdk1.8.0_92.jdk/Contents/Home /Library/Java/Home
+    
+Check
+    
+    ls -l /usr/bin/java
 
 #### Tomcat env and auto start set up
 - http://stackoverflow.com/questions/6897476/tomcat-7-how-to-set-initial-heap-size-correctly
