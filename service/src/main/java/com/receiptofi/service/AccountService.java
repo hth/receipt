@@ -390,6 +390,8 @@ public class AccountService {
                 break;
             case ADMIN:
                 roles.add(RoleEnum.ROLE_USER);
+                roles.add(RoleEnum.ROLE_BUSINESS);
+                roles.add(RoleEnum.ROLE_ENTERPRISE);
                 roles.add(RoleEnum.ROLE_TECHNICIAN);
                 roles.add(RoleEnum.ROLE_SUPERVISOR);
                 roles.add(RoleEnum.ROLE_ADMIN);
@@ -414,9 +416,9 @@ public class AccountService {
                 break;
             case BUSINESS_SMALL:
                 roles.add(RoleEnum.ROLE_USER);
-                roles.add(RoleEnum.ROLE_ENTERPRISE);
+                roles.add(RoleEnum.ROLE_BUSINESS);
             case BUSINESS_LARGE:
-                roles.add(RoleEnum.ROLE_ENTERPRISE);
+                roles.add(RoleEnum.ROLE_BUSINESS);
                 userAccountEntity.setRoles(roles);
                 break;
             default:
