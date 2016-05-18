@@ -44,11 +44,11 @@ public class EvalFeedbackService {
                 blobId = fileDBService.saveFile(uploadReceiptImage);
             }
 
-            EvalFeedbackEntity evalFeedbackEntity = EvalFeedbackEntity.newInstance(comment, rating, receiptUserId);
+            EvalFeedbackEntity evalFeedback = EvalFeedbackEntity.newInstance(comment, rating, receiptUserId);
             if (!StringUtils.isEmpty(blobId)) {
-                evalFeedbackEntity.setAttachmentBlobId(blobId);
+                evalFeedback.setAttachmentBlobId(blobId);
             }
-            evalFeedbackManager.save(evalFeedbackEntity);
+            evalFeedbackManager.save(evalFeedback);
         } catch (Exception exce) {
             LOG.error("Feedback failed reason={}", exce.getLocalizedMessage(), exce);
         }
