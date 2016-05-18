@@ -10,30 +10,19 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import com.mongodb.util.JSON;
 
+import com.receiptofi.ITest;
 import com.receiptofi.IntegrationTests;
-import com.receiptofi.RealMongoForTests;
+import com.receiptofi.LoadResource;
 import com.receiptofi.domain.ForgotRecoverEntity;
 import com.receiptofi.domain.UserProfileEntity;
-import com.receiptofi.repository.ForgotRecoverManager;
-import com.receiptofi.repository.ForgotRecoverManagerImpl;
-import com.receiptofi.repository.GenerateUserIdManager;
-import com.receiptofi.repository.GenerateUserIdManagerImpl;
-import com.receiptofi.repository.RegisteredDeviceManager;
-import com.receiptofi.repository.RegisteredDeviceManagerImpl;
-import com.receiptofi.repository.UserAccountManager;
-import com.receiptofi.repository.UserAccountManagerImpl;
-import com.receiptofi.repository.UserAuthenticationManager;
-import com.receiptofi.repository.UserAuthenticationManagerImpl;
-import com.receiptofi.repository.UserPreferenceManager;
-import com.receiptofi.repository.UserPreferenceManagerImpl;
-import com.receiptofi.repository.UserProfileManager;
-import com.receiptofi.repository.UserProfileManagerImpl;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
+
+import java.io.IOException;
 
 /**
  * User: hitender
@@ -46,38 +35,19 @@ import org.junit.experimental.categories.Category;
         "PMD.LongVariable"
 })
 @Category (IntegrationTests.class)
-public class AccountServiceITest extends RealMongoForTests {
+public class AccountServiceITest extends ITest {
     private String userProfileCollectionName = "USER_PROFILE";
     private DBCollection userProfileCollection;
 
     private String forgotRecoverCollectionName = "FORGOT_RECOVER";
     private DBCollection forgotRecoverCollection;
 
-    private UserAccountManager userAccountManager;
-    private UserAuthenticationManager userAuthenticationManager;
-    private UserProfileManager userProfileManager;
-    private UserPreferenceManager userPreferenceManager;
-    private ForgotRecoverManager forgotRecoverManager;
-    private GenerateUserIdManager generateUserIdManager;
-    private RegisteredDeviceManager registeredDeviceManager;
-    private EmailValidateService emailValidateService;
-    private RegistrationService registrationService;
-    private ExpensesService expensesService;
-    private BillingService billingService;
-    private NotificationService notificationService;
-
     private AccountService accountService;
 
     @Before
-    public void setup() {
+    public void classSetup() throws IOException {
+        LoadResource.loadProperties(properties);
 
-        userAccountManager = new UserAccountManagerImpl(getMongoTemplate());
-        userAuthenticationManager = new UserAuthenticationManagerImpl(getMongoTemplate());
-        registeredDeviceManager = new RegisteredDeviceManagerImpl(getMongoTemplate());
-        userProfileManager = new UserProfileManagerImpl(getMongoTemplate());
-        userPreferenceManager = new UserPreferenceManagerImpl(getMongoTemplate());
-        forgotRecoverManager = new ForgotRecoverManagerImpl(getMongoTemplate());
-        generateUserIdManager = new GenerateUserIdManagerImpl(getMongoTemplate());
         accountService = new AccountService(
                 new String[]{"HOME", "BUSINESS"},
                 new String[]{"#1a9af9", "#b492e8"},
