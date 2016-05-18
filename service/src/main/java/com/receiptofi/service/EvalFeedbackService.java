@@ -50,7 +50,7 @@ public class EvalFeedbackService {
             }
             evalFeedbackManager.save(evalFeedbackEntity);
         } catch (Exception exce) {
-            LOG.error(exce.getLocalizedMessage());
+            LOG.error("Feedback failed reason={}", exce.getLocalizedMessage(), exce);
         }
     }
 }
