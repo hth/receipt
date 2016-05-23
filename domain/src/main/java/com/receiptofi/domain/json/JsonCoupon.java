@@ -11,10 +11,9 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.receiptofi.domain.CouponEntity;
 import com.receiptofi.domain.annotation.Mobile;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.TimeZone;
 
 /**
@@ -75,7 +74,7 @@ public class JsonCoupon {
     private String imagePath;
 
     @JsonProperty ("sh")
-    private List<String> sharedWithRids = new ArrayList<>();
+    private String sharedWithRids;
 
     @JsonProperty ("oi")
     private String originId;
@@ -99,7 +98,7 @@ public class JsonCoupon {
         this.couponType = coupon.getCouponType().getName();
         this.reminder = coupon.isReminder();
         this.imagePath = coupon.getImagePath();
-        this.sharedWithRids = coupon.getSharedWithRids();
+        this.sharedWithRids = StringUtils.join(coupon.getSharedWithRids(), ',');
         this.originId = coupon.getOriginId();
         this.usedCoupon = coupon.isUsedCoupon();
         this.active = coupon.isActive();
