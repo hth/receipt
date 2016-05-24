@@ -68,7 +68,14 @@
                        access="permitAll" />
 
         <intercept-url pattern="/access/signoff.htm"
-                       access="hasAnyRole('ROLE_USER', 'ROLE_ADMIN', 'ROLE_TECHNICIAN', 'ROLE_SUPERVISOR', 'ROLE_ANALYSIS_READ')" />
+                       access="hasAnyRole(
+                       'ROLE_USER',
+                       'ROLE_ENTERPRISE',
+                       'ROLE_BUSINESS',
+                       'ROLE_ADMIN',
+                       'ROLE_TECHNICIAN',
+                       'ROLE_SUPERVISOR',
+                       'ROLE_ANALYSIS_READ')" />
 
         <intercept-url pattern="/access/**"
                        access="hasAnyRole('ROLE_USER', 'ROLE_ADMIN', 'ROLE_TECHNICIAN', 'ROLE_SUPERVISOR')" />
@@ -84,6 +91,12 @@
 
         <intercept-url pattern="/display/**"
                        access="hasRole('ROLE_ANALYSIS_READ')" />
+
+        <intercept-url pattern="/business/**"
+                       access="hasAnyRole('ROLE_BUSINESS', 'ROLE_ADMIN')" />
+
+        <intercept-url pattern="/enterprise/**"
+                       access="hasAnyRole('ROLE_ENTERPRISE', 'ROLE_ADMIN')" />
 
         <intercept-url pattern="/monitoring/**"
                        access="hasIpAddress('192.168.1.0/24') or hasIpAddress('127.0.0.1')" />
