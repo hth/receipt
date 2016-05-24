@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.validation.constraints.NotNull;
+
 /**
  * User: hitender
  * Date: 4/27/16 11:59 PM
@@ -27,6 +29,7 @@ import java.util.List;
 })
 public class CouponEntity extends BaseEntity {
 
+    @NotNull
     @Field ("RID")
     private String rid;
 
