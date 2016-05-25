@@ -36,7 +36,8 @@ public class FilesDeleteFromS3 {
     private static final Logger LOG = LoggerFactory.getLogger(FilesDeleteFromS3.class);
 
     private final String bucketName;
-    private final String folderName;
+    private final String receiptFolderName;
+    private final String couponFolderName;
 
     private AmazonS3Service amazonS3Service;
     private CloudFileService cloudFileService;
@@ -48,14 +49,18 @@ public class FilesDeleteFromS3 {
             String bucketName,
 
             @Value ("${aws.s3.bucketName}")
-            String folderName,
+            String receiptFolderName,
+
+            @Value ("${aws.s3.couponBucketName}")
+            String couponFolderName,
 
             CloudFileService cloudFileService,
             AmazonS3Service amazonS3Service,
             CronStatsService cronStatsService
     ) {
         this.bucketName = bucketName;
-        this.folderName = folderName;
+        this.receiptFolderName = receiptFolderName;
+        this.couponFolderName = couponFolderName;
         this.cloudFileService = cloudFileService;
         this.amazonS3Service = amazonS3Service;
         this.cronStatsService = cronStatsService;
@@ -112,6 +117,15 @@ public class FilesDeleteFromS3 {
     }
 
     private DeleteObjectsRequest.KeyVersion populateDeleteObject(CloudFileEntity cloudFile) {
-        return new DeleteObjectsRequest.KeyVersion(folderName + "/" + cloudFile.getKey());
+        switch (cloudFile.getFileType()) {
+            case R:
+                return new DeleteObjectsRequest.KeyVersion(receiptFolderName + "/" + cloudFile.getKey());
+            case C:
+                return new DeleteObjectsRequest.KeyVersion(couponFolderName + "/" + cloudFile.getKey());
+            default:
+                LOG.error("Not supported File type={}", cloudFile.getFileType());
+                throw new UnsupportedOperationException("Any other operation is not supported");
+        }
+
     }
 }

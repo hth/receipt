@@ -53,8 +53,8 @@ public class ExternalService {
      */
     public void decodeAddress(BizStoreEntity bizStore) {
         try {
-            GeocodingResult[] results = GeocodingApi.geocode(context, bizStore.getAddress()).await();
-            if (results.length > 0) {
+            GeocodingResult[] results = getGeocodingResults(bizStore.getAddress());
+            if (null != results && results.length > 0) {
                 Assert.notNull(results[0].geometry, "Address is null hence geometry is null");
                 Assert.notNull(results[0].geometry.location, "Geometry is null hence location is null");
 
@@ -80,10 +80,13 @@ public class ExternalService {
                 String placeId = results[0].placeId;
                 bizStore.setPlaceId(placeId);
 
-                PlaceDetails placeDetails = getPlaceDetails(bizStore, placeId);
-
-                if (StringUtils.isNotEmpty(placeDetails.formattedPhoneNumber)) {
-                    bizStore.setPhone(placeDetails.formattedPhoneNumber);
+                PlaceDetails placeDetails = getPlaceDetails(placeId);
+                if (null != placeDetails) {
+                    bizStore.setPlaceType(placeDetails.types);
+                    bizStore.setPlaceRating(placeDetails.rating);
+                    if (StringUtils.isNotEmpty(placeDetails.formattedPhoneNumber)) {
+                        bizStore.setPhone(placeDetails.formattedPhoneNumber);
+                    }
                 }
 
                 bizStore.setValidatedUsingExternalAPI(true);
@@ -97,20 +100,28 @@ public class ExternalService {
         }
     }
 
+    public GeocodingResult[] getGeocodingResults(String address) {
+        try {
+            return GeocodingApi.geocode(context, address).await();
+        } catch (Exception e) {
+            LOG.error("Failed fetching from google address={} reason={}", address, e.getLocalizedMessage(), e);
+        }
+        return null;
+    }
+
     /**
      * External call to find types and rating for a particular store.
      *
-     * @param bizStore
      * @param placeId
      * @return
      * @throws Exception
      */
-    private PlaceDetails getPlaceDetails(BizStoreEntity bizStore, String placeId) throws Exception {
-        PlaceDetails placeDetails = PlacesApi.placeDetails(context, placeId).await();
-        bizStore.setPlaceType(placeDetails.types);
-        bizStore.setPlaceRating(placeDetails.rating);
-        return placeDetails;
+    public PlaceDetails getPlaceDetails(String placeId) {
+        try {
+            return PlacesApi.placeDetails(context, placeId).await();
+        } catch (Exception e) {
+            LOG.error("Failed fetching from google placeId={} reason={}", placeId, e.getLocalizedMessage(), e);
+        }
+        return null;
     }
-
-
 }

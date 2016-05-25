@@ -174,8 +174,8 @@ public class AccountService {
             userAccount = UserAccountEntity.newInstance(
                     rid,
                     mail,
-                    WordUtils.capitalize(firstName),
-                    WordUtils.capitalize(lastName),
+                    firstName,
+                    lastName,
                     userAuthentication
             );
             userAccount.setAccountValidated(false);

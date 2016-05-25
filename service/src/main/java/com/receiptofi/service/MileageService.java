@@ -200,7 +200,7 @@ public class MileageService {
         if (mileage != null) {
             mileageManager.deleteHard(mileage);
             for (FileSystemEntity fileSystem : mileage.getFileSystemEntities()) {
-                CloudFileEntity cloudFile = CloudFileEntity.newInstance(fileSystem.getKey());
+                CloudFileEntity cloudFile = CloudFileEntity.newInstance(fileSystem.getKey(), fileSystem.getFileType());
                 cloudFileService.save(cloudFile);
             }
             fileSystemService.deleteHard(mileage.getFileSystemEntities());

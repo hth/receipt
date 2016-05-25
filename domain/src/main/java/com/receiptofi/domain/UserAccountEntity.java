@@ -6,6 +6,7 @@ import com.receiptofi.domain.types.RoleEnum;
 import com.receiptofi.utils.DateUtil;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.text.WordUtils;
 
 import org.joda.time.DateTime;
 import org.joda.time.Duration;
@@ -133,8 +134,8 @@ public class UserAccountEntity extends BaseEntity {
         this();
         this.receiptUserId = receiptUserId;
         this.userId = userId;
-        this.firstName = firstName;
-        this.lastName = lastName;
+        this.firstName = WordUtils.capitalize(firstName);
+        this.lastName = WordUtils.capitalize(lastName);
         this.userAuthentication = userAuthentication;
         billingAccount = new BillingAccountEntity(receiptUserId);
     }
@@ -250,7 +251,7 @@ public class UserAccountEntity extends BaseEntity {
     }
 
     public void setFirstName(String firstName) {
-        this.firstName = firstName;
+        this.firstName = WordUtils.capitalize(firstName);
     }
 
     public String getLastName() {
@@ -258,7 +259,7 @@ public class UserAccountEntity extends BaseEntity {
     }
 
     public void setLastName(String lastName) {
-        this.lastName = lastName;
+        this.lastName = WordUtils.capitalize(lastName);
     }
 
     public Set<RoleEnum> getRoles() {

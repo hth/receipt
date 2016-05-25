@@ -133,7 +133,7 @@ public class BizStoreEntity extends BaseEntity {
      * @param phone
      */
     public void setPhone(String phone) {
-        if (StringUtils.isEmpty(phone)) {
+        if (StringUtils.isBlank(phone)) {
             this.phone = CommonUtil.phoneCleanup(phoneNumberBlank);
         } else {
             this.phone = CommonUtil.phoneCleanup(phone);

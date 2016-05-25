@@ -7,6 +7,7 @@ import com.receiptofi.domain.ItemEntity;
 import com.receiptofi.repository.BizNameManager;
 import com.receiptofi.repository.BizStoreManager;
 import com.receiptofi.repository.ItemManager;
+import com.receiptofi.utils.CommonUtil;
 import com.receiptofi.utils.Formatter;
 
 import org.slf4j.Logger;
@@ -94,7 +95,7 @@ public class FetcherService {
                     bizNameEntity,
                     BizStoreEntity.PHONE_FIELD_NAME);
 
-            phone.addAll(list.stream().map(bizStore -> Formatter.phone(bizStore.getPhone(), bizStore.getCountryShortName())).collect(Collectors.toList()));
+            phone.addAll(list.stream().map(bizStore -> CommonUtil.phoneFormatter(bizStore.getPhone(), bizStore.getCountryShortName())).collect(Collectors.toList()));
             LOG.debug("found phones count={} unique count={}", list.size(), phone.size());
         }
         return phone;

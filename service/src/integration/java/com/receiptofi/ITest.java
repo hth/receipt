@@ -102,6 +102,9 @@ public class ITest extends RealMongoForTests {
     public DocumentUpdateService documentUpdateService;
     public MessageDocumentManager messageDocumentManager;
 
+    public BusinessUserManager businessUserManager;
+    public BusinessUserService businessUserService;
+
     @Mock public JavaMailSenderImpl mailSender;
     @Mock public FreeMarkerConfigurationFactoryBean freemarkerConfiguration;
     @Mock public MimeMessage message;
@@ -160,6 +163,8 @@ public class ITest extends RealMongoForTests {
         receiptManager = new ReceiptManagerImpl(itemManager, fileSystemManager, storageManager, getMongoTemplate());
         documentService = new DocumentService(documentManager, itemOCRManager);
         itemService = new ItemService(itemManager, expenseTagManager);
+        businessUserManager = new BusinessUserManagerImpl(getMongoTemplate());
+        businessUserService = new BusinessUserService(businessUserManager);
         accountService = new AccountService(
                 new String[]{"HOME", "BUSINESS"},
                 new String[]{"#1a9af9", "#b492e8"},

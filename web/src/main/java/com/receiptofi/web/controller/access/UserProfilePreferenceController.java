@@ -12,6 +12,7 @@ import com.receiptofi.domain.UserAccountEntity;
 import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.domain.site.ReceiptUser;
 import com.receiptofi.service.AccountService;
+import com.receiptofi.service.AdminService;
 import com.receiptofi.service.BillingService;
 import com.receiptofi.service.EmailValidateService;
 import com.receiptofi.service.ExpensesService;
@@ -104,6 +105,7 @@ public class UserProfilePreferenceController {
     @Autowired private BillingService billingService;
     @Autowired private ExpensesService expensesService;
     @Autowired private ReceiptService receiptService;
+    @Autowired private AdminService adminService;
 
     @PreAuthorize ("hasRole('ROLE_USER')")
     @RequestMapping (value = "/i", method = RequestMethod.GET)
@@ -409,34 +411,21 @@ public class UserProfilePreferenceController {
 
             @ModelAttribute ("billingForm")
             BillingForm billingForm
-    ) throws IOException {
-        UserProfileEntity userProfile = userProfilePreferenceService.forProfilePreferenceFindByReceiptUserId(profileForm.getRid());
-
-        userProfile.setLevel(profileForm.getLevel());
-        UserAccountEntity userAccount = accountService.changeAccountRolesToMatchUserLevel(
-                userProfile.getReceiptUserId(),
-                userProfile.getLevel()
+    ) {
+        ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        boolean changed = adminService.changeUserLevel(
+                receiptUser.getRid(),
+                profileForm.getRid(),
+                profileForm.getLevel(),
+                profileForm.isActive()
         );
 
-        /** Profile active and inactive updates UserProfileEntity and UserAccountEntity as active or inactive. */
-        if (profileForm.isActive()) {
-            userProfile.active();
-            userAccount.active();
+        if (changed) {
+            profileForm.setSuccessMessage("Updated profile " + profileForm.getRid() + " successfully.");
         } else {
-            userProfile.inActive();
-            userAccount.inActive();
+            profileForm.setErrorMessage("Failed updating profile " + profileForm.getRid() + ", reason: Failed");
         }
-
-        try {
-            accountService.saveUserAccount(userAccount);
-            userProfilePreferenceService.updateProfile(userProfile);
-            profileForm.setSuccessMessage("Updated profile " + userProfile.getReceiptUserId() + " successfully.");
-        } catch (Exception exce) {
-            //XXX todo should there be two phase commit
-            LOG.error("Failed updating User Profile, rid={}", userProfile.getReceiptUserId(), exce);
-            profileForm.setErrorMessage("Failed updating profile " + userProfile.getReceiptUserId() + ", reason: " + exce.getLocalizedMessage());
-        }
-        return "redirect:/access" + nextPage + "/their" + ".htm?id=" + userProfile.getReceiptUserId();
+        return "redirect:/access" + nextPage + "/their" + ".htm?id=" + profileForm.getRid();
     }
 
     /**
