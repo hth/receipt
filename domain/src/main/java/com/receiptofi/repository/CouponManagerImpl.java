@@ -1,5 +1,8 @@
 package com.receiptofi.repository;
 
+import static org.springframework.data.mongodb.core.query.Criteria.where;
+import static org.springframework.data.mongodb.core.query.Query.*;
+
 import com.receiptofi.domain.BaseEntity;
 import com.receiptofi.domain.CouponEntity;
 
@@ -49,6 +52,11 @@ public class CouponManagerImpl implements CouponManager {
             LOG.error("Cannot save Coupon without rid");
             throw new RuntimeException("Missing user info for coupon");
         }
+    }
+
+    @Override
+    public CouponEntity findOne(String id) {
+        return mongoTemplate.findOne(query(where("id").is(id)), CouponEntity.class, TABLE);
     }
 
     @Override
