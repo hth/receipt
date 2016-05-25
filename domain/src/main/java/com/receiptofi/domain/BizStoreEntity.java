@@ -1,7 +1,7 @@
 package com.receiptofi.domain;
 
+import com.receiptofi.utils.CommonUtil;
 import com.receiptofi.domain.value.Coordinate;
-import com.receiptofi.utils.Formatter;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -79,19 +79,6 @@ public class BizStoreEntity extends BaseEntity {
     }
 
     /**
-     * Strip all the characters other than number.
-     *
-     * @param phone
-     * @return
-     */
-    public static String phoneCleanup(String phone) {
-        if (StringUtils.isNotEmpty(phone)) {
-            return phone.replaceAll("[^0-9]", StringUtils.EMPTY);
-        }
-        return phone;
-    }
-
-    /**
      * For web display of the address.
      *
      * @return
@@ -147,14 +134,14 @@ public class BizStoreEntity extends BaseEntity {
      */
     public void setPhone(String phone) {
         if (StringUtils.isEmpty(phone)) {
-            this.phone = phoneCleanup(phoneNumberBlank);
+            this.phone = CommonUtil.phoneCleanup(phoneNumberBlank);
         } else {
-            this.phone = phoneCleanup(phone);
+            this.phone = CommonUtil.phoneCleanup(phone);
         }
     }
 
     public String getPhoneFormatted() {
-        return Formatter.phone(phone, countryShortName);
+        return CommonUtil.phoneFormatter(phone, countryShortName);
     }
 
     @NumberFormat (style = NumberFormat.Style.NUMBER)

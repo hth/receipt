@@ -1,5 +1,8 @@
 package com.receiptofi.domain.types;
 
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * User: hitender
  * Date: 12/12/15 5:08 PM
@@ -43,8 +46,13 @@ public enum BusinessTypeEnum {
         return description;
     }
 
+    public static List<BusinessTypeEnum> asList() {
+        BusinessTypeEnum[] all = BusinessTypeEnum.values();
+        return Arrays.asList(all);
+    }
+
     @Override
     public String toString() {
-        return getDescription();
+        return this.description;
     }
 }

@@ -62,6 +62,11 @@ public class BizNameEntity extends BaseEntity {
         return businessTypes;
     }
 
+    @SuppressWarnings("unused")
+    public void setBusinessTypes(List<BusinessTypeEnum> businessTypes) {
+        this.businessTypes = businessTypes;
+    }
+
     public void addBusinessType(BusinessTypeEnum businessType) {
         this.businessTypes.add(businessType);
     }
