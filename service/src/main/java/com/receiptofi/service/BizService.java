@@ -53,7 +53,7 @@ public class BizService {
         return bizNameManager.getById(bizId);
     }
 
-    public void saveName(BizNameEntity bizNameEntity) throws Exception {
+    public void saveName(BizNameEntity bizNameEntity) {
         bizNameManager.save(bizNameEntity);
     }
 
@@ -61,7 +61,7 @@ public class BizService {
         return bizStoreManager.getById(storeId);
     }
 
-    public void saveStore(BizStoreEntity bizStoreEntity) throws Exception {
+    public void saveStore(BizStoreEntity bizStoreEntity) {
         bizStoreManager.save(bizStoreEntity);
     }
 
@@ -203,5 +203,9 @@ public class BizService {
 
     public BizStoreEntity findMatchingStore(String address, String phone) {
         return bizStoreManager.findMatchingStore(address, phone);
+    }
+
+    public BizStoreEntity findOneBizStore(String bizNameId) {
+        return bizStoreManager.findOne(bizNameId);
     }
 }

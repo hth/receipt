@@ -198,7 +198,7 @@ public class ReceiptService {
 
             receiptManager.deleteSoft(receipt);
             for (FileSystemEntity fileSystem : receipt.getFileSystemEntities()) {
-                CloudFileEntity cloudFile = CloudFileEntity.newInstance(fileSystem.getKey());
+                CloudFileEntity cloudFile = CloudFileEntity.newInstance(fileSystem.getKey(), fileSystem.getFileType());
                 cloudFileService.save(cloudFile);
             }
 

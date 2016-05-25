@@ -1,5 +1,6 @@
 package com.receiptofi.domain;
 
+import com.receiptofi.domain.types.FileTypeEnum;
 import com.receiptofi.utils.FileUtil;
 
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -26,9 +27,14 @@ public class CloudFileEntity extends BaseEntity {
     @Field ("KEY")
     private String key;
 
-    private CloudFileEntity(String key) {
+    @NotNull
+    @Field
+    private FileTypeEnum fileType;
+
+    private CloudFileEntity(String key, FileTypeEnum fileType) {
         super();
         this.key = key;
+        this.fileType = fileType;
         this.markAsDeleted();
     }
 
@@ -37,19 +43,24 @@ public class CloudFileEntity extends BaseEntity {
      * @param key
      * @return
      */
-    public static CloudFileEntity newInstance(String key) {
+    public static CloudFileEntity newInstance(String key, FileTypeEnum fileType) {
         Assert.isTrue(key.contains(FileUtil.DOT));
-        return new CloudFileEntity(key);
+        return new CloudFileEntity(key, fileType);
     }
 
     public String getKey() {
         return key;
     }
 
+    public FileTypeEnum getFileType() {
+        return fileType;
+    }
+
     @Override
     public String toString() {
         return "CloudFileEntity{" +
                 "key='" + key + '\'' +
+                ", fileType=" + fileType +
                 '}';
     }
 }

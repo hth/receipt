@@ -4,10 +4,12 @@ import com.google.common.collect.Lists;
 
 import com.receiptofi.domain.types.ProviderEnum;
 import com.receiptofi.domain.types.UserLevelEnum;
+import com.receiptofi.utils.CommonUtil;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.text.WordUtils;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
@@ -154,6 +156,15 @@ public class UserProfileEntity extends BaseEntity {
     @Field ("ULE")
     private UserLevelEnum level = UserLevelEnum.USER_PAID;
 
+    @Field ("AD")
+    private String address;
+
+    @Field ("CS")
+    private String countryShortName;
+
+    @Field ("PH")
+    private String phone;
+
     /** To make bean happy. */
     public UserProfileEntity() {
         super();
@@ -162,8 +173,8 @@ public class UserProfileEntity extends BaseEntity {
     private UserProfileEntity(String email, String firstName, String lastName, String receiptUserId, String birthday) {
         super();
         this.email = email;
-        this.firstName = firstName;
-        this.lastName = lastName;
+        this.firstName = WordUtils.capitalize(firstName);
+        this.lastName = WordUtils.capitalize(lastName);
         this.receiptUserId = receiptUserId;
         this.birthday = birthday;
     }
@@ -236,7 +247,7 @@ public class UserProfileEntity extends BaseEntity {
     }
 
     public void setFirstName(String firstName) {
-        this.firstName = firstName;
+        this.firstName = WordUtils.capitalize(firstName);
     }
 
     public String getMiddleName() {
@@ -252,7 +263,7 @@ public class UserProfileEntity extends BaseEntity {
     }
 
     public void setLastName(String lastName) {
-        this.lastName = lastName;
+        this.lastName = WordUtils.capitalize(lastName);
     }
 
     public String getGender() {
@@ -484,6 +495,40 @@ public class UserProfileEntity extends BaseEntity {
 
     public void setLevel(UserLevelEnum level) {
         this.level = level;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getCountryShortName() {
+        return countryShortName;
+    }
+
+    public void setCountryShortName(String countryShortName) {
+        this.countryShortName = countryShortName;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        if (StringUtils.isNotBlank(phone)) {
+            this.phone = CommonUtil.phoneCleanup(phone);
+        }
+    }
+
+    public String getPhoneFormatted() {
+        if (StringUtils.isNotBlank(phone)) {
+            return CommonUtil.phoneFormatter(phone, countryShortName);
+        } else {
+            return "";
+        }
     }
 
     @Transient
