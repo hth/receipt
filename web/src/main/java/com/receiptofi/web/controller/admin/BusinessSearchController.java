@@ -7,6 +7,7 @@ import com.receiptofi.domain.site.ReceiptUser;
 import com.receiptofi.service.BizService;
 import com.receiptofi.service.ExternalService;
 import com.receiptofi.service.ReceiptService;
+import com.receiptofi.utils.CommonUtil;
 import com.receiptofi.web.form.BizForm;
 import com.receiptofi.web.validator.BizSearchValidator;
 import com.receiptofi.web.validator.BizValidator;
@@ -330,7 +331,7 @@ public class BusinessSearchController {
     private Set<BizStoreEntity> searchBizStoreEntities(BizForm bizForm) {
         String businessName = StringUtils.trim(bizForm.getBusinessName());
         String address = StringUtils.trim(bizForm.getAddress());
-        String phone = StringUtils.trim(BizStoreEntity.phoneCleanup(bizForm.getPhone()));
+        String phone = StringUtils.trim(CommonUtil.phoneCleanup(bizForm.getPhone()));
         Set<BizStoreEntity> bizStoreEntities = bizService.bizSearch(businessName, address, phone);
         bizForm.setSuccessMessage("Found '" + bizStoreEntities.size() + "' matching business(es).");
 
