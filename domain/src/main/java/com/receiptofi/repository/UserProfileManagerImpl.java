@@ -120,8 +120,8 @@ public final class UserProfileManagerImpl implements UserProfileManager {
     }
 
     @Override
-    public UserProfileEntity findByReceiptUserId(String receiptUserId) {
-        return mongoTemplate.findOne(byReceiptUserId(receiptUserId, true), UserProfileEntity.class, TABLE);
+    public UserProfileEntity findByReceiptUserId(String rid) {
+        return mongoTemplate.findOne(byReceiptUserId(rid, true), UserProfileEntity.class, TABLE);
     }
 
     @Override

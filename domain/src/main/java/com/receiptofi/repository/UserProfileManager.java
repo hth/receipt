@@ -21,7 +21,7 @@ public interface UserProfileManager extends RepositoryManager<UserProfileEntity>
 
     UserProfileEntity findByEmail(String email);
 
-    UserProfileEntity findByReceiptUserId(String receiptUserId);
+    UserProfileEntity findByReceiptUserId(String rid);
 
     UserProfileEntity forProfilePreferenceFindByReceiptUserId(String rid);
 

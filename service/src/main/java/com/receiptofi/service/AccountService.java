@@ -131,6 +131,7 @@ public class AccountService {
         return userAccountManager.findByReceiptUserId(rid);
     }
 
+    @Mobile
     public UserAccountEntity findByUserId(String mail) {
         return userAccountManager.findByUserId(mail);
     }
@@ -281,7 +282,7 @@ public class AccountService {
      *
      * @param rid
      */
-    public void addDefaultExpenseTag(String rid) {
+    private void addDefaultExpenseTag(String rid) {
         int i = 0;
         /** Add default expense tags. */
         for (String tag : expenseTags) {
@@ -300,7 +301,7 @@ public class AccountService {
      *
      * @param userAccount
      */
-    public void billAccount(UserAccountEntity userAccount) {
+    private void billAccount(UserAccountEntity userAccount) {
         billingService.save(userAccount.getBillingAccount());
 
         /**
@@ -336,7 +337,7 @@ public class AccountService {
      * @param receiptUserId
      * @return
      */
-    public ForgotRecoverEntity initiateAccountRecovery(String receiptUserId) {
+    ForgotRecoverEntity initiateAccountRecovery(String receiptUserId) {
         String authenticationKey = HashText.computeBCrypt(RandomString.newInstance().nextString());
         ForgotRecoverEntity forgotRecoverEntity = ForgotRecoverEntity.newInstance(receiptUserId, authenticationKey);
         forgotRecoverManager.save(forgotRecoverEntity);
@@ -354,14 +355,13 @@ public class AccountService {
     /**
      * Called during forgotten password or during an invite.
      *
-     * @param userAuthenticationEntity
-     * @throws Exception
+     * @param userAuthentication
      */
-    public void updateAuthentication(UserAuthenticationEntity userAuthenticationEntity) {
-        userAuthenticationManager.save(userAuthenticationEntity);
+    public void updateAuthentication(UserAuthenticationEntity userAuthentication) {
+        userAuthenticationManager.save(userAuthentication);
     }
 
-    public UserPreferenceEntity getPreference(UserProfileEntity userProfileEntity) {
+    UserPreferenceEntity getPreference(UserProfileEntity userProfileEntity) {
         return userPreferenceManager.getObjectUsingUserProfile(userProfileEntity);
     }
 
@@ -369,24 +369,31 @@ public class AccountService {
         userAccountManager.save(userAccountEntity);
     }
 
-    public void updateAccountToValidated(String id, AccountInactiveReasonEnum accountInactiveReason) {
+    private void updateAccountToValidated(String id, AccountInactiveReasonEnum accountInactiveReason) {
         userAccountManager.updateAccountToValidated(id, accountInactiveReason);
     }
 
-    public UserAccountEntity changeAccountRolesToMatchUserLevel(String receiptUserId, UserLevelEnum userLevel) {
-        UserAccountEntity userAccountEntity = findByReceiptUserId(receiptUserId);
+    /**
+     * Change user role to match user level.
+     *
+     * @param rid
+     * @param userLevel
+     * @return
+     */
+    public UserAccountEntity changeAccountRolesToMatchUserLevel(String rid, UserLevelEnum userLevel) {
+        UserAccountEntity userAccount = findByReceiptUserId(rid);
         Set<RoleEnum> roles = new LinkedHashSet<>();
         switch (userLevel) {
             case TECHNICIAN:
                 roles.add(RoleEnum.ROLE_USER);
                 roles.add(RoleEnum.ROLE_TECHNICIAN);
-                userAccountEntity.setRoles(roles);
+                userAccount.setRoles(roles);
                 break;
             case SUPERVISOR:
                 roles.add(RoleEnum.ROLE_USER);
                 roles.add(RoleEnum.ROLE_TECHNICIAN);
                 roles.add(RoleEnum.ROLE_SUPERVISOR);
-                userAccountEntity.setRoles(roles);
+                userAccount.setRoles(roles);
                 break;
             case ADMIN:
                 roles.add(RoleEnum.ROLE_USER);
@@ -396,36 +403,36 @@ public class AccountService {
                 roles.add(RoleEnum.ROLE_SUPERVISOR);
                 roles.add(RoleEnum.ROLE_ADMIN);
                 roles.add(RoleEnum.ROLE_ANALYSIS_READ);
-                userAccountEntity.setRoles(roles);
+                userAccount.setRoles(roles);
                 break;
             case ANALYSIS_READ:
                 roles.add(RoleEnum.ROLE_ANALYSIS_READ);
-                userAccountEntity.setRoles(roles);
+                userAccount.setRoles(roles);
                 break;
             case USER:
             case USER_COMMUNITY:
             case USER_PAID:
                 roles.add(RoleEnum.ROLE_USER);
-                userAccountEntity.setRoles(roles);
+                userAccount.setRoles(roles);
                 break;
             case ENTERPRISE:
             case ENTERPRISE_COMMUNITY:
             case ENTERPRISE_PAID:
                 roles.add(RoleEnum.ROLE_ENTERPRISE);
-                userAccountEntity.setRoles(roles);
+                userAccount.setRoles(roles);
                 break;
             case BUSINESS_SMALL:
                 roles.add(RoleEnum.ROLE_USER);
                 roles.add(RoleEnum.ROLE_BUSINESS);
             case BUSINESS_LARGE:
                 roles.add(RoleEnum.ROLE_BUSINESS);
-                userAccountEntity.setRoles(roles);
+                userAccount.setRoles(roles);
                 break;
             default:
                 LOG.error("Reached unreachable condition, UserLevel={}", userLevel.name());
                 throw new RuntimeException("Reached unreachable condition " + userLevel.name());
         }
-        return userAccountEntity;
+        return userAccount;
     }
 
     public UserAuthenticationEntity getUserAuthenticationEntity(String password) {
@@ -611,8 +618,7 @@ public class AccountService {
                 userAccount.getReceiptUserId());
     }
 
-    public UserProfileEntity findProfileByReceiptUserId(String receiptUserId) {
+    UserProfileEntity findProfileByReceiptUserId(String receiptUserId) {
         return userProfileManager.findByReceiptUserId(receiptUserId);
     }
-
 }

@@ -55,11 +55,16 @@ public final class BizStoreManagerImpl implements BizStoreManager {
 
     @Override
     public void save(BizStoreEntity object) {
-        mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
-        if (object.getId() != null) {
-            object.setUpdated();
+        if (null != object.getBizName() && null != object.getBizName().getId()) {
+            mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
+            if (object.getId() != null) {
+                object.setUpdated();
+            }
+            mongoTemplate.save(object, TABLE);
+        } else {
+            LOG.error("Cannot save bizStore without bizName");
+            throw new RuntimeException("Missing BizName for BizStore " + object.getAddress());
         }
-        mongoTemplate.save(object, TABLE);
     }
 
     @Override
@@ -197,6 +202,17 @@ public final class BizStoreManagerImpl implements BizStoreManager {
                         where("BIZ_NAME.$id").is(new ObjectId(bizNameEntity.getId())))
                         .with(new Sort(Sort.Direction.DESC, "C"))
                         .limit(limit),
+                BizStoreEntity.class
+        );
+    }
+
+    @Override
+    public BizStoreEntity findOne(String bizNameId) {
+        return mongoTemplate.findOne(
+                query(
+                        where("BIZ_NAME.$id").is(new ObjectId(bizNameId)))
+                        .with(new Sort(Sort.Direction.DESC, "C"))
+                ,
                 BizStoreEntity.class
         );
     }

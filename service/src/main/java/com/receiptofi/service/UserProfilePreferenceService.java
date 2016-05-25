@@ -41,19 +41,19 @@ public class UserProfilePreferenceService {
         return userProfileManager.findByEmail(email);
     }
 
-    public UserProfileEntity findByReceiptUserId(String receiptUserId) {
-        return userProfileManager.findByReceiptUserId(receiptUserId);
+    public UserProfileEntity findByReceiptUserId(String rid) {
+        return userProfileManager.findByReceiptUserId(rid);
     }
 
-    public UserProfileEntity forProfilePreferenceFindByReceiptUserId(String receiptUserId) {
-        return userProfileManager.forProfilePreferenceFindByReceiptUserId(receiptUserId);
+    public UserProfileEntity forProfilePreferenceFindByReceiptUserId(String rid) {
+        return userProfileManager.forProfilePreferenceFindByReceiptUserId(rid);
     }
 
     public UserProfileEntity findByProviderUserId(String puid) {
         return userProfileManager.findByProviderUserId(puid);
     }
 
-    public void updateProfile(UserProfileEntity userProfile) throws Exception {
+    public void updateProfile(UserProfileEntity userProfile) {
         userProfileManager.save(userProfile);
     }
 

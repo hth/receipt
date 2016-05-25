@@ -62,6 +62,15 @@ public interface BizStoreManager extends RepositoryManager<BizStoreEntity> {
 
 
     /**
+     * Find just one store with matching BizName Id.
+     *
+     * @param bizNameId
+     * @return
+     */
+    BizStoreEntity findOne(String bizNameId);
+
+
+    /**
      * This is mostly being used when data is corrupted, like missing addresses or lat or lng.
      *
      * @return

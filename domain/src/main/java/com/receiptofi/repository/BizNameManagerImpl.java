@@ -8,6 +8,9 @@ import com.receiptofi.domain.BizNameEntity;
 
 import org.apache.commons.lang3.StringUtils;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.WriteResultChecking;
@@ -33,6 +36,7 @@ import java.util.stream.Collectors;
 })
 @Repository
 public final class BizNameManagerImpl implements BizNameManager {
+    private static final Logger LOG = LoggerFactory.getLogger(BizNameManagerImpl.class);
     private static final String TABLE = BaseEntity.getClassAnnotationValue(
             BizNameEntity.class,
             Document.class,
@@ -47,11 +51,16 @@ public final class BizNameManagerImpl implements BizNameManager {
 
     @Override
     public void save(BizNameEntity object) {
-        mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
-        if (null != object.getId()) {
-            object.setUpdated();
+        if (StringUtils.isNotBlank(object.getBusinessName())) {
+            mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
+            if (null != object.getId()) {
+                object.setUpdated();
+            }
+            mongoTemplate.save(object, TABLE);
+        } else {
+            LOG.error("Cannot save BizName with empty name");
+            throw new RuntimeException("Found no name for business");
         }
-        mongoTemplate.save(object, TABLE);
     }
 
     @Override

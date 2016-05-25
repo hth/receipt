@@ -2,7 +2,8 @@ package com.receiptofi.repository;
 
 import com.receiptofi.domain.BaseEntity;
 import com.receiptofi.domain.CouponEntity;
-import com.receiptofi.domain.CronStatsEntity;
+
+import org.apache.commons.lang3.StringUtils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,10 +40,15 @@ public class CouponManagerImpl implements CouponManager {
 
     @Override
     public void save(CouponEntity object) {
-        if (object.getId() != null) {
-            object.setUpdated();
+        if (StringUtils.isNotBlank(object.getRid())) {
+            if (object.getId() != null) {
+                object.setUpdated();
+            }
+            mongoTemplate.save(object, TABLE);
+        } else {
+            LOG.error("Cannot save Coupon without rid");
+            throw new RuntimeException("Missing user info for coupon");
         }
-        mongoTemplate.save(object, TABLE);
     }
 
     @Override
