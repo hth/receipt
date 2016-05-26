@@ -13,6 +13,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.receiptofi.domain.CloudFileEntity;
+import com.receiptofi.domain.types.FileTypeEnum;
 import com.receiptofi.loader.service.AmazonS3Service;
 import com.receiptofi.service.CloudFileService;
 import com.receiptofi.service.CronStatsService;
@@ -96,6 +97,7 @@ public class FilesDeleteFromS3Test {
                 cronStatsService);
 
         when(amazonS3Service.getS3client()).thenReturn(s3Client);
+        when(cloudFileEntity.getFileType()).thenReturn(FileTypeEnum.R);
     }
 
     @Test
@@ -120,6 +122,17 @@ public class FilesDeleteFromS3Test {
     @Test
     public void delete() {
         when(cloudFileService.getAllMarkedAsDeleted()).thenReturn(Collections.singletonList(cloudFileEntity));
+        when(amazonS3Service.getS3client().deleteObjects(any(DeleteObjectsRequest.class))).thenReturn(deleteObjectsResult);
+
+        filesDeleteFromS3.delete();
+        verify(amazonS3Service.getS3client(), times(1)).deleteObjects(any(DeleteObjectsRequest.class));
+        verify(cloudFileService, times(1)).deleteHard(any(CloudFileEntity.class));
+    }
+
+    @Test(expected = UnsupportedOperationException.class)
+    public void deleteNoValidFile() {
+        when(cloudFileService.getAllMarkedAsDeleted()).thenReturn(Collections.singletonList(cloudFileEntity));
+        when(cloudFileEntity.getFileType()).thenReturn(FileTypeEnum.F);
         when(amazonS3Service.getS3client().deleteObjects(any(DeleteObjectsRequest.class))).thenReturn(deleteObjectsResult);
 
         filesDeleteFromS3.delete();
