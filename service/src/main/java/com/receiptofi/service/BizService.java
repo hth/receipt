@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 
@@ -35,15 +36,26 @@ import java.util.Set;
 public class BizService {
     private static final Logger LOG = LoggerFactory.getLogger(BizService.class);
 
+    private double degreeInMiles;
+    private double degreeInKilometers;
+
     private BizNameManager bizNameManager;
     private BizStoreManager bizStoreManager;
     private ExternalService externalService;
 
     @Autowired
     public BizService(
+            @Value("${degreeInMiles:69.172}")
+            double degreeInMiles,
+
+            @Value("${degreeInKilometers:111.321}")
+            double degreeInKilometers,
+
             BizNameManager bizNameManager,
             BizStoreManager bizStoreManager,
             ExternalService externalService) {
+        this.degreeInMiles = degreeInMiles;
+        this.degreeInKilometers = degreeInKilometers;
         this.bizNameManager = bizNameManager;
         this.bizStoreManager = bizStoreManager;
         this.externalService = externalService;

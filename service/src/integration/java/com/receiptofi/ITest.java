@@ -215,7 +215,7 @@ public class ITest extends RealMongoForTests {
 
         externalService = new ExternalService(properties.getProperty("google-server-api-key"));
         bizStoreManager = new BizStoreManagerImpl(getMongoTemplate());
-        bizService = new BizService(bizNameManager, bizStoreManager, externalService);
+        bizService = new BizService(69.172, 111.321, bizNameManager, bizStoreManager, externalService);
 
         inviteManager = new InviteManagerImpl(getMongoTemplate());
         inviteService = new InviteService(accountService, inviteManager, userProfileManager, userAccountManager);
