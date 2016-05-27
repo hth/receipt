@@ -57,7 +57,7 @@ public class RestoreBizStoreDataProcess {
             @Value ("${recordFetchLimit:1000}")
             int recordFetchLimit,
 
-            @Value ("${validationCountTry:10}")
+            @Value ("${validationCountTry:5}")
             int validationCountTry,
 
             BizStoreManager bizStoreManager,

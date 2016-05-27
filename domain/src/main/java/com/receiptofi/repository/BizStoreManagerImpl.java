@@ -225,7 +225,13 @@ public final class BizStoreManagerImpl implements BizStoreManager {
     @Override
     public List<BizStoreEntity> getAllWhereNotValidatedUsingExternalAPI(int validationCountTry, int skip, int limit) {
         return mongoTemplate.find(
-                query(where("EA").is(false).and("VC").lt(validationCountTry)).skip(skip).limit(limit),
+                query(
+                        where("EA").is(false)
+                                .orOperator(
+                                        where("VC").exists(false),
+                                        where("VC").lt(validationCountTry)
+                                )
+                ).skip(skip).limit(limit),
                 BizStoreEntity.class
         );
     }
