@@ -59,8 +59,8 @@ public class JsonBizStore {
         this.address = bizStore.getAddress();
         this.phone = bizStore.getPhoneFormatted();
         if (null != bizStore.getCoordinate()) {
-            this.lat = Double.toString(bizStore.getCoordinate().getLat());
-            this.lng = Double.toString(bizStore.getCoordinate().getLng());
+            this.lat = Double.toString(bizStore.getLat());
+            this.lng = Double.toString(bizStore.getLng());
         }
         this.type = Arrays.toString(bizStore.getPlaceType());
         this.rating = bizStore.getPlaceRating();

@@ -1,3 +1,9 @@
+### Date May 26 2016 - Build 1647
+Update co-ordinates and added index for co-ordinates
+
+    db.getCollection('BIZ_STORE').update({},            {$unset : {COR: ''}}, false, true);
+    db.getCollection('BIZ_STORE').update({},            { $set: {EA: false} },                  {multi: true});
+
 #### Date May 12 2016 - Build 1638
 Simplified data to smaller name to save space.
     

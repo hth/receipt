@@ -1,7 +1,6 @@
 package com.receiptofi.domain;
 
 import com.receiptofi.utils.CommonUtil;
-import com.receiptofi.domain.value.Coordinate;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -32,6 +31,7 @@ import javax.validation.constraints.NotNull;
 @CompoundIndexes (value = {
         /** Business name with address and phone makes it a unique store. */
         @CompoundIndex (name = "biz_store_idx", def = "{'AD': 1, 'PH': 1}", unique = true),
+        @CompoundIndex (name = "biz_store_cor_cs_idx", def = "{'COR': '2d', 'CS': 1}", unique = true),
 })
 public class BizStoreEntity extends BaseEntity {
 
@@ -56,7 +56,7 @@ public class BizStoreEntity extends BaseEntity {
     private String phone;
 
     @Field ("COR")
-    private Coordinate coordinate;
+    private double[] coordinate;
 
     @Field ("PI")
     private String placeId;
@@ -147,7 +147,7 @@ public class BizStoreEntity extends BaseEntity {
     @NumberFormat (style = NumberFormat.Style.NUMBER)
     public double getLat() {
         if (null != coordinate) {
-            return coordinate.getLat();
+            return coordinate[0];
         } else {
             return 0.0;
         }
@@ -156,7 +156,7 @@ public class BizStoreEntity extends BaseEntity {
     @NumberFormat (style = NumberFormat.Style.NUMBER)
     public double getLng() {
         if (null != coordinate) {
-            return coordinate.getLng();
+            return coordinate[1];
         } else {
             return 0.0;
         }
@@ -178,12 +178,12 @@ public class BizStoreEntity extends BaseEntity {
         this.validatedUsingExternalAPI = validatedUsingExternalAPI;
     }
 
-    public Coordinate getCoordinate() {
+    public double[] getCoordinate() {
         return coordinate;
     }
 
-    public void setCoordinate(Coordinate coordinate) {
-        this.coordinate = coordinate;
+    public void setCoordinate(double lat, double lng) {
+        this.coordinate = new double[] {lat, lng};
     }
 
     public String getPlaceId() {
