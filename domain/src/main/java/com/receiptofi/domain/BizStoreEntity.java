@@ -31,7 +31,7 @@ import javax.validation.constraints.NotNull;
 @CompoundIndexes (value = {
         /** Business name with address and phone makes it a unique store. */
         @CompoundIndex (name = "biz_store_idx", def = "{'AD': 1, 'PH': 1}", unique = true),
-        @CompoundIndex (name = "biz_store_cor_cs_idx", def = "{'COR': '2d', 'CS': 1}", unique = true),
+        @CompoundIndex (name = "biz_store_cor_cs_idx", def = "{'COR': '2d', 'CS': 1}"),
 })
 public class BizStoreEntity extends BaseEntity {
 
@@ -182,8 +182,8 @@ public class BizStoreEntity extends BaseEntity {
         return coordinate;
     }
 
-    public void setCoordinate(double lat, double lng) {
-        this.coordinate = new double[] {lat, lng};
+    public void setCoordinate(double[] coordinate) {
+        this.coordinate = coordinate;
     }
 
     public String getPlaceId() {

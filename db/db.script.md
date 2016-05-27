@@ -1,6 +1,8 @@
 ### Date May 26 2016 - Build 1647
 Update co-ordinates and added index for co-ordinates
+Expecting 9 record failure out of 504
 
+    db.getCollection('BIZ_STORE').find().count();
     db.getCollection('BIZ_STORE').update({},            {$unset : {COR: ''}}, false, true);
     db.getCollection('BIZ_STORE').update({},            { $set: {EA: false} },                  {multi: true});
 

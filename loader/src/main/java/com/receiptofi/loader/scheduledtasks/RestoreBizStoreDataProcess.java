@@ -19,6 +19,12 @@ import java.util.List;
 /**
  * In case latitude, longitude or address data is corrupted, then this process can attempt to fix the issue. Can be
  * used to update new information or field by re-fetching data from external api.
+ *
+ * Service                          Metric                      Region	Limit
+ * Google Maps Geocoding API        Queries (requests/day)      Global	100,000
+ * Google Places API Web Service    Queries (requests/day)      Global	150,000
+ * Google Maps JavaScript API       Map loads (requests/day)    Global	1,000,000
+ *
  * User: hitender
  * Date: 4/5/15 1:36 AM
  */
