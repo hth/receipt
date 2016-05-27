@@ -58,6 +58,7 @@ public class BizStoreEntity extends BaseEntity {
     @Field ("PH")
     private String phone;
 
+    /** Format Longitude and then Latitude. */
     @Field ("COR")
     private double[] coordinate;
 
@@ -159,7 +160,7 @@ public class BizStoreEntity extends BaseEntity {
     }
 
     @NumberFormat (style = NumberFormat.Style.NUMBER)
-    public double getLat() {
+    public double getLng() {
         if (null != coordinate) {
             return coordinate[0];
         } else {
@@ -168,7 +169,7 @@ public class BizStoreEntity extends BaseEntity {
     }
 
     @NumberFormat (style = NumberFormat.Style.NUMBER)
-    public double getLng() {
+    public double getLat() {
         if (null != coordinate) {
             return coordinate[1];
         } else {

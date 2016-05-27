@@ -19,6 +19,8 @@ public class DecodedAddress {
     private String formattedAddress;
     private String postalCode;
     private String countryShortName;
+
+    /** Format Longitude and then Latitude. */
     private double[] coordinate;
     private String placeId;
     private boolean empty = true;
@@ -48,8 +50,9 @@ public class DecodedAddress {
 
             if (null != results[0].geometry) {
                 this.coordinate = new double[] {
-                        results[0].geometry.location.lat,
-                        results[0].geometry.location.lng
+                        /** Mongo: Specify coordinates in this order: “longitude, latitude.” */
+                        results[0].geometry.location.lng,
+                        results[0].geometry.location.lat
                 };
             }
 
