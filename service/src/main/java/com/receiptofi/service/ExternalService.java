@@ -3,12 +3,11 @@ package com.receiptofi.service;
 import com.google.maps.GeoApiContext;
 import com.google.maps.GeocodingApi;
 import com.google.maps.PlacesApi;
-import com.google.maps.model.AddressComponent;
-import com.google.maps.model.AddressComponentType;
 import com.google.maps.model.GeocodingResult;
 import com.google.maps.model.PlaceDetails;
 
 import com.receiptofi.domain.BizStoreEntity;
+import com.receiptofi.domain.shared.DecodedAddress;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -18,7 +17,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.util.Assert;
 
 /**
  * User: hitender
@@ -52,35 +50,16 @@ public class ExternalService {
      */
     public void decodeAddress(BizStoreEntity bizStore) {
         try {
-            GeocodingResult[] results = getGeocodingResults(bizStore.getAddress());
-            if (null != results && results.length > 0) {
-                Assert.notNull(results[0].geometry, "Address is null hence geometry is null");
-                Assert.notNull(results[0].geometry.location, "Geometry is null hence location is null");
-
-                String formattedAddress = results[0].formattedAddress;
-                bizStore.setAddress(formattedAddress);
-
-                for (AddressComponent addressComponent : results[0].addressComponents) {
-                    for (AddressComponentType addressComponentType : addressComponent.types) {
-                        switch (addressComponentType) {
-                            case COUNTRY:
-                                LOG.debug("country code={}", addressComponent.shortName);
-                                bizStore.setCountryShortName(addressComponent.shortName);
-                                break;
-                        }
-                    }
+            DecodedAddress decodedAddress = DecodedAddress.newInstance(getGeocodingResults(bizStore.getAddress()));
+            if (decodedAddress.isNotEmpty()) {
+                bizStore.setAddress(decodedAddress.getFormattedAddress());
+                bizStore.setCountryShortName(decodedAddress.getCountryShortName());
+                if (null != decodedAddress.getCoordinate()) {
+                    bizStore.setCoordinate(decodedAddress.getCoordinate());
                 }
+                bizStore.setPlaceId(decodedAddress.getPlaceId());
 
-                if (null != results[0].geometry) {
-                    double lat = results[0].geometry.location.lat;
-                    double lng = results[0].geometry.location.lng;
-                    bizStore.setCoordinate(lat, lng);
-                }
-
-                String placeId = results[0].placeId;
-                bizStore.setPlaceId(placeId);
-
-                PlaceDetails placeDetails = getPlaceDetails(placeId);
+                PlaceDetails placeDetails = getPlaceDetails(decodedAddress.getPlaceId());
                 if (null != placeDetails) {
                     bizStore.setPlaceType(placeDetails.types);
                     bizStore.setPlaceRating(placeDetails.rating);

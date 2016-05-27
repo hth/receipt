@@ -18,12 +18,11 @@ public class DecodedAddress {
 
     private String formattedAddress;
     private String countryShortName;
-    private double lat;
-    private double lng;
+    private double[] coordinate;
     private String placeId;
     private boolean empty = true;
 
-    public DecodedAddress(GeocodingResult[] results) {
+    private DecodedAddress(GeocodingResult[] results) {
         if (null != results && results.length > 0) {
             empty = false;
             Assert.notNull(results[0].geometry, "Address is null hence geometry is null");
@@ -42,11 +41,19 @@ public class DecodedAddress {
                 }
             }
 
-            lat = results[0].geometry.location.lat;
-            lng = results[0].geometry.location.lng;
+            if (null != results[0].geometry) {
+                this.coordinate = new double[] {
+                        results[0].geometry.location.lat,
+                        results[0].geometry.location.lng
+                };
+            }
 
             placeId = results[0].placeId;
         }
+    }
+
+    public static DecodedAddress newInstance(GeocodingResult[] results) {
+        return new DecodedAddress(results);
     }
 
     public String getFormattedAddress() {
@@ -57,12 +64,8 @@ public class DecodedAddress {
         return countryShortName;
     }
 
-    public double getLat() {
-        return lat;
-    }
-
-    public double getLng() {
-        return lng;
+    public double[] getCoordinate() {
+        return coordinate;
     }
 
     public String getPlaceId() {

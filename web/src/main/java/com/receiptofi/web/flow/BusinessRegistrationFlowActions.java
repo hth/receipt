@@ -164,7 +164,7 @@ public class BusinessRegistrationFlowActions {
 
     @SuppressWarnings ("unused")
     public void updateProfile(BusinessRegistration businessRegistration) {
-        DecodedAddress decodedAddress = new DecodedAddress(externalService.getGeocodingResults(businessRegistration.getAddress()));
+        DecodedAddress decodedAddress = DecodedAddress.newInstance(externalService.getGeocodingResults(businessRegistration.getAddress()));
         if (decodedAddress.isNotEmpty()) {
             businessRegistration.setAddress(decodedAddress.getFormattedAddress());
             businessRegistration.setCountryShortName(decodedAddress.getCountryShortName());
