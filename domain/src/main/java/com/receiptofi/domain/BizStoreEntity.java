@@ -77,6 +77,9 @@ public class BizStoreEntity extends BaseEntity {
     @Field ("EA")
     private boolean validatedUsingExternalAPI;
 
+    @Field ("VC")
+    private int validationCount;
+
     public static BizStoreEntity newInstance() {
         return new BizStoreEntity();
     }
@@ -219,5 +222,18 @@ public class BizStoreEntity extends BaseEntity {
 
     public void setPlaceRating(float placeRating) {
         this.placeRating = placeRating;
+    }
+
+    public int getValidationCount() {
+        return validationCount;
+    }
+
+    public BizStoreEntity setValidationCount(int validationCount) {
+        this.validationCount = validationCount;
+        return this;
+    }
+
+    public void increaseValidationCount() {
+        this.validationCount += 1;
     }
 }

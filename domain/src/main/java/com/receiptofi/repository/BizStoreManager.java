@@ -82,5 +82,5 @@ public interface BizStoreManager extends RepositoryManager<BizStoreEntity> {
      *
      * @return
      */
-    List<BizStoreEntity> getAllWhereNotValidatedUsingExternalAPI(int skip, int limit);
+    List<BizStoreEntity> getAllWhereNotValidatedUsingExternalAPI(int validationCountTry, int skip, int limit);
 }
