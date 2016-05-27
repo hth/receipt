@@ -9,7 +9,6 @@ import com.google.maps.model.GeocodingResult;
 import com.google.maps.model.PlaceDetails;
 
 import com.receiptofi.domain.BizStoreEntity;
-import com.receiptofi.domain.value.Coordinate;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -72,10 +71,11 @@ public class ExternalService {
                     }
                 }
 
-                double lat = results[0].geometry.location.lat;
-                double lng = results[0].geometry.location.lng;
-
-                bizStore.setCoordinate(new Coordinate(lat, lng));
+                if (null != results[0].geometry) {
+                    double lat = results[0].geometry.location.lat;
+                    double lng = results[0].geometry.location.lng;
+                    bizStore.setCoordinate(lat, lng);
+                }
 
                 String placeId = results[0].placeId;
                 bizStore.setPlaceId(placeId);
