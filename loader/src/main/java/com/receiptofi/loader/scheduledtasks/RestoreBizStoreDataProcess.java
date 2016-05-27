@@ -41,6 +41,7 @@ public class RestoreBizStoreDataProcess {
     private boolean searchAddressesNotValidatedThroughExternalApi;
     private String restoreAddresses;
     private int recordFetchLimit;
+    private int validationCountTry;
     private BizStoreManager bizStoreManager;
     private ExternalService externalService;
     private CronStatsService cronStatsService;
@@ -56,6 +57,9 @@ public class RestoreBizStoreDataProcess {
             @Value ("${recordFetchLimit:1000}")
             int recordFetchLimit,
 
+            @Value ("${validationCountTry:5}")
+            int validationCountTry,
+
             BizStoreManager bizStoreManager,
             ExternalService externalService,
             CronStatsService cronStatsService
@@ -63,6 +67,7 @@ public class RestoreBizStoreDataProcess {
         this.searchAddressesNotValidatedThroughExternalApi = searchAddressesNotValidatedThroughExternalApi;
         this.restoreAddresses = restoreAddresses;
         this.recordFetchLimit = recordFetchLimit;
+        this.validationCountTry = validationCountTry;
         this.bizStoreManager = bizStoreManager;
         this.externalService = externalService;
         this.cronStatsService = cronStatsService;
@@ -86,7 +91,7 @@ public class RestoreBizStoreDataProcess {
                 while (true) {
                     if (searchAddressesNotValidatedThroughExternalApi) {
                         LOG.info("Get BizStoreEntity that were not updated through external api");
-                        bizStores = bizStoreManager.getAllWhereNotValidatedUsingExternalAPI(skip, recordFetchLimit);
+                        bizStores = bizStoreManager.getAllWhereNotValidatedUsingExternalAPI(validationCountTry, skip, recordFetchLimit);
                     } else {
                         LOG.info("Updating all the BizStoreEntity data");
                         bizStores = bizStoreManager.getAll(skip, recordFetchLimit);
@@ -103,11 +108,12 @@ public class RestoreBizStoreDataProcess {
                         try {
                             externalService.decodeAddress(bizStore);
                             if (bizStore.isValidatedUsingExternalAPI()) {
-                                bizStoreManager.save(bizStore);
                                 success++;
                             } else {
                                 failure++;
+                                bizStore.increaseValidationCount();
                             }
+                            bizStoreManager.save(bizStore);
                         } catch (Exception e) {
                             LOG.error("Error updating bizStore, reason={}", e.getLocalizedMessage(), e);
                             failure++;

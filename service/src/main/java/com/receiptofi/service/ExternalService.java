@@ -44,7 +44,7 @@ public class ExternalService {
     }
 
     /**
-     * Find and populate Address, Latitude and Longitude for a given address from Google API Service.
+     * Find and populate Address, Latitude and Longitude for a given address from Google API Service to bizStore.
      *
      * @param bizStore
      */
@@ -53,6 +53,7 @@ public class ExternalService {
             DecodedAddress decodedAddress = DecodedAddress.newInstance(getGeocodingResults(bizStore.getAddress()));
             if (decodedAddress.isNotEmpty()) {
                 bizStore.setAddress(decodedAddress.getFormattedAddress());
+                bizStore.setPostalCode(decodedAddress.getPostalCode());
                 bizStore.setCountryShortName(decodedAddress.getCountryShortName());
                 if (null != decodedAddress.getCoordinate()) {
                     bizStore.setCoordinate(decodedAddress.getCoordinate());

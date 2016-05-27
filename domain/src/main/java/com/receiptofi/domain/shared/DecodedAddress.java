@@ -17,6 +17,7 @@ public class DecodedAddress {
     private static final Logger LOG = LoggerFactory.getLogger(DecodedAddress.class);
 
     private String formattedAddress;
+    private String postalCode;
     private String countryShortName;
     private double[] coordinate;
     private String placeId;
@@ -36,6 +37,10 @@ public class DecodedAddress {
                         case COUNTRY:
                             LOG.debug("country code={}", addressComponent.shortName);
                             countryShortName = addressComponent.shortName;
+                            break;
+                        case POSTAL_CODE:
+                            LOG.debug("postal code={}", addressComponent.longName);
+                            postalCode = addressComponent.longName;
                             break;
                     }
                 }
@@ -58,6 +63,10 @@ public class DecodedAddress {
 
     public String getFormattedAddress() {
         return formattedAddress;
+    }
+
+    public String getPostalCode() {
+        return postalCode;
     }
 
     public String getCountryShortName() {

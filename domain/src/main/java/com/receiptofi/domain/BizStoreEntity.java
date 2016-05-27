@@ -47,6 +47,9 @@ public class BizStoreEntity extends BaseEntity {
     @Field ("AD")
     private String address;
 
+    @Field ("PC")
+    private String postalCode;
+
     @NotNull
     @Field ("CS")
     private String countryShortName;
@@ -73,6 +76,9 @@ public class BizStoreEntity extends BaseEntity {
 
     @Field ("EA")
     private boolean validatedUsingExternalAPI;
+
+    @Field ("VC")
+    private int validationCount;
 
     public static BizStoreEntity newInstance() {
         return new BizStoreEntity();
@@ -113,6 +119,14 @@ public class BizStoreEntity extends BaseEntity {
 
     public void setAddress(String address) {
         this.address = StringUtils.strip(address);
+    }
+
+    public String getPostalCode() {
+        return postalCode;
+    }
+
+    public void setPostalCode(String postalCode) {
+        this.postalCode = postalCode;
     }
 
     public String getCountryShortName() {
@@ -208,5 +222,18 @@ public class BizStoreEntity extends BaseEntity {
 
     public void setPlaceRating(float placeRating) {
         this.placeRating = placeRating;
+    }
+
+    public int getValidationCount() {
+        return validationCount;
+    }
+
+    public BizStoreEntity setValidationCount(int validationCount) {
+        this.validationCount = validationCount;
+        return this;
+    }
+
+    public void increaseValidationCount() {
+        this.validationCount += 1;
     }
 }
