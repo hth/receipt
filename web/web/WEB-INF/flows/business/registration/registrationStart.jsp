@@ -73,12 +73,12 @@
                         <input type="hidden" name="_flowExecutionKey" value="${flowExecutionKey}"/>
 
                         <div class="row_field">
-                            <form:label for="bizName.businessName" path="bizName.businessName" cssClass="profile_label"
+                            <form:label path="bizName.businessName" cssClass="profile_label"
                                     cssErrorClass="profile_label lb_error">Business Name</form:label>
                             <form:input path="bizName.businessName" size="20" cssClass="name_txt" />
                         </div>
                         <div class="row_field">
-                            <form:label for="bizName.businessTypes" path="bizName.businessTypes" cssClass="profile_label"
+                            <form:label path="bizName.businessTypes" cssClass="profile_label"
                                     cssErrorClass="profile_label lb_error">Business Type</form:label>
 
                             <form:select path="businessType" cssClass="styled-select slate" multiple="true" style="height: 100px;">
@@ -86,12 +86,12 @@
                             </form:select>
                         </div>
                         <div class="row_field">
-                            <form:label for="businessAddress" path="businessAddress" cssClass="profile_label"
+                            <form:label path="businessAddress" cssClass="profile_label"
                                     cssErrorClass="profile_label lb_error">Business Address</form:label>
                             <form:input path="businessAddress" size="200" cssClass="name_txt" style="width: 600px;" />
                         </div>
                         <div class="row_field">
-                            <form:label for="businessPhone" path="businessPhone" cssClass="profile_label"
+                            <form:label path="businessPhone" cssClass="profile_label"
                                     cssErrorClass="profile_label lb_error">Business Phone</form:label>
                             <form:input path="businessPhone" size="20" cssClass="name_txt" />
                         </div>
