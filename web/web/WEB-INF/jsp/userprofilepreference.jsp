@@ -268,7 +268,7 @@
                         <input type="submit" value="SAVE" class="read_btn" name="expense_tag_save_update" id="expenseTagSaveUpdate_bt"
                                 style="background: #808080; margin: 77px 10px 0 0;" disabled="disabled">
                         <input type="submit" value="DELETE" class="read_btn" name="expense_tag_delete" id="expenseTagDelete_bt" hidden="hidden"
-                                style="background:#FC462A; margin: 77px 10px 0 0;">
+                                style="background: #FC462A; margin: 77px 10px 0 0;">
                     </div>
                 </form:form>
             </div>
