@@ -3,6 +3,7 @@ package com.receiptofi.domain.flow;
 import com.receiptofi.domain.BizNameEntity;
 import com.receiptofi.domain.BizStoreEntity;
 import com.receiptofi.domain.BusinessUserEntity;
+import com.receiptofi.domain.types.BusinessTypeEnum;
 import com.receiptofi.utils.CommonUtil;
 
 import java.io.Serializable;
@@ -26,6 +27,8 @@ public class BusinessRegistration implements Serializable {
     private String businessPhone;
     private String businessCountryShortName;
     private BusinessUserEntity businessUser;
+
+    private BusinessTypeEnum businessType;
 
     private BusinessRegistration(BusinessUserEntity businessUser, BizStoreEntity bizStore) {
         this.rid = businessUser.getReceiptUserId();
@@ -148,5 +151,13 @@ public class BusinessRegistration implements Serializable {
 
     public String getBusinessPhoneFormatted() {
         return CommonUtil.phoneFormatter(businessPhone, businessCountryShortName);
+    }
+
+    public BusinessTypeEnum getBusinessType() {
+        return businessType;
+    }
+
+    public void setBusinessType(BusinessTypeEnum businessType) {
+        this.businessType = businessType;
     }
 }

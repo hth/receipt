@@ -420,8 +420,8 @@
                     &nbsp;<br>
                     &nbsp;<br>
                     &nbsp;<br>
-                    <input type="reset" value="RESET" name="Reset" class="read_btn" style="background:#2c97de; margin: 0; !important;" />
-                    <input type="submit" value="UPDATE" name="Update" class="read_btn" style="background:#2c97de; margin: 0; !important;" />
+                    <input type="reset" value="RESET" name="Reset" class="read_btn" style="background: #2c97de; margin: 0; !important;" />
+                    <input type="submit" value="UPDATE" name="Update" class="read_btn" style="background: #2c97de; margin: 0; !important;" />
                     </form:form>
                 </div>
             </div>
