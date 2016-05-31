@@ -84,12 +84,12 @@
                     </div>
                     <div class="row_field">
                         <form:label path="address" cssClass="profile_label"
-                                cssErrorClass="profile_label lb_error">Address</form:label>
+                                cssErrorClass="profile_label lb_error">Your Address</form:label>
                         <form:input path="address" size="200" cssClass="name_txt" style="width: 600px;" />
                     </div>
                     <div class="row_field">
                         <form:label path="phone" cssClass="profile_label"
-                                cssErrorClass="profile_label lb_error">Phone</form:label>
+                                cssErrorClass="profile_label lb_error">Your Phone</form:label>
                         <form:input path="phone" size="20" cssClass="name_txt" />
                     </div>
 
