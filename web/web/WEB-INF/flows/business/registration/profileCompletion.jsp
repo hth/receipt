@@ -1,26 +1,128 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<html>
-<head></head>
+<%@ include file="../../../jsp/include.jsp"%>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="description" content=""/>
+    <meta name="_csrf" content="${_csrf.token}"/>
+    <meta name="_csrf_header" content="${_csrf.headerName}"/>
+    <script>var ctx = "${pageContext.request.contextPath}"</script>
+
+    <title><fmt:message key="title"/></title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/style.css"/>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/stylelogin.css"/>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/colpick.css"/>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/sweetalert/0.5.0/sweet-alert.css"/>
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/sweetalert/0.5.0/sweet-alert.min.js"></script>
+    <script src="${pageContext.request.contextPath}/static/external/js/noble-count/jquery.NobleCount.min.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/static/external/js/cute-time/jquery.cuteTime.min.js"></script>
+</head>
 <body>
-Please confirm your profile
-<form:form commandName="businessRegistration">
-    <input type="hidden" name="_flowExecutionKey" value="${flowExecutionKey}"/>
+<div class="header_main">
+    <div class="header_wrappermain">
+        <div class="header_wrapper">
+            <div class="header_left_contentmain">
+                <div id="logo">
+                    <h1><img src="https://www.receiptofi.com/img/Receipt-26x26.png" style="margin: -3px 0;"/><a href="/access/landing.htm">Receiptofi</a></h1>
+                </div>
+            </div>
+            <div class="header_right_login">
+                <a class="top-account-bar-text" style="margin-top: -1px;" href="#">
+                    <form action="${pageContext.request.contextPath}/access/signoff.htm" method="post">
+                        <input type="submit" value="LOG OUT" class="logout_btn"/>
+                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                    </form>
+                </a>
+                <a class="top-account-bar-text" href="/access/eval/feedback.htm">FEEDBACK</a>
+                <a class="top-account-bar-text" href="/access/userprofilepreference/i.htm">ACCOUNT</a>
+                <a class="top-account-bar-text" href="/access/reportAnalysis.htm">REPORT & ANALYSIS</a>
+                <a class="top-account-bar-text" href="/access/split.htm">SPLIT EXPENSES</a>
+                <sec:authentication var="validated" property="principal.accountValidated"/>
+                <c:choose>
+                    <c:when test="${!validated}">
+                        <a class="top-account-bar-text user-email" href="/access/userprofilepreference/i.htm">
+                            <sec:authentication property="principal.username" />
+                            <span class="notification-counter">1</span>
+                        </a>
+                    </c:when>
+                    <c:otherwise>
+                        <a class="top-account-bar-text user-email" href="#">
+                            <sec:authentication property="principal.username" />
+                        </a>
+                    </c:otherwise>
+                </c:choose>
+            </div>
+        </div>
+    </div>
+</div>
+<header>
+</header>
+<div class="main clearfix">
+    <div class="sidebar_no_use">
+    </div>
+    <div class="rightside-content">
+        <sec:authorize access="hasRole('ROLE_BUSINESS')">
+        <div class="business_reg">
+            <div class="down_form">
+                <form:form commandName="businessRegistration">
+                    <h1 class="h1">Please complete your profile</h1>
+                    <hr>
+                    <input type="hidden" name="_flowExecutionKey" value="${flowExecutionKey}"/>
 
-    <b>First Name: </b><form:input path="firstName"/><br/>
-    <b>Last Name: </b><form:input path="lastName"/><br/>
-    <b>Address: </b><form:input path="address"/><br/>
-    <b>Phone: </b><form:input path="phone"/><br/>
+                    <div class="row_field">
+                        <form:label for="firstName" path="firstName" cssClass="profile_label"
+                                cssErrorClass="profile_label lb_error">First name</form:label>
+                        <form:input path="firstName" size="20" cssClass="name_txt" />
+                    </div>
+                    <div class="row_field">
+                        <form:label for="firstName" path="firstName" cssClass="profile_label"
+                                cssErrorClass="profile_label lb_error">Last name</form:label>
+                        <form:input path="lastName" size="20" cssClass="name_txt" />
+                    </div>
+                    <div class="row_field">
+                        <form:label for="firstName" path="firstName" cssClass="profile_label"
+                                cssErrorClass="profile_label lb_error">Address</form:label>
+                        <form:input path="address" size="20" cssClass="name_txt" />
+                    </div>
+                    <div class="row_field">
+                        <form:label for="firstName" path="firstName" cssClass="profile_label"
+                                cssErrorClass="profile_label lb_error">Phone</form:label>
+                        <form:input path="phone" size="20" cssClass="name_txt" />
+                    </div>
 
-    <c:if test="${!businessRegistration.emailValidated}">
-    <b>Email Address : </b>${businessRegistration.email}<br/> has not been validated.
-        Please validated email address to continue business account registration.
-    </c:if>
+                    <c:if test="${!businessRegistration.emailValidated}">
+                        <label class="profile_label" style="padding-top: 40px; width: 400px; !important; color: #606060; !important; font-weight: bold; !important;">
+                            Your email address ${businessRegistration.email} has not been validated.
+                            Please validated email address to continue business account registration.
+                        </label>
+                    </c:if>
 
-    <c:if test="${businessRegistration.emailValidated}">
-    <input type="submit" name="_eventId_submit" value="Submit" />
-    </c:if>
-    <input type="submit" name="_eventId_cancel" value="Cancel" />
-</form:form>
+                    <div class="full">
+                        <c:if test="${!businessRegistration.emailValidated}">
+                        <input type="submit" value="SUBMIT" class="read_btn" name="_eventId_submit" style="background: #2c97de; margin: 77px 10px 0 0;">
+                        </c:if>
+                        <input type="submit" value="CANCEL" class="read_btn" name="_eventId_cancel" style="background: #FC462A; margin: 77px 10px 0 0;">
+                    </div>
+                </form:form>
+            </div>
+        </div>
+        </sec:authorize>
+    </div>
+</div>
+<div class="footer-tooth clearfix">
+    <div class="footer-tooth-middle"></div>
+    <div class="footer-tooth-right"></div>
+</div>
+<div class="big_footer">
+    <div class="mfooter_up">
+    </div>
+    <div class="mfooter_down">
+        <p class="footer_copy">&#169; 2016 RECEIPTOFI, INC. ALL RIGHTS RESERVED.
+    </div>
+</div>
 </body>
+<script src="${pageContext.request.contextPath}/static/js/mainpop.js"></script>
 </html>
