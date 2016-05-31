@@ -66,7 +66,7 @@
     <div class="rightside-content">
         <sec:authorize access="hasRole('ROLE_BUSINESS')">
         <div class="business_reg">
-            <div class="down_form">
+            <div class="down_form" style="width: 90%">
                 <form:form commandName="businessRegistration">
                     <h1 class="h1">Please complete your profile</h1>
                     <hr>
@@ -85,7 +85,7 @@
                     <div class="row_field">
                         <form:label for="firstName" path="firstName" cssClass="profile_label"
                                 cssErrorClass="profile_label lb_error">Address</form:label>
-                        <form:input path="address" size="20" cssClass="name_txt" />
+                        <form:input path="address" size="200" cssClass="name_txt" style="width: 600px;" />
                     </div>
                     <div class="row_field">
                         <form:label for="firstName" path="firstName" cssClass="profile_label"
