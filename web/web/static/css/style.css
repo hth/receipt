@@ -1023,6 +1023,15 @@ a.view-more-text:hover, a.view-more-text:visited, a.view-more-text {
     padding-top: 3%;
 }
 
+.business_reg {
+    margin-left: -56%;
+    background: #F8F8F8;
+    z-index: 2;
+    height: auto;
+    width: 155%;
+    padding-top: 6%;
+}
+
 .header_top {
     background: #DCCEE2;
     height: 45px;
