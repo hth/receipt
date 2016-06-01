@@ -17,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
 /**
  * User: hitender
@@ -82,6 +83,7 @@ public class ExternalService {
 
     public GeocodingResult[] getGeocodingResults(String address) {
         try {
+            Assert.hasText(address, "Address is empty");
             return GeocodingApi.geocode(context, address).await();
         } catch (Exception e) {
             LOG.error("Failed fetching from google address={} reason={}", address, e.getLocalizedMessage(), e);
@@ -98,6 +100,7 @@ public class ExternalService {
      */
     public PlaceDetails getPlaceDetails(String placeId) {
         try {
+            Assert.hasText(placeId, "PlaceId is empty");
             return PlacesApi.placeDetails(context, placeId).await();
         } catch (Exception e) {
             LOG.error("Failed fetching from google placeId={} reason={}", placeId, e.getLocalizedMessage(), e);

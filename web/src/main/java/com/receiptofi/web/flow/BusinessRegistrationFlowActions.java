@@ -106,7 +106,12 @@ public class BusinessRegistrationFlowActions {
         try {
             updateUserProfile(businessRegistration);
 
-            BizNameEntity bizName = businessRegistration.getBizName();
+            BizNameEntity bizName = bizService.findMatchingBusiness(businessRegistration.getBusinessName());
+            if (null == bizName) {
+                bizName = BizNameEntity.newInstance();
+                bizName.setBusinessName(businessRegistration.getBusinessName());
+            }
+            bizName.setBusinessTypes(businessRegistration.getBusinessTypes());
             bizService.saveName(bizName);
 
             String businessAddress = businessRegistration.getBusinessAddress();

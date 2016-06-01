@@ -262,7 +262,9 @@ public class CustomUserDetailsService implements UserDetailsService {
         Facebook facebook = new FacebookTemplate(accessToken);
         User user = facebook.userOperations().getUserProfile();
         String facebookProfileId = user.getId();
-        LOG.debug("facebook profile mail={}", facebook.userOperations().getUserProfile().getEmail());
+        LOG.info("facebook profile puid={} mail={}",
+                facebookProfileId,
+                facebook.userOperations().getUserProfile().getEmail());
 
         UserProfileEntity userProfile = connectionService.getUserProfileEntity(
                 facebook.userOperations().getUserProfile().getEmail(),
@@ -335,7 +337,9 @@ public class CustomUserDetailsService implements UserDetailsService {
 
         Google google = new GoogleTemplate(accessToken);
         String googleProfileId = google.plusOperations().getGoogleProfile().getId();
-        LOG.debug("google profile mail={}", google.plusOperations().getGoogleProfile().getAccountEmail());
+        LOG.info("google profile puid={} mail={}",
+                googleProfileId,
+                google.plusOperations().getGoogleProfile().getAccountEmail());
 
         UserProfileEntity userProfile = connectionService.getUserProfileEntity(
                 google.plusOperations().getGoogleProfile().getAccountEmail(),

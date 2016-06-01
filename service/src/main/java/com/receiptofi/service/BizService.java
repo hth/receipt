@@ -65,8 +65,8 @@ public class BizService {
         return bizNameManager.getById(bizId);
     }
 
-    public void saveName(BizNameEntity bizNameEntity) {
-        bizNameManager.save(bizNameEntity);
+    public void saveName(BizNameEntity bizName) {
+        bizNameManager.save(bizName);
     }
 
     public BizStoreEntity getByStoreId(String storeId) {
@@ -215,6 +215,10 @@ public class BizService {
 
     public BizStoreEntity findMatchingStore(String address, String phone) {
         return bizStoreManager.findMatchingStore(address, phone);
+    }
+
+    public BizNameEntity findMatchingBusiness(String name) {
+        return bizNameManager.findOneByName(name);
     }
 
     public BizStoreEntity findOneBizStore(String bizNameId) {

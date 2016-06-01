@@ -73,37 +73,39 @@
                     <input type="hidden" name="_flowExecutionKey" value="${flowExecutionKey}"/>
 
                     <div class="row_field">
-                        <form:label for="firstName" path="firstName" cssClass="profile_label"
+                        <form:label path="firstName" cssClass="profile_label"
                                 cssErrorClass="profile_label lb_error">First name</form:label>
                         <form:input path="firstName" size="20" cssClass="name_txt" />
                     </div>
                     <div class="row_field">
-                        <form:label for="firstName" path="firstName" cssClass="profile_label"
+                        <form:label path="address" cssClass="profile_label"
                                 cssErrorClass="profile_label lb_error">Last name</form:label>
                         <form:input path="lastName" size="20" cssClass="name_txt" />
                     </div>
                     <div class="row_field">
-                        <form:label for="firstName" path="firstName" cssClass="profile_label"
-                                cssErrorClass="profile_label lb_error">Address</form:label>
+                        <form:label path="address" cssClass="profile_label"
+                                cssErrorClass="profile_label lb_error">Your Address</form:label>
                         <form:input path="address" size="200" cssClass="name_txt" style="width: 600px;" />
                     </div>
                     <div class="row_field">
-                        <form:label for="firstName" path="firstName" cssClass="profile_label"
-                                cssErrorClass="profile_label lb_error">Phone</form:label>
+                        <form:label path="phone" cssClass="profile_label"
+                                cssErrorClass="profile_label lb_error">Your Phone</form:label>
                         <form:input path="phone" size="20" cssClass="name_txt" />
                     </div>
 
                     <c:if test="${!businessRegistration.emailValidated}">
                     <label class="profile_label" style="padding-top: 40px; width: 400px; !important; color: #606060; !important; font-weight: bold; !important;">
-                        Your email address ${businessRegistration.email} has not been validated.
-                        Please validated email address to continue business account registration.
+                        Your email address <span style="color: red; font-weight: bold">${businessRegistration.email}</span>
+                        has not been validated. Please validated email address to continue business account registration.
                     </label>
                     </c:if>
 
-                    <c:if test="${!businessRegistration.emailValidated}">
-                    <input type="submit" value="SUBMIT" class="read_btn" name="_eventId_submit" style="background: #2c97de; margin: 77px 10px 0 0;">
-                    </c:if>
-                    <input type="submit" value="CANCEL" class="read_btn" name="_eventId_cancel" style="background: #FC462A; margin: 77px 10px 0 0;">
+                    <div class="full">
+                        <c:if test="${!businessRegistration.emailValidated}">
+                        <input type="submit" value="SUBMIT" class="read_btn" name="_eventId_submit" style="background: #2c97de; margin: 77px 10px 0 0;">
+                        </c:if>
+                        <input type="submit" value="CANCEL" class="read_btn" name="_eventId_cancel" style="background: #FC462A; margin: 77px 10px 0 0;">
+                    </div>
                 </form:form>
             </div>
         </div>

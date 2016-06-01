@@ -501,11 +501,16 @@ public class ConnectionServiceImpl implements ConnectionService {
         String id = null;
         if (null == userProfile) {
             userProfile = new UserProfileEntity();
-            LOG.debug("New user profile for FACEBOOK rid={}", userAccount.getReceiptUserId());
+            LOG.info("New user profile for FACEBOOK rid={} email={} puid={}",
+                    userAccount.getReceiptUserId(),
+                    facebookUserProfile.getEmail(),
+                    facebookUserProfile.getId());
         } else {
             id = userProfile.getId();
             userProfile.setUpdated();
-            LOG.debug("Existing user profile for FACEBOOK rid={} id={}", userAccount.getReceiptUserId(), userProfile.getId());
+            LOG.info("Existing user profile for FACEBOOK rid={} id={}",
+                    userAccount.getReceiptUserId(),
+                    userProfile.getId());
         }
 
         deepCopy(facebookUserProfile, userProfile);
@@ -534,11 +539,16 @@ public class ConnectionServiceImpl implements ConnectionService {
         String id = null;
         if (null == userProfile) {
             userProfile = new UserProfileEntity();
-            LOG.debug("New user profile for GOOGLE rid={}", userAccount.getReceiptUserId());
+            LOG.info("New user profile for GOOGLE rid={} email={} puid={}",
+                    userAccount.getReceiptUserId(),
+                    googleUserProfile.getAccountEmail(),
+                    googleUserProfile.getId());
         } else {
             userProfile.setUpdated();
             id = userProfile.getId();
-            LOG.debug("Existing user profile for GOOGLE rid={} id={}", userAccount.getReceiptUserId(), userProfile.getId());
+            LOG.info("Existing user profile for GOOGLE rid={} id={}",
+                    userAccount.getReceiptUserId(),
+                    userProfile.getId());
         }
 
         deepCopy(googleUserProfile, userProfile);
