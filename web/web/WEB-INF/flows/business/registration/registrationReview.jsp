@@ -11,8 +11,8 @@ This is review registration
     <b>Address: </b><form:input path="address"/><br/>
     <b>Phone: </b><form:input path="phoneFormatted"/><br/>
 
-    <b>Business Name: </b><form:input path="bizName.businessName"/><br/>
-    <b>Biz Types: </b><form:input path="bizName.businessTypes"/><br/>
+    <b>Business Name: </b><form:input path="businessName"/><br/>
+    <b>Biz Types: </b><form:input path="businessTypes"/><br/>
     <b>Address: </b><form:input path="businessAddress"/><br/>
     <b>Phone: </b><form:input path="businessPhoneFormatted"/><br/>
 

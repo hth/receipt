@@ -1,12 +1,12 @@
 package com.receiptofi.domain.flow;
 
-import com.receiptofi.domain.BizNameEntity;
 import com.receiptofi.domain.BizStoreEntity;
 import com.receiptofi.domain.BusinessUserEntity;
 import com.receiptofi.domain.types.BusinessTypeEnum;
 import com.receiptofi.utils.CommonUtil;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * User: hitender
@@ -22,7 +22,8 @@ public class BusinessRegistration implements Serializable {
     private String countryShortName;
     private String phone;
     private boolean emailValidated;
-    private BizNameEntity bizName;
+    private String businessName;
+    private List<BusinessTypeEnum> businessTypes;
     private String businessAddress;
     private String businessPhone;
     private String businessCountryShortName;
@@ -34,9 +35,8 @@ public class BusinessRegistration implements Serializable {
         this.rid = businessUser.getReceiptUserId();
         this.businessUser = businessUser;
         if (null != businessUser.getBizName()) {
-            this.bizName = businessUser.getBizName();
-        } else {
-            this.bizName = BizNameEntity.newInstance();
+            this.businessName = businessUser.getBizName().getBusinessName();
+            this.businessTypes = businessUser.getBizName().getBusinessTypes();
         }
 
         if (null != bizStore) {
@@ -121,12 +121,20 @@ public class BusinessRegistration implements Serializable {
         return this;
     }
 
-    public BizNameEntity getBizName() {
-        return bizName;
+    public String getBusinessName() {
+        return businessName;
     }
 
-    public void setBizName(BizNameEntity bizName) {
-        this.bizName = bizName;
+    public void setBusinessName(String businessName) {
+        this.businessName = businessName;
+    }
+
+    public List<BusinessTypeEnum> getBusinessTypes() {
+        return businessTypes;
+    }
+
+    public void setBusinessTypes(List<BusinessTypeEnum> businessTypes) {
+        this.businessTypes = businessTypes;
     }
 
     public String getBusinessAddress() {
