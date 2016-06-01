@@ -960,6 +960,13 @@ a.view-more-text:hover, a.view-more-text:visited, a.view-more-text {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
+.profile_label_note {
+    padding-top: 40px;
+    width: 100%; !important;
+    color: #606060; !important;
+    font-weight: bold; !important;
+}
+
 .name_txt {
     width: 267px;
     height: 40px;

@@ -80,7 +80,6 @@
                         <div class="row_field">
                             <form:label path="businessTypes" cssClass="profile_label" cssStyle="width: 145px;"
                                     cssErrorClass="profile_label lb_error">Business Type</form:label>
-
                             <form:select path="businessType" cssClass="styled-select slate" multiple="true" style="height: 100px;">
                                 <form:options itemLabel="description" />
                             </form:select>

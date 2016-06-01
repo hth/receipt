@@ -191,7 +191,7 @@
                                 </div>
                             </c:when>
                             <c:otherwise>
-                                <label class="profile_label" style="padding-top: 40px; width: 400px; !important; color: #606060; !important; font-weight: bold; !important;">
+                                <label class="profile_label profile_label_note" style="width: 400px;">
                                     <c:out value="${pageContext.request.userPrincipal.principal.pid}"/> Social signup account.
                                     Please update your social account to see changes here.
                                 </label>
