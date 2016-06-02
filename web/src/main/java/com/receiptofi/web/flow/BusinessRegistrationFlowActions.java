@@ -176,4 +176,14 @@ public class BusinessRegistrationFlowActions {
         }
         businessRegistration.setPhone(CommonUtil.phoneCleanup(businessRegistration.getPhone()));
     }
+
+    @SuppressWarnings ("unused")
+    public void updateBusiness(BusinessRegistration businessRegistration) {
+        DecodedAddress decodedAddress = DecodedAddress.newInstance(externalService.getGeocodingResults(businessRegistration.getBusinessAddress()));
+        if (decodedAddress.isNotEmpty()) {
+            businessRegistration.setBusinessAddress(decodedAddress.getFormattedAddress());
+            businessRegistration.setBusinessCountryShortName(decodedAddress.getCountryShortName());
+        }
+        businessRegistration.setBusinessPhone(CommonUtil.phoneCleanup(businessRegistration.getBusinessPhone()));
+    }
 }

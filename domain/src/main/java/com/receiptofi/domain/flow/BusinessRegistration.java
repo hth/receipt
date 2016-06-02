@@ -5,6 +5,8 @@ import com.receiptofi.domain.BusinessUserEntity;
 import com.receiptofi.domain.types.BusinessTypeEnum;
 import com.receiptofi.utils.CommonUtil;
 
+import org.springframework.data.annotation.Transient;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -23,13 +25,16 @@ public class BusinessRegistration implements Serializable {
     private String phone;
     private boolean emailValidated;
     private String businessName;
+
+    /** Business types are initialized in flow. Why? Show off. */
     private List<BusinessTypeEnum> businessTypes;
     private String businessAddress;
     private String businessPhone;
     private String businessCountryShortName;
     private BusinessUserEntity businessUser;
 
-    private BusinessTypeEnum businessType;
+    @Transient
+    private List<BusinessTypeEnum> availableBusinessTypes;
 
     private BusinessRegistration(BusinessUserEntity businessUser, BizStoreEntity bizStore) {
         this.rid = businessUser.getReceiptUserId();
@@ -108,6 +113,10 @@ public class BusinessRegistration implements Serializable {
         return this;
     }
 
+    public String getPhoneFormatted() {
+        return CommonUtil.phoneFormatter(phone, countryShortName);
+    }
+
     public BusinessUserEntity getBusinessUser() {
         return businessUser;
     }
@@ -145,6 +154,14 @@ public class BusinessRegistration implements Serializable {
         this.businessAddress = businessAddress;
     }
 
+    public String getBusinessCountryShortName() {
+        return businessCountryShortName;
+    }
+
+    public void setBusinessCountryShortName(String businessCountryShortName) {
+        this.businessCountryShortName = businessCountryShortName;
+    }
+
     public String getBusinessPhone() {
         return businessPhone;
     }
@@ -153,19 +170,15 @@ public class BusinessRegistration implements Serializable {
         this.businessPhone = businessPhone;
     }
 
-    public String getPhoneFormatted() {
-        return CommonUtil.phoneFormatter(phone, countryShortName);
-    }
-
     public String getBusinessPhoneFormatted() {
         return CommonUtil.phoneFormatter(businessPhone, businessCountryShortName);
     }
 
-    public BusinessTypeEnum getBusinessType() {
-        return businessType;
+    public List<BusinessTypeEnum> getAvailableBusinessTypes() {
+        return availableBusinessTypes;
     }
 
-    public void setBusinessType(BusinessTypeEnum businessType) {
-        this.businessType = businessType;
+    public void setAvailableBusinessTypes(List<BusinessTypeEnum> availableBusinessTypes) {
+        this.availableBusinessTypes = availableBusinessTypes;
     }
 }
