@@ -113,6 +113,10 @@ public class BusinessRegistration implements Serializable {
         return this;
     }
 
+    public String getPhoneFormatted() {
+        return CommonUtil.phoneFormatter(phone, countryShortName);
+    }
+
     public BusinessUserEntity getBusinessUser() {
         return businessUser;
     }
@@ -150,16 +154,20 @@ public class BusinessRegistration implements Serializable {
         this.businessAddress = businessAddress;
     }
 
+    public String getBusinessCountryShortName() {
+        return businessCountryShortName;
+    }
+
+    public void setBusinessCountryShortName(String businessCountryShortName) {
+        this.businessCountryShortName = businessCountryShortName;
+    }
+
     public String getBusinessPhone() {
         return businessPhone;
     }
 
     public void setBusinessPhone(String businessPhone) {
         this.businessPhone = businessPhone;
-    }
-
-    public String getPhoneFormatted() {
-        return CommonUtil.phoneFormatter(phone, countryShortName);
     }
 
     public String getBusinessPhoneFormatted() {

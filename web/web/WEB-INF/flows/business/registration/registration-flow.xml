@@ -30,7 +30,9 @@
     </view-state>
 
     <view-state id="registrationStart" model="businessRegistration">
-        <transition on="submit" to="registrationReview" />
+        <transition on="submit" to="registrationReview">
+            <evaluate expression="businessRegistrationFlowActions.updateBusiness(flowScope.businessRegistration)" />
+        </transition>
         <transition on="cancel" to="logout" />
     </view-state>
 
