@@ -84,8 +84,7 @@
                        'ROLE_BUSINESS',
                        'ROLE_ADMIN',
                        'ROLE_TECHNICIAN',
-                       'ROLE_SUPERVISOR',
-                       'ROLE_ANALYSIS_READ')" />
+                       'ROLE_SUPERVISOR')" />
 
         <intercept-url pattern="/access/userprofilepreference/**"
                        access="hasAnyRole(

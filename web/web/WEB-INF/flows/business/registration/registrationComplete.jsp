@@ -72,10 +72,14 @@
                 <div class="down_form" style="width: 90%">
                     <c:choose>
                         <c:when test="${businessRegistration.businessUser.businessUserRegistrationStatus eq 'C'}">
-                            Registration complete. Once your details are verified you would be notified.
+                            <h1 class="h1">Registration complete</h1>
+                            <hr>
+                            Your details are being verified. Would notify you once the verification is complete.
                         </c:when>
                         <c:otherwise>
-                            Registration not complete. We could not verify your details.
+                            <h1 class="h1">Registration not complete</h1>
+                            <hr>
+                            We could not verify your details. Please contact us or update profile.
                         </c:otherwise>
                     </c:choose>
                 </div>
