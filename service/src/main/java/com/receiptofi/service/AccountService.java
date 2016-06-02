@@ -396,9 +396,8 @@ public class AccountService {
                 userAccount.setRoles(roles);
                 break;
             case ADMIN:
+                /** As of now admin does not have Business and Enterprise role. */
                 roles.add(RoleEnum.ROLE_USER);
-                roles.add(RoleEnum.ROLE_BUSINESS);
-                roles.add(RoleEnum.ROLE_ENTERPRISE);
                 roles.add(RoleEnum.ROLE_TECHNICIAN);
                 roles.add(RoleEnum.ROLE_SUPERVISOR);
                 roles.add(RoleEnum.ROLE_ADMIN);

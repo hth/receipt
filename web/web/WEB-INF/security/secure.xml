@@ -77,6 +77,24 @@
                        'ROLE_SUPERVISOR',
                        'ROLE_ANALYSIS_READ')" />
 
+        <intercept-url pattern="/access/eval/**"
+                       access="hasAnyRole(
+                       'ROLE_USER',
+                       'ROLE_ENTERPRISE',
+                       'ROLE_BUSINESS',
+                       'ROLE_ADMIN',
+                       'ROLE_TECHNICIAN',
+                       'ROLE_SUPERVISOR')" />
+
+        <intercept-url pattern="/access/userprofilepreference/**"
+                       access="hasAnyRole(
+                       'ROLE_USER',
+                       'ROLE_ENTERPRISE',
+                       'ROLE_BUSINESS',
+                       'ROLE_ADMIN',
+                       'ROLE_TECHNICIAN',
+                       'ROLE_SUPERVISOR')" />
+
         <intercept-url pattern="/access/**"
                        access="hasAnyRole('ROLE_USER', 'ROLE_ADMIN', 'ROLE_TECHNICIAN', 'ROLE_SUPERVISOR')" />
 
@@ -93,10 +111,10 @@
                        access="hasRole('ROLE_ANALYSIS_READ')" />
 
         <intercept-url pattern="/business/**"
-                       access="hasAnyRole('ROLE_BUSINESS', 'ROLE_ADMIN')" />
+                       access="hasRole('ROLE_BUSINESS')" />
 
         <intercept-url pattern="/enterprise/**"
-                       access="hasAnyRole('ROLE_ENTERPRISE', 'ROLE_ADMIN')" />
+                       access="hasRole('ROLE_ENTERPRISE')" />
 
         <intercept-url pattern="/monitoring/**"
                        access="hasIpAddress('192.168.1.0/24') or hasIpAddress('127.0.0.1')" />

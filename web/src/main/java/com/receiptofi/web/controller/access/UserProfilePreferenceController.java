@@ -107,7 +107,7 @@ public class UserProfilePreferenceController {
     @Autowired private ReceiptService receiptService;
     @Autowired private AdminService adminService;
 
-    @PreAuthorize ("hasRole('ROLE_USER')")
+    @PreAuthorize ("hasAnyRole('ROLE_USER', 'ROLE_BUSINESS', 'ROLE_ENTERPRISE')")
     @RequestMapping (value = "/i", method = RequestMethod.GET)
     public String loadAccount(
             @ModelAttribute ("profileForm")
@@ -162,7 +162,7 @@ public class UserProfilePreferenceController {
         return nextPage;
     }
 
-    @PreAuthorize ("hasRole('ROLE_USER')")
+    @PreAuthorize ("hasAnyRole('ROLE_USER', 'ROLE_BUSINESS', 'ROLE_ENTERPRISE')")
     @RequestMapping (value = "/i", method = RequestMethod.POST, params = "profile_update")
     public String updateProfile(
             @ModelAttribute ("expenseTagForm")
@@ -400,7 +400,7 @@ public class UserProfilePreferenceController {
      * @return
      * @throws IOException
      */
-    @PreAuthorize ("hasAnyRole('ROLE_ADMIN')")
+    @PreAuthorize ("hasRole('ROLE_ADMIN')")
     @RequestMapping (value = "/update", method = RequestMethod.POST)
     public String adminUpdateUserStatus(
             @ModelAttribute ("expenseTagForm")

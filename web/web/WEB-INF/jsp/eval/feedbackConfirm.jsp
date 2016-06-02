@@ -8,7 +8,34 @@
     <meta name="_csrf_header" content="${_csrf.headerName}"/>
     <script>var ctx = "${pageContext.request.contextPath}"</script>
 
-    <meta http-equiv="Refresh" content="3;url=${pageContext.request.contextPath}/access/landing.htm">
+    <sec:authorize access="hasRole('ROLE_ADMIN')" var="isAdmin" />
+    <sec:authorize access="hasRole('ROLE_BUSINESS')" var="isBusiness" />
+    <sec:authorize access="hasRole('ROLE_ENTERPRISE')" var="isEnterprise" />
+    <sec:authorize access="hasRole('ROLE_SUPERVISOR')" var="isSupervisor" />
+    <sec:authorize access="hasRole('ROLE_TECHNICIAN')" var="isTechnician" />
+    <sec:authorize access="hasRole('ROLE_USER')" var="isUser" />
+
+    <c:choose>
+        <c:when test="${isAdmin}">
+            <!-- Higher to lower roles -->
+            <meta http-equiv="Refresh" content="3;url=${pageContext.request.contextPath}/admin/landing.htm">
+        </c:when>
+        <c:when test="${isBusiness}">
+            <meta http-equiv="Refresh" content="3;url=${pageContext.request.contextPath}/business/landing.htm">
+        </c:when>
+        <c:when test="${isEnterprise}">
+            <meta http-equiv="Refresh" content="3;url=${pageContext.request.contextPath}/enterprise/landing.htm">
+        </c:when>
+        <c:when test="${isSupervisor}">
+            <meta http-equiv="Refresh" content="3;url=${pageContext.request.contextPath}/emp/landing.htm">
+        </c:when>
+        <c:when test="${isTechnician}">
+            <meta http-equiv="Refresh" content="3;url=${pageContext.request.contextPath}/emp/landing.htm">
+        </c:when>
+        <c:otherwise>
+            <meta http-equiv="Refresh" content="3;url=${pageContext.request.contextPath}/access/landing.htm">
+        </c:otherwise>
+    </c:choose>
 
     <title><fmt:message key="feedback.title"/></title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/style.css"/>
@@ -35,10 +62,55 @@
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                     </form>
                 </a>
-                <a class="top-account-bar-text" href="#">REPORT</a>
-                <a class="top-account-bar-text user-email" href="#">
-                    <sec:authentication property="principal.username"/>
-                </a>
+
+                <c:choose>
+                    <c:when test="${isAdmin}">
+                        <a class="top-account-bar-text" href="/access/eval/feedback.htm">FEEDBACK</a>
+                        <a class="top-account-bar-text" href="/access/userprofilepreference/i.htm">ACCOUNT</a>
+                        <a class="top-account-bar-text" href="/access/reportAnalysis.htm">REPORT & ANALYSIS</a>
+                        <a class="top-account-bar-text" href="/access/split.htm">SPLIT EXPENSES</a>
+                    </c:when>
+                    <c:when test="${isBusiness}">
+                        <a class="top-account-bar-text" href="/access/eval/feedback.htm">FEEDBACK</a>
+                        <a class="top-account-bar-text" href="/access/userprofilepreference/i.htm">ACCOUNT</a>
+                    </c:when>
+                    <c:when test="${isEnterprise}">
+                        <a class="top-account-bar-text" href="/access/eval/feedback.htm">FEEDBACK</a>
+                        <a class="top-account-bar-text" href="/access/userprofilepreference/i.htm">ACCOUNT</a>
+                    </c:when>
+                    <c:when test="${isSupervisor}">
+                        <a class="top-account-bar-text" href="/access/eval/feedback.htm">FEEDBACK</a>
+                        <a class="top-account-bar-text" href="/access/userprofilepreference/i.htm">ACCOUNT</a>
+                        <a class="top-account-bar-text" href="/access/reportAnalysis.htm">REPORT & ANALYSIS</a>
+                        <a class="top-account-bar-text" href="/access/split.htm">SPLIT EXPENSES</a>
+                    </c:when>
+                    <c:when test="${isTechnician}">
+                        <a class="top-account-bar-text" href="/access/eval/feedback.htm">FEEDBACK</a>
+                        <a class="top-account-bar-text" href="/access/userprofilepreference/i.htm">ACCOUNT</a>
+                        <a class="top-account-bar-text" href="/access/reportAnalysis.htm">REPORT & ANALYSIS</a>
+                        <a class="top-account-bar-text" href="/access/split.htm">SPLIT EXPENSES</a>
+                    </c:when>
+                    <c:otherwise>
+                        <a class="top-account-bar-text" href="/access/eval/feedback.htm">FEEDBACK</a>
+                        <a class="top-account-bar-text" href="/access/userprofilepreference/i.htm">ACCOUNT</a>
+                        <a class="top-account-bar-text" href="/access/reportAnalysis.htm">REPORT & ANALYSIS</a>
+                        <a class="top-account-bar-text" href="/access/split.htm">SPLIT EXPENSES</a>
+                    </c:otherwise>
+                </c:choose>
+                <sec:authentication var="validated" property="principal.accountValidated"/>
+                <c:choose>
+                    <c:when test="${!validated}">
+                        <a class="top-account-bar-text user-email" href="/access/userprofilepreference/i.htm">
+                            <sec:authentication property="principal.username" />
+                            <span class="notification-counter">1</span>
+                        </a>
+                    </c:when>
+                    <c:otherwise>
+                        <a class="top-account-bar-text user-email" href="#">
+                            <sec:authentication property="principal.username" />
+                        </a>
+                    </c:otherwise>
+                </c:choose>
             </div>
         </div>
     </div>
@@ -57,9 +129,38 @@
         <br/><br/><br/>
 
         <h3 class="h3">
-            <a href="${pageContext.request.contextPath}/access/landing.htm">
-                Redirecting to home page in couple of seconds... If not redirected then please click here
-            </a>
+            <c:choose>
+                <c:when test="${isAdmin}">
+                <a href="${pageContext.request.contextPath}/admin/landing.htm">
+                    Redirecting to home page in couple of seconds... If not redirected then please click here
+                </a>
+                </c:when>
+                <c:when test="${isBusiness}">
+                <a href="${pageContext.request.contextPath}/business/landing.htm">
+                    Redirecting to home page in couple of seconds... If not redirected then please click here
+                </a>
+                </c:when>
+                <c:when test="${isEnterprise}">
+                <a href="${pageContext.request.contextPath}/enterprise/landing.htm">
+                    Redirecting to home page in couple of seconds... If not redirected then please click here
+                </a>
+                </c:when>
+                <c:when test="${isSupervisor}">
+                <a href="${pageContext.request.contextPath}/emp/landing.htm">
+                    Redirecting to home page in couple of seconds... If not redirected then please click here
+                </a>
+                </c:when>
+                <c:when test="${isTechnician}">
+                <a href="${pageContext.request.contextPath}/emp/landing.htm">
+                    Redirecting to home page in couple of seconds... If not redirected then please click here
+                </a>
+                </c:when>
+                <c:otherwise>
+                <a href="${pageContext.request.contextPath}/access/landing.htm">
+                    Redirecting to home page in couple of seconds... If not redirected then please click here
+                </a>
+                </c:otherwise>
+            </c:choose>
         </h3>
     </div>
     <div class="footer-tooth clearfix">

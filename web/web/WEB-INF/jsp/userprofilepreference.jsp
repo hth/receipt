@@ -8,6 +8,13 @@
     <meta name="_csrf_header" content="${_csrf.headerName}"/>
     <script>var ctx = "${pageContext.request.contextPath}"</script>
 
+    <sec:authorize access="hasRole('ROLE_ADMIN')" var="isAdmin" />
+    <sec:authorize access="hasRole('ROLE_BUSINESS')" var="isBusiness" />
+    <sec:authorize access="hasRole('ROLE_ENTERPRISE')" var="isEnterprise" />
+    <sec:authorize access="hasRole('ROLE_SUPERVISOR')" var="isSupervisor" />
+    <sec:authorize access="hasRole('ROLE_TECHNICIAN')" var="isTechnician" />
+    <sec:authorize access="hasRole('ROLE_USER')" var="isUser" />
+
     <title><fmt:message key="title"/></title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/style.css"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/stylelogin.css"/>
@@ -59,10 +66,41 @@
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                     </form>
                 </a>
-                <a class="top-account-bar-text" href="/access/eval/feedback.htm">FEEDBACK</a>
-                <a class="top-account-bar-text" href="/access/userprofilepreference/i.htm">ACCOUNT</a>
-                <a class="top-account-bar-text" href="/access/reportAnalysis.htm">REPORT & ANALYSIS</a>
-                <a class="top-account-bar-text" href="/access/split.htm">SPLIT EXPENSES</a>
+
+                <c:choose>
+                    <c:when test="${isAdmin}">
+                        <a class="top-account-bar-text" href="/access/eval/feedback.htm">FEEDBACK</a>
+                        <a class="top-account-bar-text" href="/access/userprofilepreference/i.htm">ACCOUNT</a>
+                        <a class="top-account-bar-text" href="/access/reportAnalysis.htm">REPORT & ANALYSIS</a>
+                        <a class="top-account-bar-text" href="/access/split.htm">SPLIT EXPENSES</a>
+                    </c:when>
+                    <c:when test="${isBusiness}">
+                        <a class="top-account-bar-text" href="/access/eval/feedback.htm">FEEDBACK</a>
+                        <a class="top-account-bar-text" href="/access/userprofilepreference/i.htm">ACCOUNT</a>
+                    </c:when>
+                    <c:when test="${isEnterprise}">
+                        <a class="top-account-bar-text" href="/access/eval/feedback.htm">FEEDBACK</a>
+                        <a class="top-account-bar-text" href="/access/userprofilepreference/i.htm">ACCOUNT</a>
+                    </c:when>
+                    <c:when test="${isSupervisor}">
+                        <a class="top-account-bar-text" href="/access/eval/feedback.htm">FEEDBACK</a>
+                        <a class="top-account-bar-text" href="/access/userprofilepreference/i.htm">ACCOUNT</a>
+                        <a class="top-account-bar-text" href="/access/reportAnalysis.htm">REPORT & ANALYSIS</a>
+                        <a class="top-account-bar-text" href="/access/split.htm">SPLIT EXPENSES</a>
+                    </c:when>
+                    <c:when test="${isTechnician}">
+                        <a class="top-account-bar-text" href="/access/eval/feedback.htm">FEEDBACK</a>
+                        <a class="top-account-bar-text" href="/access/userprofilepreference/i.htm">ACCOUNT</a>
+                        <a class="top-account-bar-text" href="/access/reportAnalysis.htm">REPORT & ANALYSIS</a>
+                        <a class="top-account-bar-text" href="/access/split.htm">SPLIT EXPENSES</a>
+                    </c:when>
+                    <c:otherwise>
+                        <a class="top-account-bar-text" href="/access/eval/feedback.htm">FEEDBACK</a>
+                        <a class="top-account-bar-text" href="/access/userprofilepreference/i.htm">ACCOUNT</a>
+                        <a class="top-account-bar-text" href="/access/reportAnalysis.htm">REPORT & ANALYSIS</a>
+                        <a class="top-account-bar-text" href="/access/split.htm">SPLIT EXPENSES</a>
+                    </c:otherwise>
+                </c:choose>
                 <sec:authentication var="validated" property="principal.accountValidated"/>
                 <c:choose>
                     <c:when test="${!validated}">
@@ -90,8 +128,10 @@
         <div id="tabs" class="nav-list">
             <ul class="nav-block">
                 <li><a href="#tabs-1">PROFILE</a></li>
+                <sec:authorize access="hasRole('ROLE_USER')">
                 <li><a href="#tabs-2">PREFERENCES</a></li>
                 <li><a href="#tabs-3">BILLING</a></li>
+                </sec:authorize>
                 <sec:authorize access="hasRole('ROLE_ADMIN')">
                 <li><a href="#tabs-4">STATUS</a></li>
                 </sec:authorize>
@@ -219,6 +259,7 @@
                 </c:if>
             </div>
 
+            <sec:authorize access="hasRole('ROLE_USER')">
             <div id="tabs-2" class="ajx-content report_my">
                 <h1 class="h1">PREFERENCES</h1>
                 <hr>
@@ -374,6 +415,7 @@
                     </c:forEach>
                 </div>
             </div>
+            </sec:authorize>
 
             <sec:authorize access="hasRole('ROLE_ADMIN')">
             <div id="tabs-4" class="ajx-content report_my">
