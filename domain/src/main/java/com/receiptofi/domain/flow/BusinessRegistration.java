@@ -121,6 +121,10 @@ public class BusinessRegistration implements Serializable {
         return businessUser;
     }
 
+    public void setBusinessUser(BusinessUserEntity businessUser) {
+        this.businessUser = businessUser;
+    }
+
     public boolean isEmailValidated() {
         return emailValidated;
     }
