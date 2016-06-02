@@ -43,8 +43,7 @@
     </view-state>
 
     <action-state id="completeRegistrationInformation">
-        <evaluate result="flowScope.businessUser"
-                  result-type="com.receiptofi.domain.BusinessUserEntity"
+        <evaluate result="flowScope.businessRegistration"
                   expression="businessRegistrationFlowActions.completeRegistrationInformation(flowScope.businessRegistration)"/>
 
         <transition to="profileCompletion"

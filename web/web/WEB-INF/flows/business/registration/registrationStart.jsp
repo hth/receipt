@@ -97,7 +97,7 @@
                         </div>
 
                         <div class="full">
-                            <c:if test="${!businessRegistration.emailValidated}">
+                            <c:if test="${businessRegistration.emailValidated}">
                                 <input type="submit" value="SUBMIT" class="read_btn" name="_eventId_submit" style="background: #2c97de; margin: 77px 10px 0 0;">
                             </c:if>
                             <input type="submit" value="CANCEL" class="read_btn" name="_eventId_cancel" style="background: #FC462A; margin: 77px 10px 0 0;">

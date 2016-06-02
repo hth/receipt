@@ -101,7 +101,7 @@ public class BusinessRegistrationFlowActions {
      * @throws BusinessRegistrationException
      */
     @SuppressWarnings ("unused")
-    public BusinessUserEntity completeRegistrationInformation(BusinessRegistration businessRegistration)
+    public BusinessRegistration completeRegistrationInformation(BusinessRegistration businessRegistration)
             throws BusinessRegistrationException {
         try {
             updateUserProfile(businessRegistration);
@@ -125,8 +125,8 @@ public class BusinessRegistrationFlowActions {
                 bizStore.setPhone(businessRegistration.getBusinessPhone());
                 bizStore.setAddress(businessRegistration.getBusinessAddress());
                 validateAddress(bizStore);
+                bizService.saveStore(bizStore);
             }
-            bizService.saveStore(bizStore);
 
             BusinessUserEntity businessUser = businessUserService.findBusinessUser(businessRegistration.getRid());
             businessUser
@@ -134,7 +134,8 @@ public class BusinessRegistrationFlowActions {
                     .setBusinessUserRegistrationStatus(BusinessUserRegistrationStatusEnum.C);
 
             businessUserService.save(businessUser);
-            return businessUser;
+            businessRegistration.setBusinessUser(businessUser);
+            return businessRegistration;
         } catch (Exception e) {
             LOG.error("Error updating business user profile rid={} reason={}",
                     businessRegistration.getRid(), e.getLocalizedMessage(), e);
