@@ -19,7 +19,8 @@
 
     <view-state id="profileCompletion" model="businessRegistration">
         <on-entry>
-            <evaluate result="businessRegistration.businessTypes"
+            <!-- Populates all available business types -->
+            <evaluate result="businessRegistration.availableBusinessTypes"
                       expression="T(com.receiptofi.domain.types.BusinessTypeEnum).asList()" />
         </on-entry>
         <transition on="submit" to="registrationStart">
