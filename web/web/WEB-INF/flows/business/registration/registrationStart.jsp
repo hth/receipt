@@ -82,7 +82,7 @@
                                     cssErrorClass="profile_label lb_error">Business Type</form:label>
 
                             <form:select path="businessTypes" cssClass="styled-select slate" multiple="true" style="height: 100px;">
-                                <form:options items="${businessRegistration.businessTypeEnumList}" itemValue="name" itemLabel="description"/>
+                                <form:options items="${businessRegistration.businessTypeEnumList}" itemValue="name" itemLabel="description" />
                             </form:select>
                         </div>
                         <div class="row_field">
