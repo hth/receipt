@@ -56,7 +56,7 @@ public class BusinessLandingController {
      * Gymnastic for PRG example.
      * @return
      */
-    @PreAuthorize ("hasAnyRole(''ROLE_BUSINESS')")
+    @PreAuthorize ("hasAnyRole('ROLE_BUSINESS')")
     @RequestMapping (value = "/landing", method = RequestMethod.GET)
     public String loadForm() {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
