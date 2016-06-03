@@ -69,7 +69,7 @@
         <div class="rightside-list-holder full-list-holder" style="overflow-y: hidden; height: auto; min-height: auto;">
             <div class="down_form" style="width: 95%;">
                 <c:if test="${!empty pending}">
-                <table style="width: 500px" class="etable">
+                <table style="width: 600px" class="etable">
                     <tbody>
                     <tr>
                         <th style="padding:5px;"></th>
@@ -111,7 +111,7 @@
         <div class="rightside-list-holder full-list-holder" style="overflow-y: hidden; height: auto; min-height: auto;">
             <div class="down_form" style="width: 95%;">
                 <c:if test="${!empty queue}">
-                <table style="width: 500px" class="etable">
+                <table style="width: 600px" class="etable">
                     <tbody>
                     <tr>
                         <th style="padding:5px;"></th>
@@ -153,7 +153,7 @@
         <div class="rightside-list-holder full-list-holder" style="overflow-y: hidden; height: auto; min-height: auto;">
             <div class="down_form" style="width: 95%;">
                 <c:if test="${!empty recheckPending}">
-                <table style="width: 500px" class="etable">
+                <table style="width: 600px" class="etable">
                     <tbody>
                     <tr>
                         <th style="padding:5px;"></th>
@@ -195,7 +195,7 @@
         <div class="rightside-list-holder full-list-holder" style="overflow-y: hidden; height: auto; min-height: auto;">
             <div class="down_form" style="width: 95%;">
                 <c:if test="${!empty recheck}">
-                <table style="width: 500px" class="etable">
+                <table style="width: 600px" class="etable">
                     <tbody>
                     <tr>
                         <th style="padding:5px;"></th>
