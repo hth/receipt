@@ -216,6 +216,16 @@ public final class Maths {
     }
 
     /**
+     * Adjust scale to two decimal place and round half up.
+     *
+     * @param thisNumber
+     * @return
+     */
+    public static BigDecimal adjustScale(Double thisNumber) {
+        return adjustScale(new BigDecimal(thisNumber, MathContext.DECIMAL64));
+    }
+
+    /**
      * This method is normally used for calculating something within acceptable range specified and accepted by system.
      *
      * @param from

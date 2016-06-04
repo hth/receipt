@@ -72,7 +72,9 @@
                 <div class="down_form" style="width: 90%">
                     <h1 class="h1"><c:out value="${businessLandingForm.bizName}" /></h1>
                     <hr>
-                    Total customer: <c:out value="${businessLandingForm.customerCount}" />
+                    Your customers: <c:out value="${businessLandingForm.customerCount}" />
+                    <br/>
+                    Total customer purchases: <c:out value="${businessLandingForm.totalCustomerPurchases}" />
                 </div>
             </div>
         </sec:authorize>

@@ -3,9 +3,12 @@ package com.receiptofi.web.controller.business;
 import com.receiptofi.domain.BizNameEntity;
 import com.receiptofi.domain.BusinessUserEntity;
 import com.receiptofi.domain.analytic.BizUserCountEntity;
+import com.receiptofi.domain.analytic.ExpensePerUserPerBizEntity;
 import com.receiptofi.domain.site.ReceiptUser;
 import com.receiptofi.service.BusinessUserService;
 import com.receiptofi.service.analytic.BizUserCountService;
+import com.receiptofi.service.analytic.ExpensePerUserPerBizService;
+import com.receiptofi.utils.Maths;
 import com.receiptofi.web.form.business.BusinessLandingForm;
 
 import org.slf4j.Logger;
@@ -41,6 +44,7 @@ public class BusinessLandingController {
     private String businessRegistrationFlow;
     private BusinessUserService businessUserService;
     private BizUserCountService bizUserCountService;
+    private ExpensePerUserPerBizService expensePerUserPerBizService;
 
     @Autowired
     public BusinessLandingController(
@@ -51,16 +55,20 @@ public class BusinessLandingController {
             String businessRegistrationFlow,
 
             BusinessUserService businessUserService,
-            BizUserCountService bizUserCountService
+            BizUserCountService bizUserCountService,
+            ExpensePerUserPerBizService expensePerUserPerBizService
     ) {
         this.nextPage = nextPage;
         this.businessRegistrationFlow = businessRegistrationFlow;
         this.businessUserService = businessUserService;
         this.bizUserCountService = bizUserCountService;
+        this.expensePerUserPerBizService = expensePerUserPerBizService;
     }
 
     /**
-     * Gymnastic for PRG example.
+     * Loading landing page for business.
+     *
+     * @param businessLandingForm
      * @return
      */
     @PreAuthorize ("hasAnyRole('ROLE_BUSINESS')")
@@ -98,5 +106,10 @@ public class BusinessLandingController {
         BizUserCountEntity bizUserCount = bizUserCountService.findBy(bizName.getId());
         businessLandingForm.setBizName(bizUserCount.getBizName());
         businessLandingForm.setCustomerCount(bizUserCount.getUserCount());
+
+        ExpensePerUserPerBizEntity expenses = expensePerUserPerBizService.getTotalCustomerPurchases(bizName.getId());
+        if (null != expenses) {
+            businessLandingForm.setTotalCustomerPurchases(Maths.adjustScale(expenses.getBizTotal()));
+        }
     }
 }
