@@ -27,8 +27,7 @@ import org.springframework.stereotype.Repository;
 })
 @Repository
 public class BizUserCountManagerImpl implements BizUserCountManager {
-
-    private static final Logger LOG = LoggerFactory.getLogger(BizNameManagerImpl.class);
+    private static final Logger LOG = LoggerFactory.getLogger(BizUserCountManagerImpl.class);
     private static final String TABLE = BaseEntity.getClassAnnotationValue(
             BizUserCountEntity.class,
             Document.class,
