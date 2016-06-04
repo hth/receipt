@@ -14,6 +14,7 @@
     <sec:authorize access="hasRole('ROLE_SUPERVISOR')" var="isSupervisor" />
     <sec:authorize access="hasRole('ROLE_TECHNICIAN')" var="isTechnician" />
     <sec:authorize access="hasRole('ROLE_USER')" var="isUser" />
+    <spring:eval expression="pageContext.request.userPrincipal.principal.userLevel eq T(com.receiptofi.domain.types.UserLevelEnum).BUSINESS_SMALL" var="isSmallBusiness"  />
 
     <title><fmt:message key="feedback.title"/></title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/style.css"/>
@@ -48,9 +49,15 @@
                         <a class="top-account-bar-text" href="/access/reportAnalysis.htm">REPORT & ANALYSIS</a>
                         <a class="top-account-bar-text" href="/access/split.htm">SPLIT EXPENSES</a>
                     </c:when>
-                    <c:when test="${isBusiness}">
+                    <c:when test="${isBusiness && !isSmallBusiness}">
                         <a class="top-account-bar-text" href="/access/eval/feedback.htm">FEEDBACK</a>
                         <a class="top-account-bar-text" href="/access/userprofilepreference/i.htm">ACCOUNT</a>
+                    </c:when>
+                    <c:when test="${isSmallBusiness}">
+                        <a class="top-account-bar-text" href="/access/eval/feedback.htm">FEEDBACK</a>
+                        <a class="top-account-bar-text" href="/access/userprofilepreference/i.htm">ACCOUNT</a>
+                        <a class="top-account-bar-text" href="/access/reportAnalysis.htm">REPORT & ANALYSIS</a>
+                        <a class="top-account-bar-text" href="/access/split.htm">SPLIT EXPENSES</a>
                     </c:when>
                     <c:when test="${isEnterprise}">
                         <a class="top-account-bar-text" href="/access/eval/feedback.htm">FEEDBACK</a>

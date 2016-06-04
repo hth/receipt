@@ -70,7 +70,9 @@
         <sec:authorize access="hasRole('ROLE_BUSINESS')">
             <div class="business_reg">
                 <div class="down_form" style="width: 90%">
-                    Setup
+                    <h1 class="h1"><c:out value="${businessLandingForm.bizName}" /></h1>
+                    <hr>
+                    Total customer: <c:out value="${businessLandingForm.customerCount}" />
                 </div>
             </div>
         </sec:authorize>
