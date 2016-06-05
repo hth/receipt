@@ -1,6 +1,5 @@
 package com.receiptofi.service.analytic;
 
-import com.receiptofi.domain.BizStoreEntity;
 import com.receiptofi.repository.analytic.StoreCountPerBizManager;
 
 import org.springframework.beans.factory.annotation.Autowired;

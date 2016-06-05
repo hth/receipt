@@ -77,6 +77,7 @@
                     Total customer purchases: <c:out value="${businessLandingForm.totalCustomerPurchases}" />
                     <br/>
                     Store count: <c:out value="${businessLandingForm.storeCount}" />
+                    Actual store count: <c:out value="${businessLandingForm.actualStoreCount}" />
                 </div>
             </div>
         </sec:authorize>

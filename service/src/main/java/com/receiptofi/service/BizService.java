@@ -224,4 +224,8 @@ public class BizService {
     public BizStoreEntity findOneBizStore(String bizNameId) {
         return bizStoreManager.findOne(bizNameId);
     }
+
+    public long getCountOfStore(String bizNameId) {
+        return bizStoreManager.getCountOfStore(bizNameId);
+    }
 }

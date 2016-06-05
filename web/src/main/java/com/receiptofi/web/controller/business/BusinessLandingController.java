@@ -5,6 +5,7 @@ import com.receiptofi.domain.BusinessUserEntity;
 import com.receiptofi.domain.analytic.BizUserCountEntity;
 import com.receiptofi.domain.analytic.ExpensePerUserPerBizEntity;
 import com.receiptofi.domain.site.ReceiptUser;
+import com.receiptofi.service.BizService;
 import com.receiptofi.service.BusinessUserService;
 import com.receiptofi.service.analytic.BizUserCountService;
 import com.receiptofi.service.analytic.ExpensePerUserPerBizService;
@@ -47,6 +48,7 @@ public class BusinessLandingController {
     private BizUserCountService bizUserCountService;
     private ExpensePerUserPerBizService expensePerUserPerBizService;
     private StoreCountPerBizService storeCountPerBizService;
+    private BizService bizService;
 
     @Autowired
     public BusinessLandingController(
@@ -59,13 +61,14 @@ public class BusinessLandingController {
             BusinessUserService businessUserService,
             BizUserCountService bizUserCountService,
             ExpensePerUserPerBizService expensePerUserPerBizService,
-            StoreCountPerBizService storeCountPerBizService) {
+            StoreCountPerBizService storeCountPerBizService, BizService bizService) {
         this.nextPage = nextPage;
         this.businessRegistrationFlow = businessRegistrationFlow;
         this.businessUserService = businessUserService;
         this.bizUserCountService = bizUserCountService;
         this.expensePerUserPerBizService = expensePerUserPerBizService;
         this.storeCountPerBizService = storeCountPerBizService;
+        this.bizService = bizService;
     }
 
     /**
@@ -118,5 +121,6 @@ public class BusinessLandingController {
         }
 
         businessLandingForm.setStoreCount(storeCountPerBizService.getNumberOfStoresForBiz(bizId));
+        businessLandingForm.setActualStoreCount(bizService.getCountOfStore(bizId));
     }
 }

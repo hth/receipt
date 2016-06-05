@@ -1,5 +1,6 @@
 package com.receiptofi.repository;
 
+import static com.receiptofi.repository.util.AppendAdditionalFields.isNotDeleted;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
 
@@ -232,6 +233,17 @@ public final class BizStoreManagerImpl implements BizStoreManager {
                                         where("VC").lt(validationCountTry)
                                 )
                 ).skip(skip).limit(limit),
+                BizStoreEntity.class
+        );
+    }
+
+    @Override
+    public long getCountOfStore(String bizNameId) {
+        return mongoTemplate.count(
+                query(
+                        where("BIZ_NAME.$id").is(new ObjectId(bizNameId))
+                        .andOperator(isNotDeleted())
+                ),
                 BizStoreEntity.class
         );
     }
