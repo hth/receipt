@@ -1,7 +1,5 @@
 package com.receiptofi.repository.analytic;
 
-import static com.receiptofi.repository.util.AppendAdditionalFields.isActive;
-import static com.receiptofi.repository.util.AppendAdditionalFields.isNotDeleted;
 import static org.springframework.data.domain.Sort.Direction.DESC;
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.group;
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.match;
@@ -11,9 +9,7 @@ import static org.springframework.data.mongodb.core.aggregation.Aggregation.sort
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 
 import com.receiptofi.domain.BaseEntity;
-import com.receiptofi.domain.SplitExpensesEntity;
 import com.receiptofi.domain.analytic.ExpensePerUserPerBizEntity;
-import com.receiptofi.domain.types.SplitStatusEnum;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

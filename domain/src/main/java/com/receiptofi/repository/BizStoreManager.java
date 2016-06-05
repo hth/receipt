@@ -83,4 +83,13 @@ public interface BizStoreManager extends RepositoryManager<BizStoreEntity> {
      * @return
      */
     List<BizStoreEntity> getAllWhereNotValidatedUsingExternalAPI(int validationCountTry, int skip, int limit);
+
+
+    /**
+     * Get count of all the stores for business.
+     *
+     * @param bizNameId
+     * @return
+     */
+    long getCountOfStore(String bizNameId);
 }

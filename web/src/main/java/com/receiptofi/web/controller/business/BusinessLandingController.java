@@ -5,9 +5,11 @@ import com.receiptofi.domain.BusinessUserEntity;
 import com.receiptofi.domain.analytic.BizUserCountEntity;
 import com.receiptofi.domain.analytic.ExpensePerUserPerBizEntity;
 import com.receiptofi.domain.site.ReceiptUser;
+import com.receiptofi.service.BizService;
 import com.receiptofi.service.BusinessUserService;
 import com.receiptofi.service.analytic.BizUserCountService;
 import com.receiptofi.service.analytic.ExpensePerUserPerBizService;
+import com.receiptofi.service.analytic.StoreCountPerBizService;
 import com.receiptofi.utils.Maths;
 import com.receiptofi.web.form.business.BusinessLandingForm;
 
@@ -45,6 +47,8 @@ public class BusinessLandingController {
     private BusinessUserService businessUserService;
     private BizUserCountService bizUserCountService;
     private ExpensePerUserPerBizService expensePerUserPerBizService;
+    private StoreCountPerBizService storeCountPerBizService;
+    private BizService bizService;
 
     @Autowired
     public BusinessLandingController(
@@ -56,13 +60,15 @@ public class BusinessLandingController {
 
             BusinessUserService businessUserService,
             BizUserCountService bizUserCountService,
-            ExpensePerUserPerBizService expensePerUserPerBizService
-    ) {
+            ExpensePerUserPerBizService expensePerUserPerBizService,
+            StoreCountPerBizService storeCountPerBizService, BizService bizService) {
         this.nextPage = nextPage;
         this.businessRegistrationFlow = businessRegistrationFlow;
         this.businessUserService = businessUserService;
         this.bizUserCountService = bizUserCountService;
         this.expensePerUserPerBizService = expensePerUserPerBizService;
+        this.storeCountPerBizService = storeCountPerBizService;
+        this.bizService = bizService;
     }
 
     /**
@@ -102,14 +108,19 @@ public class BusinessLandingController {
     private void populateBusinessLandingForm(BusinessLandingForm businessLandingForm, BusinessUserEntity businessUser) {
         Assert.notNull(businessUser, "Business user should not be null");
         BizNameEntity bizName = businessUser.getBizName();
+        String bizId = bizName.getId();
+        LOG.info("Loading dashboard for bizName={} bizId={}", bizName.getBusinessName(), bizName.getId());
 
-        BizUserCountEntity bizUserCount = bizUserCountService.findBy(bizName.getId());
+        BizUserCountEntity bizUserCount = bizUserCountService.findBy(bizId);
         businessLandingForm.setBizName(bizUserCount.getBizName());
         businessLandingForm.setCustomerCount(bizUserCount.getUserCount());
 
-        ExpensePerUserPerBizEntity expenses = expensePerUserPerBizService.getTotalCustomerPurchases(bizName.getId());
+        ExpensePerUserPerBizEntity expenses = expensePerUserPerBizService.getTotalCustomerPurchases(bizId);
         if (null != expenses) {
             businessLandingForm.setTotalCustomerPurchases(Maths.adjustScale(expenses.getBizTotal()));
         }
+
+        businessLandingForm.setStoreCount(storeCountPerBizService.getNumberOfStoresForBiz(bizId));
+        businessLandingForm.setActualStoreCount(bizService.getCountOfStore(bizId));
     }
 }
