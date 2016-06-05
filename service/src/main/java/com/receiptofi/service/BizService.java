@@ -228,4 +228,8 @@ public class BizService {
     public long getCountOfStore(String bizNameId) {
         return bizStoreManager.getCountOfStore(bizNameId);
     }
+
+    public List<BizStoreEntity> getAllBizStores(String bizNameId) {
+        return bizStoreManager.getAllBizStores(bizNameId);
+    }
 }

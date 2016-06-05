@@ -1,6 +1,7 @@
 package com.receiptofi.web.controller.business;
 
 import com.receiptofi.domain.BizNameEntity;
+import com.receiptofi.domain.BizStoreEntity;
 import com.receiptofi.domain.BusinessUserEntity;
 import com.receiptofi.domain.analytic.BizUserCountEntity;
 import com.receiptofi.domain.analytic.ExpensePerUserPerBizEntity;
@@ -25,6 +26,8 @@ import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
+import java.util.List;
 
 /**
  * For Businesses.
@@ -108,19 +111,26 @@ public class BusinessLandingController {
     private void populateBusinessLandingForm(BusinessLandingForm businessLandingForm, BusinessUserEntity businessUser) {
         Assert.notNull(businessUser, "Business user should not be null");
         BizNameEntity bizName = businessUser.getBizName();
-        String bizId = bizName.getId();
+        String bizNameId = bizName.getId();
         LOG.info("Loading dashboard for bizName={} bizId={}", bizName.getBusinessName(), bizName.getId());
 
-        BizUserCountEntity bizUserCount = bizUserCountService.findBy(bizId);
+        BizUserCountEntity bizUserCount = bizUserCountService.findBy(bizNameId);
         businessLandingForm.setBizName(bizUserCount.getBizName());
         businessLandingForm.setCustomerCount(bizUserCount.getUserCount());
 
-        ExpensePerUserPerBizEntity expenses = expensePerUserPerBizService.getTotalCustomerPurchases(bizId);
+        ExpensePerUserPerBizEntity expenses = expensePerUserPerBizService.getTotalCustomerPurchases(bizNameId);
         if (null != expenses) {
             businessLandingForm.setTotalCustomerPurchases(Maths.adjustScale(expenses.getBizTotal()));
         }
 
-        businessLandingForm.setStoreCount(storeCountPerBizService.getNumberOfStoresForBiz(bizId));
-        businessLandingForm.setActualStoreCount(bizService.getCountOfStore(bizId));
+        businessLandingForm.setStoreCount(storeCountPerBizService.getNumberOfStoresForBiz(bizNameId));
+
+        List<BizStoreEntity> bizStores = bizService.getAllBizStores(bizNameId);
+        businessLandingForm.setActualStoreCount(bizStores.size());
+
+        for (BizStoreEntity bizStore : bizStores) {
+            bizStore.getLat();
+            bizStore.getLng();
+        }
     }
 }
