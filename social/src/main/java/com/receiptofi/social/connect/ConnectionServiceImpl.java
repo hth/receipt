@@ -516,6 +516,10 @@ public class ConnectionServiceImpl implements ConnectionService {
         deepCopy(facebookUserProfile, userProfile);
         userProfile.setId(id);
 
+        if (StringUtils.isBlank(facebookUserProfile.getEmail()) && StringUtils.isBlank(userProfile.getEmail())) {
+            setBlankFacebookEmailAddress(facebookUserProfile, userAccount, userProfile);
+        }
+
         if (StringUtils.isEmpty(userProfile.getBirthday())) {
             int minAge = facebookUserProfile.getAgeRange().getMin();
             LocalDate birth = LocalDate.now().minusYears(minAge).with(TemporalAdjusters.firstDayOfYear());
@@ -530,6 +534,24 @@ public class ConnectionServiceImpl implements ConnectionService {
             userProfile.inActive();
         }
         return userProfile;
+    }
+
+    /**
+     * Facebook can send blank email. This is specific to facebook only code.
+     * In case of blank, set with RID followed by domain.
+     *
+     * @param facebookUserProfile
+     * @param userAccount
+     * @param userProfile
+     */
+    private void setBlankFacebookEmailAddress(
+            User facebookUserProfile,
+            UserAccountEntity userAccount,
+            UserProfileEntity userProfile) {
+
+        Assert.isTrue(StringUtils.isBlank(facebookUserProfile.getEmail()) && StringUtils.isBlank(userProfile.getEmail()), "");
+        userProfile.setEmail(userAccount.getReceiptUserId() + "@receiptofi.com");
+        LOG.info("Facebook email empty, setting profile email={}", userProfile.getEmail());
     }
 
     public UserProfileEntity copyToUserProfile(Person googleUserProfile, UserAccountEntity userAccount) {
