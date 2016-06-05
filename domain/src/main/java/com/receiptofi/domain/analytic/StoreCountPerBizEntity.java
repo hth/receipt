@@ -19,7 +19,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 })
 @Document (collection = "A_STORECOUNT_PER_BIZ")
 @CompoundIndexes (value = {
-        @CompoundIndex (name = "storecount_per_biz_idx", def = "{'bizId': 1}", unique = true, background = true)
+        @CompoundIndex (name = "store_count_per_biz_idx", def = "{'bizId': 1}", unique = true, background = true)
 })
 public class StoreCountPerBizEntity extends BaseEntity {
 

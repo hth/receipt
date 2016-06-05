@@ -92,4 +92,12 @@ public interface BizStoreManager extends RepositoryManager<BizStoreEntity> {
      * @return
      */
     long getCountOfStore(String bizNameId);
+
+    /**
+     * Get all the stores for business.
+     *
+     * @param bizNameId
+     * @return
+     */
+    List<BizStoreEntity> getAllBizStores(String bizNameId);
 }
