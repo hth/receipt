@@ -69,6 +69,7 @@ public class ITest extends RealMongoForTests {
     public UserProfileManager userProfileManager;
     public UserPreferenceManager userPreferenceManager;
     public ForgotRecoverManager forgotRecoverManager;
+    public GenerateUserIdManager generateUserIdManager;
     public EmailValidateManager emailValidateManager;
     public EmailValidateService emailValidateService;
 
@@ -103,6 +104,7 @@ public class ITest extends RealMongoForTests {
 
     public BusinessUserManager businessUserManager;
     public BusinessUserService businessUserService;
+    public GenerateUserIdService generateUserIdService;
 
     @Mock public JavaMailSenderImpl mailSender;
     @Mock public FreeMarkerConfigurationFactoryBean freemarkerConfiguration;
@@ -111,7 +113,6 @@ public class ITest extends RealMongoForTests {
     @Mock public Template template;
     @Mock public JmsTemplate jmsTemplate;
     @Mock public MileageService mileageService;
-    @Mock public GenerateUserIdService generateUserIdService;
 
     @Before
     public void setup() throws IOException {
@@ -132,6 +133,8 @@ public class ITest extends RealMongoForTests {
         userProfileManager = new UserProfileManagerImpl(getMongoTemplate());
         userPreferenceManager = new UserPreferenceManagerImpl(getMongoTemplate());
         forgotRecoverManager = new ForgotRecoverManagerImpl(getMongoTemplate());
+        generateUserIdManager = new GenerateUserIdManagerImpl(getMongoTemplate());
+        generateUserIdService = new GenerateUserIdService(10, generateUserIdManager, userAccountManager);
         emailValidateManager = new EmailValidateManagerImpl(getMongoTemplate());
         emailValidateService = new EmailValidateService(emailValidateManager);
         registrationService = new RegistrationService(
