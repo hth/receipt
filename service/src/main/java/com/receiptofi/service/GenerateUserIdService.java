@@ -37,7 +37,7 @@ public class GenerateUserIdService {
              * This limit is based on number of signup between server restarts.
              * In future this number would have to be adjusted.
              */
-            @Value ("${limit:336}")
+            @Value ("${limit:500}")
             int limit,
 
             GenerateUserIdManager generateUserIdManager,
