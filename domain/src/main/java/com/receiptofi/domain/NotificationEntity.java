@@ -38,20 +38,28 @@ public class NotificationEntity extends BaseEntity {
     @Field ("RID")
     private String receiptUserId;
 
-    /** Various kinds of notifications. */
+    /**
+     * Various kinds of notifications.
+     * Mark the notification Simple Notify, Push Notify, Ignore Notifying.
+     */
     @NotNull
     @Field ("NM")
     private NotificationMarkerEnum notificationMarkerEnum;
 
+    /**
+     * Set the type of notification for Push Notification, Document.
+     */
     @NotNull
     @Field ("NNE")
     private NotificationTypeEnum notificationType;
 
-    //TODO remove default values after 90 days 06/06/2016
-    /** Grouped to match similar messages with respective icons. */
+    /**
+     * Grouped to match similar messages with respective icons.
+     * Could be ground in Social, File, Receipt, Normal Message.
+     */
     @NotNull
     @Field ("NG")
-    private NotificationGroupEnum notificationGroup = NotificationGroupEnum.N;
+    private NotificationGroupEnum notificationGroup;
 
     /**
      * Could be a receipt id or Document id or empty when its just an invite.
