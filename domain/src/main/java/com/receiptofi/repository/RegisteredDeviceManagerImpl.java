@@ -134,4 +134,13 @@ public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
                 RegisteredDeviceEntity.class,
                 TABLE);
     }
+
+    @Override
+    public void resetCountOnInactiveDevice(String rid, String token) {
+        mongoTemplate.updateMulti(
+                query(where("RID").is(rid).and("TK").is(token)),
+                new Update().set("CN", 0),
+                RegisteredDeviceEntity.class,
+                TABLE);
+    }
 }

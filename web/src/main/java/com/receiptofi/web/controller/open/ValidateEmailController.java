@@ -75,8 +75,12 @@ public class ValidateEmailController {
     ) throws IOException {
         EmailValidateEntity emailValidate = emailValidateService.findByAuthenticationKey(key.getText());
         if (null == emailValidate) {
-            LOG.info("authentication failed for invalid auth={}", key);
+            LOG.info("authentication failed for deleted/invalid auth={}", key);
             httpServletResponse.sendError(HttpServletResponse.SC_NOT_FOUND);
+            return null;
+        } else if(!emailValidate.isActive()) {
+            LOG.info("authentication previously validated for auth={}", key);
+            httpServletResponse.sendError(HttpServletResponse.SC_GONE);
             return null;
         } else {
             UserAccountEntity userAccount = accountService.findByReceiptUserId(emailValidate.getReceiptUserId());

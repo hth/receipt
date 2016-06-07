@@ -68,4 +68,12 @@ public interface RegisteredDeviceManager extends RepositoryManager<RegisteredDev
      * @param token
      */
     void increaseCountOnInactiveDevice(String rid, String token);
+
+    /**
+     * When there is a success in sending notification. Reset the count.
+     *
+     * @param rid
+     * @param token
+     */
+    void resetCountOnInactiveDevice(String rid, String token);
 }
