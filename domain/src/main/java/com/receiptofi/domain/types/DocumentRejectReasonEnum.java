@@ -10,7 +10,8 @@ public enum DocumentRejectReasonEnum {
     E("E", "Not English", "is not in English."),
     G("G", "Good Document", "is not Rejected."),
     M("M", "Missing required data", "is missing required data like business name, address, details of receipts."),
-    V("V", "Not valid", "is not a valid receipt.");
+    V("V", "Not valid", "is not a valid receipt."),
+    T("T", "Multiple receipts and totals", "contains multiple receipts in image.");
 
     private final String name;
     private final String description;
