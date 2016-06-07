@@ -590,17 +590,18 @@ public class DocumentUpdateService {
         return processedByUser;
     }
 
-    public String getNotificationMessageForReceiptReject(DBObject dbObject, DocumentRejectReasonEnum documentRejectReason) {
+    private String getNotificationMessageForReceiptReject(DBObject dbObject, DocumentRejectReasonEnum documentRejectReason) {
         return getNotificationMessageForReceiptReject(dbObject.get("ORIGINAL_FILENAME").toString(), documentRejectReason);
     }
 
-    public String getNotificationMessageForReceiptReject(String originalFilename, DocumentRejectReasonEnum documentRejectReason) {
+    private String getNotificationMessageForReceiptReject(String originalFilename, DocumentRejectReasonEnum documentRejectReason) {
         switch (documentRejectReason) {
             case C:
             case D:
             case E:
             case M:
             case V:
+            case T:
                 return "Document '" + originalFilename + "' " + documentRejectReason.getInSentence();
             default:
                 LOG.error("Document Reject Reason is not defined");

@@ -611,7 +611,7 @@ public class AccountService {
 
     private void addWelcomeNotification(UserAccountEntity userAccount) {
         notificationService.addNotification(
-                "Welcome " + userAccount.getName() + ". Next step, take a picture of the receipt from app to process it.",
+                "Welcome " + userAccount.getName() + ". Next step, take a picture of your receipt from app to process it.",
                 NotificationTypeEnum.PUSH_NOTIFICATION,
                 NotificationGroupEnum.N,
                 userAccount.getReceiptUserId());
