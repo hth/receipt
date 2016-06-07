@@ -105,7 +105,7 @@ public class ReceiptServiceITest extends ITest {
         assertEquals("Notification Type", NotificationTypeEnum.PUSH_NOTIFICATION, notification.getNotificationType());
         assertEquals("Notification Group", NotificationGroupEnum.N, notification.getNotificationGroup());
         assertEquals("Notification Text",
-                "Welcome First Name. Next step, take a picture of the receipt from app to process it.",
+                "Welcome First Name. Next step, take a picture of your receipt from app to process it.",
                 notification.getMessage());
     }
 
@@ -138,7 +138,7 @@ public class ReceiptServiceITest extends ITest {
         List<NotificationEntity> notifications = notificationService.getAllNotifications(userAccount.getReceiptUserId());
         assertEquals("Number of notification", 1, notifications.size());
         assertEquals("First notification",
-                "Welcome second@receiptofi.com. Next step, take a picture of the receipt from app to process it.",
+                "Welcome second@receiptofi.com. Next step, take a picture of your receipt from app to process it.",
                 notifications.get(0).getMessage());
 
         /** Split receipt with fid. */
@@ -213,7 +213,7 @@ public class ReceiptServiceITest extends ITest {
         List<NotificationEntity> notifications = notificationService.getAllNotifications(userAccount.getReceiptUserId());
         assertEquals("Number of notification", 1, notifications.size());
         assertEquals("First notification",
-                "Welcome third@receiptofi.com. Next step, take a picture of the receipt from app to process it.",
+                "Welcome third@receiptofi.com. Next step, take a picture of your receipt from app to process it.",
                 notifications.get(0).getMessage());
 
         /** Split receipt with fid. */
@@ -288,7 +288,7 @@ public class ReceiptServiceITest extends ITest {
         List<NotificationEntity> notifications = notificationService.getAllNotifications(userAccount.getReceiptUserId());
         assertEquals("Number of notification", 1, notifications.size());
         assertEquals("First notification",
-                "Welcome fourth@receiptofi.com. Next step, take a picture of the receipt from app to process it.",
+                "Welcome fourth@receiptofi.com. Next step, take a picture of your receipt from app to process it.",
                 notifications.get(0).getMessage());
 
         /** Split receipt with fid. */
