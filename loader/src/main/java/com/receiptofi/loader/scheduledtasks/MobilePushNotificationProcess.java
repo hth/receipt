@@ -36,6 +36,7 @@ public class MobilePushNotificationProcess {
 
     private String notifyUserSwitch;
     private int documentLastUpdated;
+    private int notificationRetryCount;
     private MobilePushNotificationService mobilePushNotificationService;
     private DocumentService documentService;
     private AccountService accountService;
@@ -47,8 +48,12 @@ public class MobilePushNotificationProcess {
             @Value ("${MobilePushNotificationProcess.notifyUserSwitch}")
             String notifyUserSwitch,
 
+            /** How many minutes ago. */
             @Value ("${MobilePushNotificationProcess.how.long.ago.document.updated}")
             int documentLastUpdated,
+
+            @Value ("${MobilePushNotificationProcess.notification_retry_count:5}")
+            int notificationRetryCount,
 
             MobilePushNotificationService mobilePushNotificationService,
             DocumentService documentService,
@@ -59,6 +64,7 @@ public class MobilePushNotificationProcess {
     ) {
         this.notifyUserSwitch = notifyUserSwitch;
         this.documentLastUpdated = documentLastUpdated;
+        this.notificationRetryCount = notificationRetryCount;
         this.mobilePushNotificationService = mobilePushNotificationService;
         this.documentService = documentService;
         this.accountService = accountService;
@@ -176,7 +182,7 @@ public class MobilePushNotificationProcess {
             return;
         }
 
-        List<NotificationEntity> notifications = notificationManager.getAllPushNotifications();
+        List<NotificationEntity> notifications = notificationManager.getAllPushNotifications(notificationRetryCount);
         if (notifications.isEmpty()) {
             /** No notification to be sent. */
             return;

@@ -57,7 +57,7 @@ public class AccountServiceITest extends ITest {
                 userProfileManager,
                 userPreferenceManager,
                 forgotRecoverManager,
-                generateUserIdService,
+                generateUserIdManager,
                 emailValidateService,
                 registrationService,
                 expensesService,

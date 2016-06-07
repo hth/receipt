@@ -60,4 +60,12 @@ public interface RegisteredDeviceManager extends RepositoryManager<RegisteredDev
      * @param token
      */
     void deleteHard(String rid, String token);
+
+    /**
+     * Increase number of times Apple APNS reported device token as inactive.
+     *
+     * @param rid
+     * @param token
+     */
+    void increaseCountOnInactiveDevice(String rid, String token);
 }

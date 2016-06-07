@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
 import java.util.Date;
@@ -121,6 +122,15 @@ public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
     public void deleteHard(String rid, String token) {
         mongoTemplate.remove(
                 query(where("RID").is(rid).and("TK").is(token)),
+                RegisteredDeviceEntity.class,
+                TABLE);
+    }
+
+    @Override
+    public void increaseCountOnInactiveDevice(String rid, String token) {
+        mongoTemplate.updateMulti(
+                query(where("RID").is(rid).and("TK").is(token)),
+                new Update().inc("CN", 1),
                 RegisteredDeviceEntity.class,
                 TABLE);
     }
