@@ -56,8 +56,11 @@ public class EmailValidateManagerImpl implements EmailValidateManager {
 
     @Override
     public EmailValidateEntity findByAuthenticationKey(String auth) {
-        Query query = query(where("AUTH").is(auth)).addCriteria(isActive()).addCriteria(isNotDeleted());
-        return mongoTemplate.findOne(query, EmailValidateEntity.class, TABLE);
+        return mongoTemplate.findOne(
+                query(where("AUTH").is(auth)).addCriteria(isNotDeleted()),
+                EmailValidateEntity.class,
+                TABLE
+        );
     }
 
     @Override

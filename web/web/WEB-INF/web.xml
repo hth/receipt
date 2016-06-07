@@ -177,6 +177,11 @@
     </error-page>
 
     <error-page>
+        <error-code>410</error-code>
+        <location>/410.html</location>
+    </error-page>
+
+    <error-page>
         <error-code>414</error-code>
         <location>/414.html</location>
     </error-page>
