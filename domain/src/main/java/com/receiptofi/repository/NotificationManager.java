@@ -34,7 +34,8 @@ public interface NotificationManager extends RepositoryManager<NotificationEntit
     /**
      * Gets all the Notification that are marked as push notification.
      *
+     * @param notificationRetryCount beyond this number ignore the notification to be pushed.
      * @return
      */
-    List<NotificationEntity> getAllPushNotifications();
+    List<NotificationEntity> getAllPushNotifications(int notificationRetryCount);
 }

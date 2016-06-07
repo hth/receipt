@@ -49,9 +49,6 @@ public class NotificationManagerImpl implements NotificationManager {
             Document.class,
             "collection");
 
-    @Value ("${MobilePushNotificationProcess.notification_retry_count:5}")
-    int notificationRetryCount;
-
     private MongoTemplate mongoTemplate;
 
     @Autowired
@@ -125,7 +122,7 @@ public class NotificationManagerImpl implements NotificationManager {
     }
 
     @Override
-    public List<NotificationEntity> getAllPushNotifications() {
+    public List<NotificationEntity> getAllPushNotifications(int notificationRetryCount) {
         return mongoTemplate.find(
                 query(where("NM").is(NotificationMarkerEnum.P)
                         .orOperator(
