@@ -212,6 +212,12 @@ public class MobilePushNotificationService {
                                 registeredDevice.getToken());
                     }
                 }
+
+                if (inactiveDevices.isEmpty() && registeredDevice.getCount() > 0) {
+                    registeredDeviceManager.resetCountOnInactiveDevice(
+                            rid,
+                            registeredDevice.getToken());
+                }
             } catch (RuntimeException e) {
                 LOG.error("Failed sending Apple Notification {} {} {} reason={}", rid, registeredDevice.getDeviceId(), message, e.getMessage(), e);
             }
