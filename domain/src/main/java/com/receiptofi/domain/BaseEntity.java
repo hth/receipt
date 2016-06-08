@@ -136,6 +136,11 @@ public abstract class BaseEntity implements Serializable {
         return created;
     }
 
+    /**
+     * Can be switched to use new ObjectId(id).getDate(); to get the create date from ObjectId.
+     *
+     * @param created
+     */
     @Deprecated
     public void setCreated(Date created) {
         this.created = created;
