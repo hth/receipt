@@ -26,7 +26,8 @@ import javax.validation.constraints.NotNull;
 @Document (collection = "NOTIFICATION")
 /** Updated index. */
 @CompoundIndexes (value = {
-        @CompoundIndex (name = "notification_idx", def = "{'C': -1, 'RID': 1}", background = true)
+        @CompoundIndex (name = "notification_idx", def = "{'C': -1, 'RID': 1}", background = true),
+        @CompoundIndex (name = "notification_rid_idx", def = "{'RID': 1}", background = true)
 })
 public class NotificationEntity extends BaseEntity {
 
@@ -66,6 +67,9 @@ public class NotificationEntity extends BaseEntity {
      */
     @Field ("REF")
     private String referenceId;
+
+    @Field ("MR")
+    private boolean markedRead;
 
     @NotNull
     @Field ("CN")
@@ -140,6 +144,14 @@ public class NotificationEntity extends BaseEntity {
 
     public void setReferenceId(String referenceId) {
         this.referenceId = referenceId;
+    }
+
+    public boolean isMarkedRead() {
+        return markedRead;
+    }
+
+    public void setMarkedRead(boolean markedRead) {
+        this.markedRead = markedRead;
     }
 
     public int getCount() {

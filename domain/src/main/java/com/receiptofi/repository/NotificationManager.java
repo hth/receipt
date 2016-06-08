@@ -1,6 +1,7 @@
 package com.receiptofi.repository;
 
 import com.receiptofi.domain.NotificationEntity;
+import com.receiptofi.domain.annotation.Mobile;
 
 import java.util.Date;
 import java.util.List;
@@ -11,6 +12,7 @@ import java.util.List;
  * Time: 1:38 PM
  */
 public interface NotificationManager extends RepositoryManager<NotificationEntity> {
+    @Mobile
     List<NotificationEntity> getNotifications(String rid, int start, int limit);
 
     long notificationCount(String rid);
@@ -38,4 +40,12 @@ public interface NotificationManager extends RepositoryManager<NotificationEntit
      * @return
      */
     List<NotificationEntity> getAllPushNotifications(int notificationRetryCount);
+
+    /**
+     * Mark all the notification id as read.
+     *
+     * @param notificationIds
+     */
+    @Mobile
+    void markNotificationRead(List<String> notificationIds, String rid);
 }

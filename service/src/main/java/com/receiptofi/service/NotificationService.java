@@ -82,7 +82,7 @@ public class NotificationService {
      * Show notification to the user.
      *
      * @param message
-     * @param notificationType either MESSAGE or PUSH_NOTIFICATION
+     * @param notificationType  either MESSAGE or PUSH_NOTIFICATION
      * @param notificationGroup to group notification in types for picking right icons
      * @param rid
      */

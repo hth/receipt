@@ -56,6 +56,9 @@ public class JsonNotification {
     @JsonProperty ("ri")
     private String referenceId;
 
+    @JsonProperty("mr")
+    private boolean markedRead;
+
     @JsonProperty ("c")
     private String created;
 
@@ -72,6 +75,7 @@ public class JsonNotification {
         this.notificationType = notification.getNotificationType().getName();
         this.notificationGroup = notification.getNotificationGroup().getName();
         this.referenceId = notification.getReferenceId() == null ? "" : notification.getReferenceId();
+        this.markedRead = notification.isMarkedRead();
         this.created = DateFormatUtils.format(notification.getCreated(), JsonReceipt.ISO8601_FMT, TimeZone.getTimeZone("UTC"));
         this.updated = DateFormatUtils.format(notification.getUpdated(), JsonReceipt.ISO8601_FMT, TimeZone.getTimeZone("UTC"));
         this.active = notification.isActive();

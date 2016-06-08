@@ -140,4 +140,14 @@ public class NotificationManagerImpl implements NotificationManager {
                 ).with(new Sort(Sort.Direction.DESC, "C")),
                 NotificationEntity.class);
     }
+
+    @Override
+    public void markNotificationRead(List<String> notificationIds, String rid) {
+        mongoTemplate.updateMulti(
+                query(where("RID").is(rid).and("id").in(notificationIds)),
+                update("MR", true).set("U", new Date()),
+                NotificationEntity.class,
+                TABLE
+        );
+    }
 }
