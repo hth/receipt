@@ -130,7 +130,7 @@ public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
     public void increaseCountOnInactiveDevice(String rid, String token) {
         mongoTemplate.updateMulti(
                 query(where("RID").is(rid).and("TK").is(token)),
-                new Update().inc("CN", 1),
+                update("U", new Date()).inc("CN", 1),
                 RegisteredDeviceEntity.class,
                 TABLE);
     }
@@ -139,7 +139,7 @@ public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
     public void resetCountOnInactiveDevice(String rid, String token) {
         mongoTemplate.updateMulti(
                 query(where("RID").is(rid).and("TK").is(token)),
-                new Update().set("CN", 0),
+                update("CN", 0).set("U", new Date()),
                 RegisteredDeviceEntity.class,
                 TABLE);
     }

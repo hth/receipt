@@ -8,6 +8,8 @@ import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
 import static org.springframework.data.mongodb.core.query.Update.update;
 
+import com.mongodb.WriteResult;
+
 import com.receiptofi.domain.BaseEntity;
 import com.receiptofi.domain.NotificationEntity;
 import com.receiptofi.domain.types.NotificationMarkerEnum;
@@ -20,7 +22,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -139,5 +140,21 @@ public class NotificationManagerImpl implements NotificationManager {
                         )
                 ).with(new Sort(Sort.Direction.DESC, "C")),
                 NotificationEntity.class);
+    }
+
+    @Override
+    public void markNotificationRead(List<String> notificationIds, String rid) {
+        WriteResult writeResult = mongoTemplate.updateMulti(
+                query(where("RID").is(rid)
+                        .orOperator(
+                            where("MR").exists(false),
+                            where("MR").is(false)
+                        ).and("id").in(notificationIds)),
+                update("MR", true).set("U", new Date()),
+                NotificationEntity.class,
+                TABLE
+        );
+
+        LOG.debug("Marked read notification actual={} expected={}", writeResult.getN(), notificationIds.size());
     }
 }
