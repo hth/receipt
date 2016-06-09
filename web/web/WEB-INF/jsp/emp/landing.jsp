@@ -2,252 +2,250 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <title><fmt:message key="receipt.admin.title"/></title>
+    <meta charset="UTF-8"/>
+    <meta name="description" content=""/>
+    <meta name="_csrf" content="${_csrf.token}"/>
+    <meta name="_csrf_header" content="${_csrf.headerName}"/>
+    <script>var ctx = "${pageContext.request.contextPath}"</script>
 
-    <link rel='stylesheet' type='text/css' href='${pageContext.request.contextPath}/static/external/css/jquery/jquery-ui-1.10.4.custom.min.css'>
-    <link rel='stylesheet' type='text/css' href='${pageContext.request.contextPath}/static/jquery/css/receipt.css'>
+    <title><fmt:message key="receipt.title"/></title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/style.css"/>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/stylelogin.css"/>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/style.admin.css"/>
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/static/external/js/jquery/jquery-ui-1.10.4.custom.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.3/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/static/external/js/noble-count/jquery.NobleCount.min.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/static/external/js/cute-time/jquery.cuteTime.min.js"></script>
-
-    <!-- For drop down menu -->
-    <script>
-        $(document).ready(function () {
-
-            $(".account").click(function () {
-                var X = $(this).attr('id');
-                if (X == 1) {
-                    $(".submenu").hide();
-                    $(this).attr('id', '0');
-                }
-                else {
-                    $(".submenu").show();
-                    $(this).attr('id', '1');
-                }
-
-            });
-
-            //Mouse click on sub menu
-            $(".submenu").mouseup(function () {
-                return false
-            });
-
-            //Mouse click on my account link
-            $(".account").mouseup(function () {
-                return false
-            });
-
-            //Document Click
-            $(document).mouseup(function () {
-                $(".submenu").hide();
-                $(".account").attr('id', '');
-            });
-        });
-
-        $(document).ready(function () {
-            $('.timestamp').cuteTime({ refresh: 10000 });
-        });
-    </script>
-
 </head>
 <body>
-<div class="wrapper">
-    <div class="divTable">
-        <div class="divRow">
-            <div class="divOfCell50" style="height: 46px">
-                <img src="${pageContext.request.contextPath}/favicon.ico" alt="Receiptofi logo" height="46px"/>
-            </div>
-            <div class="divOfCell75" style="height: 46px">
-                <h3><a href="${pageContext.request.contextPath}/access/landing.htm" style="color: #065c14">Home</a></h3>
-            </div>
-            <div class="divOfCell250">
-                <h3>
-                    <div class="dropdown" style="height: 17px">
-                        <div>
-                            <a class="account" style="color: #065c14">
-                                <sec:authentication property="principal.username" />
-                                <img src="${pageContext.request.contextPath}/static/images/gear.png" width="18px" height="15px" style="float: right;"/>
-                            </a>
-                        </div>
-                        <div class="submenu">
-                            <ul class="root">
-                                <li><a href="${pageContext.request.contextPath}/access/userprofilepreference/i.htm">Profile And Preferences</a></li>
-                                <li>
-                                    <a href="#">
-                                        <form action="${pageContext.request.contextPath}/access/signoff.htm" method="post">
-                                            <input type="submit" value="Log out" class="button"/>
-                                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                                        </form>
-                                    </a>
-                                </li>
-                                <li><a href="${pageContext.request.contextPath}/access/eval/feedback.htm">Send Feedback</a></li>
-                            </ul>
-                        </div>
-
+<div class="clear"></div>
+<spring:eval expression="pageContext.request.userPrincipal.principal.userLevel ge T(com.receiptofi.domain.types.UserLevelEnum).SUPERVISOR" var="hasAccess" />
+<div>
+    <div class="header_main">
+        <div class="header_wrappermain">
+            <div class="header_wrapper">
+                <div class="header_left_contentmain">
+                    <div id="logo">
+                        <h1><a href="/access/landing.htm"><img src="https://www.receiptofi.com/img/Receipt-26x26.png" style="margin: -3px 0;"/>Receiptofi</a></h1>
                     </div>
-                </h3>
+                </div>
+                <div class="header_right_login">
+                    <a class="top-account-bar-text" style="margin-top: -1px;" href="#">
+                        <form action="${pageContext.request.contextPath}/access/signoff.htm" method="post">
+                            <input type="submit" value="LOG OUT" class="logout_btn"/>
+                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                        </form>
+                    </a>
+                    <c:if test="${hasAccess}">
+                    <a class="top-account-bar-text" href="/emp/receiptQuality.htm">RECEIPT QUALITY</a>
+                    </c:if>
+                    <sec:authentication var="validated" property="principal.accountValidated"/>
+                    <c:choose>
+                        <c:when test="${!validated}">
+                            <a class="top-account-bar-text user-email" href="/access/userprofilepreference/i.htm">
+                                <sec:authentication property="principal.username" />
+                                <span class="notification-counter">1</span>
+                            </a>
+                        </c:when>
+                        <c:otherwise>
+                            <a class="top-account-bar-text user-email" href="#">
+                                <sec:authentication property="principal.username" />
+                            </a>
+                        </c:otherwise>
+                    </c:choose>
+                </div>
             </div>
         </div>
     </div>
+    <header>
+    </header>
+    <div class="main clearfix">
+        <div class="rightside-title rightside-title-less-margin">
+            <h1 class="rightside-title-text">
+                Pending Receipt(s)
+            </h1>
+        </div>
+        <div class="rightside-list-holder full-list-holder" style="overflow-y: hidden; height: auto; min-height: auto;">
+            <div class="down_form" style="width: 95%;">
+                <c:if test="${!empty pending}">
+                <table style="width: 600px" class="etable">
+                    <tbody>
+                    <tr>
+                        <th style="padding:5px;"></th>
+                        <th style="padding:5px;">User Type</th>
+                        <th style="padding:5px;">Created</th>
+                        <th style="padding:5px;">Pending Since</th>
+                        <th style="padding:5px;">Edit</th>
+                    </tr>
+                    </tbody>
+                    <c:forEach var="receipt" items="${pending}"  varStatus="status">
+                        <tr>
+                            <td style="padding:5px; text-align: right">${status.count}</td>
+                            <td style="padding:5px;">
+                                <spring:eval expression="receipt.level" />
+                            </td>
+                            <td style="padding:5px;">
+                                <fmt:formatDate value="${receipt.created}" type="both" dateStyle="long" timeStyle="long" />
+                            </td>
+                            <td style="padding:5px;">
+                                <span class="timestamp"><fmt:formatDate value="${receipt.created}" type="both"/></span>
+                            </td>
+                            <td style="padding:5px; text-align: right" title="${receipt.documentId}">
+                                <a href="${pageContext.request.contextPath}/emp/update/${receipt.documentId}.htm" target="_blank">
+                                    Open
+                                </a>
+                            </td>
+                        </tr>
+                    </c:forEach>
+                </table>
+                </c:if>
+            </div>
+        </div>
 
-    <p>&nbsp;</p>
+        <div class="rightside-title rightside-title-less-margin">
+            <h1 class="rightside-title-text">
+                Queued Receipt(s)
+            </h1>
+        </div>
+        <div class="rightside-list-holder full-list-holder" style="overflow-y: hidden; height: auto; min-height: auto;">
+            <div class="down_form" style="width: 95%;">
+                <c:if test="${!empty queue}">
+                <table style="width: 600px" class="etable">
+                    <tbody>
+                    <tr>
+                        <th style="padding:5px;"></th>
+                        <th style="padding:5px;">User Type</th>
+                        <th style="padding:5px;">Created</th>
+                        <th style="padding:5px;">Pending Since</th>
+                        <th style="padding:5px;">Edit</th>
+                    </tr>
+                    </tbody>
+                    <c:forEach var="receipt" items="${queue}" varStatus="status">
+                        <tr>
+                            <td style="padding:5px;">${status.count}</td>
+                            <td style="padding:5px;">
+                                <spring:eval expression="receipt.level" />
+                            </td>
+                            <td style="padding:5px;">
+                                <fmt:formatDate value="${receipt.created}" type="both" dateStyle="long" timeStyle="long" />
+                            </td>
+                            <td style="padding:5px;">
+                                <span class="timestamp"><fmt:formatDate value="${receipt.created}" type="both"/></span>
+                            </td>
+                            <td style="padding:5px; text-align: right" title="${receipt.documentId}">
+                                <a href="${pageContext.request.contextPath}/emp/update/${receipt.documentId}.htm">
+                                    Open
+                                </a>
+                            </td>
+                        </tr>
+                    </c:forEach>
+                </table>
+                </c:if>
+            </div>
+        </div>
 
-    <h2 class="demoHeaders">Pending Receipt(s)</h2>
-    <c:if test="${!empty pending}">
-        <table style="width: 500px" class="etable">
-            <tbody>
-            <tr>
-                <th style="padding:3px;"></th>
-                <th style="padding:3px;">User Type</th>
-                <th style="padding:3px;">Created</th>
-                <th style="padding:3px;">Pending Since</th>
-                <th style="padding:3px;">Edit</th>
-            </tr>
-            </tbody>
-            <c:forEach var="receipt" items="${pending}"  varStatus="status">
-                <tr>
-                    <td style="padding:3px; text-align: right">
-                        ${status.count}
-                    </td>
-                    <td style="padding:3px;">
-                        <spring:eval expression="receipt.level" />
-                    </td>
-                    <td style="padding:3px;">
-                        <fmt:formatDate value="${receipt.created}" type="both" dateStyle="long" timeStyle="long" />
-                    </td>
-                    <td style="padding:3px;">
-                        <span class="timestamp"><fmt:formatDate value="${receipt.created}" type="both"/></span>
-                    </td>
-                    <td style="padding:3px; text-align: right" title="${receipt.documentId}">
-                        <a href="${pageContext.request.contextPath}/emp/update/${receipt.documentId}.htm">
-                            Open
-                        </a>
-                    </td>
-                </tr>
-            </c:forEach>
-        </table>
-    </c:if>
+        <div class="rightside-title rightside-title-less-margin">
+            <h1 class="rightside-title-text">
+                Re-Check Pending Receipt(s)
+            </h1>
+        </div>
+        <div class="rightside-list-holder full-list-holder" style="overflow-y: hidden; height: auto; min-height: auto;">
+            <div class="down_form" style="width: 95%;">
+                <c:if test="${!empty recheckPending}">
+                <table style="width: 600px" class="etable">
+                    <tbody>
+                    <tr>
+                        <th style="padding:5px;"></th>
+                        <th style="padding:5px;">User Type</th>
+                        <th style="padding:5px;">Created</th>
+                        <th style="padding:5px;">Pending Since</th>
+                        <th style="padding:5px;">Edit</th>
+                    </tr>
+                    </tbody>
+                    <c:forEach var="receipt" items="${recheckPending}"  varStatus="status">
+                        <tr>
+                            <td style="padding:5px;">${status.count}</td>
+                            <td style="padding:5px;">
+                                <spring:eval expression="receipt.level" />
+                            </td>
+                            <td style="padding:5px;">
+                                <fmt:formatDate value="${receipt.created}" type="both" dateStyle="long" timeStyle="long" />
+                            </td>
+                            <td style="padding:5px;">
+                                <span class="timestamp"><fmt:formatDate value="${receipt.created}" type="both"/></span>
+                            </td>
+                            <td style="padding:5px; text-align: right" title="${receipt.documentId}">
+                                <a href="${pageContext.request.contextPath}/emp/recheck/${receipt.documentId}.htm">
+                                    Open
+                                </a>
+                            </td>
+                        </tr>
+                    </c:forEach>
+                </table>
+                </c:if>
+            </div>
+        </div>
 
-    <h2 class="demoHeaders">Queued Receipt(s)</h2>
-    <c:if test="${!empty queue}">
-        <table style="width: 500px" class="etable">
-            <tbody>
-            <tr>
-                <th style="padding:3px;"></th>
-                <th style="padding:3px;">User Type</th>
-                <th style="padding:3px;">Created</th>
-                <th style="padding:3px;">Pending Since</th>
-                <th style="padding:3px;">Edit</th>
-            </tr>
-            </tbody>
-            <c:forEach var="receipt" items="${queue}" varStatus="status">
-                <tr>
-                    <td style="padding:3px;">
-                        ${status.count}
-                    </td>
-                    <td style="padding:3px;">
-                        <spring:eval expression="receipt.level" />
-                    </td>
-                    <td style="padding:3px;">
-                        <fmt:formatDate value="${receipt.created}" type="both" dateStyle="long" timeStyle="long" />
-                    </td>
-                    <td style="padding:3px;">
-                        <span class="timestamp"><fmt:formatDate value="${receipt.created}" type="both"/></span>
-                    </td>
-                    <td style="padding:3px; text-align: right" title="${receipt.documentId}">
-                        <a href="${pageContext.request.contextPath}/emp/update/${receipt.documentId}.htm">
-                            Open
-                        </a>
-                    </td>
-                </tr>
-            </c:forEach>
-        </table>
-    </c:if>
+        <div class="rightside-title rightside-title-less-margin">
+            <h1 class="rightside-title-text">
+                Re-Check Receipt(s)
+            </h1>
+        </div>
+        <div class="rightside-list-holder full-list-holder" style="overflow-y: hidden; height: auto; min-height: auto;">
+            <div class="down_form" style="width: 95%;">
+                <c:if test="${!empty recheck}">
+                <table style="width: 600px" class="etable">
+                    <tbody>
+                    <tr>
+                        <th style="padding:5px;"></th>
+                        <th style="padding:5px;">User Type</th>
+                        <th style="padding:5px;">Created</th>
+                        <th style="padding:5px;">Pending Since</th>
+                        <th style="padding:5px;">Edit</th>
+                    </tr>
+                    </tbody>
+                    <c:forEach var="receipt" items="${recheck}"  varStatus="status">
+                        <tr>
+                            <td style="padding:5px;">${status.count}</td>
+                            <td style="padding:5px;">
+                                <spring:eval expression="receipt.level" />
+                            </td>
+                            <td style="padding:5px;">
+                                <fmt:formatDate value="${receipt.created}" type="both" dateStyle="long" timeStyle="long" />
+                            </td>
+                            <td style="padding:5px;">
+                                <span class="timestamp"><fmt:formatDate value="${receipt.created}" type="both"/></span>
+                            </td>
+                            <td style="padding:5px; text-align: right" title="${receipt.documentId}">
+                                <a href="${pageContext.request.contextPath}/emp/recheck/${receipt.documentId}.htm">
+                                    Open
+                                </a>
+                            </td>
+                        </tr>
+                    </c:forEach>
+                </table>
+                </c:if>
+            </div>
+        </div>
 
-    <h2 class="demoHeaders">Re-Check Pending Receipt(s)</h2>
-    <c:if test="${!empty recheckPending}">
-        <table style="width: 500px" class="etable">
-            <tbody>
-            <tr>
-                <th style="padding:3px;"></th>
-                <th style="padding:3px;">User Type</th>
-                <th style="padding:3px;">Created</th>
-                <th style="padding:3px;">Pending Since</th>
-                <th style="padding:3px;">Edit</th>
-            </tr>
-            </tbody>
-            <c:forEach var="receipt" items="${recheckPending}"  varStatus="status">
-                <tr>
-                    <td style="padding:3px;">
-                        ${status.count}
-                    </td>
-                    <td style="padding:3px;">
-                        <spring:eval expression="receipt.level" />
-                    </td>
-                    <td style="padding:3px;">
-                        <fmt:formatDate value="${receipt.created}" type="both" dateStyle="long" timeStyle="long" />
-                    </td>
-                    <td style="padding:3px;">
-                        <span class="timestamp"><fmt:formatDate value="${receipt.created}" type="both"/></span>
-                    </td>
-                    <td style="padding:3px; text-align: right" title="${receipt.documentId}">
-                        <a href="${pageContext.request.contextPath}/emp/recheck/${receipt.documentId}.htm">
-                            Open
-                        </a>
-                    </td>
-                </tr>
-            </c:forEach>
-        </table>
-    </c:if>
+        <div class="footer-tooth clearfix">
+            <div class="footer-tooth-middle"></div>
+            <div class="footer-tooth-right"></div>
+        </div>
+    </div>
 
-    <h2 class="demoHeaders">Re-Check Receipt(s)</h2>
-    <c:if test="${!empty recheck}">
-        <table style="width: 500px" class="etable">
-            <tbody>
-            <tr>
-                <th style="padding:3px;"></th>
-                <th style="padding:3px;">User Type</th>
-                <th style="padding:3px;">Created</th>
-                <th style="padding:3px;">Pending Since</th>
-                <th style="padding:3px;">Edit</th>
-            </tr>
-            </tbody>
-            <c:forEach var="receipt" items="${recheck}"  varStatus="status">
-                <tr>
-                    <td style="padding:3px;">
-                        ${status.count}
-                    </td>
-                    <td style="padding:3px;">
-                        <spring:eval expression="receipt.level" />
-                    </td>
-                    <td style="padding:3px;">
-                        <fmt:formatDate value="${receipt.created}" type="both" dateStyle="long" timeStyle="long" />
-                    </td>
-                    <td style="padding:3px;">
-                        <span class="timestamp"><fmt:formatDate value="${receipt.created}" type="both"/></span>
-                    </td>
-                    <td style="padding:3px; text-align: right" title="${receipt.documentId}">
-                        <a href="${pageContext.request.contextPath}/emp/recheck/${receipt.documentId}.htm">
-                            Open
-                        </a>
-                    </td>
-                </tr>
-            </c:forEach>
-        </table>
-    </c:if>
+    <div class="detail-view-container">
 
-    <p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p>
+    </div>
 </div>
-
-<div class="footer">
-    <p>
-        <a href="${pageContext.request.contextPath}/aboutus.html">About Us</a> -
-        <a href="${pageContext.request.contextPath}/tos.html">Terms of Service</a>
-    </p>
-    <p>&#169; 2016 Receiptofi Inc. All Rights Reserved. (<fmt:message key="build.version" />)</p>
+<div class="big_footer">
+    <div class="mfooter_up">
+    </div>
+    <div class="mfooter_down">
+        <p class="footer_copy">&#169; 2016 RECEIPTOFI, INC. ALL RIGHTS RESERVED.
+    </div>
 </div>
-
+<script type="text/javascript" src="${pageContext.request.contextPath}/static/js/mainpop.js"></script>
 </body>
 </html>
