@@ -3,14 +3,11 @@ package com.receiptofi.web.controller.business;
 import com.receiptofi.domain.BizNameEntity;
 import com.receiptofi.domain.BizStoreEntity;
 import com.receiptofi.domain.BusinessUserEntity;
-import com.receiptofi.domain.analytic.BizUserCountEntity;
-import com.receiptofi.domain.analytic.ExpensePerUserPerBizEntity;
+import com.receiptofi.domain.analytic.BizDimensionEntity;
 import com.receiptofi.domain.site.ReceiptUser;
 import com.receiptofi.service.BizService;
 import com.receiptofi.service.BusinessUserService;
-import com.receiptofi.service.analytic.BizUserCountService;
-import com.receiptofi.service.analytic.ExpensePerUserPerBizService;
-import com.receiptofi.service.analytic.StoreCountPerBizService;
+import com.receiptofi.service.analytic.BizDimensionService;
 import com.receiptofi.utils.Maths;
 import com.receiptofi.web.form.business.BusinessLandingForm;
 
@@ -48,29 +45,23 @@ public class BusinessLandingController {
     private String nextPage;
     private String businessRegistrationFlow;
     private BusinessUserService businessUserService;
-    private BizUserCountService bizUserCountService;
-    private ExpensePerUserPerBizService expensePerUserPerBizService;
-    private StoreCountPerBizService storeCountPerBizService;
+    private BizDimensionService bizDimensionService;
     private BizService bizService;
 
     @Autowired
     public BusinessLandingController(
             @Value ("${nextPage:/business/landing}")
-            String nextPage,
+                    String nextPage,
 
             @Value ("${businessRegistrationFlow:redirect:/business/registration.htm}")
-            String businessRegistrationFlow,
+                    String businessRegistrationFlow,
 
             BusinessUserService businessUserService,
-            BizUserCountService bizUserCountService,
-            ExpensePerUserPerBizService expensePerUserPerBizService,
-            StoreCountPerBizService storeCountPerBizService, BizService bizService) {
+            BizDimensionService bizDimensionService, BizService bizService) {
         this.nextPage = nextPage;
         this.businessRegistrationFlow = businessRegistrationFlow;
         this.businessUserService = businessUserService;
-        this.bizUserCountService = bizUserCountService;
-        this.expensePerUserPerBizService = expensePerUserPerBizService;
-        this.storeCountPerBizService = storeCountPerBizService;
+        this.bizDimensionService = bizDimensionService;
         this.bizService = bizService;
     }
 
@@ -114,16 +105,12 @@ public class BusinessLandingController {
         String bizNameId = bizName.getId();
         LOG.info("Loading dashboard for bizName={} bizId={}", bizName.getBusinessName(), bizName.getId());
 
-        BizUserCountEntity bizUserCount = bizUserCountService.findBy(bizNameId);
-        businessLandingForm.setBizName(bizUserCount.getBizName());
-        businessLandingForm.setCustomerCount(bizUserCount.getUserCount());
-
-        ExpensePerUserPerBizEntity expenses = expensePerUserPerBizService.getTotalCustomerPurchases(bizNameId);
-        if (null != expenses) {
-            businessLandingForm.setTotalCustomerPurchases(Maths.adjustScale(expenses.getBizTotal()));
-        }
-
-        businessLandingForm.setStoreCount(storeCountPerBizService.getNumberOfStoresForBiz(bizNameId));
+        BizDimensionEntity bizDimension = bizDimensionService.findBy(bizNameId);
+        businessLandingForm.setBizName(bizDimension.getBizName())
+                .setCustomerCount(bizDimension.getUserCount())
+                .setStoreCount(bizDimension.getStoreCount())
+                .setTotalCustomerPurchases(Maths.adjustScale(bizDimension.getBizTotal()))
+                .setVisitCount(bizDimension.getVisitCount());
 
         List<BizStoreEntity> bizStores = bizService.getAllBizStores(bizNameId);
         businessLandingForm.setActualStoreCount(bizStores.size());

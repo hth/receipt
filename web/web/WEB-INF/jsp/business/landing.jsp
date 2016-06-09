@@ -78,6 +78,7 @@
                     <br/>
                     Store count: <c:out value="${businessLandingForm.storeCount}" />
                     Actual store count: <c:out value="${businessLandingForm.actualStoreCount}" />
+                    Visit count: <c:out value="${businessLandingForm.visitCount}" />
                 </div>
             </div>
         </sec:authorize>

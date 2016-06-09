@@ -16,47 +16,62 @@ public class BusinessLandingForm {
 
     private String bizName;
     private long customerCount;
-    private BigDecimal totalCustomerPurchases;
     private long storeCount;
+    private BigDecimal totalCustomerPurchases;
+    private long visitCount;
     private long actualStoreCount;
 
     public String getBizName() {
         return bizName;
     }
 
-    public void setBizName(String bizName) {
+    public BusinessLandingForm setBizName(String bizName) {
         this.bizName = bizName;
+        return this;
     }
 
     public long getCustomerCount() {
         return customerCount;
     }
 
-    public void setCustomerCount(long customerCount) {
+    public BusinessLandingForm setCustomerCount(long customerCount) {
         this.customerCount = customerCount;
-    }
-
-    public BigDecimal getTotalCustomerPurchases() {
-        return totalCustomerPurchases;
-    }
-
-    public void setTotalCustomerPurchases(BigDecimal totalCustomerPurchases) {
-        this.totalCustomerPurchases = totalCustomerPurchases;
+        return this;
     }
 
     public long getStoreCount() {
         return storeCount;
     }
 
-    public void setStoreCount(long storeCount) {
+    public BusinessLandingForm setStoreCount(long storeCount) {
         this.storeCount = storeCount;
+        return this;
+    }
+
+    public BigDecimal getTotalCustomerPurchases() {
+        return totalCustomerPurchases;
+    }
+
+    public BusinessLandingForm setTotalCustomerPurchases(BigDecimal totalCustomerPurchases) {
+        this.totalCustomerPurchases = totalCustomerPurchases;
+        return this;
+    }
+
+    public long getVisitCount() {
+        return visitCount;
+    }
+
+    public BusinessLandingForm setVisitCount(long visitCount) {
+        this.visitCount = visitCount;
+        return this;
     }
 
     public long getActualStoreCount() {
         return actualStoreCount;
     }
 
-    public void setActualStoreCount(long actualStoreCount) {
+    public BusinessLandingForm setActualStoreCount(long actualStoreCount) {
         this.actualStoreCount = actualStoreCount;
+        return this;
     }
 }
