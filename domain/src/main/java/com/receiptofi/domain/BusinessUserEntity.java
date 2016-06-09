@@ -43,9 +43,12 @@ public class BusinessUserEntity extends BaseEntity {
     private BizNameEntity bizName;
 
     @SuppressWarnings("unused")
-    private BusinessUserEntity() {}
+    private BusinessUserEntity() {
+        super();
+    }
 
     private BusinessUserEntity(String receiptUserId) {
+        super();
         this.receiptUserId = receiptUserId;
 
         /** When creating this record we are defaulting to Incomplete status. */
