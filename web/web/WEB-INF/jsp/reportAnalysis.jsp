@@ -16,7 +16,7 @@
     <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.min.js"></script>
     <script src="${pageContext.request.contextPath}/static/external/js/cute-time/jquery.cuteTime.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/highcharts/4.1.7/highcharts.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highcharts/4.2.5/highcharts.js"></script>
 
     <script src="${pageContext.request.contextPath}/static/js/classie.js"></script>
 </head>
@@ -153,7 +153,7 @@
                         </c:when>
                         <c:otherwise>
                             <a href="${pageContext.request.contextPath}/access/receipt/${receipt.id}.htm"
-                                    class="rightside-li-middle-text">
+                                    class="rightside-li-middle-text" target="_blank">
                                 <c:choose>
                                     <c:when test="${receipt.name.length() gt 34}">
                                         <spring:eval expression="receipt.name.substring(0, 34)"/>...

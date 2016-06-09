@@ -92,7 +92,7 @@
                                 <span class="timestamp"><fmt:formatDate value="${receipt.created}" type="both"/></span>
                             </td>
                             <td style="padding:5px; text-align: right" title="${receipt.documentId}">
-                                <a href="${pageContext.request.contextPath}/emp/update/${receipt.documentId}.htm">
+                                <a href="${pageContext.request.contextPath}/emp/update/${receipt.documentId}.htm" target="_blank">
                                     Open
                                 </a>
                             </td>
