@@ -156,7 +156,7 @@ public class BusinessRegistrationFlowActions {
         userProfile.setPhone(br.getPhone());
         userProfilePreferenceService.updateProfile(userProfile);
 
-        if (!userProfile.getFirstName().equals(br.getFirstName()) || !userProfile.getLastName().equals(br.getLastName())) {
+        if (!userProfile.getFirstName().equals(br.getFirstName()) && !userProfile.getLastName().equals(br.getLastName())) {
             accountService.updateName(br.getFirstName(), br.getLastName(), br.getRid());
         }
     }
