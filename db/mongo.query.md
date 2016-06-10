@@ -1,3 +1,23 @@
+## For renaming fields
+
+    db.events.update({}, {$rename: {'lat': 'coords.lat', 'lon': 'coords.lon'}}, false, true)
+
+## For updating the document structure
+
+    db.events.find().snapshot().forEach(
+      function (e) {
+        // update document, using its own properties
+        e.coords = { lat: e.lat, lon: e.lon };
+    
+        // remove old properties
+        delete e.lat;
+        delete e.lon;
+    
+        // save the updated document
+        db.events.save(e);
+      }
+    )
+
 ## Find User with Biz Name
 
     db.getCollection('RECEIPT').find(  
