@@ -16,10 +16,14 @@ import com.receiptofi.service.FetcherService;
 import com.receiptofi.service.UserProfilePreferenceService;
 import com.receiptofi.utils.CommonUtil;
 
+import org.apache.commons.lang3.StringUtils;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.binding.message.MessageBuilder;
+import org.springframework.binding.message.MessageContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
@@ -40,6 +44,7 @@ public class BusinessRegistrationFlowActions {
     private BizService bizService;
     private ExternalService externalService;
 
+    @SuppressWarnings("all")
     @Autowired
     public BusinessRegistrationFlowActions(
             FetcherService fetcherService,
@@ -186,5 +191,117 @@ public class BusinessRegistrationFlowActions {
             businessRegistration.setBusinessCountryShortName(decodedAddress.getCountryShortName());
         }
         businessRegistration.setBusinessPhone(CommonUtil.phoneCleanup(businessRegistration.getBusinessPhone()));
+    }
+
+    /**
+     * Validate business user profile.
+     *
+     * @param businessRegistration
+     * @param messageContext
+     * @return
+     */
+    @SuppressWarnings ("unused")
+    public String validateUserProfileDetails(BusinessRegistration businessRegistration, MessageContext messageContext) {
+        LOG.info("Validate business user rid={}", businessRegistration.getRid());
+        String status = "success";
+
+        if (StringUtils.isBlank(businessRegistration.getFirstName())) {
+            messageContext.addMessage(
+                    new MessageBuilder()
+                            .error()
+                            .source("firstName")
+                            .defaultText("First name cannot be empty")
+                            .build());
+            status = "failure";
+        }
+
+        if (StringUtils.isBlank(businessRegistration.getLastName())) {
+            messageContext.addMessage(
+                    new MessageBuilder()
+                            .error()
+                            .source("lastName")
+                            .defaultText("Last name cannot be empty")
+                            .build());
+            status = "failure";
+        }
+
+        if (StringUtils.isBlank(businessRegistration.getAddress())) {
+            messageContext.addMessage(
+                    new MessageBuilder()
+                            .error()
+                            .source("address")
+                            .defaultText("Your Address cannot be Empty")
+                            .build());
+            status = "failure";
+        }
+
+        if (StringUtils.isBlank(businessRegistration.getPhone())) {
+            messageContext.addMessage(
+                    new MessageBuilder()
+                            .error()
+                            .source("phone")
+                            .defaultText("Your Phone cannot be Empty")
+                            .build());
+            status = "failure";
+        }
+
+        LOG.info("Validate business user rid={} status={}", businessRegistration.getRid(), status);
+        return status;
+    }
+
+    /**
+     * Validate business user profile.
+     *
+     * @param businessRegistration
+     * @param messageContext
+     * @return
+     */
+    @SuppressWarnings ("unused")
+    public String validateBusinessDetails(BusinessRegistration businessRegistration, MessageContext messageContext) {
+        LOG.info("Validate business rid={}", businessRegistration.getRid());
+        String status = "success";
+
+        if (StringUtils.isBlank(businessRegistration.getBusinessName())) {
+            messageContext.addMessage(
+                    new MessageBuilder()
+                            .error()
+                            .source("businessName")
+                            .defaultText("Business Name cannot be empty")
+                            .build());
+            status = "failure";
+        }
+
+        if (null == businessRegistration.getBusinessTypes()) {
+            messageContext.addMessage(
+                    new MessageBuilder()
+                            .error()
+                            .source("businessTypes")
+                            .defaultText("Business Type is not selected")
+                            .build());
+            status = "failure";
+        }
+
+        if (StringUtils.isBlank(businessRegistration.getBusinessAddress())) {
+            messageContext.addMessage(
+                    new MessageBuilder()
+                            .error()
+                            .source("businessAddress")
+                            .defaultText("Business Address cannot be empty")
+                            .build());
+            status = "failure";
+        }
+
+        if (StringUtils.isBlank(businessRegistration.getBusinessPhone())) {
+            messageContext.addMessage(
+                    new MessageBuilder()
+                            .error()
+                            .source("businessPhone")
+                            .defaultText("Business Phone cannot be Empty")
+                            .build());
+            status = "failure";
+        }
+
+        LOG.info("Validate business rid={} status={}", businessRegistration.getRid(), status);
+        return status;
     }
 }

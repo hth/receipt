@@ -75,6 +75,25 @@
                         <hr>
                         <input type="hidden" name="_flowExecutionKey" value="${flowExecutionKey}"/>
 
+                        <spring:hasBindErrors name="businessRegistration">
+                        <div class="r-validation" style="width: 100%; margin: 0 0 0 0;">
+                            <ul>
+                                <c:if test="${errors.hasFieldErrors('businessName')}">
+                                    <li><form:errors path="businessName" /></li>
+                                </c:if>
+                                <c:if test="${errors.hasFieldErrors('businessTypes')}">
+                                    <li><form:errors path="businessTypes" /></li>
+                                </c:if>
+                                <c:if test="${errors.hasFieldErrors('businessAddress')}">
+                                    <li><form:errors path="businessAddress" /></li>
+                                </c:if>
+                                <c:if test="${errors.hasFieldErrors('businessPhone')}">
+                                    <li><form:errors path="businessPhone" /></li>
+                                </c:if>
+                            </ul>
+                        </div>
+                        </spring:hasBindErrors>
+
                         <div class="row_field">
                             <form:label path="businessName" cssClass="profile_label" cssStyle="width: 145px;"
                                     cssErrorClass="profile_label lb_error">Business Name</form:label>

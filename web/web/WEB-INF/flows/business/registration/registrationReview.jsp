@@ -93,7 +93,7 @@
                         <div class="row_field">
                             <form:label path="phone" cssClass="profile_label" cssStyle="width: 145px;"
                                     cssErrorClass="profile_label lb_error">Your Phone</form:label>
-                            <form:input path="phoneFormatted" size="20" cssClass="name_txt" readonly="true" />
+                            <form:input path="phone" size="20" cssClass="name_txt" readonly="true" />
                         </div>
 
                         <div class="row_field">
@@ -117,7 +117,7 @@
                         <div class="row_field">
                             <form:label path="businessPhone" cssClass="profile_label" cssStyle="width: 145px;"
                                     cssErrorClass="profile_label lb_error">Business Phone</form:label>
-                            <form:input path="businessPhoneFormatted" size="20" cssClass="name_txt" readonly="true" />
+                            <form:input path="businessPhone" size="20" cssClass="name_txt" readonly="true" />
                         </div>
 
                         <div class="full">
