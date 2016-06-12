@@ -68,22 +68,22 @@
     </div>
     <div class="rightside-content">
         <sec:authorize access="hasRole('ROLE_BUSINESS')">
-            <div class="business_reg">
-                <div class="down_form" style="width: 90%">
-                    <c:choose>
-                        <c:when test="${businessRegistration.businessUser.businessUserRegistrationStatus eq 'C'}">
-                            <h1 class="h1">Registration complete</h1>
-                            <hr>
-                            Your details are being verified. Would notify you once the verification is complete.
-                        </c:when>
-                        <c:otherwise>
-                            <h1 class="h1">Registration not complete</h1>
-                            <hr>
-                            We could not verify your details. Please contact us or update profile.
-                        </c:otherwise>
-                    </c:choose>
-                </div>
+        <div class="business_reg">
+            <div class="down_form" style="width: 90%">
+                <c:choose>
+                    <c:when test="${businessRegistration.businessUser.businessUserRegistrationStatus eq 'C'}">
+                        <h1 class="h1">Registration complete</h1>
+                        <hr>
+                        Your details are being verified. Would notify you once the verification is complete.
+                    </c:when>
+                    <c:otherwise>
+                        <h1 class="h1">Registration not complete</h1>
+                        <hr>
+                        We could not verify your details. Please contact us or update profile.
+                    </c:otherwise>
+                </c:choose>
             </div>
+        </div>
         </sec:authorize>
     </div>
 </div>
