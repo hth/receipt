@@ -12,7 +12,7 @@
     </on-start>
 
     <decision-state id="profileComplete">
-        <if test="businessRegistrationFlowActions.isRegistrationComplete(flowScope.businessRegistration.rid, flowScope.businessRegistration.businessUser)"
+        <if test="businessRegistrationFlowActions.isRegistrationComplete(businessRegistration.rid, businessRegistration.businessUser)"
             then="registrationComplete"
             else="profileCompletion" />
     </decision-state>
@@ -30,7 +30,7 @@
     <action-state id="validateUserProfile">
         <evaluate expression="businessRegistrationFlowActions.validateUserProfileDetails(businessRegistration, messageContext)" />
         <transition on="success" to="registrationStart">
-            <evaluate expression="businessRegistrationFlowActions.updateProfile(flowScope.businessRegistration)" />
+            <evaluate expression="businessRegistrationFlowActions.updateProfile(businessRegistration)" />
         </transition>
         <transition on="failure" to="profileCompletion" />
     </action-state>

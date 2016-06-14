@@ -46,7 +46,6 @@ public class BusinessLandingController {
     private String businessRegistrationFlow;
     private BusinessUserService businessUserService;
     private BizDimensionService bizDimensionService;
-    private BizService bizService;
 
     @Autowired
     public BusinessLandingController(
@@ -57,12 +56,11 @@ public class BusinessLandingController {
                     String businessRegistrationFlow,
 
             BusinessUserService businessUserService,
-            BizDimensionService bizDimensionService, BizService bizService) {
+            BizDimensionService bizDimensionService) {
         this.nextPage = nextPage;
         this.businessRegistrationFlow = businessRegistrationFlow;
         this.businessUserService = businessUserService;
         this.bizDimensionService = bizDimensionService;
-        this.bizService = bizService;
     }
 
     /**
@@ -111,13 +109,5 @@ public class BusinessLandingController {
                 .setStoreCount(bizDimension.getStoreCount())
                 .setTotalCustomerPurchases(Maths.adjustScale(bizDimension.getBizTotal()))
                 .setVisitCount(bizDimension.getVisitCount());
-
-        List<BizStoreEntity> bizStores = bizService.getAllBizStores(bizNameId);
-        businessLandingForm.setActualStoreCount(bizStores.size());
-
-        for (BizStoreEntity bizStore : bizStores) {
-            bizStore.getLat();
-            bizStore.getLng();
-        }
     }
 }

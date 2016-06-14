@@ -8,6 +8,7 @@ import com.receiptofi.domain.BaseEntity;
 import com.receiptofi.domain.BizNameEntity;
 import com.receiptofi.domain.BizStoreEntity;
 import com.receiptofi.domain.types.PaginationEnum;
+import com.receiptofi.utils.CommonUtil;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -89,7 +90,7 @@ public final class BizStoreManagerImpl implements BizStoreManager {
         if (StringUtils.isEmpty(phone)) {
             criteria = where("AD").is(address);
         } else {
-            criteria = where("AD").is(address).and("PH").is(phone);
+            criteria = where("AD").is(address).and("PH").is(CommonUtil.phoneCleanup(phone));
         }
 
         return mongoTemplate.findOne(query(criteria), BizStoreEntity.class);

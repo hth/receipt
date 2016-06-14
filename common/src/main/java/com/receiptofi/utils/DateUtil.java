@@ -13,6 +13,8 @@ import org.joda.time.format.DateTimeFormatter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDate;
@@ -20,6 +22,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.temporal.TemporalAdjusters;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * @author hitender
@@ -32,11 +35,14 @@ import java.util.Date;
         "PMD.LongVariable"
 })
 public final class DateUtil {
+    private static final Logger LOG = LoggerFactory.getLogger(DateUtil.class);
+
     private static final int MINUTE_IN_SECONDS = 60;
     private static final int HOUR_IN_SECONDS = MINUTE_IN_SECONDS * MINUTE_IN_SECONDS;
     public static final int HOURS = 24;
     public static final int DAY_IN_SECONDS = HOUR_IN_SECONDS * 24;
-    private static final Logger LOG = LoggerFactory.getLogger(DateUtil.class);
+
+    public static final DateFormat DF_MMDDYYYY = new SimpleDateFormat("MM/dd/yyyy", Locale.US);
 
     private DateUtil() {
     }

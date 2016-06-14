@@ -114,6 +114,11 @@ public class BusinessRegistration implements Serializable {
         }
     }
 
+    @Transient
+    public String getPhoneNotFormatted() {
+        return phone;
+    }
+
     public BusinessRegistration setPhone(String phone) {
         this.phone = phone;
         return this;
@@ -174,6 +179,11 @@ public class BusinessRegistration implements Serializable {
         } else {
             return businessPhone;
         }
+    }
+
+    @Transient
+    public String getBusinessPhoneNotFormatted() {
+        return businessPhone;
     }
 
     public void setBusinessPhone(String businessPhone) {

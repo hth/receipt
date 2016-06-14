@@ -13,9 +13,9 @@
     <c:choose>
         <c:when test="${!empty receiptForm.receipt}">
             <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/popup.css"/>
-            <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/sweetalert/0.5.0/sweet-alert.css"/>
+            <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css"/>
 
-            <script src="//cdnjs.cloudflare.com/ajax/libs/sweetalert/0.5.0/sweet-alert.min.js"></script>
+            <script src="//cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
         </c:when>
         <c:otherwise>
             <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/stylelogin.css"/>

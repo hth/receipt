@@ -19,7 +19,6 @@ public class BusinessLandingForm {
     private long storeCount;
     private BigDecimal totalCustomerPurchases;
     private long visitCount;
-    private long actualStoreCount;
 
     public String getBizName() {
         return bizName;
@@ -63,15 +62,6 @@ public class BusinessLandingForm {
 
     public BusinessLandingForm setVisitCount(long visitCount) {
         this.visitCount = visitCount;
-        return this;
-    }
-
-    public long getActualStoreCount() {
-        return actualStoreCount;
-    }
-
-    public BusinessLandingForm setActualStoreCount(long actualStoreCount) {
-        this.actualStoreCount = actualStoreCount;
         return this;
     }
 }

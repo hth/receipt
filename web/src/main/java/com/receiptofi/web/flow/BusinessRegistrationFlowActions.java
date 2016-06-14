@@ -122,7 +122,7 @@ public class BusinessRegistrationFlowActions {
             String businessAddress = businessRegistration.getBusinessAddress();
             BizStoreEntity bizStore = bizService.findMatchingStore(
                     businessRegistration.getBusinessAddress(),
-                    businessRegistration.getBusinessPhone());
+                    businessRegistration.getBusinessPhoneNotFormatted());
 
             if (bizStore == null) {
                 bizStore = BizStoreEntity.newInstance();
@@ -158,7 +158,7 @@ public class BusinessRegistrationFlowActions {
 
         userProfile.setAddress(br.getAddress());
         userProfile.setCountryShortName(br.getCountryShortName());
-        userProfile.setPhone(br.getPhone());
+        userProfile.setPhone(br.getPhoneNotFormatted());
         userProfilePreferenceService.updateProfile(userProfile);
 
         if (!userProfile.getFirstName().equals(br.getFirstName()) && !userProfile.getLastName().equals(br.getLastName())) {
@@ -235,7 +235,7 @@ public class BusinessRegistrationFlowActions {
             status = "failure";
         }
 
-        if (StringUtils.isBlank(businessRegistration.getPhone())) {
+        if (StringUtils.isBlank(businessRegistration.getPhoneNotFormatted())) {
             messageContext.addMessage(
                     new MessageBuilder()
                             .error()
@@ -291,7 +291,7 @@ public class BusinessRegistrationFlowActions {
             status = "failure";
         }
 
-        if (StringUtils.isBlank(businessRegistration.getBusinessPhone())) {
+        if (StringUtils.isBlank(businessRegistration.getBusinessPhoneNotFormatted())) {
             messageContext.addMessage(
                     new MessageBuilder()
                             .error()

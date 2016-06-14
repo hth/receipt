@@ -9,14 +9,15 @@
     <script>var ctx = "${pageContext.request.contextPath}"</script>
 
     <title><fmt:message key="title"/></title>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/style.css"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/stylelogin.css"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/colpick.css"/>
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/sweetalert/0.5.0/sweet-alert.css"/>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css"/>
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/sweetalert/0.5.0/sweet-alert.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
     <script src="${pageContext.request.contextPath}/static/external/js/noble-count/jquery.NobleCount.min.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/static/external/js/cute-time/jquery.cuteTime.min.js"></script>
 </head>
@@ -77,8 +78,17 @@
                     Total customer purchases: <c:out value="${businessLandingForm.totalCustomerPurchases}" />
                     <br/>
                     Store count: <c:out value="${businessLandingForm.storeCount}" />
-                    Actual store count: <c:out value="${businessLandingForm.actualStoreCount}" />
                     Visit count: <c:out value="${businessLandingForm.visitCount}" />
+
+                    <p>
+                        <label for="amount">Promote to % of customers:</label>
+                        <input type="text" id="amount" readonly style="border:0; color:#f6931f; font-weight:bold;">
+                    </p>
+
+                    <div id="slider-vertical" style="height:15px;"></div>
+
+                    <br/>
+                    <a href="/business/campaign.htm">Start</a>
                 </div>
             </div>
         </sec:authorize>
@@ -96,5 +106,20 @@
     </div>
 </div>
 </body>
+<script>
+    $(function() {
+        $( "#slider-vertical" ).slider({
+            orientation: "horizontal",
+            range: "min",
+            min: 0,
+            max: 100,
+            value: 25,
+            slide: function( event, ui ) {
+                $( "#amount" ).val( ui.value );
+            }
+        });
+        $( "#amount" ).val( $( "#slider-vertical" ).slider( "value" ) );
+    });
+</script>
 <script src="${pageContext.request.contextPath}/static/js/mainpop.js"></script>
 </html>
