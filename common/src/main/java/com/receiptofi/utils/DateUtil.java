@@ -6,6 +6,7 @@ package com.receiptofi.utils;
 import org.apache.commons.lang3.StringUtils;
 
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
@@ -141,6 +142,15 @@ public final class DateUtil {
             }
         }
         return birthday;
+    }
+
+    /**
+     * Gets current time on UTC. This is required when setting up cron task as server time is set on UTC.
+     *
+     * @return
+     */
+    public static Date getUTCDate() {
+        return new DateTime(DateTimeZone.UTC).toLocalDateTime().toDate();
     }
 
     //todo add support for small AM|PM
