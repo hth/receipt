@@ -50,10 +50,10 @@ public class BusinessLandingController {
     @Autowired
     public BusinessLandingController(
             @Value ("${nextPage:/business/landing}")
-                    String nextPage,
+            String nextPage,
 
             @Value ("${businessRegistrationFlow:redirect:/business/registration.htm}")
-                    String businessRegistrationFlow,
+            String businessRegistrationFlow,
 
             BusinessUserService businessUserService,
             BizDimensionService bizDimensionService) {
