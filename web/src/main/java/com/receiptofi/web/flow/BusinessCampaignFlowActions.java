@@ -55,15 +55,16 @@ public class BusinessCampaignFlowActions {
     public BusinessCampaign startCampaign() {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String rid = receiptUser.getRid();
+        DateTime utcDate = new DateTime(DateUtil.getUTCDate());
 
         BusinessUserEntity businessUser = businessUserService.findBusinessUser(rid);
         return new BusinessCampaign()
                 .setRid(businessUser.getReceiptUserId())
                 .setBusinessName(businessUser.getBizName().getBusinessName())
                 .setBizId(businessUser.getBizName().getId())
-                .setLive(DF_MMDDYYYY.format(new DateTime(DateUtil.getUTCDate()).plusDays(1).toDate()))
-                .setStart(DF_MMDDYYYY.format(new DateTime(DateUtil.getUTCDate()).plusDays(1).toDate()))
-                .setEnd(DF_MMDDYYYY.format(new DateTime(DateUtil.getUTCDate()).plusDays(8).toDate()));
+                .setLive(DF_MMDDYYYY.format(utcDate.plusDays(1).toDate()))
+                .setStart(DF_MMDDYYYY.format(utcDate.plusDays(1).toDate()))
+                .setEnd(DF_MMDDYYYY.format(utcDate.plusDays(8).toDate()));
     }
 
     @SuppressWarnings ("unused")
