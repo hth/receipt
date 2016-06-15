@@ -3,6 +3,7 @@
  */
 package com.receiptofi.repository;
 
+import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
 
 import com.receiptofi.domain.BaseEntity;
@@ -62,7 +63,7 @@ public final class UserAuthenticationManagerImpl implements UserAuthenticationMa
     @Override
     public UserAuthenticationEntity getById(String id) {
         Assert.hasText(id, "Id is empty");
-        return mongoTemplate.findOne(query(Criteria.where("id").is(id)), UserAuthenticationEntity.class, TABLE);
+        return mongoTemplate.findOne(query(where("id").is(id)), UserAuthenticationEntity.class, TABLE);
     }
 
     @Override
