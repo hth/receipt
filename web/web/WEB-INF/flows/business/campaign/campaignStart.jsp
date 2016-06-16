@@ -9,7 +9,6 @@
     <script>var ctx = "${pageContext.request.contextPath}"</script>
 
     <title><fmt:message key="title"/></title>
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/style.css"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/stylelogin.css"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/colpick.css"/>
@@ -100,9 +99,7 @@
                                 cssErrorClass="profile_label lb_error">Coupon Text</form:label>
                         <form:input path="freeText" size="200" cssClass="name_txt" cssStyle="width: 250px;" placeholder="Something like 10% off"/>
                         <br>
-                        <span class="si-general-text remaining-characters" style="text-indent: 129px;">
-                            <span id="freeTextCount"></span> characters remaining.
-                        </span>
+                        <span class="si-general-text remaining-characters" style="text-indent: 129px;"><span id="freeTextCount"></span> characters remaining.</span>
                     </div>
                     <div class="row_field">
                         <form:label path="start" cssClass="profile_label"
