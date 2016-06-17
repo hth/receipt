@@ -10,6 +10,7 @@ import com.receiptofi.domain.ReceiptEntity;
 import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.domain.shared.UploadDocumentImage;
 import com.receiptofi.domain.types.DocumentStatusEnum;
+import com.receiptofi.domain.types.FileTypeEnum;
 import com.receiptofi.domain.types.NotificationGroupEnum;
 import com.receiptofi.domain.types.NotificationTypeEnum;
 import com.receiptofi.domain.value.ReceiptGrouped;
@@ -351,7 +352,8 @@ public class LandingService {
                     bufferedImage,
                     0,
                     0,
-                    documentImage.getFileData());
+                    documentImage.getFileData(),
+                    FileTypeEnum.R);
             fileSystemService.save(fileSystem);
 
             document.addReceiptBlobId(fileSystem);

@@ -8,6 +8,7 @@ import com.receiptofi.domain.ItemEntity;
 import com.receiptofi.domain.ReceiptEntity;
 import com.receiptofi.domain.UserAccountEntity;
 import com.receiptofi.domain.types.CommentTypeEnum;
+import com.receiptofi.domain.types.FileTypeEnum;
 import com.receiptofi.repository.*;
 import com.receiptofi.service.*;
 import com.receiptofi.service.routes.FileUploadDocumentSenderJMS;
@@ -348,7 +349,8 @@ public class ITest extends RealMongoForTests {
                 ImageIO.read(getFile()),
                 0,
                 0,
-                getMultipartFile(receipt.getReceiptUserId()));
+                getMultipartFile(receipt.getReceiptUserId()),
+                FileTypeEnum.R);
 
         fileSystemService.save(fileSystem);
         List<FileSystemEntity> fileSystems = new ArrayList<>();

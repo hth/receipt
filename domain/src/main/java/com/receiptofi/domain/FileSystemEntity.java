@@ -105,7 +105,7 @@ public class FileSystemEntity extends BaseEntity {
     private String originalFilename;
 
     @Field ("FT")
-    private FileTypeEnum fileType = FileTypeEnum.R;
+    private FileTypeEnum fileType;
 
     /** To keep bean happy. */
     public FileSystemEntity() {
@@ -127,7 +127,8 @@ public class FileSystemEntity extends BaseEntity {
             BufferedImage bufferedImage,
             int imageOrientation,
             int sequence,
-            MultipartFile multipartFile
+            MultipartFile multipartFile,
+            FileTypeEnum fileType
     ) {
         super();
         this.blobId = blobId;
@@ -139,6 +140,7 @@ public class FileSystemEntity extends BaseEntity {
         this.contentType = multipartFile.getContentType();
         this.fileLength = multipartFile.getSize();
         this.originalFilename = multipartFile.getOriginalFilename();
+        this.fileType = fileType;
 
         if (!contentType.startsWith("image")) {
             try {
@@ -230,10 +232,6 @@ public class FileSystemEntity extends BaseEntity {
 
     public FileTypeEnum getFileType() {
         return fileType;
-    }
-
-    public void setFileType(FileTypeEnum fileType) {
-        this.fileType = fileType;
     }
 
     @Transient
