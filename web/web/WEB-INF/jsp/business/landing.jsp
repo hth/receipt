@@ -9,7 +9,6 @@
     <script>var ctx = "${pageContext.request.contextPath}"</script>
 
     <title><fmt:message key="title"/></title>
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/style.css"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/stylelogin.css"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/colpick.css"/>
@@ -79,16 +78,9 @@
                     <br/>
                     Store count: <c:out value="${businessLandingForm.storeCount}" />
                     Visit count: <c:out value="${businessLandingForm.visitCount}" />
-
-                    <p>
-                        <label for="amount">Promote to % of customers:</label>
-                        <input type="text" id="amount" readonly style="border:0; color:#f6931f; font-weight:bold;">
-                    </p>
-
-                    <div id="slider-vertical" style="height:15px;"></div>
-
                     <br/>
-                    <a href="/business/campaign.htm">Start</a>
+                    <a href="/business/campaign.htm?campaignId=5761c71d383b8de7b7b16a1e">Start</a>
+                    <a href="/business/campaign.htm">Start Empty</a>
                 </div>
             </div>
         </sec:authorize>
@@ -106,20 +98,5 @@
     </div>
 </div>
 </body>
-<script>
-    $(function() {
-        $( "#slider-vertical" ).slider({
-            orientation: "horizontal",
-            range: "min",
-            min: 0,
-            max: 100,
-            value: 25,
-            slide: function( event, ui ) {
-                $( "#amount" ).val( ui.value );
-            }
-        });
-        $( "#amount" ).val( $( "#slider-vertical" ).slider( "value" ) );
-    });
-</script>
 <script src="${pageContext.request.contextPath}/static/js/mainpop.js"></script>
 </html>
