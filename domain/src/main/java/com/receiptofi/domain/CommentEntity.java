@@ -22,7 +22,6 @@ import org.springframework.data.mongodb.core.mapping.Field;
 @Document (collection = "COMMENT")
 public class CommentEntity extends BaseEntity {
 
-    //TODO(hth) @Value annotation is not working, find why
     @Value ("${textLength:250}")
     private int textLength = 250;
 
@@ -48,6 +47,10 @@ public class CommentEntity extends BaseEntity {
         this.commentType = commentType;
     }
 
+    /**
+     * Keep me for old data model when 'RID' did not existed.
+     * @param commentType
+     */
     private CommentEntity(CommentTypeEnum commentType) {
         super();
         this.commentType = commentType;
