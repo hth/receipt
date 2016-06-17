@@ -53,8 +53,8 @@ correct indentation.
 
 #### Set JAVA 8 symb link from above step
 
-For anyone else having this problem you need to reboot your mac and press cmd+r when booting up. 
-Then go into utilities > terminal and type the following commands:
+For anyone else having this problem you need to reboot your mac and press `cmd+r` when booting up. 
+Then go into `utilities > terminal` and type the following commands:
 
     csrutil disable
     reboot 
