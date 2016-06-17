@@ -329,7 +329,7 @@ public class LandingController {
     }
 
     /**
-     * For uploading Receipts.
+     * For uploading Mileage.
      *
      * @param documentId
      * @param httpServletRequest

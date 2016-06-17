@@ -327,7 +327,7 @@ public class LandingService {
      * @throws Exception
      */
     public DocumentEntity uploadDocument(UploadDocumentImage documentImage) {
-        String documentBlobId = null;
+        String blobId = null;
         DocumentEntity document = null;
         FileSystemEntity fileSystem = null;
         List<ItemEntityOCR> items;
@@ -340,14 +340,14 @@ public class LandingService {
             LOG.info("Upload document rid={} fileType={}", documentImage.getRid(), documentImage.getFileType());
 
             BufferedImage bufferedImage = imageSplitService.bufferedImage(documentImage.getFileData().getInputStream());
-            documentBlobId = fileDBService.saveFile(documentImage);
-            documentImage.setBlobId(documentBlobId);
+            blobId = fileDBService.saveFile(documentImage);
+            documentImage.setBlobId(blobId);
 
             document = DocumentEntity.newInstance();
             document.setDocumentStatus(DocumentStatusEnum.PENDING);
 
             fileSystem = new FileSystemEntity(
-                    documentBlobId,
+                    blobId,
                     documentImage.getRid(),
                     bufferedImage,
                     0,
@@ -386,8 +386,8 @@ public class LandingService {
             LOG.warn("Undo all the saves");
 
             int sizeFSInitial = fileDBService.getFSDBSize();
-            if (null != documentBlobId) {
-                fileDBService.deleteHard(documentBlobId);
+            if (null != blobId) {
+                fileDBService.deleteHard(blobId);
             }
             int sizeFSFinal = fileDBService.getFSDBSize();
             LOG.info("Storage File: Initial size: " + sizeFSInitial + ", Final size: " + sizeFSFinal);
