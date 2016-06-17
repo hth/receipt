@@ -15,6 +15,7 @@ import com.receiptofi.service.ExternalService;
 import com.receiptofi.service.FetcherService;
 import com.receiptofi.service.UserProfilePreferenceService;
 import com.receiptofi.utils.CommonUtil;
+import com.receiptofi.web.controller.access.LandingController;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -203,7 +204,7 @@ public class BusinessRegistrationFlowActions {
     @SuppressWarnings ("unused")
     public String validateUserProfileDetails(BusinessRegistration businessRegistration, MessageContext messageContext) {
         LOG.info("Validate business user rid={}", businessRegistration.getRid());
-        String status = "success";
+        String status = LandingController.SUCCESS;
 
         if (StringUtils.isBlank(businessRegistration.getFirstName())) {
             messageContext.addMessage(
