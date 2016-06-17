@@ -4,7 +4,9 @@ import com.receiptofi.domain.types.CommentTypeEnum;
 
 import org.apache.commons.lang3.StringUtils;
 
-import org.springframework.beans.factory.annotation.Value;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
@@ -21,9 +23,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 })
 @Document (collection = "COMMENT")
 public class CommentEntity extends BaseEntity {
-
-    @Value ("${textLength:250}")
-    private int textLength = 250;
+    private static final Logger LOG = LoggerFactory.getLogger(CommentEntity.class);
 
     @Field ("RID")
     private String receiptUserId;
@@ -68,8 +68,20 @@ public class CommentEntity extends BaseEntity {
         return text;
     }
 
-    public void setText(String text) {
-        this.text = StringUtils.substring(StringUtils.trim(text), 0, textLength);
+    public CommentEntity setText(String text) {
+        switch (commentType) {
+            case C:
+                this.text = text;
+                break;
+            case N:
+            case R:
+                this.text = StringUtils.substring(StringUtils.trim(text), 0, commentType.getTextLength());
+                break;
+            default:
+                LOG.error("Reached unsupported rid={} commentType={}", receiptUserId, commentType.getDescription());
+                throw new UnsupportedOperationException("Reached unsupported condition");
+        }
+        return this;
     }
 
     public CommentTypeEnum getCommentType() {
@@ -83,7 +95,7 @@ public class CommentEntity extends BaseEntity {
     @Override
     public String toString() {
         return "CommentEntity{" +
-                "textLength=" + textLength +
+                "textLength=" + commentType.getTextLength() +
                 ", text='" + text + '\'' +
                 ", commentType=" + commentType +
                 '}';
