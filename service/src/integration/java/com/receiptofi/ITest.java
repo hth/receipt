@@ -292,8 +292,8 @@ public class ITest extends RealMongoForTests {
 
     public ReceiptEntity populateReceiptWithComments(UserAccountEntity userAccount) throws IOException {
         ReceiptEntity receipt = populateReceipt(userAccount);
-        receipt.setNotes(createComment(CommentTypeEnum.N));
-        receipt.setRecheckComment(createComment(CommentTypeEnum.R));
+        receipt.setNotes(createComment(userAccount.getReceiptUserId(), CommentTypeEnum.N));
+        receipt.setRecheckComment(createComment(userAccount.getReceiptUserId(), CommentTypeEnum.R));
         return receipt;
     }
 
@@ -356,8 +356,8 @@ public class ITest extends RealMongoForTests {
         return fileSystems;
     }
 
-    private CommentEntity createComment(CommentTypeEnum commentType) {
-        CommentEntity commentEntity = CommentEntity.newInstance(commentType);
+    private CommentEntity createComment(String rid, CommentTypeEnum commentType) {
+        CommentEntity commentEntity = CommentEntity.newInstance(rid, commentType);
         commentEntity.setText("This is notes");
         commentService.save(commentEntity);
         return commentEntity;
