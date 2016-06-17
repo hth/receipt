@@ -265,10 +265,9 @@ public class ReceiptServiceITest extends ITest {
         assertTrue("Account validated", primaryUserAccount.isAccountValidated());
 
         /** New Document. */
-        UploadDocumentImage image = UploadDocumentImage.newInstance();
-        image.setFileData(getMultipartFile(primaryUserAccount.getReceiptUserId()));
-        image.setRid(primaryUserAccount.getReceiptUserId());
-        image.setFileType(FileTypeEnum.R);
+        UploadDocumentImage image = UploadDocumentImage.newInstance(FileTypeEnum.R)
+                .setFileData(getMultipartFile(primaryUserAccount.getReceiptUserId()))
+                .setRid(primaryUserAccount.getReceiptUserId());
         DocumentEntity document = landingService.uploadDocument(image);
 
         /** Process Document to Receipt. */

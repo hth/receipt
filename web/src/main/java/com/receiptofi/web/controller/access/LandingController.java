@@ -285,10 +285,9 @@ public class LandingController {
             final List<MultipartFile> files = getMultipartFiles(multipartHttpRequest);
 
             for (MultipartFile multipartFile : files) {
-                UploadDocumentImage image = UploadDocumentImage.newInstance();
-                image.setFileData(multipartFile);
-                image.setRid(rid);
-                image.setFileType(FileTypeEnum.R);
+                UploadDocumentImage image = UploadDocumentImage.newInstance(FileTypeEnum.R)
+                        .setFileData(multipartFile)
+                        .setRid(rid);
                 try {
                     boolean duplicateFile = fileSystemService.fileWithSimilarNameDoesNotExists(rid, image.getOriginalFileName());
                     DocumentEntity document = landingService.uploadDocument(image);
@@ -360,10 +359,9 @@ public class LandingController {
             final List<MultipartFile> files = getMultipartFiles(multipartHttpRequest);
 
             for (MultipartFile multipartFile : files) {
-                UploadDocumentImage uploadReceiptImage = UploadDocumentImage.newInstance();
-                uploadReceiptImage.setFileData(multipartFile);
-                uploadReceiptImage.setRid(receiptUser.getRid());
-                uploadReceiptImage.setFileType(FileTypeEnum.M);
+                UploadDocumentImage uploadReceiptImage = UploadDocumentImage.newInstance(FileTypeEnum.M)
+                        .setFileData(multipartFile)
+                        .setRid(receiptUser.getRid());
                 try {
                     landingService.appendMileage(documentId.getText(), receiptUser.getRid(), uploadReceiptImage);
                     outcome = "{\"success\" : true, \"uploadMessage\" : \"File uploaded successfully\"}";
