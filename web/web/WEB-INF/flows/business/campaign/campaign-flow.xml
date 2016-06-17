@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns="http://www.springframework.org/schema/webflow"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.springframework.org/schema/webflow
+       http://www.springframework.org/schema/webflow/spring-webflow-2.4.xsd">
+
+    <secured attributes="ROLE_BUSINESS" />
+
+    <on-start>
+        <evaluate expression="businessCampaignFlowActions.startCampaign()"
+                  result="flowScope.businessCampaign" />
+    </on-start>
+
+    <view-state id="campaignStart" model="businessCampaign">
+        <transition on="submit" to="validateCampaignDetails" />
+        <transition on="cancel" to="home" />
+    </view-state>
+
+    <action-state id="validateCampaignDetails">
+        <evaluate expression="businessCampaignFlowActions.validateCampaignDetails(businessCampaign, messageContext)" />
+        <transition on="success" to="campaignCoupon" />
+        <transition on="failure" to="campaignStart" />
+    </action-state>
+
+    <view-state id="campaignCoupon" model="businessCampaign">
+        <transition on="submit" to="campaignReview" />
+        <transition on="cancel" to="home" />
+    </view-state>
+
+    <view-state id="campaignReview">
+        <transition on="confirm" to="home" />
+        <transition on="revise" to="home" />
+        <transition on="cancel" to="home" />
+    </view-state>
+
+    <view-state id="registrationComplete">
+        <transition to="home" />
+    </view-state>
+
+    <view-state id="home" view="externalRedirect:#{'/business/landing.htm'}"/>
+</flow>

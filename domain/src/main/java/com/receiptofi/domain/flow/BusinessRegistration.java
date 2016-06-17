@@ -5,6 +5,8 @@ import com.receiptofi.domain.BusinessUserEntity;
 import com.receiptofi.domain.types.BusinessTypeEnum;
 import com.receiptofi.utils.CommonUtil;
 
+import org.apache.commons.lang3.StringUtils;
+
 import org.springframework.data.annotation.Transient;
 
 import java.io.Serializable;
@@ -105,16 +107,21 @@ public class BusinessRegistration implements Serializable {
     }
 
     public String getPhone() {
+        if (StringUtils.isNotBlank(phone)) {
+            return CommonUtil.phoneFormatter(phone, countryShortName);
+        } else {
+            return phone;
+        }
+    }
+
+    @Transient
+    public String getPhoneNotFormatted() {
         return phone;
     }
 
     public BusinessRegistration setPhone(String phone) {
         this.phone = phone;
         return this;
-    }
-
-    public String getPhoneFormatted() {
-        return CommonUtil.phoneFormatter(phone, countryShortName);
     }
 
     public BusinessUserEntity getBusinessUser() {
@@ -167,15 +174,20 @@ public class BusinessRegistration implements Serializable {
     }
 
     public String getBusinessPhone() {
+        if (StringUtils.isNotBlank(businessPhone)) {
+            return CommonUtil.phoneFormatter(businessPhone, businessCountryShortName);
+        } else {
+            return businessPhone;
+        }
+    }
+
+    @Transient
+    public String getBusinessPhoneNotFormatted() {
         return businessPhone;
     }
 
     public void setBusinessPhone(String businessPhone) {
         this.businessPhone = businessPhone;
-    }
-
-    public String getBusinessPhoneFormatted() {
-        return CommonUtil.phoneFormatter(businessPhone, businessCountryShortName);
     }
 
     public List<BusinessTypeEnum> getAvailableBusinessTypes() {

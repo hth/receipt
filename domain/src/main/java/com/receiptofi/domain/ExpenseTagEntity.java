@@ -7,6 +7,7 @@ import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
+import org.springframework.format.annotation.NumberFormat;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -46,6 +47,11 @@ public class ExpenseTagEntity extends BaseEntity {
     @NotNull
     @Field ("CLR")
     private String tagColor;
+
+    //TODO add budget through expense tags
+//    @NumberFormat (style = NumberFormat.Style.CURRENCY)
+//    @Field ("BG")
+//    private Double budget;
 
     /** To keep bean happy for auto populating drop down */
     public ExpenseTagEntity() {
@@ -95,6 +101,14 @@ public class ExpenseTagEntity extends BaseEntity {
     public String getTagColor() {
         return tagColor;
     }
+
+//    public Double getBudget() {
+//        return budget;
+//    }
+//
+//    public void setBudget(Double budget) {
+//        this.budget = budget;
+//    }
 
     @Override
     public String toString() {

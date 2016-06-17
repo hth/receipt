@@ -41,19 +41,22 @@ public class JsonReceiptSplit {
         return receiptId;
     }
 
-    public void setReceiptId(String receiptId) {
+    public JsonReceiptSplit setReceiptId(String receiptId) {
         this.receiptId = receiptId;
+        return this;
     }
 
     public List<JsonFriend> getSplits() {
         return splits;
     }
 
-    public void setSplits(List<JsonFriend> splits) {
+    public JsonReceiptSplit setSplits(List<JsonFriend> splits) {
         this.splits = splits;
+        return this;
     }
 
-    public void addSplit(JsonFriend jsonFriend) {
+    public JsonReceiptSplit addSplit(JsonFriend jsonFriend) {
         this.splits.add(jsonFriend);
+        return this;
     }
 }

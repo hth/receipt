@@ -40,8 +40,8 @@
                 <a class="top-account-bar-text" href="/access/eval/feedback.htm">FEEDBACK</a>
                 <a class="top-account-bar-text" href="/access/userprofilepreference/i.htm">ACCOUNT</a>
                 <c:if test="${hasAccess}">
-                <a class="top-account-bar-text" href="/access/reportAnalysis.htm">REPORT & ANALYSIS</a>
-                <a class="top-account-bar-text" href="/access/split.htm">SPLIT EXPENSES</a>
+                    <a class="top-account-bar-text" href="/access/reportAnalysis.htm">REPORT & ANALYSIS</a>
+                    <a class="top-account-bar-text" href="/access/split.htm">SPLIT EXPENSES</a>
                 </c:if>
                 <sec:authentication var="validated" property="principal.accountValidated"/>
                 <c:choose>
@@ -70,70 +70,57 @@
         <sec:authorize access="hasRole('ROLE_BUSINESS')">
         <div class="business_reg">
             <div class="down_form" style="width: 90%">
-                <form:form commandName="businessRegistration">
-                    <h1 class="h1">Please complete your profile</h1>
+                <form:form commandName="businessCampaign">
+                    <h1 class="h1">Create New Coupon Campaign</h1>
                     <hr>
                     <input type="hidden" name="_flowExecutionKey" value="${flowExecutionKey}"/>
 
-                    <spring:hasBindErrors name="businessRegistration">
+                    <spring:hasBindErrors name="businessCampaign">
                     <div class="r-validation" style="width: 100%; margin: 0 0 0 0;">
                         <ul>
-                            <c:if test="${errors.hasFieldErrors('firstName')}">
-                                <li><form:errors path="firstName" /></li>
+                            <c:if test="${errors.hasFieldErrors('freeText')}">
+                                <li><form:errors path="freeText" /></li>
                             </c:if>
-                            <c:if test="${errors.hasFieldErrors('lastName')}">
-                                <li><form:errors path="lastName" /></li>
+                            <c:if test="${errors.hasFieldErrors('start')}">
+                                <li><form:errors path="start" /></li>
                             </c:if>
-                            <c:if test="${errors.hasFieldErrors('address')}">
-                                <li><form:errors path="address" /></li>
+                            <c:if test="${errors.hasFieldErrors('end')}">
+                                <li><form:errors path="start" /></li>
                             </c:if>
-                            <c:if test="${errors.hasFieldErrors('phone')}">
-                                <li><form:errors path="phone" /></li>
+                            <c:if test="${errors.hasFieldErrors('live')}">
+                                <li><form:errors path="live" /></li>
                             </c:if>
                         </ul>
                     </div>
                     </spring:hasBindErrors>
 
                     <div class="row_field">
-                        <form:label path="firstName" cssClass="profile_label"
-                                cssErrorClass="profile_label lb_error">First name</form:label>
-                        <form:input path="firstName" size="20" cssClass="name_txt" />
+                        <form:label path="freeText" cssClass="profile_label"
+                                cssErrorClass="profile_label lb_error">Coupon Text</form:label>
+                        <form:input path="freeText" size="200" cssClass="name_txt" cssStyle="width: 250px;" placeholder="Something like 10% off"/>
+                        <br>
+                        <span class="si-general-text remaining-characters" style="text-indent: 129px;"><span id="freeTextCount"></span> characters remaining.</span>
                     </div>
                     <div class="row_field">
-                        <form:label path="lastName" cssClass="profile_label"
-                                cssErrorClass="profile_label lb_error">Last name</form:label>
-                        <form:input path="lastName" size="20" cssClass="name_txt" />
-                    </div>
-                    <div class="row_field">
-                        <form:label path="address" cssClass="profile_label"
-                                cssErrorClass="profile_label lb_error">Your Address</form:label>
-                        <form:input path="address" size="200" cssClass="name_txt" cssStyle="width: 600px;" />
-                    </div>
-                    <div class="row_field">
-                        <form:label path="phone" cssClass="profile_label"
-                                cssErrorClass="profile_label lb_error">Your Phone</form:label>
-                        <form:input path="phone" size="20" cssClass="name_txt" />
-                    </div>
-
-                    <c:if test="${!businessRegistration.emailValidated}">
-                    <div class="profile_label profile_label_note">
-                        <p>
-                        Your email address <span style="color: red; font-weight: bold">${businessRegistration.email}</span>
-                        has not been validated. Please validated email address to continue business account registration.
-                        </p>
-                        <p style="padding-top: 10px;">
-                        To resend account validation email, click here.
-                        </p>
-                    </div>
-                    </c:if>
-
-                    <div class="full">
-                        <c:if test="${businessRegistration.emailValidated}">
-                        <input type="submit" value="NEXT" class="read_btn" name="_eventId_submit"
-                                style="background: #2c97de; margin: 77px 10px 0 0;">
+                        <form:label path="start" cssClass="profile_label"
+                                cssErrorClass="profile_label lb_error">Valid From</form:label>
+                        <form:input path="start" size="20" cssClass="name_txt" cssStyle="width: 100px;" />
+                        &nbsp;
+                        <span style="padding: 10px 8px 8px 0; font-weight: bold">To</span>
+                        &nbsp;
+                        <form:input path="end" size="20" cssClass="name_txt" cssStyle="width: 100px;" />
+                        <c:if test="${businessCampaign.daysBetween gt -1}">
+                        <span style="padding: 10px 8px 8px 0; font-weight: bold">&nbsp; Duration <c:out value="${businessCampaign.daysBetween}" /> Days</span>
                         </c:if>
-                        <input type="submit" value="CANCEL" class="read_btn" name="_eventId_cancel"
-                                style="background: #FC462A; margin: 77px 10px 0 0;">
+                    </div>
+                    <div class="row_field">
+                        <form:label path="live" cssClass="profile_label"
+                                cssErrorClass="profile_label lb_error">First Available</form:label>
+                        <form:input path="live" size="20" cssClass="name_txt" cssStyle="width: 100px;" />
+                    </div>
+                    <div class="full">
+                        <input type="submit" value="NEXT" class="read_btn" name="_eventId_submit" style="background: #2c97de; margin: 77px 10px 0 0;">
+                        <input type="submit" value="CANCEL" class="read_btn" name="_eventId_cancel" style="background: #FC462A; margin: 77px 10px 0 0;">
                     </div>
                 </form:form>
             </div>
@@ -153,5 +140,34 @@
     </div>
 </div>
 </body>
+<script>
+    $(function() {
+        $("#live").datepicker({minDate: 0});
+        $( "#start" ).datepicker({
+            minDate: +1,
+            defaultDate: "+1w",
+            changeMonth: true,
+            numberOfMonths: 2,
+            onClose: function( selectedDate ) {
+                $( "#end" ).datepicker( "option", "minDate", selectedDate );
+            }
+        });
+        $( "#end" ).datepicker({
+            minDate: +1,
+            defaultDate: "+1w",
+            changeMonth: true,
+            numberOfMonths: 2,
+            onClose: function( selectedDate ) {
+                $( "#start" ).datepicker( "option", "maxDate", selectedDate );
+            }
+        });
+
+        $('#freeText').NobleCount('#freeTextCount', {
+            on_negative: 'error',
+            on_positive: 'okay',
+            max_chars: 30
+        });
+    });
+</script>
 <script src="${pageContext.request.contextPath}/static/js/mainpop.js"></script>
 </html>

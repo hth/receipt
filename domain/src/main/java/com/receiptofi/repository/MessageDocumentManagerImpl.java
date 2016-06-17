@@ -206,6 +206,7 @@ public final class MessageDocumentManagerImpl implements MessageDocumentManager 
 
     @Override
     public void markMessageForReceiptAsDuplicate(String did, String emailId, String rid, DocumentStatusEnum documentStatus) {
+        LOG.info("Marking message as {} for did={}", documentStatus, did);
         Assert.assertEquals("Can only set to reject", DocumentStatusEnum.REJECT, documentStatus);
         mongoTemplate.updateFirst(
                 query(where("DID").is(did)),

@@ -6,12 +6,20 @@ package com.receiptofi.utils;
 import org.apache.commons.lang3.StringUtils;
 
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
+import org.joda.time.Interval;
+import org.joda.time.PeriodType;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.springframework.util.Assert;
+
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDate;
@@ -19,6 +27,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.temporal.TemporalAdjusters;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * @author hitender
@@ -31,11 +40,14 @@ import java.util.Date;
         "PMD.LongVariable"
 })
 public final class DateUtil {
+    private static final Logger LOG = LoggerFactory.getLogger(DateUtil.class);
+
     private static final int MINUTE_IN_SECONDS = 60;
     private static final int HOUR_IN_SECONDS = MINUTE_IN_SECONDS * MINUTE_IN_SECONDS;
     public static final int HOURS = 24;
     public static final int DAY_IN_SECONDS = HOUR_IN_SECONDS * 24;
-    private static final Logger LOG = LoggerFactory.getLogger(DateUtil.class);
+
+    public static final DateFormat DF_MMDDYYYY = new SimpleDateFormat("MM/dd/yyyy", Locale.US);
 
     private DateUtil() {
     }
@@ -141,6 +153,32 @@ public final class DateUtil {
             }
         }
         return birthday;
+    }
+
+    /**
+     * Gets current time on UTC. This is required when setting up cron task as server time is set on UTC.
+     *
+     * @return
+     */
+    public static Date getUTCDate() {
+        return new DateTime(DateTimeZone.UTC).toLocalDateTime().toDate();
+    }
+
+    /**
+     * Inclusive of the days the campaign is going to run.
+     *
+     * @return
+     */
+    public static int getDaysBetween(String start, String end) {
+        try {
+            Assert.notNull(start);
+            Assert.notNull(end);
+            Interval interval = new Interval(DF_MMDDYYYY.parse(start).getTime(), DF_MMDDYYYY.parse(end).getTime());
+            return interval.toPeriod(PeriodType.days()).getDays();
+        } catch (ParseException e) {
+            LOG.warn("Failed to parse date start={} end={}", start, end);
+            return -1;
+        }
     }
 
     //todo add support for small AM|PM

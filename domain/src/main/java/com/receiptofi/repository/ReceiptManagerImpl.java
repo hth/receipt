@@ -97,14 +97,15 @@ public class ReceiptManagerImpl implements ReceiptManager {
 
     @Override
     public List<ReceiptEntity> getAllReceipts(String rid) {
-        Criteria criteria = where("RID").is(rid)
-                .andOperator(
-                        isActive(),
-                        isNotDeleted()
-                );
-
-        Sort sort = new Sort(DESC, "RTXD").and(new Sort(DESC, "C"));
-        return mongoTemplate.find(query(criteria).with(sort), ReceiptEntity.class, TABLE);
+        return mongoTemplate.find(
+                query(where("RID").is(rid)
+                        .andOperator(
+                                isActive(),
+                                isNotDeleted()
+                        )
+                ).with(new Sort(DESC, "RTXD").and(new Sort(DESC, "C"))),
+                ReceiptEntity.class,
+                TABLE);
     }
 
     @Override

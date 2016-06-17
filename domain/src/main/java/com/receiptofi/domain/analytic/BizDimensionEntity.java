@@ -9,7 +9,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 
 /**
  * User: hitender
- * Date: 6/3/16 3:01 PM
+ * Date: 6/8/16 3:47 PM
  */
 @SuppressWarnings ({
         "PMD.BeanMembersShouldSerialize",
@@ -17,11 +17,11 @@ import org.springframework.data.mongodb.core.mapping.Field;
         "PMD.MethodArgumentCouldBeFinal",
         "PMD.LongVariable"
 })
-@Document (collection = "A_BIZ_USER_COUNT")
+@Document (collection = "Z_BIZ_DIM")
 @CompoundIndexes (value = {
-        @CompoundIndex (name = "biz_user_count_idx", def = "{'bizId': 1}", unique = true, background = true)
+        @CompoundIndex (name = "biz_dim_idx", def = "{'bizId': 1}", unique = true, background = true)
 })
-public class BizUserCountEntity extends BaseEntity {
+public class BizDimensionEntity extends BaseEntity {
 
     @Field ("bizName")
     private String bizName;
@@ -31,6 +31,15 @@ public class BizUserCountEntity extends BaseEntity {
 
     @Field ("userCount")
     private long userCount;
+
+    @Field ("storeCount")
+    private long storeCount;
+
+    @Field ("bizTotal")
+    private Double bizTotal;
+
+    @Field ("visitCnt")
+    private long visitCount;
 
     public String getBizName() {
         return bizName;
@@ -54,5 +63,29 @@ public class BizUserCountEntity extends BaseEntity {
 
     public void setUserCount(long userCount) {
         this.userCount = userCount;
+    }
+
+    public long getStoreCount() {
+        return storeCount;
+    }
+
+    public void setStoreCount(long storeCount) {
+        this.storeCount = storeCount;
+    }
+
+    public Double getBizTotal() {
+        return bizTotal;
+    }
+
+    public void setBizTotal(Double bizTotal) {
+        this.bizTotal = bizTotal;
+    }
+
+    public long getVisitCount() {
+        return visitCount;
+    }
+
+    public void setVisitCount(long visitCount) {
+        this.visitCount = visitCount;
     }
 }

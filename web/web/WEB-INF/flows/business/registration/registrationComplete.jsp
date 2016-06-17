@@ -12,11 +12,11 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/style.css"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/stylelogin.css"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/colpick.css"/>
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/sweetalert/0.5.0/sweet-alert.css"/>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css"/>
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/sweetalert/0.5.0/sweet-alert.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
     <script src="${pageContext.request.contextPath}/static/external/js/noble-count/jquery.NobleCount.min.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/static/external/js/cute-time/jquery.cuteTime.min.js"></script>
 </head>
@@ -68,22 +68,22 @@
     </div>
     <div class="rightside-content">
         <sec:authorize access="hasRole('ROLE_BUSINESS')">
-            <div class="business_reg">
-                <div class="down_form" style="width: 90%">
-                    <c:choose>
-                        <c:when test="${businessRegistration.businessUser.businessUserRegistrationStatus eq 'C'}">
-                            <h1 class="h1">Registration complete</h1>
-                            <hr>
-                            Your details are being verified. Would notify you once the verification is complete.
-                        </c:when>
-                        <c:otherwise>
-                            <h1 class="h1">Registration not complete</h1>
-                            <hr>
-                            We could not verify your details. Please contact us or update profile.
-                        </c:otherwise>
-                    </c:choose>
-                </div>
+        <div class="business_reg">
+            <div class="down_form" style="width: 90%">
+                <c:choose>
+                    <c:when test="${businessRegistration.businessUser.businessUserRegistrationStatus eq 'C'}">
+                        <h1 class="h1">Registration complete</h1>
+                        <hr>
+                        Your details are being verified. Would notify you once the verification is complete.
+                    </c:when>
+                    <c:otherwise>
+                        <h1 class="h1">Registration not complete</h1>
+                        <hr>
+                        We could not verify your details. Please contact us or update profile.
+                    </c:otherwise>
+                </c:choose>
             </div>
+        </div>
         </sec:authorize>
     </div>
 </div>

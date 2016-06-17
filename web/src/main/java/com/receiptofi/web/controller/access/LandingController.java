@@ -294,7 +294,7 @@ public class LandingController {
 
                     if (!duplicateFile) {
                         LOG.info("{} receipt found, delete, name={} rid={}",
-                                DocumentRejectReasonEnum.D.getName(),
+                                DocumentRejectReasonEnum.D.getDescription(),
                                 image.getOriginalFileName(),
                                 rid);
 
