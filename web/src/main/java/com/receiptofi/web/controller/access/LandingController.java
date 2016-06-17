@@ -86,6 +86,7 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping (value = "/access")
 public class LandingController {
     private static final Logger LOG = LoggerFactory.getLogger(LandingController.class);
+
     public static final String SUCCESS = "success";
     private static final String UPLOAD_MESSAGE = "uploadMessage";
     private static final String FILE_UPLOADED_SUCCESSFULLY = "File uploaded successfully";
