@@ -9,6 +9,7 @@
     <script>var ctx = "${pageContext.request.contextPath}"</script>
 
     <title><fmt:message key="title"/></title>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/style.css"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/stylelogin.css"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/colpick.css"/>
@@ -81,6 +82,9 @@
                             <c:if test="${errors.hasFieldErrors('freeText')}">
                                 <li><form:errors path="freeText" /></li>
                             </c:if>
+                            <c:if test="${errors.hasFieldErrors('additionalInfo')}">
+                                <li><form:errors path="additionalInfo" /></li>
+                            </c:if>
                             <c:if test="${errors.hasFieldErrors('start')}">
                                 <li><form:errors path="start" /></li>
                             </c:if>
@@ -97,9 +101,18 @@
                     <div class="row_field">
                         <form:label path="freeText" cssClass="profile_label"
                                 cssErrorClass="profile_label lb_error">Coupon Text</form:label>
-                        <form:input path="freeText" size="200" cssClass="name_txt" cssStyle="width: 250px;" placeholder="Something like 10% off"/>
+                        <form:input path="freeText" size="200" cssClass="name_txt" cssStyle="width: 250px;"
+                                placeholder="Something like 10% off"/>
                         <br>
                         <span class="si-general-text remaining-characters" style="text-indent: 129px;"><span id="freeTextCount"></span> characters remaining.</span>
+                    </div>
+                    <div class="row_field">
+                        <form:label path="additionalInfo" cssClass="profile_label"
+                                cssErrorClass="profile_label lb_error">Additional Info</form:label>
+                        <form:textarea path="additionalInfo" cols="50" rows="5" cssClass="name_txt" cssStyle="width: 450px; height: 150px;"
+                                placeholder="Description, Conditions & Legal Content"/>
+                        <br>
+                        <span class="si-general-text remaining-characters" style="text-indent: 129px;"><span id="additionalInfoCount"></span> characters remaining.</span>
                     </div>
                     <div class="row_field">
                         <form:label path="start" cssClass="profile_label"
@@ -166,6 +179,12 @@
             on_negative: 'error',
             on_positive: 'okay',
             max_chars: 30
+        });
+
+        $('#additionalInfo').NobleCount('#additionalInfoCount', {
+            on_negative: 'error',
+            on_positive: 'okay',
+            max_chars: 600
         });
     });
 </script>
