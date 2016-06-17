@@ -76,11 +76,6 @@ public class UploadDocumentImage {
         return fileType;
     }
 
-    public UploadDocumentImage setFileType(FileTypeEnum fileType) {
-        this.fileType = fileType;
-        return this;
-    }
-
     public DBObject getMetaData() {
         DBObject metaData = new BasicDBObject();
 
