@@ -2,6 +2,8 @@ package com.receiptofi.utils;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.io.Serializable;
+
 /**
  * Cleans incoming data.
  * User: hitender
@@ -13,7 +15,9 @@ import org.apache.commons.lang3.StringUtils;
         "PMD.MethodArgumentCouldBeFinal",
         "PMD.LongVariable"
 })
-public class ScrubbedInput {
+public class ScrubbedInput implements Serializable {
+    private static final long serialVersionUID = -4941918823207463880L;
+
     protected String text;
 
     @SuppressWarnings ("unused")
