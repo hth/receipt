@@ -12,8 +12,9 @@ package com.receiptofi.domain.types;
         "PMD.LongVariable"
 })
 public enum CommentTypeEnum {
-    NOTES("NOTES", "Notes"),
-    RECHECK("RECHECK", "Recheck");
+    N("N", "Notes"),
+    R("R", "Recheck"),
+    C("C", "Coupon");
 
     private final String description;
     private final String name;

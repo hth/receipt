@@ -292,8 +292,8 @@ public class ITest extends RealMongoForTests {
 
     public ReceiptEntity populateReceiptWithComments(UserAccountEntity userAccount) throws IOException {
         ReceiptEntity receipt = populateReceipt(userAccount);
-        receipt.setNotes(createComment(CommentTypeEnum.NOTES));
-        receipt.setRecheckComment(createComment(CommentTypeEnum.RECHECK));
+        receipt.setNotes(createComment(CommentTypeEnum.N));
+        receipt.setRecheckComment(createComment(CommentTypeEnum.R));
         return receipt;
     }
 

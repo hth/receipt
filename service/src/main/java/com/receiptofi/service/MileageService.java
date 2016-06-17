@@ -162,7 +162,7 @@ public class MileageService {
      *
      * @param notes
      * @param mileageId
-     * @param userProfileId
+     * @param rid
      * @return
      */
     public boolean updateMileageNotes(String notes, String mileageId, String rid) {
@@ -171,7 +171,7 @@ public class MileageService {
         boolean commentEntityBoolean = false;
         if (null == commentEntity) {
             commentEntityBoolean = true;
-            commentEntity = CommentEntity.newInstance(rid, CommentTypeEnum.NOTES);
+            commentEntity = CommentEntity.newInstance(rid, CommentTypeEnum.N);
             commentEntity.setText(notes);
         } else {
             commentEntity.setText(notes);

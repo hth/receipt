@@ -361,12 +361,12 @@ public class ReceiptServiceITest extends ITest {
 
         receiptService.updateReceiptNotes("My new receipt note", receipt.getId(), receipt.getReceiptUserId());
         ReceiptEntity receiptAfterCommentUpdate = receiptService.findReceipt(receipt.getId());
-        assertEquals("Receipt comment type", CommentTypeEnum.NOTES, receiptAfterCommentUpdate.getNotes().getCommentType());
+        assertEquals("Receipt comment type", CommentTypeEnum.N, receiptAfterCommentUpdate.getNotes().getCommentType());
         assertEquals("Receipt Note", "My new receipt note", receiptAfterCommentUpdate.getNotes().getText());
 
         receiptService.updateReceiptNotes("Updated receipt note", receipt.getId(), receipt.getReceiptUserId());
         receiptAfterCommentUpdate = receiptService.findReceipt(receipt.getId());
-        assertEquals("Receipt comment type", CommentTypeEnum.NOTES, receiptAfterCommentUpdate.getNotes().getCommentType());
+        assertEquals("Receipt comment type", CommentTypeEnum.N, receiptAfterCommentUpdate.getNotes().getCommentType());
         assertEquals("Receipt Note", "Updated receipt note", receiptAfterCommentUpdate.getNotes().getText());
 
         /** Delete the original receipt. Clean Up. */
@@ -395,12 +395,12 @@ public class ReceiptServiceITest extends ITest {
 
         receiptService.updateReceiptComment("My new recheck comment", receipt.getId(), receipt.getReceiptUserId());
         ReceiptEntity receiptAfterCommentUpdate = receiptService.findReceipt(receipt.getId());
-        assertEquals("Receipt comment type", CommentTypeEnum.RECHECK, receiptAfterCommentUpdate.getRecheckComment().getCommentType());
+        assertEquals("Receipt comment type", CommentTypeEnum.R, receiptAfterCommentUpdate.getRecheckComment().getCommentType());
         assertEquals("Receipt Re-Check comment", "My new recheck comment", receiptAfterCommentUpdate.getRecheckComment().getText());
 
         receiptService.updateReceiptComment("Updated recheck comment", receipt.getId(), receipt.getReceiptUserId());
         receiptAfterCommentUpdate = receiptService.findReceipt(receipt.getId());
-        assertEquals("Receipt comment type", CommentTypeEnum.RECHECK, receiptAfterCommentUpdate.getRecheckComment().getCommentType());
+        assertEquals("Receipt comment type", CommentTypeEnum.R, receiptAfterCommentUpdate.getRecheckComment().getCommentType());
         assertEquals("Receipt Re-Check comment", "Updated recheck comment", receiptAfterCommentUpdate.getRecheckComment().getText());
 
         /** Delete the original receipt. Clean Up. */
