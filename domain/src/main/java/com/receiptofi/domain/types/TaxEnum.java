@@ -36,6 +36,6 @@ public enum TaxEnum {
 
     @Override
     public String toString() {
-        return getDescription();
+        return description;
     }
 }

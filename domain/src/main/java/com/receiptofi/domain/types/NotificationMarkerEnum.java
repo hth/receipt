@@ -27,6 +27,6 @@ public enum NotificationMarkerEnum {
 
     @Override
     public String toString() {
-        return getDescription();
+        return description;
     }
 }

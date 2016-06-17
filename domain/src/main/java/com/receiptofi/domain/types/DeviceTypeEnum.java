@@ -26,6 +26,6 @@ public enum DeviceTypeEnum {
 
     @Override
     public String toString() {
-        return getDescription();
+        return description;
     }
 }

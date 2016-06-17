@@ -37,6 +37,6 @@ public enum DocumentRejectReasonEnum {
 
     @Override
     public String toString() {
-        return getDescription();
+        return description;
     }
 }

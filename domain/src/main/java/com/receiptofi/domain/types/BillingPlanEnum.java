@@ -48,6 +48,6 @@ public enum BillingPlanEnum {
 
     @Override
     public String toString() {
-        return getDescription();
+        return description;
     }
 }

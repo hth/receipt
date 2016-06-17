@@ -37,6 +37,6 @@ public enum FileTypeEnum {
 
     @Override
     public String toString() {
-        return getDescription();
+        return description;
     }
 }

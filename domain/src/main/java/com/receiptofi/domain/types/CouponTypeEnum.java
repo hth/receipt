@@ -27,6 +27,6 @@ public enum CouponTypeEnum {
 
     @Override
     public String toString() {
-        return getDescription();
+        return description;
     }
 }
