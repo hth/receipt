@@ -380,7 +380,7 @@ public class ReceiptService {
         boolean commentEntityBoolean = false;
         if (null == commentEntity) {
             commentEntityBoolean = true;
-            commentEntity = CommentEntity.newInstance(rid, CommentTypeEnum.NOTES);
+            commentEntity = CommentEntity.newInstance(rid, CommentTypeEnum.N);
             commentEntity.setText(notes);
         } else {
             commentEntity.setText(notes);
@@ -413,7 +413,7 @@ public class ReceiptService {
         boolean commentEntityBoolean = false;
         if (null == commentEntity) {
             commentEntityBoolean = true;
-            commentEntity = CommentEntity.newInstance(rid, CommentTypeEnum.RECHECK);
+            commentEntity = CommentEntity.newInstance(rid, CommentTypeEnum.R);
             commentEntity.setText(comment);
         } else {
             commentEntity.setText(comment);
@@ -445,7 +445,7 @@ public class ReceiptService {
         boolean commentEntityBoolean = false;
         if (null == commentEntity) {
             commentEntityBoolean = true;
-            commentEntity = CommentEntity.newInstance(rid, CommentTypeEnum.RECHECK);
+            commentEntity = CommentEntity.newInstance(rid, CommentTypeEnum.R);
             commentEntity.setText(comment);
         } else {
             commentEntity.setText(comment);

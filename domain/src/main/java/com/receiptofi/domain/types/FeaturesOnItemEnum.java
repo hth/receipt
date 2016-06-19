@@ -40,6 +40,6 @@ public enum FeaturesOnItemEnum {
 
     @Override
     public String toString() {
-        return getDescription();
+        return description;
     }
 }

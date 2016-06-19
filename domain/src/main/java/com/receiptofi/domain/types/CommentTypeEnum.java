@@ -12,15 +12,18 @@ package com.receiptofi.domain.types;
         "PMD.LongVariable"
 })
 public enum CommentTypeEnum {
-    NOTES("NOTES", "Notes"),
-    RECHECK("RECHECK", "Recheck");
+    N("N", "Notes", 250),
+    R("R", "Recheck", 250),
+    C("C", "Coupon", 600);
 
     private final String description;
     private final String name;
+    private final int textLength;
 
-    CommentTypeEnum(String name, String description) {
+    CommentTypeEnum(String name, String description, int textLength) {
         this.name = name;
         this.description = description;
+        this.textLength = textLength;
     }
 
     public String getName() {
@@ -31,8 +34,12 @@ public enum CommentTypeEnum {
         return description;
     }
 
+    public int getTextLength() {
+        return textLength;
+    }
+
     @Override
     public String toString() {
-        return getDescription();
+        return description;
     }
 }

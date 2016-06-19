@@ -39,6 +39,6 @@ public enum AccountTypeEnum {
 
     @Override
     public String toString() {
-        return getDescription();
+        return description;
     }
 }

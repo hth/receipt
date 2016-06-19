@@ -36,19 +36,23 @@ public class UploadDocumentImage {
     private FileTypeEnum fileType;
     private String blobId;
 
-    private UploadDocumentImage() {
+    private UploadDocumentImage() {}
+
+    private UploadDocumentImage(FileTypeEnum fileType) {
+        this.fileType = fileType;
     }
 
-    public static UploadDocumentImage newInstance() {
-        return new UploadDocumentImage();
+    public static UploadDocumentImage newInstance(FileTypeEnum fileType) {
+        return new UploadDocumentImage(fileType);
     }
 
     public MultipartFile getFileData() {
         return fileData;
     }
 
-    public void setFileData(MultipartFile fileData) {
+    public UploadDocumentImage setFileData(MultipartFile fileData) {
         this.fileData = fileData;
+        return this;
     }
 
     public String getOriginalFileName() {
@@ -63,16 +67,13 @@ public class UploadDocumentImage {
         return rid;
     }
 
-    public void setRid(String rid) {
+    public UploadDocumentImage setRid(String rid) {
         this.rid = rid;
+        return this;
     }
 
     public FileTypeEnum getFileType() {
         return fileType;
-    }
-
-    public void setFileType(FileTypeEnum fileType) {
-        this.fileType = fileType;
     }
 
     public DBObject getMetaData() {

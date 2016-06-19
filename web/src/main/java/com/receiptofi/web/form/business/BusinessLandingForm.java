@@ -16,47 +16,52 @@ public class BusinessLandingForm {
 
     private String bizName;
     private long customerCount;
-    private BigDecimal totalCustomerPurchases;
     private long storeCount;
-    private long actualStoreCount;
+    private BigDecimal totalCustomerPurchases;
+    private long visitCount;
 
     public String getBizName() {
         return bizName;
     }
 
-    public void setBizName(String bizName) {
+    public BusinessLandingForm setBizName(String bizName) {
         this.bizName = bizName;
+        return this;
     }
 
     public long getCustomerCount() {
         return customerCount;
     }
 
-    public void setCustomerCount(long customerCount) {
+    public BusinessLandingForm setCustomerCount(long customerCount) {
         this.customerCount = customerCount;
-    }
-
-    public BigDecimal getTotalCustomerPurchases() {
-        return totalCustomerPurchases;
-    }
-
-    public void setTotalCustomerPurchases(BigDecimal totalCustomerPurchases) {
-        this.totalCustomerPurchases = totalCustomerPurchases;
+        return this;
     }
 
     public long getStoreCount() {
         return storeCount;
     }
 
-    public void setStoreCount(long storeCount) {
+    public BusinessLandingForm setStoreCount(long storeCount) {
         this.storeCount = storeCount;
+        return this;
     }
 
-    public long getActualStoreCount() {
-        return actualStoreCount;
+    public BigDecimal getTotalCustomerPurchases() {
+        return totalCustomerPurchases;
     }
 
-    public void setActualStoreCount(long actualStoreCount) {
-        this.actualStoreCount = actualStoreCount;
+    public BusinessLandingForm setTotalCustomerPurchases(BigDecimal totalCustomerPurchases) {
+        this.totalCustomerPurchases = totalCustomerPurchases;
+        return this;
+    }
+
+    public long getVisitCount() {
+        return visitCount;
+    }
+
+    public BusinessLandingForm setVisitCount(long visitCount) {
+        this.visitCount = visitCount;
+        return this;
     }
 }

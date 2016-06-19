@@ -31,6 +31,6 @@ public enum BusinessUserRegistrationStatusEnum {
 
     @Override
     public String toString() {
-        return this.description;
+        return description;
     }
 }

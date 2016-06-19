@@ -12,11 +12,11 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/style.css"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/stylelogin.css"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/colpick.css"/>
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/sweetalert/0.5.0/sweet-alert.css"/>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css"/>
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/sweetalert/0.5.0/sweet-alert.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
     <script src="${pageContext.request.contextPath}/static/external/js/noble-count/jquery.NobleCount.min.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/static/external/js/cute-time/jquery.cuteTime.min.js"></script>
 </head>
@@ -68,46 +68,67 @@
     </div>
     <div class="rightside-content">
         <sec:authorize access="hasRole('ROLE_BUSINESS')">
-            <div class="business_reg">
-                <div class="down_form" style="width: 90%">
-                    <form:form commandName="businessRegistration">
-                        <h1 class="h1">Add business details</h1>
-                        <hr>
-                        <input type="hidden" name="_flowExecutionKey" value="${flowExecutionKey}"/>
+        <div class="business_reg">
+            <div class="down_form" style="width: 90%">
+                <form:form commandName="businessRegistration">
+                    <h1 class="h1">Add business details</h1>
+                    <hr>
+                    <input type="hidden" name="_flowExecutionKey" value="${flowExecutionKey}"/>
 
-                        <div class="row_field">
-                            <form:label path="businessName" cssClass="profile_label" cssStyle="width: 145px;"
-                                    cssErrorClass="profile_label lb_error">Business Name</form:label>
-                            <form:input path="businessName" size="20" cssClass="name_txt" />
-                        </div>
-                        <div class="row_field">
-                            <form:label path="businessTypes" cssClass="profile_label" cssStyle="width: 145px;"
-                                    cssErrorClass="profile_label lb_error">Business Type</form:label>
-
-                            <form:select path="businessTypes" cssClass="styled-select slate" multiple="true" style="height: 100px;">
-                                <form:options items="${businessRegistration.availableBusinessTypes}" itemValue="name" itemLabel="description" />
-                            </form:select>
-                        </div>
-                        <div class="row_field">
-                            <form:label path="businessAddress" cssClass="profile_label" cssStyle="width: 145px;"
-                                    cssErrorClass="profile_label lb_error">Business Address</form:label>
-                            <form:input path="businessAddress" size="200" cssClass="name_txt" style="width: 600px;" />
-                        </div>
-                        <div class="row_field">
-                            <form:label path="businessPhone" cssClass="profile_label" cssStyle="width: 145px;"
-                                    cssErrorClass="profile_label lb_error">Business Phone</form:label>
-                            <form:input path="businessPhone" size="20" cssClass="name_txt" />
-                        </div>
-
-                        <div class="full">
-                            <c:if test="${businessRegistration.emailValidated}">
-                                <input type="submit" value="SUBMIT" class="read_btn" name="_eventId_submit" style="background: #2c97de; margin: 77px 10px 0 0;">
+                    <spring:hasBindErrors name="businessRegistration">
+                    <div class="r-validation" style="width: 100%; margin: 0 0 0 0;">
+                        <ul>
+                            <c:if test="${errors.hasFieldErrors('businessName')}">
+                                <li><form:errors path="businessName" /></li>
                             </c:if>
-                            <input type="submit" value="CANCEL" class="read_btn" name="_eventId_cancel" style="background: #FC462A; margin: 77px 10px 0 0;">
-                        </div>
-                    </form:form>
-                </div>
+                            <c:if test="${errors.hasFieldErrors('businessTypes')}">
+                                <li><form:errors path="businessTypes" /></li>
+                            </c:if>
+                            <c:if test="${errors.hasFieldErrors('businessAddress')}">
+                                <li><form:errors path="businessAddress" /></li>
+                            </c:if>
+                            <c:if test="${errors.hasFieldErrors('businessPhone')}">
+                                <li><form:errors path="businessPhone" /></li>
+                            </c:if>
+                        </ul>
+                    </div>
+                    </spring:hasBindErrors>
+
+                    <div class="row_field">
+                        <form:label path="businessName" cssClass="profile_label" cssStyle="width: 145px;"
+                                cssErrorClass="profile_label lb_error">Business Name</form:label>
+                        <form:input path="businessName" size="20" cssClass="name_txt" />
+                    </div>
+                    <div class="row_field">
+                        <form:label path="businessTypes" cssClass="profile_label" cssStyle="width: 145px;"
+                                cssErrorClass="profile_label lb_error">Business Type</form:label>
+
+                        <form:select path="businessTypes" cssClass="styled-select slate" multiple="true" style="height: 100px;">
+                            <form:options items="${businessRegistration.availableBusinessTypes}" itemValue="name" itemLabel="description" />
+                        </form:select>
+                    </div>
+                    <div class="row_field">
+                        <form:label path="businessAddress" cssClass="profile_label" cssStyle="width: 145px;"
+                                cssErrorClass="profile_label lb_error">Business Address</form:label>
+                        <form:input path="businessAddress" size="200" cssClass="name_txt" style="width: 600px;" />
+                    </div>
+                    <div class="row_field">
+                        <form:label path="businessPhone" cssClass="profile_label" cssStyle="width: 145px;"
+                                cssErrorClass="profile_label lb_error">Business Phone</form:label>
+                        <form:input path="businessPhone" size="20" cssClass="name_txt" />
+                    </div>
+
+                    <div class="full">
+                        <c:if test="${businessRegistration.emailValidated}">
+                            <input type="submit" value="NEXT" class="read_btn" name="_eventId_submit"
+                                    style="background: #2c97de; margin: 77px 10px 0 0;">
+                        </c:if>
+                        <input type="submit" value="CANCEL" class="read_btn" name="_eventId_cancel"
+                                style="background: #FC462A; margin: 77px 10px 0 0;">
+                    </div>
+                </form:form>
             </div>
+        </div>
         </sec:authorize>
     </div>
 </div>

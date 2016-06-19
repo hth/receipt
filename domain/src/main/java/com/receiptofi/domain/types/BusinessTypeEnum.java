@@ -53,6 +53,6 @@ public enum BusinessTypeEnum {
 
     @Override
     public String toString() {
-        return this.description;
+        return description;
     }
 }

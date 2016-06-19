@@ -33,7 +33,7 @@ import java.util.List;
 @RequestMapping (value = "/emp")
 public class EmpLandingController {
     private static final Logger LOG = LoggerFactory.getLogger(EmpLandingController.class);
-    private static final String nextPage = "/emp/landing1";
+    private static final String nextPage = "/emp/landing";
 
     private EmpLandingService empLandingService;
 

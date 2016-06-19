@@ -17,7 +17,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.text.DateFormat;
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -43,9 +45,9 @@ import javax.validation.constraints.NotNull;
 public class FileSystemEntity extends BaseEntity {
     private static final Logger LOG = LoggerFactory.getLogger(FileSystemEntity.class);
 
-    public static final SimpleDateFormat SDF_YEAR_AND_MONTH = new SimpleDateFormat("yyyy-MM");
-    public static final SimpleDateFormat SDF_DATE = new SimpleDateFormat("dd");
-    private static final DecimalFormat TWO_DIGIT_FORMAT = new DecimalFormat("00");
+    public static final DateFormat SDF_YEAR_AND_MONTH = new SimpleDateFormat("yyyy-MM");
+    public static final DateFormat SDF_DATE = new SimpleDateFormat("dd");
+    private static final NumberFormat TWO_DIGIT_FORMAT = new DecimalFormat("00");
 
     /** Means image it aligned vertically. */
     public static final int DEFAULT_ORIENTATION_ANGLE = 0;
@@ -103,20 +105,30 @@ public class FileSystemEntity extends BaseEntity {
     private String originalFilename;
 
     @Field ("FT")
-    private FileTypeEnum fileType = FileTypeEnum.R;
+    private FileTypeEnum fileType;
 
     /** To keep bean happy. */
     public FileSystemEntity() {
         super();
     }
 
+    /**
+     *
+     * @param blobId
+     * @param rid
+     * @param bufferedImage
+     * @param imageOrientation
+     * @param sequence
+     * @param multipartFile Meta data
+     */
     public FileSystemEntity(
             String blobId,
             String rid,
             BufferedImage bufferedImage,
             int imageOrientation,
             int sequence,
-            MultipartFile multipartFile
+            MultipartFile multipartFile,
+            FileTypeEnum fileType
     ) {
         super();
         this.blobId = blobId;
@@ -128,6 +140,7 @@ public class FileSystemEntity extends BaseEntity {
         this.contentType = multipartFile.getContentType();
         this.fileLength = multipartFile.getSize();
         this.originalFilename = multipartFile.getOriginalFilename();
+        this.fileType = fileType;
 
         if (!contentType.startsWith("image")) {
             try {
@@ -219,10 +232,6 @@ public class FileSystemEntity extends BaseEntity {
 
     public FileTypeEnum getFileType() {
         return fileType;
-    }
-
-    public void setFileType(FileTypeEnum fileType) {
-        this.fileType = fileType;
     }
 
     @Transient

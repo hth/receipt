@@ -25,6 +25,6 @@ public enum PaymentGatewayEnum {
 
     @Override
     public String toString() {
-        return getDescription();
+        return description;
     }
 }

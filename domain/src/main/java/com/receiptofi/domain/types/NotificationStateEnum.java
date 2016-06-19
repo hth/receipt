@@ -26,6 +26,6 @@ public enum NotificationStateEnum {
 
     @Override
     public String toString() {
-        return getDescription();
+        return description;
     }
 }

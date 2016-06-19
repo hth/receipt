@@ -12,11 +12,11 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/style.css"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/stylelogin.css"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/colpick.css"/>
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/sweetalert/0.5.0/sweet-alert.css"/>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css"/>
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/sweetalert/0.5.0/sweet-alert.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
     <script src="${pageContext.request.contextPath}/static/external/js/noble-count/jquery.NobleCount.min.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/static/external/js/cute-time/jquery.cuteTime.min.js"></script>
 </head>
@@ -75,20 +75,39 @@
                     <hr>
                     <input type="hidden" name="_flowExecutionKey" value="${flowExecutionKey}"/>
 
+                    <spring:hasBindErrors name="businessRegistration">
+                    <div class="r-validation" style="width: 100%; margin: 0 0 0 0;">
+                        <ul>
+                            <c:if test="${errors.hasFieldErrors('firstName')}">
+                                <li><form:errors path="firstName" /></li>
+                            </c:if>
+                            <c:if test="${errors.hasFieldErrors('lastName')}">
+                                <li><form:errors path="lastName" /></li>
+                            </c:if>
+                            <c:if test="${errors.hasFieldErrors('address')}">
+                                <li><form:errors path="address" /></li>
+                            </c:if>
+                            <c:if test="${errors.hasFieldErrors('phone')}">
+                                <li><form:errors path="phone" /></li>
+                            </c:if>
+                        </ul>
+                    </div>
+                    </spring:hasBindErrors>
+
                     <div class="row_field">
                         <form:label path="firstName" cssClass="profile_label"
                                 cssErrorClass="profile_label lb_error">First name</form:label>
                         <form:input path="firstName" size="20" cssClass="name_txt" />
                     </div>
                     <div class="row_field">
-                        <form:label path="address" cssClass="profile_label"
+                        <form:label path="lastName" cssClass="profile_label"
                                 cssErrorClass="profile_label lb_error">Last name</form:label>
                         <form:input path="lastName" size="20" cssClass="name_txt" />
                     </div>
                     <div class="row_field">
                         <form:label path="address" cssClass="profile_label"
                                 cssErrorClass="profile_label lb_error">Your Address</form:label>
-                        <form:input path="address" size="200" cssClass="name_txt" style="width: 600px;" />
+                        <form:input path="address" size="200" cssClass="name_txt" cssStyle="width: 600px;" />
                     </div>
                     <div class="row_field">
                         <form:label path="phone" cssClass="profile_label"
@@ -110,9 +129,11 @@
 
                     <div class="full">
                         <c:if test="${businessRegistration.emailValidated}">
-                        <input type="submit" value="SUBMIT" class="read_btn" name="_eventId_submit" style="background: #2c97de; margin: 77px 10px 0 0;">
+                        <input type="submit" value="NEXT" class="read_btn" name="_eventId_submit"
+                                style="background: #2c97de; margin: 77px 10px 0 0;">
                         </c:if>
-                        <input type="submit" value="CANCEL" class="read_btn" name="_eventId_cancel" style="background: #FC462A; margin: 77px 10px 0 0;">
+                        <input type="submit" value="CANCEL" class="read_btn" name="_eventId_cancel"
+                                style="background: #FC462A; margin: 77px 10px 0 0;">
                     </div>
                 </form:form>
             </div>

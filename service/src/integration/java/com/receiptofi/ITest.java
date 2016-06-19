@@ -8,6 +8,7 @@ import com.receiptofi.domain.ItemEntity;
 import com.receiptofi.domain.ReceiptEntity;
 import com.receiptofi.domain.UserAccountEntity;
 import com.receiptofi.domain.types.CommentTypeEnum;
+import com.receiptofi.domain.types.FileTypeEnum;
 import com.receiptofi.repository.*;
 import com.receiptofi.service.*;
 import com.receiptofi.service.routes.FileUploadDocumentSenderJMS;
@@ -292,8 +293,8 @@ public class ITest extends RealMongoForTests {
 
     public ReceiptEntity populateReceiptWithComments(UserAccountEntity userAccount) throws IOException {
         ReceiptEntity receipt = populateReceipt(userAccount);
-        receipt.setNotes(createComment(CommentTypeEnum.NOTES));
-        receipt.setRecheckComment(createComment(CommentTypeEnum.RECHECK));
+        receipt.setNotes(createComment(userAccount.getReceiptUserId(), CommentTypeEnum.N));
+        receipt.setRecheckComment(createComment(userAccount.getReceiptUserId(), CommentTypeEnum.R));
         return receipt;
     }
 
@@ -348,7 +349,8 @@ public class ITest extends RealMongoForTests {
                 ImageIO.read(getFile()),
                 0,
                 0,
-                getMultipartFile(receipt.getReceiptUserId()));
+                getMultipartFile(receipt.getReceiptUserId()),
+                FileTypeEnum.R);
 
         fileSystemService.save(fileSystem);
         List<FileSystemEntity> fileSystems = new ArrayList<>();
@@ -356,8 +358,8 @@ public class ITest extends RealMongoForTests {
         return fileSystems;
     }
 
-    private CommentEntity createComment(CommentTypeEnum commentType) {
-        CommentEntity commentEntity = CommentEntity.newInstance(commentType);
+    private CommentEntity createComment(String rid, CommentTypeEnum commentType) {
+        CommentEntity commentEntity = CommentEntity.newInstance(rid, commentType);
         commentEntity.setText("This is notes");
         commentService.save(commentEntity);
         return commentEntity;

@@ -1,4 +1,4 @@
-package com.receiptofi.web.flow;
+package com.receiptofi.web.flow.exception;
 
 /**
  * User: hitender

@@ -36,10 +36,9 @@ public class EvalFeedbackService {
         String blobId = StringUtils.EMPTY;
         try {
             if (fileData.getSize() > 0) {
-                UploadDocumentImage uploadReceiptImage = UploadDocumentImage.newInstance();
-                uploadReceiptImage.setFileData(fileData);
-                uploadReceiptImage.setRid(receiptUserId);
-                uploadReceiptImage.setFileType(FileTypeEnum.F);
+                UploadDocumentImage uploadReceiptImage = UploadDocumentImage.newInstance(FileTypeEnum.F)
+                        .setFileData(fileData)
+                        .setRid(receiptUserId);
 
                 blobId = fileDBService.saveFile(uploadReceiptImage);
             }
