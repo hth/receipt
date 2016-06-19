@@ -8,5 +8,5 @@ import com.receiptofi.domain.BusinessCampaignEntity;
  */
 public interface BusinessCampaignManager extends RepositoryManager<BusinessCampaignEntity> {
 
-    BusinessCampaignEntity findById(String campaignId);
+    BusinessCampaignEntity findById(String campaignId, String bizId);
 }

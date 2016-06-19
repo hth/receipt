@@ -1,4 +1,4 @@
-jQuery(document).ready(function ($) {
+$(document).ready(function ($) {
     //Fineuploader start
     var errorHandler = function (event, id, fileName, reason) {
         qq.log("id: " + id + ", fileName: " + fileName + ", reason: " + reason);
@@ -13,60 +13,29 @@ jQuery(document).ready(function ($) {
             onError: errorHandler,
             onComplete: function (id, fileName, responseJSON) {
                 if (responseJSON.success == true) {
+                    console.log("success");
                     $(this.getItemByFileId(id)).hide('slow');
-
-                    $.ajax({
-                        type: 'POST',
-                        beforeSend: function (xhr) {
-                            xhr.setRequestHeader(
-                                $("meta[name='_csrf_header']").attr("content"),
-                                $("meta[name='_csrf']").attr("content")
-                            );
-                        },
-                        url: ctx + '/ws/r/pending.htm',
-                        success: function (response) {
-                            if (response.PENDING > 0) {
-                                var html =
-                                    "<a href='" + ctx + "/access/document/pending.htm' class='big-view'>" +
-                                    "<span class='pendingCounter' id='pendingCountValue'>0</span>" +
-                                    "</a>";
-                                $('#pendingCountInitial').hide();
-                                $('#pendingCountId').html(html).show();
-                                $(runCounter(response.PENDING, '#pendingCountValue'));
-                                $('#pendingCountSyncedId').attr('data-timestamp', 'asd');
-                                $('#pendingCountSyncedId').text("just now");
-                            }
-
-                            if (response.REJECTED > 0) {
-                                var html =
-                                    "<a href='" + ctx + "/access/document/rejected.htm' class='big-view-lower'>" +
-                                    "<span class='rejectedCounter' id='rejectedCountValue'>0</span>" +
-                                    "</a>";
-                                $('#rejectedCountInitial').hide();
-                                $('#rejectedCountId').html(html).show();
-                                $(runCounter(response.REJECTED, '#rejectedCountValue'));
-                                $('#rejectedCountSyncedId').attr('data-timestamp', 'asd');
-                                $('#rejectedCountSyncedId').text("just now");
-                            }
-                        }
-                    });
                 }
             }
         },
         request: {
-            endpoint: ctx + '/access/landing/upload.htm',
+            endpoint: ctx + '/business/upload.htm',
             customHeaders: {
                 Accept: 'multipart/form-data',
                 'X-CSRF-TOKEN': $("meta[name='_csrf']").attr("content")
+            },
+            params : {
+                campaignId : document.getElementById('campaignId').value,
+                bizId : document.getElementById('bizId').value
             }
         },
-        multiple: true,
+        multiple: false,
         validation: {
             allowedExtensions: ['jpeg', 'jpg', 'gif', 'png'],
             sizeLimit: 10485760 // 10 MB in bytes
         },
         text: {
-            uploadButton: '&uarr; &nbsp; UPLOAD IMAGE(S)'
+            uploadButton: '&uarr; &nbsp; UPLOAD COUPON'
         },
         showMessage: function (message) {
             $('#fine-uploader-validation').append('<div class="alert-error">' + message + '</div>');

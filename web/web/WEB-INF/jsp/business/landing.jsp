@@ -79,7 +79,7 @@
                     Store count: <c:out value="${businessLandingForm.storeCount}" />
                     Visit count: <c:out value="${businessLandingForm.visitCount}" />
                     <br/>
-                    <a href="/business/campaign.htm?campaignId=5761c71d383b8de7b7b16a1e">Start</a>
+                    <a href="/business/campaign.htm?campaignId=5765cf13c46da2195a3be10f">Start</a>
                     <a href="/business/campaign.htm">Start Empty</a>
                 </div>
             </div>

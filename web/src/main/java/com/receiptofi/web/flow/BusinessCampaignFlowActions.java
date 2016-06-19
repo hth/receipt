@@ -4,11 +4,14 @@ import static com.receiptofi.utils.DateUtil.DF_MMDDYYYY;
 
 import com.receiptofi.domain.BusinessCampaignEntity;
 import com.receiptofi.domain.BusinessUserEntity;
-import com.receiptofi.domain.flow.BusinessCampaign;
+import com.receiptofi.domain.flow.CouponCampaign;
 import com.receiptofi.domain.site.ReceiptUser;
 import com.receiptofi.service.BusinessCampaignService;
 import com.receiptofi.service.BusinessUserService;
 import com.receiptofi.utils.DateUtil;
+import com.receiptofi.utils.ScrubbedInput;
+import com.receiptofi.web.controller.access.LandingController;
+import com.receiptofi.web.flow.exception.BusinessCampaignException;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -52,14 +55,14 @@ public class BusinessCampaignFlowActions {
      * @return
      */
     @SuppressWarnings ("unused")
-    public BusinessCampaign startCampaign() {
+    public CouponCampaign startCampaign() {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String rid = receiptUser.getRid();
         DateTime utcDate = new DateTime(DateUtil.getUTCDate());
 
         BusinessUserEntity businessUser = businessUserService.findBusinessUser(rid);
-        return new BusinessCampaign()
-                .setRid(businessUser.getReceiptUserId())
+        return new CouponCampaign(null)
+                .setRid(rid)
                 .setBusinessName(businessUser.getBizName().getBusinessName())
                 .setBizId(businessUser.getBizName().getId())
                 .setLive(DF_MMDDYYYY.format(utcDate.plusDays(1).toDate()))
@@ -68,36 +71,43 @@ public class BusinessCampaignFlowActions {
     }
 
     @SuppressWarnings ("unused")
-    public BusinessCampaign editCampaign(String campaignId) {
+    public CouponCampaign editCampaign(String campaignId) {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String rid = receiptUser.getRid();
 
-        BusinessCampaignEntity businessCampaign = businessCampaignService.findById(campaignId);
-        return new BusinessCampaign()
+        BusinessUserEntity businessUser = businessUserService.findBusinessUser(rid);
+        BusinessCampaignEntity businessCampaign = businessCampaignService.findById(campaignId, businessUser.getBizName().getId());
+        return new CouponCampaign(businessCampaign.getId())
+                .setRid(rid)
+                .setBusinessName(businessUser.getBizName().getBusinessName())
+                .setBizId(businessUser.getBizName().getId())
                 .setLive(DF_MMDDYYYY.format(businessCampaign.getLive()))
                 .setStart(DF_MMDDYYYY.format(businessCampaign.getStart()))
-                .setEnd(DF_MMDDYYYY.format(businessCampaign.getEnd()));
+                .setEnd(DF_MMDDYYYY.format(businessCampaign.getEnd()))
+                .setFreeText(new ScrubbedInput(businessCampaign.getFreeText()))
+                .setAdditionalInfo(businessCampaign.getAdditionalInfo() != null ? new ScrubbedInput(businessCampaign.getAdditionalInfo().getText()) : new ScrubbedInput(""))
+                .setDistributionPercent(businessCampaign.getDistributionPercent() + "%");
     }
 
     @SuppressWarnings ("unused")
-    public String validateCampaignDetails(BusinessCampaign businessCampaign, MessageContext messageContext) {
+    public String validateCampaignDetails(CouponCampaign couponCampaign, MessageContext messageContext) {
         LOG.info("Validate campaign details rid={} bizId={} bizName={}",
-                businessCampaign.getRid(),
-                businessCampaign.getBizId(),
-                businessCampaign.getBusinessName());
+                couponCampaign.getRid(),
+                couponCampaign.getBizId(),
+                couponCampaign.getBusinessName());
 
-        String status = "success";
+        String status = LandingController.SUCCESS;
 
         Date live = null, start = null, end = null;
         try {
-            live = DF_MMDDYYYY.parse(businessCampaign.getLive());
-            start = DF_MMDDYYYY.parse(businessCampaign.getStart());
-            end = DF_MMDDYYYY.parse(businessCampaign.getEnd());
+            live = DF_MMDDYYYY.parse(couponCampaign.getLive());
+            start = DF_MMDDYYYY.parse(couponCampaign.getStart());
+            end = DF_MMDDYYYY.parse(couponCampaign.getEnd());
         } catch (ParseException e) {
             LOG.error(e.getLocalizedMessage());
         }
 
-        if (StringUtils.isBlank(businessCampaign.getFreeText())) {
+        if (StringUtils.isBlank(couponCampaign.getFreeText().getText())) {
             messageContext.addMessage(
                     new MessageBuilder()
                             .error()
@@ -105,12 +115,22 @@ public class BusinessCampaignFlowActions {
                             .defaultText("Please enter Coupon Text to help explain the deal to your customers")
                             .build());
             status = "failure";
-        } else if (businessCampaign.getFreeText().length() > 30) {
+        } else if (couponCampaign.getFreeText().getText().length() > 30) {
             messageContext.addMessage(
                     new MessageBuilder()
                             .error()
                             .source("freeText")
                             .defaultText("Please keep Coupon Text under 30 characters")
+                            .build());
+            status = "failure";
+        }
+
+        if (couponCampaign.getAdditionalInfo().getText().length() > 600) {
+            messageContext.addMessage(
+                    new MessageBuilder()
+                            .error()
+                            .source("additionalInfo")
+                            .defaultText("Please shorten the content to fit under 600 characters")
                             .build());
             status = "failure";
         }
@@ -132,9 +152,9 @@ public class BusinessCampaignFlowActions {
                             .error()
                             .source("start")
                             .defaultText("Valid From cannot be before first available date " +
-                                    businessCampaign.getLive() +
+                                    couponCampaign.getLive() +
                                     ". Change Valid From date to match " +
-                                    businessCampaign.getLive())
+                                    couponCampaign.getLive())
                             .build());
             status = "failure";
         }
@@ -145,7 +165,7 @@ public class BusinessCampaignFlowActions {
                             .error()
                             .source("start")
                             .defaultText("Valid From cannot start and end on the same or before the start date " +
-                                    businessCampaign.getStart())
+                                    couponCampaign.getStart())
                             .build());
             status = "failure";
         }
@@ -157,16 +177,61 @@ public class BusinessCampaignFlowActions {
                             .source("start")
                             .defaultText("Valid From cannot start and end on the same. " +
                                     "Change the end date to higher than " +
-                                    businessCampaign.getEnd())
+                                    couponCampaign.getEnd())
                             .build());
             status = "failure";
         }
 
         LOG.info("Validate campaign details rid={} status={} bizId={} ",
-                businessCampaign.getRid(),
+                couponCampaign.getRid(),
                 status,
-                businessCampaign.getBizId());
+                couponCampaign.getBizId());
+
         LOG.info("Completed validating campaign details ");
+        return status;
+    }
+
+    @SuppressWarnings ("unused")
+    public void createUpdateCampaign(CouponCampaign couponCampaign) {
+        try {
+            businessCampaignService.save(couponCampaign);
+        } catch (Exception e) {
+            LOG.error("Error updating business user profile rid={} reason={}",
+                    couponCampaign.getRid(), e.getLocalizedMessage(), e);
+            throw new BusinessCampaignException("Error saving campaign", e);
+        }
+    }
+
+    @SuppressWarnings ("unused")
+    public String validateCampaignCoupon(CouponCampaign couponCampaign, MessageContext messageContext) {
+        LOG.info("Validate campaign details rid={} bizId={} bizName={}",
+                couponCampaign.getRid(),
+                couponCampaign.getBizId(),
+                couponCampaign.getBusinessName());
+
+        String status = LandingController.SUCCESS;
+
+        if (StringUtils.isBlank(couponCampaign.getDistributionPercent())) {
+            messageContext.addMessage(
+                    new MessageBuilder()
+                            .error()
+                            .source("distributionPercent")
+                            .defaultText("Distribution cannot be empty.")
+                            .build());
+            status = "failure";
+        }
+
+        if (couponCampaign.getDistributionPercentAsInt() <= 0) {
+            messageContext.addMessage(
+                    new MessageBuilder()
+                            .error()
+                            .source("distributionPercent")
+                            .defaultText("Distribution cannot be set to zero.")
+                            .build());
+            status = "failure";
+        }
+
+        LOG.info("Completed validating campaign coupon ");
         return status;
     }
 }

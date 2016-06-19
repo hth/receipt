@@ -71,12 +71,12 @@
         <sec:authorize access="hasRole('ROLE_BUSINESS')">
         <div class="business_reg">
             <div class="down_form" style="width: 90%">
-                <form:form commandName="businessCampaign">
+                <form:form commandName="couponCampaign">
                     <h1 class="h1">Create New Coupon Campaign</h1>
                     <hr>
                     <input type="hidden" name="_flowExecutionKey" value="${flowExecutionKey}"/>
 
-                    <spring:hasBindErrors name="businessCampaign">
+                    <spring:hasBindErrors name="couponCampaign">
                     <div class="r-validation" style="width: 100%; margin: 0 0 0 0;">
                         <ul>
                             <c:if test="${errors.hasFieldErrors('freeText')}">
@@ -122,8 +122,8 @@
                         <span style="padding: 10px 8px 8px 0; font-weight: bold">To</span>
                         &nbsp;
                         <form:input path="end" size="20" cssClass="name_txt" cssStyle="width: 100px;" />
-                        <c:if test="${businessCampaign.daysBetween gt -1}">
-                        <span style="padding: 10px 8px 8px 0; font-weight: bold">&nbsp; Duration <c:out value="${businessCampaign.daysBetween}" /> Days</span>
+                        <c:if test="${couponCampaign.daysBetween gt -1}">
+                        <span style="padding: 10px 8px 8px 0; font-weight: bold">&nbsp; Duration <c:out value="${couponCampaign.daysBetween}" /> Days</span>
                         </c:if>
                     </div>
                     <div class="row_field">

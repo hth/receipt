@@ -59,7 +59,7 @@
                   expression="businessRegistrationFlowActions.completeRegistrationInformation(businessRegistration)"/>
 
         <transition to="profileCompletion"
-                    on-exception="com.receiptofi.web.flow.BusinessRegistrationException"/>
+                    on-exception="com.receiptofi.web.flow.exception.BusinessRegistrationException"/>
 
         <transition to="registrationComplete"/>
     </action-state>

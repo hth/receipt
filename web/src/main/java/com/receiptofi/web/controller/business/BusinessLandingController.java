@@ -1,12 +1,18 @@
 package com.receiptofi.web.controller.business;
 
 import com.receiptofi.domain.BizNameEntity;
-import com.receiptofi.domain.BizStoreEntity;
+import com.receiptofi.domain.BusinessCampaignEntity;
 import com.receiptofi.domain.BusinessUserEntity;
+import com.receiptofi.domain.FileSystemEntity;
 import com.receiptofi.domain.analytic.BizDimensionEntity;
+import com.receiptofi.domain.shared.UploadDocumentImage;
 import com.receiptofi.domain.site.ReceiptUser;
-import com.receiptofi.service.BizService;
+import com.receiptofi.domain.types.FileTypeEnum;
+import com.receiptofi.service.BusinessCampaignService;
 import com.receiptofi.service.BusinessUserService;
+import com.receiptofi.service.FileDBService;
+import com.receiptofi.service.FileSystemService;
+import com.receiptofi.service.ImageSplitService;
 import com.receiptofi.service.analytic.BizDimensionService;
 import com.receiptofi.utils.Maths;
 import com.receiptofi.web.form.business.BusinessLandingForm;
@@ -23,8 +29,14 @@ import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.util.Collection;
+import java.util.LinkedList;
 
 /**
  * For Businesses.
@@ -44,8 +56,13 @@ public class BusinessLandingController {
 
     private String nextPage;
     private String businessRegistrationFlow;
+
     private BusinessUserService businessUserService;
     private BizDimensionService bizDimensionService;
+    private FileDBService fileDBService;
+    private FileSystemService fileSystemService;
+    private ImageSplitService imageSplitService;
+    private BusinessCampaignService businessCampaignService;
 
     @Autowired
     public BusinessLandingController(
@@ -56,11 +73,19 @@ public class BusinessLandingController {
             String businessRegistrationFlow,
 
             BusinessUserService businessUserService,
-            BizDimensionService bizDimensionService) {
+            BizDimensionService bizDimensionService,
+            FileDBService fileDBService,
+            FileSystemService fileSystemService,
+            ImageSplitService imageSplitService,
+            BusinessCampaignService businessCampaignService) {
         this.nextPage = nextPage;
         this.businessRegistrationFlow = businessRegistrationFlow;
         this.businessUserService = businessUserService;
         this.bizDimensionService = bizDimensionService;
+        this.fileDBService = fileDBService;
+        this.fileSystemService = fileSystemService;
+        this.imageSplitService = imageSplitService;
+        this.businessCampaignService = businessCampaignService;
     }
 
     /**
@@ -109,5 +134,71 @@ public class BusinessLandingController {
                 .setStoreCount(bizDimension.getStoreCount())
                 .setTotalCustomerPurchases(Maths.adjustScale(bizDimension.getBizTotal()))
                 .setVisitCount(bizDimension.getVisitCount());
+    }
+
+    /**
+     * For uploading campaign coupon.
+     *
+     * @throws IOException
+     */
+    @SuppressWarnings ("unused")
+    @RequestMapping (
+            method = RequestMethod.POST,
+            value = "/upload")
+    @ResponseBody
+    public String uploadCoupon(
+            @RequestParam("campaignId")
+            String campaignId,
+
+            @RequestParam("bizId")
+            String bizId,
+
+            @RequestParam ("qqfile")
+            MultipartFile multipartFile
+    ) throws IOException {
+        String rid = ((ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getRid();
+        LOG.info("Uploading business coupon rid={} campaignId={}", rid, campaignId);
+
+        if (multipartFile.isEmpty()) {
+            LOG.error("Empty or no coupon uploaded");
+            throw new RuntimeException("Empty or no coupon uploaded");
+        }
+
+        UploadDocumentImage image = UploadDocumentImage.newInstance(FileTypeEnum.C)
+                .setFileData(multipartFile)
+                .setRid(rid);
+
+        BufferedImage bufferedImage = imageSplitService.bufferedImage(image.getFileData().getInputStream());
+        String blobId = fileDBService.saveFile(image);
+        image.setBlobId(blobId);
+
+        BusinessCampaignEntity businessCampaign = businessCampaignService.findById(campaignId, bizId);
+
+        Collection<FileSystemEntity> fileSystems = new LinkedList<>();
+        FileSystemEntity fileSystem;
+        if (businessCampaign.getFileSystemEntities() != null) {
+            fileSystems = businessCampaign.getFileSystemEntities();
+            fileDBService.deleteHard(fileSystems);
+            fileSystemService.deleteHard(fileSystems);
+
+            fileSystems = new LinkedList<>();
+        }
+
+        fileSystem = new FileSystemEntity(
+                blobId,
+                rid,
+                bufferedImage,
+                0,
+                0,
+                image.getFileData(),
+                FileTypeEnum.C);
+        fileSystemService.save(fileSystem);
+        fileSystems.add(fileSystem);
+
+        businessCampaign.setFileSystemEntities(fileSystems);
+        businessCampaignService.save(businessCampaign);
+
+        LOG.info("Upload complete rid={}", rid);
+        return "{\"success\" : \"true\"}";
     }
 }

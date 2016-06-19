@@ -7,6 +7,9 @@ import com.receiptofi.utils.CommonUtil;
 
 import org.apache.commons.lang3.StringUtils;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.springframework.data.annotation.Transient;
 
 import java.io.Serializable;
@@ -17,6 +20,8 @@ import java.util.List;
  * Date: 5/20/16 8:24 AM
  */
 public class BusinessRegistration implements Serializable {
+    private static final Logger LOG = LoggerFactory.getLogger(BusinessRegistration.class);
+    private static final long serialVersionUID = -6047892968409443583L;
 
     private String rid;
     private String email;
