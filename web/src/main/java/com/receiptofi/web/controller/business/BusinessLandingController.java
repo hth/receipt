@@ -176,7 +176,7 @@ public class BusinessLandingController {
 
         Collection<FileSystemEntity> fileSystems = new LinkedList<>();
         FileSystemEntity fileSystem;
-        if (businessCampaign.getFileSystemEntities() != null) {
+        if (null != businessCampaign.getFileSystemEntities()) {
             fileSystems = businessCampaign.getFileSystemEntities();
             fileDBService.deleteHard(fileSystems);
             fileSystemService.deleteHard(fileSystems);
