@@ -65,7 +65,7 @@ public class TextInputScrubber {
         try {
             return URLDecoder.decode(input, "UTF-8");
         } catch (IllegalArgumentException e) {
-            LOG.warn("Unable to decode the input={} trying replacing text.", input, e);
+            LOG.warn("Unable to decode the input={}, next trying replacing text.", input);
             input = input.replaceAll("%(?![0-9a-fA-F]{2})", "%25");
             input = input.replaceAll("\\+", "%2B");
             try {
