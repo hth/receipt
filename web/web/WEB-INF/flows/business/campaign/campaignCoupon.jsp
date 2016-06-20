@@ -74,38 +74,38 @@
         <div class="business_reg">
             <div class="down_form" style="width: 90%">
                 <form:form modelAttribute="couponCampaign" enctype="multipart/form-data">
-                    <h1 class="h1">Continue Creating New Coupon Campaign</h1>
-                    <hr>
-                    <input type="hidden" name="_flowExecutionKey" value="${flowExecutionKey}"/>
-                    <input type="hidden" id="campaignId" value="${couponCampaign.campaignId}"/>
-                    <input type="hidden" id="bizId" value="${couponCampaign.bizId}"/>
+                <h1 class="h1">Continue Creating New Coupon Campaign</h1>
+                <hr>
+                <input type="hidden" name="_flowExecutionKey" value="${flowExecutionKey}"/>
+                <input type="hidden" id="campaignId" value="${couponCampaign.campaignId}"/>
+                <input type="hidden" id="bizId" value="${couponCampaign.bizId}"/>
 
-                    <spring:hasBindErrors name="couponCampaign">
-                    <div class="r-validation" style="width: 100%; margin: 0 0 0 0;">
-                        <ul>
-                            <c:if test="${errors.hasFieldErrors('distributionPercent')}">
-                                <li><form:errors path="distributionPercent" /></li>
-                            </c:if>
-                        </ul>
-                    </div>
-                    </spring:hasBindErrors>
-                    <div class="row_field" style="padding-bottom: 15px;">
-                        <h1 class="widget-title-text">Upload Coupon</h1>
-                    </div>
-                    <div id="fine-uploader-validation" class="upload-text"></div>
-                    <div class="row_field">
-                        <form:label path="distributionPercent" cssClass="profile_label" cssErrorClass="profile_label lb_error" cssStyle="width: 300px;">
-                            % Of Customers Receiving Coupons:
-                        </form:label>
-                        <form:input path="distributionPercent" size="20" cssClass="name_txt" cssStyle="border: 0;" readonly="true"/>
-                    </div>
-                    <div class="row_field">
-                        <div id="slider-vertical" style="height:15px; width: 325px;"></div>
-                    </div>
-                    <div class="full">
-                        <input type="submit" value="NEXT" class="read_btn" name="_eventId_submit" style="background: #2c97de; margin: 77px 10px 0 0;">
-                        <input type="submit" value="CANCEL" class="read_btn" name="_eventId_cancel" style="background: #FC462A; margin: 77px 10px 0 0;">
-                    </div>
+                <spring:hasBindErrors name="couponCampaign">
+                <div class="r-validation" style="width: 100%; margin: 0 0 0 0;">
+                    <ul>
+                        <c:if test="${errors.hasFieldErrors('distributionPercent')}">
+                            <li><form:errors path="distributionPercent" /></li>
+                        </c:if>
+                    </ul>
+                </div>
+                </spring:hasBindErrors>
+                <div class="row_field" style="padding-bottom: 15px;">
+                    <h1 class="widget-title-text">Upload Coupon</h1>
+                </div>
+                <div id="fine-uploader-validation" class="upload-text"></div>
+                <div class="row_field">
+                    <form:label path="distributionPercent" cssClass="profile_label" cssErrorClass="profile_label lb_error" cssStyle="width: 300px;">
+                        % Of Customers Receiving Coupons:
+                    </form:label>
+                    <form:input path="distributionPercent" size="20" cssClass="name_txt" cssStyle="border: 0;" readonly="true"/>
+                </div>
+                <div class="row_field">
+                    <div id="slider-vertical" style="height:15px; width: 325px;"></div>
+                </div>
+                <div class="full">
+                    <input type="submit" value="NEXT" class="read_btn" name="_eventId_submit" style="background: #2c97de; margin: 77px 10px 0 0;">
+                    <input type="submit" value="CANCEL" class="read_btn" name="_eventId_cancel" style="background: #FC462A; margin: 77px 10px 0 0;">
+                </div>
                 </form:form>
             </div>
         </div>
