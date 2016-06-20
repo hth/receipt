@@ -23,7 +23,7 @@ import java.net.URLDecoder;
         "PMD.MethodArgumentCouldBeFinal",
         "PMD.LongVariable"
 })
-public class TextInputScrubber {
+class TextInputScrubber {
     private static final Logger LOG = LoggerFactory.getLogger(TextInputScrubber.class);
 
     private TextInputScrubber() {
@@ -36,7 +36,7 @@ public class TextInputScrubber {
      * @param input The input text to scrub
      * @return the scrubbed text or just a blank string if nothing is left
      */
-    public static String sanitize(String input) {
+    static String sanitize(String input) {
         if (StringUtils.isBlank(input)) {
             return input;
         }
@@ -57,7 +57,7 @@ public class TextInputScrubber {
         }
     }
 
-    public static String decode(String input) {
+    static String decode(String input) {
         if (StringUtils.isBlank(input)) {
             return input;
         }
