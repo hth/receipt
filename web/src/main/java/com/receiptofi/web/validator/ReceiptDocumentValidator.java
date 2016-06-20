@@ -41,11 +41,14 @@ import java.util.Date;
 public class ReceiptDocumentValidator implements Validator {
     private static final Logger LOG = LoggerFactory.getLogger(ReceiptDocumentValidator.class);
 
-    @Autowired
     private ExternalService externalService;
+    private BizService bizService;
 
     @Autowired
-    private BizService bizService;
+    public ReceiptDocumentValidator(ExternalService externalService, BizService bizService) {
+        this.externalService = externalService;
+        this.bizService = bizService;
+    }
 
     @Override
     public boolean supports(Class<?> clazz) {

@@ -69,23 +69,31 @@ public class CommentEntity extends BaseEntity {
     }
 
     public CommentEntity setText(String text) {
-        switch (commentType) {
-            case C:
-                this.text = text;
-                break;
-            case N:
-            case R:
-                this.text = StringUtils.substring(StringUtils.trim(text), 0, commentType.getTextLength());
-                break;
-            default:
-                LOG.error("Reached unsupported rid={} commentType={}", receiptUserId, commentType.getDescription());
-                throw new UnsupportedOperationException("Reached unsupported condition");
+        if (null == commentType) {
+            this.text = StringUtils.substring(StringUtils.trim(text), 0, CommentTypeEnum.C.getTextLength());
+        } else {
+            switch (commentType) {
+                case C:
+                    this.text = text;
+                    break;
+                case N:
+                case R:
+                    this.text = StringUtils.substring(StringUtils.trim(text), 0, commentType.getTextLength());
+                    break;
+                default:
+                    LOG.error("Reached unsupported rid={} commentType={}", receiptUserId, commentType.getDescription());
+                    throw new UnsupportedOperationException("Reached unsupported condition");
+            }
         }
         return this;
     }
 
     public CommentTypeEnum getCommentType() {
         return commentType;
+    }
+
+    public void setCommentType(CommentTypeEnum commentType) {
+        this.commentType = commentType;
     }
 
     public String getReceiptUserId() {
@@ -95,7 +103,7 @@ public class CommentEntity extends BaseEntity {
     @Override
     public String toString() {
         return "CommentEntity{" +
-                "textLength=" + commentType.getTextLength() +
+                "textLength=" + (commentType != null ? commentType.getTextLength() : "0") +
                 ", text='" + text + '\'' +
                 ", commentType=" + commentType +
                 '}';
