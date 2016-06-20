@@ -69,7 +69,9 @@ public class CommentEntity extends BaseEntity {
     }
 
     public CommentEntity setText(String text) {
-        if (null != commentType) {
+        if (null == commentType) {
+            this.text = StringUtils.substring(StringUtils.trim(text), 0, CommentTypeEnum.C.getTextLength());
+        } else {
             switch (commentType) {
                 case C:
                     this.text = text;
@@ -82,8 +84,6 @@ public class CommentEntity extends BaseEntity {
                     LOG.error("Reached unsupported rid={} commentType={}", receiptUserId, commentType.getDescription());
                     throw new UnsupportedOperationException("Reached unsupported condition");
             }
-        } else {
-            this.text = StringUtils.substring(StringUtils.trim(text), 0, CommentTypeEnum.C.getTextLength());
         }
         return this;
     }
