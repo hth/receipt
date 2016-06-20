@@ -92,10 +92,6 @@ public class CommentEntity extends BaseEntity {
         return commentType;
     }
 
-    public void setCommentType(CommentTypeEnum commentType) {
-        this.commentType = commentType;
-    }
-
     public String getReceiptUserId() {
         return receiptUserId;
     }
