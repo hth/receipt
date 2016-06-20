@@ -23,7 +23,7 @@ import java.net.URLDecoder;
         "PMD.MethodArgumentCouldBeFinal",
         "PMD.LongVariable"
 })
-public class TextInputScrubber {
+class TextInputScrubber {
     private static final Logger LOG = LoggerFactory.getLogger(TextInputScrubber.class);
 
     private TextInputScrubber() {
@@ -36,7 +36,7 @@ public class TextInputScrubber {
      * @param input The input text to scrub
      * @return the scrubbed text or just a blank string if nothing is left
      */
-    public static String sanitize(String input) {
+    static String sanitize(String input) {
         if (StringUtils.isBlank(input)) {
             return input;
         }
@@ -57,7 +57,7 @@ public class TextInputScrubber {
         }
     }
 
-    public static String decode(String input) {
+    static String decode(String input) {
         if (StringUtils.isBlank(input)) {
             return input;
         }
@@ -65,7 +65,7 @@ public class TextInputScrubber {
         try {
             return URLDecoder.decode(input, "UTF-8");
         } catch (IllegalArgumentException e) {
-            LOG.error("Unable to decode the input={} trying replacing text.", input, e);
+            LOG.warn("Unable to decode the input={}, next trying replacing text.", input);
             input = input.replaceAll("%(?![0-9a-fA-F]{2})", "%25");
             input = input.replaceAll("\\+", "%2B");
             try {
