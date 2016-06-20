@@ -43,7 +43,7 @@ public final class ReceiptDocumentForm {
     private Map<Date, UserProfileEntity> processedBy = new LinkedHashMap<>();
 
     /** Used for showing error messages to user when the request action fails to execute */
-    String errorMessage;
+    private String errorMessage;
 
     /**
      * Need for bean instantiation in ReceiptUpdateForm
@@ -148,6 +148,5 @@ public final class ReceiptDocumentForm {
                 item.setTax(0.00);
             }
         }
-
     }
 }

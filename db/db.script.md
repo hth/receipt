@@ -1,5 +1,6 @@
 ### Date June 16 2016 - Build 1678
 Change 'Notes' to 'N' and "Recheck' to 'R'
+
     db.getCollection('COMMENT').update({"CT" : "RECHECK"},   { $set: {"CT": 'R'} }, {multi: true});
     db.getCollection('COMMENT').update({"CT" : "NOTES"},     { $set: {"CT": "N"} }, {multi: true});    
 
