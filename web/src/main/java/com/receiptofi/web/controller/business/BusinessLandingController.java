@@ -59,9 +59,6 @@ public class BusinessLandingController {
 
     private BusinessUserService businessUserService;
     private BizDimensionService bizDimensionService;
-    private FileDBService fileDBService;
-    private FileSystemService fileSystemService;
-    private ImageSplitService imageSplitService;
     private BusinessCampaignService businessCampaignService;
 
     @Autowired
@@ -74,17 +71,11 @@ public class BusinessLandingController {
 
             BusinessUserService businessUserService,
             BizDimensionService bizDimensionService,
-            FileDBService fileDBService,
-            FileSystemService fileSystemService,
-            ImageSplitService imageSplitService,
             BusinessCampaignService businessCampaignService) {
         this.nextPage = nextPage;
         this.businessRegistrationFlow = businessRegistrationFlow;
         this.businessUserService = businessUserService;
         this.bizDimensionService = bizDimensionService;
-        this.fileDBService = fileDBService;
-        this.fileSystemService = fileSystemService;
-        this.imageSplitService = imageSplitService;
         this.businessCampaignService = businessCampaignService;
     }
 
@@ -168,32 +159,10 @@ public class BusinessLandingController {
                 .setFileData(multipartFile)
                 .setRid(rid);
 
-        BufferedImage bufferedImage = imageSplitService.bufferedImage(image.getFileData().getInputStream());
-        String blobId = fileDBService.saveFile(image);
-        image.setBlobId(blobId);
-
         BusinessCampaignEntity businessCampaign = businessCampaignService.findById(campaignId, bizId);
-
-        Collection<FileSystemEntity> fileSystems = new LinkedList<>();
-        FileSystemEntity fileSystem;
-        if (null != businessCampaign.getFileSystemEntities()) {
-            fileSystems = businessCampaign.getFileSystemEntities();
-            fileDBService.deleteHard(fileSystems);
-            fileSystemService.deleteHard(fileSystems);
-
-            fileSystems = new LinkedList<>();
-        }
-
-        fileSystem = new FileSystemEntity(
-                blobId,
-                rid,
-                bufferedImage,
-                0,
-                0,
-                image.getFileData(),
-                FileTypeEnum.C);
-        fileSystemService.save(fileSystem);
-        fileSystems.add(fileSystem);
+        Collection<FileSystemEntity> fileSystems = businessCampaignService.deleteAndCreateNewImage(
+                image,
+                businessCampaign.getFileSystemEntities());
 
         businessCampaign.setFileSystemEntities(fileSystems);
         businessCampaignService.save(businessCampaign);

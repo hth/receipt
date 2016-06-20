@@ -4,10 +4,12 @@ import com.receiptofi.domain.types.CouponTypeEnum;
 
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -57,6 +59,7 @@ public class CouponEntity extends BaseEntity {
     @Field ("RM")
     private boolean reminder = false;
 
+    /** Saved local image location when coupon FileSystemEntity is null. */
     @Field ("IP")
     private String imagePath;
 
@@ -68,11 +71,18 @@ public class CouponEntity extends BaseEntity {
     @Field ("SH")
     private List<String> sharedWithRids = new ArrayList<>();
 
+    /**
+     * Holds the id where this coupon has originated from.
+     */
     @Field ("OI")
     private String originId;
 
     @Field ("UC")
     private boolean usedCoupon;
+
+    @DBRef
+    @Field ("FS")
+    private Collection<FileSystemEntity> fileSystemEntities;
 
     public String getLocalId() {
         return localId;
@@ -138,7 +148,16 @@ public class CouponEntity extends BaseEntity {
     }
 
     public String getImagePath() {
-        return imagePath;
+        if (null != fileSystemEntities) {
+            StringBuilder sb = new StringBuilder("");
+
+            for (FileSystemEntity fileSystem : fileSystemEntities) {
+                sb.append(fileSystem.getKey());
+            }
+            return sb.toString();
+        } else {
+            return imagePath;
+        }
     }
 
     public CouponEntity setImagePath(String imagePath) {
@@ -179,6 +198,15 @@ public class CouponEntity extends BaseEntity {
 
     public CouponEntity setOriginId(String originId) {
         this.originId = originId;
+        return this;
+    }
+
+    public Collection<FileSystemEntity> getFileSystemEntities() {
+        return fileSystemEntities;
+    }
+
+    public CouponEntity setFileSystemEntities(Collection<FileSystemEntity> fileSystemEntities) {
+        this.fileSystemEntities = fileSystemEntities;
         return this;
     }
 }
