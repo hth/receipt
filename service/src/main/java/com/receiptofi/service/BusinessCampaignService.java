@@ -7,6 +7,7 @@ import com.receiptofi.domain.CommentEntity;
 import com.receiptofi.domain.FileSystemEntity;
 import com.receiptofi.domain.flow.CouponCampaign;
 import com.receiptofi.domain.shared.UploadDocumentImage;
+import com.receiptofi.domain.types.BusinessCampaignStatusEnum;
 import com.receiptofi.domain.types.CommentTypeEnum;
 import com.receiptofi.domain.types.FileTypeEnum;
 import com.receiptofi.repository.BusinessCampaignManager;
@@ -112,6 +113,12 @@ public class BusinessCampaignService {
 
     public void save(BusinessCampaignEntity businessCampaign) {
         businessCampaignManager.save(businessCampaign);
+    }
+
+    public void completeCampaign(String campaignId, String bizId) {
+        BusinessCampaignEntity businessCampaign = businessCampaignManager.findById(campaignId, bizId);
+        businessCampaign.setBusinessCampaignStatus(BusinessCampaignStatusEnum.C);
+        save(businessCampaign);
     }
 
     private CommentEntity createNewComment(CouponCampaign businessCampaign) {

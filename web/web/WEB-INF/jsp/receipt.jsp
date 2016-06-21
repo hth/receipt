@@ -172,7 +172,7 @@
                                     }
                                 });
                             } else {
-                                alert("Please select a checkbox to generate expense report");
+                                swal("Expense Report", "Please select a checkbox to generate expense report", "info");
                                 $("#actionId").val($("#actionId option:first").val());
                             }
                         } else if (this.value === 'recheck') {

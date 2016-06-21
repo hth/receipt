@@ -6,6 +6,10 @@
 
     <secured attributes="ROLE_BUSINESS" />
 
+    <on-start>
+        <set name="conversationScope.campaignId" value="requestParameters.campaignId" type="string" />
+    </on-start>
+
     <!-- Need model couponCampaign -->
     <view-state id="campaignStart" model="couponCampaign">
         <on-entry>
@@ -13,9 +17,9 @@
             Set conversationScope as the id is set after saving, this id is required on hitting back
             browser as it will be used to update instead of creating new campaign
             -->
-            <evaluate expression="requestParameters.campaignId == null ?
+            <evaluate expression="campaignId == null ?
                                     businessCampaignFlowActions.startCampaign() :
-                                    businessCampaignFlowActions.editCampaign(requestParameters.campaignId)"
+                                    businessCampaignFlowActions.editCampaign(campaignId)"
                       result="conversationScope.couponCampaign" />
         </on-entry>
         <transition on="submit" to="validateCampaignDetails" />
@@ -28,8 +32,8 @@
             <evaluate expression="businessCampaignFlowActions.createUpdateCampaign(couponCampaign)" />
         </transition>
         <transition on="failure" to="campaignStart" />
-        <transition to="campaignStart"
-                    on-exception="com.receiptofi.web.flow.exception.BusinessCampaignException"/>
+        <transition on-exception="com.receiptofi.web.flow.exception.BusinessCampaignException"
+                    to="campaignStart" />
     </action-state>
 
     <view-state id="campaignCoupon" model="couponCampaign">
@@ -43,19 +47,24 @@
             <evaluate expression="businessCampaignFlowActions.createUpdateCampaign(couponCampaign)" />
         </transition>
         <transition on="failure" to="campaignCoupon" />
-        <transition to="campaignCoupon"
-                    on-exception="com.receiptofi.web.flow.exception.BusinessCampaignException"/>
+        <transition on-exception="com.receiptofi.web.flow.exception.BusinessCampaignException"
+                    to="campaignCoupon" />
     </action-state>
 
-    <view-state id="campaignReview">
-        <transition on="confirm" to="home" />
-        <transition on="revise" to="campaignStart" />
+    <view-state id="campaignReview" model="couponCampaign">
+        <transition on="confirm" to="completeCampaign" />
+        <transition on="revise" to="campaignStart">
+            <set name="conversationScope.campaignId" value="couponCampaign.campaignId" type="string" />
+        </transition>
         <transition on="cancel" to="home" />
     </view-state>
 
-    <view-state id="registrationComplete">
-        <transition to="home" />
-    </view-state>
+    <action-state id="completeCampaign">
+        <evaluate expression="businessCampaignFlowActions.completeCampaign(couponCampaign.campaignId, couponCampaign.bizId)" />
+        <transition on-exception="com.receiptofi.web.flow.exception.BusinessCampaignException"
+                    to="campaignReview" />
+        <transition to="home"/>
+    </action-state>
 
-    <view-state id="home" view="externalRedirect:#{'/business/landing.htm'}"/>
+    <view-state id="home" view="externalRedirect:#{'/business/landing.htm'}" />
 </flow>
