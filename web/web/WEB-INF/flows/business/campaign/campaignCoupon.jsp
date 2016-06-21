@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/style.css"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/stylelogin.css"/>
-    <link rel='stylesheet' type='text/css' href='${pageContext.request.contextPath}/static/external/css/fineuploader/fine-uploader.css'/>
+    <link rel='stylesheet' href='${pageContext.request.contextPath}/static/external/css/fineuploader/fine-uploader.css'/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/colpick.css"/>
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css"/>
 
