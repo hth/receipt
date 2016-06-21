@@ -55,11 +55,12 @@
     </view-state>
 
     <action-state id="completeRegistrationInformation">
+        <!-- Need the result to show correct message on JSP -->
         <evaluate result="businessRegistration"
                   expression="businessRegistrationFlowActions.completeRegistrationInformation(businessRegistration)"/>
 
-        <transition to="profileCompletion"
-                    on-exception="com.receiptofi.web.flow.exception.BusinessRegistrationException"/>
+        <transition on-exception="com.receiptofi.web.flow.exception.BusinessRegistrationException"
+                    to="profileCompletion" />
 
         <transition to="registrationComplete"/>
     </action-state>

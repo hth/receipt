@@ -202,6 +202,16 @@ public class BusinessCampaignFlowActions {
         }
     }
 
+    public void completeCampaign(String campaignId, String bizId) {
+        try {
+            businessCampaignService.completeCampaign(campaignId, bizId);
+        } catch (Exception e) {
+            LOG.error("Error marking campaign complete id={} bizId={} reason={}",
+                    campaignId, bizId, e.getLocalizedMessage(), e);
+            throw new BusinessCampaignException("Error saving campaign", e);
+        }
+    }
+
     @SuppressWarnings ("unused")
     public String validateCampaignCoupon(CouponCampaign couponCampaign, MessageContext messageContext) {
         LOG.info("Validate campaign details rid={} bizId={} bizName={}",
