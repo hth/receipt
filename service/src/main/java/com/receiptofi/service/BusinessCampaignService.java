@@ -104,7 +104,10 @@ public class BusinessCampaignService {
                 bce.setAdditionalInfo(comment);
             }
             save(bce);
-            couponCampaign.setCampaignId(bce.getId());
+
+            couponCampaign.setCampaignId(bce.getId())
+                    .setBusinessCampaignStatus(bce.getBusinessCampaignStatus())
+                    .setFileSystemEntities(bce.getFileSystemEntities());
         } catch (ParseException e) {
             LOG.error("Error saving reason={}", e.getLocalizedMessage(), e);
             throw e;
@@ -127,11 +130,11 @@ public class BusinessCampaignService {
     }
 
     public Collection<FileSystemEntity> deleteAndCreateNewImage(
+            BufferedImage bufferedImage,
             UploadDocumentImage image,
             Collection<FileSystemEntity> fileSystems
     ) throws IOException {
         /** Save image first. */
-        BufferedImage bufferedImage = imageSplitService.bufferedImage(image.getFileData().getInputStream());
         String blobId = fileDBService.saveFile(image);
         image.setBlobId(blobId);
         LOG.info("Saved new image rid={}", image.getRid());

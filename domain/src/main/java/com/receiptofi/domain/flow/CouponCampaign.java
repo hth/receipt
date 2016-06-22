@@ -1,5 +1,7 @@
 package com.receiptofi.domain.flow;
 
+import com.receiptofi.domain.FileSystemEntity;
+import com.receiptofi.domain.types.BusinessCampaignStatusEnum;
 import com.receiptofi.utils.DateUtil;
 import com.receiptofi.utils.ScrubbedInput;
 
@@ -11,6 +13,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.annotation.Transient;
 
 import java.io.Serializable;
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * User: hitender
@@ -32,6 +37,8 @@ public class CouponCampaign implements Serializable {
     private String end;
     private String live;
     private String distributionPercent;
+    private BusinessCampaignStatusEnum businessCampaignStatus;
+    private Collection<FileSystemEntity> fileSystemEntities;
 
     public CouponCampaign(String campaignId) {
         this.campaignId = campaignId;
@@ -41,8 +48,9 @@ public class CouponCampaign implements Serializable {
         return campaignId;
     }
 
-    public void setCampaignId(String campaignId) {
+    public CouponCampaign setCampaignId(String campaignId) {
         this.campaignId = campaignId;
+        return this;
     }
 
     public String getRid() {
@@ -142,5 +150,23 @@ public class CouponCampaign implements Serializable {
         } else {
             return 0;
         }
+    }
+
+    public BusinessCampaignStatusEnum getBusinessCampaignStatus() {
+        return businessCampaignStatus;
+    }
+
+    public CouponCampaign setBusinessCampaignStatus(BusinessCampaignStatusEnum businessCampaignStatus) {
+        this.businessCampaignStatus = businessCampaignStatus;
+        return this;
+    }
+
+    public Collection<FileSystemEntity> getFileSystemEntities() {
+        return fileSystemEntities;
+    }
+
+    public CouponCampaign setFileSystemEntities(Collection<FileSystemEntity> fileSystemEntities) {
+        this.fileSystemEntities = fileSystemEntities;
+        return this;
     }
 }

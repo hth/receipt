@@ -86,7 +86,9 @@ public class BusinessCampaignFlowActions {
                 .setEnd(DF_MMDDYYYY.format(businessCampaign.getEnd()))
                 .setFreeText(new ScrubbedInput(businessCampaign.getFreeText()))
                 .setAdditionalInfo(businessCampaign.getAdditionalInfo() != null ? new ScrubbedInput(businessCampaign.getAdditionalInfo().getText()) : new ScrubbedInput(""))
-                .setDistributionPercent(businessCampaign.getDistributionPercent() + "%");
+                .setDistributionPercent(businessCampaign.getDistributionPercent() + "%")
+                .setBusinessCampaignStatus(businessCampaign.getBusinessCampaignStatus())
+                .setFileSystemEntities(businessCampaign.getFileSystemEntities());
     }
 
     @SuppressWarnings ("unused")

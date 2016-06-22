@@ -72,7 +72,7 @@
         <div class="business_reg">
             <div class="down_form" style="width: 90%">
                 <form:form commandName="couponCampaign">
-                    <h1 class="h1">Create New Coupon Campaign</h1>
+                    <h1 class="h1">Submit New Coupon Campaign</h1>
                     <hr>
                     <input type="hidden" name="_flowExecutionKey" value="${flowExecutionKey}"/>
                     <input type="hidden" id="campaignId" value="${couponCampaign.campaignId}"/>
@@ -112,6 +112,7 @@
                         </form:label>
                         <form:input path="distributionPercent" size="20" cssClass="name_txt" cssStyle="border: 0;" readonly="true"/>
                     </div>
+                    <div id="container"></div>
                     <div class="full">
                         <input type="submit" value="CONFIRM" class="read_btn" name="_eventId_confirm"
                                 style="background: #2c97de; margin: 77px 10px 0 0;">
@@ -138,5 +139,82 @@
     </div>
 </div>
 </body>
+<!-- Loads image -->
+<script>
+    function measurement(position) {
+        if (position instanceof String) {
+            if (position.indexOf("%") != -1) {
+                return position;
+            }
+        }
+        return position + "px";
+    }
+    function rotate(el, d) {
+        var s = "rotate(" + d + "deg)";
+        if (el.style) { // regular DOM Object
+            el.style.MozTransform = s;
+            el.style.WebkitTransform = s;
+            el.style.OTransform = s;
+            el.style.transform = s;
+        } else if (el.css) { // JQuery Object
+            el.css("-moz-transform", s);
+            el.css("-webkit-transform", s);
+            el.css("-o-transform", s);
+            el.css("transform", s);
+        }
+        el.setAttribute("rotation", d);
+    }
+    function calculateTop(imageHeight) {
+        if (topHeight == 0 ) {
+            return topHeight + 5;
+        }
+        return topHeight + imageHeight + 5;
+    }
+
+    // JSON data
+    var topHeight = 0,
+            info = [
+                <c:forEach items="${couponCampaign.fileSystemEntities}" var="arr" varStatus="status">
+                    <c:choose>
+                    <c:when test="${couponCampaign.businessCampaignStatus eq 'C'}">
+                    {
+                        src: "https://s3-us-west-2.amazonaws.com/<spring:eval expression="@environmentProperty.getProperty('aws.s3.bucketName')" />/<spring:eval expression="@environmentProperty.getProperty('aws.s3.couponBucketName')" />/${arr.key}",
+                        pos: {
+                            top: topHeight = calculateTop(${arr.height}),
+                            left: 0
+                        },
+                        rotate: ${arr.imageOrientation},
+                        zIndex: 0
+                    },
+                    </c:when>
+                    <c:otherwise>
+                    {
+                        src: '${pageContext.request.contextPath}/access/filedownload/receiptimage/${arr.blobId}.htm',
+                        pos: {
+                            top: topHeight = calculateTop(${arr.height}),
+                            left: 0
+                        },
+                        rotate: ${arr.imageOrientation},
+                        zIndex: 0
+                    },
+                    </c:otherwise>
+                    </c:choose>
+                </c:forEach>
+            ]
+            ;
+
+    var df = document.createDocumentFragment();
+    for (var i = 0, j = info.length; i < j; i++) {
+        var el = document.createElement("img");
+        el.src = info[i].src;
+        el.className = "img";
+        el.style.left = measurement(info[i].pos.left);
+        el.style.top = measurement(info[i].pos.top);
+        el.style.zIndex = info[i].zIndex;
+        rotate(el, info[i].rotate);
+        df.appendChild(el);
+    }
+    document.getElementById("container").appendChild(df);
+</script>
 <script src="${pageContext.request.contextPath}/static/js/mainpop.js"></script>
 </html>

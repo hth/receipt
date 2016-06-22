@@ -94,6 +94,9 @@
                 </div>
                 <div id="fine-uploader-validation" class="upload-text"></div>
                 <div class="row_field">
+                    <span id="couponImageSize" class="si-general-text remaining-characters"><sup>*</sup> Image max width 600px</span>
+                </div>
+                <div class="row_field">
                     <form:label path="distributionPercent" cssClass="profile_label" cssErrorClass="profile_label lb_error" cssStyle="width: 300px;">
                         % Of Customers Receiving Coupons:
                     </form:label>
