@@ -175,6 +175,6 @@
         <p class="footer_copy">&#169; 2016 RECEIPTOFI, INC. ALL RIGHTS RESERVED.
     </div>
 </div>
-<script type="text/javascript" src="${pageContext.request.contextPath}/static/js/mainpop.js"></script>
+<script src="${pageContext.request.contextPath}/static/js/mainpop.js"></script>
 </body>
 </html>
