@@ -1,5 +1,9 @@
 package com.receiptofi.web.controller.business;
 
+import static com.receiptofi.web.controller.access.LandingController.SUCCESS;
+
+import com.google.gson.JsonObject;
+
 import com.receiptofi.domain.BizNameEntity;
 import com.receiptofi.domain.BusinessCampaignEntity;
 import com.receiptofi.domain.BusinessUserEntity;
@@ -10,8 +14,6 @@ import com.receiptofi.domain.site.ReceiptUser;
 import com.receiptofi.domain.types.FileTypeEnum;
 import com.receiptofi.service.BusinessCampaignService;
 import com.receiptofi.service.BusinessUserService;
-import com.receiptofi.service.FileDBService;
-import com.receiptofi.service.FileSystemService;
 import com.receiptofi.service.ImageSplitService;
 import com.receiptofi.service.analytic.BizDimensionService;
 import com.receiptofi.utils.Maths;
@@ -36,7 +38,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Collection;
-import java.util.LinkedList;
 
 /**
  * For Businesses.
@@ -60,6 +61,7 @@ public class BusinessLandingController {
     private BusinessUserService businessUserService;
     private BizDimensionService bizDimensionService;
     private BusinessCampaignService businessCampaignService;
+    private ImageSplitService imageSplitService;
 
     @Autowired
     public BusinessLandingController(
@@ -71,12 +73,14 @@ public class BusinessLandingController {
 
             BusinessUserService businessUserService,
             BizDimensionService bizDimensionService,
-            BusinessCampaignService businessCampaignService) {
+            BusinessCampaignService businessCampaignService,
+            ImageSplitService imageSplitService) {
         this.nextPage = nextPage;
         this.businessRegistrationFlow = businessRegistrationFlow;
         this.businessUserService = businessUserService;
         this.bizDimensionService = bizDimensionService;
         this.businessCampaignService = businessCampaignService;
+        this.imageSplitService = imageSplitService;
     }
 
     /**
@@ -138,10 +142,10 @@ public class BusinessLandingController {
             value = "/upload")
     @ResponseBody
     public String uploadCoupon(
-            @RequestParam("campaignId")
+            @RequestParam ("campaignId")
             String campaignId,
 
-            @RequestParam("bizId")
+            @RequestParam ("bizId")
             String bizId,
 
             @RequestParam ("qqfile")
@@ -159,8 +163,17 @@ public class BusinessLandingController {
                 .setFileData(multipartFile)
                 .setRid(rid);
 
+        JsonObject jsonObject = new JsonObject();
+        BufferedImage bufferedImage = imageSplitService.bufferedImage(image.getFileData().getInputStream());
+        if (bufferedImage.getWidth() > 600) {
+            jsonObject.addProperty(SUCCESS, false);
+            jsonObject.addProperty("reason", "<sup>*</sup> Uploaded image width greater than 600px");
+            return jsonObject.toString();
+        }
+
         BusinessCampaignEntity businessCampaign = businessCampaignService.findById(campaignId, bizId);
         Collection<FileSystemEntity> fileSystems = businessCampaignService.deleteAndCreateNewImage(
+                bufferedImage,
                 image,
                 businessCampaign.getFileSystemEntities());
 
@@ -168,6 +181,7 @@ public class BusinessLandingController {
         businessCampaignService.save(businessCampaign);
 
         LOG.info("Upload complete rid={}", rid);
-        return "{\"success\" : \"true\"}";
+        jsonObject.addProperty(SUCCESS, true);
+        return jsonObject.toString();
     }
 }

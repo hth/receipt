@@ -11,9 +11,21 @@ $(document).ready(function ($) {
         template: 'qq-template',
         callbacks: {
             onError: errorHandler,
+            onSubmit: function(id, fileName) {
+                $('#couponImageSize')
+                    .html('<sup>*</sup> Image max width 600px')
+                    .css('color', '#484848');
+            },
             onComplete: function (id, fileName, responseJSON) {
+                if (responseJSON.success == false) {
+                    console.log("success fail " + fileName);
+                    $('#couponImageSize')
+                        .html(responseJSON.reason)
+                        .css('color', 'red');
+                }
+
                 if (responseJSON.success == true) {
-                    console.log("success");
+                    console.log("success true " + fileName);
                     $(this.getItemByFileId(id)).hide('slow');
                 }
             }
