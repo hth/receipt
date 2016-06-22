@@ -12,10 +12,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.WriteResultChecking;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  * User: hitender
@@ -66,6 +69,17 @@ public class BusinessCampaignManagerImpl implements BusinessCampaignManager {
         LOG.info("campaignId={} bizId={}", campaignId, bizId);
         return mongoTemplate.findOne(
                 query(where("id").is(campaignId).and("BID").is(bizId)),
+                BusinessCampaignEntity.class,
+                TABLE
+        );
+    }
+
+    @Override
+    public List<BusinessCampaignEntity> findBy(String bizId) {
+        return mongoTemplate.find(
+                query(
+                        where("BID").is(bizId)
+                ).with(new Sort(Sort.Direction.DESC, "LP")),
                 BusinessCampaignEntity.class,
                 TABLE
         );

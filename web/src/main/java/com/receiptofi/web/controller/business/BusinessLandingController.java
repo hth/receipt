@@ -38,6 +38,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * For Businesses.
@@ -128,7 +129,8 @@ public class BusinessLandingController {
                 .setCustomerCount(bizDimension.getUserCount())
                 .setStoreCount(bizDimension.getStoreCount())
                 .setTotalCustomerPurchases(Maths.adjustScale(bizDimension.getBizTotal()))
-                .setVisitCount(bizDimension.getVisitCount());
+                .setVisitCount(bizDimension.getVisitCount())
+                .setBusinessCampaigns(businessCampaignService.findBy(bizNameId));
     }
 
     /**

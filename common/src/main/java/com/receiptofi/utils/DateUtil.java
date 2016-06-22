@@ -167,18 +167,33 @@ public final class DateUtil {
     /**
      * Inclusive of the days the campaign is going to run.
      *
+     * @param start
+     * @param end
      * @return
      */
     public static int getDaysBetween(String start, String end) {
         try {
-            Assert.notNull(start);
-            Assert.notNull(end);
-            Interval interval = new Interval(DF_MMDDYYYY.parse(start).getTime(), DF_MMDDYYYY.parse(end).getTime());
-            return interval.toPeriod(PeriodType.days()).getDays();
+            Assert.isTrue(StringUtils.isNotBlank(start), "Start date string is null");
+            Assert.notNull(StringUtils.isNotBlank(end), "End date string is null");
+            return getDaysBetween(DF_MMDDYYYY.parse(start), DF_MMDDYYYY.parse(end));
         } catch (ParseException e) {
             LOG.warn("Failed to parse date start={} end={}", start, end);
             return -1;
         }
+    }
+
+    /**
+     * Inclusive of the days the campaign is going to run.
+     *
+     * @param start
+     * @param end
+     * @return
+     */
+    public static int getDaysBetween(Date start, Date end) {
+        Assert.notNull(start, "Start date is null");
+        Assert.notNull(end, "End date is null");
+        Interval interval = new Interval(start.getTime(), end.getTime());
+        return interval.toPeriod(PeriodType.days()).getDays();
     }
 
     //todo add support for small AM|PM

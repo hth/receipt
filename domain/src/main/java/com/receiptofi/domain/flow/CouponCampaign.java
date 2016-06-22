@@ -131,6 +131,7 @@ public class CouponCampaign implements Serializable {
      * @return
      */
     @SuppressWarnings ("unused")
+    @Transient
     public int getDaysBetween() {
         return DateUtil.getDaysBetween(start, end);
     }

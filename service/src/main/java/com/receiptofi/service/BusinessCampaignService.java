@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.util.Collection;
 import java.util.LinkedList;
+import java.util.List;
 
 /**
  * User: hitender
@@ -44,20 +45,17 @@ public class BusinessCampaignService {
     private CommentService commentService;
     private FileDBService fileDBService;
     private FileSystemService fileSystemService;
-    private ImageSplitService imageSplitService;
 
     @Autowired
     public BusinessCampaignService(
             BusinessCampaignManager businessCampaignManager,
             CommentService commentService,
             FileDBService fileDBService,
-            FileSystemService fileSystemService,
-            ImageSplitService imageSplitService) {
+            FileSystemService fileSystemService) {
         this.businessCampaignManager = businessCampaignManager;
         this.commentService = commentService;
         this.fileDBService = fileDBService;
         this.fileSystemService = fileSystemService;
-        this.imageSplitService = imageSplitService;
     }
 
     public BusinessCampaignEntity findById(String campaignId, String bizId) {
@@ -159,5 +157,9 @@ public class BusinessCampaignService {
         fileSystems.add(fileSystem);
         LOG.info("Created new filesystem rid={}", image.getRid());
         return fileSystems;
+    }
+
+    public List<BusinessCampaignEntity> findBy(String bizId) {
+        return businessCampaignManager.findBy(bizId);
     }
 }
