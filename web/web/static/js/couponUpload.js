@@ -18,14 +18,12 @@ $(document).ready(function ($) {
             },
             onComplete: function (id, fileName, responseJSON) {
                 if (responseJSON.success == false) {
-                    console.log("success fail " + fileName);
                     $('#couponImageSize')
                         .html(responseJSON.reason)
                         .css('color', 'red');
                 }
 
                 if (responseJSON.success == true) {
-                    console.log("success true " + fileName);
                     $(this.getItemByFileId(id)).hide('slow');
                 }
             }
