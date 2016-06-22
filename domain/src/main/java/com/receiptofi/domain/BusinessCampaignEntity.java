@@ -2,7 +2,9 @@ package com.receiptofi.domain;
 
 import com.receiptofi.domain.types.BusinessCampaignStatusEnum;
 import com.receiptofi.domain.types.BusinessCampaignTypeEnum;
+import com.receiptofi.utils.DateUtil;
 
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.DBRef;
@@ -196,5 +198,10 @@ public class BusinessCampaignEntity extends BaseEntity {
     public BusinessCampaignEntity setAdditionalInfo(CommentEntity additionalInfo) {
         this.additionalInfo = additionalInfo;
         return this;
+    }
+
+    @Transient
+    public int getDaysBetween() {
+        return DateUtil.getDaysBetween(start, end);
     }
 }

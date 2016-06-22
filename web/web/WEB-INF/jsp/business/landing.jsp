@@ -79,8 +79,36 @@
                     Store count: <c:out value="${businessLandingForm.storeCount}" />
                     Visit count: <c:out value="${businessLandingForm.visitCount}" />
                     <br/>
-                    <a href="/business/campaign.htm?campaignId=5765cf13c46da2195a3be10f">Start</a>
-                    <a href="/business/campaign.htm">Start Empty</a>
+                    <a href="/business/campaign.htm">Start New Campaign</a>
+                </div>
+
+                <div class="down_form" style="width: 90%">
+                    <c:choose>
+                    <c:when test="${businessLandingForm.businessCampaigns ne null}">
+                    <table width="100%" style="margin-left: 4px; margin-right: 4px">
+                    <c:forEach items="${businessLandingForm.businessCampaigns}" var="item" varStatus="status">
+                        <tr>
+                            <td>${status.count}&nbsp;</td>
+                            <td><a href="/business/campaign.htm?campaignId=${item.id}">${item.freeText}</a></td>
+                            <td>${item.daysBetween} Days</td>
+                            <td>
+                                <fmt:formatDate pattern="MMMM dd, yyyy" value="${item.live}"/>
+                                <span style="color: #6E6E6E;font-weight: normal;">&nbsp;<fmt:formatDate value="${item.live}" type="time"/></span>
+                            </td>
+                            <td>${item.distributionPercent}&nbsp;</td>
+                            <td>${item.businessCampaignStatus.description}&nbsp</td>
+                            <td>
+                                <fmt:formatDate pattern="MMMM dd, yyyy" value="${item.updated}"/>
+                                <span style="color: #6E6E6E;font-weight: normal;">&nbsp;<fmt:formatDate value="${item.updated}" type="time"/></span>
+                            </td>
+                        </tr>
+                    </c:forEach>
+                    </table>
+                    </c:when>
+                    <c:otherwise>
+                        Create new campaign.
+                    </c:otherwise>
+                    </c:choose>
                 </div>
             </div>
         </sec:authorize>

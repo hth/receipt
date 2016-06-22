@@ -1,6 +1,9 @@
 package com.receiptofi.web.form.business;
 
+import com.receiptofi.domain.BusinessCampaignEntity;
+
 import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * User: hitender
@@ -19,6 +22,7 @@ public class BusinessLandingForm {
     private long storeCount;
     private BigDecimal totalCustomerPurchases;
     private long visitCount;
+    private List<BusinessCampaignEntity> businessCampaigns;
 
     public String getBizName() {
         return bizName;
@@ -62,6 +66,15 @@ public class BusinessLandingForm {
 
     public BusinessLandingForm setVisitCount(long visitCount) {
         this.visitCount = visitCount;
+        return this;
+    }
+
+    public List<BusinessCampaignEntity> getBusinessCampaigns() {
+        return businessCampaigns;
+    }
+
+    public BusinessLandingForm setBusinessCampaigns(List<BusinessCampaignEntity> businessCampaigns) {
+        this.businessCampaigns = businessCampaigns;
         return this;
     }
 }
