@@ -17,7 +17,7 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.2/raphael-min.js"></script>
     <script src="${pageContext.request.contextPath}/static/jquery/js/dynamic_list_helper2.js"></script>
     <script src="${pageContext.request.contextPath}/static/jquery/fineuploader/jquery.fine-uploader.min.js"></script>
-    <%--<script type="text/javascript" src="../../static/jquery/js/beatak-imageloader/jquery.imageloader.js"></script>--%>
+    <%--<script src="../../static/jquery/js/beatak-imageloader/jquery.imageloader.js"></script>--%>
 
 	<script>
 		/* add background color to holder in tr tag */
