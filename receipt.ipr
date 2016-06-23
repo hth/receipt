@@ -338,13 +338,13 @@
         <element id="file-copy" path="$PROJECT_DIR$/web/web/410.html" />
       </root>
     </artifact>
-    <artifact type="war" name="Gradle : com.receiptofi : security-1.0.0.war">
+    <artifact type="war" name="Gradle : com.receiptofi : security-2.0.0.war">
       <output-path>$PROJECT_DIR$/out/artifacts/security</output-path>
       <properties id="gradle-properties">
         <options external-project-path="$PROJECT_DIR$" />
       </properties>
-      <root id="archive" name="security-1.0.0.war">
-        <element id="javaee-facet-resources" facet="security_main/web/Web Gradle : security-1.0.0.war" />
+      <root id="archive" name="security-2.0.0.war">
+        <element id="javaee-facet-resources" facet="security_main/web/Web Gradle : security-2.0.0.war" />
         <element id="directory" name="WEB-INF">
           <element id="directory" name="classes">
             <element id="module-output" name="security_main" />
@@ -428,7 +428,7 @@
             <element id="library" level="project" name="Gradle: net.logstash.logback:logstash-logback-encoder:4.6" />
             <element id="library" level="project" name="Gradle: net.bull.javamelody:javamelody-core:1.60.0" />
             <element id="library" level="project" name="Gradle: junit:junit:4.12" />
-            <element id="archive" name="com.receiptofi-common-1.0.0.jar">
+            <element id="archive" name="com.receiptofi-common-2.0.0.jar">
               <element id="module-output" name="common_main" />
               <element id="dir-copy" path="$PROJECT_DIR$/common/build/resources/main" />
             </element>
@@ -539,7 +539,7 @@
             <element id="library" level="project" name="Gradle: org.codehaus.woodstox:stax2-api:3.1.4" />
             <element id="library" level="project" name="Gradle: org.springframework.social:spring-social-config:1.1.4.RELEASE" />
             <element id="library" level="project" name="Gradle: org.slf4j:slf4j-api:1.7.21" />
-            <element id="archive" name="com.receiptofi-domain-1.0.0.jar">
+            <element id="archive" name="com.receiptofi-domain-2.0.0.jar">
               <element id="module-output" name="domain_main" />
               <element id="dir-copy" path="$PROJECT_DIR$/domain/build/resources/main" />
             </element>
@@ -547,17 +547,17 @@
           </element>
         </element>
         <element id="directory" name="META-INF">
-          <element id="file-copy" path="$PROJECT_DIR$/out/artifacts/security/exploded/security-1.0.0.war/META-INF/MANIFEST.MF" />
+          <element id="file-copy" path="$PROJECT_DIR$/out/artifacts/security/exploded/security-2.0.0.war/META-INF/MANIFEST.MF" />
         </element>
       </root>
     </artifact>
-    <artifact type="exploded-war" name="Gradle : com.receiptofi : security-1.0.0.war (exploded)">
-      <output-path>$PROJECT_DIR$/out/artifacts/security/exploded/security-1.0.0.war</output-path>
+    <artifact type="exploded-war" name="Gradle : com.receiptofi : security-2.0.0.war (exploded)">
+      <output-path>$PROJECT_DIR$/out/artifacts/security/exploded/security-2.0.0.war</output-path>
       <properties id="gradle-properties">
         <options external-project-path="$PROJECT_DIR$" />
       </properties>
       <root id="root">
-        <element id="javaee-facet-resources" facet="security_main/web/Web Gradle : security-1.0.0.war" />
+        <element id="javaee-facet-resources" facet="security_main/web/Web Gradle : security-2.0.0.war" />
         <element id="directory" name="WEB-INF">
           <element id="directory" name="classes">
             <element id="module-output" name="security_main" />
@@ -641,7 +641,7 @@
             <element id="library" level="project" name="Gradle: net.logstash.logback:logstash-logback-encoder:4.6" />
             <element id="library" level="project" name="Gradle: net.bull.javamelody:javamelody-core:1.60.0" />
             <element id="library" level="project" name="Gradle: junit:junit:4.12" />
-            <element id="archive" name="com.receiptofi-common-1.0.0.jar">
+            <element id="archive" name="com.receiptofi-common-2.0.0.jar">
               <element id="module-output" name="common_main" />
               <element id="dir-copy" path="$PROJECT_DIR$/common/build/resources/main" />
             </element>
@@ -752,7 +752,7 @@
             <element id="library" level="project" name="Gradle: org.codehaus.woodstox:stax2-api:3.1.4" />
             <element id="library" level="project" name="Gradle: org.springframework.social:spring-social-config:1.1.4.RELEASE" />
             <element id="library" level="project" name="Gradle: org.slf4j:slf4j-api:1.7.21" />
-            <element id="archive" name="com.receiptofi-domain-1.0.0.jar">
+            <element id="archive" name="com.receiptofi-domain-2.0.0.jar">
               <element id="module-output" name="domain_main" />
               <element id="dir-copy" path="$PROJECT_DIR$/domain/build/resources/main" />
             </element>
@@ -760,17 +760,17 @@
           </element>
         </element>
         <element id="directory" name="META-INF">
-          <element id="file-copy" path="$PROJECT_DIR$/out/artifacts/security/exploded/security-1.0.0.war/META-INF/MANIFEST.MF" />
+          <element id="file-copy" path="$PROJECT_DIR$/out/artifacts/security/exploded/security-2.0.0.war/META-INF/MANIFEST.MF" />
         </element>
       </root>
     </artifact>
-    <artifact type="war" name="Gradle : com.receiptofi : social-1.0.0.war">
+    <artifact type="war" name="Gradle : com.receiptofi : social-2.0.0.war">
       <output-path>$PROJECT_DIR$/out/artifacts/social</output-path>
       <properties id="gradle-properties">
         <options external-project-path="$PROJECT_DIR$" />
       </properties>
-      <root id="archive" name="social-1.0.0.war">
-        <element id="javaee-facet-resources" facet="social_main/web/Web Gradle : social-1.0.0.war" />
+      <root id="archive" name="social-2.0.0.war">
+        <element id="javaee-facet-resources" facet="social_main/web/Web Gradle : social-2.0.0.war" />
         <element id="directory" name="WEB-INF">
           <element id="directory" name="classes">
             <element id="module-output" name="social_main" />
@@ -854,7 +854,7 @@
             <element id="library" level="project" name="Gradle: net.logstash.logback:logstash-logback-encoder:4.6" />
             <element id="library" level="project" name="Gradle: net.bull.javamelody:javamelody-core:1.60.0" />
             <element id="library" level="project" name="Gradle: junit:junit:4.12" />
-            <element id="archive" name="com.receiptofi-common-1.0.0.jar">
+            <element id="archive" name="com.receiptofi-common-2.0.0.jar">
               <element id="module-output" name="common_main" />
               <element id="dir-copy" path="$PROJECT_DIR$/common/build/resources/main" />
             </element>
@@ -965,11 +965,11 @@
             <element id="library" level="project" name="Gradle: org.codehaus.woodstox:stax2-api:3.1.4" />
             <element id="library" level="project" name="Gradle: org.springframework.social:spring-social-config:1.1.4.RELEASE" />
             <element id="library" level="project" name="Gradle: org.slf4j:slf4j-api:1.7.21" />
-            <element id="archive" name="com.receiptofi-domain-1.0.0.jar">
+            <element id="archive" name="com.receiptofi-domain-2.0.0.jar">
               <element id="module-output" name="domain_main" />
               <element id="dir-copy" path="$PROJECT_DIR$/domain/build/resources/main" />
             </element>
-            <element id="archive" name="com.receiptofi-service-1.0.0.jar">
+            <element id="archive" name="com.receiptofi-service-2.0.0.jar">
               <element id="module-output" name="service_main" />
               <element id="dir-copy" path="$PROJECT_DIR$/service/build/resources/main" />
             </element>
@@ -977,17 +977,17 @@
           </element>
         </element>
         <element id="directory" name="META-INF">
-          <element id="file-copy" path="$PROJECT_DIR$/out/artifacts/social/exploded/social-1.0.0.war/META-INF/MANIFEST.MF" />
+          <element id="file-copy" path="$PROJECT_DIR$/out/artifacts/social/exploded/social-2.0.0.war/META-INF/MANIFEST.MF" />
         </element>
       </root>
     </artifact>
-    <artifact type="exploded-war" name="Gradle : com.receiptofi : social-1.0.0.war (exploded)">
-      <output-path>$PROJECT_DIR$/out/artifacts/social/exploded/social-1.0.0.war</output-path>
+    <artifact type="exploded-war" name="Gradle : com.receiptofi : social-2.0.0.war (exploded)">
+      <output-path>$PROJECT_DIR$/out/artifacts/social/exploded/social-2.0.0.war</output-path>
       <properties id="gradle-properties">
         <options external-project-path="$PROJECT_DIR$" />
       </properties>
       <root id="root">
-        <element id="javaee-facet-resources" facet="social_main/web/Web Gradle : social-1.0.0.war" />
+        <element id="javaee-facet-resources" facet="social_main/web/Web Gradle : social-2.0.0.war" />
         <element id="directory" name="WEB-INF">
           <element id="directory" name="classes">
             <element id="module-output" name="social_main" />
@@ -1071,7 +1071,7 @@
             <element id="library" level="project" name="Gradle: net.logstash.logback:logstash-logback-encoder:4.6" />
             <element id="library" level="project" name="Gradle: net.bull.javamelody:javamelody-core:1.60.0" />
             <element id="library" level="project" name="Gradle: junit:junit:4.12" />
-            <element id="archive" name="com.receiptofi-common-1.0.0.jar">
+            <element id="archive" name="com.receiptofi-common-2.0.0.jar">
               <element id="module-output" name="common_main" />
               <element id="dir-copy" path="$PROJECT_DIR$/common/build/resources/main" />
             </element>
@@ -1182,11 +1182,11 @@
             <element id="library" level="project" name="Gradle: org.codehaus.woodstox:stax2-api:3.1.4" />
             <element id="library" level="project" name="Gradle: org.springframework.social:spring-social-config:1.1.4.RELEASE" />
             <element id="library" level="project" name="Gradle: org.slf4j:slf4j-api:1.7.21" />
-            <element id="archive" name="com.receiptofi-domain-1.0.0.jar">
+            <element id="archive" name="com.receiptofi-domain-2.0.0.jar">
               <element id="module-output" name="domain_main" />
               <element id="dir-copy" path="$PROJECT_DIR$/domain/build/resources/main" />
             </element>
-            <element id="archive" name="com.receiptofi-service-1.0.0.jar">
+            <element id="archive" name="com.receiptofi-service-2.0.0.jar">
               <element id="module-output" name="service_main" />
               <element id="dir-copy" path="$PROJECT_DIR$/service/build/resources/main" />
             </element>
@@ -1194,17 +1194,17 @@
           </element>
         </element>
         <element id="directory" name="META-INF">
-          <element id="file-copy" path="$PROJECT_DIR$/out/artifacts/social/exploded/social-1.0.0.war/META-INF/MANIFEST.MF" />
+          <element id="file-copy" path="$PROJECT_DIR$/out/artifacts/social/exploded/social-2.0.0.war/META-INF/MANIFEST.MF" />
         </element>
       </root>
     </artifact>
-    <artifact type="war" name="Gradle : com.receiptofi : receiptofi-web-1.0.0.war">
+    <artifact type="war" name="Gradle : com.receiptofi : receiptofi-web-2.0.0.war">
       <output-path>$PROJECT_DIR$/out/artifacts/web</output-path>
       <properties id="gradle-properties">
         <options external-project-path="$PROJECT_DIR$" />
       </properties>
-      <root id="archive" name="receiptofi-web-1.0.0.war">
-        <element id="javaee-facet-resources" facet="web_main/web/Web Gradle : receiptofi-web-1.0.0.war" />
+      <root id="archive" name="receiptofi-web-2.0.0.war">
+        <element id="javaee-facet-resources" facet="web_main/web/Web Gradle : receiptofi-web-2.0.0.war" />
         <element id="directory" name="WEB-INF">
           <element id="directory" name="classes">
             <element id="module-output" name="web_main" />
@@ -1288,7 +1288,7 @@
             <element id="library" level="project" name="Gradle: net.logstash.logback:logstash-logback-encoder:4.6" />
             <element id="library" level="project" name="Gradle: net.bull.javamelody:javamelody-core:1.60.0" />
             <element id="library" level="project" name="Gradle: junit:junit:4.12" />
-            <element id="archive" name="com.receiptofi-common-1.0.0.jar">
+            <element id="archive" name="com.receiptofi-common-2.0.0.jar">
               <element id="module-output" name="common_main" />
               <element id="dir-copy" path="$PROJECT_DIR$/common/build/resources/main" />
             </element>
@@ -1399,41 +1399,41 @@
             <element id="library" level="project" name="Gradle: org.codehaus.woodstox:stax2-api:3.1.4" />
             <element id="library" level="project" name="Gradle: org.springframework.social:spring-social-config:1.1.4.RELEASE" />
             <element id="library" level="project" name="Gradle: org.slf4j:slf4j-api:1.7.21" />
-            <element id="archive" name="com.receiptofi-domain-1.0.0.jar">
+            <element id="archive" name="com.receiptofi-domain-2.0.0.jar">
               <element id="module-output" name="domain_main" />
               <element id="dir-copy" path="$PROJECT_DIR$/domain/build/resources/main" />
             </element>
-            <element id="archive" name="com.receiptofi-security-1.0.0.jar">
+            <element id="archive" name="com.receiptofi-security-2.0.0.jar">
               <element id="module-output" name="security_main" />
               <element id="dir-copy" path="$PROJECT_DIR$/security/build/resources/main" />
             </element>
             <element id="library" level="project" name="Gradle: javax.servlet:jstl:1.2" />
-            <element id="archive" name="com.receiptofi-social-1.0.0.jar">
+            <element id="archive" name="com.receiptofi-social-2.0.0.jar">
               <element id="module-output" name="social_main" />
               <element id="dir-copy" path="$PROJECT_DIR$/social/build/resources/main" />
             </element>
-            <element id="archive" name="com.receiptofi-service-1.0.0.jar">
+            <element id="archive" name="com.receiptofi-service-2.0.0.jar">
               <element id="module-output" name="service_main" />
               <element id="dir-copy" path="$PROJECT_DIR$/service/build/resources/main" />
             </element>
-            <element id="archive" name="com.receiptofi-loader-1.0.0.jar">
+            <element id="archive" name="com.receiptofi-loader-2.0.0.jar">
               <element id="module-output" name="loader_main" />
               <element id="dir-copy" path="$PROJECT_DIR$/loader/build/resources/main" />
             </element>
           </element>
         </element>
         <element id="directory" name="META-INF">
-          <element id="file-copy" path="$PROJECT_DIR$/out/artifacts/web/exploded/receiptofi-web-1.0.0.war/META-INF/MANIFEST.MF" />
+          <element id="file-copy" path="$PROJECT_DIR$/out/artifacts/web/exploded/receiptofi-web-2.0.0.war/META-INF/MANIFEST.MF" />
         </element>
       </root>
     </artifact>
-    <artifact type="exploded-war" name="Gradle : com.receiptofi : receiptofi-web-1.0.0.war (exploded)">
-      <output-path>$PROJECT_DIR$/out/artifacts/web/exploded/receiptofi-web-1.0.0.war</output-path>
+    <artifact type="exploded-war" name="Gradle : com.receiptofi : receiptofi-web-2.0.0.war (exploded)">
+      <output-path>$PROJECT_DIR$/out/artifacts/web/exploded/receiptofi-web-2.0.0.war</output-path>
       <properties id="gradle-properties">
         <options external-project-path="$PROJECT_DIR$" />
       </properties>
       <root id="root">
-        <element id="javaee-facet-resources" facet="web_main/web/Web Gradle : receiptofi-web-1.0.0.war" />
+        <element id="javaee-facet-resources" facet="web_main/web/Web Gradle : receiptofi-web-2.0.0.war" />
         <element id="directory" name="WEB-INF">
           <element id="directory" name="classes">
             <element id="module-output" name="web_main" />
@@ -1517,7 +1517,7 @@
             <element id="library" level="project" name="Gradle: net.logstash.logback:logstash-logback-encoder:4.6" />
             <element id="library" level="project" name="Gradle: net.bull.javamelody:javamelody-core:1.60.0" />
             <element id="library" level="project" name="Gradle: junit:junit:4.12" />
-            <element id="archive" name="com.receiptofi-common-1.0.0.jar">
+            <element id="archive" name="com.receiptofi-common-2.0.0.jar">
               <element id="module-output" name="common_main" />
               <element id="dir-copy" path="$PROJECT_DIR$/common/build/resources/main" />
             </element>
@@ -1628,41 +1628,41 @@
             <element id="library" level="project" name="Gradle: org.codehaus.woodstox:stax2-api:3.1.4" />
             <element id="library" level="project" name="Gradle: org.springframework.social:spring-social-config:1.1.4.RELEASE" />
             <element id="library" level="project" name="Gradle: org.slf4j:slf4j-api:1.7.21" />
-            <element id="archive" name="com.receiptofi-domain-1.0.0.jar">
+            <element id="archive" name="com.receiptofi-domain-2.0.0.jar">
               <element id="module-output" name="domain_main" />
               <element id="dir-copy" path="$PROJECT_DIR$/domain/build/resources/main" />
             </element>
-            <element id="archive" name="com.receiptofi-security-1.0.0.jar">
+            <element id="archive" name="com.receiptofi-security-2.0.0.jar">
               <element id="module-output" name="security_main" />
               <element id="dir-copy" path="$PROJECT_DIR$/security/build/resources/main" />
             </element>
             <element id="library" level="project" name="Gradle: javax.servlet:jstl:1.2" />
-            <element id="archive" name="com.receiptofi-social-1.0.0.jar">
+            <element id="archive" name="com.receiptofi-social-2.0.0.jar">
               <element id="module-output" name="social_main" />
               <element id="dir-copy" path="$PROJECT_DIR$/social/build/resources/main" />
             </element>
-            <element id="archive" name="com.receiptofi-service-1.0.0.jar">
+            <element id="archive" name="com.receiptofi-service-2.0.0.jar">
               <element id="module-output" name="service_main" />
               <element id="dir-copy" path="$PROJECT_DIR$/service/build/resources/main" />
             </element>
-            <element id="archive" name="com.receiptofi-loader-1.0.0.jar">
+            <element id="archive" name="com.receiptofi-loader-2.0.0.jar">
               <element id="module-output" name="loader_main" />
               <element id="dir-copy" path="$PROJECT_DIR$/loader/build/resources/main" />
             </element>
           </element>
         </element>
         <element id="directory" name="META-INF">
-          <element id="file-copy" path="$PROJECT_DIR$/out/artifacts/web/exploded/receiptofi-web-1.0.0.war/META-INF/MANIFEST.MF" />
+          <element id="file-copy" path="$PROJECT_DIR$/out/artifacts/web/exploded/receiptofi-web-2.0.0.war/META-INF/MANIFEST.MF" />
         </element>
       </root>
     </artifact>
-    <artifact type="war" name="Gradle : com.receiptofi : loader-1.0.0.war">
+    <artifact type="war" name="Gradle : com.receiptofi : loader-2.0.0.war">
       <output-path>$PROJECT_DIR$/out/artifacts/loader</output-path>
       <properties id="gradle-properties">
         <options external-project-path="$PROJECT_DIR$" />
       </properties>
-      <root id="archive" name="loader-1.0.0.war">
-        <element id="javaee-facet-resources" facet="loader_main/web/Web Gradle : loader-1.0.0.war" />
+      <root id="archive" name="loader-2.0.0.war">
+        <element id="javaee-facet-resources" facet="loader_main/web/Web Gradle : loader-2.0.0.war" />
         <element id="directory" name="WEB-INF">
           <element id="directory" name="classes">
             <element id="module-output" name="loader_main" />
@@ -1746,7 +1746,7 @@
             <element id="library" level="project" name="Gradle: net.logstash.logback:logstash-logback-encoder:4.6" />
             <element id="library" level="project" name="Gradle: net.bull.javamelody:javamelody-core:1.60.0" />
             <element id="library" level="project" name="Gradle: junit:junit:4.12" />
-            <element id="archive" name="com.receiptofi-common-1.0.0.jar">
+            <element id="archive" name="com.receiptofi-common-2.0.0.jar">
               <element id="module-output" name="common_main" />
               <element id="dir-copy" path="$PROJECT_DIR$/common/build/resources/main" />
             </element>
@@ -1857,28 +1857,28 @@
             <element id="library" level="project" name="Gradle: org.codehaus.woodstox:stax2-api:3.1.4" />
             <element id="library" level="project" name="Gradle: org.springframework.social:spring-social-config:1.1.4.RELEASE" />
             <element id="library" level="project" name="Gradle: org.slf4j:slf4j-api:1.7.21" />
-            <element id="archive" name="com.receiptofi-service-1.0.0.jar">
+            <element id="archive" name="com.receiptofi-service-2.0.0.jar">
               <element id="module-output" name="service_main" />
               <element id="dir-copy" path="$PROJECT_DIR$/service/build/resources/main" />
             </element>
-            <element id="archive" name="com.receiptofi-domain-1.0.0.jar">
+            <element id="archive" name="com.receiptofi-domain-2.0.0.jar">
               <element id="module-output" name="domain_main" />
               <element id="dir-copy" path="$PROJECT_DIR$/domain/build/resources/main" />
             </element>
           </element>
         </element>
         <element id="directory" name="META-INF">
-          <element id="file-copy" path="$PROJECT_DIR$/out/artifacts/loader/exploded/loader-1.0.0.war/META-INF/MANIFEST.MF" />
+          <element id="file-copy" path="$PROJECT_DIR$/out/artifacts/loader/exploded/loader-2.0.0.war/META-INF/MANIFEST.MF" />
         </element>
       </root>
     </artifact>
-    <artifact type="exploded-war" name="Gradle : com.receiptofi : loader-1.0.0.war (exploded)">
-      <output-path>$PROJECT_DIR$/out/artifacts/loader/exploded/loader-1.0.0.war</output-path>
+    <artifact type="exploded-war" name="Gradle : com.receiptofi : loader-2.0.0.war (exploded)">
+      <output-path>$PROJECT_DIR$/out/artifacts/loader/exploded/loader-2.0.0.war</output-path>
       <properties id="gradle-properties">
         <options external-project-path="$PROJECT_DIR$" />
       </properties>
       <root id="root">
-        <element id="javaee-facet-resources" facet="loader_main/web/Web Gradle : loader-1.0.0.war" />
+        <element id="javaee-facet-resources" facet="loader_main/web/Web Gradle : loader-2.0.0.war" />
         <element id="directory" name="WEB-INF">
           <element id="directory" name="classes">
             <element id="module-output" name="loader_main" />
@@ -1962,7 +1962,7 @@
             <element id="library" level="project" name="Gradle: net.logstash.logback:logstash-logback-encoder:4.6" />
             <element id="library" level="project" name="Gradle: net.bull.javamelody:javamelody-core:1.60.0" />
             <element id="library" level="project" name="Gradle: junit:junit:4.12" />
-            <element id="archive" name="com.receiptofi-common-1.0.0.jar">
+            <element id="archive" name="com.receiptofi-common-2.0.0.jar">
               <element id="module-output" name="common_main" />
               <element id="dir-copy" path="$PROJECT_DIR$/common/build/resources/main" />
             </element>
@@ -2073,18 +2073,18 @@
             <element id="library" level="project" name="Gradle: org.codehaus.woodstox:stax2-api:3.1.4" />
             <element id="library" level="project" name="Gradle: org.springframework.social:spring-social-config:1.1.4.RELEASE" />
             <element id="library" level="project" name="Gradle: org.slf4j:slf4j-api:1.7.21" />
-            <element id="archive" name="com.receiptofi-service-1.0.0.jar">
+            <element id="archive" name="com.receiptofi-service-2.0.0.jar">
               <element id="module-output" name="service_main" />
               <element id="dir-copy" path="$PROJECT_DIR$/service/build/resources/main" />
             </element>
-            <element id="archive" name="com.receiptofi-domain-1.0.0.jar">
+            <element id="archive" name="com.receiptofi-domain-2.0.0.jar">
               <element id="module-output" name="domain_main" />
               <element id="dir-copy" path="$PROJECT_DIR$/domain/build/resources/main" />
             </element>
           </element>
         </element>
         <element id="directory" name="META-INF">
-          <element id="file-copy" path="$PROJECT_DIR$/out/artifacts/loader/exploded/loader-1.0.0.war/META-INF/MANIFEST.MF" />
+          <element id="file-copy" path="$PROJECT_DIR$/out/artifacts/loader/exploded/loader-2.0.0.war/META-INF/MANIFEST.MF" />
         </element>
       </root>
     </artifact>
