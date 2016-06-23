@@ -63,17 +63,11 @@ public class CouponEntity extends BaseEntity {
     @Field ("IP")
     private String imagePath;
 
-    /**
-     * Show secured coupon lock and no lock when shared true.
-     * After sharing coupon the location becomes remote location.
-     * Let user know the risk associated.
-     */
+    /** All coupons are saved on cloud. Shared coupons refers to same image. */
     @Field ("SH")
     private List<String> sharedWithRids = new ArrayList<>();
 
-    /**
-     * Holds the id where this coupon has originated from.
-     */
+    /** Holds the id where this coupon has originated from. */
     @Field ("OI")
     private String originId;
 
