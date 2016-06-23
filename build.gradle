@@ -212,7 +212,7 @@ subprojects {
 
         compile "$springDataGroup:spring-data-mongodb:$springDataMongo"
         compile "$springDataGroup:spring-data-commons:$springDataCommon"
-        compile "org.mongodb:mongo-java-driver:$mongoDriver"
+        compile "org.mongodb:mongo-java-driver:$mongoJavaDriver"
 
         compile "com.braintreepayments.gateway:braintree-java:$braintree"
 
