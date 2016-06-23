@@ -2,6 +2,8 @@ package com.receiptofi.domain;
 
 import com.receiptofi.domain.types.CouponTypeEnum;
 
+import org.apache.commons.lang3.StringUtils;
+
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.DBRef;
@@ -146,9 +148,9 @@ public class CouponEntity extends BaseEntity {
             StringBuilder sb = new StringBuilder("");
 
             for (FileSystemEntity fileSystem : fileSystemEntities) {
-                sb.append(fileSystem.getKey());
+                sb.append(fileSystem.getKey()).append(",");
             }
-            return sb.toString();
+            return StringUtils.chop(sb.toString());
         } else {
             return imagePath;
         }
