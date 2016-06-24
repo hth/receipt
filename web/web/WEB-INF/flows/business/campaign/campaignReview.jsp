@@ -176,7 +176,7 @@
             info = [
                 <c:forEach items="${couponCampaign.fileSystemEntities}" var="arr" varStatus="status">
                     <c:choose>
-                    <c:when test="${couponCampaign.businessCampaignStatus eq 'C'}">
+                    <c:when test="${couponCampaign.businessCampaignStatus eq 'A'}">
                     {
                         src: "https://s3-us-west-2.amazonaws.com/<spring:eval expression="@environmentProperty.getProperty('aws.s3.bucketName')" />/<spring:eval expression="@environmentProperty.getProperty('aws.s3.couponBucketName')" />/${arr.key}",
                         pos: {
