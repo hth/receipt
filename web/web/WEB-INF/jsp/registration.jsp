@@ -151,6 +151,7 @@
 </div>
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery-migrate/3.0.0/jquery-migrate.min.js"></script>
 <script>
     jQuery(document).ready(function ($) {
         if ($('.floating-labels').length > 0) {

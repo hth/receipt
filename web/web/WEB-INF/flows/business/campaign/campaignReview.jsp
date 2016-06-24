@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css"/>
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-migrate/3.0.0/jquery-migrate.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
     <script src="${pageContext.request.contextPath}/static/external/js/noble-count/jquery.NobleCount.min.js"></script>
@@ -176,7 +177,7 @@
             info = [
                 <c:forEach items="${couponCampaign.fileSystemEntities}" var="arr" varStatus="status">
                     <c:choose>
-                    <c:when test="${couponCampaign.businessCampaignStatus eq 'C'}">
+                    <c:when test="${couponCampaign.businessCampaignStatus eq 'A'}">
                     {
                         src: "https://s3-us-west-2.amazonaws.com/<spring:eval expression="@environmentProperty.getProperty('aws.s3.bucketName')" />/<spring:eval expression="@environmentProperty.getProperty('aws.s3.couponBucketName')" />/${arr.key}",
                         pos: {
