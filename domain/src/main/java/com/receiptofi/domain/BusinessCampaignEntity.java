@@ -13,6 +13,10 @@ import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.util.Collection;
 import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 import javax.validation.constraints.NotNull;
 
@@ -69,6 +73,10 @@ public class BusinessCampaignEntity extends BaseEntity {
     @Field ("CS")
     private BusinessCampaignStatusEnum businessCampaignStatus = BusinessCampaignStatusEnum.I;
 
+    @NotNull
+    @Field ("HS")
+    private Map<Date, BusinessCampaignStatusEnum> historicalCampaignStates = new LinkedHashMap<>();
+
     @DBRef
     @Field ("AI")
     private CommentEntity additionalInfo;
@@ -86,6 +94,7 @@ public class BusinessCampaignEntity extends BaseEntity {
         this.start = start;
         this.end = end;
         this.live = live;
+        historicalCampaignStates.put(new Date(), businessCampaignStatus);
     }
 
     public static BusinessCampaignEntity newInstance(String rid, String bizId, String freeText, Date start, Date end, Date live) {
@@ -146,11 +155,11 @@ public class BusinessCampaignEntity extends BaseEntity {
         return this;
     }
 
-    public BusinessCampaignTypeEnum getBusinessPromoType() {
+    public BusinessCampaignTypeEnum getBusinessCampaignType() {
         return businessCampaignType;
     }
 
-    public BusinessCampaignEntity setBusinessPromoType(BusinessCampaignTypeEnum businessCampaignType) {
+    public BusinessCampaignEntity setBusinessCampaignType(BusinessCampaignTypeEnum businessCampaignType) {
         this.businessCampaignType = businessCampaignType;
         return this;
     }
@@ -188,7 +197,12 @@ public class BusinessCampaignEntity extends BaseEntity {
 
     public BusinessCampaignEntity setBusinessCampaignStatus(BusinessCampaignStatusEnum businessCampaignStatus) {
         this.businessCampaignStatus = businessCampaignStatus;
+        historicalCampaignStates.put(new Date(), businessCampaignStatus);
         return this;
+    }
+
+    public Map<Date, BusinessCampaignStatusEnum> getHistoricalCampaignStates() {
+        return historicalCampaignStates;
     }
 
     public CommentEntity getAdditionalInfo() {

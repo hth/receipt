@@ -8,7 +8,11 @@ public enum BusinessCampaignStatusEnum {
     I("I", "Incomplete"),
     C("C", "Complete"),
     A("A", "Approved"),
-    R("R", "Rejected");
+    R("R", "Rejected"), //moves to incomplete
+    L("L", "Live"),
+    E("E", "Expired"),
+    T("T", "Terminated");
+
 
     private final String description;
     private final String name;
