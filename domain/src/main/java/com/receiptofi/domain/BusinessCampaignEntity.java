@@ -71,7 +71,7 @@ public class BusinessCampaignEntity extends BaseEntity {
 
     @NotNull
     @Field ("CS")
-    private BusinessCampaignStatusEnum businessCampaignStatus = BusinessCampaignStatusEnum.I;
+    private BusinessCampaignStatusEnum businessCampaignStatus = BusinessCampaignStatusEnum.N;
 
     @NotNull
     @Field ("HS")

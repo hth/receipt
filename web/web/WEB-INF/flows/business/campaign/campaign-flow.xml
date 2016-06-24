@@ -19,8 +19,8 @@
                   result="conversationScope.couponCampaign" />
     </on-start>
 
-    <decision-state id="isCampaignComplete">
-        <if test="businessCampaignFlowActions.isCampaignComplete(couponCampaign)"
+    <decision-state id="isCampaignPendingApproval">
+        <if test="businessCampaignFlowActions.isCampaignPendingApproval(couponCampaign)"
             then="campaignReview"
             else="campaignStart" />
     </decision-state>
