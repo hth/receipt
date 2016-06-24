@@ -1,3 +1,16 @@
+## Delete account related 
+
+    db.getCollection('BILLING_ACCOUNT').remove({"RID" : "10000000381"})
+    db.getCollection('BILLING_HISTORY').remove({"RID" : "10000000381"})
+    db.getCollection('EMAIL_VALIDATE').remove({"RID" : "10000000381"})
+    db.getCollection('EXPENSE_TAG').remove({"RID" : "10000000381"})
+    db.getCollection('NOTIFICATION').remove({"RID" : "10000000381"})
+    
+    db.getCollection('USER_PROFILE').remove({"RID" : "10000000381"})
+    db.getCollection('USER_PREFERENCE').remove({"RID" : "10000000381"})
+    db.getCollection('USER_AUTHENTICATION').remove({"_id" : ObjectId("576add45f4a3b614d3144ed7")})
+    db.getCollection('USER_ACCOUNT').remove({"RID" : "10000000381"})
+
 ## For renaming fields
 
     db.events.update({}, {$rename: {'lat': 'coords.lat', 'lon': 'coords.lon'}}, false, true)
