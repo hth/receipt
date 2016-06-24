@@ -108,21 +108,25 @@
                     </div>
                     <div id="fine-uploader-validation" class="upload-text"></div>
                     <div class="row_field">
-                        <form:label path="distributionPercent" cssClass="profile_label" cssErrorClass="profile_label lb_error" cssStyle="width: 300px;">
-                            % Of Customers Receiving Coupons:
-                        </form:label>
+                        <form:label path="distributionPercent" cssClass="profile_label"
+                                cssErrorClass="profile_label lb_error" cssStyle="width: 300px;">% Of Customers Receiving Coupons:</form:label>
                         <form:input path="distributionPercent" size="20" cssClass="name_txt" cssStyle="border: 0;" readonly="true"/>
                     </div>
                     <div id="container"></div>
                     <div class="full">
+                    <div class="row_field">
+                        <form:label path="businessCampaignStatus" cssClass="profile_label"
+                                cssErrorClass="profile_label lb_error">State</form:label>
+                        <form:input path="businessCampaignStatus.description" size="20" cssClass="name_txt" cssStyle="width: 100px; border: 0;" readonly="true" />
+                    </div>
                     <c:choose>
-                    <c:when test="${couponCampaign.businessCampaignStatus eq 'A'}">
+                    <c:when test="${couponCampaign.businessCampaignStatus ne 'A'}">
                         <input type="submit" value="CONFIRM" class="read_btn" name="_eventId_confirm"
-                                style="background: #2c97de; margin: 77px 10px 0 0;" disabled="${couponCampaign.businessCampaignStatus eq 'A'}">
+                                style="background: #2c97de; margin: 77px 10px 0 0;">
                         <input type="submit" value="REVISE" class="read_btn" name="_eventId_revise"
-                                style="background: #2c97de; margin: 77px 10px 0 0;" disabled="${couponCampaign.businessCampaignStatus eq 'A'}">
+                                style="background: #2c97de; margin: 77px 10px 0 0;">
                         <input type="submit" value="CANCEL" class="read_btn" name="_eventId_cancel"
-                                style="background: #FC462A; margin: 77px 10px 0 0;" disabled="${couponCampaign.businessCampaignStatus eq 'A'}">
+                                style="background: #FC462A; margin: 77px 10px 0 0;">
                     </c:when>
                     <c:otherwise>
                         <input type="submit" value="HOME" class="read_btn" name="_eventId_cancel"
