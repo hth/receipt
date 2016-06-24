@@ -115,12 +115,20 @@
                     </div>
                     <div id="container"></div>
                     <div class="full">
+                    <c:choose>
+                    <c:when test="${couponCampaign.businessCampaignStatus eq 'A'}">
                         <input type="submit" value="CONFIRM" class="read_btn" name="_eventId_confirm"
-                                style="background: #2c97de; margin: 77px 10px 0 0;">
+                                style="background: #2c97de; margin: 77px 10px 0 0;" disabled="${couponCampaign.businessCampaignStatus eq 'A'}">
                         <input type="submit" value="REVISE" class="read_btn" name="_eventId_revise"
-                                style="background: #2c97de; margin: 77px 10px 0 0;">
+                                style="background: #2c97de; margin: 77px 10px 0 0;" disabled="${couponCampaign.businessCampaignStatus eq 'A'}">
                         <input type="submit" value="CANCEL" class="read_btn" name="_eventId_cancel"
-                                style="background: #FC462A; margin: 77px 10px 0 0;">
+                                style="background: #FC462A; margin: 77px 10px 0 0;" disabled="${couponCampaign.businessCampaignStatus eq 'A'}">
+                    </c:when>
+                    <c:otherwise>
+                        <input type="submit" value="HOME" class="read_btn" name="_eventId_cancel"
+                                style="background: #2c97de; margin: 77px 10px 0 0;">
+                    </c:otherwise>
+                    </c:choose>
                     </div>
                 </form:form>
             </div>

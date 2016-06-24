@@ -6,6 +6,7 @@ import com.receiptofi.domain.BusinessCampaignEntity;
 import com.receiptofi.domain.BusinessUserEntity;
 import com.receiptofi.domain.flow.CouponCampaign;
 import com.receiptofi.domain.site.ReceiptUser;
+import com.receiptofi.domain.types.BusinessCampaignStatusEnum;
 import com.receiptofi.service.BusinessCampaignService;
 import com.receiptofi.service.BusinessUserService;
 import com.receiptofi.utils.DateUtil;
@@ -245,5 +246,9 @@ public class BusinessCampaignFlowActions {
 
         LOG.info("Completed validating campaign coupon ");
         return status;
+    }
+
+    public boolean isCampaignComplete(CouponCampaign couponCampaign) {
+        return couponCampaign.getBusinessCampaignStatus() == BusinessCampaignStatusEnum.C;
     }
 }
