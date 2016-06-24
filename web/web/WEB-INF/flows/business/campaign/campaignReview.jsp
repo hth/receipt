@@ -114,11 +114,13 @@
                     </div>
                     <div id="container"></div>
                     <div class="full">
+                    <c:if test="${couponCampaign.businessCampaignStatus ne 'I'}">
                     <div class="row_field">
                         <form:label path="businessCampaignStatus" cssClass="profile_label"
                                 cssErrorClass="profile_label lb_error">State</form:label>
                         <form:input path="businessCampaignStatus.description" size="20" cssClass="name_txt" cssStyle="width: 100px; border: 0;" readonly="true" />
                     </div>
+                    </c:if>
                     <c:choose>
                     <c:when test="${couponCampaign.businessCampaignStatus ne 'A'}">
                         <input type="submit" value="CONFIRM" class="read_btn" name="_eventId_confirm"
