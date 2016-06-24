@@ -87,7 +87,16 @@
                     <c:choose>
                     <c:when test="${businessLandingForm.businessCampaigns ne null}">
                     <table width="100%" style="margin-left: 4px; margin-right: 4px">
-                    <c:forEach items="${businessLandingForm.businessCampaigns}" var="item" varStatus="status">
+                        <tr>
+                            <th style="text-align: left;"></th>
+                            <th style="text-align: left;">Text</th>
+                            <th style="text-align: left;">Duration</th>
+                            <th style="text-align: left;">Live</th>
+                            <th style="text-align: left;">Distribution</th>
+                            <th style="text-align: left;">State</th>
+                            <th style="text-align: left;">Last Modified</th>
+                        </tr>
+                        <c:forEach items="${businessLandingForm.businessCampaigns}" var="item" varStatus="status">
                         <tr>
                             <td>${status.count}&nbsp;</td>
                             <td><a href="/business/campaign.htm?campaignId=${item.id}">${item.freeText}</a></td>
@@ -96,18 +105,18 @@
                                 <fmt:formatDate pattern="MMMM dd, yyyy" value="${item.live}"/>
                                 <span style="color: #6E6E6E;font-weight: normal;">&nbsp;<fmt:formatDate value="${item.live}" type="time"/></span>
                             </td>
-                            <td>${item.distributionPercent}&nbsp;</td>
+                            <td>${item.distributionPercent}&nbsp;%</td>
                             <td>${item.businessCampaignStatus.description}&nbsp</td>
                             <td>
                                 <fmt:formatDate pattern="MMMM dd, yyyy" value="${item.updated}"/>
                                 <span style="color: #6E6E6E;font-weight: normal;">&nbsp;<fmt:formatDate value="${item.updated}" type="time"/></span>
                             </td>
                         </tr>
-                    </c:forEach>
+                        </c:forEach>
                     </table>
                     </c:when>
                     <c:otherwise>
-                        Create new campaign.
+                        You have no new campaign set to connect with customer.
                     </c:otherwise>
                     </c:choose>
                 </div>
