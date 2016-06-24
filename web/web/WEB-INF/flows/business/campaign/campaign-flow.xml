@@ -8,20 +8,25 @@
 
     <on-start>
         <set name="conversationScope.campaignId" value="requestParameters.campaignId" type="string" />
+
+        <!--
+        Set conversationScope as the id is set after saving, this id is required on hitting back
+        browser as it will be used to update instead of creating new campaign
+        -->
+        <evaluate expression="campaignId == null ?
+                                businessCampaignFlowActions.startCampaign() :
+                                businessCampaignFlowActions.editCampaign(campaignId)"
+                  result="conversationScope.couponCampaign" />
     </on-start>
+
+    <decision-state id="isCampaignComplete">
+        <if test="businessCampaignFlowActions.isCampaignComplete(couponCampaign)"
+            then="campaignReview"
+            else="campaignStart" />
+    </decision-state>
 
     <!-- Need model couponCampaign -->
     <view-state id="campaignStart" model="couponCampaign">
-        <on-entry>
-            <!--
-            Set conversationScope as the id is set after saving, this id is required on hitting back
-            browser as it will be used to update instead of creating new campaign
-            -->
-            <evaluate expression="campaignId == null ?
-                                    businessCampaignFlowActions.startCampaign() :
-                                    businessCampaignFlowActions.editCampaign(campaignId)"
-                      result="conversationScope.couponCampaign" />
-        </on-entry>
         <transition on="submit" to="validateCampaignDetails" />
         <transition on="cancel" to="home" />
     </view-state>
