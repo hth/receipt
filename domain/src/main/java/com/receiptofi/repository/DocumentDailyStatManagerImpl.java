@@ -65,8 +65,8 @@ public class DocumentDailyStatManagerImpl implements DocumentDailyStatManager {
 
     @Override
     public DocumentDailyStatEntity getLastEntry() {
-        Query query = new Query();
-        query.with(new Sort(Sort.Direction.DESC, "DT")).limit(1);
-        return mongoTemplate.findOne(query, DocumentDailyStatEntity.class);
+        return mongoTemplate.findOne(
+                new Query().with(new Sort(Sort.Direction.DESC, "DT")).limit(1),
+                DocumentDailyStatEntity.class);
     }
 }
