@@ -80,12 +80,5 @@
         <p class="footer_copy">&#169; 2016 RECEIPTOFI, INC. ALL RIGHTS RESERVED. (<fmt:message key="build.version" />)
     </div>
 </div>
-<script>
-    $(document).ready(function() {
-        $( "#userName" ).autocomplete({
-            source: "${pageContext. request. contextPath}/admin/find_user.htm"
-        });
-    });
-</script>
 </body>
 </html>
