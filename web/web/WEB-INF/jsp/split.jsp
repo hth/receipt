@@ -219,7 +219,7 @@
                     <c:when test="${!empty splitForm.activeProfiles}">
                         <c:forEach var="profile" items="${splitForm.activeProfiles}" varStatus="status">
                         <div class="row_field" id="${profile.id}">
-                            <label class="profile_label" style="!important; color: #606060; !important; font-weight: normal; !important; line-height: 30px; width: 360px;">
+                            <label class="profile_label" style="!important; color: #606060 !important; font-weight: normal !important; line-height: 30px; width: 360px;">
                                 <div class="member" style="background-color: #00529B">
                                     <span class="member-initials">${profile.initials}</span>
                                 </div>

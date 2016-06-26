@@ -372,7 +372,7 @@
                 </p>
             </div>
             <div class="row_field">
-                <label class="profile_label" style="!important; color: #606060; !important; font-weight: normal; !important; line-height: 30px; width: 360px;">
+                <label class="profile_label" style="!important; color: #606060 !important; font-weight: normal !important; line-height: 30px; width: 360px;">
                     <span style="float: left; vertical-align: middle; width: 80px;">Splits Expenses:</span>
                     <div id="splits">
                         <c:choose>
@@ -397,7 +397,7 @@
             </div>
             <c:if test="${empty receiptForm.receipt.referReceiptId}">
             <div class="row_field">
-                <label class="profile_label" style="!important; color: #606060; !important; font-weight: normal; !important; line-height: 30px; width: 360px;">
+                <label class="profile_label" style="!important; color: #606060 !important; font-weight: normal !important; line-height: 30px; width: 360px;">
                     <span style="float: left; vertical-align: middle; width: 80px;">Friends:</span>
                     <div id="friends">
                         <c:forEach var="friend" items="${receiptForm.jsonFriends.values()}" varStatus="status">

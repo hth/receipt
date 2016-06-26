@@ -87,7 +87,7 @@
 
             <table width="95%" style="margin-left: 4px; margin-right: 4px;">
                 <tr style="border-bottom: 1px dotted #919191;">
-                    <th class="analysis" style="width: 50px; !important;">Date</th>
+                    <th class="analysis" style="width: 50px !important;">Date</th>
                     <th class="analysis">Business</th>
                     <th class="analysis">Location</th>
                     <th class="analysis">Price</th>
@@ -95,7 +95,7 @@
                     <th class="analysis">Site's Average</th>
                 </tr>
                 <tr>
-                    <td class="analysis" style="width: 50px; !important;">
+                    <td class="analysis" style="width: 50px !important;">
                         <fmt:formatDate value="${itemAnalyticForm.item.receipt.receiptDate}" type="date"/>
                     </td>
                     <td class="analysis">
