@@ -74,6 +74,7 @@
                        'ROLE_BUSINESS',
                        'ROLE_ADMIN',
                        'ROLE_TECHNICIAN',
+                       'ROLE_CAMPAIGN',
                        'ROLE_SUPERVISOR',
                        'ROLE_ANALYSIS_READ')" />
 
@@ -84,6 +85,7 @@
                        'ROLE_BUSINESS',
                        'ROLE_ADMIN',
                        'ROLE_TECHNICIAN',
+                       'ROLE_CAMPAIGN',
                        'ROLE_SUPERVISOR')" />
 
         <intercept-url pattern="/access/userprofilepreference/**"
@@ -93,16 +95,31 @@
                        'ROLE_BUSINESS',
                        'ROLE_ADMIN',
                        'ROLE_TECHNICIAN',
+                       'ROLE_CAMPAIGN',
                        'ROLE_SUPERVISOR')" />
 
         <intercept-url pattern="/access/**"
-                       access="hasAnyRole('ROLE_USER', 'ROLE_ADMIN', 'ROLE_TECHNICIAN', 'ROLE_SUPERVISOR')" />
+                       access="hasAnyRole(
+                       'ROLE_USER',
+                       'ROLE_ADMIN',
+                       'ROLE_TECHNICIAN',
+                       'ROLE_CAMPAIGN',
+                       'ROLE_SUPERVISOR')" />
 
         <intercept-url pattern="/ws/**"
                        access="hasAnyRole('ROLE_USER', 'ROLE_TECHNICIAN', 'ROLE_SUPERVISOR')" />
 
+        <!-- Note: narrowed interceptor has to be before broader interceptor, example '/emp/**' for ROLE_SUPERVISOR -->
+        <intercept-url pattern="/emp/receipt/**"
+                       access="hasRole('ROLE_TECHNICIAN')" />
+
+        <!-- Note: narrowed interceptor has to be before broader interceptor, example '/emp/**' for ROLE_SUPERVISOR -->
+        <intercept-url pattern="/emp/campaign/**"
+                       access="hasRole('ROLE_CAMPAIGN')" />
+
+        <!-- Note: broader interceptor after narrowed interceptor, example '/emp/receipt/**' for ROLE_TECHNICIAN -->
         <intercept-url pattern="/emp/**"
-                       access="hasAnyRole('ROLE_TECHNICIAN', 'ROLE_SUPERVISOR')" />
+                       access="hasRole('ROLE_SUPERVISOR')" />
 
         <intercept-url pattern="/admin/**"
                        access="hasRole('ROLE_ADMIN')" />

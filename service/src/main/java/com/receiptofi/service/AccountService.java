@@ -380,7 +380,7 @@ public class AccountService {
      * @param userLevel
      * @return
      */
-    public UserAccountEntity changeAccountRolesToMatchUserLevel(String rid, UserLevelEnum userLevel) {
+    UserAccountEntity changeAccountRolesToMatchUserLevel(String rid, UserLevelEnum userLevel) {
         UserAccountEntity userAccount = findByReceiptUserId(rid);
         Set<RoleEnum> roles = new LinkedHashSet<>();
         switch (userLevel) {
@@ -389,9 +389,15 @@ public class AccountService {
                 roles.add(RoleEnum.ROLE_TECHNICIAN);
                 userAccount.setRoles(roles);
                 break;
+            case TECH_CAMPAIGN:
+                roles.add(RoleEnum.ROLE_USER);
+                roles.add(RoleEnum.ROLE_CAMPAIGN);
+                userAccount.setRoles(roles);
+                break;
             case SUPERVISOR:
                 roles.add(RoleEnum.ROLE_USER);
                 roles.add(RoleEnum.ROLE_TECHNICIAN);
+                roles.add(RoleEnum.ROLE_CAMPAIGN);
                 roles.add(RoleEnum.ROLE_SUPERVISOR);
                 userAccount.setRoles(roles);
                 break;
@@ -399,6 +405,7 @@ public class AccountService {
                 /** As of now admin does not have Business and Enterprise role. */
                 roles.add(RoleEnum.ROLE_USER);
                 roles.add(RoleEnum.ROLE_TECHNICIAN);
+                roles.add(RoleEnum.ROLE_CAMPAIGN);
                 roles.add(RoleEnum.ROLE_SUPERVISOR);
                 roles.add(RoleEnum.ROLE_ADMIN);
                 roles.add(RoleEnum.ROLE_ANALYSIS_READ);
