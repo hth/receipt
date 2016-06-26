@@ -47,19 +47,22 @@ public interface DocumentManager extends RepositoryManager<DocumentEntity> {
     List<DocumentEntity> getAllPending(String rid);
 
     /**
-     * Document all pending.
+     * Total pending includes new and re-process document count.
+     *
      * @return
      */
     long getTotalPending();
 
     /**
      * Documents processed today.
+     *
      * @return
      */
     long getTotalProcessedToday();
 
     /**
      * Historical data on document processed from the days submitted.
+     *
      * @param since
      * @return
      */

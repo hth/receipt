@@ -207,8 +207,10 @@ public final class DocumentManagerImpl implements DocumentManager {
     @Override
     public long getTotalPending() {
         return mongoTemplate.count(
-                query(where("DS").is(DocumentStatusEnum.PENDING)
-                        .andOperator(isNotDeleted())),
+                query(where("DS").in(
+                        DocumentStatusEnum.PENDING,
+                        DocumentStatusEnum.REPROCESS
+                ).andOperator(isNotDeleted())),
                 DocumentEntity.class
         );
     }
