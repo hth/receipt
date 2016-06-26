@@ -139,10 +139,11 @@ public final class DocumentManagerImpl implements DocumentManager {
     @Override
     public List<DocumentEntity> getAllPending(String rid) {
         return mongoTemplate.find(
-                query(where("RID").is(rid))
-                        .addCriteria(isActive())
-                        .addCriteria(isNotDeleted())
-                        .with(new Sort(Direction.ASC, "C")),
+                query(where("RID").is(rid)
+                        .andOperator(
+                                isActive(),
+                                isNotDeleted())
+                ).with(new Sort(Direction.ASC, "C")),
                 DocumentEntity.class,
                 TABLE
         );
@@ -151,10 +152,12 @@ public final class DocumentManagerImpl implements DocumentManager {
     @Override
     public List<DocumentEntity> getAllRejected(String rid) {
         return mongoTemplate.find(
-                query(where("RID").is(rid).and("DS").is(DocumentStatusEnum.REJECT))
-                        .addCriteria(isNotActive())
-                        .addCriteria(isDeleted())
-                        .with(new Sort(Direction.ASC, "C")),
+                query(where("RID").is(rid)
+                        .and("DS").is(DocumentStatusEnum.REJECT)
+                        .andOperator(
+                                isNotActive(),
+                                isDeleted())
+                ).with(new Sort(Direction.ASC, "C")),
                 DocumentEntity.class,
                 TABLE
         );
@@ -189,11 +192,12 @@ public final class DocumentManagerImpl implements DocumentManager {
     @Override
     public List<DocumentEntity> getAllProcessedDocuments() {
         return mongoTemplate.find(
-                query(where("IU").is(false).and("DS").is(DocumentStatusEnum.PROCESSED)
-                                .andOperator(
-                                        isNotActive(),
-                                        isNotDeleted()
-                                )
+                query(where("IU").is(false)
+                        .and("DS").is(DocumentStatusEnum.PROCESSED)
+                        .andOperator(
+                                isNotActive(),
+                                isNotDeleted()
+                        )
                 ).with(new Sort(Direction.ASC, "U")),
                 DocumentEntity.class,
                 TABLE
@@ -203,7 +207,8 @@ public final class DocumentManagerImpl implements DocumentManager {
     @Override
     public long getTotalPending() {
         return mongoTemplate.count(
-                query(where("DS").is(DocumentStatusEnum.PENDING).andOperator(isNotDeleted())),
+                query(where("DS").is(DocumentStatusEnum.PENDING)
+                        .andOperator(isNotDeleted())),
                 DocumentEntity.class
         );
     }
@@ -211,10 +216,9 @@ public final class DocumentManagerImpl implements DocumentManager {
     @Override
     public long getTotalProcessedToday() {
         return mongoTemplate.count(
-                query(
-                        where("DS").ne(DocumentStatusEnum.PENDING)
-                                .and("U").gte(DateUtil.midnight(new Date()))
-                ).addCriteria(isNotDeleted()),
+                query(where("DS").ne(DocumentStatusEnum.PENDING)
+                        .and("U").gte(DateUtil.midnight(new Date()))
+                        .andOperator(isNotDeleted())),
                 DocumentEntity.class
         );
     }
