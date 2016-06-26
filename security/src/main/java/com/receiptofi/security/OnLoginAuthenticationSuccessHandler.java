@@ -36,9 +36,19 @@ import javax.servlet.http.HttpServletResponse;
 public class OnLoginAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
     private static final Logger LOG = LoggerFactory.getLogger(OnLoginAuthenticationSuccessHandler.class);
 
+    /** For users. */
     @Value ("${accessLanding:/access/landing.htm}")
     private String accessLanding;
 
+    /** For receipt techs. */
+    @Value ("${empLanding:/emp/receipt/landing.htm}")
+    private String empReceiptLanding;
+
+    /** For campaign techs. */
+    @Value ("${empLanding:/emp/campaign/landing.htm}")
+    private String empCampaignLanding;
+
+    /** For supers. */
     @Value ("${empLanding:/emp/landing.htm}")
     private String empLanding;
 
@@ -110,13 +120,15 @@ public class OnLoginAuthenticationSuccessHandler extends SimpleUrlAuthentication
      */
     public String determineTargetUrl(Authentication authentication) {
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-        GrantedAuthority grantedAuthority = authorities.iterator().next();
-        switch (RoleEnum.valueOf(grantedAuthority.getAuthority())) {
+        switch (getHighestRoleEnum(authorities)) {
             case ROLE_USER:
                 return accessLanding;
             case ROLE_SUPERVISOR:
-            case ROLE_TECHNICIAN:
                 return empLanding;
+            case ROLE_TECHNICIAN:
+                return empReceiptLanding;
+            case ROLE_CAMPAIGN:
+                return empCampaignLanding;
             case ROLE_ADMIN:
                 return adminLanding;
             case ROLE_ANALYSIS_READ:
@@ -129,5 +141,22 @@ public class OnLoginAuthenticationSuccessHandler extends SimpleUrlAuthentication
                 LOG.error("Role set is not defined");
                 throw new IllegalStateException("Role set is not defined");
         }
+    }
+
+    /**
+     * Finds the highest available role for landing page.
+     *
+     * @param authorities
+     * @return
+     */
+    private RoleEnum getHighestRoleEnum(Collection<? extends GrantedAuthority> authorities) {
+        RoleEnum roleEnum = null;
+        for (GrantedAuthority grantedAuthority : authorities) {
+            if (null == roleEnum || roleEnum.ordinal() < RoleEnum.valueOf(grantedAuthority.getAuthority()).ordinal()) {
+                roleEnum = RoleEnum.valueOf(grantedAuthority.getAuthority());
+            }
+        }
+
+        return roleEnum;
     }
 }

@@ -13,6 +13,10 @@ package com.receiptofi.domain.types;
         "PMD.LongVariable"
 })
 public enum RoleEnum {
+
+    /** Has read access */
+    ROLE_ANALYSIS_READ,
+
     /** A regular user */
     ROLE_USER,
 
@@ -25,8 +29,8 @@ public enum RoleEnum {
     /** Validate and process data */
     ROLE_TECHNICIAN,
 
-    /** Has read access */
-    ROLE_ANALYSIS_READ,
+    /** Approve Campaign */
+    ROLE_CAMPAIGN,
 
     /** Has complete access */
     ROLE_SUPERVISOR,
