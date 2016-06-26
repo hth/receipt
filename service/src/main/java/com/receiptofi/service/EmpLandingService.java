@@ -23,7 +23,12 @@ import java.util.List;
 @Service
 public class EmpLandingService {
 
-    @Autowired private MessageDocumentManager messageDocumentManager;
+    private MessageDocumentManager messageDocumentManager;
+
+    @Autowired
+    public EmpLandingService(MessageDocumentManager messageDocumentManager) {
+        this.messageDocumentManager = messageDocumentManager;
+    }
 
     public List<MessageDocumentEntity> pendingReceipts(String emailId, String profileId, DocumentStatusEnum status) {
         return messageDocumentManager.findPending(emailId, profileId, status);

@@ -22,7 +22,12 @@ import java.util.List;
 @Service
 public class DocumentPendingService {
 
-    @Autowired private DocumentManager documentManager;
+    private DocumentManager documentManager;
+
+    @Autowired
+    public DocumentPendingService(DocumentManager documentManager) {
+        this.documentManager = documentManager;
+    }
 
     /**
      * All pending receipt for a user
@@ -44,6 +49,11 @@ public class DocumentPendingService {
         return documentManager.getAllRejected(userProfileId);
     }
 
+    /**
+     * Total pending includes new and re-process document count.
+     *
+     * @return
+     */
     public long getTotalPending() {
         return documentManager.getTotalPending();
     }
