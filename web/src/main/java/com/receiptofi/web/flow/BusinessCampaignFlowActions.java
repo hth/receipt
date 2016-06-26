@@ -248,7 +248,7 @@ public class BusinessCampaignFlowActions {
         return status;
     }
 
-    public boolean isCampaignComplete(CouponCampaign couponCampaign) {
-        return couponCampaign.getBusinessCampaignStatus() == BusinessCampaignStatusEnum.C;
+    public boolean isCampaignPendingApproval(CouponCampaign couponCampaign) {
+        return couponCampaign.getBusinessCampaignStatus() == BusinessCampaignStatusEnum.P;
     }
 }

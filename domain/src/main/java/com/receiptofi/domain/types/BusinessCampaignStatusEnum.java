@@ -5,10 +5,14 @@ package com.receiptofi.domain.types;
  * Date: 6/15/16 7:07 PM
  */
 public enum BusinessCampaignStatusEnum {
-    I("I", "Incomplete"),
-    C("C", "Complete"),
+    N("N", "Not Complete"),
+    P("P", "Pending Approval"),
     A("A", "Approved"),
-    R("R", "Rejected");
+    R("R", "Rejected"), //moves to incomplete
+    L("L", "Live"),
+    E("E", "Expired"),
+    T("T", "Terminated");
+
 
     private final String description;
     private final String name;

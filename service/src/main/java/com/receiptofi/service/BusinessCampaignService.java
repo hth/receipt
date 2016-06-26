@@ -118,7 +118,7 @@ public class BusinessCampaignService {
 
     public void completeCampaign(String campaignId, String bizId) {
         BusinessCampaignEntity businessCampaign = businessCampaignManager.findById(campaignId, bizId);
-        businessCampaign.setBusinessCampaignStatus(BusinessCampaignStatusEnum.C);
+        businessCampaign.setBusinessCampaignStatus(BusinessCampaignStatusEnum.P);
         save(businessCampaign);
     }
 
