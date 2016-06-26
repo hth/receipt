@@ -638,13 +638,13 @@ public class MailService {
             }
 
             if (StringUtils.isNotBlank(invitees.getIfPresent(invitedUserEmail))) {
-                LOG.info("Duplicate invite={}, list max={} actual={}", invitedUserEmail, SIZE_100, invitees.size());
+                LOG.info("Duplicate Request invite={}, list max={} actual={}",
+                        invitedUserEmail, SIZE_100, invitees.size());
 
                 /**
                  * In case users is impatient and hits invite twice for same user. This will ensure same records
                  * are not created twice.
                  */
-
                 return generateInviteResponse(false, "Almost ready, sending invitee to '" + invitedUserEmail + "'");
             }
             invitees.put(invitedUserEmail, invitedUserEmail);
