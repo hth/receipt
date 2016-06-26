@@ -404,8 +404,8 @@ div .sidebar-invite form input {
 
 .rightside-list-holder-report {
     width: 680px;
-    height: auto; !important;
-    min-height: 0px; !important;
+    height: auto !important;
+    min-height: 0px !important;
     overflow-y: hidden;
 }
 
@@ -604,9 +604,9 @@ a.big-view-lower:hover, a.big-view-lower:visited, a.big-view-lower {
 }
 
 .remaining-characters {
-    padding-top: 6px; !important;
-    padding-left: 5px; !important;
-    width: auto; !important;
+    padding-top: 6px !important;
+    padding-left: 5px !important;
+    width: auto !important;
     padding-bottom: 2%;
     color: #484848;
 }
@@ -686,13 +686,13 @@ a.view-more-text:hover, a.view-more-text:visited, a.view-more-text {
 
 /** For date form MMM, dd */
 .rightside-li-date-text-short {
-    width: 60px; !important;
+    width: 60px !important;
 }
 /** End for date MMM, dd */
 
 /** For showing different attributes */
 .rightside-li-date-text-show-attr {
-    width: 72px; !important;
+    width: 72px !important;
 }
 /** For showing different attributes ends */
 
@@ -817,7 +817,7 @@ a.view-more-text:hover, a.view-more-text:visited, a.view-more-text {
 }
 
 .first-small {
-    padding: 1%; !important;
+    padding: 1% !important;
 }
 
 .r-info, .r-success, .r-warning, .r-error, .r-validation {
@@ -939,10 +939,10 @@ a.view-more-text:hover, a.view-more-text:visited, a.view-more-text {
     background: #FFF;
     color: #707070;
     border: 1px dotted #606060;
-    margin: 0px 25px 0px 0px;
+    margin: 0 25px 0 0;
     padding-top: 15px;
     text-align: center;
-    width: 300px; !important;
+    width: 300px !important;
     padding-bottom: 2%;
 }
 
@@ -954,7 +954,7 @@ a.view-more-text:hover, a.view-more-text:visited, a.view-more-text {
 
 .profile_label {
     float: left;
-    padding: 10px 8px 8px 0px;
+    padding: 10px 8px 8px 0;
     width: 129px;
     font-weight: bold;
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
@@ -962,15 +962,15 @@ a.view-more-text:hover, a.view-more-text:visited, a.view-more-text {
 
 .profile_label_note {
     padding-top: 40px;
-    width: 100%; !important;
-    color: #606060; !important;
-    font-weight: bold; !important;
+    width: 100% !important;
+    color: #606060 !important;
+    font-weight: bold !important;
 }
 
 .name_txt {
     width: 267px;
     height: 40px;
-    line-height: 24px;
+    line-height: 38px;
     color: #606060;
     font-size: 1.1em;
     padding: 2px 3px;
@@ -978,7 +978,7 @@ a.view-more-text:hover, a.view-more-text:visited, a.view-more-text {
     border-radius: 3px;
     -moz-border-radius: 3px;
     -webkit-border-radius: 3px;
-    margin: 0px;
+    margin: 0;
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
@@ -1140,7 +1140,7 @@ a.view-more-text:hover, a.view-more-text:visited, a.view-more-text {
 
 /*Report chronically*/
 .ll-h {
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     font-size: 1.2em !important;
     font-weight: bold;
     line-height: 55px !important;
@@ -1148,7 +1148,7 @@ a.view-more-text:hover, a.view-more-text:visited, a.view-more-text {
 }
 
 .ll-t {
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     font-size: 1.1em !important;
     line-height: 40px !important;
 }
@@ -1462,7 +1462,7 @@ a.expense-tag:hover, a.expense-tag:visited, a.expense-tag:link {
 }
 
 .logout_btn:focus {
-    outline: 0; !important;
+    outline: 0 !important;
 }
 
 /*Logout End*/
