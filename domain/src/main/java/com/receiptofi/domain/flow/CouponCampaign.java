@@ -37,6 +37,7 @@ public class CouponCampaign implements Serializable {
     private String distributionPercent;
     private BusinessCampaignStatusEnum businessCampaignStatus;
     private Collection<FileSystemEntity> fileSystemEntities;
+    //TODO(hth) add reason to show up for rejection of campaign, add it in BusinessCampaignEntity
 
     @SuppressWarnings ("unused")
     private CouponCampaign() {
