@@ -29,7 +29,6 @@ import com.receiptofi.utils.HashText;
 import com.receiptofi.utils.RandomString;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.text.WordUtils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -384,7 +383,7 @@ public class AccountService {
         UserAccountEntity userAccount = findByReceiptUserId(rid);
         Set<RoleEnum> roles = new LinkedHashSet<>();
         switch (userLevel) {
-            case TECHNICIAN:
+            case TECH_RECEIPT:
                 roles.add(RoleEnum.ROLE_USER);
                 roles.add(RoleEnum.ROLE_TECHNICIAN);
                 userAccount.setRoles(roles);

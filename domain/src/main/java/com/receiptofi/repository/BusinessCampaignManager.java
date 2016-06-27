@@ -1,6 +1,7 @@
 package com.receiptofi.repository;
 
 import com.receiptofi.domain.BusinessCampaignEntity;
+import com.receiptofi.domain.types.BusinessCampaignStatusEnum;
 import com.receiptofi.domain.types.UserLevelEnum;
 
 import java.util.List;
@@ -14,7 +15,7 @@ public interface BusinessCampaignManager extends RepositoryManager<BusinessCampa
     BusinessCampaignEntity findById(String campaignId, String bizId);
 
     /**
-     * Should be accessed by UserLevelEnum SUPERVISOR or TECH_CAMPAIGN.
+     * Note: Should be accessed by UserLevelEnum SUPERVISOR or TECH_CAMPAIGN.
      *
      * @param campaignId
      * @return
@@ -26,4 +27,16 @@ public interface BusinessCampaignManager extends RepositoryManager<BusinessCampa
     List<BusinessCampaignEntity> findAllPendingApproval(int limit);
 
     long countPendingApproval();
+
+    /**
+     * Note: Should be accessed by UserLevelEnum SUPERVISOR or TECH_CAMPAIGN.
+     *
+     * @param campaignId
+     * @param userLevel
+     * @param businessCampaignStatus
+     */
+    void updateCampaignStatus(
+            String campaignId,
+            UserLevelEnum userLevel,
+            BusinessCampaignStatusEnum businessCampaignStatus);
 }

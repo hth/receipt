@@ -1,7 +1,8 @@
 package com.receiptofi.web.controller.access;
 
+import static com.receiptofi.domain.types.UserLevelEnum.*;
+
 import com.receiptofi.domain.site.ReceiptUser;
-import com.receiptofi.domain.types.UserLevelEnum;
 import com.receiptofi.service.MessageDocumentService;
 
 import org.slf4j.Logger;
@@ -37,7 +38,12 @@ import javax.servlet.http.HttpServletResponse;
 public class SignOff extends SimpleUrlLogoutSuccessHandler implements LogoutSuccessHandler {
     private static final Logger LOG = LoggerFactory.getLogger(SignOff.class);
 
-    @Autowired MessageDocumentService messageDocumentService;
+    private MessageDocumentService messageDocumentService;
+
+    @Autowired
+    public SignOff(MessageDocumentService messageDocumentService) {
+        this.messageDocumentService = messageDocumentService;
+    }
 
     @Override
     public void onLogoutSuccess(
@@ -51,9 +57,8 @@ public class SignOff extends SimpleUrlLogoutSuccessHandler implements LogoutSucc
             ReceiptUser receiptUser = (ReceiptUser) authentication.getPrincipal();
             receiptUserId = receiptUser.getRid();
 
-            /** Only UserLevelEnum.TECHNICIAN and UserLevelEnum.SUPERVISOR has access to update and modify documents. */
-            if (receiptUser.getUserLevel() == UserLevelEnum.TECHNICIAN ||
-                    receiptUser.getUserLevel() == UserLevelEnum.SUPERVISOR) {
+            /** Only UserLevelEnum.TECH_RECEIPT and UserLevelEnum.SUPERVISOR has access to update and modify documents. */
+            if (receiptUser.getUserLevel() == TECH_RECEIPT || receiptUser.getUserLevel() == SUPERVISOR) {
                 LOG.info("Reset document pending documents rid={} userLevel={}",
                         receiptUser.getRid(), receiptUser.getUserLevel());
 

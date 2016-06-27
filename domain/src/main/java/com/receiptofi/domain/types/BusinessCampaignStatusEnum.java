@@ -8,11 +8,10 @@ public enum BusinessCampaignStatusEnum {
     N("N", "Not Complete"),
     P("P", "Pending Approval"),
     A("A", "Approved"),
-    R("R", "Rejected"), //moves to incomplete
+    D("D", "Declined"), //Declined campaign can be modified and resubmitted to pending approval
     L("L", "Live"),
     E("E", "Expired"),
     T("T", "Terminated");
-
 
     private final String description;
     private final String name;

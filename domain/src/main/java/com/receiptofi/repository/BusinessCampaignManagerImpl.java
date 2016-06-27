@@ -1,9 +1,9 @@
 package com.receiptofi.repository;
 
-import static com.receiptofi.domain.types.UserLevelEnum.SUPERVISOR;
-import static com.receiptofi.domain.types.UserLevelEnum.TECH_CAMPAIGN;
+import static com.receiptofi.repository.util.AppendAdditionalFields.entityUpdate;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
+import static org.springframework.data.mongodb.core.query.Update.update;
 
 import com.receiptofi.domain.BaseEntity;
 import com.receiptofi.domain.BusinessCampaignEntity;
@@ -126,5 +126,28 @@ public class BusinessCampaignManagerImpl implements BusinessCampaignManager {
                 BusinessCampaignEntity.class,
                 TABLE
         );
+    }
+
+    @Override
+    public void updateCampaignStatus(
+            String campaignId,
+            UserLevelEnum userLevel,
+            BusinessCampaignStatusEnum businessCampaignStatus
+    ) {
+        LOG.info("campaignId={} userLevel={}", campaignId, userLevel);
+
+        switch (userLevel) {
+            case SUPERVISOR:
+            case TECH_CAMPAIGN:
+                mongoTemplate.updateFirst(
+                        query(where("id").is(campaignId)),
+                        entityUpdate(update("CS", businessCampaignStatus)),
+                        BusinessCampaignEntity.class,
+                        TABLE
+                );
+                break;
+            default:
+                throw new UnsupportedOperationException("Not authorized to modify campaign");
+        }
     }
 }
