@@ -1,10 +1,14 @@
 package com.receiptofi.repository;
 
+import static com.receiptofi.domain.types.UserLevelEnum.SUPERVISOR;
+import static com.receiptofi.domain.types.UserLevelEnum.TECH_CAMPAIGN;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
 
 import com.receiptofi.domain.BaseEntity;
 import com.receiptofi.domain.BusinessCampaignEntity;
+import com.receiptofi.domain.types.BusinessCampaignStatusEnum;
+import com.receiptofi.domain.types.UserLevelEnum;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -75,11 +79,50 @@ public class BusinessCampaignManagerImpl implements BusinessCampaignManager {
     }
 
     @Override
+    public BusinessCampaignEntity findById(String campaignId, UserLevelEnum userLevel) {
+        LOG.info("campaignId={} userLevel={}", campaignId, userLevel);
+
+        switch (userLevel) {
+            case SUPERVISOR:
+            case TECH_CAMPAIGN:
+                return mongoTemplate.findOne(
+                        query(where("id").is(campaignId)),
+                        BusinessCampaignEntity.class,
+                        TABLE
+                );
+            default:
+                throw new UnsupportedOperationException("Not authorized to load campaign");
+        }
+    }
+
+    @Override
     public List<BusinessCampaignEntity> findBy(String bizId) {
         return mongoTemplate.find(
                 query(
                         where("BID").is(bizId)
                 ).with(new Sort(Sort.Direction.DESC, "LP")),
+                BusinessCampaignEntity.class,
+                TABLE
+        );
+    }
+
+    @Override
+    public List<BusinessCampaignEntity> findAllPendingApproval(int limit) {
+        return mongoTemplate.find(
+                query(
+                        where("CS").is(BusinessCampaignStatusEnum.P)
+                ).limit(5).with(new Sort(Sort.Direction.DESC, "U")),
+                BusinessCampaignEntity.class,
+                TABLE
+        );
+    }
+
+    @Override
+    public long countPendingApproval() {
+        return mongoTemplate.count(
+                query(
+                        where("CS").is(BusinessCampaignStatusEnum.P)
+                ).with(new Sort(Sort.Direction.DESC, "U")),
                 BusinessCampaignEntity.class,
                 TABLE
         );
