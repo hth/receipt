@@ -22,7 +22,7 @@ public class BusinessLandingForm {
     private long storeCount;
     private BigDecimal totalCustomerPurchases;
     private long visitCount;
-    private List<BusinessCampaignEntity> businessCampaigns;
+    private CampaignListForm campaignListForm;
 
     public String getBizName() {
         return bizName;
@@ -69,12 +69,12 @@ public class BusinessLandingForm {
         return this;
     }
 
-    public List<BusinessCampaignEntity> getBusinessCampaigns() {
-        return businessCampaigns;
+    public CampaignListForm getCampaignListForm() {
+        return campaignListForm;
     }
 
-    public BusinessLandingForm setBusinessCampaigns(List<BusinessCampaignEntity> businessCampaigns) {
-        this.businessCampaigns = businessCampaigns;
+    public BusinessLandingForm setCampaignListForm(CampaignListForm campaignListForm) {
+        this.campaignListForm = campaignListForm;
         return this;
     }
 }
