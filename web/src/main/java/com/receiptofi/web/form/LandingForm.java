@@ -1,6 +1,5 @@
 package com.receiptofi.web.form;
 
-import com.receiptofi.domain.MileageEntity;
 import com.receiptofi.domain.value.ReceiptGrouped;
 import com.receiptofi.domain.value.ReceiptGroupedByBizLocation;
 import com.receiptofi.web.helper.ReceiptForMonth;
@@ -29,10 +28,6 @@ public final class LandingForm {
     private Iterator<ReceiptGrouped> receiptGrouped;
     private List<LandingDonutChart> bizByExpenseTypes;
     private String bizNames;
-
-    private List<MileageEntity> mileageEntities;
-    private String mileages;
-    private int mileageMonthlyTotal;
 
     public ReceiptForMonth getReceiptForMonth() {
         return receiptForMonth;
@@ -86,30 +81,6 @@ public final class LandingForm {
 
     public void setBizNames(String bizNames) {
         this.bizNames = bizNames;
-    }
-
-    public List<MileageEntity> getMileageEntities() {
-        return mileageEntities;
-    }
-
-    public void setMileageEntities(List<MileageEntity> mileageEntities) {
-        this.mileageEntities = mileageEntities;
-    }
-
-    public void setMileages(String mileages) {
-        this.mileages = mileages;
-    }
-
-    public String getMileages() {
-        return this.mileages;
-    }
-
-    public int getMileageMonthlyTotal() {
-        return mileageMonthlyTotal;
-    }
-
-    public void setMileageMonthlyTotal(int mileageMonthlyTotal) {
-        this.mileageMonthlyTotal = mileageMonthlyTotal;
     }
 }
 

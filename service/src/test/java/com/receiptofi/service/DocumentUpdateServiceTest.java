@@ -49,7 +49,6 @@ public class DocumentUpdateServiceTest {
     @Mock private NotificationService notificationService;
     @Mock private StorageManager storageManager;
     @Mock private FileSystemService fileSystemService;
-    @Mock private MileageService mileageService;
     @Mock private BillingService billingService;
     @Mock private ExpensesService expensesService;
 
@@ -74,7 +73,6 @@ public class DocumentUpdateServiceTest {
                 notificationService,
                 storageManager,
                 fileSystemService,
-                mileageService,
                 billingService,
                 expensesService
         );

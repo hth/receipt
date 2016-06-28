@@ -6,7 +6,6 @@ package com.receiptofi.web.controller.access;
 import com.google.gson.JsonObject;
 
 import com.receiptofi.domain.DocumentEntity;
-import com.receiptofi.domain.MileageEntity;
 import com.receiptofi.domain.ReceiptEntity;
 import com.receiptofi.domain.shared.UploadDocumentImage;
 import com.receiptofi.domain.site.ReceiptUser;
@@ -21,7 +20,6 @@ import com.receiptofi.service.FileSystemService;
 import com.receiptofi.service.LandingService;
 import com.receiptofi.service.MailService;
 import com.receiptofi.service.MessageDocumentService;
-import com.receiptofi.service.MileageService;
 import com.receiptofi.service.NotificationService;
 import com.receiptofi.utils.DateUtil;
 import com.receiptofi.utils.Maths;
@@ -32,7 +30,6 @@ import com.receiptofi.web.form.LandingForm;
 import com.receiptofi.web.form.NotificationForm;
 import com.receiptofi.web.helper.ReceiptForMonth;
 import com.receiptofi.web.helper.ReceiptLandingView;
-import com.receiptofi.web.helper.json.Driven;
 
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
@@ -96,7 +93,6 @@ public class LandingController {
 
     @Autowired private LandingService landingService;
     @Autowired private NotificationService notificationService;
-    @Autowired private MileageService mileageService;
     @Autowired private MailService mailService;
     @Autowired private FileSystemService fileSystemService;
     @Autowired private DocumentUpdateService documentUpdateService;
@@ -174,15 +170,6 @@ public class LandingController {
         /** Notification. */
         notificationForm.setNotifications(notificationService.getNotifications(receiptUser.getRid()));
         notificationForm.setCount(Long.toString(notificationService.notificationCount(receiptUser.getRid())));
-
-        /** Mileage. */
-        List<MileageEntity> mileageEntityList = mileageService.getMileageForThisMonth(receiptUser.getRid(), time);
-        landingForm.setMileageEntities(mileageEntityList);
-        landingForm.setMileageMonthlyTotal(mileageService.mileageTotal(mileageEntityList));
-
-        Driven driven = new Driven();
-        driven.setMiles(mileageService.getMileageForThisMonth(receiptUser.getRid(), time));
-        landingForm.setMileages(driven.asJson());
         return modelAndView;
     }
 

@@ -21,7 +21,6 @@ public enum NotificationTypeEnum {
     RECEIPT("RECEIPT", "Receipt", NotificationMarkerEnum.P),
 
     INVOICE("INVOICE", "Invoice", NotificationMarkerEnum.S),
-    MILEAGE("MILEAGE", "Mileage", NotificationMarkerEnum.S),
 
     DOCUMENT("DOCUMENT", "Document", NotificationMarkerEnum.S),
     DOCUMENT_UPLOADED("DOCUMENT_UPLOADED", "Document Uploaded", NotificationMarkerEnum.S),

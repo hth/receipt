@@ -112,7 +112,6 @@ public class ITest extends RealMongoForTests {
     @Mock public Configuration configuration;
     @Mock public Template template;
     @Mock public JmsTemplate jmsTemplate;
-    @Mock public MileageService mileageService;
 
     @Before
     public void setup() throws IOException {
@@ -285,7 +284,6 @@ public class ITest extends RealMongoForTests {
                 notificationService,
                 storageManager,
                 fileSystemService,
-                mileageService,
                 billingService,
                 expensesService
         );

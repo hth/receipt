@@ -2,7 +2,6 @@ package com.receiptofi.service;
 
 import com.receiptofi.domain.BaseEntity;
 import com.receiptofi.domain.DocumentEntity;
-import com.receiptofi.domain.MileageEntity;
 import com.receiptofi.domain.NotificationEntity;
 import com.receiptofi.domain.ReceiptEntity;
 import com.receiptofi.domain.types.NotificationGroupEnum;
@@ -157,14 +156,6 @@ public class NotificationService {
                         notificationGroup,
                         supportedEntity.getId(),
                         ((ReceiptEntity) supportedEntity).getReceiptUserId());
-                break;
-            case MILEAGE:
-                addNotification(
-                        message,
-                        notificationType,
-                        notificationGroup,
-                        supportedEntity.getId(),
-                        ((MileageEntity) supportedEntity).getReceiptUserId());
                 break;
             case DOCUMENT:
             case DOCUMENT_UPLOADED:

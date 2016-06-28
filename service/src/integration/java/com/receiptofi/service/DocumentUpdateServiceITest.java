@@ -51,7 +51,6 @@ public class DocumentUpdateServiceITest extends ITest {
                 notificationService,
                 storageManager,
                 fileSystemService,
-                mileageService,
                 billingService,
                 expensesService);
 
