@@ -11,13 +11,11 @@
     <title><fmt:message key="title"/></title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/style.css"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/stylelogin.css"/>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/colpick.css"/>
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css"/>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/style.admin.css"/>
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-migrate/3.0.0/jquery-migrate.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
     <script src="${pageContext.request.contextPath}/static/external/js/noble-count/jquery.NobleCount.min.js"></script>
     <script src="${pageContext.request.contextPath}/static/external/js/cute-time/jquery.cuteTime.min.js"></script>
 </head>
@@ -65,64 +63,62 @@
 <header>
 </header>
 <div class="main clearfix">
-    <div class="sidebar_no_use">
-    </div>
-    <div class="rightside-content">
-        <sec:authorize access="hasRole('ROLE_BUSINESS')">
-        <div class="business_reg">
-            <div class="down_form" style="width: 90%">
-                <h1 class="h1"><c:out value="${businessLandingForm.bizName}" /></h1>
-                <hr>
-                Registered customers: <c:out value="${businessLandingForm.customerCount}" />
-                <br/>
-                Total customer purchases: <c:out value="${businessLandingForm.totalCustomerPurchases}" />
-                <br/>
-                Store count: <c:out value="${businessLandingForm.storeCount}" />
-                Visit count: <c:out value="${businessLandingForm.visitCount}" />
-                <br/>
-                <a href="/business/campaign.htm">Start New Campaign</a>
-            </div>
-
-            <div class="down_form" style="width: 90%">
-                <c:choose>
-                <c:when test="${businessLandingForm.businessCampaigns ne null}">
-                <table width="100%" style="margin-left: 4px; margin-right: 4px">
-                    <tr>
-                        <th style="text-align: left;"></th>
-                        <th style="text-align: left;">Text</th>
-                        <th style="text-align: left;">Duration</th>
-                        <th style="text-align: left;">Live</th>
-                        <th style="text-align: left;">Distribution</th>
-                        <th style="text-align: left;">State</th>
-                        <th style="text-align: left;">Last Modified</th>
-                    </tr>
-                    <c:forEach items="${businessLandingForm.businessCampaigns}" var="item" varStatus="status">
-                    <tr>
-                        <td>${status.count}&nbsp;</td>
-                        <td><a href="/business/campaign.htm?campaignId=${item.id}">${item.freeText}</a></td>
-                        <td>${item.daysBetween} Days</td>
-                        <td>
-                            <fmt:formatDate pattern="MMMM dd, yyyy" value="${item.live}"/>
-                            <span style="color: #6E6E6E;font-weight: normal;">&nbsp;<fmt:formatDate value="${item.live}" type="time"/></span>
-                        </td>
-                        <td>${item.distributionPercent}&nbsp;%</td>
-                        <td>${item.businessCampaignStatus.description}&nbsp</td>
-                        <td>
-                            <fmt:formatDate pattern="MMMM dd, yyyy" value="${item.updated}"/>
-                            <span style="color: #6E6E6E;font-weight: normal;">&nbsp;<fmt:formatDate value="${item.updated}" type="time"/></span>
-                        </td>
-                    </tr>
-                    </c:forEach>
-                </table>
-                </c:when>
-                <c:otherwise>
-                    You have no new campaign set to connect with customer.
-                </c:otherwise>
-                </c:choose>
-            </div>
+    <sec:authorize access="hasRole('ROLE_BUSINESS')">
+    <div>
+        <div class="down_form" style="width: 90%;">
+            <h1 class="h1"><c:out value="${businessLandingForm.bizName}" /></h1>
+            <hr>
+            Registered customers: <c:out value="${businessLandingForm.customerCount}" />
+            <br/>
+            Total customer purchases: <c:out value="${businessLandingForm.totalCustomerPurchases}" />
+            <br/>
+            Store count: <c:out value="${businessLandingForm.storeCount}" />
+            Visit count: <c:out value="${businessLandingForm.visitCount}" />
+            <br/>
+            <a href="/business/campaign.htm">Start New Campaign</a>
         </div>
-        </sec:authorize>
+
+        <div class="rightside-list-holder full-list-holder"
+                style="overflow-y: hidden; height: 700px; margin-left: 0; padding-left: 0">
+        <div class="down_form" style="width: 96%">
+            <c:choose>
+            <c:when test="${businessLandingForm.campaignListForm ne null}">
+            <table width="100%" style="margin: 0 4px 0 4px">
+                <tr>
+                    <th style="text-align: left;"></th>
+                    <th style="text-align: left;">Text</th>
+                    <th style="text-align: left;">Duration</th>
+                    <th style="text-align: left;">Campaign Live Date</th>
+                    <th style="text-align: left;">Distribution</th>
+                    <th style="text-align: left;">State</th>
+                    <th style="text-align: left;">Last Modified</th>
+                </tr>
+                <c:forEach items="${businessLandingForm.campaignListForm.businessCampaigns}" var="item" varStatus="status">
+                <tr>
+                    <td style="padding: 10px; border: 1px solid #ccc">${status.count}&nbsp;</td>
+                    <td style="padding: 10px; border: 1px solid #ccc"><a href="/business/campaign.htm?campaignId=${item.id}">${item.freeText}</a></td>
+                    <td style="padding: 10px; border: 1px solid #ccc">${item.daysBetween} Days</td>
+                    <td style="padding: 10px; border: 1px solid #ccc">
+                        <fmt:formatDate pattern="MMMM dd, yyyy" value="${item.live}"/>
+                        <span style="color: #6E6E6E;font-weight: normal;">&nbsp;<fmt:formatDate value="${item.live}" type="time"/></span>
+                    </td>
+                    <td style="padding: 10px; border: 1px solid #ccc">${item.distributionPercent}&nbsp;%</td>
+                    <td style="padding: 10px; border: 1px solid #ccc">${item.businessCampaignStatus.description}&nbsp</td>
+                    <td style="padding: 10px; border: 1px solid #ccc">
+                        <fmt:formatDate pattern="MMMM dd, yyyy" value="${item.updated}"/>
+                    </td>
+                </tr>
+                </c:forEach>
+            </table>
+            </c:when>
+            <c:otherwise>
+                You have no new campaign set to connect with customer.
+            </c:otherwise>
+            </c:choose>
+        </div>
+        </div>
     </div>
+    </sec:authorize>
 </div>
 <div class="footer-tooth clearfix">
     <div class="footer-tooth-middle"></div>

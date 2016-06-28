@@ -1,10 +1,14 @@
 package com.receiptofi.repository;
 
+import static com.receiptofi.repository.util.AppendAdditionalFields.entityUpdate;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
+import static org.springframework.data.mongodb.core.query.Update.update;
 
 import com.receiptofi.domain.BaseEntity;
 import com.receiptofi.domain.BusinessCampaignEntity;
+import com.receiptofi.domain.types.BusinessCampaignStatusEnum;
+import com.receiptofi.domain.types.UserLevelEnum;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -75,6 +79,23 @@ public class BusinessCampaignManagerImpl implements BusinessCampaignManager {
     }
 
     @Override
+    public BusinessCampaignEntity findById(String campaignId, UserLevelEnum userLevel) {
+        LOG.info("campaignId={} userLevel={}", campaignId, userLevel);
+
+        switch (userLevel) {
+            case SUPERVISOR:
+            case TECH_CAMPAIGN:
+                return mongoTemplate.findOne(
+                        query(where("id").is(campaignId)),
+                        BusinessCampaignEntity.class,
+                        TABLE
+                );
+            default:
+                throw new UnsupportedOperationException("Not authorized to load campaign");
+        }
+    }
+
+    @Override
     public List<BusinessCampaignEntity> findBy(String bizId) {
         return mongoTemplate.find(
                 query(
@@ -83,5 +104,50 @@ public class BusinessCampaignManagerImpl implements BusinessCampaignManager {
                 BusinessCampaignEntity.class,
                 TABLE
         );
+    }
+
+    @Override
+    public List<BusinessCampaignEntity> findAllPendingApproval(int limit) {
+        return mongoTemplate.find(
+                query(
+                        where("CS").is(BusinessCampaignStatusEnum.P)
+                ).limit(5).with(new Sort(Sort.Direction.DESC, "U")),
+                BusinessCampaignEntity.class,
+                TABLE
+        );
+    }
+
+    @Override
+    public long countPendingApproval() {
+        return mongoTemplate.count(
+                query(
+                        where("CS").is(BusinessCampaignStatusEnum.P)
+                ).with(new Sort(Sort.Direction.DESC, "U")),
+                BusinessCampaignEntity.class,
+                TABLE
+        );
+    }
+
+    @Override
+    public void updateCampaignStatus(
+            String campaignId,
+            UserLevelEnum userLevel,
+            BusinessCampaignStatusEnum businessCampaignStatus
+    ) {
+        LOG.info("campaignId={} userLevel={}", campaignId, userLevel);
+
+        switch (userLevel) {
+            case SUPERVISOR:
+            case TECH_CAMPAIGN:
+                mongoTemplate.updateFirst(
+                        query(where("id").is(campaignId)),
+                        entityUpdate(update("CS", businessCampaignStatus)),
+                        BusinessCampaignEntity.class,
+                        TABLE
+                );
+                break;
+            default:
+                throw new UnsupportedOperationException("Not authorized to modify campaign");
+        }
     }
 }

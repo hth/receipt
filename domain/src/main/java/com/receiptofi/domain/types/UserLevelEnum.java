@@ -29,7 +29,7 @@ public enum UserLevelEnum {
     ENTERPRISE_PAID("Enterprise Paid", 40),
     BUSINESS_SMALL("Business Small", 50),
     BUSINESS_LARGE("Business Large", 60),
-    TECHNICIAN("Receipt Tech", 70),
+    TECH_RECEIPT("Receipt Tech", 70),
     TECH_CAMPAIGN("Campaign Tech", 71),
     SUPERVISOR("Super", 80),
     ANALYSIS_READ("Analysis Read", 90),

@@ -10,6 +10,7 @@ import com.receiptofi.domain.shared.UploadDocumentImage;
 import com.receiptofi.domain.types.BusinessCampaignStatusEnum;
 import com.receiptofi.domain.types.CommentTypeEnum;
 import com.receiptofi.domain.types.FileTypeEnum;
+import com.receiptofi.domain.types.UserLevelEnum;
 import com.receiptofi.repository.BusinessCampaignManager;
 
 import org.apache.commons.lang3.StringUtils;
@@ -18,6 +19,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.awt.image.BufferedImage;
@@ -41,6 +43,7 @@ import java.util.List;
 public class BusinessCampaignService {
     private static final Logger LOG = LoggerFactory.getLogger(BusinessCampaignService.class);
 
+    private int limit;
     private BusinessCampaignManager businessCampaignManager;
     private CommentService commentService;
     private FileDBService fileDBService;
@@ -48,10 +51,14 @@ public class BusinessCampaignService {
 
     @Autowired
     public BusinessCampaignService(
+            @Value ("${limit: 5}")
+            int limit,
+
             BusinessCampaignManager businessCampaignManager,
             CommentService commentService,
             FileDBService fileDBService,
             FileSystemService fileSystemService) {
+        this.limit = limit;
         this.businessCampaignManager = businessCampaignManager;
         this.commentService = commentService;
         this.fileDBService = fileDBService;
@@ -60,6 +67,10 @@ public class BusinessCampaignService {
 
     public BusinessCampaignEntity findById(String campaignId, String bizId) {
         return businessCampaignManager.findById(campaignId, bizId);
+    }
+
+    public BusinessCampaignEntity findById(String campaignId, UserLevelEnum userLevel) {
+        return businessCampaignManager.findById(campaignId, userLevel);
     }
 
     public void save(CouponCampaign couponCampaign) throws ParseException {
@@ -161,5 +172,20 @@ public class BusinessCampaignService {
 
     public List<BusinessCampaignEntity> findBy(String bizId) {
         return businessCampaignManager.findBy(bizId);
+    }
+
+    public List<BusinessCampaignEntity> findAllPendingApproval() {
+        return businessCampaignManager.findAllPendingApproval(limit);
+    }
+
+    public long countPendingApproval() {
+        return businessCampaignManager.countPendingApproval();
+    }
+
+    public void updateCampaignStatus(
+            String campaignId,
+            UserLevelEnum userLevel,
+            BusinessCampaignStatusEnum businessCampaignStatus) {
+        businessCampaignManager.updateCampaignStatus(campaignId, userLevel, businessCampaignStatus);
     }
 }

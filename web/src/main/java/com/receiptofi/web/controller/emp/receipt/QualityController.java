@@ -1,4 +1,4 @@
-package com.receiptofi.web.controller.emp;
+package com.receiptofi.web.controller.emp.receipt;
 
 import com.receiptofi.domain.ReceiptEntity;
 import com.receiptofi.service.ItemService;
@@ -29,34 +29,36 @@ import java.util.List;
         "PMD.LongVariable"
 })
 @Controller
-@RequestMapping (value = "/emp")
-public class ReceiptQualityController {
-    private static final Logger LOG = LoggerFactory.getLogger(ReceiptQualityController.class);
+@RequestMapping (value = "/emp/receipt")
+public class QualityController {
+    private static final Logger LOG = LoggerFactory.getLogger(QualityController.class);
 
-    @Value ("${nextPage:/emp/receiptQuality}")
+    @Value ("${nextPage:/emp/receipt/quality}")
     private String nextPage;
 
     private ReceiptService receiptService;
     private ItemService itemService;
 
     @Autowired
-    public ReceiptQualityController(ReceiptService receiptService, ItemService itemService) {
+    public QualityController(ReceiptService receiptService, ItemService itemService) {
         this.receiptService = receiptService;
         this.itemService = itemService;
     }
 
-    @PreAuthorize ("hasAnyRole('ROLE_SUPERVISOR')")
+    @PreAuthorize ("hasRole('ROLE_SUPERVISOR')")
     @RequestMapping (
-            value = "/receiptQuality",
+            value = "/quality",
             method = RequestMethod.GET)
     public String loadForm(
             @ModelAttribute ("receiptQualityForm")
             ReceiptQualityForm receiptQualityForm
     ) {
+        LOG.info("Loading receipts for quality check");
         List<ReceiptEntity> receipts = receiptService.getReceiptsWithoutQC();
         for (ReceiptEntity receipt : receipts) {
             receiptQualityForm.setReceiptAndItems(receipt, itemService.getAllItemsOfReceipt(receipt.getId()));
         }
+        LOG.info("Found receipt for quality check count={}", receipts.size());
         return nextPage;
     }
 }

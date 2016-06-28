@@ -14,8 +14,6 @@ import org.springframework.data.annotation.Transient;
 
 import java.io.Serializable;
 import java.util.Collection;
-import java.util.LinkedList;
-import java.util.List;
 
 /**
  * User: hitender
@@ -39,6 +37,11 @@ public class CouponCampaign implements Serializable {
     private String distributionPercent;
     private BusinessCampaignStatusEnum businessCampaignStatus;
     private Collection<FileSystemEntity> fileSystemEntities;
+    //TODO(hth) add reason to show up for rejection of campaign, add it in BusinessCampaignEntity
+
+    @SuppressWarnings ("unused")
+    private CouponCampaign() {
+    }
 
     public CouponCampaign(String campaignId) {
         this.campaignId = campaignId;

@@ -69,13 +69,11 @@
     <div class="sidebar_no_use">
     </div>
     <div class="rightside-content">
-    <sec:authorize access="hasRole('ROLE_BUSINESS')">
         <div class="business_reg">
             <div class="down_form" style="width: 90%">
                 <form:form commandName="couponCampaign">
                     <h1 class="h1">Submit New Coupon Campaign</h1>
                     <hr>
-                    <input type="hidden" name="_flowExecutionKey" value="${flowExecutionKey}"/>
                     <input type="hidden" id="campaignId" value="${couponCampaign.campaignId}"/>
                     <input type="hidden" id="bizId" value="${couponCampaign.bizId}"/>
 
@@ -114,32 +112,29 @@
                     </div>
                     <div id="container"></div>
                     <div class="full">
-                    <c:if test="${couponCampaign.businessCampaignStatus ne 'N'}">
-                    <div class="row_field">
-                        <form:label path="businessCampaignStatus" cssClass="profile_label"
-                                cssErrorClass="profile_label lb_error">Current State</form:label>
-                        <form:input path="businessCampaignStatus.description" size="20" cssClass="name_txt" cssStyle="width: 200px; border: 0;" readonly="true" />
-                    </div>
-                    </c:if>
-                    <c:choose>
-                    <c:when test="${couponCampaign.businessCampaignStatus ne 'L'}">
-                        <input type="submit" value="CONFIRM" class="read_btn" name="_eventId_confirm"
-                                style="background: #2c97de; margin: 77px 10px 0 0;">
-                        <input type="submit" value="REVISE" class="read_btn" name="_eventId_revise"
-                                style="background: #2c97de; margin: 77px 10px 0 0;">
-                        <input type="submit" value="CANCEL" class="read_btn" name="_eventId_cancel"
-                                style="background: #FC462A; margin: 77px 10px 0 0;">
-                    </c:when>
-                    <c:otherwise>
-                        <input type="submit" value="HOME" class="read_btn" name="_eventId_cancel"
-                                style="background: #2c97de; margin: 77px 10px 0 0;">
-                    </c:otherwise>
-                    </c:choose>
+                        <c:if test="${couponCampaign.businessCampaignStatus ne 'N'}">
+                            <div class="row_field">
+                                <form:label path="businessCampaignStatus" cssClass="profile_label"
+                                        cssErrorClass="profile_label lb_error">State</form:label>
+                                <form:input path="businessCampaignStatus.description" size="20" cssClass="name_txt" cssStyle="width: 200px; border: 0;" readonly="true" />
+                            </div>
+                        </c:if>
+                        <c:choose>
+                            <c:when test="${couponCampaign.businessCampaignStatus eq 'P'}">
+                                <input type="submit" value="APPROVE" class="read_btn" name="campaign-approve"
+                                        style="background: #2c97de; margin: 77px 10px 0 0;">
+                                <input type="submit" value="DECLINE" class="read_btn" name="campaign-decline"
+                                        style="background: #FC462A; margin: 77px 10px 0 0;">
+                            </c:when>
+                            <c:otherwise>
+                                <input type="submit" value="CANCEL" class="read_btn" name="_eventId_cancel"
+                                        style="background: #2c97de; margin: 77px 10px 0 0;">
+                            </c:otherwise>
+                        </c:choose>
                     </div>
                 </form:form>
             </div>
         </div>
-    </sec:authorize>
     </div>
 </div>
 <div class="footer-tooth clearfix">
@@ -190,30 +185,30 @@
     var topHeight = 0,
             info = [
                 <c:forEach items="${couponCampaign.fileSystemEntities}" var="arr" varStatus="status">
-                    <c:choose>
-                    <c:when test="${couponCampaign.businessCampaignStatus eq 'L'}">
-                    {
-                        src: "https://s3-us-west-2.amazonaws.com/<spring:eval expression="@environmentProperty.getProperty('aws.s3.bucketName')" />/<spring:eval expression="@environmentProperty.getProperty('aws.s3.couponBucketName')" />/${arr.key}",
-                        pos: {
-                            top: topHeight = calculateTop(${arr.height}),
-                            left: 0
-                        },
-                        rotate: ${arr.imageOrientation},
-                        zIndex: 0
+                <c:choose>
+                <c:when test="${couponCampaign.businessCampaignStatus eq 'A'}">
+                {
+                    src: "https://s3-us-west-2.amazonaws.com/<spring:eval expression="@environmentProperty.getProperty('aws.s3.bucketName')" />/<spring:eval expression="@environmentProperty.getProperty('aws.s3.couponBucketName')" />/${arr.key}",
+                    pos: {
+                        top: topHeight = calculateTop(${arr.height}),
+                        left: 0
                     },
-                    </c:when>
-                    <c:otherwise>
-                    {
-                        src: '${pageContext.request.contextPath}/access/filedownload/receiptimage/${arr.blobId}.htm',
-                        pos: {
-                            top: topHeight = calculateTop(${arr.height}),
-                            left: 0
-                        },
-                        rotate: ${arr.imageOrientation},
-                        zIndex: 0
+                    rotate: ${arr.imageOrientation},
+                    zIndex: 0
+                },
+                </c:when>
+                <c:otherwise>
+                {
+                    src: '${pageContext.request.contextPath}/access/filedownload/receiptimage/${arr.blobId}.htm',
+                    pos: {
+                        top: topHeight = calculateTop(${arr.height}),
+                        left: 0
                     },
-                    </c:otherwise>
-                    </c:choose>
+                    rotate: ${arr.imageOrientation},
+                    zIndex: 0
+                },
+                </c:otherwise>
+                </c:choose>
                 </c:forEach>
             ]
             ;

@@ -1,3 +1,8 @@
+### Date June 27 2016 - Build 1700
+
+    db.getCollection('USER_PROFILE').update({"ULE" : "TECHNICIAN"},   { $set: {"ULE": 'TECH_RECEIPT'} }, {multi: true});    
+    db.getCollection('MESSAGE_DOCUMENT').update({"ULE" : "TECHNICIAN"},   { $set: {"ULE": 'TECH_RECEIPT'} }, {multi: true});    
+
 ### Date June 16 2016 - Build 1678
 Change 'Notes' to 'N' and "Recheck' to 'R'
 

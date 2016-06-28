@@ -18,6 +18,7 @@ import com.receiptofi.service.ImageSplitService;
 import com.receiptofi.service.analytic.BizDimensionService;
 import com.receiptofi.utils.Maths;
 import com.receiptofi.web.form.business.BusinessLandingForm;
+import com.receiptofi.web.form.business.CampaignListForm;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,7 +40,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Collection;
-import java.util.List;
 
 /**
  * For Businesses.
@@ -131,7 +131,7 @@ public class BusinessLandingController {
                 .setStoreCount(bizDimension.getStoreCount())
                 .setTotalCustomerPurchases(Maths.adjustScale(bizDimension.getBizTotal()))
                 .setVisitCount(bizDimension.getVisitCount())
-                .setBusinessCampaigns(businessCampaignService.findBy(bizNameId));
+                .setCampaignListForm(new CampaignListForm().setBusinessCampaigns(businessCampaignService.findBy(bizNameId)));
     }
 
     /**

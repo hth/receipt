@@ -1,22 +1,20 @@
 package com.receiptofi.web.controller.emp;
 
-import com.receiptofi.domain.MessageDocumentEntity;
 import com.receiptofi.domain.site.ReceiptUser;
-import com.receiptofi.domain.types.DocumentStatusEnum;
-import com.receiptofi.service.EmpLandingService;
+import com.receiptofi.service.BusinessCampaignService;
+import com.receiptofi.service.DocumentPendingService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
-
-import java.util.List;
 
 /**
  * User: hitender
@@ -33,48 +31,32 @@ import java.util.List;
 @RequestMapping (value = "/emp")
 public class EmpLandingController {
     private static final Logger LOG = LoggerFactory.getLogger(EmpLandingController.class);
-    private static final String nextPage = "/emp/landing";
 
-    private EmpLandingService empLandingService;
+    private String empLanding;
+    private DocumentPendingService documentPendingService;
+    private BusinessCampaignService businessCampaignService;
 
     @Autowired
-    public EmpLandingController(EmpLandingService empLandingService) {
-        this.empLandingService = empLandingService;
+    public EmpLandingController(
+            @Value ("${empLanding:/emp/landing}")
+            String empLanding,
+
+            DocumentPendingService documentPendingService,
+            BusinessCampaignService businessCampaignService) {
+        this.empLanding = empLanding;
+        this.documentPendingService = documentPendingService;
+        this.businessCampaignService = businessCampaignService;
     }
 
-    @PreAuthorize ("hasAnyRole('ROLE_TECHNICIAN', 'ROLE_SUPERVISOR')")
+    @PreAuthorize ("hasRole('ROLE_SUPERVISOR')")
     @RequestMapping (value = "/landing", method = RequestMethod.GET)
     public ModelAndView empLanding() {
-        LOG.info("employee landed");
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        LOG.info("Employee landed rid={}", receiptUser.getRid());
 
-        ModelAndView modelAndView = new ModelAndView(nextPage);
-
-        /**
-         * Note: findPending has to be before findUpdateWithLimit because records are update in the second query
-         * and this gets duplicates
-         */
-        List<MessageDocumentEntity> pending = empLandingService.pendingReceipts(
-                receiptUser.getUsername(),
-                receiptUser.getRid(),
-                DocumentStatusEnum.PENDING);
-        modelAndView.addObject("pending", pending);
-
-        List<MessageDocumentEntity> queue = empLandingService.queuedReceipts(
-                receiptUser.getUsername(),
-                receiptUser.getRid());
-        modelAndView.addObject("queue", queue);
-
-        List<MessageDocumentEntity> recheckPending = empLandingService.pendingReceipts(
-                receiptUser.getUsername(),
-                receiptUser.getRid(),
-                DocumentStatusEnum.REPROCESS);
-        modelAndView.addObject("recheckPending", recheckPending);
-
-        List<MessageDocumentEntity> recheck = empLandingService.recheck(
-                receiptUser.getUsername(),
-                receiptUser.getRid());
-        modelAndView.addObject("recheck", recheck);
+        ModelAndView modelAndView = new ModelAndView(empLanding);
+        modelAndView.addObject("documentPending", documentPendingService.getTotalPending());
+        modelAndView.addObject("campaignPending", businessCampaignService.countPendingApproval());
         return modelAndView;
     }
 }

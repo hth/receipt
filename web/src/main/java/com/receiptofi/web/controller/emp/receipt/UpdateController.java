@@ -1,7 +1,7 @@
 /**
  *
  */
-package com.receiptofi.web.controller.emp;
+package com.receiptofi.web.controller.emp.receipt;
 
 import com.receiptofi.domain.DocumentEntity;
 import com.receiptofi.domain.ItemEntity;
@@ -54,13 +54,13 @@ import javax.servlet.http.HttpServletRequest;
         "PMD.LongVariable"
 })
 @Controller
-@RequestMapping (value = "/emp")
-public class ReceiptUpdateController {
-    private static final Logger LOG = LoggerFactory.getLogger(ReceiptUpdateController.class);
+@RequestMapping (value = "/emp/receipt")
+public class UpdateController {
+    private static final Logger LOG = LoggerFactory.getLogger(UpdateController.class);
 
-    private static final String NEXT_PAGE_UPDATE = "/update";
-    private static final String NEXT_PAGE_RECHECK = "/recheck";
-    public static final String REDIRECT_EMP_LANDING_HTM = "redirect:/emp/landing.htm";
+    private static final String NEXT_PAGE_UPDATE = "/emp/receipt/update";
+    private static final String NEXT_PAGE_RECHECK = "/emp/receipt/recheck";
+    public static final String REDIRECT_EMP_LANDING_HTM = "redirect:/emp/receipt/landing.htm";
 
     @Autowired private ReceiptDocumentValidator receiptDocumentValidator;
     @Autowired private DocumentRejectValidator documentRejectValidator;
@@ -435,14 +435,13 @@ public class ReceiptUpdateController {
 
     private void listBindingErrors(BindingResult bindingResult) {
         List<FieldError> errors = bindingResult.getFieldErrors();
-        StringBuilder stringBuilder = new StringBuilder();
+        StringBuilder sb = new StringBuilder();
         for (FieldError error : errors) {
-            stringBuilder
-                    .append(error.getObjectName())
+            sb.append(error.getObjectName())
                     .append(" - ")
                     .append(error.getDefaultMessage())
                     .append(", ");
         }
-        LOG.warn("validation fail={}", stringBuilder.toString());
+        LOG.warn("validation fail={}", sb.toString());
     }
 }
