@@ -1,4 +1,9 @@
-### Date June 27 2016 - Build 1700
+### Date June 27 2016 - Build 1702
+
+    Upgrade ActiveMQ to 5.13.3
+    Upgrade Mongo 3.2.7
+    Delete MileageEntity collection
+    Upgrade Jenkins
 
     db.getCollection('USER_PROFILE').update({"ULE" : "TECHNICIAN"},   { $set: {"ULE": 'TECH_RECEIPT'} }, {multi: true});    
     db.getCollection('MESSAGE_DOCUMENT').update({"ULE" : "TECHNICIAN"},   { $set: {"ULE": 'TECH_RECEIPT'} }, {multi: true});    
