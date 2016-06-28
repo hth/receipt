@@ -117,12 +117,12 @@
                     <c:if test="${couponCampaign.businessCampaignStatus ne 'N'}">
                     <div class="row_field">
                         <form:label path="businessCampaignStatus" cssClass="profile_label"
-                                cssErrorClass="profile_label lb_error">State</form:label>
+                                cssErrorClass="profile_label lb_error">Current State</form:label>
                         <form:input path="businessCampaignStatus.description" size="20" cssClass="name_txt" cssStyle="width: 200px; border: 0;" readonly="true" />
                     </div>
                     </c:if>
                     <c:choose>
-                    <c:when test="${couponCampaign.businessCampaignStatus ne 'A'}">
+                    <c:when test="${couponCampaign.businessCampaignStatus ne 'L'}">
                         <input type="submit" value="CONFIRM" class="read_btn" name="_eventId_confirm"
                                 style="background: #2c97de; margin: 77px 10px 0 0;">
                         <input type="submit" value="REVISE" class="read_btn" name="_eventId_revise"
@@ -191,7 +191,7 @@
             info = [
                 <c:forEach items="${couponCampaign.fileSystemEntities}" var="arr" varStatus="status">
                     <c:choose>
-                    <c:when test="${couponCampaign.businessCampaignStatus eq 'A'}">
+                    <c:when test="${couponCampaign.businessCampaignStatus eq 'L'}">
                     {
                         src: "https://s3-us-west-2.amazonaws.com/<spring:eval expression="@environmentProperty.getProperty('aws.s3.bucketName')" />/<spring:eval expression="@environmentProperty.getProperty('aws.s3.couponBucketName')" />/${arr.key}",
                         pos: {
