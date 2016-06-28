@@ -13,7 +13,6 @@ import com.receiptofi.domain.DocumentEntity;
 import com.receiptofi.domain.ExpenseTagEntity;
 import com.receiptofi.domain.FileSystemEntity;
 import com.receiptofi.domain.ItemEntity;
-import com.receiptofi.domain.MileageEntity;
 import com.receiptofi.domain.ReceiptEntity;
 import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.domain.types.DocumentOfTypeEnum;
@@ -68,7 +67,6 @@ public class DocumentUpdateService {
     private NotificationService notificationService;
     private StorageManager storageManager;
     private FileSystemService fileSystemService;
-    private MileageService mileageService;
     private BillingService billingService;
     private ExpensesService expensesService;
 
@@ -85,7 +83,6 @@ public class DocumentUpdateService {
             NotificationService notificationService,
             StorageManager storageManager,
             FileSystemService fileSystemService,
-            MileageService mileageService,
             BillingService billingService,
             ExpensesService expensesService
     ) {
@@ -101,7 +98,6 @@ public class DocumentUpdateService {
         this.notificationService = notificationService;
         this.storageManager = storageManager;
         this.fileSystemService = fileSystemService;
-        this.mileageService = mileageService;
         this.billingService = billingService;
         this.expensesService = expensesService;
     }
@@ -509,49 +505,6 @@ public class DocumentUpdateService {
      */
     public boolean hasReceiptWithSimilarChecksum(String checksum) {
         return receiptManager.hasRecordWithSimilarChecksum(checksum);
-    }
-
-    /**
-     * Processes Mileage document.
-     *
-     * @param technicianId
-     * @param mileage
-     * @param document
-     */
-    public void processDocumentForMileage(String technicianId, MileageEntity mileage, DocumentEntity document) {
-        try {
-            Date transaction = new Date();
-            DocumentEntity documentEntity = documentService.loadActiveDocumentById(document.getId());
-
-            mileage.setFileSystemEntities(documentEntity.getFileSystemEntities());
-            mileage.setDocumentId(documentEntity.getId());
-            mileage.addProcessedBy(transaction, technicianId);
-            mileageService.save(mileage);
-
-            document.setFileSystemEntities(documentEntity.getFileSystemEntities());
-
-            updateDocumentVersion(document, documentEntity);
-            document.setDocumentStatus(PROCESSED);
-            document.setNotifyUser(false);
-            document.setReferenceDocumentId(mileage.getId());
-            document.inActive();
-            document.addProcessedBy(transaction, technicianId);
-            documentService.save(document);
-
-            updateMessageManager(document, PENDING, PROCESSED);
-
-            notificationService.addNotification(
-                    String.valueOf(mileage.getStart()) + ", " + "odometer reading processed",
-                    NotificationTypeEnum.MILEAGE,
-                    NotificationGroupEnum.N,
-                    mileage);
-        } catch (DuplicateKeyException duplicateKeyException) {
-            LOG.error(duplicateKeyException.getLocalizedMessage(), duplicateKeyException);
-            throw new RuntimeException("Found existing record with similar odometer reading");
-        } catch (Exception e) {
-            LOG.error(e.getLocalizedMessage(), e);
-            //TODO add roll back
-        }
     }
 
     /**

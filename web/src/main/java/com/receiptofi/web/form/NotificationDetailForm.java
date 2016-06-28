@@ -78,9 +78,6 @@ public class NotificationDetailForm {
             case EXPENSE_REPORT:
                 this.href = "./receipt/" + referenceId + ".htm";
                 return getReceiptURL(getAbbreviatedMessage());
-            case MILEAGE:
-                this.href = "./modv/" + referenceId + ".htm";
-                return getMileageURL(getAbbreviatedMessage());
             default:
                 LOG.error("Reached invalid condition");
                 return "";
@@ -111,9 +108,6 @@ public class NotificationDetailForm {
             case EXPENSE_REPORT:
                 this.href = "./receipt/" + referenceId + ".htm";
                 return getReceiptURL(getAbbreviatedMessageForDetailedView());
-            case MILEAGE:
-                this.href = "./modv/" + referenceId + ".htm";
-                return getMileageURL(getAbbreviatedMessageForDetailedView());
             default:
                 LOG.error("Reached invalid condition");
                 return "";

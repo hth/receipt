@@ -6,7 +6,6 @@ package com.receiptofi.web.controller.emp.receipt;
 import com.receiptofi.domain.DocumentEntity;
 import com.receiptofi.domain.ItemEntity;
 import com.receiptofi.domain.ItemEntityOCR;
-import com.receiptofi.domain.MileageEntity;
 import com.receiptofi.domain.ReceiptEntity;
 import com.receiptofi.domain.site.ReceiptUser;
 import com.receiptofi.domain.util.DeepCopy;
@@ -15,7 +14,6 @@ import com.receiptofi.service.DocumentUpdateService;
 import com.receiptofi.utils.ScrubbedInput;
 import com.receiptofi.web.form.ReceiptDocumentForm;
 import com.receiptofi.web.validator.DocumentRejectValidator;
-import com.receiptofi.web.validator.MileageDocumentValidator;
 import com.receiptofi.web.validator.ReceiptDocumentValidator;
 
 import org.slf4j.Logger;
@@ -66,7 +64,6 @@ public class UpdateController {
     @Autowired private DocumentRejectValidator documentRejectValidator;
     @Autowired private DocumentUpdateService documentUpdateService;
     @Autowired private DocumentService documentService;
-    @Autowired private MileageDocumentValidator mileageDocumentValidator;
 
     @Value ("${duplicate.receipt}")
     private String duplicateReceiptMessage;
@@ -196,55 +193,6 @@ public class UpdateController {
     }
 
     /**
-     * Process receipt after submitted by technician.
-     *
-     * @param receiptDocumentForm
-     * @param result
-     * @return
-     */
-    @RequestMapping (
-            value = "/submitMileage",
-            method = RequestMethod.POST,
-            params = "mileage-submit")
-    public String submitMileage(
-            @ModelAttribute ("receiptDocumentForm")
-            ReceiptDocumentForm receiptDocumentForm,
-
-            BindingResult result,
-            RedirectAttributes redirectAttrs
-    ) {
-        ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        switch (receiptDocumentForm.getReceiptDocument().getDocumentOfType()) {
-            case MILEAGE:
-                LOG.info("Mileage : ");
-                break;
-            default:
-                LOG.error("Reached unreachable condition, DocumentOfType={}", receiptDocumentForm.getReceiptDocument().getDocumentOfType());
-                throw new RuntimeException("Reached unreachable condition " + receiptDocumentForm.getReceiptDocument().getDocumentOfType());
-        }
-
-        mileageDocumentValidator.validate(receiptDocumentForm, result);
-        if (result.hasErrors()) {
-            listBindingErrors(result);
-            redirectAttrs.addFlashAttribute("result", result);
-            redirectAttrs.addFlashAttribute("receiptDocumentForm", receiptDocumentForm);
-            return "redirect:" + NEXT_PAGE_UPDATE + "/" + receiptDocumentForm.getReceiptDocument().getId() + ".htm";
-        }
-
-        try {
-            MileageEntity mileage = receiptDocumentForm.getMileageEntity();
-            DocumentEntity document = receiptDocumentForm.getReceiptDocument();
-            documentUpdateService.processDocumentForMileage(receiptUser.getRid(), mileage, document);
-            return REDIRECT_EMP_LANDING_HTM;
-        } catch (Exception exce) {
-            LOG.error("Error in Submit Process saving receipt, reason={}", exce.getLocalizedMessage(), exce);
-            receiptDocumentForm.setErrorMessage(exce.getLocalizedMessage());
-            redirectAttrs.addFlashAttribute("receiptDocumentForm", receiptDocumentForm);
-            return "redirect:" + NEXT_PAGE_UPDATE + "/" + receiptDocumentForm.getReceiptDocument().getId() + ".htm";
-        }
-    }
-
-    /**
      * Reject receipt since it can't be processed or its not a receipt.
      *
      * @param receiptDocumentForm
@@ -271,35 +219,6 @@ public class UpdateController {
             return "redirect:" + NEXT_PAGE_UPDATE + "/" + receiptDocumentForm.getReceiptDocument().getId() + ".htm";
         }
 
-        return submitRejectionOfDocument(receiptUser.getRid(), receiptDocumentForm, redirectAttrs);
-    }
-
-    /**
-     * Reject receipt since it can't be processed or its not a receipt.
-     *
-     * @param receiptDocumentForm
-     * @param redirectAttrs
-     * @return
-     */
-    @RequestMapping (
-            value = "/submitMileage",
-            method = RequestMethod.POST,
-            params = "mileage-reject")
-    public String submitRejectedMileage(
-            @ModelAttribute ("receiptDocumentForm")
-            ReceiptDocumentForm receiptDocumentForm,
-
-            BindingResult result,
-            RedirectAttributes redirectAttrs
-    ) {
-        ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        documentRejectValidator.validate(receiptDocumentForm, result);
-        if (result.hasErrors()) {
-            listBindingErrors(result);
-            redirectAttrs.addFlashAttribute("result", result);
-            redirectAttrs.addFlashAttribute("receiptDocumentForm", receiptDocumentForm);
-            return "redirect:" + NEXT_PAGE_UPDATE + "/" + receiptDocumentForm.getReceiptDocument().getId() + ".htm";
-        }
         return submitRejectionOfDocument(receiptUser.getRid(), receiptDocumentForm, redirectAttrs);
     }
 

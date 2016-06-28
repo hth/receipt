@@ -6,7 +6,6 @@ package com.receiptofi.web.form;
 import com.receiptofi.domain.DocumentEntity;
 import com.receiptofi.domain.ItemEntity;
 import com.receiptofi.domain.ItemEntityOCR;
-import com.receiptofi.domain.MileageEntity;
 import com.receiptofi.domain.ReceiptEntity;
 import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.domain.types.TaxEnum;
@@ -38,7 +37,6 @@ public final class ReceiptDocumentForm {
     private static final Logger LOG = LoggerFactory.getLogger(ReceiptDocumentForm.class);
 
     private DocumentEntity receiptDocument;
-    private MileageEntity mileage;
     private List<ItemEntityOCR> items;
     private Map<Date, UserProfileEntity> processedBy = new LinkedHashMap<>();
 
@@ -80,14 +78,6 @@ public final class ReceiptDocumentForm {
         this.items = items;
     }
 
-    public MileageEntity getMileage() {
-        return mileage;
-    }
-
-    public void setMileage(MileageEntity mileage) {
-        this.mileage = mileage;
-    }
-
     public void setErrorMessage(String errorMessage) {
         this.errorMessage = errorMessage;
     }
@@ -107,15 +97,6 @@ public final class ReceiptDocumentForm {
     @Override
     public String toString() {
         return "ReceiptDocumentForm [receiptDocument=" + receiptDocument + ", items=" + items + "]";
-    }
-
-    public MileageEntity getMileageEntity() {
-        MileageEntity mileageEntity = new MileageEntity();
-        mileageEntity.setReceiptUserId(receiptDocument.getReceiptUserId());
-        mileageEntity.setStart(mileage.getStart());
-        mileageEntity.setEnd(mileage.getEnd());
-        mileageEntity.setStartDate(DateUtil.nowDate());
-        return mileageEntity;
     }
 
     /**
