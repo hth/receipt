@@ -60,7 +60,7 @@ public class UpdateController {
 
     private static final String NEXT_PAGE_UPDATE = "/emp/receipt/update";
     private static final String NEXT_PAGE_RECHECK = "/emp/receipt/recheck";
-    public static final String REDIRECT_EMP_LANDING_HTM = "redirect:/emp/receipt/landing.htm";
+    private static final String REDIRECT_EMP_LANDING_HTM = "redirect:/emp/receipt/landing.htm";
 
     @Autowired private ReceiptDocumentValidator receiptDocumentValidator;
     @Autowired private DocumentRejectValidator documentRejectValidator;
@@ -168,7 +168,7 @@ public class UpdateController {
             listBindingErrors(result);
             redirectAttrs.addFlashAttribute("result", result);
             redirectAttrs.addFlashAttribute("receiptDocumentForm", receiptDocumentForm);
-            return "redirect:/emp" + NEXT_PAGE_UPDATE + "/" + receiptDocumentForm.getReceiptDocument().getId() + ".htm";
+            return "redirect:" + NEXT_PAGE_UPDATE + "/" + receiptDocumentForm.getReceiptDocument().getId() + ".htm";
         }
 
         try {
@@ -177,7 +177,7 @@ public class UpdateController {
                 LOG.info("Found pre-existing receipt with similar information for the selected date. Could be rejected and marked as duplicate.");
                 receiptDocumentForm.setErrorMessage(duplicateReceiptMessage);
                 redirectAttrs.addFlashAttribute("receiptDocumentForm", receiptDocumentForm);
-                return "redirect:/emp" + NEXT_PAGE_UPDATE + "/" + receiptDocumentForm.getReceiptDocument().getId() + ".htm";
+                return "redirect:" + NEXT_PAGE_UPDATE + "/" + receiptDocumentForm.getReceiptDocument().getId() + ".htm";
             }
 
             //TODO add validate receipt entity as this can some times be invalid and add logic to recover a broken receipts by admin
@@ -191,7 +191,7 @@ public class UpdateController {
             LOG.error("Error in Submit Process saving receipt, reason={}", exce.getLocalizedMessage(), exce);
             receiptDocumentForm.setErrorMessage(exce.getLocalizedMessage());
             redirectAttrs.addFlashAttribute("receiptDocumentForm", receiptDocumentForm);
-            return "redirect:/emp" + NEXT_PAGE_UPDATE + "/" + receiptDocumentForm.getReceiptDocument().getId() + ".htm";
+            return "redirect:" + NEXT_PAGE_UPDATE + "/" + receiptDocumentForm.getReceiptDocument().getId() + ".htm";
         }
     }
 
@@ -228,7 +228,7 @@ public class UpdateController {
             listBindingErrors(result);
             redirectAttrs.addFlashAttribute("result", result);
             redirectAttrs.addFlashAttribute("receiptDocumentForm", receiptDocumentForm);
-            return "redirect:/emp" + NEXT_PAGE_UPDATE + "/" + receiptDocumentForm.getReceiptDocument().getId() + ".htm";
+            return "redirect:" + NEXT_PAGE_UPDATE + "/" + receiptDocumentForm.getReceiptDocument().getId() + ".htm";
         }
 
         try {
@@ -240,7 +240,7 @@ public class UpdateController {
             LOG.error("Error in Submit Process saving receipt, reason={}", exce.getLocalizedMessage(), exce);
             receiptDocumentForm.setErrorMessage(exce.getLocalizedMessage());
             redirectAttrs.addFlashAttribute("receiptDocumentForm", receiptDocumentForm);
-            return "redirect:/emp" + NEXT_PAGE_UPDATE + "/" + receiptDocumentForm.getReceiptDocument().getId() + ".htm";
+            return "redirect:" + NEXT_PAGE_UPDATE + "/" + receiptDocumentForm.getReceiptDocument().getId() + ".htm";
         }
     }
 
@@ -268,7 +268,7 @@ public class UpdateController {
             listBindingErrors(result);
             redirectAttrs.addFlashAttribute("result", result);
             redirectAttrs.addFlashAttribute("receiptDocumentForm", receiptDocumentForm);
-            return "redirect:/emp" + NEXT_PAGE_UPDATE + "/" + receiptDocumentForm.getReceiptDocument().getId() + ".htm";
+            return "redirect:" + NEXT_PAGE_UPDATE + "/" + receiptDocumentForm.getReceiptDocument().getId() + ".htm";
         }
 
         return submitRejectionOfDocument(receiptUser.getRid(), receiptDocumentForm, redirectAttrs);
@@ -298,7 +298,7 @@ public class UpdateController {
             listBindingErrors(result);
             redirectAttrs.addFlashAttribute("result", result);
             redirectAttrs.addFlashAttribute("receiptDocumentForm", receiptDocumentForm);
-            return "redirect:/emp" + NEXT_PAGE_UPDATE + "/" + receiptDocumentForm.getReceiptDocument().getId() + ".htm";
+            return "redirect:" + NEXT_PAGE_UPDATE + "/" + receiptDocumentForm.getReceiptDocument().getId() + ".htm";
         }
         return submitRejectionOfDocument(receiptUser.getRid(), receiptDocumentForm, redirectAttrs);
     }
@@ -331,7 +331,7 @@ public class UpdateController {
             String message = "Document could not be processed for Reject. Contact administrator with Document # ";
             receiptDocumentForm.setErrorMessage(message + receiptDocumentForm.getReceiptDocument().getId());
             redirectAttrs.addFlashAttribute("receiptDocumentForm", receiptDocumentForm);
-            return "redirect:/emp" + NEXT_PAGE_UPDATE + "/" + receiptDocumentForm.getReceiptDocument().getId() + ".htm";
+            return "redirect:" + NEXT_PAGE_UPDATE + "/" + receiptDocumentForm.getReceiptDocument().getId() + ".htm";
         }
     }
 
@@ -361,7 +361,7 @@ public class UpdateController {
             listBindingErrors(result);
             redirectAttrs.addFlashAttribute("result", result);
             redirectAttrs.addFlashAttribute("receiptDocumentForm", receiptDocumentForm);
-            return "redirect:/emp" + NEXT_PAGE_RECHECK + "/" + receiptDocumentForm.getReceiptDocument().getId() + ".htm";
+            return "redirect:" + NEXT_PAGE_RECHECK + "/" + receiptDocumentForm.getReceiptDocument().getId() + ".htm";
         }
 
         try {
@@ -373,7 +373,7 @@ public class UpdateController {
 
                 receiptDocumentForm.setErrorMessage(duplicateReceiptMessage);
                 redirectAttrs.addFlashAttribute("receiptDocumentForm", receiptDocumentForm);
-                return "redirect:/emp" + NEXT_PAGE_RECHECK + "/" + receiptDocumentForm.getReceiptDocument().getId() + ".htm";
+                return "redirect:" + NEXT_PAGE_RECHECK + "/" + receiptDocumentForm.getReceiptDocument().getId() + ".htm";
             }
 
             //TODO add validate receipt entity as this can some times be invalid and add logic to recover a broken receipts by admin
@@ -388,7 +388,7 @@ public class UpdateController {
 
             receiptDocumentForm.setErrorMessage(exce.getLocalizedMessage());
             redirectAttrs.addFlashAttribute("receiptDocumentForm", receiptDocumentForm);
-            return "redirect:/emp" + NEXT_PAGE_RECHECK + "/" + receiptDocumentForm.getReceiptDocument().getId() + ".htm";
+            return "redirect:" + NEXT_PAGE_RECHECK + "/" + receiptDocumentForm.getReceiptDocument().getId() + ".htm";
         }
     }
 
