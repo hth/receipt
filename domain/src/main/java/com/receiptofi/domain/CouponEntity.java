@@ -143,8 +143,13 @@ public class CouponEntity extends BaseEntity {
         return this;
     }
 
+    /**
+     * When image path is blank then file is on S3.
+     *
+     * @return
+     */
     public String getImagePath() {
-        if (null != fileSystemEntities) {
+        if (null != fileSystemEntities && StringUtils.isBlank(imagePath)) {
             StringBuilder sb = new StringBuilder("");
 
             for (FileSystemEntity fileSystem : fileSystemEntities) {
