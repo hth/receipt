@@ -204,4 +204,13 @@ public class CouponEntity extends BaseEntity {
         this.couponUploadStatus = CouponUploadStatusEnum.A;
         return this;
     }
+
+    public CouponUploadStatusEnum getCouponUploadStatus() {
+        return couponUploadStatus;
+    }
+
+    public CouponEntity setCouponUploadStatus(CouponUploadStatusEnum couponUploadStatus) {
+        this.couponUploadStatus = couponUploadStatus;
+        return this;
+    }
 }

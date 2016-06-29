@@ -6,6 +6,7 @@ import com.receiptofi.repository.FileSystemManager;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
 import java.util.Collection;
 import java.util.List;
@@ -29,24 +30,26 @@ public class FileSystemService {
         this.fileSystemManager = fileSystemManager;
     }
 
-    public void save(FileSystemEntity fileSystemEntity) {
-        fileSystemManager.save(fileSystemEntity);
+    public void save(FileSystemEntity fileSystem) {
+        fileSystemManager.save(fileSystem);
     }
 
     public FileSystemEntity getById(String id) {
         return fileSystemManager.getById(id);
     }
 
-    public void deleteSoft(Collection<FileSystemEntity> fileSystemEntities) {
-        fileSystemManager.deleteSoft(fileSystemEntities);
+    public void deleteSoft(Collection<FileSystemEntity> fileSystems) {
+        Assert.notNull(fileSystems, "FileSystem collection is null");
+        fileSystemManager.deleteSoft(fileSystems);
     }
 
     public void deleteHard(FileSystemEntity fileSystemEntity) {
         fileSystemManager.deleteHard(fileSystemEntity);
     }
 
-    public void deleteHard(Collection<FileSystemEntity> fileSystemEntities) {
-        fileSystemManager.deleteHard(fileSystemEntities);
+    public void deleteHard(Collection<FileSystemEntity> fileSystems) {
+        Assert.notNull(fileSystems, "FileSystem collection is null");
+        fileSystemManager.deleteHard(fileSystems);
     }
 
     public DiskUsageGrouped diskUsage(String rid) {
