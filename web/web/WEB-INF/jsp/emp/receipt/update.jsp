@@ -499,57 +499,6 @@
                             </table>
                         </form:form>
                     </div>
-
-                    <div id="activeMileage" class="hidden">
-                        <form:form method="post" action="../submitMileage.htm" modelAttribute="receiptDocumentForm" id="receiptUpdateForm">
-                            <form:errors path="errorMessage"    cssClass="error" id="existingErrorMessage"/>
-                            <form:errors path="receiptDocument" cssClass="error" />
-                            <form:hidden path="receiptDocument.id"/>
-                            <form:hidden path="receiptDocument.receiptUserId"/>
-                            <form:hidden path="receiptDocument.version"/>
-                            <form:hidden path="receiptDocument.documentStatus"/>
-                            <form:hidden path="receiptDocument.referenceDocumentId"/>
-                            <form:hidden path="receiptDocument.documentOfType" value="MILEAGE"/>
-
-                            <table border="0" style="width: 550px" class="etable">
-                                <tr>
-                                    <td colspan="6">
-                                        <div class="leftAlign">
-                                            <form:label for="mileage.start" path="mileage.start" cssErrorClass="error">Begin</form:label>
-                                            <form:input path="mileage.start" id="startMileage" size="25" class="tooltip" title="Mile before starting the trip"/>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td colspan="6">
-                                        <div class="leftAlign"><form:errors path="mileage.start" cssClass="error" /></div>
-                                    </td>
-                                </tr>
-                                <tr style="height: 6em;">
-                                    <td colspan="1">
-                                        <input type="submit" value="Reject" name="mileage-reject" id="rejectMileage" class="btn btn-danger" />
-                                    </td>
-                                    <td colspan="3">
-                                        <form:label for="receiptDocument.documentRejectReason" path="receiptDocument.documentRejectReason" cssErrorClass="error">Reject Reason: </form:label>
-                                        <form:select path="receiptDocument.documentRejectReason" id="documentRejectReason">
-                                            <form:option value="NONE" label="--- Select ---"/>
-                                            <form:options itemValue="name" itemLabel="description" />
-                                        </form:select>
-                                        <br/>
-                                        <form:errors path="receiptDocument.documentRejectReason" cssClass="error" />
-                                    </td>
-                                    <td colspan="2">
-                                        <input type="submit" value="Submit" name="mileage-submit" id="submitMileage" class="btn btn-default" />
-                                    </td>
-                                </tr>
-                            </table>
-                        </form:form>
-
-                        <!-- To test upload for multiple image to show up, I believe -->
-                        <%--<div>&nbsp;</div><div>&nbsp;</div><div>&nbsp;</div><div>&nbsp;</div>--%>
-                        <%--<div id="restricted-fine-uploader" style="margin-left: 10px; font-size: 1.05em" class="hidden"></div>--%>
-
-                    </div>
                     </c:when>
                 <c:otherwise>
                     &nbsp;
