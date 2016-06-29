@@ -70,7 +70,10 @@ public class CouponEntity extends BaseEntity {
     @Field ("SH")
     private List<String> sharedWithRids = new ArrayList<>();
 
-    /** Holds the id where this coupon has originated from. */
+    /**
+     * Holds the id where this coupon has originated from. For business coupon, this is blank and
+     * for individual, the owner has a blank originId.
+     */
     @Field ("OI")
     private String originId;
 
