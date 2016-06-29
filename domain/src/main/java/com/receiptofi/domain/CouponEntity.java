@@ -1,6 +1,7 @@
 package com.receiptofi.domain;
 
 import com.receiptofi.domain.types.CouponTypeEnum;
+import com.receiptofi.domain.types.CouponUploadStatusEnum;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -80,6 +81,9 @@ public class CouponEntity extends BaseEntity {
     @Field ("FS")
     private Collection<FileSystemEntity> fileSystemEntities;
 
+    @Field ("CU")
+    private CouponUploadStatusEnum couponUploadStatus = CouponUploadStatusEnum.I;
+
     public String getLocalId() {
         return localId;
     }
@@ -143,13 +147,11 @@ public class CouponEntity extends BaseEntity {
         return this;
     }
 
-    /**
-     * When localId is blank/null then file is on S3.
-     *
-     * @return
-     */
     public String getImagePath() {
-        if (null != fileSystemEntities && StringUtils.isBlank(localId)) {
+        if (null != fileSystemEntities &&
+                couponUploadStatus == CouponUploadStatusEnum.C &&
+                StringUtils.isNotBlank(originId)) {
+
             StringBuilder sb = new StringBuilder("");
 
             for (FileSystemEntity fileSystem : fileSystemEntities) {
@@ -208,6 +210,7 @@ public class CouponEntity extends BaseEntity {
 
     public CouponEntity setFileSystemEntities(Collection<FileSystemEntity> fileSystemEntities) {
         this.fileSystemEntities = fileSystemEntities;
+        this.couponUploadStatus = CouponUploadStatusEnum.A;
         return this;
     }
 }

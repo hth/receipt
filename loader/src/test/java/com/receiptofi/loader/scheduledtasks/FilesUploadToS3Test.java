@@ -25,9 +25,9 @@ import com.receiptofi.domain.DocumentEntity;
 import com.receiptofi.domain.FileSystemEntity;
 import com.receiptofi.loader.service.AffineTransformService;
 import com.receiptofi.loader.service.AmazonS3Service;
+import com.receiptofi.service.CouponService;
 import com.receiptofi.service.CronStatsService;
 import com.receiptofi.service.DocumentService;
-import com.receiptofi.service.DocumentUpdateService;
 import com.receiptofi.service.FileDBService;
 import com.receiptofi.service.FileSystemService;
 import com.receiptofi.service.ImageSplitService;
@@ -89,6 +89,7 @@ public class FilesUploadToS3Test {
     @Mock private AffineTransformService affineTransformService;
     @Mock private BufferedImage bufferedImage;
     @Mock private CronStatsService cronStatsService;
+    @Mock private CouponService couponService;
 
     private FilesUploadToS3 filesUploadToS3;
     private Properties prop = new Properties();
@@ -116,6 +117,7 @@ public class FilesUploadToS3Test {
         filesUploadToS3 = new FilesUploadToS3(
                 prop.getProperty("aws.s3.bucketName"),
                 prop.getProperty("aws.s3.bucketName"),
+                prop.getProperty("aws.s3.couponBucketName"),
                 prop.getProperty("filesUploadToS3"),
                 documentService,
                 fileDBService,
@@ -123,8 +125,8 @@ public class FilesUploadToS3Test {
                 amazonS3Service,
                 fileSystemService,
                 affineTransformService,
-                cronStatsService
-        );
+                cronStatsService,
+                couponService);
         when(gridFSDBFile.getInputStream()).thenReturn(inputStream);
         when(fileDBService.getFile(anyString())).thenReturn(gridFSDBFile);
 
@@ -147,7 +149,7 @@ public class FilesUploadToS3Test {
     @Test
     public void testEmptyDocumentList() {
         when(documentService.getAllProcessedDocuments()).thenReturn(new ArrayList<>());
-        filesUploadToS3.upload();
+        filesUploadToS3.receiptUpload();
         assertEquals(0, documentService.getAllProcessedDocuments().size());
         verify(documentService, never()).cloudUploadSuccessful(any(String.class));
     }
@@ -162,7 +164,7 @@ public class FilesUploadToS3Test {
         doNothing().when(documentService).cloudUploadSuccessful(anyString());
         doNothing().when(fileDBService).deleteHard(anyCollectionOf(FileSystemEntity.class));
 
-        filesUploadToS3.upload();
+        filesUploadToS3.receiptUpload();
         assertNotEquals(0, documentService.getAllProcessedDocuments().size());
         verify(s3Client, never()).putObject(any(PutObjectRequest.class));
         verify(documentService, never()).cloudUploadSuccessful(anyString());
@@ -179,7 +181,7 @@ public class FilesUploadToS3Test {
         doNothing().when(documentService).cloudUploadSuccessful(anyString());
         doNothing().when(fileDBService).deleteHard(anyCollectionOf(FileSystemEntity.class));
 
-        filesUploadToS3.upload();
+        filesUploadToS3.receiptUpload();
         assertNotEquals(0, documentService.getAllProcessedDocuments().size());
         verify(s3Client, never()).putObject(any(PutObjectRequest.class));
         verify(documentService, never()).cloudUploadSuccessful(anyString());
@@ -194,7 +196,7 @@ public class FilesUploadToS3Test {
 
         doThrow(Exception.class).when(documentService).cloudUploadSuccessful(anyString());
 
-        filesUploadToS3.upload();
+        filesUploadToS3.receiptUpload();
         assertNotEquals(0, documentService.getAllProcessedDocuments().size());
         verify(s3Client, atMost(2)).putObject(any(PutObjectRequest.class));
         verify(documentService, times(1)).cloudUploadSuccessful(anyString());
@@ -210,7 +212,7 @@ public class FilesUploadToS3Test {
         doNothing().when(documentService).cloudUploadSuccessful(anyString());
         doNothing().when(fileDBService).deleteHard(anyCollectionOf(FileSystemEntity.class));
 
-        filesUploadToS3.upload();
+        filesUploadToS3.receiptUpload();
         assertNotEquals(0, documentService.getAllProcessedDocuments().size());
         verify(s3Client, times(2)).putObject(any(PutObjectRequest.class));
         verify(documentService, times(1)).cloudUploadSuccessful(documentEntity.getId());
@@ -236,7 +238,7 @@ public class FilesUploadToS3Test {
         doNothing().when(documentService).cloudUploadSuccessful(anyString());
         doNothing().when(fileDBService).deleteHard(anyCollectionOf(FileSystemEntity.class));
 
-        filesUploadToS3.upload();
+        filesUploadToS3.receiptUpload();
         assertNotEquals(0, documentService.getAllProcessedDocuments().size());
         verify(s3Client, times(2)).putObject(any(PutObjectRequest.class));
         verify(documentService, times(1)).cloudUploadSuccessful(documentEntity.getId());

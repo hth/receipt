@@ -23,7 +23,12 @@ import java.util.Map;
 })
 @Service
 public class CronStatsService {
-    @Autowired private CronStatsManager cronStatsManager;
+    private CronStatsManager cronStatsManager;
+
+    @Autowired
+    public CronStatsService(CronStatsManager cronStatsManager) {
+        this.cronStatsManager = cronStatsManager;
+    }
 
     public void save(CronStatsEntity cronStats) {
         cronStats.setEnd(new Date());

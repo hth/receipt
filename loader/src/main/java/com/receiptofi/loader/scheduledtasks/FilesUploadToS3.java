@@ -2,14 +2,16 @@ package com.receiptofi.loader.scheduledtasks;
 
 import com.mongodb.gridfs.GridFSDBFile;
 
+import com.receiptofi.domain.BaseEntity;
+import com.receiptofi.domain.CouponEntity;
 import com.receiptofi.domain.CronStatsEntity;
 import com.receiptofi.domain.DocumentEntity;
 import com.receiptofi.domain.FileSystemEntity;
 import com.receiptofi.loader.service.AffineTransformService;
 import com.receiptofi.loader.service.AmazonS3Service;
+import com.receiptofi.service.CouponService;
 import com.receiptofi.service.CronStatsService;
 import com.receiptofi.service.DocumentService;
-import com.receiptofi.service.DocumentUpdateService;
 import com.receiptofi.service.FileDBService;
 import com.receiptofi.service.FileSystemService;
 import com.receiptofi.service.ImageSplitService;
@@ -55,7 +57,8 @@ public class FilesUploadToS3 {
     private static final int ROTATE_AT_CENTER = 2;
 
     private final String bucketName;
-    private final String folderName;
+    private final String receiptFolderName;
+    private final String couponFolderName;
     private final String filesUploadSwitch;
 
     private DocumentService documentService;
@@ -65,6 +68,7 @@ public class FilesUploadToS3 {
     private FileSystemService fileSystemService;
     private AffineTransformService affineTransformService;
     private CronStatsService cronStatsService;
+    private CouponService couponService;
 
     @Autowired
     public FilesUploadToS3(
@@ -72,7 +76,10 @@ public class FilesUploadToS3 {
             String bucketName,
 
             @Value ("${aws.s3.bucketName}")
-            String folderName,
+            String receiptFolderName,
+
+            @Value ("${aws.s3.couponBucketName}")
+            String couponFolderName,
 
             @Value ("${FilesUploadToS3.filesUploadSwitch}")
             String filesUploadSwitch,
@@ -83,10 +90,11 @@ public class FilesUploadToS3 {
             AmazonS3Service amazonS3Service,
             FileSystemService fileSystemService,
             AffineTransformService affineTransformService,
-            CronStatsService cronStatsService
-    ) {
+            CronStatsService cronStatsService,
+            CouponService couponService) {
         this.bucketName = bucketName;
-        this.folderName = folderName;
+        this.receiptFolderName = receiptFolderName;
+        this.couponFolderName = couponFolderName;
         this.filesUploadSwitch = filesUploadSwitch;
 
         this.documentService = documentService;
@@ -96,16 +104,17 @@ public class FilesUploadToS3 {
         this.fileSystemService = fileSystemService;
         this.affineTransformService = affineTransformService;
         this.cronStatsService = cronStatsService;
+        this.couponService = couponService;
     }
 
     /**
      * Note: Cron string blow run every 5 minutes.
      */
-    @Scheduled (fixedDelayString = "${loader.FilesUploadToS3.upload}")
-    public void upload() {
+    @Scheduled (fixedDelayString = "${loader.FilesUploadToS3.receiptUpload}")
+    public void receiptUpload() {
         CronStatsEntity cronStats = new CronStatsEntity(
                 FilesUploadToS3.class.getName(),
-                "Upload",
+                "ReceiptUpload",
                 filesUploadSwitch);
 
         /**
@@ -136,17 +145,7 @@ public class FilesUploadToS3 {
 
                             GridFSDBFile fs = fileDBService.getFile(fileSystem.getBlobId());
                             if (null != fs) {
-                                PutObjectRequest putObject = createPutObjectRequest(document, fileSystem, fs);
-                                amazonS3Service.getS3client().putObject(putObject);
-
-                                /**
-                                 * Reason: Your socket connection to the server was not read from or written to within
-                                 * the timeout period. Idle connections will be closed.
-                                 *
-                                 * On successful update persist changes to FileSystemEntity.
-                                 */
-                                fileSystemService.save(fileSystem);
-                                success++;
+                                success = uploadToS3(success, document, fileSystem, fs);
                             } else {
                                 //TODO keep an eye on this issue. Should not happen.
                                 skipped++;
@@ -193,7 +192,7 @@ public class FilesUploadToS3 {
                     failure++;
 
                     for (FileSystemEntity fileSystem : document.getFileSystemEntities()) {
-                        amazonS3Service.getS3client().deleteObject(bucketName, folderName + "/" + fileSystem.getKey());
+                        amazonS3Service.getS3client().deleteObject(bucketName, receiptFolderName + "/" + fileSystem.getKey());
                         LOG.warn("On failure removed files from cloud filename={}", fileSystem.getKey());
                     }
                 }
@@ -201,17 +200,123 @@ public class FilesUploadToS3 {
         } catch (Exception e) {
             LOG.error("Error S3 uploading document reason={}", e.getLocalizedMessage(), e);
         } finally {
-            cronStats.addStats("success", success);
-            cronStats.addStats("skipped", skipped);
-            cronStats.addStats("failure", failure);
-            cronStats.addStats("found", documents.size());
-            cronStatsService.save(cronStats);
-
-            LOG.info("S3 upload success={} skipped={} failure={} total={}", success, skipped, failure, documents.size());
+            saveUploadStats(cronStats, success, failure, skipped, documents.size());
         }
     }
 
-    private PutObjectRequest createPutObjectRequest(DocumentEntity document, FileSystemEntity fileSystem, GridFSDBFile fs) throws IOException {
+    @Scheduled (fixedDelayString = "${loader.FilesUploadToS3.couponUpload}")
+    public void couponUpload() {
+        CronStatsEntity cronStats = new CronStatsEntity(
+                FilesUploadToS3.class.getName(),
+                "CouponUpload",
+                filesUploadSwitch);
+
+        /**
+         * TODO prevent test db connection from dev. As this moves files to 'dev' bucket in S3 and test environment fails to upload to 'test' bucket.
+         * NOTE: This is one of the reason you should not connect to test database from dev environment. Or have a
+         * fail safe to prevent uploading to dev bucket when connected to test database.
+         */
+        if ("OFF".equalsIgnoreCase(filesUploadSwitch)) {
+            LOG.info("feature is {}", filesUploadSwitch);
+            return;
+        }
+
+        List<CouponEntity> coupons = couponService.findCouponToUpload();
+        if (coupons.isEmpty()) {
+            /** No coupons to upload. */
+            return;
+        } else {
+            LOG.info("Coupons to upload to cloud, count={}", coupons.size());
+        }
+
+        int success = 0, failure = 0, skipped = 0;
+        try {
+            for (CouponEntity coupon : coupons) {
+                try {
+                    Collection<FileSystemEntity> fileSystems = coupon.getFileSystemEntities();
+                    for (FileSystemEntity fileSystem : fileSystems) {
+                        GridFSDBFile fs = fileDBService.getFile(fileSystem.getBlobId());
+                        if (null != fs) {
+                            success = uploadToS3(success, coupon, fileSystem, fs);
+                        } else {
+                            //TODO keep an eye on this issue. Should not happen.
+                            skipped++;
+                            LOG.error("Skipped file={} as it does not exists in GridFSDBFile", fileSystem.getBlobId());
+                        }
+
+                    }
+                    couponService.cloudUploadSuccessful(coupon.getId());
+                    fileDBService.deleteHard(coupon.getFileSystemEntities());
+                } catch (AmazonServiceException e) {
+                    LOG.error("Amazon S3 rejected request with an error response for some reason " +
+                                    "document:{} " +
+                                    "Error Message:{} " +
+                                    "HTTP Status Code:{} " +
+                                    "AWS Error Code:{} " +
+                                    "Error Type:{} " +
+                                    "Request ID:{}",
+                            coupon,
+                            e.getLocalizedMessage(),
+                            e.getStatusCode(),
+                            e.getErrorCode(),
+                            e.getErrorType(),
+                            e.getRequestId(),
+                            e);
+
+                    failure++;
+                } catch (AmazonClientException e) {
+                    LOG.error("Client encountered an internal error while trying to communicate with S3 " +
+                                    "document:{} " +
+                                    "reason={}",
+                            coupon,
+                            e.getLocalizedMessage(),
+                            e);
+
+                    failure++;
+                } catch (Exception e) {
+                    LOG.error("S3 image upload failure document={} reason={}", coupon, e.getLocalizedMessage(), e);
+
+                    failure++;
+
+                    for (FileSystemEntity fileSystem : coupon.getFileSystemEntities()) {
+                        amazonS3Service.getS3client().deleteObject(bucketName, couponFolderName + "/" + fileSystem.getKey());
+                        LOG.warn("On failure removed files from cloud filename={}", fileSystem.getKey());
+                    }
+                }
+            }
+        } catch (Exception e) {
+            LOG.error("Error S3 uploading document reason={}", e.getLocalizedMessage(), e);
+        } finally {
+            saveUploadStats(cronStats, success, failure, skipped, coupons.size());
+        }
+    }
+
+    private void saveUploadStats(CronStatsEntity cronStats, int success, int failure, int skipped, int size) {
+        cronStats.addStats("success", success);
+        cronStats.addStats("skipped", skipped);
+        cronStats.addStats("failure", failure);
+        cronStats.addStats("found", size);
+        cronStatsService.save(cronStats);
+
+        LOG.info("S3 upload success={} skipped={} failure={} total={}", success, skipped, failure, size);
+    }
+
+    private int uploadToS3(int success, BaseEntity document, FileSystemEntity fileSystem, GridFSDBFile fs) throws IOException {
+        PutObjectRequest putObject = createPutObjectRequest(document, fileSystem, fs);
+        amazonS3Service.getS3client().putObject(putObject);
+
+        /**
+         * Reason: Your socket connection to the server was not read from or written to within
+         * the timeout period. Idle connections will be closed.
+         *
+         * On successful update persist changes to FileSystemEntity.
+         */
+        fileSystemService.save(fileSystem);
+        success++;
+        return success;
+    }
+
+    private PutObjectRequest createPutObjectRequest(BaseEntity document, FileSystemEntity fileSystem, GridFSDBFile fs) throws IOException {
         File scaledImage = FileUtil.createTempFile(
                 FilenameUtils.getBaseName(fileSystem.getOriginalFilename()),
                 FileUtil.getFileExtension(fileSystem.getOriginalFilename()));
@@ -232,6 +337,21 @@ public class FilesUploadToS3 {
         }
         updateFileSystemWithScaledImageForS3(fileSystem, fileForS3);
         return getPutObjectRequest(document, fileSystem, fileForS3);
+    }
+
+    private PutObjectRequest createPutObjectRequest(CouponEntity coupon, FileSystemEntity fileSystem, GridFSDBFile fs) throws IOException {
+        LOG.info("fileSystemID={} filename={} newFilename={} originalLength={}",
+                fileSystem.getId(),
+                fileSystem.getOriginalFilename(),
+                fileSystem.getBlobId(),
+                FileUtil.fileSizeInMB(fileSystem.getFileLength()));
+
+        File fileForS3 = FileUtil.createTempFile(
+                FilenameUtils.getBaseName(fileSystem.getOriginalFilename()),
+                FileUtil.getFileExtension(fileSystem.getOriginalFilename()));;
+        fs.writeTo(fileForS3);
+        updateFileSystemWithScaledImageForS3(fileSystem, fileForS3);
+        return getPutObjectRequest(coupon, fileSystem, fileForS3);
     }
 
     /**
@@ -328,9 +448,17 @@ public class FilesUploadToS3 {
      * @param file
      * @return
      */
-    private PutObjectRequest getPutObjectRequest(DocumentEntity document, FileSystemEntity fileSystem, File file) {
-        PutObjectRequest putObject = new PutObjectRequest(bucketName, folderName + "/" + fileSystem.getKey(), file);
-        putObject.setMetadata(getObjectMetadata(file.length(), document, fileSystem));
+    private PutObjectRequest getPutObjectRequest(BaseEntity document, FileSystemEntity fileSystem, File file) {
+        PutObjectRequest putObject = null;
+
+        if (document instanceof DocumentEntity) {
+            putObject = new PutObjectRequest(bucketName, receiptFolderName + "/" + fileSystem.getKey(), file);
+            putObject.setMetadata(getObjectMetadata(file.length(), document, fileSystem));
+        } else if (document instanceof CouponEntity) {
+            putObject = new PutObjectRequest(bucketName, couponFolderName + "/" + fileSystem.getKey(), file);
+            putObject.setMetadata(getObjectMetadata(file.length(), document, fileSystem));
+        }
+
         return putObject;
     }
 
@@ -342,13 +470,20 @@ public class FilesUploadToS3 {
      * @param fileSystem
      * @return
      */
-    private ObjectMetadata getObjectMetadata(long fileLength, DocumentEntity document, FileSystemEntity fileSystem) {
+    private ObjectMetadata getObjectMetadata(long fileLength, BaseEntity document, FileSystemEntity fileSystem) {
         ObjectMetadata metaData = new ObjectMetadata();
-        metaData.setContentType(fileSystem.getContentType());
-        metaData.addUserMetadata("X-RID", document.getReceiptUserId());
-        metaData.addUserMetadata("X-RDID", document.getReferenceDocumentId());
-        metaData.addUserMetadata("X-RTXD", document.getReceiptDate());
-        metaData.addUserMetadata("X-CL", String.valueOf(fileLength));
+
+        if (document instanceof DocumentEntity) {
+            metaData.setContentType(fileSystem.getContentType());
+            metaData.addUserMetadata("X-RID", ((DocumentEntity) document).getReceiptUserId());
+            metaData.addUserMetadata("X-RDID", ((DocumentEntity) document).getReferenceDocumentId());
+            metaData.addUserMetadata("X-RTXD", ((DocumentEntity) document).getReceiptDate());
+            metaData.addUserMetadata("X-CL", String.valueOf(fileLength));
+        } else if (document instanceof CouponEntity) {
+            metaData.setContentType(fileSystem.getContentType());
+            metaData.addUserMetadata("X-RID", ((CouponEntity) document).getRid());
+            metaData.addUserMetadata("X-CL", String.valueOf(fileLength));
+        }
 
         return metaData;
     }

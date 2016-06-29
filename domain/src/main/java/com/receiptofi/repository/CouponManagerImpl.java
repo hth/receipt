@@ -1,10 +1,14 @@
 package com.receiptofi.repository;
 
+import static com.receiptofi.repository.util.AppendAdditionalFields.entityUpdate;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.*;
+import static org.springframework.data.mongodb.core.query.Update.update;
 
 import com.receiptofi.domain.BaseEntity;
 import com.receiptofi.domain.CouponEntity;
+import com.receiptofi.domain.DocumentEntity;
+import com.receiptofi.domain.types.CouponUploadStatusEnum;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -15,6 +19,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  * User: hitender
@@ -62,5 +68,23 @@ public class CouponManagerImpl implements CouponManager {
     @Override
     public void deleteHard(CouponEntity object) {
         throw new UnsupportedOperationException("This method is not supported");
+    }
+
+    @Override
+    public List<CouponEntity> findCouponToUpload(int limit) {
+        return mongoTemplate.find(
+                query(where("CU").is(CouponUploadStatusEnum.A)).limit(limit),
+                CouponEntity.class,
+                TABLE
+        );
+    }
+
+    @Override
+    public void cloudUploadSuccessful(String id) {
+        mongoTemplate.updateFirst(
+                query(where("id").is(id)),
+                entityUpdate(update("CU", CouponUploadStatusEnum.C)),
+                CouponEntity.class
+        );
     }
 }
