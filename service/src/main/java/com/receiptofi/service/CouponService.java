@@ -40,7 +40,13 @@ public class CouponService {
         return couponManager.findCouponToUpload(limit);
     }
 
-    public void cloudUploadSuccessful(String id) {
-        couponManager.cloudUploadSuccessful(id);
+    /**
+     * Update path of image location.
+     *
+     * @param id
+     * @param imagePathOnCloud
+     */
+    public void cloudUploadSuccessful(String id, String imagePathOnCloud) {
+        couponManager.cloudUploadSuccessful(id, imagePathOnCloud);
     }
 }

@@ -148,19 +148,7 @@ public class CouponEntity extends BaseEntity {
     }
 
     public String getImagePath() {
-        if (null != fileSystemEntities &&
-                couponUploadStatus == CouponUploadStatusEnum.C &&
-                StringUtils.isNotBlank(originId)) {
-
-            StringBuilder sb = new StringBuilder("");
-
-            for (FileSystemEntity fileSystem : fileSystemEntities) {
-                sb.append(fileSystem.getKey()).append(",");
-            }
-            return StringUtils.chop(sb.toString());
-        } else {
-            return imagePath;
-        }
+        return imagePath;
     }
 
     public CouponEntity setImagePath(String imagePath) {

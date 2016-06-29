@@ -80,10 +80,10 @@ public class CouponManagerImpl implements CouponManager {
     }
 
     @Override
-    public void cloudUploadSuccessful(String id) {
+    public void cloudUploadSuccessful(String id, String imagePathOnCloud) {
         mongoTemplate.updateFirst(
                 query(where("id").is(id)),
-                entityUpdate(update("CU", CouponUploadStatusEnum.C)),
+                entityUpdate(update("CU", CouponUploadStatusEnum.C).set("IP", imagePathOnCloud)),
                 CouponEntity.class
         );
     }

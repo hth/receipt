@@ -18,6 +18,7 @@ import com.receiptofi.service.ImageSplitService;
 import com.receiptofi.utils.FileUtil;
 
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -233,11 +234,13 @@ public class FilesUploadToS3 {
         try {
             for (CouponEntity coupon : coupons) {
                 try {
+                    StringBuilder sb = new StringBuilder("");
                     Collection<FileSystemEntity> fileSystems = coupon.getFileSystemEntities();
                     for (FileSystemEntity fileSystem : fileSystems) {
                         GridFSDBFile fs = fileDBService.getFile(fileSystem.getBlobId());
                         if (null != fs) {
                             success = uploadToS3(success, coupon, fileSystem, fs);
+                            sb.append(fileSystem.getKey()).append(",");
                         } else {
                             //TODO keep an eye on this issue. Should not happen.
                             skipped++;
@@ -245,7 +248,8 @@ public class FilesUploadToS3 {
                         }
 
                     }
-                    couponService.cloudUploadSuccessful(coupon.getId());
+                    /** Update image path from local to cloud (S3) after coupon upload. */
+                    couponService.cloudUploadSuccessful(coupon.getId(), StringUtils.chop(sb.toString()));
                     fileDBService.deleteHard(coupon.getFileSystemEntities());
                 } catch (AmazonServiceException e) {
                     LOG.error("Amazon S3 rejected request with an error response for some reason " +
