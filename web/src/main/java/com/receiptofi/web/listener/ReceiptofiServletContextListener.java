@@ -31,9 +31,6 @@ import javax.servlet.ServletContextListener;
 public class ReceiptofiServletContextListener implements ServletContextListener {
     private static final Logger LOG = LoggerFactory.getLogger(ReceiptofiServletContextListener.class);
 
-    private Properties config = new Properties();
-    private Properties messages = new Properties();
-
     @Override
     public void contextDestroyed(ServletContextEvent arg0) {
         //TODO make clean shutdown for quartz. This prevent now from tomcat shutdown
@@ -44,8 +41,21 @@ public class ReceiptofiServletContextListener implements ServletContextListener 
     public void contextInitialized(ServletContextEvent arg0) {
         LOG.info("Receiptofi context initialized");
 
+        Properties messages = new Properties();
+        Properties environment = new Properties();
+        Properties config = new Properties();
+
         try {
             messages.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("messages.properties"));
+
+            if (StringUtils.equals(messages.getProperty("build.env"), "prod")) {
+                environment.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("conf/prop.properties"));
+            } else if (StringUtils.equals(messages.getProperty("build.env"), "test")) {
+                environment.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("conf/test.properties"));
+            } else {
+                environment.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("conf/dev.properties"));
+            }
+
             config.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("conf/config.properties"));
             URL url = Thread.currentThread().getContextClassLoader().getResource("..//jsp//images//smallGoogle.jpg");
             Assert.notNull(url, "Images for email exists");
@@ -53,16 +63,18 @@ public class ReceiptofiServletContextListener implements ServletContextListener 
             LOG.error("could not load config properties file reason={}", e.getLocalizedMessage(), e);
         }
 
-        checkEnvironment();
-        if (hasAccessToFileSystem()) {
-            LOG.info("Found and has access, to directory={}", config.get("expensofiReportLocation"));
+        checkEnvironment(messages);
+
+        LOG.info("AWS S3 upload status={}", environment.getProperty("FilesUploadToS3.filesUploadSwitch"));
+        if (hasAccessToFileSystem(config)) {
+            LOG.info("Found and has access, to directory={}", config.getProperty("expensofiReportLocation"));
         }
     }
 
-    private void checkEnvironment() {
+    private void checkEnvironment(Properties properties) {
         try {
             String hostName = InetAddress.getLocalHost().getHostName();
-            String buildEnvironment = (String) messages.get("build.env");
+            String buildEnvironment = properties.getProperty("build.env");
 
             LOG.info("Deploying on environment={} and host={}", buildEnvironment, hostName);
             if (StringUtils.equals(buildEnvironment, "prod") && !hostName.equals("live")) {
@@ -77,8 +89,8 @@ public class ReceiptofiServletContextListener implements ServletContextListener 
         }
     }
 
-    private boolean hasAccessToFileSystem() {
-        String expensofiReportLocation = (String) config.get("expensofiReportLocation");
+    private boolean hasAccessToFileSystem(Properties properties) {
+        String expensofiReportLocation = properties.getProperty("expensofiReportLocation");
         Assert.notNull(expensofiReportLocation);
 
         File directory = new File(expensofiReportLocation);
