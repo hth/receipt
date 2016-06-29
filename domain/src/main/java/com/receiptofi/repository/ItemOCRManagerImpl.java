@@ -80,9 +80,10 @@ public final class ItemOCRManagerImpl implements ItemOCRManager {
 
     @Override
     public List<ItemEntityOCR> getWhereReceipt(DocumentEntity receipt) {
-        Query query = query(where("DOCUMENT.$id").is(new ObjectId(receipt.getId())));
-        Sort sort = new Sort(Direction.ASC, "SEQ");
-        return mongoTemplate.find(query.with(sort), ItemEntityOCR.class, TABLE);
+        return mongoTemplate.find(
+                query(where("DOCUMENT.$id").is(new ObjectId(receipt.getId()))).with(new Sort(Direction.ASC, "SEQ")),
+                ItemEntityOCR.class,
+                TABLE);
     }
 
     @Override
@@ -92,15 +93,18 @@ public final class ItemOCRManagerImpl implements ItemOCRManager {
 
     @Override
     public void deleteWhereReceipt(DocumentEntity receipt) {
-        Query query = query(where("DOCUMENT.$id").is(new ObjectId(receipt.getId())));
-        mongoTemplate.remove(query, ItemEntityOCR.class);
+        mongoTemplate.remove(
+                query(where("DOCUMENT.$id").is(new ObjectId(receipt.getId()))),
+                ItemEntityOCR.class,
+                TABLE);
     }
 
     @Override
     public WriteResult updateObject(ItemEntityOCR object) {
-        Query query = query(where("id").is(object.getId()));
-        Update update = update("IN", object.getName());
-        return mongoTemplate.updateFirst(query, entityUpdate(update), TABLE);
+        return mongoTemplate.updateFirst(
+                query(where("id").is(object.getId())),
+                entityUpdate(update("IN", object.getName())),
+                TABLE);
     }
 
     @Override
