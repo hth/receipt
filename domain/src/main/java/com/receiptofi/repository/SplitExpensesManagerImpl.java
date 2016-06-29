@@ -1,5 +1,6 @@
 package com.receiptofi.repository;
 
+import static com.receiptofi.repository.util.AppendAdditionalFields.entityUpdate;
 import static com.receiptofi.repository.util.AppendAdditionalFields.isActive;
 import static com.receiptofi.repository.util.AppendAdditionalFields.isNotDeleted;
 import static org.springframework.data.domain.Sort.Direction.DESC;
@@ -10,6 +11,7 @@ import static org.springframework.data.mongodb.core.aggregation.Aggregation.prev
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.sort;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
+import static org.springframework.data.mongodb.core.query.Update.*;
 
 import com.mongodb.WriteResult;
 
@@ -148,7 +150,7 @@ public class SplitExpensesManagerImpl implements SplitExpensesManager {
     public boolean updateSplitTotal(String rdid, Double splitTotal) {
         WriteResult writeResult = mongoTemplate.updateMulti(
                 query(where("RDID").is(rdid)),
-                Update.update("ST", splitTotal),
+                entityUpdate(update("ST", splitTotal)),
                 SplitExpensesEntity.class
         );
         return writeResult.getN() > 0;

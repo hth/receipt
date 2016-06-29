@@ -1,5 +1,6 @@
 package com.receiptofi.repository;
 
+import static com.receiptofi.repository.util.AppendAdditionalFields.*;
 import static com.receiptofi.repository.util.AppendAdditionalFields.isActive;
 import static com.receiptofi.repository.util.AppendAdditionalFields.isNotDeleted;
 import static org.springframework.data.domain.Sort.Direction.DESC;
@@ -109,7 +110,7 @@ public class UserAccountManagerImpl implements UserAccountManager {
     public int inactiveNonValidatedAccount(Date pastActivationDate) {
         WriteResult writeResult = mongoTemplate.updateMulti(
                 query(where("AV").is(false).and("AVD").lt(pastActivationDate).and("A").is(true)),
-                AppendAdditionalFields.entityUpdate(update("A", false).set("AIR", AccountInactiveReasonEnum.ANV)),
+                entityUpdate(update("A", false).set("AIR", AccountInactiveReasonEnum.ANV)),
                 UserAccountEntity.class
         );
 
@@ -128,7 +129,7 @@ public class UserAccountManagerImpl implements UserAccountManager {
     public void removeRegistrationIsOffFrom(String id) {
         mongoTemplate.updateFirst(
                 query(where("id").is(id)),
-                AppendAdditionalFields.entityUpdate(new Update().unset("RIO")),
+                entityUpdate(new Update().unset("RIO")),
                 UserAccountEntity.class
         );
     }
@@ -137,7 +138,7 @@ public class UserAccountManagerImpl implements UserAccountManager {
     public void updateAccountToValidated(String id, AccountInactiveReasonEnum air) {
         mongoTemplate.updateFirst(
                 query(where("id").is(id).and("AIR").is(air)),
-                AppendAdditionalFields.entityUpdate(update("A", true).set("AV", true).unset("AIR")),
+                entityUpdate(update("A", true).set("AV", true).unset("AIR")),
                 UserAccountEntity.class
         );
     }
