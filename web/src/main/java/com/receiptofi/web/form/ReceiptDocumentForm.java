@@ -109,20 +109,20 @@ public final class ReceiptDocumentForm {
         BigDecimal taxedItemTotalWithoutTax = BigDecimal.ZERO;
 
         for (ItemEntity item : items) {
-            if (item.getTaxed() == TaxEnum.T) {
+            if (TaxEnum.T == item.getTaxed()) {
                 taxedItemTotalWithoutTax = Maths.add(taxedItemTotalWithoutTax, item.getTotalPriceWithoutTax());
             }
         }
 
         BigDecimal tax = Maths.calculateTax(receipt.getTax(), taxedItemTotalWithoutTax);
-        if (tax.compareTo(BigDecimal.ZERO) == 0) {
+        if (0 == tax.compareTo(BigDecimal.ZERO)) {
             receipt.setPercentTax("0.0000");
         } else {
             receipt.setPercentTax(tax.toString());
         }
 
         for (ItemEntity item : items) {
-            if (item.getTaxed() == TaxEnum.T) {
+            if (TaxEnum.T == item.getTaxed()) {
                 BigDecimal taxedAmount = Maths.multiply(item.getPrice().toString(), receipt.getPercentTax());
                 item.setTax(new Double(taxedAmount.toString()));
             } else {
