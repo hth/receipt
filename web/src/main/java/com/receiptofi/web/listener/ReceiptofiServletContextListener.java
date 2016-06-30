@@ -48,6 +48,7 @@ public class ReceiptofiServletContextListener implements ServletContextListener 
         try {
             messages.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("messages.properties"));
 
+            LOG.info("Build environment={}", messages.getProperty("build.env"));
             if (StringUtils.equals(messages.getProperty("build.env"), "prod")) {
                 environment.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("conf/prop.properties"));
             } else if (StringUtils.equals(messages.getProperty("build.env"), "test")) {
