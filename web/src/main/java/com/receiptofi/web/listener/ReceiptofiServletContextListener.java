@@ -48,15 +48,13 @@ public class ReceiptofiServletContextListener implements ServletContextListener 
         try {
             messages.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("messages.properties"));
 
-            LOG.info("Build environment={}", messages.getProperty("build.env"));
             if (StringUtils.equals(messages.getProperty("build.env"), "prod")) {
-                environment.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("conf/prop.properties"));
+                environment.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("conf/prod.properties"));
             } else if (StringUtils.equals(messages.getProperty("build.env"), "test")) {
                 environment.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("conf/test.properties"));
             } else {
                 environment.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("conf/dev.properties"));
             }
-            Assert.notEmpty(environment.keySet(), "Environment is not empty");
 
             config.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("conf/config.properties"));
             URL url = Thread.currentThread().getContextClassLoader().getResource("..//jsp//images//smallGoogle.jpg");
