@@ -56,6 +56,7 @@ public class ReceiptofiServletContextListener implements ServletContextListener 
             } else {
                 environment.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("conf/dev.properties"));
             }
+            Assert.notEmpty(environment.keySet(), "Environment is not empty");
 
             config.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("conf/config.properties"));
             URL url = Thread.currentThread().getContextClassLoader().getResource("..//jsp//images//smallGoogle.jpg");
