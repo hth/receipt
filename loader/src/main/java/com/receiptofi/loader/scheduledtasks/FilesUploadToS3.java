@@ -109,6 +109,7 @@ public class FilesUploadToS3 {
     }
 
     /**
+     * Upload Receipt to S3.
      * Note: Cron string blow run every 5 minutes.
      */
     @Scheduled (fixedDelayString = "${loader.FilesUploadToS3.receiptUpload}")
@@ -205,6 +206,10 @@ public class FilesUploadToS3 {
         }
     }
 
+    /**
+     * Upload Coupon type Individual to S3.
+     * Note: Cron string blow run every 1 minute.
+     */
     @Scheduled (fixedDelayString = "${loader.FilesUploadToS3.couponUpload}")
     public void couponUpload() {
         CronStatsEntity cronStats = new CronStatsEntity(
@@ -341,21 +346,6 @@ public class FilesUploadToS3 {
         }
         updateFileSystemWithScaledImageForS3(fileSystem, fileForS3);
         return getPutObjectRequest(document, fileSystem, fileForS3);
-    }
-
-    private PutObjectRequest createPutObjectRequest(CouponEntity coupon, FileSystemEntity fileSystem, GridFSDBFile fs) throws IOException {
-        LOG.info("fileSystemID={} filename={} newFilename={} originalLength={}",
-                fileSystem.getId(),
-                fileSystem.getOriginalFilename(),
-                fileSystem.getBlobId(),
-                FileUtil.fileSizeInMB(fileSystem.getFileLength()));
-
-        File fileForS3 = FileUtil.createTempFile(
-                FilenameUtils.getBaseName(fileSystem.getOriginalFilename()),
-                FileUtil.getFileExtension(fileSystem.getOriginalFilename()));;
-        fs.writeTo(fileForS3);
-        updateFileSystemWithScaledImageForS3(fileSystem, fileForS3);
-        return getPutObjectRequest(coupon, fileSystem, fileForS3);
     }
 
     /**
