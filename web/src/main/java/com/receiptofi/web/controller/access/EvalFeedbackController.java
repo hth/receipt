@@ -74,7 +74,7 @@ public class EvalFeedbackController {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         evalFeedbackValidator.validate(evalFeedbackForm, result);
         if (result.hasErrors()) {
-            LOG.error("error in result check");
+            LOG.warn("validation fail");
             return nextPage;
         }
 
