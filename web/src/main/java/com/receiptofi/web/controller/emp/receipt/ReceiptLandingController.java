@@ -58,6 +58,8 @@ public class ReceiptLandingController {
         /**
          * Note: findPending has to be before findUpdateWithLimit because records are update in the second query
          * and this gets duplicates
+         *
+         * Note: Inactive and PROCESSED marked records are not captured in the queries below.
          */
         List<MessageDocumentEntity> pending = empLandingService.pendingReceipts(
                 receiptUser.getUsername(),
