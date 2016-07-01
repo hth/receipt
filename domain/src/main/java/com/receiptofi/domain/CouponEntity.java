@@ -3,8 +3,6 @@ package com.receiptofi.domain;
 import com.receiptofi.domain.types.CouponTypeEnum;
 import com.receiptofi.domain.types.CouponUploadStatusEnum;
 
-import org.apache.commons.lang3.StringUtils;
-
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.DBRef;
