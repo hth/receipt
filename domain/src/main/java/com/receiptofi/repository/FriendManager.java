@@ -39,21 +39,21 @@ public interface FriendManager extends RepositoryManager<FriendEntity> {
     /**
      * Has some form of connection. Accepted or awaiting acceptance. Or even unfriend.
      *
-     * @param receiptUserId
-     * @param friendUserId
+     * @param rid
+     * @param fid
      * @return
      */
-    boolean hasConnection(String receiptUserId, String friendUserId);
+    boolean hasConnection(String rid, String fid);
 
-    void deleteHard(String receiptUserId, String friendUserId);
+    void deleteHard(String rid, String fid);
 
     boolean updateResponse(String id, String authenticationKey, boolean acceptConnection, String rid);
 
     boolean cancelInvite(String id, String authenticationKey);
 
-    FriendEntity getConnection(String receiptUserId, String friendUserId);
+    FriendEntity getConnection(String rid, String fid);
 
-    boolean unfriend(String receiptUserId, String friendUserId);
+    boolean unfriend(String rid, String fid);
 
     /**
      * Re-invite friend after cancelling the invitation.
