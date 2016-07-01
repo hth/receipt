@@ -128,6 +128,13 @@ public class FriendService {
         return jsonAwaitingAcceptances;
     }
 
+    /**
+     * Used for social friends. Just identifies connection and not FRIEND or UN-FRIEND.
+     *
+     * @param receiptUserId
+     * @param friendUserId
+     * @return
+     */
     public boolean hasConnection(String receiptUserId, String friendUserId) {
         return friendManager.hasConnection(receiptUserId, friendUserId);
     }
