@@ -570,6 +570,7 @@ public class ReceiptService {
 
         switch (splitAction) {
             case A:
+                /** When users are connected as a friend, then split receipt. */
                 if (friendService.isConnected(receipt.getReceiptUserId(), fid)) {
                     if (!splitExpensesService.doesExists(receipt.getId(), receipt.getReceiptUserId(), fid)) {
                         splitExpensesService.save(new SplitExpensesEntity(fid, receipt));
