@@ -97,19 +97,29 @@ public class FriendManagerImpl implements FriendManager {
     }
 
     @Override
-    public boolean hasConnection(String receiptUserId, String friendUserId) {
+    public boolean hasConnection(String rid, String fid) {
         return this.mongoTemplate.exists(
                 query(new Criteria().orOperator(
-                        Criteria.where("FID").is(receiptUserId).and("RID").is(friendUserId),
-                        Criteria.where("RID").is(receiptUserId).and("FID").is(friendUserId))),
+                        Criteria.where("FID").is(rid).and("RID").is(fid),
+                        Criteria.where("RID").is(rid).and("FID").is(fid))),
                 FriendEntity.class
         );
     }
 
     @Override
-    public void deleteHard(String receiptUserId, String friendUserId) {
+    public boolean isConnected(String rid, String fid) {
+        return this.mongoTemplate.exists(
+                query(new Criteria().orOperator(
+                        Criteria.where("FID").is(rid).and("RID").is(fid).and("CON").is(true),
+                        Criteria.where("RID").is(rid).and("FID").is(fid).and("CON").is(true))),
+                FriendEntity.class
+        );
+    }
+
+    @Override
+    public void deleteHard(String rid, String fid) {
         this.mongoTemplate.remove(
-                query(where("RID").is(receiptUserId).and("FID").is(friendUserId)),
+                query(where("RID").is(rid).and("FID").is(fid)),
                 FriendEntity.class,
                 TABLE);
     }
@@ -135,22 +145,22 @@ public class FriendManagerImpl implements FriendManager {
     }
 
     @Override
-    public FriendEntity getConnection(String receiptUserId, String friendUserId) {
+    public FriendEntity getConnection(String rid, String fid) {
         return this.mongoTemplate.findOne(
                 query(new Criteria().orOperator(
-                        Criteria.where("FID").is(receiptUserId).and("RID").is(friendUserId),
-                        Criteria.where("RID").is(receiptUserId).and("FID").is(friendUserId))),
+                        Criteria.where("FID").is(rid).and("RID").is(fid),
+                        Criteria.where("RID").is(rid).and("FID").is(fid))),
                 FriendEntity.class
         );
     }
 
     @Override
-    public boolean unfriend(String receiptUserId, String friendUserId) {
+    public boolean unfriend(String rid, String fid) {
         WriteResult writeResult = this.mongoTemplate.updateFirst(
                 query(new Criteria().orOperator(
-                        Criteria.where("FID").is(receiptUserId).and("RID").is(friendUserId).and("CON").is(true),
-                        Criteria.where("RID").is(receiptUserId).and("FID").is(friendUserId).and("CON").is(true))),
-                entityUpdate(update("CON", false).set("UNF", receiptUserId)),
+                        Criteria.where("FID").is(rid).and("RID").is(fid).and("CON").is(true),
+                        Criteria.where("RID").is(rid).and("FID").is(fid).and("CON").is(true))),
+                entityUpdate(update("CON", false).set("UNF", rid)),
                 FriendEntity.class
         );
 

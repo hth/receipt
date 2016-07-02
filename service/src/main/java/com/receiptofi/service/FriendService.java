@@ -150,6 +150,17 @@ public class FriendService {
         return friendManager.getConnection(receiptUserId, friendUserId);
     }
 
+    /**
+     * Check is friends are connected.
+     *
+     * @param receiptUserId
+     * @param friendUserId
+     * @return
+     */
+    public boolean isConnected(String receiptUserId, String friendUserId) {
+        return friendManager.isConnected(receiptUserId, friendUserId);
+    }
+
     public boolean updateResponse(String id, String authenticationKey, boolean acceptConnection, String rid) {
         boolean response = friendManager.updateResponse(id, authenticationKey, acceptConnection, rid);
         if (response) {
