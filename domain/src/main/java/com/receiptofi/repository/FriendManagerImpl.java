@@ -107,6 +107,16 @@ public class FriendManagerImpl implements FriendManager {
     }
 
     @Override
+    public boolean isConnected(String rid, String fid) {
+        return this.mongoTemplate.exists(
+                query(new Criteria().orOperator(
+                        Criteria.where("FID").is(rid).and("RID").is(fid).and("CON").is(true),
+                        Criteria.where("RID").is(rid).and("FID").is(fid).and("CON").is(true))),
+                FriendEntity.class
+        );
+    }
+
+    @Override
     public void deleteHard(String rid, String fid) {
         this.mongoTemplate.remove(
                 query(where("RID").is(rid).and("FID").is(fid)),

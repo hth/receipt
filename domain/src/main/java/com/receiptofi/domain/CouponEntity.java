@@ -50,7 +50,7 @@ public class CouponEntity extends BaseEntity {
     @Field ("AV")
     private Date available;
 
-    /** Period this coupon is not valid. */
+    /** Period this coupon is not valid after. */
     @Field ("EX")
     private Date expire;
 

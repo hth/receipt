@@ -45,6 +45,8 @@ public interface FriendManager extends RepositoryManager<FriendEntity> {
      */
     boolean hasConnection(String rid, String fid);
 
+    boolean isConnected(String rid, String fid);
+
     void deleteHard(String rid, String fid);
 
     boolean updateResponse(String id, String authenticationKey, boolean acceptConnection, String rid);
