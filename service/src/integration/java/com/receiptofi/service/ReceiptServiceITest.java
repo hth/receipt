@@ -18,6 +18,7 @@ import com.receiptofi.domain.BizNameEntity;
 import com.receiptofi.domain.BizStoreEntity;
 import com.receiptofi.domain.DocumentEntity;
 import com.receiptofi.domain.EmailValidateEntity;
+import com.receiptofi.domain.FriendEntity;
 import com.receiptofi.domain.ItemEntity;
 import com.receiptofi.domain.ItemEntityOCR;
 import com.receiptofi.domain.NotificationEntity;
@@ -28,6 +29,7 @@ import com.receiptofi.domain.types.CommentTypeEnum;
 import com.receiptofi.domain.types.DocumentOfTypeEnum;
 import com.receiptofi.domain.types.DocumentStatusEnum;
 import com.receiptofi.domain.types.FileTypeEnum;
+import com.receiptofi.domain.types.FriendConnectionTypeEnum;
 import com.receiptofi.domain.types.NotificationGroupEnum;
 import com.receiptofi.domain.types.NotificationTypeEnum;
 import com.receiptofi.domain.types.SplitActionEnum;
@@ -141,6 +143,14 @@ public class ReceiptServiceITest extends ITest {
                 "Welcome second@receiptofi.com. Next step, take a picture of your receipt from app to process it.",
                 notifications.get(0).getMessage());
 
+        /** Accept connection. */
+        FriendEntity friend = friendService.getConnection(primaryUserAccount.getReceiptUserId(), userAccount.getReceiptUserId());
+        friendService.updateFriendConnection(
+                friend.getId(),
+                friend.getAuthenticationKey(),
+                FriendConnectionTypeEnum.A,
+                userAccount.getReceiptUserId());
+
         /** Split receipt with fid. */
         boolean splitAction = receiptService.splitAction(userAccount.getReceiptUserId(), SplitActionEnum.A, receipt);
         ReceiptEntity receiptAfterSplit = receiptService.findReceipt(receipt.getId());
@@ -216,6 +226,14 @@ public class ReceiptServiceITest extends ITest {
                 "Welcome third@receiptofi.com. Next step, take a picture of your receipt from app to process it.",
                 notifications.get(0).getMessage());
 
+        /** Accept connection. */
+        FriendEntity friend = friendService.getConnection(primaryUserAccount.getReceiptUserId(), userAccount.getReceiptUserId());
+        friendService.updateFriendConnection(
+                friend.getId(),
+                friend.getAuthenticationKey(),
+                FriendConnectionTypeEnum.A,
+                userAccount.getReceiptUserId());
+
         /** Split receipt with fid. */
         boolean splitAction = receiptService.splitAction(userAccount.getReceiptUserId(), SplitActionEnum.A, receipt);
         ReceiptEntity receiptAfterSplit = receiptService.findReceipt(receipt.getId());
@@ -289,6 +307,14 @@ public class ReceiptServiceITest extends ITest {
         assertEquals("First notification",
                 "Welcome fourth@receiptofi.com. Next step, take a picture of your receipt from app to process it.",
                 notifications.get(0).getMessage());
+
+        /** Accept connection. */
+        FriendEntity friend = friendService.getConnection(primaryUserAccount.getReceiptUserId(), userAccount.getReceiptUserId());
+        friendService.updateFriendConnection(
+                friend.getId(),
+                friend.getAuthenticationKey(),
+                FriendConnectionTypeEnum.A,
+                userAccount.getReceiptUserId());
 
         /** Split receipt with fid. */
         boolean splitAction = receiptService.splitAction(userAccount.getReceiptUserId(), SplitActionEnum.A, receipt);
