@@ -3,7 +3,6 @@ package com.receiptofi.web.form;
 import com.receiptofi.domain.ItemEntity;
 import com.receiptofi.domain.ReceiptEntity;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 

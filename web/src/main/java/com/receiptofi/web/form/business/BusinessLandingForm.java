@@ -1,9 +1,6 @@
 package com.receiptofi.web.form.business;
 
-import com.receiptofi.domain.BusinessCampaignEntity;
-
 import java.math.BigDecimal;
-import java.util.List;
 
 /**
  * User: hitender

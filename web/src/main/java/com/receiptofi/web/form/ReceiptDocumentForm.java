@@ -9,7 +9,6 @@ import com.receiptofi.domain.ItemEntityOCR;
 import com.receiptofi.domain.ReceiptEntity;
 import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.domain.types.TaxEnum;
-import com.receiptofi.utils.DateUtil;
 import com.receiptofi.utils.Maths;
 
 import org.slf4j.Logger;

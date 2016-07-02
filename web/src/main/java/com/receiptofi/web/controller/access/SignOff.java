@@ -1,6 +1,7 @@
 package com.receiptofi.web.controller.access;
 
-import static com.receiptofi.domain.types.UserLevelEnum.*;
+import static com.receiptofi.domain.types.UserLevelEnum.SUPERVISOR;
+import static com.receiptofi.domain.types.UserLevelEnum.TECH_RECEIPT;
 
 import com.receiptofi.domain.site.ReceiptUser;
 import com.receiptofi.service.MessageDocumentService;
