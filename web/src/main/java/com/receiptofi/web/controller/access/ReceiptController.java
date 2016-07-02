@@ -9,10 +9,7 @@ import com.receiptofi.domain.BizNameEntity;
 import com.receiptofi.domain.ExpenseTagEntity;
 import com.receiptofi.domain.ItemEntity;
 import com.receiptofi.domain.ReceiptEntity;
-import com.receiptofi.domain.json.JsonExpenseTag;
 import com.receiptofi.domain.json.JsonFriend;
-import com.receiptofi.domain.json.JsonReceipt;
-import com.receiptofi.domain.json.JsonReceiptItem;
 import com.receiptofi.domain.site.ReceiptUser;
 import com.receiptofi.domain.types.SplitActionEnum;
 import com.receiptofi.repository.BizNameManager;
@@ -28,7 +25,6 @@ import com.receiptofi.web.form.ReceiptByBizForm;
 import com.receiptofi.web.form.ReceiptForm;
 import com.receiptofi.web.helper.ReceiptForMonth;
 import com.receiptofi.web.helper.ReceiptLandingView;
-import com.receiptofi.web.rest.JsonReceiptDetail;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,10 +44,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.io.IOException;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletResponse;
 
