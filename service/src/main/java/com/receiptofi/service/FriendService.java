@@ -140,6 +140,17 @@ public class FriendService {
     }
 
     /**
+     * Check friends are connected before performing SPLIT receipt or SHARING coupons.
+     *
+     * @param receiptUserId
+     * @param friendUserId
+     * @return
+     */
+    public boolean isConnected(String receiptUserId, String friendUserId) {
+        return friendManager.isConnected(receiptUserId, friendUserId);
+    }
+
+    /**
      * Find specific connection between two users.
      *
      * @param receiptUserId
@@ -148,17 +159,6 @@ public class FriendService {
      */
     public FriendEntity getConnection(String receiptUserId, String friendUserId) {
         return friendManager.getConnection(receiptUserId, friendUserId);
-    }
-
-    /**
-     * Check is friends are connected.
-     *
-     * @param receiptUserId
-     * @param friendUserId
-     * @return
-     */
-    public boolean isConnected(String receiptUserId, String friendUserId) {
-        return friendManager.isConnected(receiptUserId, friendUserId);
     }
 
     public boolean updateResponse(String id, String authenticationKey, boolean acceptConnection, String rid) {

@@ -29,7 +29,7 @@
         <div class="header_wrapper">
             <div class="header_left_contentmain">
                 <div id="logo">
-                    <h1><img src="https://www.receiptofi.com/img/Receipt-26x26.png" style="margin: -3px 0;"/><a href="/business/landing.htm">Receiptofi</a></h1>
+                    <h1><img src="https://www.receiptofi.com/img/Receipt-26x26.png" style="margin: -3px 0;"/><a href="/emp/campaign/landing.htm">Receiptofi</a></h1>
                 </div>
             </div>
             <div class="header_right_login">

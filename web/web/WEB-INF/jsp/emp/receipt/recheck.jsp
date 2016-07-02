@@ -304,7 +304,7 @@
                 <sec:authorize access="hasAnyRole('ROLE_TECHNICIAN', 'ROLE_SUPERVISOR')" var="isAdmin" />
                 <c:choose>
                 <c:when test="${isAdmin}">
-                    <h3><a href="${pageContext.request.contextPath}/emp/landing.htm" style="color: #065c14">Home</a></h3>
+                    <h3><a href="${pageContext.request.contextPath}/emp/receipt/landing.htm" style="color: #065c14">Home</a></h3>
                 </c:when>
                 <c:otherwise>
                     <h3><a href="${pageContext.request.contextPath}/access/landing.htm" style="color: #065c14">Home</a></h3>
