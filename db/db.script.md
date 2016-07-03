@@ -1,3 +1,12 @@
+### Date July 2 2016 - Build 1721
+Caused because of inactive token.
+    
+    db.getCollection('REGISTERED_DEVICE').update(
+            {},            
+            {$set: {U: ISODate("2016-06-01T01:00:00.320Z")} },                  
+            {multi: true}
+        );
+
 ### Date June 27 2016 - Build 1702
 
     Upgrade ActiveMQ to 5.13.3
