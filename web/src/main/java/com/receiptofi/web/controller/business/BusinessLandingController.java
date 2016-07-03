@@ -131,9 +131,10 @@ public class BusinessLandingController {
                     .setCustomerCount(bizDimension.getUserCount())
                     .setStoreCount(bizDimension.getStoreCount())
                     .setTotalCustomerPurchases(Maths.adjustScale(bizDimension.getBizTotal()))
-                    .setVisitCount(bizDimension.getVisitCount())
-                    .setCampaignListForm(new CampaignListForm().setBusinessCampaigns(businessCampaignService.findBy(bizNameId)));
+                    .setVisitCount(bizDimension.getVisitCount());
         }
+
+        businessLandingForm.setCampaignListForm(new CampaignListForm().setBusinessCampaigns(businessCampaignService.findBy(bizNameId)));
     }
 
     /**
