@@ -203,7 +203,7 @@ public class MobilePushNotificationService {
                             rid, registeredDevice.getToken(), id, inactiveDevices.get(id));
 
                     if (registeredDevice.getCount() > 5) {
-                        registeredDeviceManager.deleteHard(
+                        registeredDeviceManager.unsetToken(
                                 rid,
                                 registeredDevice.getToken());
                     } else {
