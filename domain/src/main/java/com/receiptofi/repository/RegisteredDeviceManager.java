@@ -54,12 +54,12 @@ public interface RegisteredDeviceManager extends RepositoryManager<RegisteredDev
     List<RegisteredDeviceEntity> getDevicesForRid(String rid);
 
     /**
-     * Delete device info.
+     * Remove tokens that are unused or inactive.
      *
      * @param rid
      * @param token
      */
-    void deleteHard(String rid, String token);
+    void unsetToken(String rid, String token);
 
     /**
      * Increase number of times Apple APNS reported device token as inactive.

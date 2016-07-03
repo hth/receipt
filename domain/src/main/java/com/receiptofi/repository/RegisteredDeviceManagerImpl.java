@@ -108,7 +108,7 @@ public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
      */
     public List<RegisteredDeviceEntity> getDevicesForRid(String rid) {
         return mongoTemplate.find(
-                query(where("RID").is(rid)),
+                query(where("RID").is(rid).and("TK").exists(true)),
                 RegisteredDeviceEntity.class,
                 TABLE);
     }
@@ -119,9 +119,10 @@ public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
     }
 
     @Override
-    public void deleteHard(String rid, String token) {
-        mongoTemplate.remove(
+    public void unsetToken(String rid, String token) {
+        mongoTemplate.updateFirst(
                 query(where("RID").is(rid).and("TK").is(token)),
+                new Update().unset("TK"),
                 RegisteredDeviceEntity.class,
                 TABLE);
     }
@@ -142,7 +143,7 @@ public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
     }
 
     /**
-     *
+     * Reset when inactive token is active.
      *
      * @param rid
      * @param token
