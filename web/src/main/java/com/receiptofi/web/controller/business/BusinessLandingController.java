@@ -126,12 +126,14 @@ public class BusinessLandingController {
         LOG.info("Loading dashboard for bizName={} bizId={}", bizName.getBusinessName(), bizName.getId());
 
         BizDimensionEntity bizDimension = bizDimensionService.findBy(bizNameId);
-        businessLandingForm.setBizName(bizDimension.getBizName())
-                .setCustomerCount(bizDimension.getUserCount())
-                .setStoreCount(bizDimension.getStoreCount())
-                .setTotalCustomerPurchases(Maths.adjustScale(bizDimension.getBizTotal()))
-                .setVisitCount(bizDimension.getVisitCount())
-                .setCampaignListForm(new CampaignListForm().setBusinessCampaigns(businessCampaignService.findBy(bizNameId)));
+        if (null != bizDimension) {
+            businessLandingForm.setBizName(bizDimension.getBizName())
+                    .setCustomerCount(bizDimension.getUserCount())
+                    .setStoreCount(bizDimension.getStoreCount())
+                    .setTotalCustomerPurchases(Maths.adjustScale(bizDimension.getBizTotal()))
+                    .setVisitCount(bizDimension.getVisitCount())
+                    .setCampaignListForm(new CampaignListForm().setBusinessCampaigns(businessCampaignService.findBy(bizNameId)));
+        }
     }
 
     /**
