@@ -126,20 +126,32 @@ public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
                 TABLE);
     }
 
+    /**
+     * Note: Do not update the date to new date as this is being reference for last update for device.
+     *
+     * @param rid
+     * @param token
+     */
     @Override
     public void increaseCountOnInactiveDevice(String rid, String token) {
         mongoTemplate.updateMulti(
                 query(where("RID").is(rid).and("TK").is(token)),
-                update("U", new Date()).inc("CN", 1),
+                new Update().inc("CN", 1),
                 RegisteredDeviceEntity.class,
                 TABLE);
     }
 
+    /**
+     *
+     *
+     * @param rid
+     * @param token
+     */
     @Override
     public void resetCountOnInactiveDevice(String rid, String token) {
         mongoTemplate.updateMulti(
                 query(where("RID").is(rid).and("TK").is(token)),
-                update("CN", 0).set("U", new Date()),
+                update("CN", 0),
                 RegisteredDeviceEntity.class,
                 TABLE);
     }

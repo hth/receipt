@@ -310,8 +310,8 @@ public class FilesUploadToS3 {
         LOG.info("S3 upload success={} skipped={} failure={} total={}", success, skipped, failure, size);
     }
 
-    private int uploadToS3(int success, BaseEntity document, FileSystemEntity fileSystem, GridFSDBFile fs) throws IOException {
-        PutObjectRequest putObject = createPutObjectRequest(document, fileSystem, fs);
+    private int uploadToS3(int success, BaseEntity baseEntity, FileSystemEntity fileSystem, GridFSDBFile fs) throws IOException {
+        PutObjectRequest putObject = createPutObjectRequest(baseEntity, fileSystem, fs);
         amazonS3Service.getS3client().putObject(putObject);
 
         /**
@@ -325,7 +325,7 @@ public class FilesUploadToS3 {
         return success;
     }
 
-    private PutObjectRequest createPutObjectRequest(BaseEntity document, FileSystemEntity fileSystem, GridFSDBFile fs) throws IOException {
+    private PutObjectRequest createPutObjectRequest(BaseEntity baseEntity, FileSystemEntity fileSystem, GridFSDBFile fs) throws IOException {
         File scaledImage = FileUtil.createTempFile(
                 FilenameUtils.getBaseName(fileSystem.getOriginalFilename()),
                 FileUtil.getFileExtension(fileSystem.getOriginalFilename()));
@@ -345,7 +345,7 @@ public class FilesUploadToS3 {
             fileForS3 = rotate(fileSystem.getImageOrientation(), scaledImage);
         }
         updateFileSystemWithScaledImageForS3(fileSystem, fileForS3);
-        return getPutObjectRequest(document, fileSystem, fileForS3);
+        return getPutObjectRequest(baseEntity, fileSystem, fileForS3);
     }
 
     /**
@@ -437,20 +437,20 @@ public class FilesUploadToS3 {
     /**
      * Populates PutObjectRequest.
      *
-     * @param document
+     * @param baseEntity
      * @param fileSystem
      * @param file
      * @return
      */
-    private PutObjectRequest getPutObjectRequest(BaseEntity document, FileSystemEntity fileSystem, File file) {
+    private PutObjectRequest getPutObjectRequest(BaseEntity baseEntity, FileSystemEntity fileSystem, File file) {
         PutObjectRequest putObject = null;
 
-        if (document instanceof DocumentEntity) {
+        if (baseEntity instanceof DocumentEntity) {
             putObject = new PutObjectRequest(bucketName, receiptFolderName + "/" + fileSystem.getKey(), file);
-            putObject.setMetadata(getObjectMetadata(file.length(), document, fileSystem));
-        } else if (document instanceof CouponEntity) {
+            putObject.setMetadata(getObjectMetadata(file.length(), baseEntity, fileSystem));
+        } else if (baseEntity instanceof CouponEntity) {
             putObject = new PutObjectRequest(bucketName, couponFolderName + "/" + fileSystem.getKey(), file);
-            putObject.setMetadata(getObjectMetadata(file.length(), document, fileSystem));
+            putObject.setMetadata(getObjectMetadata(file.length(), baseEntity, fileSystem));
         }
 
         return putObject;
@@ -460,22 +460,22 @@ public class FilesUploadToS3 {
      * Adds metadata like Receipt User Id, Receipt Id and Receipt Date to file.
      *
      * @param fileLength
-     * @param document
+     * @param baseEntity
      * @param fileSystem
      * @return
      */
-    private ObjectMetadata getObjectMetadata(long fileLength, BaseEntity document, FileSystemEntity fileSystem) {
+    private ObjectMetadata getObjectMetadata(long fileLength, BaseEntity baseEntity, FileSystemEntity fileSystem) {
         ObjectMetadata metaData = new ObjectMetadata();
 
-        if (document instanceof DocumentEntity) {
+        if (baseEntity instanceof DocumentEntity) {
             metaData.setContentType(fileSystem.getContentType());
-            metaData.addUserMetadata("X-RID", ((DocumentEntity) document).getReceiptUserId());
-            metaData.addUserMetadata("X-RDID", ((DocumentEntity) document).getReferenceDocumentId());
-            metaData.addUserMetadata("X-RTXD", ((DocumentEntity) document).getReceiptDate());
+            metaData.addUserMetadata("X-RID", ((DocumentEntity) baseEntity).getReceiptUserId());
+            metaData.addUserMetadata("X-RDID", ((DocumentEntity) baseEntity).getReferenceDocumentId());
+            metaData.addUserMetadata("X-RTXD", ((DocumentEntity) baseEntity).getReceiptDate());
             metaData.addUserMetadata("X-CL", String.valueOf(fileLength));
-        } else if (document instanceof CouponEntity) {
+        } else if (baseEntity instanceof CouponEntity) {
             metaData.setContentType(fileSystem.getContentType());
-            metaData.addUserMetadata("X-RID", ((CouponEntity) document).getRid());
+            metaData.addUserMetadata("X-RID", ((CouponEntity) baseEntity).getRid());
             metaData.addUserMetadata("X-CL", String.valueOf(fileLength));
         }
 
