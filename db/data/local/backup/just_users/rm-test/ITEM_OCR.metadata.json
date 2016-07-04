@@ -1,0 +1,1 @@
+{"options":{},"indexes":[{"v":1,"key":{"_id":1},"name":"_id_","ns":"rm-test.ITEM_OCR"},{"v":1,"key":{"RECEIPT":-1,"RID":1},"name":"user_item_ocr_idx","ns":"rm-test.ITEM_OCR"}]}
