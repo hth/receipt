@@ -7,6 +7,10 @@ import com.receiptofi.domain.annotation.Mobile;
  * Date: 6/28/16 4:27 PM
  */
 public enum CouponUploadStatusEnum {
+    /**
+     * Ignore is by default or for coupons created from campaign as
+     * they share the same path to coupon image on S3.
+     */
     I("I", "Ignore Upload"),
     A("A", "Awaiting Upload"),
     C("C", "Upload Complete"),
