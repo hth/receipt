@@ -1,7 +1,7 @@
 package com.receiptofi.domain;
 
 import com.receiptofi.domain.types.CampaignStatusEnum;
-import com.receiptofi.domain.types.BusinessCampaignTypeEnum;
+import com.receiptofi.domain.types.CampaignTypeEnum;
 import com.receiptofi.utils.DateUtil;
 
 import org.springframework.data.annotation.Transient;
@@ -52,8 +52,8 @@ public class CampaignEntity extends BaseEntity {
     @Field ("LP")
     private Date live;
 
-    @Field ("BT")
-    private BusinessCampaignTypeEnum businessCampaignType = BusinessCampaignTypeEnum.L;
+    @Field ("CT")
+    private CampaignTypeEnum campaignType = CampaignTypeEnum.L;
 
     /** Number of coupon to release. */
     @Field ("DP")
@@ -153,12 +153,12 @@ public class CampaignEntity extends BaseEntity {
         return this;
     }
 
-    public BusinessCampaignTypeEnum getBusinessCampaignType() {
-        return businessCampaignType;
+    public CampaignTypeEnum getCampaignType() {
+        return campaignType;
     }
 
-    public CampaignEntity setBusinessCampaignType(BusinessCampaignTypeEnum businessCampaignType) {
-        this.businessCampaignType = businessCampaignType;
+    public CampaignEntity setCampaignType(CampaignTypeEnum campaignType) {
+        this.campaignType = campaignType;
         return this;
     }
 
