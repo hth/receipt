@@ -5,10 +5,11 @@ package com.receiptofi.domain.types;
  * Date: 6/15/16 7:07 PM
  */
 public enum BusinessCampaignStatusEnum {
-    N("N", "Not Complete"),
+    N("N", "In Progress. Confirm to mark as complete."),
     P("P", "Pending Approval"),
     A("A", "Approved"),
-    D("D", "Declined"), //Declined campaign can be modified and resubmitted to pending approval
+    /** Declined campaign can be modified and resubmitted to pending approval. */
+    D("D", "Declined"),
     L("L", "Live"),
     E("E", "Expired"),
     T("T", "Terminated");

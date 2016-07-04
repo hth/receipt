@@ -28,7 +28,8 @@ import javax.validation.constraints.NotNull;
 })
 @Document (collection = "COUPON")
 @CompoundIndexes (value = {
-        @CompoundIndex (name = "coupon_idx", def = "{'RID': -1}", background = true)
+        @CompoundIndex (name = "coupon_idx", def = "{'RID': -1}", background = true),
+        @CompoundIndex (name = "coupon_rid_initiated_idx", def = "{'RID': -1, 'IF': -1}", unique = true, background = true)
 })
 public class CouponEntity extends BaseEntity {
 
@@ -74,6 +75,15 @@ public class CouponEntity extends BaseEntity {
      */
     @Field ("OI")
     private String originId;
+
+    /**
+     * Holds the id where it originate from originally. For business coupon, this is BusinessCampaignId and
+     * for individual, the owner has a id as initiatedFromId but rest of the shared coupon would have the same id
+     * where the coupon had originated from. This will help in creating just one coupon per campaign.
+     * Or Avoid creating multiple coupons on sharing.
+     */
+    @Field ("IF")
+    private String initiatedFromId;
 
     @Field ("UC")
     private boolean usedCoupon;
@@ -190,6 +200,15 @@ public class CouponEntity extends BaseEntity {
 
     public CouponEntity setOriginId(String originId) {
         this.originId = originId;
+        return this;
+    }
+
+    public String getInitiatedFromId() {
+        return initiatedFromId;
+    }
+
+    public CouponEntity setInitiatedFromId(String initiatedFromId) {
+        this.initiatedFromId = initiatedFromId;
         return this;
     }
 

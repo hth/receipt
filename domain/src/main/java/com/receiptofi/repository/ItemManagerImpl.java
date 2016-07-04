@@ -242,7 +242,7 @@ public final class ItemManagerImpl implements ItemManager {
             query = query(criteriaI).addCriteria(criteriaB);
         }
 
-        //This makes just one of the field populated
+        /** This makes just one of the field populated. */
         query.fields().include("IN");
         return mongoTemplate.find(query, ItemEntity.class, TABLE);
     }

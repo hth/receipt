@@ -49,4 +49,8 @@ public class CouponService {
     public void cloudUploadSuccessful(String id, String imagePathOnCloud) {
         couponManager.cloudUploadSuccessful(id, imagePathOnCloud);
     }
+
+    public void save(CouponEntity coupon) {
+        couponManager.save(coupon);
+    }
 }
