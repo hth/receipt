@@ -1,0 +1,1 @@
+{"options":{},"indexes":[{"v":1,"key":{"_id":1},"name":"_id_","ns":"rm-test.Z_BIZ_DIM"},{"v":1,"unique":true,"key":{"bizId":1},"name":"biz_dim_idx","ns":"rm-test.Z_BIZ_DIM","background":true}]}

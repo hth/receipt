@@ -1,0 +1,1 @@
+{"options":{},"indexes":[{"v":1,"key":{"_id":1},"name":"_id_","ns":"rm-test.USER_AUTHENTICATION"},{"v":1,"unique":true,"key":{"PA":1,"AU":1},"name":"user_authentication_idx","ns":"rm-test.USER_AUTHENTICATION"}]}
