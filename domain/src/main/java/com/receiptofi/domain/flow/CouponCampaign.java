@@ -35,7 +35,7 @@ public class CouponCampaign implements Serializable {
     private String end;
     private String live;
     private String distributionPercent;
-    private CampaignStatusEnum businessCampaignStatus;
+    private CampaignStatusEnum campaignStatus;
     private Collection<FileSystemEntity> fileSystemEntities;
     //TODO(hth) add reason to show up for rejection of campaign, add it in BusinessCampaignEntity
 
@@ -156,12 +156,12 @@ public class CouponCampaign implements Serializable {
         }
     }
 
-    public CampaignStatusEnum getBusinessCampaignStatus() {
-        return businessCampaignStatus;
+    public CampaignStatusEnum getCampaignStatus() {
+        return campaignStatus;
     }
 
-    public CouponCampaign setBusinessCampaignStatus(CampaignStatusEnum businessCampaignStatus) {
-        this.businessCampaignStatus = businessCampaignStatus;
+    public CouponCampaign setCampaignStatus(CampaignStatusEnum campaignStatus) {
+        this.campaignStatus = campaignStatus;
         return this;
     }
 

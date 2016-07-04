@@ -105,15 +105,15 @@ public class CampaignProcess {
 
         int success = 0, failure = 0, skipped = 0;
         try {
-            for (CampaignEntity businessCampaign : campaigns) {
-                String businessCampaignId = businessCampaign.getId();
-                int distribution = businessCampaign.getDistributionPercent();
-                String bizId = businessCampaign.getBizId();
+            for (CampaignEntity campaign : campaigns) {
+                String businessCampaignId = campaign.getId();
+                int distribution = campaign.getDistributionPercent();
+                String bizId = campaign.getBizId();
                 BizNameEntity bizName = bizService.getByBizNameId(bizId);
                 String businessName = bizName.getBusinessName();
 
                 StringBuilder sb = new StringBuilder();
-                Collection<FileSystemEntity> fileSystemEntities = businessCampaign.getFileSystemEntities();
+                Collection<FileSystemEntity> fileSystemEntities = campaign.getFileSystemEntities();
                 if (null != fileSystemEntities) {
                     for (FileSystemEntity fileSystem : fileSystemEntities) {
                         sb.append(fileSystem.getKey()).append(",");
@@ -138,9 +138,9 @@ public class CampaignProcess {
                             CouponEntity coupon = new CouponEntity()
                                     .setRid(userDimension.getRid())
                                     .setBusinessName(businessName)
-                                    .setFreeText(businessCampaign.getFreeText())
-                                    .setAvailable(businessCampaign.getLive())
-                                    .setExpire(businessCampaign.getEnd())
+                                    .setFreeText(campaign.getFreeText())
+                                    .setAvailable(campaign.getLive())
+                                    .setExpire(campaign.getEnd())
                                     .setCouponType(CouponTypeEnum.B)
                                     .setImagePath(imagePath)
                                     .setInitiatedFromId(businessCampaignId)
@@ -163,10 +163,10 @@ public class CampaignProcess {
                     }
 
                     /** Set campaign to live and live campaign cannot be modified but only END. */
-                    businessCampaign.setBusinessCampaignStatus(CampaignStatusEnum.L);
-                    campaignService.save(businessCampaign);
+                    campaign.setCampaignStatus(CampaignStatusEnum.L);
+                    campaignService.save(campaign);
                 } else {
-                    LOG.warn("No biz dimension found for id={} bizId={}", businessCampaign.getId(), businessCampaign.getBizId());
+                    LOG.warn("No biz dimension found for id={} bizId={}", campaign.getId(), campaign.getBizId());
                     skipped++;
                 }
             }

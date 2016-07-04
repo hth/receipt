@@ -76,19 +76,19 @@ public class CampaignLandingController {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         LOG.info("load campaign rid={} campaignId={}", receiptUser.getRid(), campaignId);
 
-        CampaignEntity businessCampaign = campaignService.findById(campaignId, receiptUser.getUserLevel());
+        CampaignEntity campaign = campaignService.findById(campaignId, receiptUser.getUserLevel());
 
-        couponCampaign.setCampaignId(businessCampaign.getId())
-                .setRid(businessCampaign.getRid())
-                .setBizId(businessCampaign.getBizId())
-                .setLive(DF_MMDDYYYY.format(businessCampaign.getLive()))
-                .setStart(DF_MMDDYYYY.format(businessCampaign.getStart()))
-                .setEnd(DF_MMDDYYYY.format(businessCampaign.getEnd()))
-                .setFreeText(new ScrubbedInput(businessCampaign.getFreeText()))
-                .setAdditionalInfo(businessCampaign.getAdditionalInfo() != null ? new ScrubbedInput(businessCampaign.getAdditionalInfo().getText()) : new ScrubbedInput(""))
-                .setDistributionPercent(businessCampaign.getDistributionPercent() + "%")
-                .setBusinessCampaignStatus(businessCampaign.getBusinessCampaignStatus())
-                .setFileSystemEntities(businessCampaign.getFileSystemEntities());
+        couponCampaign.setCampaignId(campaign.getId())
+                .setRid(campaign.getRid())
+                .setBizId(campaign.getBizId())
+                .setLive(DF_MMDDYYYY.format(campaign.getLive()))
+                .setStart(DF_MMDDYYYY.format(campaign.getStart()))
+                .setEnd(DF_MMDDYYYY.format(campaign.getEnd()))
+                .setFreeText(new ScrubbedInput(campaign.getFreeText()))
+                .setAdditionalInfo(campaign.getAdditionalInfo() != null ? new ScrubbedInput(campaign.getAdditionalInfo().getText()) : new ScrubbedInput(""))
+                .setDistributionPercent(campaign.getDistributionPercent() + "%")
+                .setCampaignStatus(campaign.getCampaignStatus())
+                .setFileSystemEntities(campaign.getFileSystemEntities());
 
         return loadCampaign;
     }

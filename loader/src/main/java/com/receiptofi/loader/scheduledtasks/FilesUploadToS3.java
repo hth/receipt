@@ -362,7 +362,7 @@ public class FilesUploadToS3 {
                         LOG.info("Skipped as campaign does not contain any image campaignId={}", campaign.getId());
                     }
 
-                    campaign.setBusinessCampaignStatus(CampaignStatusEnum.S);
+                    campaign.setCampaignStatus(CampaignStatusEnum.S);
                     campaignService.save(campaign);
                 } catch (AmazonServiceException e) {
                     LOG.error("Amazon S3 rejected request with an error response for some reason " +

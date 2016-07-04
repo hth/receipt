@@ -69,7 +69,7 @@ public class CampaignEntity extends BaseEntity {
 
     @NotNull
     @Field ("CS")
-    private CampaignStatusEnum businessCampaignStatus = CampaignStatusEnum.N;
+    private CampaignStatusEnum campaignStatus = CampaignStatusEnum.N;
 
     @NotNull
     @Field ("HS")
@@ -92,7 +92,7 @@ public class CampaignEntity extends BaseEntity {
         this.start = start;
         this.end = end;
         this.live = live;
-        historicalCampaignStates.put(new Date(), businessCampaignStatus);
+        historicalCampaignStates.put(new Date(), campaignStatus);
     }
 
     public static CampaignEntity newInstance(String rid, String bizId, String freeText, Date start, Date end, Date live) {
@@ -189,13 +189,13 @@ public class CampaignEntity extends BaseEntity {
         return this;
     }
 
-    public CampaignStatusEnum getBusinessCampaignStatus() {
-        return businessCampaignStatus;
+    public CampaignStatusEnum getCampaignStatus() {
+        return campaignStatus;
     }
 
-    public CampaignEntity setBusinessCampaignStatus(CampaignStatusEnum businessCampaignStatus) {
-        this.businessCampaignStatus = businessCampaignStatus;
-        historicalCampaignStates.put(new Date(), businessCampaignStatus);
+    public CampaignEntity setCampaignStatus(CampaignStatusEnum campaignStatus) {
+        this.campaignStatus = campaignStatus;
+        historicalCampaignStates.put(new Date(), campaignStatus);
         return this;
     }
 

@@ -132,7 +132,7 @@ public class CampaignManagerImpl implements CampaignManager {
     public void updateCampaignStatus(
             String campaignId,
             UserLevelEnum userLevel,
-            CampaignStatusEnum businessCampaignStatus
+            CampaignStatusEnum campaignStatus
     ) {
         LOG.info("campaignId={} userLevel={}", campaignId, userLevel);
 
@@ -141,7 +141,7 @@ public class CampaignManagerImpl implements CampaignManager {
             case TECH_CAMPAIGN:
                 mongoTemplate.updateFirst(
                         query(where("id").is(campaignId)),
-                        entityUpdate(update("CS", businessCampaignStatus)),
+                        entityUpdate(update("CS", campaignStatus)),
                         CampaignEntity.class,
                         TABLE
                 );
@@ -152,10 +152,10 @@ public class CampaignManagerImpl implements CampaignManager {
     }
 
     @Override
-    public List<CampaignEntity> findCampaignWithStatus(int limit, CampaignStatusEnum businessCampaignStatus) {
+    public List<CampaignEntity> findCampaignWithStatus(int limit, CampaignStatusEnum campaignStatus) {
         return mongoTemplate.find(
                 query(
-                        where("CS").is(businessCampaignStatus)
+                        where("CS").is(campaignStatus)
                 ).limit(limit).with(new Sort(Sort.Direction.ASC, "LP")),
                 CampaignEntity.class,
                 TABLE

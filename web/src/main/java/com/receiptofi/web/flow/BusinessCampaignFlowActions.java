@@ -88,7 +88,7 @@ public class BusinessCampaignFlowActions {
                 .setFreeText(new ScrubbedInput(businessCampaign.getFreeText()))
                 .setAdditionalInfo(businessCampaign.getAdditionalInfo() != null ? new ScrubbedInput(businessCampaign.getAdditionalInfo().getText()) : new ScrubbedInput(""))
                 .setDistributionPercent(businessCampaign.getDistributionPercent() + "%")
-                .setBusinessCampaignStatus(businessCampaign.getBusinessCampaignStatus())
+                .setCampaignStatus(businessCampaign.getCampaignStatus())
                 .setFileSystemEntities(businessCampaign.getFileSystemEntities());
     }
 
@@ -249,7 +249,7 @@ public class BusinessCampaignFlowActions {
     }
 
     public boolean isCampaignPendingApproval(CouponCampaign couponCampaign) {
-        return couponCampaign.getBusinessCampaignStatus() == CampaignStatusEnum.P
-                || couponCampaign.getBusinessCampaignStatus() == CampaignStatusEnum.A;
+        return couponCampaign.getCampaignStatus() == CampaignStatusEnum.P
+                || couponCampaign.getCampaignStatus() == CampaignStatusEnum.A;
     }
 }

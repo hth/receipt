@@ -33,12 +33,12 @@ public interface CampaignManager extends RepositoryManager<CampaignEntity> {
      *
      * @param campaignId
      * @param userLevel
-     * @param businessCampaignStatus
+     * @param campaignStatus
      */
     void updateCampaignStatus(
             String campaignId,
             UserLevelEnum userLevel,
-            CampaignStatusEnum businessCampaignStatus);
+            CampaignStatusEnum campaignStatus);
 
     /**
      * Finds all approved campaign.
@@ -46,5 +46,5 @@ public interface CampaignManager extends RepositoryManager<CampaignEntity> {
      * @param limit
      * @return
      */
-    List<CampaignEntity> findCampaignWithStatus(int limit, CampaignStatusEnum businessCampaignStatus);
+    List<CampaignEntity> findCampaignWithStatus(int limit, CampaignStatusEnum campaignStatus);
 }

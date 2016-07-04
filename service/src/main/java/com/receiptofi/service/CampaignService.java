@@ -75,11 +75,11 @@ public class CampaignService {
 
     public void save(CouponCampaign couponCampaign) throws ParseException {
         try {
-            CampaignEntity bce;
+            CampaignEntity campaign;
             CommentEntity comment = null;
             if (StringUtils.isNotBlank(couponCampaign.getCampaignId())) {
-                bce = campaignManager.findById(couponCampaign.getCampaignId(), couponCampaign.getBizId());
-                bce.setRid(couponCampaign.getRid())
+                campaign = campaignManager.findById(couponCampaign.getCampaignId(), couponCampaign.getBizId());
+                campaign.setRid(couponCampaign.getRid())
                         .setBizId(couponCampaign.getBizId())
                         .setFreeText(couponCampaign.getFreeText().getText())
                         .setStart(DF_MMDDYYYY.parse(couponCampaign.getStart()))
@@ -87,14 +87,14 @@ public class CampaignService {
                         .setLive(DF_MMDDYYYY.parse(couponCampaign.getLive()))
                         .setDistributionPercent(couponCampaign.getDistributionPercentAsInt());
 
-                comment = bce.getAdditionalInfo();
+                comment = campaign.getAdditionalInfo();
                 if (comment != null) {
                     comment.setText(couponCampaign.getAdditionalInfo().getText());
                 } else if (StringUtils.isNotBlank(couponCampaign.getAdditionalInfo().getText())) {
                     comment = createNewComment(couponCampaign);
                 }
             } else {
-                bce = CampaignEntity.newInstance(
+                campaign = CampaignEntity.newInstance(
                         couponCampaign.getRid(),
                         couponCampaign.getBizId(),
                         couponCampaign.getFreeText().toString(),
@@ -110,22 +110,22 @@ public class CampaignService {
 
             if (null != comment) {
                 commentService.save(comment);
-                bce.setAdditionalInfo(comment);
+                campaign.setAdditionalInfo(comment);
             }
-            switch(bce.getBusinessCampaignStatus()) {
+            switch(campaign.getCampaignStatus()) {
                 case A:
                 case P:
-                    bce.setBusinessCampaignStatus(CampaignStatusEnum.N);
+                    campaign.setCampaignStatus(CampaignStatusEnum.N);
                     break;
                 default:
                     break;
             }
 
-            save(bce);
+            save(campaign);
 
-            couponCampaign.setCampaignId(bce.getId())
-                    .setBusinessCampaignStatus(bce.getBusinessCampaignStatus())
-                    .setFileSystemEntities(bce.getFileSystemEntities());
+            couponCampaign.setCampaignId(campaign.getId())
+                    .setCampaignStatus(campaign.getCampaignStatus())
+                    .setFileSystemEntities(campaign.getFileSystemEntities());
         } catch (ParseException e) {
             LOG.error("Error saving reason={}", e.getLocalizedMessage(), e);
             throw e;
@@ -137,9 +137,9 @@ public class CampaignService {
     }
 
     public void completeCampaign(String campaignId, String bizId) {
-        CampaignEntity businessCampaign = campaignManager.findById(campaignId, bizId);
-        businessCampaign.setBusinessCampaignStatus(CampaignStatusEnum.P);
-        save(businessCampaign);
+        CampaignEntity campaign = campaignManager.findById(campaignId, bizId);
+        campaign.setCampaignStatus(CampaignStatusEnum.P);
+        save(campaign);
     }
 
     private CommentEntity createNewComment(CouponCampaign businessCampaign) {
@@ -196,8 +196,8 @@ public class CampaignService {
         return campaignManager.findAllPendingApproval(limit);
     }
 
-    public List<CampaignEntity> findCampaignWithStatus(CampaignStatusEnum businessCampaignStatus) {
-        return campaignManager.findCampaignWithStatus(limit, businessCampaignStatus);
+    public List<CampaignEntity> findCampaignWithStatus(CampaignStatusEnum campaignStatus) {
+        return campaignManager.findCampaignWithStatus(limit, campaignStatus);
     }
 
     public long countPendingApproval() {
@@ -207,7 +207,7 @@ public class CampaignService {
     public void updateCampaignStatus(
             String campaignId,
             UserLevelEnum userLevel,
-            CampaignStatusEnum businessCampaignStatus) {
-        campaignManager.updateCampaignStatus(campaignId, userLevel, businessCampaignStatus);
+            CampaignStatusEnum campaignStatus) {
+        campaignManager.updateCampaignStatus(campaignId, userLevel, campaignStatus);
     }
 }
