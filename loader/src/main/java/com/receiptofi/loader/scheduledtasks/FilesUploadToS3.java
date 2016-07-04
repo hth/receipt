@@ -10,7 +10,7 @@ import com.receiptofi.domain.CouponEntity;
 import com.receiptofi.domain.CronStatsEntity;
 import com.receiptofi.domain.DocumentEntity;
 import com.receiptofi.domain.FileSystemEntity;
-import com.receiptofi.domain.types.BusinessCampaignStatusEnum;
+import com.receiptofi.domain.types.CampaignStatusEnum;
 import com.receiptofi.loader.service.AffineTransformService;
 import com.receiptofi.loader.service.AmazonS3Service;
 import com.receiptofi.service.BusinessCampaignService;
@@ -331,7 +331,7 @@ public class FilesUploadToS3 {
             return;
         }
 
-        List<BusinessCampaignEntity> campaigns = businessCampaignService.findCampaignWithStatus(BusinessCampaignStatusEnum.A);
+        List<BusinessCampaignEntity> campaigns = businessCampaignService.findCampaignWithStatus(CampaignStatusEnum.A);
         if (campaigns.isEmpty()) {
             /** No campaigns to upload. */
             return;
@@ -362,7 +362,7 @@ public class FilesUploadToS3 {
                         LOG.info("Skipped as campaign does not contain any image campaignId={}", campaign.getId());
                     }
 
-                    campaign.setBusinessCampaignStatus(BusinessCampaignStatusEnum.S);
+                    campaign.setBusinessCampaignStatus(CampaignStatusEnum.S);
                     businessCampaignService.save(campaign);
                 } catch (AmazonServiceException e) {
                     LOG.error("Amazon S3 rejected request with an error response for some reason " +

@@ -1,7 +1,7 @@
 package com.receiptofi.repository;
 
 import com.receiptofi.domain.BusinessCampaignEntity;
-import com.receiptofi.domain.types.BusinessCampaignStatusEnum;
+import com.receiptofi.domain.types.CampaignStatusEnum;
 import com.receiptofi.domain.types.UserLevelEnum;
 
 import java.util.List;
@@ -38,7 +38,7 @@ public interface BusinessCampaignManager extends RepositoryManager<BusinessCampa
     void updateCampaignStatus(
             String campaignId,
             UserLevelEnum userLevel,
-            BusinessCampaignStatusEnum businessCampaignStatus);
+            CampaignStatusEnum businessCampaignStatus);
 
     /**
      * Finds all approved campaign.
@@ -46,5 +46,5 @@ public interface BusinessCampaignManager extends RepositoryManager<BusinessCampa
      * @param limit
      * @return
      */
-    List<BusinessCampaignEntity> findCampaignWithStatus(int limit, BusinessCampaignStatusEnum businessCampaignStatus);
+    List<BusinessCampaignEntity> findCampaignWithStatus(int limit, CampaignStatusEnum businessCampaignStatus);
 }

@@ -7,7 +7,7 @@ import static org.springframework.data.mongodb.core.query.Update.update;
 
 import com.receiptofi.domain.BaseEntity;
 import com.receiptofi.domain.BusinessCampaignEntity;
-import com.receiptofi.domain.types.BusinessCampaignStatusEnum;
+import com.receiptofi.domain.types.CampaignStatusEnum;
 import com.receiptofi.domain.types.UserLevelEnum;
 
 import org.apache.commons.lang3.StringUtils;
@@ -110,7 +110,7 @@ public class BusinessCampaignManagerImpl implements BusinessCampaignManager {
     public List<BusinessCampaignEntity> findAllPendingApproval(int limit) {
         return mongoTemplate.find(
                 query(
-                        where("CS").is(BusinessCampaignStatusEnum.P)
+                        where("CS").is(CampaignStatusEnum.P)
                 ).limit(5).with(new Sort(Sort.Direction.DESC, "U")),
                 BusinessCampaignEntity.class,
                 TABLE
@@ -121,7 +121,7 @@ public class BusinessCampaignManagerImpl implements BusinessCampaignManager {
     public long countPendingApproval() {
         return mongoTemplate.count(
                 query(
-                        where("CS").is(BusinessCampaignStatusEnum.P)
+                        where("CS").is(CampaignStatusEnum.P)
                 ).with(new Sort(Sort.Direction.DESC, "U")),
                 BusinessCampaignEntity.class,
                 TABLE
@@ -132,7 +132,7 @@ public class BusinessCampaignManagerImpl implements BusinessCampaignManager {
     public void updateCampaignStatus(
             String campaignId,
             UserLevelEnum userLevel,
-            BusinessCampaignStatusEnum businessCampaignStatus
+            CampaignStatusEnum businessCampaignStatus
     ) {
         LOG.info("campaignId={} userLevel={}", campaignId, userLevel);
 
@@ -152,7 +152,7 @@ public class BusinessCampaignManagerImpl implements BusinessCampaignManager {
     }
 
     @Override
-    public List<BusinessCampaignEntity> findCampaignWithStatus(int limit, BusinessCampaignStatusEnum businessCampaignStatus) {
+    public List<BusinessCampaignEntity> findCampaignWithStatus(int limit, CampaignStatusEnum businessCampaignStatus) {
         return mongoTemplate.find(
                 query(
                         where("CS").is(businessCampaignStatus)

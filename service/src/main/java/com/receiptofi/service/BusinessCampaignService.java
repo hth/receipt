@@ -7,7 +7,7 @@ import com.receiptofi.domain.CommentEntity;
 import com.receiptofi.domain.FileSystemEntity;
 import com.receiptofi.domain.flow.CouponCampaign;
 import com.receiptofi.domain.shared.UploadDocumentImage;
-import com.receiptofi.domain.types.BusinessCampaignStatusEnum;
+import com.receiptofi.domain.types.CampaignStatusEnum;
 import com.receiptofi.domain.types.CommentTypeEnum;
 import com.receiptofi.domain.types.FileTypeEnum;
 import com.receiptofi.domain.types.UserLevelEnum;
@@ -115,7 +115,7 @@ public class BusinessCampaignService {
             switch(bce.getBusinessCampaignStatus()) {
                 case A:
                 case P:
-                    bce.setBusinessCampaignStatus(BusinessCampaignStatusEnum.N);
+                    bce.setBusinessCampaignStatus(CampaignStatusEnum.N);
                     break;
                 default:
                     break;
@@ -138,7 +138,7 @@ public class BusinessCampaignService {
 
     public void completeCampaign(String campaignId, String bizId) {
         BusinessCampaignEntity businessCampaign = businessCampaignManager.findById(campaignId, bizId);
-        businessCampaign.setBusinessCampaignStatus(BusinessCampaignStatusEnum.P);
+        businessCampaign.setBusinessCampaignStatus(CampaignStatusEnum.P);
         save(businessCampaign);
     }
 
@@ -196,7 +196,7 @@ public class BusinessCampaignService {
         return businessCampaignManager.findAllPendingApproval(limit);
     }
 
-    public List<BusinessCampaignEntity> findCampaignWithStatus(BusinessCampaignStatusEnum businessCampaignStatus) {
+    public List<BusinessCampaignEntity> findCampaignWithStatus(CampaignStatusEnum businessCampaignStatus) {
         return businessCampaignManager.findCampaignWithStatus(limit, businessCampaignStatus);
     }
 
@@ -207,7 +207,7 @@ public class BusinessCampaignService {
     public void updateCampaignStatus(
             String campaignId,
             UserLevelEnum userLevel,
-            BusinessCampaignStatusEnum businessCampaignStatus) {
+            CampaignStatusEnum businessCampaignStatus) {
         businessCampaignManager.updateCampaignStatus(campaignId, userLevel, businessCampaignStatus);
     }
 }

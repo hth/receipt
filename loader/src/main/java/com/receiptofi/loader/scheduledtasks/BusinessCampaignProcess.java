@@ -8,7 +8,7 @@ import com.receiptofi.domain.CronStatsEntity;
 import com.receiptofi.domain.FileSystemEntity;
 import com.receiptofi.domain.analytic.BizDimensionEntity;
 import com.receiptofi.domain.analytic.UserDimensionEntity;
-import com.receiptofi.domain.types.BusinessCampaignStatusEnum;
+import com.receiptofi.domain.types.CampaignStatusEnum;
 import com.receiptofi.domain.types.CouponTypeEnum;
 import com.receiptofi.domain.types.CouponUploadStatusEnum;
 import com.receiptofi.service.BizService;
@@ -95,7 +95,7 @@ public class BusinessCampaignProcess {
             return;
         }
 
-        List<BusinessCampaignEntity> businessCampaigns = businessCampaignService.findCampaignWithStatus(BusinessCampaignStatusEnum.S);
+        List<BusinessCampaignEntity> businessCampaigns = businessCampaignService.findCampaignWithStatus(CampaignStatusEnum.S);
         if (businessCampaigns.isEmpty()) {
             /** No campaigns to upload. */
             return;
@@ -163,7 +163,7 @@ public class BusinessCampaignProcess {
                     }
 
                     /** Set campaign to live and live campaign cannot be modified but only END. */
-                    businessCampaign.setBusinessCampaignStatus(BusinessCampaignStatusEnum.L);
+                    businessCampaign.setBusinessCampaignStatus(CampaignStatusEnum.L);
                     businessCampaignService.save(businessCampaign);
                 } else {
                     LOG.warn("No biz dimension found for id={} bizId={}", businessCampaign.getId(), businessCampaign.getBizId());

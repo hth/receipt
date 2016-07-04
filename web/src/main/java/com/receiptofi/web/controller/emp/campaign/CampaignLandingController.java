@@ -5,7 +5,7 @@ import static com.receiptofi.utils.DateUtil.DF_MMDDYYYY;
 import com.receiptofi.domain.BusinessCampaignEntity;
 import com.receiptofi.domain.flow.CouponCampaign;
 import com.receiptofi.domain.site.ReceiptUser;
-import com.receiptofi.domain.types.BusinessCampaignStatusEnum;
+import com.receiptofi.domain.types.CampaignStatusEnum;
 import com.receiptofi.service.BusinessCampaignService;
 import com.receiptofi.utils.ScrubbedInput;
 import com.receiptofi.web.form.business.CampaignListForm;
@@ -100,12 +100,12 @@ public class CampaignLandingController {
     public String declineCampaign(@PathVariable ("campaignId") String campaignId) {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         LOG.info("{} campaign campaignId={} by rid={}",
-                BusinessCampaignStatusEnum.D.getDescription(), campaignId, receiptUser.getRid());
+                CampaignStatusEnum.D.getDescription(), campaignId, receiptUser.getRid());
 
         businessCampaignService.updateCampaignStatus(
                 campaignId,
                 receiptUser.getUserLevel(),
-                BusinessCampaignStatusEnum.D);
+                CampaignStatusEnum.D);
 
         return "redirect:" + campaignLanding + ".htm";
     }
@@ -117,12 +117,12 @@ public class CampaignLandingController {
     public String approveCampaign(@PathVariable ("campaignId") String campaignId) {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         LOG.info("{} campaign campaignId={} by rid={}",
-                BusinessCampaignStatusEnum.A.getDescription(), campaignId, receiptUser.getRid());
+                CampaignStatusEnum.A.getDescription(), campaignId, receiptUser.getRid());
 
         businessCampaignService.updateCampaignStatus(
                 campaignId,
                 receiptUser.getUserLevel(),
-                BusinessCampaignStatusEnum.A);
+                CampaignStatusEnum.A);
 
         return "redirect:" + campaignLanding + ".htm";
     }

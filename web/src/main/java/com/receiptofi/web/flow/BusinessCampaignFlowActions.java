@@ -6,7 +6,7 @@ import com.receiptofi.domain.BusinessCampaignEntity;
 import com.receiptofi.domain.BusinessUserEntity;
 import com.receiptofi.domain.flow.CouponCampaign;
 import com.receiptofi.domain.site.ReceiptUser;
-import com.receiptofi.domain.types.BusinessCampaignStatusEnum;
+import com.receiptofi.domain.types.CampaignStatusEnum;
 import com.receiptofi.service.BusinessCampaignService;
 import com.receiptofi.service.BusinessUserService;
 import com.receiptofi.utils.DateUtil;
@@ -249,7 +249,7 @@ public class BusinessCampaignFlowActions {
     }
 
     public boolean isCampaignPendingApproval(CouponCampaign couponCampaign) {
-        return couponCampaign.getBusinessCampaignStatus() == BusinessCampaignStatusEnum.P
-                || couponCampaign.getBusinessCampaignStatus() == BusinessCampaignStatusEnum.A;
+        return couponCampaign.getBusinessCampaignStatus() == CampaignStatusEnum.P
+                || couponCampaign.getBusinessCampaignStatus() == CampaignStatusEnum.A;
     }
 }

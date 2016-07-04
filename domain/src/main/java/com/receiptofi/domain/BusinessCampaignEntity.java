@@ -1,6 +1,6 @@
 package com.receiptofi.domain;
 
-import com.receiptofi.domain.types.BusinessCampaignStatusEnum;
+import com.receiptofi.domain.types.CampaignStatusEnum;
 import com.receiptofi.domain.types.BusinessCampaignTypeEnum;
 import com.receiptofi.utils.DateUtil;
 
@@ -14,8 +14,6 @@ import org.springframework.data.mongodb.core.mapping.Field;
 import java.util.Collection;
 import java.util.Date;
 import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 
 import javax.validation.constraints.NotNull;
@@ -71,11 +69,11 @@ public class BusinessCampaignEntity extends BaseEntity {
 
     @NotNull
     @Field ("CS")
-    private BusinessCampaignStatusEnum businessCampaignStatus = BusinessCampaignStatusEnum.N;
+    private CampaignStatusEnum businessCampaignStatus = CampaignStatusEnum.N;
 
     @NotNull
     @Field ("HS")
-    private Map<Date, BusinessCampaignStatusEnum> historicalCampaignStates = new LinkedHashMap<>();
+    private Map<Date, CampaignStatusEnum> historicalCampaignStates = new LinkedHashMap<>();
 
     @DBRef
     @Field ("AI")
@@ -191,17 +189,17 @@ public class BusinessCampaignEntity extends BaseEntity {
         return this;
     }
 
-    public BusinessCampaignStatusEnum getBusinessCampaignStatus() {
+    public CampaignStatusEnum getBusinessCampaignStatus() {
         return businessCampaignStatus;
     }
 
-    public BusinessCampaignEntity setBusinessCampaignStatus(BusinessCampaignStatusEnum businessCampaignStatus) {
+    public BusinessCampaignEntity setBusinessCampaignStatus(CampaignStatusEnum businessCampaignStatus) {
         this.businessCampaignStatus = businessCampaignStatus;
         historicalCampaignStates.put(new Date(), businessCampaignStatus);
         return this;
     }
 
-    public Map<Date, BusinessCampaignStatusEnum> getHistoricalCampaignStates() {
+    public Map<Date, CampaignStatusEnum> getHistoricalCampaignStates() {
         return historicalCampaignStates;
     }
 
