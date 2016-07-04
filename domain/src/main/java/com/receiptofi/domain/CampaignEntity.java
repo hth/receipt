@@ -28,9 +28,9 @@ import javax.validation.constraints.NotNull;
         "PMD.MethodArgumentCouldBeFinal",
         "PMD.LongVariable"
 })
-@Document (collection = "BUSINESS_CAMPAIGN")
+@Document (collection = "CAMPAIGN")
 @CompoundIndexes (value = {
-        @CompoundIndex (name = "business_campaign_idx", def = "{'BID': -1}", unique = false),
+        @CompoundIndex (name = "campaign_idx", def = "{'BID': -1}", unique = false),
 })
 public class CampaignEntity extends BaseEntity {
 
