@@ -112,15 +112,15 @@
                     </div>
                     <div id="container"></div>
                     <div class="full">
-                        <c:if test="${couponCampaign.businessCampaignStatus ne 'N'}">
+                        <c:if test="${couponCampaign.campaignStatus ne 'N'}">
                             <div class="row_field">
-                                <form:label path="businessCampaignStatus" cssClass="profile_label"
+                                <form:label path="campaignStatus" cssClass="profile_label"
                                         cssErrorClass="profile_label lb_error">State</form:label>
-                                <form:input path="businessCampaignStatus.description" size="20" cssClass="name_txt" cssStyle="width: 200px; border: 0;" readonly="true" />
+                                <form:input path="campaignStatus.description" size="20" cssClass="name_txt" cssStyle="width: 200px; border: 0;" readonly="true" />
                             </div>
                         </c:if>
                         <c:choose>
-                            <c:when test="${couponCampaign.businessCampaignStatus eq 'P'}">
+                            <c:when test="${couponCampaign.campaignStatus eq 'P'}">
                                 <input type="submit" value="APPROVE" class="read_btn" name="campaign-approve"
                                         style="background: #2c97de; margin: 77px 10px 0 0;">
                                 <input type="submit" value="DECLINE" class="read_btn" name="campaign-decline"
@@ -186,7 +186,7 @@
             info = [
                 <c:forEach items="${couponCampaign.fileSystemEntities}" var="arr" varStatus="status">
                 <c:choose>
-                <c:when test="${couponCampaign.businessCampaignStatus eq 'A'}">
+                <c:when test="${couponCampaign.campaignStatus eq 'A'}">
                 {
                     src: "https://s3-us-west-2.amazonaws.com/<spring:eval expression="@environmentProperty.getProperty('aws.s3.bucketName')" />/<spring:eval expression="@environmentProperty.getProperty('aws.s3.couponBucketName')" />/${arr.key}",
                     pos: {

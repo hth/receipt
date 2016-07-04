@@ -103,7 +103,7 @@
                         <span style="color: #6E6E6E;font-weight: normal;">&nbsp;<fmt:formatDate value="${item.live}" type="time"/></span>
                     </td>
                     <td style="padding: 10px; border: 1px solid #ccc">${item.distributionPercent}&nbsp;%</td>
-                    <td style="padding: 10px; border: 1px solid #ccc">${item.businessCampaignStatus.description}&nbsp</td>
+                    <td style="padding: 10px; border: 1px solid #ccc">${item.campaignStatus.description}&nbsp</td>
                     <td style="padding: 10px; border: 1px solid #ccc">
                         <fmt:formatDate pattern="MMMM dd, yyyy" value="${item.updated}"/>
                     </td>

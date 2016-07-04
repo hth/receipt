@@ -90,7 +90,7 @@
                             <span style="color: #6E6E6E;font-weight: normal;"><fmt:formatDate pattern="MMMM dd, yyyy" value="${item.live}"/></span>
                         </td>
                         <td style="padding: 10px; border: 1px solid #ccc">${item.distributionPercent}&nbsp;%</td>
-                        <td style="padding: 10px; border: 1px solid #ccc">${item.businessCampaignStatus.description}</td>
+                        <td style="padding: 10px; border: 1px solid #ccc">${item.campaignStatus.description}</td>
                         <td style="padding: 10px; border: 1px solid #ccc">
                             <span style="color: #6E6E6E;font-weight: normal;"><fmt:formatDate pattern="MMMM dd, yyyy" value="${item.updated}"/></span>
                         </td>

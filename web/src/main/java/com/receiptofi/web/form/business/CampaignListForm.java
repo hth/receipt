@@ -1,6 +1,6 @@
 package com.receiptofi.web.form.business;
 
-import com.receiptofi.domain.BusinessCampaignEntity;
+import com.receiptofi.domain.CampaignEntity;
 
 import java.util.List;
 
@@ -11,7 +11,7 @@ import java.util.List;
 public class CampaignListForm {
 
     private long campaignCount;
-    private List<BusinessCampaignEntity> businessCampaigns;
+    private List<CampaignEntity> businessCampaigns;
 
     public long getCampaignCount() {
         return campaignCount;
@@ -22,11 +22,11 @@ public class CampaignListForm {
         return this;
     }
 
-    public List<BusinessCampaignEntity> getBusinessCampaigns() {
+    public List<CampaignEntity> getBusinessCampaigns() {
         return businessCampaigns;
     }
 
-    public CampaignListForm setBusinessCampaigns(List<BusinessCampaignEntity> businessCampaigns) {
+    public CampaignListForm setBusinessCampaigns(List<CampaignEntity> businessCampaigns) {
         this.businessCampaigns = businessCampaigns;
         return this;
     }

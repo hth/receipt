@@ -121,14 +121,14 @@
                     <div id="container"></div>
                     <div class="full">
                     <div class="row_field">
-                        <form:label path="businessCampaignStatus" cssClass="profile_label"
+                        <form:label path="campaignStatus" cssClass="profile_label"
                                 cssErrorClass="profile_label lb_error">Current State</form:label>
-                        <form:input path="businessCampaignStatus.description" size="20"
+                        <form:input path="campaignStatus.description" size="20"
                                 cssClass="name_txt" cssStyle="width: 400px; border: 0;" readonly="true" />
                     </div>
                     <c:choose>
-                    <c:when test="${couponCampaign.businessCampaignStatus ne 'L'}">
-                        <c:if test="${couponCampaign.businessCampaignStatus ne 'P' && couponCampaign.businessCampaignStatus ne 'A'}">
+                    <c:when test="${couponCampaign.campaignStatus ne 'L'}">
+                        <c:if test="${couponCampaign.campaignStatus ne 'P' && couponCampaign.campaignStatus ne 'A'}">
                         <input type="submit" value="CONFIRM" class="read_btn" name="_eventId_confirm"
                                 style="background: #2c97de; margin: 77px 10px 0 0;">
                         </c:if>
@@ -198,7 +198,7 @@
             info = [
                 <c:forEach items="${couponCampaign.fileSystemEntities}" var="arr" varStatus="status">
                     <c:choose>
-                    <c:when test="${couponCampaign.businessCampaignStatus eq 'L'}">
+                    <c:when test="${couponCampaign.campaignStatus eq 'L'}">
                     {
                         src: "https://s3-us-west-2.amazonaws.com/<spring:eval expression="@environmentProperty.getProperty('aws.s3.bucketName')" />/<spring:eval expression="@environmentProperty.getProperty('aws.s3.couponBucketName')" />/${arr.key}",
                         pos: {

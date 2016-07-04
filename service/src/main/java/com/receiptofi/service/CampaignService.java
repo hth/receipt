@@ -2,16 +2,16 @@ package com.receiptofi.service;
 
 import static com.receiptofi.utils.DateUtil.DF_MMDDYYYY;
 
-import com.receiptofi.domain.BusinessCampaignEntity;
+import com.receiptofi.domain.CampaignEntity;
 import com.receiptofi.domain.CommentEntity;
 import com.receiptofi.domain.FileSystemEntity;
 import com.receiptofi.domain.flow.CouponCampaign;
 import com.receiptofi.domain.shared.UploadDocumentImage;
-import com.receiptofi.domain.types.BusinessCampaignStatusEnum;
+import com.receiptofi.domain.types.CampaignStatusEnum;
 import com.receiptofi.domain.types.CommentTypeEnum;
 import com.receiptofi.domain.types.FileTypeEnum;
 import com.receiptofi.domain.types.UserLevelEnum;
-import com.receiptofi.repository.BusinessCampaignManager;
+import com.receiptofi.repository.CampaignManager;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -40,46 +40,46 @@ import java.util.List;
         "PMD.LongVariable"
 })
 @Service
-public class BusinessCampaignService {
-    private static final Logger LOG = LoggerFactory.getLogger(BusinessCampaignService.class);
+public class CampaignService {
+    private static final Logger LOG = LoggerFactory.getLogger(CampaignService.class);
 
     private int limit;
-    private BusinessCampaignManager businessCampaignManager;
+    private CampaignManager campaignManager;
     private CommentService commentService;
     private FileDBService fileDBService;
     private FileSystemService fileSystemService;
 
     @Autowired
-    public BusinessCampaignService(
+    public CampaignService(
             @Value ("${limit: 5}")
             int limit,
 
-            BusinessCampaignManager businessCampaignManager,
+            CampaignManager campaignManager,
             CommentService commentService,
             FileDBService fileDBService,
             FileSystemService fileSystemService) {
         this.limit = limit;
-        this.businessCampaignManager = businessCampaignManager;
+        this.campaignManager = campaignManager;
         this.commentService = commentService;
         this.fileDBService = fileDBService;
         this.fileSystemService = fileSystemService;
     }
 
-    public BusinessCampaignEntity findById(String campaignId, String bizId) {
-        return businessCampaignManager.findById(campaignId, bizId);
+    public CampaignEntity findById(String campaignId, String bizId) {
+        return campaignManager.findById(campaignId, bizId);
     }
 
-    public BusinessCampaignEntity findById(String campaignId, UserLevelEnum userLevel) {
-        return businessCampaignManager.findById(campaignId, userLevel);
+    public CampaignEntity findById(String campaignId, UserLevelEnum userLevel) {
+        return campaignManager.findById(campaignId, userLevel);
     }
 
     public void save(CouponCampaign couponCampaign) throws ParseException {
         try {
-            BusinessCampaignEntity bce;
+            CampaignEntity campaign;
             CommentEntity comment = null;
             if (StringUtils.isNotBlank(couponCampaign.getCampaignId())) {
-                bce = businessCampaignManager.findById(couponCampaign.getCampaignId(), couponCampaign.getBizId());
-                bce.setRid(couponCampaign.getRid())
+                campaign = campaignManager.findById(couponCampaign.getCampaignId(), couponCampaign.getBizId());
+                campaign.setRid(couponCampaign.getRid())
                         .setBizId(couponCampaign.getBizId())
                         .setFreeText(couponCampaign.getFreeText().getText())
                         .setStart(DF_MMDDYYYY.parse(couponCampaign.getStart()))
@@ -87,14 +87,14 @@ public class BusinessCampaignService {
                         .setLive(DF_MMDDYYYY.parse(couponCampaign.getLive()))
                         .setDistributionPercent(couponCampaign.getDistributionPercentAsInt());
 
-                comment = bce.getAdditionalInfo();
+                comment = campaign.getAdditionalInfo();
                 if (comment != null) {
                     comment.setText(couponCampaign.getAdditionalInfo().getText());
                 } else if (StringUtils.isNotBlank(couponCampaign.getAdditionalInfo().getText())) {
                     comment = createNewComment(couponCampaign);
                 }
             } else {
-                bce = BusinessCampaignEntity.newInstance(
+                campaign = CampaignEntity.newInstance(
                         couponCampaign.getRid(),
                         couponCampaign.getBizId(),
                         couponCampaign.getFreeText().toString(),
@@ -110,36 +110,36 @@ public class BusinessCampaignService {
 
             if (null != comment) {
                 commentService.save(comment);
-                bce.setAdditionalInfo(comment);
+                campaign.setAdditionalInfo(comment);
             }
-            switch(bce.getBusinessCampaignStatus()) {
+            switch(campaign.getCampaignStatus()) {
                 case A:
                 case P:
-                    bce.setBusinessCampaignStatus(BusinessCampaignStatusEnum.N);
+                    campaign.setCampaignStatus(CampaignStatusEnum.N);
                     break;
                 default:
                     break;
             }
 
-            save(bce);
+            save(campaign);
 
-            couponCampaign.setCampaignId(bce.getId())
-                    .setBusinessCampaignStatus(bce.getBusinessCampaignStatus())
-                    .setFileSystemEntities(bce.getFileSystemEntities());
+            couponCampaign.setCampaignId(campaign.getId())
+                    .setCampaignStatus(campaign.getCampaignStatus())
+                    .setFileSystemEntities(campaign.getFileSystemEntities());
         } catch (ParseException e) {
             LOG.error("Error saving reason={}", e.getLocalizedMessage(), e);
             throw e;
         }
     }
 
-    public void save(BusinessCampaignEntity businessCampaign) {
-        businessCampaignManager.save(businessCampaign);
+    public void save(CampaignEntity businessCampaign) {
+        campaignManager.save(businessCampaign);
     }
 
     public void completeCampaign(String campaignId, String bizId) {
-        BusinessCampaignEntity businessCampaign = businessCampaignManager.findById(campaignId, bizId);
-        businessCampaign.setBusinessCampaignStatus(BusinessCampaignStatusEnum.P);
-        save(businessCampaign);
+        CampaignEntity campaign = campaignManager.findById(campaignId, bizId);
+        campaign.setCampaignStatus(CampaignStatusEnum.P);
+        save(campaign);
     }
 
     private CommentEntity createNewComment(CouponCampaign businessCampaign) {
@@ -188,26 +188,26 @@ public class BusinessCampaignService {
         return fileSystems;
     }
 
-    public List<BusinessCampaignEntity> findBy(String bizId) {
-        return businessCampaignManager.findBy(bizId);
+    public List<CampaignEntity> findBy(String bizId) {
+        return campaignManager.findBy(bizId);
     }
 
-    public List<BusinessCampaignEntity> findAllPendingApproval() {
-        return businessCampaignManager.findAllPendingApproval(limit);
+    public List<CampaignEntity> findAllPendingApproval() {
+        return campaignManager.findAllPendingApproval(limit);
     }
 
-    public List<BusinessCampaignEntity> findCampaignWithStatus(BusinessCampaignStatusEnum businessCampaignStatus) {
-        return businessCampaignManager.findCampaignWithStatus(limit, businessCampaignStatus);
+    public List<CampaignEntity> findCampaignWithStatus(CampaignStatusEnum campaignStatus) {
+        return campaignManager.findCampaignWithStatus(limit, campaignStatus);
     }
 
     public long countPendingApproval() {
-        return businessCampaignManager.countPendingApproval();
+        return campaignManager.countPendingApproval();
     }
 
     public void updateCampaignStatus(
             String campaignId,
             UserLevelEnum userLevel,
-            BusinessCampaignStatusEnum businessCampaignStatus) {
-        businessCampaignManager.updateCampaignStatus(campaignId, userLevel, businessCampaignStatus);
+            CampaignStatusEnum campaignStatus) {
+        campaignManager.updateCampaignStatus(campaignId, userLevel, campaignStatus);
     }
 }

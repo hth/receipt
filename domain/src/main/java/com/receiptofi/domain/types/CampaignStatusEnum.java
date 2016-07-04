@@ -4,12 +4,12 @@ package com.receiptofi.domain.types;
  * User: hitender
  * Date: 6/15/16 7:07 PM
  */
-public enum BusinessCampaignStatusEnum {
+public enum CampaignStatusEnum {
     N("N", "In Progress. Confirm to mark as complete."),
     P("P", "Pending Approval"),
-    A("A", "Approved"),
     /** Declined campaign can be modified and resubmitted to pending approval. */
     D("D", "Declined"),
+    A("A", "Approved"),
     /** State after APPROVED and before making system LIVE. */
     S("S", "Campaign set to go live"),
     L("L", "Live"),
@@ -18,7 +18,7 @@ public enum BusinessCampaignStatusEnum {
     private final String description;
     private final String name;
 
-    BusinessCampaignStatusEnum(String name, String description) {
+    CampaignStatusEnum(String name, String description) {
         this.name = name;
         this.description = description;
     }

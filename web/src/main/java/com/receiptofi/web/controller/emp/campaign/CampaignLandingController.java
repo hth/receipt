@@ -2,11 +2,11 @@ package com.receiptofi.web.controller.emp.campaign;
 
 import static com.receiptofi.utils.DateUtil.DF_MMDDYYYY;
 
-import com.receiptofi.domain.BusinessCampaignEntity;
+import com.receiptofi.domain.CampaignEntity;
 import com.receiptofi.domain.flow.CouponCampaign;
 import com.receiptofi.domain.site.ReceiptUser;
-import com.receiptofi.domain.types.BusinessCampaignStatusEnum;
-import com.receiptofi.service.BusinessCampaignService;
+import com.receiptofi.domain.types.CampaignStatusEnum;
+import com.receiptofi.service.CampaignService;
 import com.receiptofi.utils.ScrubbedInput;
 import com.receiptofi.web.form.business.CampaignListForm;
 
@@ -39,7 +39,7 @@ public class CampaignLandingController {
 
     private String campaignLanding;
     private String loadCampaign;
-    private BusinessCampaignService businessCampaignService;
+    private CampaignService campaignService;
 
     @Autowired
     public CampaignLandingController(
@@ -49,10 +49,10 @@ public class CampaignLandingController {
             @Value ("${approveCampaign:/emp/campaign/loadCampaign}")
             String loadCampaign,
 
-            BusinessCampaignService businessCampaignService) {
+            CampaignService campaignService) {
         this.campaignLanding = campaignLanding;
         this.loadCampaign = loadCampaign;
-        this.businessCampaignService = businessCampaignService;
+        this.campaignService = campaignService;
     }
 
     @RequestMapping (value = "/landing", method = RequestMethod.GET)
@@ -60,8 +60,8 @@ public class CampaignLandingController {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         LOG.info("employee landed rid={}", receiptUser.getRid());
 
-        campaignListForm.setCampaignCount(businessCampaignService.countPendingApproval())
-                .setBusinessCampaigns(businessCampaignService.findAllPendingApproval());
+        campaignListForm.setCampaignCount(campaignService.countPendingApproval())
+                .setBusinessCampaigns(campaignService.findAllPendingApproval());
         return campaignLanding;
     }
 
@@ -76,19 +76,19 @@ public class CampaignLandingController {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         LOG.info("load campaign rid={} campaignId={}", receiptUser.getRid(), campaignId);
 
-        BusinessCampaignEntity businessCampaign = businessCampaignService.findById(campaignId, receiptUser.getUserLevel());
+        CampaignEntity campaign = campaignService.findById(campaignId, receiptUser.getUserLevel());
 
-        couponCampaign.setCampaignId(businessCampaign.getId())
-                .setRid(businessCampaign.getRid())
-                .setBizId(businessCampaign.getBizId())
-                .setLive(DF_MMDDYYYY.format(businessCampaign.getLive()))
-                .setStart(DF_MMDDYYYY.format(businessCampaign.getStart()))
-                .setEnd(DF_MMDDYYYY.format(businessCampaign.getEnd()))
-                .setFreeText(new ScrubbedInput(businessCampaign.getFreeText()))
-                .setAdditionalInfo(businessCampaign.getAdditionalInfo() != null ? new ScrubbedInput(businessCampaign.getAdditionalInfo().getText()) : new ScrubbedInput(""))
-                .setDistributionPercent(businessCampaign.getDistributionPercent() + "%")
-                .setBusinessCampaignStatus(businessCampaign.getBusinessCampaignStatus())
-                .setFileSystemEntities(businessCampaign.getFileSystemEntities());
+        couponCampaign.setCampaignId(campaign.getId())
+                .setRid(campaign.getRid())
+                .setBizId(campaign.getBizId())
+                .setLive(DF_MMDDYYYY.format(campaign.getLive()))
+                .setStart(DF_MMDDYYYY.format(campaign.getStart()))
+                .setEnd(DF_MMDDYYYY.format(campaign.getEnd()))
+                .setFreeText(new ScrubbedInput(campaign.getFreeText()))
+                .setAdditionalInfo(campaign.getAdditionalInfo() != null ? new ScrubbedInput(campaign.getAdditionalInfo().getText()) : new ScrubbedInput(""))
+                .setDistributionPercent(campaign.getDistributionPercent() + "%")
+                .setCampaignStatus(campaign.getCampaignStatus())
+                .setFileSystemEntities(campaign.getFileSystemEntities());
 
         return loadCampaign;
     }
@@ -100,12 +100,12 @@ public class CampaignLandingController {
     public String declineCampaign(@PathVariable ("campaignId") String campaignId) {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         LOG.info("{} campaign campaignId={} by rid={}",
-                BusinessCampaignStatusEnum.D.getDescription(), campaignId, receiptUser.getRid());
+                CampaignStatusEnum.D.getDescription(), campaignId, receiptUser.getRid());
 
-        businessCampaignService.updateCampaignStatus(
+        campaignService.updateCampaignStatus(
                 campaignId,
                 receiptUser.getUserLevel(),
-                BusinessCampaignStatusEnum.D);
+                CampaignStatusEnum.D);
 
         return "redirect:" + campaignLanding + ".htm";
     }
@@ -117,12 +117,12 @@ public class CampaignLandingController {
     public String approveCampaign(@PathVariable ("campaignId") String campaignId) {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         LOG.info("{} campaign campaignId={} by rid={}",
-                BusinessCampaignStatusEnum.A.getDescription(), campaignId, receiptUser.getRid());
+                CampaignStatusEnum.A.getDescription(), campaignId, receiptUser.getRid());
 
-        businessCampaignService.updateCampaignStatus(
+        campaignService.updateCampaignStatus(
                 campaignId,
                 receiptUser.getUserLevel(),
-                BusinessCampaignStatusEnum.A);
+                CampaignStatusEnum.A);
 
         return "redirect:" + campaignLanding + ".htm";
     }

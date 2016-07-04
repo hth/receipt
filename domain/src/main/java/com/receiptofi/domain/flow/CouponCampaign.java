@@ -1,7 +1,7 @@
 package com.receiptofi.domain.flow;
 
 import com.receiptofi.domain.FileSystemEntity;
-import com.receiptofi.domain.types.BusinessCampaignStatusEnum;
+import com.receiptofi.domain.types.CampaignStatusEnum;
 import com.receiptofi.utils.DateUtil;
 import com.receiptofi.utils.ScrubbedInput;
 
@@ -35,7 +35,7 @@ public class CouponCampaign implements Serializable {
     private String end;
     private String live;
     private String distributionPercent;
-    private BusinessCampaignStatusEnum businessCampaignStatus;
+    private CampaignStatusEnum campaignStatus;
     private Collection<FileSystemEntity> fileSystemEntities;
     //TODO(hth) add reason to show up for rejection of campaign, add it in BusinessCampaignEntity
 
@@ -156,12 +156,12 @@ public class CouponCampaign implements Serializable {
         }
     }
 
-    public BusinessCampaignStatusEnum getBusinessCampaignStatus() {
-        return businessCampaignStatus;
+    public CampaignStatusEnum getCampaignStatus() {
+        return campaignStatus;
     }
 
-    public CouponCampaign setBusinessCampaignStatus(BusinessCampaignStatusEnum businessCampaignStatus) {
-        this.businessCampaignStatus = businessCampaignStatus;
+    public CouponCampaign setCampaignStatus(CampaignStatusEnum campaignStatus) {
+        this.campaignStatus = campaignStatus;
         return this;
     }
 
