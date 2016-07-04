@@ -12,7 +12,7 @@ import com.receiptofi.domain.analytic.BizDimensionEntity;
 import com.receiptofi.domain.shared.UploadDocumentImage;
 import com.receiptofi.domain.site.ReceiptUser;
 import com.receiptofi.domain.types.FileTypeEnum;
-import com.receiptofi.service.BusinessCampaignService;
+import com.receiptofi.service.CampaignService;
 import com.receiptofi.service.BusinessUserService;
 import com.receiptofi.service.ImageSplitService;
 import com.receiptofi.service.analytic.BizDimensionService;
@@ -62,7 +62,7 @@ public class BusinessLandingController {
 
     private BusinessUserService businessUserService;
     private BizDimensionService bizDimensionService;
-    private BusinessCampaignService businessCampaignService;
+    private CampaignService campaignService;
     private ImageSplitService imageSplitService;
 
     @Autowired
@@ -75,13 +75,13 @@ public class BusinessLandingController {
 
             BusinessUserService businessUserService,
             BizDimensionService bizDimensionService,
-            BusinessCampaignService businessCampaignService,
+            CampaignService campaignService,
             ImageSplitService imageSplitService) {
         this.nextPage = nextPage;
         this.businessRegistrationFlow = businessRegistrationFlow;
         this.businessUserService = businessUserService;
         this.bizDimensionService = bizDimensionService;
-        this.businessCampaignService = businessCampaignService;
+        this.campaignService = campaignService;
         this.imageSplitService = imageSplitService;
     }
 
@@ -134,7 +134,7 @@ public class BusinessLandingController {
                     .setVisitCount(bizDimension.getVisitCount());
         }
 
-        businessLandingForm.setCampaignListForm(new CampaignListForm().setBusinessCampaigns(businessCampaignService.findBy(bizNameId)));
+        businessLandingForm.setCampaignListForm(new CampaignListForm().setBusinessCampaigns(campaignService.findBy(bizNameId)));
     }
 
     /**
@@ -177,14 +177,14 @@ public class BusinessLandingController {
             return jsonObject.toString();
         }
 
-        CampaignEntity businessCampaign = businessCampaignService.findById(campaignId, bizId);
-        Collection<FileSystemEntity> fileSystems = businessCampaignService.deleteAndCreateNewImage(
+        CampaignEntity businessCampaign = campaignService.findById(campaignId, bizId);
+        Collection<FileSystemEntity> fileSystems = campaignService.deleteAndCreateNewImage(
                 bufferedImage,
                 image,
                 businessCampaign.getFileSystemEntities());
 
         businessCampaign.setFileSystemEntities(fileSystems);
-        businessCampaignService.save(businessCampaign);
+        campaignService.save(businessCampaign);
 
         LOG.info("Upload complete rid={}", rid);
         jsonObject.addProperty(SUCCESS, true);

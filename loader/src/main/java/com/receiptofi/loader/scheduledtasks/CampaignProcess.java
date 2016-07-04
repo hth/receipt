@@ -12,7 +12,7 @@ import com.receiptofi.domain.types.CampaignStatusEnum;
 import com.receiptofi.domain.types.CouponTypeEnum;
 import com.receiptofi.domain.types.CouponUploadStatusEnum;
 import com.receiptofi.service.BizService;
-import com.receiptofi.service.BusinessCampaignService;
+import com.receiptofi.service.CampaignService;
 import com.receiptofi.service.CouponService;
 import com.receiptofi.service.CronStatsService;
 import com.receiptofi.service.analytic.BizDimensionService;
@@ -44,11 +44,11 @@ import java.util.List;
         "PMD.LongVariable"
 })
 @Component
-public class BusinessCampaignProcess {
-    private static final Logger LOG = LoggerFactory.getLogger(BusinessCampaignProcess.class);
+public class CampaignProcess {
+    private static final Logger LOG = LoggerFactory.getLogger(CampaignProcess.class);
 
     private final String filesUploadSwitch;
-    private BusinessCampaignService businessCampaignService;
+    private CampaignService campaignService;
     private BizDimensionService bizDimensionService;
     private CronStatsService cronStatsService;
     private BizService bizService;
@@ -56,17 +56,17 @@ public class BusinessCampaignProcess {
     private CouponService couponService;
 
     @Autowired
-    public BusinessCampaignProcess(
+    public CampaignProcess(
             @Value ("${FilesUploadToS3.filesUploadSwitch}")
             String filesUploadSwitch,
 
-            BusinessCampaignService businessCampaignService,
+            CampaignService campaignService,
             BizDimensionService bizDimensionService,
             CronStatsService cronStatsService, BizService bizService,
             UserDimensionService userDimensionService,
             CouponService couponService) {
         this.filesUploadSwitch = filesUploadSwitch;
-        this.businessCampaignService = businessCampaignService;
+        this.campaignService = campaignService;
         this.bizDimensionService = bizDimensionService;
         this.cronStatsService = cronStatsService;
         this.bizService = bizService;
@@ -78,10 +78,10 @@ public class BusinessCampaignProcess {
      * Create coupons from campaign and mark Campaign as LIVE.
      * Note: Cron string blow run every 2 minute.
      */
-    @Scheduled (fixedDelayString = "${loader.BusinessCampaign.setToLive}")
+    @Scheduled (fixedDelayString = "${loader.Campaign.setToLive}")
     public void setToLiveCampaign() {
         CronStatsEntity cronStats = new CronStatsEntity(
-                BusinessCampaignProcess.class.getName(),
+                CampaignProcess.class.getName(),
                 "setToLiveCampaign",
                 filesUploadSwitch);
 
@@ -95,17 +95,17 @@ public class BusinessCampaignProcess {
             return;
         }
 
-        List<CampaignEntity> businessCampaigns = businessCampaignService.findCampaignWithStatus(CampaignStatusEnum.S);
-        if (businessCampaigns.isEmpty()) {
+        List<CampaignEntity> campaigns = campaignService.findCampaignWithStatus(CampaignStatusEnum.S);
+        if (campaigns.isEmpty()) {
             /** No campaigns to upload. */
             return;
         } else {
-            LOG.info("Campaigns to upload to live, count={}", businessCampaigns.size());
+            LOG.info("Campaigns to upload to live, count={}", campaigns.size());
         }
 
         int success = 0, failure = 0, skipped = 0;
         try {
-            for (CampaignEntity businessCampaign : businessCampaigns) {
+            for (CampaignEntity businessCampaign : campaigns) {
                 String businessCampaignId = businessCampaign.getId();
                 int distribution = businessCampaign.getDistributionPercent();
                 String bizId = businessCampaign.getBizId();
@@ -164,7 +164,7 @@ public class BusinessCampaignProcess {
 
                     /** Set campaign to live and live campaign cannot be modified but only END. */
                     businessCampaign.setBusinessCampaignStatus(CampaignStatusEnum.L);
-                    businessCampaignService.save(businessCampaign);
+                    campaignService.save(businessCampaign);
                 } else {
                     LOG.warn("No biz dimension found for id={} bizId={}", businessCampaign.getId(), businessCampaign.getBizId());
                     skipped++;
@@ -174,7 +174,7 @@ public class BusinessCampaignProcess {
             LOG.error("Error creating coupons reason={}", e.getLocalizedMessage(), e);
             failure ++;
         } finally {
-            saveUploadStats(cronStats, success, failure, skipped, businessCampaigns.size());
+            saveUploadStats(cronStats, success, failure, skipped, campaigns.size());
         }
     }
 

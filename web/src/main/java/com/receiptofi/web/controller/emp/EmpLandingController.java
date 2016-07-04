@@ -1,7 +1,7 @@
 package com.receiptofi.web.controller.emp;
 
 import com.receiptofi.domain.site.ReceiptUser;
-import com.receiptofi.service.BusinessCampaignService;
+import com.receiptofi.service.CampaignService;
 import com.receiptofi.service.DocumentPendingService;
 
 import org.slf4j.Logger;
@@ -34,7 +34,7 @@ public class EmpLandingController {
 
     private String empLanding;
     private DocumentPendingService documentPendingService;
-    private BusinessCampaignService businessCampaignService;
+    private CampaignService campaignService;
 
     @Autowired
     public EmpLandingController(
@@ -42,10 +42,10 @@ public class EmpLandingController {
             String empLanding,
 
             DocumentPendingService documentPendingService,
-            BusinessCampaignService businessCampaignService) {
+            CampaignService campaignService) {
         this.empLanding = empLanding;
         this.documentPendingService = documentPendingService;
-        this.businessCampaignService = businessCampaignService;
+        this.campaignService = campaignService;
     }
 
     @PreAuthorize ("hasRole('ROLE_SUPERVISOR')")
@@ -56,7 +56,7 @@ public class EmpLandingController {
 
         ModelAndView modelAndView = new ModelAndView(empLanding);
         modelAndView.addObject("documentPending", documentPendingService.getTotalPending());
-        modelAndView.addObject("campaignPending", businessCampaignService.countPendingApproval());
+        modelAndView.addObject("campaignPending", campaignService.countPendingApproval());
         return modelAndView;
     }
 }

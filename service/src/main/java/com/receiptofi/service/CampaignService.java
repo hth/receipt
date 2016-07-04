@@ -40,8 +40,8 @@ import java.util.List;
         "PMD.LongVariable"
 })
 @Service
-public class BusinessCampaignService {
-    private static final Logger LOG = LoggerFactory.getLogger(BusinessCampaignService.class);
+public class CampaignService {
+    private static final Logger LOG = LoggerFactory.getLogger(CampaignService.class);
 
     private int limit;
     private CampaignManager campaignManager;
@@ -50,7 +50,7 @@ public class BusinessCampaignService {
     private FileSystemService fileSystemService;
 
     @Autowired
-    public BusinessCampaignService(
+    public CampaignService(
             @Value ("${limit: 5}")
             int limit,
 

@@ -7,7 +7,7 @@ import com.receiptofi.domain.BusinessUserEntity;
 import com.receiptofi.domain.flow.CouponCampaign;
 import com.receiptofi.domain.site.ReceiptUser;
 import com.receiptofi.domain.types.CampaignStatusEnum;
-import com.receiptofi.service.BusinessCampaignService;
+import com.receiptofi.service.CampaignService;
 import com.receiptofi.service.BusinessUserService;
 import com.receiptofi.utils.DateUtil;
 import com.receiptofi.utils.ScrubbedInput;
@@ -39,15 +39,15 @@ public class BusinessCampaignFlowActions {
     private static final Logger LOG = LoggerFactory.getLogger(BusinessCampaignFlowActions.class);
 
     private BusinessUserService businessUserService;
-    private BusinessCampaignService businessCampaignService;
+    private CampaignService campaignService;
 
     @SuppressWarnings ("all")
     @Autowired
     public BusinessCampaignFlowActions(
             BusinessUserService businessUserService,
-            BusinessCampaignService businessCampaignService) {
+            CampaignService campaignService) {
         this.businessUserService = businessUserService;
-        this.businessCampaignService = businessCampaignService;
+        this.campaignService = campaignService;
     }
 
     /**
@@ -77,7 +77,7 @@ public class BusinessCampaignFlowActions {
         String rid = receiptUser.getRid();
 
         BusinessUserEntity businessUser = businessUserService.findBusinessUser(rid);
-        CampaignEntity businessCampaign = businessCampaignService.findById(campaignId, businessUser.getBizName().getId());
+        CampaignEntity businessCampaign = campaignService.findById(campaignId, businessUser.getBizName().getId());
         return new CouponCampaign(businessCampaign.getId())
                 .setRid(rid)
                 .setBusinessName(businessUser.getBizName().getBusinessName())
@@ -197,7 +197,7 @@ public class BusinessCampaignFlowActions {
     @SuppressWarnings ("unused")
     public void createUpdateCampaign(CouponCampaign couponCampaign) {
         try {
-            businessCampaignService.save(couponCampaign);
+            campaignService.save(couponCampaign);
         } catch (Exception e) {
             LOG.error("Error updating business user profile rid={} reason={}",
                     couponCampaign.getRid(), e.getLocalizedMessage(), e);
@@ -207,7 +207,7 @@ public class BusinessCampaignFlowActions {
 
     public void completeCampaign(String campaignId, String bizId) {
         try {
-            businessCampaignService.completeCampaign(campaignId, bizId);
+            campaignService.completeCampaign(campaignId, bizId);
         } catch (Exception e) {
             LOG.error("Error marking campaign complete id={} bizId={} reason={}",
                     campaignId, bizId, e.getLocalizedMessage(), e);

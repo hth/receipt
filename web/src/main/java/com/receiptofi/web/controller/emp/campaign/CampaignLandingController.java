@@ -6,7 +6,7 @@ import com.receiptofi.domain.CampaignEntity;
 import com.receiptofi.domain.flow.CouponCampaign;
 import com.receiptofi.domain.site.ReceiptUser;
 import com.receiptofi.domain.types.CampaignStatusEnum;
-import com.receiptofi.service.BusinessCampaignService;
+import com.receiptofi.service.CampaignService;
 import com.receiptofi.utils.ScrubbedInput;
 import com.receiptofi.web.form.business.CampaignListForm;
 
@@ -39,7 +39,7 @@ public class CampaignLandingController {
 
     private String campaignLanding;
     private String loadCampaign;
-    private BusinessCampaignService businessCampaignService;
+    private CampaignService campaignService;
 
     @Autowired
     public CampaignLandingController(
@@ -49,10 +49,10 @@ public class CampaignLandingController {
             @Value ("${approveCampaign:/emp/campaign/loadCampaign}")
             String loadCampaign,
 
-            BusinessCampaignService businessCampaignService) {
+            CampaignService campaignService) {
         this.campaignLanding = campaignLanding;
         this.loadCampaign = loadCampaign;
-        this.businessCampaignService = businessCampaignService;
+        this.campaignService = campaignService;
     }
 
     @RequestMapping (value = "/landing", method = RequestMethod.GET)
@@ -60,8 +60,8 @@ public class CampaignLandingController {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         LOG.info("employee landed rid={}", receiptUser.getRid());
 
-        campaignListForm.setCampaignCount(businessCampaignService.countPendingApproval())
-                .setBusinessCampaigns(businessCampaignService.findAllPendingApproval());
+        campaignListForm.setCampaignCount(campaignService.countPendingApproval())
+                .setBusinessCampaigns(campaignService.findAllPendingApproval());
         return campaignLanding;
     }
 
@@ -76,7 +76,7 @@ public class CampaignLandingController {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         LOG.info("load campaign rid={} campaignId={}", receiptUser.getRid(), campaignId);
 
-        CampaignEntity businessCampaign = businessCampaignService.findById(campaignId, receiptUser.getUserLevel());
+        CampaignEntity businessCampaign = campaignService.findById(campaignId, receiptUser.getUserLevel());
 
         couponCampaign.setCampaignId(businessCampaign.getId())
                 .setRid(businessCampaign.getRid())
@@ -102,7 +102,7 @@ public class CampaignLandingController {
         LOG.info("{} campaign campaignId={} by rid={}",
                 CampaignStatusEnum.D.getDescription(), campaignId, receiptUser.getRid());
 
-        businessCampaignService.updateCampaignStatus(
+        campaignService.updateCampaignStatus(
                 campaignId,
                 receiptUser.getUserLevel(),
                 CampaignStatusEnum.D);
@@ -119,7 +119,7 @@ public class CampaignLandingController {
         LOG.info("{} campaign campaignId={} by rid={}",
                 CampaignStatusEnum.A.getDescription(), campaignId, receiptUser.getRid());
 
-        businessCampaignService.updateCampaignStatus(
+        campaignService.updateCampaignStatus(
                 campaignId,
                 receiptUser.getUserLevel(),
                 CampaignStatusEnum.A);

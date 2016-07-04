@@ -13,7 +13,7 @@ import com.receiptofi.domain.FileSystemEntity;
 import com.receiptofi.domain.types.CampaignStatusEnum;
 import com.receiptofi.loader.service.AffineTransformService;
 import com.receiptofi.loader.service.AmazonS3Service;
-import com.receiptofi.service.BusinessCampaignService;
+import com.receiptofi.service.CampaignService;
 import com.receiptofi.service.CouponService;
 import com.receiptofi.service.CronStatsService;
 import com.receiptofi.service.DocumentService;
@@ -77,7 +77,7 @@ public class FilesUploadToS3 {
     private AffineTransformService affineTransformService;
     private CronStatsService cronStatsService;
     private CouponService couponService;
-    private BusinessCampaignService businessCampaignService;
+    private CampaignService campaignService;
 
     @Autowired
     public FilesUploadToS3(
@@ -101,7 +101,7 @@ public class FilesUploadToS3 {
             AffineTransformService affineTransformService,
             CronStatsService cronStatsService,
             CouponService couponService,
-            BusinessCampaignService businessCampaignService) {
+            CampaignService campaignService) {
         this.bucketName = bucketName;
         this.receiptFolderName = receiptFolderName;
         this.couponFolderName = couponFolderName;
@@ -115,7 +115,7 @@ public class FilesUploadToS3 {
         this.affineTransformService = affineTransformService;
         this.cronStatsService = cronStatsService;
         this.couponService = couponService;
-        this.businessCampaignService = businessCampaignService;
+        this.campaignService = campaignService;
     }
 
     /**
@@ -331,7 +331,7 @@ public class FilesUploadToS3 {
             return;
         }
 
-        List<CampaignEntity> campaigns = businessCampaignService.findCampaignWithStatus(CampaignStatusEnum.A);
+        List<CampaignEntity> campaigns = campaignService.findCampaignWithStatus(CampaignStatusEnum.A);
         if (campaigns.isEmpty()) {
             /** No campaigns to upload. */
             return;
@@ -363,7 +363,7 @@ public class FilesUploadToS3 {
                     }
 
                     campaign.setBusinessCampaignStatus(CampaignStatusEnum.S);
-                    businessCampaignService.save(campaign);
+                    campaignService.save(campaign);
                 } catch (AmazonServiceException e) {
                     LOG.error("Amazon S3 rejected request with an error response for some reason " +
                                     "document:{} " +
