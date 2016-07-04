@@ -39,4 +39,12 @@ public interface BusinessCampaignManager extends RepositoryManager<BusinessCampa
             String campaignId,
             UserLevelEnum userLevel,
             BusinessCampaignStatusEnum businessCampaignStatus);
+
+    /**
+     * Finds all approved campaign.
+     *
+     * @param limit
+     * @return
+     */
+    List<BusinessCampaignEntity> findCampaignWithStatus(int limit, BusinessCampaignStatusEnum businessCampaignStatus);
 }

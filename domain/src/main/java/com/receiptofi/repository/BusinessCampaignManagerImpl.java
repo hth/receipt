@@ -150,4 +150,15 @@ public class BusinessCampaignManagerImpl implements BusinessCampaignManager {
                 throw new UnsupportedOperationException("Not authorized to modify campaign");
         }
     }
+
+    @Override
+    public List<BusinessCampaignEntity> findCampaignWithStatus(int limit, BusinessCampaignStatusEnum businessCampaignStatus) {
+        return mongoTemplate.find(
+                query(
+                        where("CS").is(businessCampaignStatus)
+                ).limit(limit).with(new Sort(Sort.Direction.ASC, "LP")),
+                BusinessCampaignEntity.class,
+                TABLE
+        );
+    }
 }

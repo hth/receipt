@@ -10,9 +10,10 @@ public enum BusinessCampaignStatusEnum {
     A("A", "Approved"),
     /** Declined campaign can be modified and resubmitted to pending approval. */
     D("D", "Declined"),
+    /** State after APPROVED and before making system LIVE. */
+    S("S", "Campaign set to go live"),
     L("L", "Live"),
-    E("E", "Expired"),
-    T("T", "Terminated");
+    E("E", "End Campaign");
 
     private final String description;
     private final String name;
@@ -32,6 +33,6 @@ public enum BusinessCampaignStatusEnum {
 
     @Override
     public String toString() {
-        return getDescription();
+        return description;
     }
 }
