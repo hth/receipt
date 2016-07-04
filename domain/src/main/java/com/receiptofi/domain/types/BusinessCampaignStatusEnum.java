@@ -7,9 +7,9 @@ package com.receiptofi.domain.types;
 public enum BusinessCampaignStatusEnum {
     N("N", "In Progress. Confirm to mark as complete."),
     P("P", "Pending Approval"),
-    A("A", "Approved"),
     /** Declined campaign can be modified and resubmitted to pending approval. */
     D("D", "Declined"),
+    A("A", "Approved"),
     /** State after APPROVED and before making system LIVE. */
     S("S", "Campaign set to go live"),
     L("L", "Live"),
