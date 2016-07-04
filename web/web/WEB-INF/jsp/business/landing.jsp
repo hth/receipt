@@ -82,7 +82,7 @@
                 style="overflow-y: hidden; height: 700px; margin-left: 0; padding-left: 0">
         <div class="down_form" style="width: 96%">
             <c:choose>
-            <c:when test="${businessLandingForm.campaignListForm ne null}">
+            <c:when test="${!empty businessLandingForm.campaignListForm.businessCampaigns}">
             <table width="100%" style="margin: 0 4px 0 4px">
                 <tr>
                     <th style="text-align: left;"></th>
