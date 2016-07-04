@@ -1,1 +1,0 @@
-{"options":{},"indexes":[{"v":1,"key":{"_id":1},"name":"_id_","ns":"rm-test.BILLING_ACCOUNT"},{"v":1,"key":{"RID":-1},"name":"billing_account_idx","ns":"rm-test.BILLING_ACCOUNT","background":true},{"v":1,"key":{"SD":-1},"name":"billing_account_sub_idx","ns":"rm-test.BILLING_ACCOUNT","background":true}]}

@@ -1,1 +1,0 @@
-{"options":{},"indexes":[{"v":1,"key":{"_id":1},"name":"_id_","ns":"rm-test.INVITE"},{"v":1,"key":{"EM":0},"name":"invite_email_idx","ns":"rm-test.INVITE"},{"v":1,"unique":true,"key":{"AU":0},"name":"invite_key_idx","ns":"rm-test.INVITE"}]}

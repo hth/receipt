@@ -1,1 +1,0 @@
-{"options":{},"indexes":[{"v":1,"key":{"_id":1},"name":"_id_","ns":"rm-test.EXPENSE_TAG"},{"v":1,"unique":true,"key":{"RID":1,"TAG":1},"name":"expense_tag_idx","ns":"rm-test.EXPENSE_TAG"}]}

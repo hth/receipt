@@ -1,1 +1,0 @@
-{"options":{},"indexes":[{"v":1,"key":{"_id":1},"name":"_id_","ns":"rm-test.BIZ_STORE"},{"v":1,"unique":true,"key":{"AD":1,"PH":1},"name":"biz_store_idx","ns":"rm-test.BIZ_STORE"}]}
