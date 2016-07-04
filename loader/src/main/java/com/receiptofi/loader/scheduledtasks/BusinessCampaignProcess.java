@@ -2,7 +2,7 @@ package com.receiptofi.loader.scheduledtasks;
 
 import com.receiptofi.domain.BizNameEntity;
 import com.receiptofi.domain.BizStoreEntity;
-import com.receiptofi.domain.BusinessCampaignEntity;
+import com.receiptofi.domain.CampaignEntity;
 import com.receiptofi.domain.CouponEntity;
 import com.receiptofi.domain.CronStatsEntity;
 import com.receiptofi.domain.FileSystemEntity;
@@ -95,7 +95,7 @@ public class BusinessCampaignProcess {
             return;
         }
 
-        List<BusinessCampaignEntity> businessCampaigns = businessCampaignService.findCampaignWithStatus(CampaignStatusEnum.S);
+        List<CampaignEntity> businessCampaigns = businessCampaignService.findCampaignWithStatus(CampaignStatusEnum.S);
         if (businessCampaigns.isEmpty()) {
             /** No campaigns to upload. */
             return;
@@ -105,7 +105,7 @@ public class BusinessCampaignProcess {
 
         int success = 0, failure = 0, skipped = 0;
         try {
-            for (BusinessCampaignEntity businessCampaign : businessCampaigns) {
+            for (CampaignEntity businessCampaign : businessCampaigns) {
                 String businessCampaignId = businessCampaign.getId();
                 int distribution = businessCampaign.getDistributionPercent();
                 String bizId = businessCampaign.getBizId();

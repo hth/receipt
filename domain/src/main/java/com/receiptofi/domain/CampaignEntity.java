@@ -32,7 +32,7 @@ import javax.validation.constraints.NotNull;
 @CompoundIndexes (value = {
         @CompoundIndex (name = "business_campaign_idx", def = "{'BID': -1}", unique = false),
 })
-public class BusinessCampaignEntity extends BaseEntity {
+public class CampaignEntity extends BaseEntity {
 
     @Field ("BID")
     private String bizId;
@@ -80,11 +80,11 @@ public class BusinessCampaignEntity extends BaseEntity {
     private CommentEntity additionalInfo;
 
     @SuppressWarnings("unused")
-    private BusinessCampaignEntity() {
+    private CampaignEntity() {
         super();
     }
 
-    private BusinessCampaignEntity(String rid, String bizId, String freeText, Date start, Date end, Date live) {
+    private CampaignEntity(String rid, String bizId, String freeText, Date start, Date end, Date live) {
         super();
         this.rid = rid;
         this.bizId = bizId;
@@ -95,15 +95,15 @@ public class BusinessCampaignEntity extends BaseEntity {
         historicalCampaignStates.put(new Date(), businessCampaignStatus);
     }
 
-    public static BusinessCampaignEntity newInstance(String rid, String bizId, String freeText, Date start, Date end, Date live) {
-        return new BusinessCampaignEntity(rid, bizId, freeText, start, end, live);
+    public static CampaignEntity newInstance(String rid, String bizId, String freeText, Date start, Date end, Date live) {
+        return new CampaignEntity(rid, bizId, freeText, start, end, live);
     }
 
     public String getBizId() {
         return bizId;
     }
 
-    public BusinessCampaignEntity setBizId(String bizId) {
+    public CampaignEntity setBizId(String bizId) {
         this.bizId = bizId;
         return this;
     }
@@ -112,7 +112,7 @@ public class BusinessCampaignEntity extends BaseEntity {
         return rid;
     }
 
-    public BusinessCampaignEntity setRid(String rid) {
+    public CampaignEntity setRid(String rid) {
         this.rid = rid;
         return this;
     }
@@ -121,7 +121,7 @@ public class BusinessCampaignEntity extends BaseEntity {
         return freeText;
     }
 
-    public BusinessCampaignEntity setFreeText(String freeText) {
+    public CampaignEntity setFreeText(String freeText) {
         this.freeText = freeText;
         return this;
     }
@@ -130,7 +130,7 @@ public class BusinessCampaignEntity extends BaseEntity {
         return start;
     }
 
-    public BusinessCampaignEntity setStart(Date start) {
+    public CampaignEntity setStart(Date start) {
         this.start = start;
         return this;
     }
@@ -139,7 +139,7 @@ public class BusinessCampaignEntity extends BaseEntity {
         return end;
     }
 
-    public BusinessCampaignEntity setEnd(Date end) {
+    public CampaignEntity setEnd(Date end) {
         this.end = end;
         return this;
     }
@@ -148,7 +148,7 @@ public class BusinessCampaignEntity extends BaseEntity {
         return live;
     }
 
-    public BusinessCampaignEntity setLive(Date live) {
+    public CampaignEntity setLive(Date live) {
         this.live = live;
         return this;
     }
@@ -157,7 +157,7 @@ public class BusinessCampaignEntity extends BaseEntity {
         return businessCampaignType;
     }
 
-    public BusinessCampaignEntity setBusinessCampaignType(BusinessCampaignTypeEnum businessCampaignType) {
+    public CampaignEntity setBusinessCampaignType(BusinessCampaignTypeEnum businessCampaignType) {
         this.businessCampaignType = businessCampaignType;
         return this;
     }
@@ -166,7 +166,7 @@ public class BusinessCampaignEntity extends BaseEntity {
         return fileSystemEntities;
     }
 
-    public BusinessCampaignEntity setFileSystemEntities(Collection<FileSystemEntity> fileSystemEntities) {
+    public CampaignEntity setFileSystemEntities(Collection<FileSystemEntity> fileSystemEntities) {
         this.fileSystemEntities = fileSystemEntities;
         return this;
     }
@@ -175,7 +175,7 @@ public class BusinessCampaignEntity extends BaseEntity {
         return distributionPercent;
     }
 
-    public BusinessCampaignEntity setDistributionPercent(int distributionPercent) {
+    public CampaignEntity setDistributionPercent(int distributionPercent) {
         this.distributionPercent = distributionPercent;
         return this;
     }
@@ -184,7 +184,7 @@ public class BusinessCampaignEntity extends BaseEntity {
         return totalDistribution;
     }
 
-    public BusinessCampaignEntity setTotalDistribution(int totalDistribution) {
+    public CampaignEntity setTotalDistribution(int totalDistribution) {
         this.totalDistribution = totalDistribution;
         return this;
     }
@@ -193,7 +193,7 @@ public class BusinessCampaignEntity extends BaseEntity {
         return businessCampaignStatus;
     }
 
-    public BusinessCampaignEntity setBusinessCampaignStatus(CampaignStatusEnum businessCampaignStatus) {
+    public CampaignEntity setBusinessCampaignStatus(CampaignStatusEnum businessCampaignStatus) {
         this.businessCampaignStatus = businessCampaignStatus;
         historicalCampaignStates.put(new Date(), businessCampaignStatus);
         return this;
@@ -207,7 +207,7 @@ public class BusinessCampaignEntity extends BaseEntity {
         return additionalInfo;
     }
 
-    public BusinessCampaignEntity setAdditionalInfo(CommentEntity additionalInfo) {
+    public CampaignEntity setAdditionalInfo(CommentEntity additionalInfo) {
         this.additionalInfo = additionalInfo;
         return this;
     }

@@ -2,7 +2,7 @@ package com.receiptofi.web.flow;
 
 import static com.receiptofi.utils.DateUtil.DF_MMDDYYYY;
 
-import com.receiptofi.domain.BusinessCampaignEntity;
+import com.receiptofi.domain.CampaignEntity;
 import com.receiptofi.domain.BusinessUserEntity;
 import com.receiptofi.domain.flow.CouponCampaign;
 import com.receiptofi.domain.site.ReceiptUser;
@@ -77,7 +77,7 @@ public class BusinessCampaignFlowActions {
         String rid = receiptUser.getRid();
 
         BusinessUserEntity businessUser = businessUserService.findBusinessUser(rid);
-        BusinessCampaignEntity businessCampaign = businessCampaignService.findById(campaignId, businessUser.getBizName().getId());
+        CampaignEntity businessCampaign = businessCampaignService.findById(campaignId, businessUser.getBizName().getId());
         return new CouponCampaign(businessCampaign.getId())
                 .setRid(rid)
                 .setBusinessName(businessUser.getBizName().getBusinessName())

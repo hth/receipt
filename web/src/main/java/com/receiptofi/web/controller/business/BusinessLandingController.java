@@ -5,7 +5,7 @@ import static com.receiptofi.web.controller.access.LandingController.SUCCESS;
 import com.google.gson.JsonObject;
 
 import com.receiptofi.domain.BizNameEntity;
-import com.receiptofi.domain.BusinessCampaignEntity;
+import com.receiptofi.domain.CampaignEntity;
 import com.receiptofi.domain.BusinessUserEntity;
 import com.receiptofi.domain.FileSystemEntity;
 import com.receiptofi.domain.analytic.BizDimensionEntity;
@@ -177,7 +177,7 @@ public class BusinessLandingController {
             return jsonObject.toString();
         }
 
-        BusinessCampaignEntity businessCampaign = businessCampaignService.findById(campaignId, bizId);
+        CampaignEntity businessCampaign = businessCampaignService.findById(campaignId, bizId);
         Collection<FileSystemEntity> fileSystems = businessCampaignService.deleteAndCreateNewImage(
                 bufferedImage,
                 image,

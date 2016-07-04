@@ -2,7 +2,7 @@ package com.receiptofi.service;
 
 import static com.receiptofi.utils.DateUtil.DF_MMDDYYYY;
 
-import com.receiptofi.domain.BusinessCampaignEntity;
+import com.receiptofi.domain.CampaignEntity;
 import com.receiptofi.domain.CommentEntity;
 import com.receiptofi.domain.FileSystemEntity;
 import com.receiptofi.domain.flow.CouponCampaign;
@@ -65,17 +65,17 @@ public class BusinessCampaignService {
         this.fileSystemService = fileSystemService;
     }
 
-    public BusinessCampaignEntity findById(String campaignId, String bizId) {
+    public CampaignEntity findById(String campaignId, String bizId) {
         return businessCampaignManager.findById(campaignId, bizId);
     }
 
-    public BusinessCampaignEntity findById(String campaignId, UserLevelEnum userLevel) {
+    public CampaignEntity findById(String campaignId, UserLevelEnum userLevel) {
         return businessCampaignManager.findById(campaignId, userLevel);
     }
 
     public void save(CouponCampaign couponCampaign) throws ParseException {
         try {
-            BusinessCampaignEntity bce;
+            CampaignEntity bce;
             CommentEntity comment = null;
             if (StringUtils.isNotBlank(couponCampaign.getCampaignId())) {
                 bce = businessCampaignManager.findById(couponCampaign.getCampaignId(), couponCampaign.getBizId());
@@ -94,7 +94,7 @@ public class BusinessCampaignService {
                     comment = createNewComment(couponCampaign);
                 }
             } else {
-                bce = BusinessCampaignEntity.newInstance(
+                bce = CampaignEntity.newInstance(
                         couponCampaign.getRid(),
                         couponCampaign.getBizId(),
                         couponCampaign.getFreeText().toString(),
@@ -132,12 +132,12 @@ public class BusinessCampaignService {
         }
     }
 
-    public void save(BusinessCampaignEntity businessCampaign) {
+    public void save(CampaignEntity businessCampaign) {
         businessCampaignManager.save(businessCampaign);
     }
 
     public void completeCampaign(String campaignId, String bizId) {
-        BusinessCampaignEntity businessCampaign = businessCampaignManager.findById(campaignId, bizId);
+        CampaignEntity businessCampaign = businessCampaignManager.findById(campaignId, bizId);
         businessCampaign.setBusinessCampaignStatus(CampaignStatusEnum.P);
         save(businessCampaign);
     }
@@ -188,15 +188,15 @@ public class BusinessCampaignService {
         return fileSystems;
     }
 
-    public List<BusinessCampaignEntity> findBy(String bizId) {
+    public List<CampaignEntity> findBy(String bizId) {
         return businessCampaignManager.findBy(bizId);
     }
 
-    public List<BusinessCampaignEntity> findAllPendingApproval() {
+    public List<CampaignEntity> findAllPendingApproval() {
         return businessCampaignManager.findAllPendingApproval(limit);
     }
 
-    public List<BusinessCampaignEntity> findCampaignWithStatus(CampaignStatusEnum businessCampaignStatus) {
+    public List<CampaignEntity> findCampaignWithStatus(CampaignStatusEnum businessCampaignStatus) {
         return businessCampaignManager.findCampaignWithStatus(limit, businessCampaignStatus);
     }
 

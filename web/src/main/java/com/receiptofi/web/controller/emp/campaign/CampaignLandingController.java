@@ -2,7 +2,7 @@ package com.receiptofi.web.controller.emp.campaign;
 
 import static com.receiptofi.utils.DateUtil.DF_MMDDYYYY;
 
-import com.receiptofi.domain.BusinessCampaignEntity;
+import com.receiptofi.domain.CampaignEntity;
 import com.receiptofi.domain.flow.CouponCampaign;
 import com.receiptofi.domain.site.ReceiptUser;
 import com.receiptofi.domain.types.CampaignStatusEnum;
@@ -76,7 +76,7 @@ public class CampaignLandingController {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         LOG.info("load campaign rid={} campaignId={}", receiptUser.getRid(), campaignId);
 
-        BusinessCampaignEntity businessCampaign = businessCampaignService.findById(campaignId, receiptUser.getUserLevel());
+        CampaignEntity businessCampaign = businessCampaignService.findById(campaignId, receiptUser.getUserLevel());
 
         couponCampaign.setCampaignId(businessCampaign.getId())
                 .setRid(businessCampaign.getRid())

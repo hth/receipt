@@ -6,7 +6,7 @@ import static org.springframework.data.mongodb.core.query.Query.query;
 import static org.springframework.data.mongodb.core.query.Update.update;
 
 import com.receiptofi.domain.BaseEntity;
-import com.receiptofi.domain.BusinessCampaignEntity;
+import com.receiptofi.domain.CampaignEntity;
 import com.receiptofi.domain.types.CampaignStatusEnum;
 import com.receiptofi.domain.types.UserLevelEnum;
 
@@ -38,7 +38,7 @@ import java.util.List;
 public class BusinessCampaignManagerImpl implements BusinessCampaignManager {
     private static final Logger LOG = LoggerFactory.getLogger(BusinessCampaignManagerImpl.class);
     private static final String TABLE = BaseEntity.getClassAnnotationValue(
-            BusinessCampaignEntity.class,
+            CampaignEntity.class,
             Document.class,
             "collection");
 
@@ -50,7 +50,7 @@ public class BusinessCampaignManagerImpl implements BusinessCampaignManager {
     }
 
     @Override
-    public void save(BusinessCampaignEntity object) {
+    public void save(CampaignEntity object) {
         if (StringUtils.isNotBlank(object.getBizId())) {
             mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
             if (object.getId() != null) {
@@ -64,22 +64,22 @@ public class BusinessCampaignManagerImpl implements BusinessCampaignManager {
     }
 
     @Override
-    public void deleteHard(BusinessCampaignEntity object) {
+    public void deleteHard(CampaignEntity object) {
 
     }
 
     @Override
-    public BusinessCampaignEntity findById(String campaignId, String bizId) {
+    public CampaignEntity findById(String campaignId, String bizId) {
         LOG.info("campaignId={} bizId={}", campaignId, bizId);
         return mongoTemplate.findOne(
                 query(where("id").is(campaignId).and("BID").is(bizId)),
-                BusinessCampaignEntity.class,
+                CampaignEntity.class,
                 TABLE
         );
     }
 
     @Override
-    public BusinessCampaignEntity findById(String campaignId, UserLevelEnum userLevel) {
+    public CampaignEntity findById(String campaignId, UserLevelEnum userLevel) {
         LOG.info("campaignId={} userLevel={}", campaignId, userLevel);
 
         switch (userLevel) {
@@ -87,7 +87,7 @@ public class BusinessCampaignManagerImpl implements BusinessCampaignManager {
             case TECH_CAMPAIGN:
                 return mongoTemplate.findOne(
                         query(where("id").is(campaignId)),
-                        BusinessCampaignEntity.class,
+                        CampaignEntity.class,
                         TABLE
                 );
             default:
@@ -96,23 +96,23 @@ public class BusinessCampaignManagerImpl implements BusinessCampaignManager {
     }
 
     @Override
-    public List<BusinessCampaignEntity> findBy(String bizId) {
+    public List<CampaignEntity> findBy(String bizId) {
         return mongoTemplate.find(
                 query(
                         where("BID").is(bizId)
                 ).with(new Sort(Sort.Direction.DESC, "LP")),
-                BusinessCampaignEntity.class,
+                CampaignEntity.class,
                 TABLE
         );
     }
 
     @Override
-    public List<BusinessCampaignEntity> findAllPendingApproval(int limit) {
+    public List<CampaignEntity> findAllPendingApproval(int limit) {
         return mongoTemplate.find(
                 query(
                         where("CS").is(CampaignStatusEnum.P)
                 ).limit(5).with(new Sort(Sort.Direction.DESC, "U")),
-                BusinessCampaignEntity.class,
+                CampaignEntity.class,
                 TABLE
         );
     }
@@ -123,7 +123,7 @@ public class BusinessCampaignManagerImpl implements BusinessCampaignManager {
                 query(
                         where("CS").is(CampaignStatusEnum.P)
                 ).with(new Sort(Sort.Direction.DESC, "U")),
-                BusinessCampaignEntity.class,
+                CampaignEntity.class,
                 TABLE
         );
     }
@@ -142,7 +142,7 @@ public class BusinessCampaignManagerImpl implements BusinessCampaignManager {
                 mongoTemplate.updateFirst(
                         query(where("id").is(campaignId)),
                         entityUpdate(update("CS", businessCampaignStatus)),
-                        BusinessCampaignEntity.class,
+                        CampaignEntity.class,
                         TABLE
                 );
                 break;
@@ -152,12 +152,12 @@ public class BusinessCampaignManagerImpl implements BusinessCampaignManager {
     }
 
     @Override
-    public List<BusinessCampaignEntity> findCampaignWithStatus(int limit, CampaignStatusEnum businessCampaignStatus) {
+    public List<CampaignEntity> findCampaignWithStatus(int limit, CampaignStatusEnum businessCampaignStatus) {
         return mongoTemplate.find(
                 query(
                         where("CS").is(businessCampaignStatus)
                 ).limit(limit).with(new Sort(Sort.Direction.ASC, "LP")),
-                BusinessCampaignEntity.class,
+                CampaignEntity.class,
                 TABLE
         );
     }

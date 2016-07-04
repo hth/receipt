@@ -5,7 +5,7 @@ import static com.receiptofi.service.ImageSplitService.PNG_FORMAT;
 import com.mongodb.gridfs.GridFSDBFile;
 
 import com.receiptofi.domain.BaseEntity;
-import com.receiptofi.domain.BusinessCampaignEntity;
+import com.receiptofi.domain.CampaignEntity;
 import com.receiptofi.domain.CouponEntity;
 import com.receiptofi.domain.CronStatsEntity;
 import com.receiptofi.domain.DocumentEntity;
@@ -331,7 +331,7 @@ public class FilesUploadToS3 {
             return;
         }
 
-        List<BusinessCampaignEntity> campaigns = businessCampaignService.findCampaignWithStatus(CampaignStatusEnum.A);
+        List<CampaignEntity> campaigns = businessCampaignService.findCampaignWithStatus(CampaignStatusEnum.A);
         if (campaigns.isEmpty()) {
             /** No campaigns to upload. */
             return;
@@ -341,7 +341,7 @@ public class FilesUploadToS3 {
 
         int success = 0, failure = 0, skipped = 0;
         try {
-            for (BusinessCampaignEntity campaign : campaigns) {
+            for (CampaignEntity campaign : campaigns) {
                 try {
                     Collection<FileSystemEntity> fileSystems = campaign.getFileSystemEntities();
                     if (null != fileSystems) {
@@ -423,7 +423,7 @@ public class FilesUploadToS3 {
         if (baseEntity instanceof DocumentEntity) {
             putObject = createPutObjectRequest(baseEntity, fileSystem, fs);
             amazonS3Service.getS3client().putObject(putObject);
-        } else if(baseEntity instanceof CouponEntity || baseEntity instanceof BusinessCampaignEntity) {
+        } else if(baseEntity instanceof CouponEntity || baseEntity instanceof CampaignEntity) {
             putObject = createPutObjectRequestWithoutDecreaseInResolution(baseEntity, fileSystem, fs);
             amazonS3Service.getS3client().putObject(putObject);
         }
@@ -586,7 +586,7 @@ public class FilesUploadToS3 {
         if (baseEntity instanceof DocumentEntity) {
             putObject = new PutObjectRequest(bucketName, receiptFolderName + "/" + fileSystem.getKey(), file);
             putObject.setMetadata(getObjectMetadata(file.length(), baseEntity, fileSystem));
-        } else if (baseEntity instanceof CouponEntity || baseEntity instanceof BusinessCampaignEntity) {
+        } else if (baseEntity instanceof CouponEntity || baseEntity instanceof CampaignEntity) {
             putObject = new PutObjectRequest(bucketName, couponFolderName + "/" + fileSystem.getKey(), file);
             putObject.setMetadata(getObjectMetadata(file.length(), baseEntity, fileSystem));
         }
@@ -615,9 +615,9 @@ public class FilesUploadToS3 {
             metaData.setContentType(fileSystem.getContentType());
             metaData.addUserMetadata("X-RID", ((CouponEntity) baseEntity).getRid());
             metaData.addUserMetadata("X-CL", String.valueOf(fileLength));
-        } else if (baseEntity instanceof BusinessCampaignEntity) {
+        } else if (baseEntity instanceof CampaignEntity) {
             metaData.setContentType(fileSystem.getContentType());
-            metaData.addUserMetadata("X-RID", ((BusinessCampaignEntity) baseEntity).getRid());
+            metaData.addUserMetadata("X-RID", ((CampaignEntity) baseEntity).getRid());
             metaData.addUserMetadata("X-CL", String.valueOf(fileLength));
         }
 
