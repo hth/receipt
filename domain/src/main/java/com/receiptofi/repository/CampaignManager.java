@@ -10,7 +10,7 @@ import java.util.List;
  * User: hitender
  * Date: 6/10/16 4:30 PM
  */
-public interface BusinessCampaignManager extends RepositoryManager<CampaignEntity> {
+public interface CampaignManager extends RepositoryManager<CampaignEntity> {
 
     CampaignEntity findById(String campaignId, String bizId);
 

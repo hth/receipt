@@ -11,7 +11,7 @@ import com.receiptofi.domain.types.CampaignStatusEnum;
 import com.receiptofi.domain.types.CommentTypeEnum;
 import com.receiptofi.domain.types.FileTypeEnum;
 import com.receiptofi.domain.types.UserLevelEnum;
-import com.receiptofi.repository.BusinessCampaignManager;
+import com.receiptofi.repository.CampaignManager;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -44,7 +44,7 @@ public class BusinessCampaignService {
     private static final Logger LOG = LoggerFactory.getLogger(BusinessCampaignService.class);
 
     private int limit;
-    private BusinessCampaignManager businessCampaignManager;
+    private CampaignManager campaignManager;
     private CommentService commentService;
     private FileDBService fileDBService;
     private FileSystemService fileSystemService;
@@ -54,23 +54,23 @@ public class BusinessCampaignService {
             @Value ("${limit: 5}")
             int limit,
 
-            BusinessCampaignManager businessCampaignManager,
+            CampaignManager campaignManager,
             CommentService commentService,
             FileDBService fileDBService,
             FileSystemService fileSystemService) {
         this.limit = limit;
-        this.businessCampaignManager = businessCampaignManager;
+        this.campaignManager = campaignManager;
         this.commentService = commentService;
         this.fileDBService = fileDBService;
         this.fileSystemService = fileSystemService;
     }
 
     public CampaignEntity findById(String campaignId, String bizId) {
-        return businessCampaignManager.findById(campaignId, bizId);
+        return campaignManager.findById(campaignId, bizId);
     }
 
     public CampaignEntity findById(String campaignId, UserLevelEnum userLevel) {
-        return businessCampaignManager.findById(campaignId, userLevel);
+        return campaignManager.findById(campaignId, userLevel);
     }
 
     public void save(CouponCampaign couponCampaign) throws ParseException {
@@ -78,7 +78,7 @@ public class BusinessCampaignService {
             CampaignEntity bce;
             CommentEntity comment = null;
             if (StringUtils.isNotBlank(couponCampaign.getCampaignId())) {
-                bce = businessCampaignManager.findById(couponCampaign.getCampaignId(), couponCampaign.getBizId());
+                bce = campaignManager.findById(couponCampaign.getCampaignId(), couponCampaign.getBizId());
                 bce.setRid(couponCampaign.getRid())
                         .setBizId(couponCampaign.getBizId())
                         .setFreeText(couponCampaign.getFreeText().getText())
@@ -133,11 +133,11 @@ public class BusinessCampaignService {
     }
 
     public void save(CampaignEntity businessCampaign) {
-        businessCampaignManager.save(businessCampaign);
+        campaignManager.save(businessCampaign);
     }
 
     public void completeCampaign(String campaignId, String bizId) {
-        CampaignEntity businessCampaign = businessCampaignManager.findById(campaignId, bizId);
+        CampaignEntity businessCampaign = campaignManager.findById(campaignId, bizId);
         businessCampaign.setBusinessCampaignStatus(CampaignStatusEnum.P);
         save(businessCampaign);
     }
@@ -189,25 +189,25 @@ public class BusinessCampaignService {
     }
 
     public List<CampaignEntity> findBy(String bizId) {
-        return businessCampaignManager.findBy(bizId);
+        return campaignManager.findBy(bizId);
     }
 
     public List<CampaignEntity> findAllPendingApproval() {
-        return businessCampaignManager.findAllPendingApproval(limit);
+        return campaignManager.findAllPendingApproval(limit);
     }
 
     public List<CampaignEntity> findCampaignWithStatus(CampaignStatusEnum businessCampaignStatus) {
-        return businessCampaignManager.findCampaignWithStatus(limit, businessCampaignStatus);
+        return campaignManager.findCampaignWithStatus(limit, businessCampaignStatus);
     }
 
     public long countPendingApproval() {
-        return businessCampaignManager.countPendingApproval();
+        return campaignManager.countPendingApproval();
     }
 
     public void updateCampaignStatus(
             String campaignId,
             UserLevelEnum userLevel,
             CampaignStatusEnum businessCampaignStatus) {
-        businessCampaignManager.updateCampaignStatus(campaignId, userLevel, businessCampaignStatus);
+        campaignManager.updateCampaignStatus(campaignId, userLevel, businessCampaignStatus);
     }
 }

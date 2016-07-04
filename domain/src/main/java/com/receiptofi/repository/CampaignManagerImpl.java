@@ -35,8 +35,8 @@ import java.util.List;
         "PMD.LongVariable"
 })
 @Repository
-public class BusinessCampaignManagerImpl implements BusinessCampaignManager {
-    private static final Logger LOG = LoggerFactory.getLogger(BusinessCampaignManagerImpl.class);
+public class CampaignManagerImpl implements CampaignManager {
+    private static final Logger LOG = LoggerFactory.getLogger(CampaignManagerImpl.class);
     private static final String TABLE = BaseEntity.getClassAnnotationValue(
             CampaignEntity.class,
             Document.class,
@@ -45,7 +45,7 @@ public class BusinessCampaignManagerImpl implements BusinessCampaignManager {
     private MongoTemplate mongoTemplate;
 
     @Autowired
-    public BusinessCampaignManagerImpl(MongoTemplate mongoTemplate) {
+    public CampaignManagerImpl(MongoTemplate mongoTemplate) {
         this.mongoTemplate = mongoTemplate;
     }
 
