@@ -112,6 +112,15 @@ public class BusinessCampaignService {
                 commentService.save(comment);
                 bce.setAdditionalInfo(comment);
             }
+            switch(bce.getBusinessCampaignStatus()) {
+                case A:
+                case P:
+                    bce.setBusinessCampaignStatus(BusinessCampaignStatusEnum.N);
+                    break;
+                default:
+                    break;
+            }
+
             save(bce);
 
             couponCampaign.setCampaignId(bce.getId())
@@ -138,6 +147,15 @@ public class BusinessCampaignService {
                 .setText(businessCampaign.getAdditionalInfo().getText());
     }
 
+    /**
+     * Note: All campaign and coupons are uploaded by default to S3 ASAP.
+     *
+     * @param bufferedImage
+     * @param image
+     * @param fileSystems
+     * @return
+     * @throws IOException
+     */
     public Collection<FileSystemEntity> deleteAndCreateNewImage(
             BufferedImage bufferedImage,
             UploadDocumentImage image,
@@ -176,6 +194,10 @@ public class BusinessCampaignService {
 
     public List<BusinessCampaignEntity> findAllPendingApproval() {
         return businessCampaignManager.findAllPendingApproval(limit);
+    }
+
+    public List<BusinessCampaignEntity> findCampaignWithStatus(BusinessCampaignStatusEnum businessCampaignStatus) {
+        return businessCampaignManager.findCampaignWithStatus(limit, businessCampaignStatus);
     }
 
     public long countPendingApproval() {
