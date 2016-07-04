@@ -249,6 +249,7 @@ public class BusinessCampaignFlowActions {
     }
 
     public boolean isCampaignPendingApproval(CouponCampaign couponCampaign) {
-        return couponCampaign.getBusinessCampaignStatus() == BusinessCampaignStatusEnum.P;
+        return couponCampaign.getBusinessCampaignStatus() == BusinessCampaignStatusEnum.P
+                || couponCampaign.getBusinessCampaignStatus() == BusinessCampaignStatusEnum.A;
     }
 }

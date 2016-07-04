@@ -82,21 +82,25 @@
                     <div class="row_field">
                         <form:label path="freeText" cssClass="profile_label"
                                 cssErrorClass="profile_label lb_error">Coupon Text</form:label>
-                        <form:input path="freeText" size="200" cssClass="name_txt" cssStyle="width: 250px;" readonly="true"/>
+                        <form:input path="freeText" size="200" cssClass="name_txt"
+                                cssStyle="width: 250px;" readonly="true"/>
                     </div>
                     <div class="row_field">
                         <form:label path="additionalInfo" cssClass="profile_label"
                                 cssErrorClass="profile_label lb_error">Additional Info</form:label>
-                        <form:textarea path="additionalInfo" cols="50" rows="5" cssClass="name_txt" cssStyle="width: 450px; height: 150px;" readonly="true"/>
+                        <form:textarea path="additionalInfo" cols="50" rows="5" cssClass="name_txt"
+                                cssStyle="width: 450px; height: 150px;" readonly="true"/>
                     </div>
                     <div class="row_field">
                         <form:label path="start" cssClass="profile_label"
                                 cssErrorClass="profile_label lb_error">Valid From</form:label>
-                        <form:input path="start" size="20" cssClass="name_txt" cssStyle="width: 100px;" readonly="true" />
+                        <form:input path="start" size="20" cssClass="name_txt"
+                                cssStyle="width: 100px;" readonly="true" />
                         &nbsp;
                         <span style="padding: 10px 8px 8px 0; font-weight: bold">To</span>
                         &nbsp;
-                        <form:input path="end" size="20" cssClass="name_txt" cssStyle="width: 100px;" readonly="true" />
+                        <form:input path="end" size="20" cssClass="name_txt"
+                                cssStyle="width: 100px;" readonly="true" />
                         <c:if test="${couponCampaign.daysBetween gt -1}">
                             <span style="padding: 10px 8px 8px 0; font-weight: bold">&nbsp; Duration <c:out value="${couponCampaign.daysBetween}" /> Days</span>
                         </c:if>
@@ -104,27 +108,30 @@
                     <div class="row_field">
                         <form:label path="live" cssClass="profile_label"
                                 cssErrorClass="profile_label lb_error">First Available</form:label>
-                        <form:input path="live" size="20" cssClass="name_txt" cssStyle="width: 100px;" readonly="true" />
+                        <form:input path="live" size="20" cssClass="name_txt"
+                                cssStyle="width: 100px;" readonly="true" />
                     </div>
                     <div id="fine-uploader-validation" class="upload-text"></div>
                     <div class="row_field">
                         <form:label path="distributionPercent" cssClass="profile_label"
                                 cssErrorClass="profile_label lb_error" cssStyle="width: 300px;">% Of Customers Receiving Coupons:</form:label>
-                        <form:input path="distributionPercent" size="20" cssClass="name_txt" cssStyle="border: 0;" readonly="true"/>
+                        <form:input path="distributionPercent" size="20"
+                                cssClass="name_txt" cssStyle="border: 0;" readonly="true"/>
                     </div>
                     <div id="container"></div>
                     <div class="full">
-                    <c:if test="${couponCampaign.businessCampaignStatus ne 'N'}">
                     <div class="row_field">
                         <form:label path="businessCampaignStatus" cssClass="profile_label"
                                 cssErrorClass="profile_label lb_error">Current State</form:label>
-                        <form:input path="businessCampaignStatus.description" size="20" cssClass="name_txt" cssStyle="width: 200px; border: 0;" readonly="true" />
+                        <form:input path="businessCampaignStatus.description" size="20"
+                                cssClass="name_txt" cssStyle="width: 400px; border: 0;" readonly="true" />
                     </div>
-                    </c:if>
                     <c:choose>
                     <c:when test="${couponCampaign.businessCampaignStatus ne 'L'}">
+                        <c:if test="${couponCampaign.businessCampaignStatus ne 'P' && couponCampaign.businessCampaignStatus ne 'A'}">
                         <input type="submit" value="CONFIRM" class="read_btn" name="_eventId_confirm"
                                 style="background: #2c97de; margin: 77px 10px 0 0;">
+                        </c:if>
                         <input type="submit" value="REVISE" class="read_btn" name="_eventId_revise"
                                 style="background: #2c97de; margin: 77px 10px 0 0;">
                         <input type="submit" value="CANCEL" class="read_btn" name="_eventId_cancel"
