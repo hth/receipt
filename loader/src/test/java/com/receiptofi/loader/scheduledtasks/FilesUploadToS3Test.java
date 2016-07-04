@@ -25,6 +25,7 @@ import com.receiptofi.domain.DocumentEntity;
 import com.receiptofi.domain.FileSystemEntity;
 import com.receiptofi.loader.service.AffineTransformService;
 import com.receiptofi.loader.service.AmazonS3Service;
+import com.receiptofi.service.BusinessCampaignService;
 import com.receiptofi.service.CouponService;
 import com.receiptofi.service.CronStatsService;
 import com.receiptofi.service.DocumentService;
@@ -90,6 +91,7 @@ public class FilesUploadToS3Test {
     @Mock private BufferedImage bufferedImage;
     @Mock private CronStatsService cronStatsService;
     @Mock private CouponService couponService;
+    @Mock private BusinessCampaignService businessCampaignService;
 
     private FilesUploadToS3 filesUploadToS3;
     private Properties prop = new Properties();
@@ -126,7 +128,8 @@ public class FilesUploadToS3Test {
                 fileSystemService,
                 affineTransformService,
                 cronStatsService,
-                couponService);
+                couponService,
+                businessCampaignService);
         when(gridFSDBFile.getInputStream()).thenReturn(inputStream);
         when(fileDBService.getFile(anyString())).thenReturn(gridFSDBFile);
 

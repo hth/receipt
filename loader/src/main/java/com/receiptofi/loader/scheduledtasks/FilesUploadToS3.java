@@ -1,14 +1,19 @@
 package com.receiptofi.loader.scheduledtasks;
 
+import static com.receiptofi.service.ImageSplitService.PNG_FORMAT;
+
 import com.mongodb.gridfs.GridFSDBFile;
 
 import com.receiptofi.domain.BaseEntity;
+import com.receiptofi.domain.BusinessCampaignEntity;
 import com.receiptofi.domain.CouponEntity;
 import com.receiptofi.domain.CronStatsEntity;
 import com.receiptofi.domain.DocumentEntity;
 import com.receiptofi.domain.FileSystemEntity;
+import com.receiptofi.domain.types.BusinessCampaignStatusEnum;
 import com.receiptofi.loader.service.AffineTransformService;
 import com.receiptofi.loader.service.AmazonS3Service;
+import com.receiptofi.service.BusinessCampaignService;
 import com.receiptofi.service.CouponService;
 import com.receiptofi.service.CronStatsService;
 import com.receiptofi.service.DocumentService;
@@ -42,6 +47,8 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 
+import javax.imageio.ImageIO;
+
 /**
  * User: hitender
  * Date: 11/28/14 11:35 AM
@@ -70,6 +77,7 @@ public class FilesUploadToS3 {
     private AffineTransformService affineTransformService;
     private CronStatsService cronStatsService;
     private CouponService couponService;
+    private BusinessCampaignService businessCampaignService;
 
     @Autowired
     public FilesUploadToS3(
@@ -92,7 +100,8 @@ public class FilesUploadToS3 {
             FileSystemService fileSystemService,
             AffineTransformService affineTransformService,
             CronStatsService cronStatsService,
-            CouponService couponService) {
+            CouponService couponService,
+            BusinessCampaignService businessCampaignService) {
         this.bucketName = bucketName;
         this.receiptFolderName = receiptFolderName;
         this.couponFolderName = couponFolderName;
@@ -106,6 +115,7 @@ public class FilesUploadToS3 {
         this.affineTransformService = affineTransformService;
         this.cronStatsService = cronStatsService;
         this.couponService = couponService;
+        this.businessCampaignService = businessCampaignService;
     }
 
     /**
@@ -300,6 +310,104 @@ public class FilesUploadToS3 {
         }
     }
 
+    /**
+     * Upload approved Campaign coupon type Business to S3.
+     * Note: Cron string blow run every 1 minute.
+     */
+    @Scheduled (fixedDelayString = "${loader.FilesUploadToS3.campaignUpload}")
+    public void campaignUpload() {
+        CronStatsEntity cronStats = new CronStatsEntity(
+                FilesUploadToS3.class.getName(),
+                "campaignUpload",
+                filesUploadSwitch);
+
+        /**
+         * TODO prevent test db connection from dev. As this moves files to 'dev' bucket in S3 and test environment fails to upload to 'test' bucket.
+         * NOTE: This is one of the reason you should not connect to test database from dev environment. Or have a
+         * fail safe to prevent uploading to dev bucket when connected to test database.
+         */
+        if ("OFF".equalsIgnoreCase(filesUploadSwitch)) {
+            LOG.info("feature is {}", filesUploadSwitch);
+            return;
+        }
+
+        List<BusinessCampaignEntity> campaigns = businessCampaignService.findCampaignWithStatus(BusinessCampaignStatusEnum.A);
+        if (campaigns.isEmpty()) {
+            /** No campaigns to upload. */
+            return;
+        } else {
+            LOG.info("Campaigns to upload to cloud, count={}", campaigns.size());
+        }
+
+        int success = 0, failure = 0, skipped = 0;
+        try {
+            for (BusinessCampaignEntity campaign : campaigns) {
+                try {
+                    Collection<FileSystemEntity> fileSystems = campaign.getFileSystemEntities();
+                    if (null != fileSystems) {
+                        for (FileSystemEntity fileSystem : fileSystems) {
+                            GridFSDBFile fs = fileDBService.getFile(fileSystem.getBlobId());
+                            if (null != fs) {
+                                success = uploadToS3(success, campaign, fileSystem, fs);
+                            } else {
+                                //TODO keep an eye on this issue. Should not happen.
+                                skipped++;
+                                LOG.error("Skipped file={} as it does not exists in GridFSDBFile", fileSystem.getBlobId());
+                            }
+                        }
+                        /** Update image path from local to cloud (S3) after coupon upload. */
+                        fileDBService.deleteHard(campaign.getFileSystemEntities());
+                    } else {
+                        skipped++;
+                        LOG.info("Skipped as campaign does not contain any image campaignId={}", campaign.getId());
+                    }
+
+                    campaign.setBusinessCampaignStatus(BusinessCampaignStatusEnum.S);
+                    businessCampaignService.save(campaign);
+                } catch (AmazonServiceException e) {
+                    LOG.error("Amazon S3 rejected request with an error response for some reason " +
+                                    "document:{} " +
+                                    "Error Message:{} " +
+                                    "HTTP Status Code:{} " +
+                                    "AWS Error Code:{} " +
+                                    "Error Type:{} " +
+                                    "Request ID:{}",
+                            campaign,
+                            e.getLocalizedMessage(),
+                            e.getStatusCode(),
+                            e.getErrorCode(),
+                            e.getErrorType(),
+                            e.getRequestId(),
+                            e);
+
+                    failure++;
+                } catch (AmazonClientException e) {
+                    LOG.error("Client encountered an internal error while trying to communicate with S3 " +
+                                    "document:{} " +
+                                    "reason={}",
+                            campaign,
+                            e.getLocalizedMessage(),
+                            e);
+
+                    failure++;
+                } catch (Exception e) {
+                    LOG.error("S3 image upload failure document={} reason={}", campaign, e.getLocalizedMessage(), e);
+
+                    failure++;
+
+                    for (FileSystemEntity fileSystem : campaign.getFileSystemEntities()) {
+                        amazonS3Service.getS3client().deleteObject(bucketName, couponFolderName + "/" + fileSystem.getKey());
+                        LOG.warn("On failure removed files from cloud filename={}", fileSystem.getKey());
+                    }
+                }
+            }
+        } catch (Exception e) {
+            LOG.error("Error S3 uploading document reason={}", e.getLocalizedMessage(), e);
+        } finally {
+            saveUploadStats(cronStats, success, failure, skipped, campaigns.size());
+        }
+    }
+
     private void saveUploadStats(CronStatsEntity cronStats, int success, int failure, int skipped, int size) {
         cronStats.addStats("success", success);
         cronStats.addStats("skipped", skipped);
@@ -311,8 +419,14 @@ public class FilesUploadToS3 {
     }
 
     private int uploadToS3(int success, BaseEntity baseEntity, FileSystemEntity fileSystem, GridFSDBFile fs) throws IOException {
-        PutObjectRequest putObject = createPutObjectRequest(baseEntity, fileSystem, fs);
-        amazonS3Service.getS3client().putObject(putObject);
+        PutObjectRequest putObject;
+        if (baseEntity instanceof DocumentEntity) {
+            putObject = createPutObjectRequest(baseEntity, fileSystem, fs);
+            amazonS3Service.getS3client().putObject(putObject);
+        } else if(baseEntity instanceof CouponEntity || baseEntity instanceof BusinessCampaignEntity) {
+            putObject = createPutObjectRequestWithoutDecreaseInResolution(baseEntity, fileSystem, fs);
+            amazonS3Service.getS3client().putObject(putObject);
+        }
 
         /**
          * Reason: Your socket connection to the server was not read from or written to within
@@ -325,7 +439,11 @@ public class FilesUploadToS3 {
         return success;
     }
 
-    private PutObjectRequest createPutObjectRequest(BaseEntity baseEntity, FileSystemEntity fileSystem, GridFSDBFile fs) throws IOException {
+    private PutObjectRequest createPutObjectRequest(
+            BaseEntity baseEntity,
+            FileSystemEntity fileSystem,
+            GridFSDBFile fs
+    ) throws IOException {
         File scaledImage = FileUtil.createTempFile(
                 FilenameUtils.getBaseName(fileSystem.getOriginalFilename()),
                 FileUtil.getFileExtension(fileSystem.getOriginalFilename()));
@@ -346,6 +464,26 @@ public class FilesUploadToS3 {
         }
         updateFileSystemWithScaledImageForS3(fileSystem, fileForS3);
         return getPutObjectRequest(baseEntity, fileSystem, fileForS3);
+    }
+
+    private PutObjectRequest createPutObjectRequestWithoutDecreaseInResolution(
+            BaseEntity baseEntity,
+            FileSystemEntity fileSystem,
+            GridFSDBFile fs
+    ) throws IOException {
+        File file = FileUtil.createTempFile(
+                FilenameUtils.getBaseName(fileSystem.getOriginalFilename()),
+                FileUtil.getFileExtension(fileSystem.getOriginalFilename()));
+
+        LOG.info("fileSystemID={} filename={} newFilename={} originalLength={} newLength={}",
+                fileSystem.getId(),
+                fileSystem.getOriginalFilename(),
+                fileSystem.getBlobId(),
+                FileUtil.fileSizeInMB(fileSystem.getFileLength()),
+                FileUtil.fileSizeInMB(file.length()));
+
+        ImageIO.write(imageSplitService.bufferedImage(fs.getInputStream()), PNG_FORMAT, file);
+        return getPutObjectRequest(baseEntity, fileSystem, file);
     }
 
     /**
@@ -448,7 +586,7 @@ public class FilesUploadToS3 {
         if (baseEntity instanceof DocumentEntity) {
             putObject = new PutObjectRequest(bucketName, receiptFolderName + "/" + fileSystem.getKey(), file);
             putObject.setMetadata(getObjectMetadata(file.length(), baseEntity, fileSystem));
-        } else if (baseEntity instanceof CouponEntity) {
+        } else if (baseEntity instanceof CouponEntity || baseEntity instanceof BusinessCampaignEntity) {
             putObject = new PutObjectRequest(bucketName, couponFolderName + "/" + fileSystem.getKey(), file);
             putObject.setMetadata(getObjectMetadata(file.length(), baseEntity, fileSystem));
         }
@@ -476,6 +614,10 @@ public class FilesUploadToS3 {
         } else if (baseEntity instanceof CouponEntity) {
             metaData.setContentType(fileSystem.getContentType());
             metaData.addUserMetadata("X-RID", ((CouponEntity) baseEntity).getRid());
+            metaData.addUserMetadata("X-CL", String.valueOf(fileLength));
+        } else if (baseEntity instanceof BusinessCampaignEntity) {
+            metaData.setContentType(fileSystem.getContentType());
+            metaData.addUserMetadata("X-RID", ((BusinessCampaignEntity) baseEntity).getRid());
             metaData.addUserMetadata("X-CL", String.valueOf(fileLength));
         }
 
