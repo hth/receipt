@@ -40,6 +40,7 @@ public class CloudFileEntity extends BaseEntity {
 
     /**
      * New instance created is marked as deleted.
+     *
      * @param key
      * @return
      */

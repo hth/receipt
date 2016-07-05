@@ -29,8 +29,17 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
 public class EvalFeedbackService {
     private static final Logger LOG = LoggerFactory.getLogger(EvalFeedbackService.class);
 
-    @Autowired EvalFeedbackManager evalFeedbackManager;
-    @Autowired FileDBService fileDBService;
+    private EvalFeedbackManager evalFeedbackManager;
+    private FileDBService fileDBService;
+
+    @Autowired
+    public EvalFeedbackService(
+            EvalFeedbackManager evalFeedbackManager,
+            FileDBService fileDBService
+    ) {
+        this.evalFeedbackManager = evalFeedbackManager;
+        this.fileDBService = fileDBService;
+    }
 
     public void addFeedback(String comment, int rating, CommonsMultipartFile fileData, String receiptUserId) {
         String blobId = StringUtils.EMPTY;
