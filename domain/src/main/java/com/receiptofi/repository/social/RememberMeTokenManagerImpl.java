@@ -1,6 +1,7 @@
 package com.receiptofi.repository.social;
 
 import static org.springframework.data.mongodb.core.query.Criteria.where;
+import static org.springframework.data.mongodb.core.query.Query.query;
 
 import com.receiptofi.domain.BaseEntity;
 import com.receiptofi.domain.social.RememberMeTokenEntity;
@@ -11,8 +12,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -37,13 +36,12 @@ public class RememberMeTokenManagerImpl implements RememberMeTokenManager {
 
     @Override
     public RememberMeTokenEntity findBySeries(String series) {
-        Criteria criteria = where("S").is(series);
-        return mongoTemplate.findOne(Query.query(criteria), RememberMeTokenEntity.class, TABLE);
+        return mongoTemplate.findOne(query(where("S").is(series)), RememberMeTokenEntity.class, TABLE);
     }
 
     @Override
     public void deleteTokensWithUsername(String username) {
-        mongoTemplate.remove(Query.query(where("UN").is(username)), TABLE);
+        mongoTemplate.remove(query(where("UN").is(username)), TABLE);
     }
 
     @Override
