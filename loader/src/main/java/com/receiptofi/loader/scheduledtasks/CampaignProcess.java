@@ -77,6 +77,8 @@ public class CampaignProcess {
     /**
      * Create coupons from campaign and mark Campaign as LIVE.
      * Note: Cron string blow run every 2 minute.
+     *
+     * @see <a href="http://docs.spring.io/spring/docs/current/spring-framework-reference/html/scheduling.html#scheduling-annotation-support-scheduled">http://docs.spring.io/spring/docs/current/spring-framework-reference/html/scheduling.html#scheduling-annotation-support-scheduled</a>
      */
     @Scheduled (fixedDelayString = "${loader.Campaign.setToLive}")
     public void setToLiveCampaign() {

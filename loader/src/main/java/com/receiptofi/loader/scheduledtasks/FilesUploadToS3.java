@@ -121,6 +121,8 @@ public class FilesUploadToS3 {
     /**
      * Upload Receipt to S3.
      * Note: Cron string blow run every 5 minutes.
+     *
+     * @see <a href="http://docs.spring.io/spring/docs/current/spring-framework-reference/html/scheduling.html#scheduling-annotation-support-scheduled">http://docs.spring.io/spring/docs/current/spring-framework-reference/html/scheduling.html#scheduling-annotation-support-scheduled</a>
      */
     @Scheduled (fixedDelayString = "${loader.FilesUploadToS3.receiptUpload}")
     public void receiptUpload() {
@@ -170,6 +172,7 @@ public class FilesUploadToS3 {
                                     fileSystem.getScaledFileLength());
                         }
                     }
+                    /** Mark image upload to cloud successful. */
                     documentService.cloudUploadSuccessful(document.getId());
                     fileDBService.deleteHard(document.getFileSystemEntities());
                 } catch (AmazonServiceException e) {
@@ -219,6 +222,8 @@ public class FilesUploadToS3 {
     /**
      * Upload Coupon type Individual to S3.
      * Note: Cron string blow run every 1 minute.
+     *
+     * @see <a href="http://docs.spring.io/spring/docs/current/spring-framework-reference/html/scheduling.html#scheduling-annotation-support-scheduled">http://docs.spring.io/spring/docs/current/spring-framework-reference/html/scheduling.html#scheduling-annotation-support-scheduled</a>
      */
     @Scheduled (fixedDelayString = "${loader.FilesUploadToS3.couponUpload}")
     public void couponUpload() {
@@ -313,6 +318,8 @@ public class FilesUploadToS3 {
     /**
      * Upload approved Campaign coupon type Business to S3.
      * Note: Cron string blow run every 1 minute.
+     *
+     * @see <a href="http://docs.spring.io/spring/docs/current/spring-framework-reference/html/scheduling.html#scheduling-annotation-support-scheduled">http://docs.spring.io/spring/docs/current/spring-framework-reference/html/scheduling.html#scheduling-annotation-support-scheduled</a>
      */
     @Scheduled (fixedDelayString = "${loader.FilesUploadToS3.campaignUpload}")
     public void campaignUpload() {
