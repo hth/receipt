@@ -215,6 +215,16 @@ public class BusinessCampaignFlowActions {
         }
     }
 
+    public void stopCampaign(String campaignId, String bizId) {
+        try {
+            campaignService.stopCampaign(campaignId, bizId);
+        } catch (Exception e) {
+            LOG.error("Error marking campaign stop id={} bizId={} reason={}",
+                    campaignId, bizId, e.getLocalizedMessage(), e);
+            throw new BusinessCampaignException("Error saving campaign", e);
+        }
+    }
+
     @SuppressWarnings ("unused")
     public String validateCampaignCoupon(CouponCampaign couponCampaign, MessageContext messageContext) {
         LOG.info("Validate campaign details rid={} bizId={} bizName={}",
@@ -250,6 +260,7 @@ public class BusinessCampaignFlowActions {
 
     public boolean isCampaignPendingApproval(CouponCampaign couponCampaign) {
         return couponCampaign.getCampaignStatus() == CampaignStatusEnum.P
-                || couponCampaign.getCampaignStatus() == CampaignStatusEnum.A;
+                || couponCampaign.getCampaignStatus() == CampaignStatusEnum.A
+                || couponCampaign.getCampaignStatus() == CampaignStatusEnum.L;
     }
 }

@@ -27,7 +27,7 @@ public class CouponService {
 
     @Autowired
     public CouponService(
-            @Value("${limit:10}")
+            @Value ("${limit:10}")
             int limit,
 
             CouponManager couponManager
@@ -52,5 +52,14 @@ public class CouponService {
 
     public void save(CouponEntity coupon) {
         couponManager.save(coupon);
+    }
+
+    /**
+     * Campaign coupons are marked inactive so that system removes them from distribution.
+     *
+     * @param campaignId
+     */
+    public void markCampaignCouponsInactive(String campaignId) {
+        couponManager.markCampaignCouponsInactive(campaignId);
     }
 }

@@ -14,4 +14,11 @@ public interface CouponManager extends RepositoryManager<CouponEntity> {
     List<CouponEntity> findCouponToUpload(int limit);
 
     void cloudUploadSuccessful(String id, String imagePathOnCloud);
+
+    /**
+     * Campaign coupons are marked inactive so that system removes them from distribution.
+     *
+     * @param campaignId
+     */
+    void markCampaignCouponsInactive(String campaignId);
 }

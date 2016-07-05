@@ -29,7 +29,8 @@ import javax.validation.constraints.NotNull;
 @Document (collection = "COUPON")
 @CompoundIndexes (value = {
         @CompoundIndex (name = "coupon_idx", def = "{'RID': -1}", background = true),
-        @CompoundIndex (name = "coupon_rid_initiated_idx", def = "{'RID': -1, 'IF': -1}", unique = true, background = true)
+        @CompoundIndex (name = "coupon_rid_initiated_idx", def = "{'RID': -1, 'IF': -1}", unique = true, background = true),
+        @CompoundIndex (name = "coupon_initiated_idx", def = "{'IF': -1}", unique = false, background = true)
 })
 public class CouponEntity extends BaseEntity {
 

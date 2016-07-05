@@ -48,6 +48,7 @@ public class CampaignService {
     private CommentService commentService;
     private FileDBService fileDBService;
     private FileSystemService fileSystemService;
+    private CouponService couponService;
 
     @Autowired
     public CampaignService(
@@ -57,12 +58,14 @@ public class CampaignService {
             CampaignManager campaignManager,
             CommentService commentService,
             FileDBService fileDBService,
-            FileSystemService fileSystemService) {
+            FileSystemService fileSystemService,
+            CouponService couponService) {
         this.limit = limit;
         this.campaignManager = campaignManager;
         this.commentService = commentService;
         this.fileDBService = fileDBService;
         this.fileSystemService = fileSystemService;
+        this.couponService = couponService;
     }
 
     public CampaignEntity findById(String campaignId, String bizId) {
@@ -140,6 +143,17 @@ public class CampaignService {
         CampaignEntity campaign = campaignManager.findById(campaignId, bizId);
         campaign.setCampaignStatus(CampaignStatusEnum.P);
         save(campaign);
+    }
+
+    public void stopCampaign(String campaignId, String bizId) {
+        CampaignEntity campaign = campaignManager.findById(campaignId, bizId);
+        if (null != campaign && campaign.getCampaignStatus() == CampaignStatusEnum.L) {
+            couponService.markCampaignCouponsInactive(campaign.getId());
+            campaign.setCampaignStatus(CampaignStatusEnum.E);
+            save(campaign);
+        } else {
+            LOG.error("Fail to end the campaignId={} bizId={}", campaignId, bizId);
+        }
     }
 
     private CommentEntity createNewComment(CouponCampaign businessCampaign) {

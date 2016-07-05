@@ -62,10 +62,18 @@
             <set name="conversationScope.campaignId" value="couponCampaign.campaignId" type="string" />
         </transition>
         <transition on="cancel" to="home" />
+        <transition on="stop_campaign" to="stopCampaign" />
     </view-state>
 
     <action-state id="completeCampaign">
         <evaluate expression="businessCampaignFlowActions.completeCampaign(couponCampaign.campaignId, couponCampaign.bizId)" />
+        <transition on-exception="com.receiptofi.web.flow.exception.BusinessCampaignException"
+                    to="campaignReview" />
+        <transition to="home"/>
+    </action-state>
+
+    <action-state id="stopCampaign">
+        <evaluate expression="businessCampaignFlowActions.stopCampaign(couponCampaign.campaignId, couponCampaign.bizId)" />
         <transition on-exception="com.receiptofi.web.flow.exception.BusinessCampaignException"
                     to="campaignReview" />
         <transition to="home"/>
