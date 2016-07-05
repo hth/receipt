@@ -15,7 +15,6 @@ package com.receiptofi.domain.types;
 public enum FileTypeEnum {
     R("R", "Receipt"),
     I("I", "Invoice"),
-    M("M", "Mileage"),
     F("F", "Feedback"),
     C("C", "Coupon");
 
