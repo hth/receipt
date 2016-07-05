@@ -48,8 +48,8 @@ public class FileSystemService {
         fileSystemManager.deleteSoft(fileSystems);
     }
 
-    public void deleteHard(FileSystemEntity fileSystemEntity) {
-        fileSystemManager.deleteHard(fileSystemEntity);
+    public void deleteHard(FileSystemEntity fileSystem) {
+        fileSystemManager.deleteHard(fileSystem);
     }
 
     public void deleteHard(Collection<FileSystemEntity> fileSystems) {
