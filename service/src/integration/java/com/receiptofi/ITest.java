@@ -186,7 +186,7 @@ public class ITest extends RealMongoForTests {
 
         commentManager = new CommentManagerImpl(getMongoTemplate());
         commentService = new CommentService(commentManager);
-        fileSystemService = new FileSystemService(fileSystemManager);
+        fileSystemService = new FileSystemService(fileSystemManager, cloudFileService);
 
         cloudFileManager = new CloudFileManagerImpl(getMongoTemplate());
         cloudFileService = new CloudFileService(cloudFileManager);

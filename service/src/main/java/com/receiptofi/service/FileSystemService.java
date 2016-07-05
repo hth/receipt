@@ -24,10 +24,15 @@ import java.util.List;
 @Service
 public class FileSystemService {
     private FileSystemManager fileSystemManager;
+    private CloudFileService cloudFileService;
 
     @Autowired
-    public FileSystemService(FileSystemManager fileSystemManager) {
+    public FileSystemService(
+            FileSystemManager fileSystemManager,
+            CloudFileService cloudFileService
+    ) {
         this.fileSystemManager = fileSystemManager;
+        this.cloudFileService = cloudFileService;
     }
 
     public void save(FileSystemEntity fileSystem) {
