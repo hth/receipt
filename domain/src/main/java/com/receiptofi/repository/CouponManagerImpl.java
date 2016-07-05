@@ -91,4 +91,13 @@ public class CouponManagerImpl implements CouponManager {
                 CouponEntity.class
         );
     }
+
+    @Override
+    public void markCampaignCouponInactive(String campaignId) {
+        mongoTemplate.updateFirst(
+                query(where("IF").is(campaignId)),
+                entityUpdate(update("A", false)),
+                CouponEntity.class
+        );
+    }
 }

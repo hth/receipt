@@ -14,4 +14,6 @@ public interface CouponManager extends RepositoryManager<CouponEntity> {
     List<CouponEntity> findCouponToUpload(int limit);
 
     void cloudUploadSuccessful(String id, String imagePathOnCloud);
+
+    void markCampaignCouponInactive(String campaignId);
 }

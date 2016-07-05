@@ -137,6 +137,10 @@
                         <input type="submit" value="CANCEL" class="read_btn" name="_eventId_cancel"
                                 style="background: #FC462A; margin: 77px 10px 0 0;">
                     </c:when>
+                    <c:when test="${couponCampaign.campaignStatus eq 'L'}">
+                        <input type="submit" value="STOP CAMPAIGN" class="read_btn" name="_eventId_stop_campaign"
+                                style="background: #FC462A; margin: 77px 10px 0 0;">
+                    </c:when>
                     <c:otherwise>
                         <input type="submit" value="HOME" class="read_btn" name="_eventId_cancel"
                                 style="background: #2c97de; margin: 77px 10px 0 0;">

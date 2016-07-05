@@ -113,9 +113,9 @@ public class CampaignProcess {
                 String businessName = bizName.getBusinessName();
 
                 StringBuilder sb = new StringBuilder();
-                Collection<FileSystemEntity> fileSystemEntities = campaign.getFileSystemEntities();
-                if (null != fileSystemEntities) {
-                    for (FileSystemEntity fileSystem : fileSystemEntities) {
+                Collection<FileSystemEntity> fileSystems = campaign.getFileSystemEntities();
+                if (null != fileSystems) {
+                    for (FileSystemEntity fileSystem : fileSystems) {
                         sb.append(fileSystem.getKey()).append(",");
                     }
                 }
