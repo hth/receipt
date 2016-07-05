@@ -574,7 +574,6 @@
             <spring:eval var="isReceipt" expression="receiptDocumentForm.receiptDocument.documentOfType == T(com.receiptofi.domain.types.DocumentOfTypeEnum).RECEIPT" />
             <c:if test="${isReceipt}">
                 $('#activeReceipt').removeClass('hidden');
-                $('#activeMileage').hide();
                 $('#restricted-fine-uploader').hide();
                 $('#documentId').prop('disabled', true);
             </c:if>
@@ -582,16 +581,7 @@
             <spring:eval var="isInvoice" expression="receiptDocumentForm.receiptDocument.documentOfType == T(com.receiptofi.domain.types.DocumentOfTypeEnum).INVOICE" />
             <c:if test="${isInvoice}">
                 $('#activeReceipt').removeClass('hidden');
-                $('#activeMileage').hide();
                 $('#restricted-fine-uploader').hide();
-                $('#documentId').prop('disabled', true);
-            </c:if>
-
-            <spring:eval var="isMileage" expression="receiptDocumentForm.receiptDocument.documentOfType == T(com.receiptofi.domain.types.DocumentOfTypeEnum).MILEAGE" />
-            <c:if test="${isMileage}">
-                $('#activeReceipt').hide();
-                $('#activeMileage').removeClass('hidden');
-                $('#restricted-fine-uploader').removeClass('hidden');
                 $('#documentId').prop('disabled', true);
             </c:if>
         </c:if>
@@ -603,7 +593,6 @@
             var valueSelected = this.value;
             if(valueSelected == 'RECEIPT') {
                 $('#activeReceipt').removeClass('hidden');
-                $('#activeMileage').hide();
                 $('#restricted-fine-uploader').hide();
                 $("#submit").focus();
                 $('#documentId').prop('disabled', true);
@@ -611,16 +600,7 @@
 
             if(valueSelected == 'INVOICE') {
                 $('#activeReceipt').removeClass('hidden');
-                $('#activeMileage').hide();
                 $('#restricted-fine-uploader').hide();
-                $('#documentId').prop('disabled', true);
-            }
-
-            if(valueSelected == 'MILEAGE') {
-                $('#activeReceipt').hide();
-                $('#activeMileage').removeClass('hidden');
-                $('#restricted-fine-uploader').removeClass('hidden');
-                $("#submitMileage").focus();
                 $('#documentId').prop('disabled', true);
             }
         });
