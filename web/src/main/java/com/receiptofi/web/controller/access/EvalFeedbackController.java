@@ -16,7 +16,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
 import java.util.Enumeration;
@@ -53,14 +52,14 @@ public class EvalFeedbackController {
     @Autowired EvalFeedbackValidator evalFeedbackValidator;
 
     @RequestMapping (method = RequestMethod.GET, value = "/feedback")
-    public ModelAndView loadForm(
+    public String loadForm(
             @ModelAttribute ("evalFeedbackForm")
             EvalFeedbackForm evalFeedbackForm
     ) {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        LOG.info("Feedback loadForm: " + receiptUser.getRid());
-        return new ModelAndView(nextPage);
+        LOG.info("Feedback loadForm rid={}", receiptUser.getRid());
+        return nextPage;
     }
 
     @RequestMapping (method = RequestMethod.POST, value = "/feedback")

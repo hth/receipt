@@ -31,7 +31,7 @@
             <meta http-equiv="Refresh" content="3;url=${pageContext.request.contextPath}/emp/landing.htm">
         </c:when>
         <c:when test="${isTechnician}">
-            <meta http-equiv="Refresh" content="3;url=${pageContext.request.contextPath}/emp/landing.htm">
+            <meta http-equiv="Refresh" content="3;url=${pageContext.request.contextPath}/emp/receipt/landing.htm">
         </c:when>
         <c:otherwise>
             <meta http-equiv="Refresh" content="3;url=${pageContext.request.contextPath}/access/landing.htm">
@@ -159,7 +159,7 @@
                 </a>
                 </c:when>
                 <c:when test="${isTechnician}">
-                <a href="${pageContext.request.contextPath}/emp/landing.htm">
+                <a href="${pageContext.request.contextPath}/emp/receipt/landing.htm">
                     Redirecting to home page in couple of seconds... If not redirected then please click here
                 </a>
                 </c:when>
