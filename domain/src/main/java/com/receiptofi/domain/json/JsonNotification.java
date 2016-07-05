@@ -72,7 +72,7 @@ public class JsonNotification {
         this.id = notification.getId();
         this.message = notification.getMessage();
         this.notify = notification.isNotify();
-        this.notificationType = notification.getNotificationType().getName();
+        this.notificationType = notification.getNotificationType().name;
         this.notificationGroup = notification.getNotificationGroup().getName();
         this.referenceId = notification.getReferenceId() == null ? "" : notification.getReferenceId();
         this.markedRead = notification.isMarkedRead();
