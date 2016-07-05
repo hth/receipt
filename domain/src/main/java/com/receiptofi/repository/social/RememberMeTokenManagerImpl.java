@@ -47,12 +47,16 @@ public class RememberMeTokenManagerImpl implements RememberMeTokenManager {
     }
 
     @Override
-    public void save(RememberMeTokenEntity rememberMeTokenEntity) {
-        mongoTemplate.save(rememberMeTokenEntity);
+    public void save(RememberMeTokenEntity rememberMeToken) {
+        try {
+            mongoTemplate.save(rememberMeToken);
+        } catch (Exception e) {
+            LOG.error("Failed saving rememberMeToken un={} reason={}", rememberMeToken.getUsername(), e.getLocalizedMessage(), e);
+        }
     }
 
     @Override
-    public void deleteHard(RememberMeTokenEntity rememberMeTokenEntity) {
-        mongoTemplate.remove(rememberMeTokenEntity);
+    public void deleteHard(RememberMeTokenEntity rememberMeToken) {
+        mongoTemplate.remove(rememberMeToken);
     }
 }
