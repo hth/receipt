@@ -128,9 +128,9 @@ public class NotificationManagerImpl implements NotificationManager {
                 query(where("NM").is(NotificationMarkerEnum.P)
                         .orOperator(
                                 where("C").lte(DateUtil.getDateMinusMinutes(1)).and("NNE").is(NotificationTypeEnum.PUSH_NOTIFICATION),
-                                where("C").lte(DateUtil.getDateMinusMinutes(5)).and("NNE").is(NotificationTypeEnum.EXPENSE_REPORT),
+                                where("C").lte(DateUtil.getDateMinusMinutes(4)).and("NNE").is(NotificationTypeEnum.EXPENSE_REPORT),
                                 where("C").lte(DateUtil.getDateMinusMinutes(1)).and("NNE").is(NotificationTypeEnum.DOCUMENT_REJECTED),
-                                where("C").lte(DateUtil.getDateMinusMinutes(10)).and("NNE").is(NotificationTypeEnum.RECEIPT)
+                                where("C").lte(DateUtil.getDateMinusMinutes(4)).and("NNE").is(NotificationTypeEnum.RECEIPT)
                         )
                         .and("NS").is(NotificationStateEnum.F)
                         .and("CN").lt(notificationRetryCount)
