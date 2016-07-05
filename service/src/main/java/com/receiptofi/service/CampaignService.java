@@ -148,7 +148,7 @@ public class CampaignService {
     public void stopCampaign(String campaignId, String bizId) {
         CampaignEntity campaign = campaignManager.findById(campaignId, bizId);
         if (null != campaign && campaign.getCampaignStatus() == CampaignStatusEnum.L) {
-            couponService.markCampaignCouponInactive(campaign.getId());
+            couponService.markCampaignCouponsInactive(campaign.getId());
             campaign.setCampaignStatus(CampaignStatusEnum.E);
             save(campaign);
         } else {

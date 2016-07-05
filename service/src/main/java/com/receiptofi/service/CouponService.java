@@ -55,11 +55,11 @@ public class CouponService {
     }
 
     /**
-     * Campaign coupons are marked inactive and removed from dsitribution.
+     * Campaign coupons are marked inactive so that system removes them from distribution.
      *
      * @param campaignId
      */
-    public void markCampaignCouponInactive(String campaignId) {
-        couponManager.markCampaignCouponInactive(campaignId);
+    public void markCampaignCouponsInactive(String campaignId) {
+        couponManager.markCampaignCouponsInactive(campaignId);
     }
 }

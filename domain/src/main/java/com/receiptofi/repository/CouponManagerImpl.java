@@ -5,6 +5,8 @@ import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.*;
 import static org.springframework.data.mongodb.core.query.Update.update;
 
+import com.mongodb.WriteResult;
+
 import com.receiptofi.domain.BaseEntity;
 import com.receiptofi.domain.CouponEntity;
 import com.receiptofi.domain.DocumentEntity;
@@ -93,11 +95,13 @@ public class CouponManagerImpl implements CouponManager {
     }
 
     @Override
-    public void markCampaignCouponInactive(String campaignId) {
-        mongoTemplate.updateFirst(
+    public void markCampaignCouponsInactive(String campaignId) {
+        WriteResult writeResult = mongoTemplate.updateMulti(
                 query(where("IF").is(campaignId)),
                 entityUpdate(update("A", false)),
                 CouponEntity.class
         );
+
+        LOG.info("Marked inactive coupon count={} campaignId={}", writeResult.getN(), campaignId);
     }
 }
