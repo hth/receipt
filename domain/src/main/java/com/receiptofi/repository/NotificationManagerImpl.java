@@ -1,9 +1,14 @@
 package com.receiptofi.repository;
 
 
+import static com.receiptofi.domain.types.NotificationTypeEnum.DOCUMENT_REJECTED;
+import static com.receiptofi.domain.types.NotificationTypeEnum.EXPENSE_REPORT;
+import static com.receiptofi.domain.types.NotificationTypeEnum.PUSH_NOTIFICATION;
+import static com.receiptofi.domain.types.NotificationTypeEnum.RECEIPT;
 import static com.receiptofi.repository.util.AppendAdditionalFields.entityUpdate;
 import static com.receiptofi.repository.util.AppendAdditionalFields.isActive;
 import static com.receiptofi.repository.util.AppendAdditionalFields.isNotDeleted;
+import static org.springframework.data.domain.Sort.Direction;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
 import static org.springframework.data.mongodb.core.query.Update.update;
@@ -14,7 +19,6 @@ import com.receiptofi.domain.BaseEntity;
 import com.receiptofi.domain.NotificationEntity;
 import com.receiptofi.domain.types.NotificationMarkerEnum;
 import com.receiptofi.domain.types.NotificationStateEnum;
-import com.receiptofi.domain.types.NotificationTypeEnum;
 import com.receiptofi.domain.types.PaginationEnum;
 import com.receiptofi.utils.DateUtil;
 
@@ -79,7 +83,7 @@ public class NotificationManagerImpl implements NotificationManager {
                                 isActive(),
                                 isNotDeleted()
                         )
-        ).skip(start).with(new Sort(Sort.Direction.DESC, "C"));
+        ).skip(start).with(new Sort(Direction.DESC, "C"));
         if (limit != PaginationEnum.ALL.getLimit()) {
             query.limit(limit);
         }
@@ -127,10 +131,10 @@ public class NotificationManagerImpl implements NotificationManager {
         return mongoTemplate.find(
                 query(where("NM").is(NotificationMarkerEnum.P)
                         .orOperator(
-                                where("C").lte(DateUtil.getDateMinusMinutes(1)).and("NNE").is(NotificationTypeEnum.PUSH_NOTIFICATION),
-                                where("C").lte(DateUtil.getDateMinusMinutes(4)).and("NNE").is(NotificationTypeEnum.EXPENSE_REPORT),
-                                where("C").lte(DateUtil.getDateMinusMinutes(1)).and("NNE").is(NotificationTypeEnum.DOCUMENT_REJECTED),
-                                where("C").lte(DateUtil.getDateMinusMinutes(4)).and("NNE").is(NotificationTypeEnum.RECEIPT)
+                                where("C").lte(DateUtil.getDateMinusMinutes(PUSH_NOTIFICATION.delayNotifying)).and("NNE").is(PUSH_NOTIFICATION),
+                                where("C").lte(DateUtil.getDateMinusMinutes(EXPENSE_REPORT.delayNotifying)).and("NNE").is(EXPENSE_REPORT),
+                                where("C").lte(DateUtil.getDateMinusMinutes(DOCUMENT_REJECTED.delayNotifying)).and("NNE").is(DOCUMENT_REJECTED),
+                                where("C").lte(DateUtil.getDateMinusMinutes(RECEIPT.delayNotifying)).and("NNE").is(RECEIPT)
                         )
                         .and("NS").is(NotificationStateEnum.F)
                         .and("CN").lt(notificationRetryCount)
@@ -138,7 +142,7 @@ public class NotificationManagerImpl implements NotificationManager {
                                 isActive(),
                                 isNotDeleted()
                         )
-                ).with(new Sort(Sort.Direction.DESC, "C")),
+                ).with(new Sort(Direction.DESC, "C")),
                 NotificationEntity.class);
     }
 

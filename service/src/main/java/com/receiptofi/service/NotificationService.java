@@ -59,9 +59,9 @@ public class NotificationService {
         NotificationEntity notification = NotificationEntity.newInstance(notificationType);
         notification.setMessage(message);
         notification.setReceiptUserId(rid);
-        notification.setNotificationMarkerEnum(notificationType.getNotificationMarker());
+        notification.setNotificationMarkerEnum(notificationType.notificationMarker);
         notification.setNotificationGroup(notificationGroup);
-        if (notificationType.getNotificationMarker() != NotificationMarkerEnum.P) {
+        if (notificationType.notificationMarker != NotificationMarkerEnum.P) {
             /** Defaults to success as its not going to be sent through Push Notification. */
             notification.setNotificationStateToSuccess();
         }
