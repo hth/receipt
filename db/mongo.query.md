@@ -1,3 +1,7 @@
+## Find Receipt for specific FILE_SYSTEM
+
+    db.getCollection('RECEIPT').find({"FS.$id": ObjectId("55d8ff2ff4a3b69fab11138e")})
+
 ## Delete account related 
 
     db.getCollection('BILLING_ACCOUNT').remove({"RID" : "10000000381"})

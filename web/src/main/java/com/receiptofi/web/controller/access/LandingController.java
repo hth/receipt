@@ -315,58 +315,6 @@ public class LandingController {
         return jsonObject.toString();
     }
 
-    /**
-     * For uploading Mileage.
-     *
-     * @param documentId
-     * @param httpServletRequest
-     * @return
-     * @throws IOException
-     */
-    @PreAuthorize ("hasRole('ROLE_USER')")
-    @RequestMapping (
-            method = RequestMethod.POST,
-            value = "/landing/uploadmileage"
-    )
-    @ResponseBody
-    public String uploadMileage(
-            @PathVariable
-            ScrubbedInput documentId,
-
-            HttpServletRequest httpServletRequest
-    ) throws IOException {
-        ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-        LOG.info("Upload a mileage");
-        String outcome = "{\"success\" : false}";
-
-        boolean isMultipart = ServletFileUpload.isMultipartContent(httpServletRequest);
-        if (isMultipart) {
-            MultipartHttpServletRequest multipartHttpRequest = (MultipartHttpServletRequest) httpServletRequest;
-            final List<MultipartFile> files = getMultipartFiles(multipartHttpRequest);
-
-            for (MultipartFile multipartFile : files) {
-                UploadDocumentImage uploadReceiptImage = UploadDocumentImage.newInstance(FileTypeEnum.M)
-                        .setFileData(multipartFile)
-                        .setRid(receiptUser.getRid());
-                try {
-                    landingService.appendMileage(documentId.getText(), receiptUser.getRid(), uploadReceiptImage);
-                    outcome = "{\"success\" : true, \"uploadMessage\" : \"File uploaded successfully\"}";
-                } catch (Exception exce) {
-                    outcome = "{\"success\" : false, \"uploadMessage\" : \"" + exce.getLocalizedMessage() + "\"}";
-                    LOG.error("Receipt upload reason={}, for rid={}", exce.getLocalizedMessage(), receiptUser.getRid(), exce);
-                }
-            }
-        } else {
-            //TODO test with IE
-            //http://skillshared.blogspot.com/2012/08/java-class-for-valums-ajax-file.html
-            LOG.warn("Look like IE file upload");
-            String filename = httpServletRequest.getHeader("X-File-Name");
-            InputStream is = httpServletRequest.getInputStream();
-        }
-        return outcome;
-    }
-
     private List<MultipartFile> getMultipartFiles(MultipartHttpServletRequest multipartHttpRequest) {
         final List<MultipartFile> files = multipartHttpRequest.getFiles("qqfile");
 

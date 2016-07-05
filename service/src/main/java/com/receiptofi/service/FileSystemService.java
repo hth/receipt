@@ -24,10 +24,15 @@ import java.util.List;
 @Service
 public class FileSystemService {
     private FileSystemManager fileSystemManager;
+    private CloudFileService cloudFileService;
 
     @Autowired
-    public FileSystemService(FileSystemManager fileSystemManager) {
+    public FileSystemService(
+            FileSystemManager fileSystemManager,
+            CloudFileService cloudFileService
+    ) {
         this.fileSystemManager = fileSystemManager;
+        this.cloudFileService = cloudFileService;
     }
 
     public void save(FileSystemEntity fileSystem) {
@@ -43,8 +48,8 @@ public class FileSystemService {
         fileSystemManager.deleteSoft(fileSystems);
     }
 
-    public void deleteHard(FileSystemEntity fileSystemEntity) {
-        fileSystemManager.deleteHard(fileSystemEntity);
+    public void deleteHard(FileSystemEntity fileSystem) {
+        fileSystemManager.deleteHard(fileSystem);
     }
 
     public void deleteHard(Collection<FileSystemEntity> fileSystems) {
