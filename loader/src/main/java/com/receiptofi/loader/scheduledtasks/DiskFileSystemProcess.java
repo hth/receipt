@@ -70,7 +70,7 @@ public class DiskFileSystemProcess {
         this.cronStatsService = cronStatsService;
     }
 
-    @Scheduled (cron = "${loader.FileSystemProcess.removeExpiredExcelFiles}")
+    @Scheduled (cron = "${loader.DiskFileSystemProcess.removeExpiredExcelFiles}")
     public void removeExpiredExcelFiles() {
         cronStats = new CronStatsEntity(
                 DiskFileSystemProcess.class.getName(),
@@ -124,7 +124,7 @@ public class DiskFileSystemProcess {
      *
      * @throws IOException
      */
-    @Scheduled (cron = "${loader.FileSystemProcess.removeTempFiles}")
+    @Scheduled (cron = "${loader.DiskFileSystemProcess.removeTempFiles}")
     public void removeTempFiles() throws IOException {
         File file = FileUtil.createTempFile("delete", ".xml");
         File directory = file.getParentFile();
