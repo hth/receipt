@@ -35,8 +35,8 @@ import java.io.IOException;
         "PMD.LongVariable"
 })
 @Component
-public class FileSystemProcess {
-    private static final Logger LOG = LoggerFactory.getLogger(FileSystemProcess.class);
+public class DiskFileSystemProcess {
+    private static final Logger LOG = LoggerFactory.getLogger(DiskFileSystemProcess.class);
 
     private ReceiptService receiptService;
     private CronStatsService cronStatsService;
@@ -50,7 +50,7 @@ public class FileSystemProcess {
     private CronStatsEntity cronStats;
 
     @Autowired
-    public FileSystemProcess(
+    public DiskFileSystemProcess(
             @Value ("${expensofiReportLocation}")
             String expensofiReportLocation,
 
@@ -73,7 +73,7 @@ public class FileSystemProcess {
     @Scheduled (cron = "${loader.FileSystemProcess.removeExpiredExcelFiles}")
     public void removeExpiredExcelFiles() {
         cronStats = new CronStatsEntity(
-                FileSystemProcess.class.getName(),
+                DiskFileSystemProcess.class.getName(),
                 "Remove_Expired_Excel_Files",
                 removeExpiredExcelFiles);
 
@@ -130,7 +130,7 @@ public class FileSystemProcess {
         File directory = file.getParentFile();
 
         cronStats = new CronStatsEntity(
-                FileSystemProcess.class.getName(),
+                DiskFileSystemProcess.class.getName(),
                 "Remove_Temp_Files",
                 removeExpiredExcelFiles);
 

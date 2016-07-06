@@ -7,7 +7,7 @@ import com.mongodb.gridfs.GridFSDBFile;
 
 import com.receiptofi.domain.ReceiptEntity;
 import com.receiptofi.domain.site.ReceiptUser;
-import com.receiptofi.loader.scheduledtasks.FileSystemProcess;
+import com.receiptofi.loader.scheduledtasks.DiskFileSystemProcess;
 import com.receiptofi.service.FileDBService;
 import com.receiptofi.service.ReceiptService;
 import com.receiptofi.utils.FileUtil;
@@ -56,7 +56,7 @@ public class FileDownloadController {
     private static final Logger LOG = LoggerFactory.getLogger(FileDownloadController.class);
 
     @Autowired private FileDBService fileDBService;
-    @Autowired private FileSystemProcess fileSystemProcess;
+    @Autowired private DiskFileSystemProcess diskFileSystemProcess;
     @Autowired private ReceiptService receiptService;
 
     @Value ("${imageNotFoundPlaceHolder:/static/images/no_image.gif}")
@@ -116,10 +116,10 @@ public class FileDownloadController {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         try {
-            ReceiptEntity receiptEntity = receiptService.findReceipt(receiptId.getText(), receiptUser.getRid());
-            setHeaderForExcel(receiptEntity, response);
+            ReceiptEntity receipt = receiptService.findReceipt(receiptId.getText(), receiptUser.getRid());
+            setHeaderForExcel(receipt, response);
 
-            InputStream inputStream = new FileInputStream(fileSystemProcess.getExcelFile(receiptEntity.getExpenseReportInFS()));
+            InputStream inputStream = new FileInputStream(diskFileSystemProcess.getExcelFile(receipt.getExpenseReportInFS()));
             IOUtils.copy(inputStream, response.getOutputStream());
         } catch (IOException e) {
             LOG.error("Excel retrieval error occurred Receipt={} for user={} reason={}",

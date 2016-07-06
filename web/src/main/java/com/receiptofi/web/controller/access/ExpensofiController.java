@@ -10,7 +10,7 @@ import com.receiptofi.domain.ReceiptEntity;
 import com.receiptofi.domain.site.ReceiptUser;
 import com.receiptofi.domain.types.NotificationGroupEnum;
 import com.receiptofi.domain.types.NotificationTypeEnum;
-import com.receiptofi.loader.scheduledtasks.FileSystemProcess;
+import com.receiptofi.loader.scheduledtasks.DiskFileSystemProcess;
 import com.receiptofi.service.ItemAnalyticService;
 import com.receiptofi.service.NotificationService;
 import com.receiptofi.service.ReceiptService;
@@ -71,7 +71,7 @@ public class ExpensofiController {
     @Autowired private ReceiptService receiptService;
     @Autowired private NotificationService notificationService;
     @Autowired private ItemAnalyticService itemAnalyticService;
-    @Autowired private FileSystemProcess fileSystemProcess;
+    @Autowired private DiskFileSystemProcess diskFileSystemProcess;
     @Autowired private ExpensofiExcelView expensofiExcelView;
 
     @RequestMapping (
@@ -141,7 +141,7 @@ public class ExpensofiController {
 
     private void updateReceiptWithExcelFilename(ReceiptEntity receiptEntity, String filename) {
         if (StringUtils.isNotEmpty(receiptEntity.getExpenseReportInFS())) {
-            fileSystemProcess.removeExpiredExcel(receiptEntity.getExpenseReportInFS());
+            diskFileSystemProcess.removeExpiredExcel(receiptEntity.getExpenseReportInFS());
         }
         receiptEntity.setExpenseReportInFS(filename);
         receiptService.updateReceiptWithExpReportFilename(receiptEntity);

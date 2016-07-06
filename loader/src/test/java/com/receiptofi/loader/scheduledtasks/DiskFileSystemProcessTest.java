@@ -28,53 +28,53 @@ import java.io.File;
         "PMD.MethodArgumentCouldBeFinal",
         "PMD.LongVariable"
 })
-public class FileSystemProcessTest {
+public class DiskFileSystemProcessTest {
 
     @Rule public TemporaryFolder folder = new TemporaryFolder();
     @Mock private ReceiptService receiptService;
     @Mock private CronStatsService cronStatsService;
-    private FileSystemProcess fileSystemProcess;
+    private DiskFileSystemProcess diskFileSystemProcess;
     private File createdFile;
 
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
         createdFile = folder.newFile("file.xml");
-        fileSystemProcess = new FileSystemProcess(createdFile.getParent(), 0, "ON", receiptService, cronStatsService);
+        diskFileSystemProcess = new DiskFileSystemProcess(createdFile.getParent(), 0, "ON", receiptService, cronStatsService);
     }
 
     @Test
     public void whenRemoveExpiredExcelFilesIsTurnedOn() {
-        fileSystemProcess.removeExpiredExcelFiles();
+        diskFileSystemProcess.removeExpiredExcelFiles();
         verify(receiptService, times(1)).removeExpensofiFilenameReference(any(String.class));
     }
 
     @Test
     public void whenRemoveExpiredExcelFilesIsTurnedOff() {
-        fileSystemProcess = new FileSystemProcess(createdFile.getParent(), 0, "OFF", receiptService, cronStatsService);
-        fileSystemProcess.removeExpiredExcelFiles();
+        diskFileSystemProcess = new DiskFileSystemProcess(createdFile.getParent(), 0, "OFF", receiptService, cronStatsService);
+        diskFileSystemProcess.removeExpiredExcelFiles();
         verify(receiptService, never()).removeExpensofiFilenameReference(any(String.class));
     }
 
     @Test
     public void whenRemoveExpiredExcelException() {
         doThrow(Exception.class).when(receiptService).removeExpensofiFilenameReference(anyString());
-        fileSystemProcess.removeExpiredExcelFiles();
+        diskFileSystemProcess.removeExpiredExcelFiles();
         verify(receiptService, times(1)).removeExpensofiFilenameReference(any(String.class));
-        assertTrue(fileSystemProcess.getCronStats().getStats().containsKey("deletedExcelFiles"));
-        assertEquals("0", fileSystemProcess.getCronStats().getStats().get("deletedExcelFiles"));
+        assertTrue(diskFileSystemProcess.getCronStats().getStats().containsKey("deletedExcelFiles"));
+        assertEquals("0", diskFileSystemProcess.getCronStats().getStats().get("deletedExcelFiles"));
     }
 
     @Test
     public void removeExpiredExcel() {
-        fileSystemProcess.removeExpiredExcel(createdFile.getName());
+        diskFileSystemProcess.removeExpiredExcel(createdFile.getName());
         assertFalse(createdFile.exists());
     }
 
     @Test
     public void removeTempFiles() throws Exception {
-        fileSystemProcess.removeTempFiles();
-        assertTrue(fileSystemProcess.getCronStats().getStats().containsKey("totalXmlFiles"));
-        assertTrue("deleted files successfully", Integer.parseInt(fileSystemProcess.getCronStats().getStats().get("totalXmlFiles")) > 0);
+        diskFileSystemProcess.removeTempFiles();
+        assertTrue(diskFileSystemProcess.getCronStats().getStats().containsKey("totalXmlFiles"));
+        assertTrue("deleted files successfully", Integer.parseInt(diskFileSystemProcess.getCronStats().getStats().get("totalXmlFiles")) > 0);
     }
 }
