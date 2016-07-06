@@ -70,8 +70,8 @@ public class FileSystemService {
 
     public long filesPendingDiskUsage(String rid) {
         long pendingFileSize = 0;
-        List<FileSystemEntity> fileSystemEntities = fileSystemManager.filesPending(rid);
-        for (FileSystemEntity fileSystem : fileSystemEntities) {
+        List<FileSystemEntity> fileSystems = fileSystemManager.filesPending(rid);
+        for (FileSystemEntity fileSystem : fileSystems) {
             pendingFileSize += fileSystem.getFileLength();
         }
 
