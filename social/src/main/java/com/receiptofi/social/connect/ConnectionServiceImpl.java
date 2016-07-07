@@ -20,6 +20,7 @@ import com.receiptofi.social.config.ProviderConfig;
 import com.receiptofi.social.service.CustomUserDetailsService;
 import com.receiptofi.utils.DateUtil;
 import com.receiptofi.utils.RandomString;
+import com.receiptofi.utils.ScrubbedInput;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -548,10 +549,17 @@ public class ConnectionServiceImpl implements ConnectionService {
             User facebookUserProfile,
             UserAccountEntity userAccount,
             UserProfileEntity userProfile) {
+        LOG.warn("Facebook name firstName={} lastName={} randomEmail={} REMOVE CODE",
+                userProfile.getFirstName(),
+                userProfile.getLastName(),
+                RandomString.generateEmailAddress(
+                        new ScrubbedInput(userProfile.getFirstName()),
+                        new ScrubbedInput(userProfile.getLastName()),
+                        userAccount.getReceiptUserId()));
 
         Assert.isTrue(StringUtils.isBlank(facebookUserProfile.getEmail()) && StringUtils.isBlank(userProfile.getEmail()), "");
         userProfile.setEmail(userAccount.getReceiptUserId() + "@receiptofi.com");
-        LOG.info("Facebook email empty, setting profile email={}", userProfile.getEmail());
+        LOG.warn("Facebook email empty, setting profile email={}", userProfile.getEmail());
     }
 
     public UserProfileEntity copyToUserProfile(Person googleUserProfile, UserAccountEntity userAccount) {
