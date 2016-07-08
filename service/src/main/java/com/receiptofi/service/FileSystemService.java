@@ -1,8 +1,14 @@
 package com.receiptofi.service;
 
+import com.receiptofi.domain.CloudFileEntity;
 import com.receiptofi.domain.FileSystemEntity;
+import com.receiptofi.domain.annotation.Mobile;
+import com.receiptofi.domain.types.FileTypeEnum;
 import com.receiptofi.domain.value.DiskUsageGrouped;
 import com.receiptofi.repository.FileSystemManager;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,6 +29,7 @@ import java.util.List;
 })
 @Service
 public class FileSystemService {
+    private static final Logger LOG = LoggerFactory.getLogger(FileSystemService.class);
     private FileSystemManager fileSystemManager;
     private CloudFileService cloudFileService;
 
@@ -43,9 +50,35 @@ public class FileSystemService {
         return fileSystemManager.getById(id);
     }
 
-    public void deleteSoft(Collection<FileSystemEntity> fileSystems) {
+    /**
+     * Delete all Receipt, Coupon files from S3 and skip Documents, Feedback files are they are local.
+     *
+     * @param fileSystems
+     * @param fileType
+     */
+    @Mobile
+    public void deleteSoft(Collection<FileSystemEntity> fileSystems, FileTypeEnum fileType) {
         Assert.notNull(fileSystems, "FileSystem collection is null");
         fileSystemManager.deleteSoft(fileSystems);
+
+        switch (fileType) {
+            case C:
+            case R:
+                /** Add to Cloud File for deleting from S3. */
+                for (FileSystemEntity fileSystem : fileSystems) {
+                    CloudFileEntity cloudFile = CloudFileEntity.newInstance(fileSystem.getKey(), fileSystem.getFileType());
+                    cloudFileService.save(cloudFile);
+                    LOG.info("CloudFile created key={} fileType={}", fileSystem.getKey(), fileSystem.getFileType());
+                }
+                break;
+            case D:
+            case F:
+                LOG.info("Skipping cloud delete fileType={}", fileType.getDescription());
+                break;
+            default:
+                LOG.error("Unable to delete as fileType={} undefined", fileType.getDescription());
+                break;
+        }
     }
 
     public void deleteHard(FileSystemEntity fileSystem) {
