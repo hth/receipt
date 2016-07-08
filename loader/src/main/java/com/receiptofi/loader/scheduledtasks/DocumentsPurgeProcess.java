@@ -67,7 +67,7 @@ public class DocumentsPurgeProcess {
 
     @Scheduled (cron = "${loader.DocumentsPurgeProcess.purgeRejectedDocument}")
     public void purgeRejectedDocument() {
-        LOG.info("begins");
+        LOG.info("Purging Rejected document begins");
 
         cronStats = new CronStatsEntity(
                 DocumentsPurgeProcess.class.getName(),
@@ -97,7 +97,7 @@ public class DocumentsPurgeProcess {
                 cronStats.addStats("deleted", deleted);
                 cronStatsService.save(cronStats);
 
-                LOG.info("complete found={} failure={} deleted={}", found, failure, deleted);
+                LOG.info("Purging Rejected Document complete found={} failure={} deleted={}", found, failure, deleted);
             }
         } else {
             LOG.info("feature is {}", purgeRejectedDocument);
