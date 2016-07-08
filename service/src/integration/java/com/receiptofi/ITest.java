@@ -53,6 +53,7 @@ public class ITest extends RealMongoForTests {
     public FileUploadDocumentSenderJMS senderJMS;
     public CommentService commentService;
     public FileSystemService fileSystemService;
+    public CloudFileManager cloudFileManager;
     public CloudFileService cloudFileService;
     public ExpensesService expensesService;
     public NotificationService notificationService;
@@ -81,7 +82,6 @@ public class ITest extends RealMongoForTests {
 
     public CommentManager commentManager;
     public RegistrationService registrationService;
-    public CloudFileManager cloudFileManager;
     public NotificationManager notificationManager;
     public UserProfilePreferenceService userProfilePreferenceService;
     public FriendManager friendManager;
@@ -143,6 +143,8 @@ public class ITest extends RealMongoForTests {
 
         billingAccountManager = new BillingAccountManagerImpl(getMongoTemplate());
         billingHistoryManager = new BillingHistoryManagerImpl(getMongoTemplate());
+        cloudFileManager = new CloudFileManagerImpl(getMongoTemplate());
+        cloudFileService = new CloudFileService(cloudFileManager);
 
         paymentGatewayService = new PaymentGatewayService(
                 properties.getProperty("braintree.environment"),
@@ -187,9 +189,6 @@ public class ITest extends RealMongoForTests {
         commentManager = new CommentManagerImpl(getMongoTemplate());
         commentService = new CommentService(commentManager);
         fileSystemService = new FileSystemService(fileSystemManager, cloudFileService);
-
-        cloudFileManager = new CloudFileManagerImpl(getMongoTemplate());
-        cloudFileService = new CloudFileService(cloudFileManager);
 
         friendManager = new FriendManagerImpl(getMongoTemplate());
         userProfilePreferenceService = new UserProfilePreferenceService(userProfileManager, userPreferenceManager);
