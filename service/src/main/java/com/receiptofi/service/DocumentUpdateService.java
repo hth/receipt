@@ -18,6 +18,7 @@ import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.domain.types.DocumentOfTypeEnum;
 import com.receiptofi.domain.types.DocumentRejectReasonEnum;
 import com.receiptofi.domain.types.DocumentStatusEnum;
+import com.receiptofi.domain.types.FileTypeEnum;
 import com.receiptofi.domain.types.NotificationGroupEnum;
 import com.receiptofi.domain.types.NotificationTypeEnum;
 import com.receiptofi.repository.ItemManager;
@@ -367,7 +368,7 @@ public class DocumentUpdateService {
                 updateMessageWithDocumentChanges(document);
                 itemOCRManager.deleteWhereReceipt(document);
 
-                fileSystemService.deleteSoft(document.getFileSystemEntities());
+                fileSystemService.deleteSoft(document.getFileSystemEntities(), FileTypeEnum.D);
                 storageManager.deleteSoft(document.getFileSystemEntities());
                 GridFSDBFile gridFSDBFile = storageManager.get(document.getFileSystemEntities().iterator().next().getBlobId());
                 DBObject dbObject = gridFSDBFile.getMetaData();

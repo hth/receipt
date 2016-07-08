@@ -13,10 +13,19 @@ package com.receiptofi.domain.types;
         "PMD.LongVariable"
 })
 public enum FileTypeEnum {
+    /** Receipt ends up on cloud. */
     R("R", "Receipt"),
+
+    /** Coupon ends up on cloud. */
+    C("C", "Coupon"),
+
     I("I", "Invoice"),
+
+    /** File stays local. */
     F("F", "Feedback"),
-    C("C", "Coupon");
+
+    /** File stays local. */
+    D("D", "Document");
 
     private final String description;
     private final String name;

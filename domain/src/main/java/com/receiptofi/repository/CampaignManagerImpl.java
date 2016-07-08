@@ -91,6 +91,7 @@ public class CampaignManagerImpl implements CampaignManager {
                         TABLE
                 );
             default:
+                LOG.error("Not authorized to load campaign {}",userLevel);
                 throw new UnsupportedOperationException("Not authorized to load campaign");
         }
     }

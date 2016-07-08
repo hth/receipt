@@ -1,5 +1,7 @@
 package com.receiptofi.utils;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.Random;
 
 /**
@@ -20,6 +22,7 @@ public final class RandomString {
 
     private static final int CHARACTER_SIZE = 32;
     private static final char[] SYMBOLS = new char[36];
+    private static final String RID_SHORTEN = "^10+(?!$)";
 
     static {
         for (int idx = 0; idx < 10; ++idx) {
@@ -30,6 +33,7 @@ public final class RandomString {
             SYMBOLS[idx] = (char) ('a' + idx - 10);
         }
     }
+
     private final Random random = new Random();
     private final char[] buf;
 
@@ -53,5 +57,19 @@ public final class RandomString {
             buf[idx] = SYMBOLS[random.nextInt(SYMBOLS.length)];
         }
         return new String(buf);
+    }
+
+    public static String generateEmailAddress(ScrubbedInput firstName, ScrubbedInput lastName, String rid) {
+        String shortenedRid = rid.replaceFirst(RID_SHORTEN, "");
+
+        if (StringUtils.isNotBlank(firstName.getText()) && StringUtils.isNotBlank(lastName.getText())) {
+            return StringUtils.lowerCase(firstName.getText()) + "." + StringUtils.lowerCase(lastName.getText()) + "." + shortenedRid;
+        } else if (StringUtils.isNotBlank(firstName.getText())) {
+            return StringUtils.lowerCase(firstName.getText()) + "." + shortenedRid;
+        } else if (StringUtils.isNotBlank(lastName.getText())) {
+            return StringUtils.lowerCase(lastName.getText()) + "." + shortenedRid;
+        } else {
+           return StringUtils.lowerCase(RandomString.newInstance(6).nextString()) + "." + shortenedRid;
+        }
     }
 }

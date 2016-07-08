@@ -102,7 +102,7 @@ public class FilesDeleteFromS3 {
                     cronStats.addStats("deleted", 0);
                     cronStatsService.save(cronStats);
 
-                    LOG.warn("Successfully found count={} and deleted count failure", cloudFiles.size());
+                    LOG.warn("Failed to find count={} and deleted count failure", cloudFiles.size());
                 } else {
                     cronStats.addStats("found", cloudFiles.size());
                     cronStats.addStats("deleted", deleteObjectsResult.getDeletedObjects().size());

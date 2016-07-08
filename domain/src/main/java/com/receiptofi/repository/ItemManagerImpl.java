@@ -228,9 +228,8 @@ public final class ItemManagerImpl implements ItemManager {
 
     @Override
     public List<ItemEntity> findItems(String name, String bizName) {
-        Criteria criteriaI = where("IN").regex(
-                name.length() > 4 ? (new StringTokenizer("^" + name).nextToken()) : "^" + name,
-                "i");
+        //String search = name.length() > 4 ? (new StringTokenizer("^" + name).nextToken()) : "^" + name;
+        Criteria criteriaI = where("IN").regex("^" + name, "i");
 
         Query query;
         BizNameEntity bizNameEntity = bizNameManager.findOneByName(bizName);

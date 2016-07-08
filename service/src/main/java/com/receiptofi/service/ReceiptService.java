@@ -17,6 +17,7 @@ import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.domain.annotation.Mobile;
 import com.receiptofi.domain.types.CommentTypeEnum;
 import com.receiptofi.domain.types.DocumentStatusEnum;
+import com.receiptofi.domain.types.FileTypeEnum;
 import com.receiptofi.domain.types.NotificationGroupEnum;
 import com.receiptofi.domain.types.NotificationTypeEnum;
 import com.receiptofi.domain.types.SplitActionEnum;
@@ -178,7 +179,7 @@ public class ReceiptService {
             String md = notificationService.getNotificationMessageForReceiptProcess(receipt, "deleted");
 
             itemService.deleteSoft(receipt);
-            fileSystemService.deleteSoft(receipt.getFileSystemEntities());
+            fileSystemService.deleteSoft(receipt.getFileSystemEntities(), FileTypeEnum.R);
 
             if (null != receipt.getRecheckComment() && !StringUtils.isEmpty(receipt.getRecheckComment().getId())) {
                 commentService.deleteHard(receipt.getRecheckComment());
@@ -197,10 +198,6 @@ public class ReceiptService {
             }
 
             receiptManager.deleteSoft(receipt);
-            for (FileSystemEntity fileSystem : receipt.getFileSystemEntities()) {
-                CloudFileEntity cloudFile = CloudFileEntity.newInstance(fileSystem.getKey(), fileSystem.getFileType());
-                cloudFileService.save(cloudFile);
-            }
 
             /** Added document deleted successfully. */
             notificationService.addNotification(
