@@ -2,6 +2,8 @@ package com.receiptofi.repository;
 
 import com.receiptofi.domain.EvalFeedbackEntity;
 
+import java.util.List;
+
 /**
  * User: hitender
  * Date: 7/20/13
@@ -9,4 +11,5 @@ import com.receiptofi.domain.EvalFeedbackEntity;
  */
 public interface EvalFeedbackManager extends RepositoryManager<EvalFeedbackEntity> {
 
+    List<EvalFeedbackEntity> latestFeedback(int limit);
 }

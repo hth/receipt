@@ -11,8 +11,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
+
+import java.util.List;
 
 /**
  * User: hitender
@@ -29,14 +32,19 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
 public class EvalFeedbackService {
     private static final Logger LOG = LoggerFactory.getLogger(EvalFeedbackService.class);
 
+    private int limit;
     private EvalFeedbackManager evalFeedbackManager;
     private FileDBService fileDBService;
 
     @Autowired
     public EvalFeedbackService(
+            @Value("${EvalFeedbackService.limit:20}")
+            int limit,
+
             EvalFeedbackManager evalFeedbackManager,
             FileDBService fileDBService
     ) {
+        this.limit = limit;
         this.evalFeedbackManager = evalFeedbackManager;
         this.fileDBService = fileDBService;
     }
@@ -60,5 +68,9 @@ public class EvalFeedbackService {
         } catch (Exception exce) {
             LOG.error("Feedback failed reason={}", exce.getLocalizedMessage(), exce);
         }
+    }
+
+    public List<EvalFeedbackEntity> latestFeedback() {
+        return evalFeedbackManager.latestFeedback(limit);
     }
 }

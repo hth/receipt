@@ -63,7 +63,7 @@
         </h1>
     </div>
     <div class="rightside-list-holder full-list-holder" style="overflow-y: hidden; height: 1000px; width: 1560px;">
-        <c class="down_form" style="width: 1530px;">
+        <div class="down_form" style="width: 1530px;">
             <h2 class="h2" style="padding-bottom:5px; text-decoration: underline;">Edit Business or Store information</h2>
             <form:form method="post" modelAttribute="bizForm" action="../businessSearch.htm">
                 <form:hidden path="nameId" />
