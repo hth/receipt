@@ -38,18 +38,27 @@ import javax.servlet.http.HttpServletRequest;
 public class EvalFeedbackController {
     private static final Logger LOG = LoggerFactory.getLogger(EvalFeedbackController.class);
 
-    /* Refers to feedback.jsp and next one to feedbackConfirm.jsp. */
+    /** Refers to feedback.jsp and next one to feedbackConfirm.jsp. */
     @Value ("${EvalFeedbackController.nextPage:/eval/feedback}")
     private String nextPage;
 
     @Value ("${EvalFeedbackController.nextPageConfirm:/eval/feedbackConfirm}")
     private String nextPageConfirm;
 
-    /* For confirming which page to show. */
+    /** For confirming which page to show. */
     private static final String SUCCESS_EVAL = "success_eval_feedback";
 
-    @Autowired EvalFeedbackService evalFeedbackService;
-    @Autowired EvalFeedbackValidator evalFeedbackValidator;
+    private EvalFeedbackService evalFeedbackService;
+    private EvalFeedbackValidator evalFeedbackValidator;
+
+    @Autowired
+    public EvalFeedbackController(
+            EvalFeedbackService evalFeedbackService,
+            EvalFeedbackValidator evalFeedbackValidator
+    ) {
+        this.evalFeedbackService = evalFeedbackService;
+        this.evalFeedbackValidator = evalFeedbackValidator;
+    }
 
     @RequestMapping (method = RequestMethod.GET, value = "/feedback")
     public String loadForm(
@@ -100,8 +109,7 @@ public class EvalFeedbackController {
         while (attributes.hasMoreElements()) {
             String attributeName = attributes.nextElement();
             if (attributeName.equals(SUCCESS_EVAL)) {
-                boolean condition = (boolean) httpServletRequest.getSession().getAttribute(SUCCESS_EVAL);
-                if (condition) {
+                if ((boolean) httpServletRequest.getSession().getAttribute(SUCCESS_EVAL)) {
                     httpServletRequest.getSession().setAttribute(SUCCESS_EVAL, false);
                     return nextPageConfirm;
                 }
