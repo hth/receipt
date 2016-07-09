@@ -59,14 +59,39 @@
 <div class="main clearfix">
     <div class="rightside-title rightside-title-less-margin">
         <h1 class="rightside-title-text">
-            Admin Actions
+            Feedback
         </h1>
     </div>
-    <div class="rightside-list-holder full-list-holder" style="overflow-y: hidden; height: 800px;">
-        <div class="down_form" style="width: 95%;">
-            <h2 class="h2" style="padding-bottom:5%;"><a href="/admin/userSearch.htm">User search</a></h2>
-            <h2 class="h2" style="padding-bottom:5%;"><a href="/admin/businessSearch.htm">Business search</a></h2>
-            <h2 class="h2" style="padding-bottom:5%;"><a href="/admin/feedback.htm">Feedback</a></h2>
+    <div class="rightside-list-holder full-list-holder"
+            style="overflow-y: hidden; height: 700px; margin-left: 0; padding-left: 0;">
+        <div class="down_form" style="width: 96%;">
+            <c:choose>
+            <c:when test="${!empty eval}">
+            <table width="100%" style="margin: 0 4px 0 4px">
+                <tr>
+                    <th style="text-align: left;"></th>
+                    <th style="text-align: left;">User</th>
+                    <th style="text-align: left;">Feedback</th>
+                    <th style="text-align: left;">Rating</th>
+                    <th style="text-align: left;">Last Modified</th>
+                </tr>
+                <c:forEach items="${eval}" var="item" varStatus="status">
+                <tr>
+                    <td style="padding: 10px; border: 1px solid #ccc">${status.count}&nbsp;</td>
+                    <td style="padding: 10px; border: 1px solid #ccc">${item.receiptUserId}</td>
+                    <td style="padding: 10px; border: 1px solid #ccc"><a href="/emp/campaign/${item.id}.htm">${item.feedback}</a></td>
+                    <td style="padding: 10px; border: 1px solid #ccc">${item.rating}</td>
+                    <td style="padding: 10px; border: 1px solid #ccc">
+                        <span style="color: #6E6E6E;font-weight: normal;"><fmt:formatDate pattern="MMMM dd, yyyy" value="${item.updated}"/></span>
+                    </td>
+                </tr>
+                </c:forEach>
+            </table>
+            </c:when>
+            <c:otherwise>
+                There are no feedback's to read.
+            </c:otherwise>
+            </c:choose>
         </div>
     </div>
     <div class="footer-tooth clearfix">

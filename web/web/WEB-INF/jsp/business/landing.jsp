@@ -79,7 +79,7 @@
         </div>
 
         <div class="rightside-list-holder full-list-holder"
-                style="overflow-y: hidden; height: 700px; margin-left: 0; padding-left: 0">
+                style="overflow-y: hidden; height: 700px; margin-left: 0; padding-left: 0;">
         <div class="down_form" style="width: 96%">
             <c:choose>
             <c:when test="${!empty businessLandingForm.campaignListForm.businessCampaigns}">
