@@ -68,4 +68,9 @@ public final class EvalFeedbackManagerImpl implements EvalFeedbackManager {
                 TABLE
         );
     }
+
+    @Override
+    public long collectionSize() {
+        return mongoTemplate.getCollection(TABLE).count();
+    }
 }

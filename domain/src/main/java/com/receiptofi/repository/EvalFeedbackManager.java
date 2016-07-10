@@ -12,4 +12,6 @@ import java.util.List;
 public interface EvalFeedbackManager extends RepositoryManager<EvalFeedbackEntity> {
 
     List<EvalFeedbackEntity> latestFeedback(int limit);
+
+    long collectionSize();
 }
