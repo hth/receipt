@@ -11,6 +11,7 @@
     <title><fmt:message key="title"/></title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/style.css"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/stylelogin.css"/>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/style.admin.css"/>
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-migrate/3.0.0/jquery-migrate.min.js"></script>
@@ -79,7 +80,7 @@
                 <tr>
                     <td style="padding: 10px; border: 1px solid #ccc">${status.count}&nbsp;</td>
                     <td style="padding: 10px; border: 1px solid #ccc">${item.receiptUserId}</td>
-                    <td style="padding: 10px; border: 1px solid #ccc"><a href="/emp/campaign/${item.id}.htm">${item.feedback}</a></td>
+                    <td style="padding: 10px; border: 1px solid #ccc">${item.feedback}</td>
                     <td style="padding: 10px; border: 1px solid #ccc">${item.rating}</td>
                     <td style="padding: 10px; border: 1px solid #ccc">
                         <span style="color: #6E6E6E;font-weight: normal;"><fmt:formatDate pattern="MMMM dd, yyyy" value="${item.updated}"/></span>
