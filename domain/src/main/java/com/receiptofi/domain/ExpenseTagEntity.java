@@ -31,7 +31,7 @@ import javax.validation.constraints.Size;
 public class ExpenseTagEntity extends BaseEntity {
 
     @NotNull
-    @Size (min = 0, max = 6)
+    @Size (min = 0, max = 22)
     @Field ("TAG")
     private String tagName;
 
