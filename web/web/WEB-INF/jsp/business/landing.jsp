@@ -80,42 +80,42 @@
 
         <div class="rightside-list-holder full-list-holder"
                 style="overflow-y: hidden; height: 700px; margin-left: 0; padding-left: 0;">
-        <div class="down_form" style="width: 96%">
-            <c:choose>
-            <c:when test="${!empty businessLandingForm.campaignListForm.businessCampaigns}">
-            <table width="100%" style="margin: 0 4px 0 4px">
-                <tr>
-                    <th style="text-align: left;"></th>
-                    <th style="text-align: left;">Text</th>
-                    <th style="text-align: left;">Duration</th>
-                    <th style="text-align: left;">Campaign Live Date</th>
-                    <th style="text-align: left;">Distribution</th>
-                    <th style="text-align: left;">State</th>
-                    <th style="text-align: left;">Last Modified</th>
-                </tr>
-                <c:forEach items="${businessLandingForm.campaignListForm.businessCampaigns}" var="item" varStatus="status">
-                <tr>
-                    <td style="padding: 10px; border: 1px solid #ccc">${status.count}&nbsp;</td>
-                    <td style="padding: 10px; border: 1px solid #ccc"><a href="/business/campaign.htm?campaignId=${item.id}">${item.freeText}</a></td>
-                    <td style="padding: 10px; border: 1px solid #ccc">${item.daysBetween} Days</td>
-                    <td style="padding: 10px; border: 1px solid #ccc">
-                        <fmt:formatDate pattern="MMMM dd, yyyy" value="${item.live}"/>
-                        <span style="color: #6E6E6E;font-weight: normal;">&nbsp;<fmt:formatDate value="${item.live}" type="time"/></span>
-                    </td>
-                    <td style="padding: 10px; border: 1px solid #ccc">${item.distributionPercent}&nbsp;%</td>
-                    <td style="padding: 10px; border: 1px solid #ccc">${item.campaignStatus.description}&nbsp</td>
-                    <td style="padding: 10px; border: 1px solid #ccc">
-                        <fmt:formatDate pattern="MMMM dd, yyyy" value="${item.updated}"/>
-                    </td>
-                </tr>
-                </c:forEach>
-            </table>
-            </c:when>
-            <c:otherwise>
-                You have no new campaign set to connect with customer.
-            </c:otherwise>
-            </c:choose>
-        </div>
+            <div class="down_form" style="width: 96%;">
+                <c:choose>
+                <c:when test="${!empty businessLandingForm.campaignListForm.businessCampaigns}">
+                <table width="100%" style="margin: 0 4px 0 4px">
+                    <tr>
+                        <th style="text-align: left;"></th>
+                        <th style="text-align: left;">Text</th>
+                        <th style="text-align: left;">Duration</th>
+                        <th style="text-align: left;">Campaign Live Date</th>
+                        <th style="text-align: left;">Distribution</th>
+                        <th style="text-align: left;">State</th>
+                        <th style="text-align: left;">Last Modified</th>
+                    </tr>
+                    <c:forEach items="${businessLandingForm.campaignListForm.businessCampaigns}" var="item" varStatus="status">
+                    <tr>
+                        <td style="padding: 10px; border: 1px solid #ccc">${status.count}&nbsp;</td>
+                        <td style="padding: 10px; border: 1px solid #ccc"><a href="/business/campaign.htm?campaignId=${item.id}">${item.freeText}</a></td>
+                        <td style="padding: 10px; border: 1px solid #ccc">${item.daysBetween} Days</td>
+                        <td style="padding: 10px; border: 1px solid #ccc">
+                            <fmt:formatDate pattern="MMMM dd, yyyy" value="${item.live}"/>
+                            <span style="color: #6E6E6E;font-weight: normal;">&nbsp;<fmt:formatDate value="${item.live}" type="time"/></span>
+                        </td>
+                        <td style="padding: 10px; border: 1px solid #ccc">${item.distributionPercent}&nbsp;%</td>
+                        <td style="padding: 10px; border: 1px solid #ccc">${item.campaignStatus.description}&nbsp</td>
+                        <td style="padding: 10px; border: 1px solid #ccc">
+                            <fmt:formatDate pattern="MMMM dd, yyyy" value="${item.updated}"/>
+                        </td>
+                    </tr>
+                    </c:forEach>
+                </table>
+                </c:when>
+                <c:otherwise>
+                    You have no new campaign set to connect with customer.
+                </c:otherwise>
+                </c:choose>
+            </div>
         </div>
     </div>
     </sec:authorize>
