@@ -640,7 +640,7 @@ public class MailService {
         return generateInviteResponse(responseStatus, responseMessage);
     }
 
-    private String generateInviteResponse(Boolean responseStatus, String responseMessage) {
+    private String generateInviteResponse(boolean responseStatus, String responseMessage) {
         JsonObject response = new JsonObject();
         response.addProperty("status", responseStatus);
         response.addProperty("message", responseMessage);
