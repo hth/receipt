@@ -298,7 +298,7 @@ public class FilesUploadToS3 {
 
                     failure++;
                 } catch (Exception e) {
-                    LOG.error("S3 image upload failure document={} reason={}", coupon, e.getLocalizedMessage(), e);
+                    LOG.error("S3 image upload failure coupon={} reason={}", coupon, e.getLocalizedMessage(), e);
 
                     failure++;
 
@@ -398,7 +398,7 @@ public class FilesUploadToS3 {
 
                     failure++;
                 } catch (Exception e) {
-                    LOG.error("S3 image upload failure document={} reason={}", campaign, e.getLocalizedMessage(), e);
+                    LOG.error("S3 image upload failure campaign={} reason={}", campaign, e.getLocalizedMessage(), e);
 
                     failure++;
 

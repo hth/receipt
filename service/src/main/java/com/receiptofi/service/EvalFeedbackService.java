@@ -73,4 +73,8 @@ public class EvalFeedbackService {
     public List<EvalFeedbackEntity> latestFeedback() {
         return evalFeedbackManager.latestFeedback(limit);
     }
+
+    public long collectionSize() {
+        return evalFeedbackManager.collectionSize();
+    }
 }

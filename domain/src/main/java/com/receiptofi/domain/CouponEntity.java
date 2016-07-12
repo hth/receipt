@@ -231,4 +231,26 @@ public class CouponEntity extends BaseEntity {
         this.couponUploadStatus = couponUploadStatus;
         return this;
     }
+
+    @Override
+    public String toString() {
+        return "CouponEntity{" +
+                "id=" + id +
+                ", rid='" + rid + '\'' +
+                ", localId='" + localId + '\'' +
+                ", businessName='" + businessName + '\'' +
+                ", freeText='" + freeText + '\'' +
+                ", available=" + available +
+                ", expire=" + expire +
+                ", couponType=" + couponType +
+                ", reminder=" + reminder +
+                ", imagePath='" + imagePath + '\'' +
+                ", sharedWithRids=" + sharedWithRids +
+                ", originId='" + originId + '\'' +
+                ", initiatedFromId='" + initiatedFromId + '\'' +
+                ", usedCoupon=" + usedCoupon +
+                ", fileSystemEntities=" + fileSystemEntities +
+                ", couponUploadStatus=" + couponUploadStatus +
+                '}';
+    }
 }

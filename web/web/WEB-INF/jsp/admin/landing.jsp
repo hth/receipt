@@ -66,7 +66,7 @@
         <div class="down_form" style="width: 95%;">
             <h2 class="h2" style="padding-bottom:5%;"><a href="/admin/userSearch.htm">User search</a></h2>
             <h2 class="h2" style="padding-bottom:5%;"><a href="/admin/businessSearch.htm">Business search</a></h2>
-            <h2 class="h2" style="padding-bottom:5%;"><a href="/admin/feedback.htm">Feedback</a></h2>
+            <h2 class="h2" style="padding-bottom:5%;"><a href="/admin/feedback.htm">Feedback</a> ${countEval}</h2>
         </div>
     </div>
     <div class="footer-tooth clearfix">

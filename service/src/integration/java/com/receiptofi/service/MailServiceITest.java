@@ -65,10 +65,8 @@ public class MailServiceITest extends ITest {
         freemarkerConfiguration.setPreTemplateLoaders(templateLoader);
 
         String appendToSubject = "::" + properties.getProperty("braintree.environment") + ":: ";
-        String baseDirectory = this.getClass().getResource(".").getPath().split("classes")[0];
 
         mailService = new MailService(
-                properties.getProperty("do.not.reply.email"),
                 properties.getProperty("dev.sent.to"),
                 properties.getProperty("invitee.email"),
                 properties.getProperty("email.address.name"),
@@ -79,13 +77,8 @@ public class MailServiceITest extends ITest {
                 appendToSubject + properties.getProperty("mail.validate.subject"),
                 appendToSubject + properties.getProperty("mail.registration.active.subject"),
                 appendToSubject + properties.getProperty("mail.account.not.found"),
-                baseDirectory + "resources/test/smallGoogle.jpg",
-                baseDirectory + "resources/test/googlePlay151x47.jpg",
-                baseDirectory + "resources/test/smallFacebook.jpg",
-                baseDirectory + "resources/test/app-store151x48.jpg",
                 accountService,
                 inviteService,
-                mailSender,
                 freemarkerConfiguration,
                 emailValidateService,
                 friendService,
@@ -94,6 +87,7 @@ public class MailServiceITest extends ITest {
                 userAccountManager,
                 userProfilePreferenceService,
                 notificationService,
+                mailManager,
                 1
         );
     }
