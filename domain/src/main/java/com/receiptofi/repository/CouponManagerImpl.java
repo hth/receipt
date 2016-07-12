@@ -76,6 +76,11 @@ public class CouponManagerImpl implements CouponManager {
     public List<CouponEntity> findCouponToUpload(int limit) {
         return mongoTemplate.find(
                 query(where("CU").is(CouponUploadStatusEnum.A)).limit(limit),
+                /** If have to use FS exists true then there is a bug. */
+                /* query(
+                        where("CU").is(CouponUploadStatusEnum.A)
+                        .and("FS").exists(true)
+                ).limit(limit), */
                 CouponEntity.class,
                 TABLE
         );

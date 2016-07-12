@@ -27,6 +27,7 @@ public class MailProcessITest extends ITest {
                 baseDirectory + "resources/test/smallFacebook.jpg",
                 baseDirectory + "resources/test/app-store151x48.jpg",
                 properties.getProperty("MailProcess.emailSwitch"),
+                Integer.parseInt(properties.getProperty("MailProcess.sendAttempt")),
                 mailSender,
                 mailManager,
                 cronStatsService

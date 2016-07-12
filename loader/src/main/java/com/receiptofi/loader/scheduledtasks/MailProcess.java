@@ -55,6 +55,7 @@ public class MailProcess {
     private final String appStore;
     private final String googlePlay;
     private final String emailSwitch;
+    private final int sendAttempt;
 
     private JavaMailSenderImpl mailSender;
     private MailManager mailManager;
@@ -89,6 +90,9 @@ public class MailProcess {
             @Value ("${MailProcess.emailSwitch}")
             String emailSwitch,
 
+            @Value ("${MailProcess.sendAttempt}")
+            int sendAttempt,
+
             JavaMailSenderImpl mailSender,
             MailManager mailManager,
             CronStatsService cronStatsService
@@ -102,6 +106,7 @@ public class MailProcess {
         this.facebookSmall = facebookSmall;
         this.appStore = appStore;
         this.emailSwitch = emailSwitch;
+        this.sendAttempt = sendAttempt;
 
         this.mailSender = mailSender;
         this.mailManager = mailManager;
@@ -134,22 +139,25 @@ public class MailProcess {
                     MimeMessage message = mailSender.createMimeMessage();
                     MimeMessageHelper helper = populateMessageBody(mail, message);
                     sendMail(mail, message, helper);
-                    mail.setMailStatus(MailStatusEnum.S);
-                    success++;
                     mailManager.updateMail(mail.getId(), MailStatusEnum.S);
+                    success++;
                 } catch (MessagingException | UnsupportedEncodingException e) {
                     LOG.error("Failure sending email={} subject={} reason={}", mail.getToMail(), mail.getSubject(), e.getLocalizedMessage(), e);
-                    failure++;
-                    if (5 < mail.getAttempts()) {
+                    if (sendAttempt < mail.getAttempts()) {
                         mailManager.updateMail(mail.getId(), MailStatusEnum.N);
+                        failure++;
                     } else {
                         mailManager.updateMail(mail.getId(), MailStatusEnum.F);
+                        skipped++;
                     }
                 }
             }
         } catch (Exception e) {
             LOG.error("Error sending mail reason={}", e.getLocalizedMessage(), e);
         } finally {
+            if (0 < skipped) {
+                LOG.error("Skipped sending mail. Number of attempts exceeded. Take a look.");
+            }
             saveUploadStats(cronStats, success, failure, skipped, mails.size());
         }
     }
