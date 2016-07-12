@@ -262,7 +262,7 @@ public class FilesUploadToS3 {
                             success = uploadToS3(success, coupon, fileSystem, fs);
                             sb.append(fileSystem.getKey()).append(",");
                         } else {
-                            //TODO keep an eye on this issue. Should not happen.
+                            //Keep an eye on this issue. Should not happen. Otherwise a bug.
                             skipped++;
                             LOG.error("Skipped file={} as it does not exists in GridFSDBFile", fileSystem.getBlobId());
                         }
@@ -271,6 +271,7 @@ public class FilesUploadToS3 {
                     /** Update image path from local to cloud (S3) after coupon upload. */
                     couponService.cloudUploadSuccessful(coupon.getId(), StringUtils.chop(sb.toString()));
                     fileDBService.deleteHard(coupon.getFileSystemEntities());
+                    LOG.info("Uploaded coupon id={} imagePath={} rid={}", coupon.getId(), coupon.getImagePath(), coupon.getRid());
                 } catch (AmazonServiceException e) {
                     LOG.error("Amazon S3 rejected request with an error response for some reason " +
                                     "document:{} " +
