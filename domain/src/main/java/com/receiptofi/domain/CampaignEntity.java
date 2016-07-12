@@ -216,4 +216,24 @@ public class CampaignEntity extends BaseEntity {
     public int getDaysBetween() {
         return DateUtil.getDaysBetween(start, end);
     }
+
+    @Override
+    public String toString() {
+        return "CampaignEntity{" +
+                "id=" + id +
+                ", bizId='" + bizId + '\'' +
+                ", rid='" + rid + '\'' +
+                ", freeText='" + freeText + '\'' +
+                ", start=" + start +
+                ", end=" + end +
+                ", live=" + live +
+                ", campaignType=" + campaignType +
+                ", distributionPercent=" + distributionPercent +
+                ", totalDistribution=" + totalDistribution +
+                ", fileSystemEntities=" + fileSystemEntities +
+                ", campaignStatus=" + campaignStatus +
+                ", historicalCampaignStates=" + historicalCampaignStates +
+                ", additionalInfo=" + additionalInfo +
+                '}';
+    }
 }
