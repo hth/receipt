@@ -106,6 +106,8 @@ public class ITest extends RealMongoForTests {
 
     public BusinessUserManager businessUserManager;
     public BusinessUserService businessUserService;
+    public CronStatsManager cronStatsManager;
+    public CronStatsService cronStatsService;
 
     @Mock public JavaMailSenderImpl mailSender;
     @Mock public FreeMarkerConfigurationFactoryBean freemarkerConfiguration;
@@ -283,6 +285,9 @@ public class ITest extends RealMongoForTests {
                 billingService,
                 expensesService
         );
+
+        cronStatsManager = new CronStatsManagerImpl(getMongoTemplate());
+        cronStatsService = new CronStatsService(cronStatsManager);
     }
 
     public ReceiptEntity populateReceiptWithComments(UserAccountEntity userAccount) throws IOException {

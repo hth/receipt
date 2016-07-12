@@ -35,8 +35,12 @@ public class CronStatsManagerImpl implements CronStatsManager {
             Document.class,
             "collection");
 
-    @Autowired
     private MongoTemplate mongoTemplate;
+
+    @Autowired
+    public CronStatsManagerImpl(MongoTemplate mongoTemplate) {
+        this.mongoTemplate = mongoTemplate;
+    }
 
     @Override
     public void save(CronStatsEntity object) {

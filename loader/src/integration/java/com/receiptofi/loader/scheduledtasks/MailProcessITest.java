@@ -26,8 +26,10 @@ public class MailProcessITest extends ITest {
                 baseDirectory + "resources/test/googlePlay151x47.jpg",
                 baseDirectory + "resources/test/smallFacebook.jpg",
                 baseDirectory + "resources/test/app-store151x48.jpg",
+                properties.getProperty("MailProcess.emailSwitch"),
                 mailSender,
-                mailManager
+                mailManager,
+                cronStatsService
         );
     }
 }

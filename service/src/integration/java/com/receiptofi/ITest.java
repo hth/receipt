@@ -102,6 +102,7 @@ public class ITest extends RealMongoForTests {
     public ReceiptParserService receiptParserService;
     public DocumentUpdateService documentUpdateService;
     public MessageDocumentManager messageDocumentManager;
+    public MailManager mailManager;
 
     public BusinessUserManager businessUserManager;
     public BusinessUserService businessUserService;
@@ -140,6 +141,7 @@ public class ITest extends RealMongoForTests {
                 "/open/login.htm"
         );
         expensesService = new ExpensesService(expenseTagManager, receiptManager, itemManager);
+        mailManager = new MailManagerImpl(getMongoTemplate());
 
         billingAccountManager = new BillingAccountManagerImpl(getMongoTemplate());
         billingHistoryManager = new BillingHistoryManagerImpl(getMongoTemplate());
@@ -222,7 +224,6 @@ public class ITest extends RealMongoForTests {
         browserManager = new BrowserManagerImpl(getMongoTemplate());
 
         mailService = new MailService(
-                properties.getProperty("do.not.reply.email"),
                 properties.getProperty("dev.sent.to"),
                 properties.getProperty("invitee.email"),
                 properties.getProperty("email.address.name"),
@@ -233,13 +234,8 @@ public class ITest extends RealMongoForTests {
                 properties.getProperty("mail.validate.subject"),
                 properties.getProperty("mail.registration.active.subject"),
                 properties.getProperty("mail.account.not.found"),
-                "",
-                "",
-                "",
-                "",
                 accountService,
                 inviteService,
-                mailSender,
                 freemarkerConfiguration,
                 emailValidateService,
                 friendService,
@@ -248,6 +244,7 @@ public class ITest extends RealMongoForTests {
                 userAccountManager,
                 userProfilePreferenceService,
                 notificationService,
+                mailManager,
                 1);
 
 

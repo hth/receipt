@@ -11,13 +11,16 @@ import com.receiptofi.domain.EmailValidateEntity;
 import com.receiptofi.domain.ForgotRecoverEntity;
 import com.receiptofi.domain.FriendEntity;
 import com.receiptofi.domain.InviteEntity;
+import com.receiptofi.domain.MailEntity;
 import com.receiptofi.domain.UserAccountEntity;
 import com.receiptofi.domain.UserAuthenticationEntity;
 import com.receiptofi.domain.UserPreferenceEntity;
 import com.receiptofi.domain.UserProfileEntity;
+import com.receiptofi.domain.types.MailStatusEnum;
 import com.receiptofi.domain.types.MailTypeEnum;
 import com.receiptofi.domain.types.NotificationGroupEnum;
 import com.receiptofi.domain.types.NotificationTypeEnum;
+import com.receiptofi.repository.MailManager;
 import com.receiptofi.repository.UserAccountManager;
 import com.receiptofi.repository.UserAuthenticationManager;
 import com.receiptofi.utils.HashText;
@@ -77,7 +80,6 @@ public class MailService {
 
     private AccountService accountService;
     private InviteService inviteService;
-    private JavaMailSenderImpl mailSender;
     private FreeMarkerConfigurationFactory freemarkerConfiguration;
     private EmailValidateService emailValidateService;
     private LoginService loginService;
@@ -86,8 +88,8 @@ public class MailService {
     private UserProfilePreferenceService userProfilePreferenceService;
     private FriendService friendService;
     private NotificationService notificationService;
+    private MailManager mailManager;
 
-    private String doNotReplyEmail;
     private String devSentTo;
     private String inviteeEmail;
     private String emailAddressName;
@@ -98,18 +100,11 @@ public class MailService {
     private String mailValidateSubject;
     private String mailRegistrationActiveSubject;
     private String accountNotFound;
-    private String googleSmall;
-    private String facebookSmall;
-    private String appStore;
-    private String googlePlay;
 
     private final Cache<String, String> invitees;
 
     @Autowired
     public MailService(
-            @Value ("${do.not.reply.email}")
-            String doNotReplyEmail,
-
             @Value ("${dev.sent.to}")
             String devSentTo,
 
@@ -140,21 +135,8 @@ public class MailService {
             @Value ("${mail.account.not.found}")
             String accountNotFound,
 
-            @Value ("${mail.googleSmall:..//jsp//images//smallGoogle.jpg}")
-            String googleSmall,
-
-            @Value ("${mail.googlePlay:..//jsp//images//googlePlay151x47.jpg}")
-            String googlePlay,
-
-            @Value ("${mail.facebookSmall:..//jsp//images//smallFacebook.jpg}")
-            String facebookSmall,
-
-            @Value ("${mail.appStore:..//jsp//images//app-store151x48.jpg}")
-            String appStore,
-
             AccountService accountService,
             InviteService inviteService,
-            JavaMailSenderImpl mailSender,
 
             @SuppressWarnings ("SpringJavaAutowiringInspection")
             FreeMarkerConfigurationFactory freemarkerConfiguration,
@@ -166,12 +148,12 @@ public class MailService {
             UserAccountManager userAccountManager,
             UserProfilePreferenceService userProfilePreferenceService,
             NotificationService notificationService,
+            MailManager mailManager,
 
             @Value ("${MailService.inviteCachePeriod}")
             int inviteCachePeriod
     ) {
 
-        this.doNotReplyEmail = doNotReplyEmail;
         this.devSentTo = devSentTo;
         this.inviteeEmail = inviteeEmail;
         this.emailAddressName = emailAddressName;
@@ -182,14 +164,9 @@ public class MailService {
         this.mailValidateSubject = mailValidateSubject;
         this.mailRegistrationActiveSubject = mailRegistrationActiveSubject;
         this.accountNotFound = accountNotFound;
-        this.googleSmall = googleSmall;
-        this.googlePlay = googlePlay;
-        this.facebookSmall = facebookSmall;
-        this.appStore = appStore;
 
         this.accountService = accountService;
         this.inviteService = inviteService;
-        this.mailSender = mailSender;
         this.freemarkerConfiguration = freemarkerConfiguration;
         this.emailValidateService = emailValidateService;
         this.friendService = friendService;
@@ -198,6 +175,7 @@ public class MailService {
         this.userAccountManager = userAccountManager;
         this.userProfilePreferenceService = userProfilePreferenceService;
         this.notificationService = notificationService;
+        this.mailManager = mailManager;
 
         invitees = CacheBuilder.newBuilder()
                 .maximumSize(SIZE_100)
@@ -213,16 +191,15 @@ public class MailService {
         rootMap.put("https", https);
 
         try {
-            MimeMessage message = mailSender.createMimeMessage();
             LOG.info("Account registration sent to={}", StringUtils.isEmpty(devSentTo) ? userId : devSentTo);
-            MimeMessageHelper helper = populateMessageBody(userId, name, message);
-            sendMail(
-                    name + ": " + mailRegistrationActiveSubject,
-                    freemarkerToString("mail/registration-active.ftl", rootMap),
-                    message,
-                    helper
-            );
-        } catch (IOException | TemplateException | MessagingException exception) {
+            MailEntity mail = new MailEntity()
+                    .setToMail(userId)
+                    .setToName(name)
+                    .setSubject(name + ": " + mailRegistrationActiveSubject)
+                    .setMessage(freemarkerToString("mail/registration-active.ftl", rootMap))
+                    .setMailStatus(MailStatusEnum.N);
+            mailManager.save(mail);
+        } catch (IOException | TemplateException exception) {
             LOG.error("Registration failure email for={}", userId, exception);
             return false;
         }
@@ -246,76 +223,47 @@ public class MailService {
         rootMap.put("https", https);
 
         try {
-            MimeMessage message = mailSender.createMimeMessage();
             LOG.info("Account validation sent to={}", StringUtils.isEmpty(devSentTo) ? userId : devSentTo);
-            MimeMessageHelper helper = populateMessageBody(userId, name, message);
-            sendMail(
-                    name + ": " + mailValidateSubject,
-                    freemarkerToString("mail/self-signup.ftl", rootMap),
-                    message,
-                    helper
-            );
-        } catch (IOException | TemplateException | MessagingException exception) {
+            MailEntity mail = new MailEntity()
+                    .setToMail(userId)
+                    .setToName(name)
+                    .setSubject(name + ": " + mailValidateSubject)
+                    .setMessage(freemarkerToString("mail/self-signup.ftl", rootMap))
+                    .setMailStatus(MailStatusEnum.N);
+            mailManager.save(mail);
+        } catch (IOException | TemplateException exception) {
             LOG.error("Validation failure email for={}", userId, exception);
             return false;
         }
         return true;
     }
 
-    private MimeMessageHelper populateMessageBody(String userId, String name, MimeMessage message) throws MessagingException, UnsupportedEncodingException {
-        // use the true flag to indicate you need a multipart message
-        MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
-        helper.setFrom(new InternetAddress(doNotReplyEmail, emailAddressName));
-
-        String sentTo = StringUtils.isEmpty(devSentTo) ? userId : devSentTo;
-        if (sentTo.equalsIgnoreCase(devSentTo)) {
-            helper.setTo(new InternetAddress(devSentTo, emailAddressName));
-        } else {
-            helper.setTo(new InternetAddress(userId, name));
-        }
-        return helper;
-    }
-
     /**
      * Send recover email to user of provided email id.
      * http://bharatonjava.wordpress.com/2012/08/27/sending-email-using-java-mail-api/
      *
-     * @param mail
+     * @param userId
      */
-    public MailTypeEnum mailRecoverLink(String mail) {
-        UserAccountEntity userAccount = accountService.findByUserId(mail);
+    public MailTypeEnum mailRecoverLink(String userId) {
+        UserAccountEntity userAccount = accountService.findByUserId(userId);
         if (null == userAccount) {
-            LOG.warn("Could not recover user={}", mail);
+            LOG.warn("Could not recover user={}", userId);
 
             Map<String, String> rootMap = new HashMap<>();
-            rootMap.put("contact_email", mail);
+            rootMap.put("contact_email", userId);
             rootMap.put("domain", domain);
             rootMap.put("https", https);
 
             try {
-                MimeMessage message = mailSender.createMimeMessage();
+                MailEntity mail = new MailEntity()
+                        .setToMail(userId)
+                        .setSubject(accountNotFound)
+                        .setMessage(freemarkerToString("mail/account-recover-unregistered-user.ftl", rootMap))
+                        .setMailStatus(MailStatusEnum.N);
+                mailManager.save(mail);
 
-                // use the true flag to indicate you need a multipart message
-                MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
-                helper.setFrom(new InternetAddress(doNotReplyEmail, emailAddressName));
-
-                String sentTo = StringUtils.isEmpty(devSentTo) ? mail : devSentTo;
-                if (sentTo.equalsIgnoreCase(devSentTo)) {
-                    LOG.info("Mail account not found send to={}", devSentTo);
-                    helper.setTo(new InternetAddress(devSentTo, emailAddressName));
-                } else {
-                    LOG.info("Mail account not found send to={}", mail);
-                    helper.setTo(new InternetAddress(mail, ""));
-                }
-
-                sendMail(
-                        accountNotFound,
-                        freemarkerToString("mail/account-recover-unregistered-user.ftl", rootMap),
-                        message,
-                        helper
-                );
                 return MailTypeEnum.SUCCESS;
-            } catch (IOException | TemplateException | MessagingException exception) {
+            } catch (IOException | TemplateException exception) {
                 LOG.error("Account not found email={}", exception.getLocalizedMessage(), exception);
             }
 
@@ -324,7 +272,7 @@ public class MailService {
 
         if (null != userAccount.getProviderId()) {
             /** Cannot change password for social account. Well this condition is checked in Mobile Server too. */
-            LOG.warn("Social account user={} tried recovering password", mail);
+            LOG.warn("Social account user={} tried recovering password", userId);
             return MailTypeEnum.SOCIAL_ACCOUNT;
         }
 
@@ -339,29 +287,16 @@ public class MailService {
             rootMap.put("https", https);
 
             try {
-                MimeMessage message = mailSender.createMimeMessage();
+                MailEntity mail = new MailEntity()
+                        .setToMail(userId)
+                        .setToName(userAccount.getName())
+                        .setSubject(userAccount.getName() + ": " + mailRecoverSubject)
+                        .setMessage(freemarkerToString("mail/account-recover.ftl", rootMap))
+                        .setMailStatus(MailStatusEnum.N);
+                mailManager.save(mail);
 
-                // use the true flag to indicate you need a multipart message
-                MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
-                helper.setFrom(new InternetAddress(doNotReplyEmail, emailAddressName));
-
-                String sentTo = StringUtils.isEmpty(devSentTo) ? mail : devSentTo;
-                if (sentTo.equalsIgnoreCase(devSentTo)) {
-                    helper.setTo(new InternetAddress(devSentTo, emailAddressName));
-                    LOG.info("Mail recovery send to={}", devSentTo);
-                } else {
-                    helper.setTo(new InternetAddress(mail, userAccount.getName()));
-                    LOG.info("Mail recovery send to={}", mail);
-                }
-
-                sendMail(
-                        userAccount.getName() + ": " + mailRecoverSubject,
-                        freemarkerToString("mail/account-recover.ftl", rootMap),
-                        message,
-                        helper
-                );
                 return MailTypeEnum.SUCCESS;
-            } catch (IOException | TemplateException | MessagingException exception) {
+            } catch (IOException | TemplateException exception) {
                 LOG.error("Recovery email={}", exception.getLocalizedMessage(), exception);
                 return MailTypeEnum.FAILURE;
             }
@@ -504,91 +439,20 @@ public class MailService {
         rootMap.put("https", https);
 
         try {
-            MimeMessage message = mailSender.createMimeMessage();
-
-            /** Use the true flag to indicate you need a multipart message. */
-            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
-            helper.setFrom(new InternetAddress(inviteeEmail, emailAddressName));
-            helper.setTo(StringUtils.isEmpty(devSentTo) ? email : devSentTo);
             LOG.info("Invitation send to={}", StringUtils.isEmpty(devSentTo) ? email : devSentTo);
-            sendMail(
-                    mailInviteSubject + " - " + invitedBy.getName(),
-                    freemarkerToString("mail/invite.ftl", rootMap),
-                    message,
-                    helper
-            );
-        } catch (TemplateException | IOException | MessagingException exception) {
+            MailEntity mail = new MailEntity()
+                    .setToMail(StringUtils.isEmpty(devSentTo) ? email : devSentTo)
+                    .setFromMail(inviteeEmail)
+                    .setFromName(emailAddressName)
+                    .setSubject(mailInviteSubject + " - " + invitedBy.getName())
+                    .setMessage(freemarkerToString("mail/invite.ftl", rootMap))
+                    .setMailStatus(MailStatusEnum.N);
+            mailManager.save(mail);
+        } catch (TemplateException | IOException exception) {
             LOG.error("Invitation failure email inviteId={}, for={}",
                     inviteEntity.getId(), inviteEntity.getEmail(), exception);
             throw new RuntimeException(exception);
         }
-    }
-
-    private void sendMail(
-            String subject,
-            String text,
-            MimeMessage message,
-            MimeMessageHelper helper
-    ) throws MessagingException {
-        /** Use the true flag to indicate the text included is HTML. */
-        helper.setText(text, true);
-        helper.setSubject(subject);
-
-        if (subject.startsWith(mailInviteSubject)) {
-            /** Attach image always at the end. */
-            helper.addInline("googlePlus.logo", getFileSystemResource(googleSmall));
-            helper.addInline("facebook.logo", getFileSystemResource(facebookSmall));
-            helper.addInline("ios.logo", getFileSystemResource(appStore));
-            helper.addInline("android.logo", getFileSystemResource(googlePlay));
-        }
-
-        try {
-            int count = 0;
-            boolean connected = false;
-            while (!connected && count < 10) {
-                count++;
-                try {
-                    mailSender.testConnection();
-                    connected = true;
-                } catch (MessagingException m) {
-                    LOG.error("Failed to connect with mail server count={} reason={}", count, m.getLocalizedMessage(), m);
-                }
-            }
-
-            count = 0;
-            boolean noAuthenticationException = false;
-            while (!noAuthenticationException && count < 10) {
-                count++;
-                try {
-                    mailSender.send(message);
-                    noAuthenticationException = true;
-                    LOG.info("Mail success... subject={}", subject);
-                    return;
-                } catch (MailAuthenticationException | MailSendException e) {
-                    LOG.error("Failed to send mail server count={} reason={}", count, e.getLocalizedMessage(), e);
-                }
-                LOG.warn("Mail fail... subject={}", subject);
-            }
-        } catch (MailSendException mailSendException) {
-            LOG.error("Mail send exception={}", mailSendException.getLocalizedMessage());
-            throw new MessagingException(mailSendException.getLocalizedMessage(), mailSendException);
-        }
-    }
-
-    private FileSystemResource getFileSystemResource(String location) {
-        URL url = Thread.currentThread().getContextClassLoader().getResource(location);
-        if (url == null) {
-            try {
-                File file = new File(location);
-                if (file.exists()) {
-                    url = file.toURI().toURL();
-                }
-            } catch (MalformedURLException e) {
-                LOG.error("URL for file at location={} reason={}", location, e.getLocalizedMessage(), e);
-            }
-        }
-        Assert.notNull(url, "File not found at location " + location);
-        return new FileSystemResource(url.getPath());
     }
 
     private String freemarkerToString(String ftl, Map<String, String> rootMap) throws IOException, TemplateException {
