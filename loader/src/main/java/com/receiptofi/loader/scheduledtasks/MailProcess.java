@@ -139,22 +139,25 @@ public class MailProcess {
                     MimeMessage message = mailSender.createMimeMessage();
                     MimeMessageHelper helper = populateMessageBody(mail, message);
                     sendMail(mail, message, helper);
-                    mail.setMailStatus(MailStatusEnum.S);
-                    success++;
                     mailManager.updateMail(mail.getId(), MailStatusEnum.S);
+                    success++;
                 } catch (MessagingException | UnsupportedEncodingException e) {
                     LOG.error("Failure sending email={} subject={} reason={}", mail.getToMail(), mail.getSubject(), e.getLocalizedMessage(), e);
-                    failure++;
                     if (sendAttempt < mail.getAttempts()) {
                         mailManager.updateMail(mail.getId(), MailStatusEnum.N);
+                        failure++;
                     } else {
                         mailManager.updateMail(mail.getId(), MailStatusEnum.F);
+                        skipped++;
                     }
                 }
             }
         } catch (Exception e) {
             LOG.error("Error sending mail reason={}", e.getLocalizedMessage(), e);
         } finally {
+            if (0 < skipped) {
+                LOG.error("Skipped sending mail. Number of attempts exceeded. Take a look.");
+            }
             saveUploadStats(cronStats, success, failure, skipped, mails.size());
         }
     }
