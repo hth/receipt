@@ -55,6 +55,7 @@ public class MailProcess {
     private final String appStore;
     private final String googlePlay;
     private final String emailSwitch;
+    private final int sendAttempt;
 
     private JavaMailSenderImpl mailSender;
     private MailManager mailManager;
@@ -89,6 +90,9 @@ public class MailProcess {
             @Value ("${MailProcess.emailSwitch}")
             String emailSwitch,
 
+            @Value ("${MailProcess.sendAttempt}")
+            int sendAttempt,
+
             JavaMailSenderImpl mailSender,
             MailManager mailManager,
             CronStatsService cronStatsService
@@ -102,6 +106,7 @@ public class MailProcess {
         this.facebookSmall = facebookSmall;
         this.appStore = appStore;
         this.emailSwitch = emailSwitch;
+        this.sendAttempt = sendAttempt;
 
         this.mailSender = mailSender;
         this.mailManager = mailManager;
@@ -140,7 +145,7 @@ public class MailProcess {
                 } catch (MessagingException | UnsupportedEncodingException e) {
                     LOG.error("Failure sending email={} subject={} reason={}", mail.getToMail(), mail.getSubject(), e.getLocalizedMessage(), e);
                     failure++;
-                    if (5 < mail.getAttempts()) {
+                    if (sendAttempt < mail.getAttempts()) {
                         mailManager.updateMail(mail.getId(), MailStatusEnum.N);
                     } else {
                         mailManager.updateMail(mail.getId(), MailStatusEnum.F);
