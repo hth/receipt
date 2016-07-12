@@ -163,11 +163,11 @@ public class FilesUploadToS3 {
                             } else {
                                 //TODO keep an eye on this issue. Should not happen.
                                 skipped++;
-                                LOG.error("Skipped file={} as it does not exists in GridFSDBFile", fileSystem.getBlobId());
+                                LOG.error("Skipped document file={} as it does not exists in GridFSDBFile", fileSystem.getBlobId());
                             }
                         } else {
                             skipped++;
-                            LOG.warn("Skipped file={} as it exists in S3 SNL={}",
+                            LOG.warn("Skipped as document file={} as it exists in S3 SNL={}",
                                     fileSystem.getBlobId(),
                                     fileSystem.getScaledFileLength());
                         }
@@ -264,7 +264,7 @@ public class FilesUploadToS3 {
                         } else {
                             //Keep an eye on this issue. Should not happen. Otherwise a bug.
                             skipped++;
-                            LOG.error("Skipped file={} as it does not exists in GridFSDBFile", fileSystem.getBlobId());
+                            LOG.error("Skipped coupon file={} as it does not exists in GridFSDBFile", fileSystem.getBlobId());
                         }
 
                     }
@@ -360,14 +360,14 @@ public class FilesUploadToS3 {
                             } else {
                                 //TODO keep an eye on this issue. Should not happen.
                                 skipped++;
-                                LOG.error("Skipped file={} as it does not exists in GridFSDBFile", fileSystem.getBlobId());
+                                LOG.error("Skipped campaign file={} as it does not exists in GridFSDBFile", fileSystem.getBlobId());
                             }
                         }
                         /** Update image path from local to cloud (S3) after coupon upload. */
                         fileDBService.deleteHard(campaign.getFileSystemEntities());
                     } else {
                         skipped++;
-                        LOG.info("Skipped as campaign does not contain any image campaignId={}", campaign.getId());
+                        LOG.warn("Skipped as campaign does not contain any image campaignId={}", campaign.getId());
                     }
 
                     campaign.setCampaignStatus(CampaignStatusEnum.S);
