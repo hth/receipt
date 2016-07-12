@@ -59,7 +59,7 @@ public final class RandomString {
         return new String(buf);
     }
 
-    public static String generateEmailAddress(ScrubbedInput firstName, ScrubbedInput lastName, String rid) {
+    private static String generateEmailAddress(ScrubbedInput firstName, ScrubbedInput lastName, String rid) {
         String shortenedRid = rid.replaceFirst(RID_SHORTEN, "");
 
         if (StringUtils.isNotBlank(firstName.getText()) && StringUtils.isNotBlank(lastName.getText())) {
@@ -71,5 +71,9 @@ public final class RandomString {
         } else {
            return StringUtils.lowerCase(RandomString.newInstance(6).nextString()) + "." + shortenedRid;
         }
+    }
+
+    public static String generateEmailAddressWithDomain(ScrubbedInput firstName, ScrubbedInput lastName, String rid) {
+        return generateEmailAddress(firstName, lastName, rid) + "@receiptofi.com";
     }
 }
