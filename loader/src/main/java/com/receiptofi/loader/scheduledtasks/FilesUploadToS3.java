@@ -161,7 +161,7 @@ public class FilesUploadToS3 {
                             if (null != fs) {
                                 success = uploadToS3(success, document, fileSystem, fs);
                             } else {
-                                //TODO keep an eye on this issue. Should not happen.
+                                //Keep an eye on this issue. Should not happen. Otherwise a bug.
                                 skipped++;
                                 LOG.error("Skipped document file={} as it does not exists in GridFSDBFile", fileSystem.getBlobId());
                             }
@@ -358,7 +358,7 @@ public class FilesUploadToS3 {
                             if (null != fs) {
                                 success = uploadToS3(success, campaign, fileSystem, fs);
                             } else {
-                                //TODO keep an eye on this issue. Should not happen.
+                                //Keep an eye on this issue. Should not happen. Otherwise a bug.
                                 skipped++;
                                 LOG.error("Skipped campaign file={} as it does not exists in GridFSDBFile", fileSystem.getBlobId());
                             }

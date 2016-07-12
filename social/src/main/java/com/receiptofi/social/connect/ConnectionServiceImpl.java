@@ -549,16 +549,18 @@ public class ConnectionServiceImpl implements ConnectionService {
             User facebookUserProfile,
             UserAccountEntity userAccount,
             UserProfileEntity userProfile) {
-        LOG.warn("Facebook name firstName={} lastName={} randomEmail={} REMOVE CODE",
+        String email = RandomString.generateEmailAddressWithDomain(
+                new ScrubbedInput(userProfile.getFirstName()),
+                new ScrubbedInput(userProfile.getLastName()),
+                userAccount.getReceiptUserId());
+
+        LOG.warn("Facebook name firstName={} lastName={} randomEmail={}",
                 userProfile.getFirstName(),
                 userProfile.getLastName(),
-                RandomString.generateEmailAddress(
-                        new ScrubbedInput(userProfile.getFirstName()),
-                        new ScrubbedInput(userProfile.getLastName()),
-                        userAccount.getReceiptUserId()));
+                email);
 
         Assert.isTrue(StringUtils.isBlank(facebookUserProfile.getEmail()) && StringUtils.isBlank(userProfile.getEmail()), "");
-        userProfile.setEmail(userAccount.getReceiptUserId() + "@receiptofi.com");
+        userProfile.setEmail(email);
         LOG.warn("Facebook email empty, setting profile email={}", userProfile.getEmail());
     }
 
