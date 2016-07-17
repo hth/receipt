@@ -1,8 +1,12 @@
 package com.receiptofi.loader.service;
 
 import com.receiptofi.domain.RegisteredDeviceEntity;
+import com.receiptofi.domain.types.NotificationSendStateEnum;
+import com.receiptofi.domain.types.NotificationStateEnum;
 import com.receiptofi.repository.RegisteredDeviceManager;
+import com.receiptofi.service.MailService;
 import com.receiptofi.utils.CommonUtil;
+import com.receiptofi.utils.DateUtil;
 
 import org.apache.commons.io.IOUtils;
 
@@ -28,6 +32,7 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -107,18 +112,18 @@ public class MobilePushNotificationService {
         };
     }
 
-    public boolean sendNotification(String message, String rid) {
+    public List<NotificationSendStateEnum> sendNotification(String message, String rid) {
         List<RegisteredDeviceEntity> registeredDevices = registeredDeviceManager.getDevicesForRid(rid);
 
-        boolean sentNotification = false;
+        List<NotificationSendStateEnum> notificationSendStates = new LinkedList<>();
         for (RegisteredDeviceEntity registeredDevice : registeredDevices) {
             LOG.info("Invoked notification for rid={} deviceType={}", registeredDevice.getReceiptUserId(), registeredDevice.getDeviceType());
             switch (registeredDevice.getDeviceType()) {
                 case A:
-                    sentNotification = invokeGoogleNotification(message, rid, registeredDevice);
+                    notificationSendStates.add(invokeGoogleNotification(message, rid, registeredDevice));
                     break;
                 case I:
-                    sentNotification = invokeAppleNotification(message, rid, registeredDevice);
+                    notificationSendStates.add(invokeAppleNotification(message, rid, registeredDevice));
                     break;
                 default:
                     LOG.error("DeviceTypeEnum={} not defined", registeredDevice.getDeviceType());
@@ -126,11 +131,11 @@ public class MobilePushNotificationService {
             }
         }
 
-        return sentNotification;
+        return notificationSendStates;
     }
 
-    private boolean invokeGoogleNotification(String message, String rid, RegisteredDeviceEntity registeredDevice) {
-        boolean sentNotification = false;
+    private NotificationSendStateEnum invokeGoogleNotification(String message, String rid, RegisteredDeviceEntity registeredDevice) {
+        NotificationSendStateEnum notificationSendState = NotificationSendStateEnum.FAILED;
         try {
             // Prepare JSON containing the GCM message content. What to send and where to send.
             JSONObject jGcmData = new JSONObject();
@@ -161,15 +166,20 @@ public class MobilePushNotificationService {
                 try {
                     org.json.JSONObject jo = new org.json.JSONObject(resp);
                     if (jo.has("error")) {
-                        LOG.warn("Error while sending notification reason={} deviceId={} rid={}",
-                                jo.getString("error"), registeredDevice.getDeviceId(), rid);
+                        if (DateUtil.getDaysBetween(registeredDevice.getUpdated(), DateUtil.nowDate()) > 45) {
+                            LOG.warn("Deleting A device older than 45 days rid={} did={}", rid, registeredDevice.getDeviceId());
+                            registeredDeviceManager.deleteHard(rid, registeredDevice.getDeviceId());
+                        } else {
+                            LOG.warn("Error while sending notification reason={} deviceId={} rid={}",
+                                    jo.getString("error"), registeredDevice.getDeviceId(), rid);
+                        }
                     }
 
                     if (jo.has("message_id")) {
                         LOG.info("Success sending notification messageId={} deviceId={} rid={}",
                                 jo.getInt("message_id"), registeredDevice.getDeviceId(), rid);
 
-                        sentNotification = true;
+                        notificationSendState = NotificationSendStateEnum.SUCCESS;
                     }
                 } catch (JSONException e) {
                     LOG.error("Failed parsing JSON string={}", resp);
@@ -181,12 +191,13 @@ public class MobilePushNotificationService {
             LOG.error("Unable to send GCM message. Reason={}", e.getLocalizedMessage(), e);
         }
 
-        return sentNotification;
+        return notificationSendState;
     }
 
-    private boolean invokeAppleNotification(String message, String rid, RegisteredDeviceEntity registeredDevice) {
+    private NotificationSendStateEnum invokeAppleNotification(String message, String rid, RegisteredDeviceEntity registeredDevice) {
         LOG.info("Invoked apple notification rid={}", rid);
 
+        NotificationSendStateEnum notificationSendState = NotificationSendStateEnum.FAILED;
         if (null == registeredDevice.getToken()) {
             LOG.info("Skipped notifying as token is missing rid={}", rid);
         } else {
@@ -199,30 +210,24 @@ public class MobilePushNotificationService {
                 apnsService.push(registeredDevice.getToken(), payload);
                 Map<String, Date> inactiveDevices = apnsService.getInactiveDevices();
                 for (String id : inactiveDevices.keySet()) {
-                    LOG.warn("Apple inactive rid={} token={} id={} date={}",
-                            rid, registeredDevice.getToken(), id, inactiveDevices.get(id));
-
-                    if (registeredDevice.getCount() > 5) {
-                        registeredDeviceManager.unsetToken(
-                                rid,
-                                registeredDevice.getToken());
+                    if (DateUtil.getDaysBetween(registeredDevice.getUpdated(), DateUtil.nowDate()) > 45) {
+                        LOG.warn("Deleting I device older than 45 days rid={} did={}", rid, registeredDevice.getDeviceId());
+                        registeredDeviceManager.deleteHard(rid, registeredDevice.getDeviceId());
                     } else {
-                        registeredDeviceManager.increaseCountOnInactiveDevice(
-                                rid,
-                                registeredDevice.getToken());
+                        LOG.warn("Apple inactive rid={} token={} id={} date={}",
+                                rid, registeredDevice.getToken(), id, inactiveDevices.get(id));
                     }
                 }
 
-                if (inactiveDevices.isEmpty() && registeredDevice.getCount() > 0) {
-                    registeredDeviceManager.resetCountOnInactiveDevice(
-                            rid,
-                            registeredDevice.getToken());
+                if (inactiveDevices.isEmpty()) {
+                    notificationSendState = NotificationSendStateEnum.SUCCESS;
                 }
             } catch (RuntimeException e) {
-                LOG.error("Failed sending Apple Notification {} {} {} reason={}", rid, registeredDevice.getDeviceId(), message, e.getMessage(), e);
+                LOG.error("Failed sending Apple Notification {} {} {} reason={}",
+                        rid, registeredDevice.getDeviceId(), message, e.getMessage(), e);
             }
         }
 
-        return true;
+        return notificationSendState;
     }
 }

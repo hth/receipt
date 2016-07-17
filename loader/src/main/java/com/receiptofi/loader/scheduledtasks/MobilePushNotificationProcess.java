@@ -4,6 +4,8 @@ import com.receiptofi.domain.CronStatsEntity;
 import com.receiptofi.domain.DocumentEntity;
 import com.receiptofi.domain.NotificationEntity;
 import com.receiptofi.domain.UserAccountEntity;
+import com.receiptofi.domain.types.NotificationSendStateEnum;
+import com.receiptofi.domain.types.NotificationStateEnum;
 import com.receiptofi.loader.service.MobilePushNotificationService;
 import com.receiptofi.repository.NotificationManager;
 import com.receiptofi.service.AccountService;
@@ -192,23 +194,54 @@ public class MobilePushNotificationProcess {
         try {
             for (NotificationEntity notification : notifications) {
                 try {
-                    if (mobilePushNotificationService.sendNotification(
+                    List<NotificationSendStateEnum> notificationSendStates = mobilePushNotificationService.sendNotification(
                             notification.getMessage(),
-                            notification.getReceiptUserId())) {
+                            notification.getReceiptUserId());
+                    LOG.info("Attempts to send notification count={} rid={}", notificationSendStates.size(), notification.getReceiptUserId());
 
-                        notification.setNotificationStateToSuccess();
-                        success++;
-                    } else {
-                        LOG.warn("Push failure rid={} id={} message={}",
-                                notification.getReceiptUserId(),
-                                notification.getId(),
-                                notification.getMessage());
+                    boolean atLeastOneNotificationSend = false;
+                    for (NotificationSendStateEnum notificationSendState : notificationSendStates) {
+                        switch (notificationSendState) {
+                            case SUCCESS:
+                                LOG.info("Push sent rid={} id={} message={}",
+                                        notification.getReceiptUserId(),
+                                        notification.getId(),
+                                        notification.getMessage());
 
-                        notification.setNotificationStateToFailure();
-                        failure++;
+                                notification.setNotificationStateToSuccess();
+                                success++;
+                                atLeastOneNotificationSend = true;
+
+                                break;
+                            case FAILED:
+                                LOG.warn("Push failure rid={} id={} message={}",
+                                        notification.getReceiptUserId(),
+                                        notification.getId(),
+                                        notification.getMessage());
+
+                                if (!atLeastOneNotificationSend) {
+                                    /* If success then do not re-set to failure. */
+                                    notification.setNotificationStateToFailure();
+                                }
+                                failure++;
+
+                                break;
+                            case SKIPPED:
+                                LOG.info("Push skipped, missing TOKEN rid={} id={} message={}",
+                                        notification.getReceiptUserId(),
+                                        notification.getId(),
+                                        notification.getMessage());
+                                break;
+                            default:
+                                LOG.error("NotificationSendStateEnum not defined {}", notificationSendState);
+                        }
                     }
 
-                    /** Increase count when success or failure. */
+                    if (!atLeastOneNotificationSend) {
+                        /** TODO In case of failure in sending notification to all registered device, then notify through email. */
+                    }
+
+                    /** Increase count when success or failure or skipped. */
                     notification.addCount();
                     LOG.info("Push count={} rid={} id={}",
                             notification.getCount(),
