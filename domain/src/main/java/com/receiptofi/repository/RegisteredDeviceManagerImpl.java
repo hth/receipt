@@ -128,40 +128,9 @@ public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
     }
 
     @Override
-    public void unsetToken(String rid, String token) {
-        mongoTemplate.updateFirst(
-                query(where("RID").is(rid).and("TK").is(token)),
-                new Update().unset("TK"),
-                RegisteredDeviceEntity.class,
-                TABLE);
-    }
-
-    /**
-     * Note: Do not update the date to new date as this is being reference for last update for device.
-     *
-     * @param rid
-     * @param token
-     */
-    @Override
-    public void increaseCountOnInactiveDevice(String rid, String token) {
-        mongoTemplate.updateMulti(
-                query(where("RID").is(rid).and("TK").is(token)),
-                new Update().inc("CN", 1),
-                RegisteredDeviceEntity.class,
-                TABLE);
-    }
-
-    /**
-     * Reset when inactive token is active.
-     *
-     * @param rid
-     * @param token
-     */
-    @Override
-    public void resetCountOnInactiveDevice(String rid, String token) {
-        mongoTemplate.updateMulti(
-                query(where("RID").is(rid).and("TK").is(token)),
-                update("CN", 0),
+    public void deleteHard(String rid, String did) {
+        mongoTemplate.remove(
+                query(where("RID").is(rid).and("DID").is(did)),
                 RegisteredDeviceEntity.class,
                 TABLE);
     }

@@ -44,10 +44,6 @@ public class RegisteredDeviceEntity extends BaseEntity {
     @Field ("TK")
     private String token;
 
-    /** Update query increases the count by one. */
-    @Field ("CN")
-    private int count = 0;
-
     private RegisteredDeviceEntity(String receiptUserId, String deviceId, DeviceTypeEnum deviceType, String token) {
         super();
         this.receiptUserId = receiptUserId;
@@ -86,9 +82,5 @@ public class RegisteredDeviceEntity extends BaseEntity {
 
     public void setToken(String token) {
         this.token = token;
-    }
-
-    public int getCount() {
-        return count;
     }
 }
