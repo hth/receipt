@@ -92,9 +92,18 @@ public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
      */
     @Override
     public RegisteredDeviceEntity lastAccessed(String rid, String did) {
+        return  lastAccessed(rid, did, update("U", "ON".equals(deviceLastAccessedNow) ? new Date() : DateTime.now().minusYears(1).toDate()));
+    }
+
+    @Override
+    public RegisteredDeviceEntity lastAccessed(String rid, String did, String token) {
+        return lastAccessed(rid, did, update("U", "ON".equals(deviceLastAccessedNow) ? new Date() : DateTime.now().minusYears(1).toDate()).set("TK", token));
+    }
+
+    private RegisteredDeviceEntity lastAccessed(String rid, String did, Update update) {
         return mongoTemplate.findAndModify(
                 query(where("RID").is(rid).and("DID").is(did)),
-                update("U", "ON".equals(deviceLastAccessedNow) ? new Date() : DateTime.now().minusYears(1).toDate()),
+                update,
                 RegisteredDeviceEntity.class,
                 TABLE
         );
