@@ -167,7 +167,8 @@ public class MobilePushNotificationService {
                     org.json.JSONObject jo = new org.json.JSONObject(resp);
                     if (jo.has("error")) {
                         if (DateUtil.getDaysBetween(registeredDevice.getUpdated(), DateUtil.nowDate()) > 45) {
-                            LOG.warn("Deleting A device older than 45 days rid={} did={}", rid, registeredDevice.getDeviceId());
+                            LOG.warn("Deleting {} device older than 45 days rid={} did={}",
+                                    registeredDevice.getDeviceType(), rid, registeredDevice.getDeviceId());
                             registeredDeviceManager.deleteHard(rid, registeredDevice.getDeviceId());
                         } else {
                             LOG.warn("Error while sending notification reason={} deviceId={} rid={}",
@@ -211,7 +212,8 @@ public class MobilePushNotificationService {
                 Map<String, Date> inactiveDevices = apnsService.getInactiveDevices();
                 for (String id : inactiveDevices.keySet()) {
                     if (DateUtil.getDaysBetween(registeredDevice.getUpdated(), DateUtil.nowDate()) > 45) {
-                        LOG.warn("Deleting I device older than 45 days rid={} did={}", rid, registeredDevice.getDeviceId());
+                        LOG.warn("Deleting {} device older than 45 days rid={} did={}",
+                                registeredDevice.getDeviceType(), rid, registeredDevice.getDeviceId());
                         registeredDeviceManager.deleteHard(rid, registeredDevice.getDeviceId());
                     } else {
                         LOG.warn("Apple inactive rid={} token={} id={} date={}",
