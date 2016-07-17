@@ -34,6 +34,18 @@ public interface RegisteredDeviceManager extends RepositoryManager<RegisteredDev
     RegisteredDeviceEntity lastAccessed(String rid, String did);
 
     /**
+     * Update the token for a particular device id. Update token every time the request comes in.
+     *
+     * @param rid
+     * @param did
+     * @param token
+     * @return
+     */
+    @SuppressWarnings ("unused")
+    @Mobile
+    RegisteredDeviceEntity lastAccessed(String rid, String did, String token);
+
+    /**
      * Finds or register device if not found. When not found returns false and saves the new device.
      * When found returns true.
      *
