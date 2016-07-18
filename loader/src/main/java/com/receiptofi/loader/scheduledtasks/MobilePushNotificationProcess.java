@@ -4,13 +4,14 @@ import com.receiptofi.domain.CronStatsEntity;
 import com.receiptofi.domain.DocumentEntity;
 import com.receiptofi.domain.NotificationEntity;
 import com.receiptofi.domain.UserAccountEntity;
+import com.receiptofi.domain.types.MailTypeEnum;
 import com.receiptofi.domain.types.NotificationSendStateEnum;
-import com.receiptofi.domain.types.NotificationStateEnum;
 import com.receiptofi.loader.service.MobilePushNotificationService;
 import com.receiptofi.repository.NotificationManager;
 import com.receiptofi.service.AccountService;
 import com.receiptofi.service.CronStatsService;
 import com.receiptofi.service.DocumentService;
+import com.receiptofi.service.MailService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,6 +45,7 @@ public class MobilePushNotificationProcess {
     private AccountService accountService;
     private CronStatsService cronStatsService;
     private NotificationManager notificationManager;
+    private MailService mailService;
 
     @Autowired
     public MobilePushNotificationProcess(
@@ -61,8 +63,8 @@ public class MobilePushNotificationProcess {
             DocumentService documentService,
             AccountService accountService,
             CronStatsService cronStatsService,
-            NotificationManager notificationManager
-
+            NotificationManager notificationManager,
+            MailService mailService
     ) {
         this.notifyUserSwitch = notifyUserSwitch;
         this.documentLastUpdated = documentLastUpdated;
@@ -72,6 +74,7 @@ public class MobilePushNotificationProcess {
         this.accountService = accountService;
         this.cronStatsService = cronStatsService;
         this.notificationManager = notificationManager;
+        this.mailService = mailService;
     }
 
     /**
@@ -199,7 +202,7 @@ public class MobilePushNotificationProcess {
                             notification.getReceiptUserId());
                     LOG.info("Attempts to send notification count={} rid={}", notificationSendStates.size(), notification.getReceiptUserId());
 
-                    boolean atLeastOneNotificationSend = false;
+                    boolean atLeastOneNotificationSent = false;
                     for (NotificationSendStateEnum notificationSendState : notificationSendStates) {
                         switch (notificationSendState) {
                             case SUCCESS:
@@ -207,10 +210,7 @@ public class MobilePushNotificationProcess {
                                         notification.getReceiptUserId(),
                                         notification.getId(),
                                         notification.getMessage());
-
-                                notification.setNotificationStateToSuccess();
-                                success++;
-                                atLeastOneNotificationSend = true;
+                                atLeastOneNotificationSent = true;
 
                                 break;
                             case FAILED:
@@ -219,26 +219,41 @@ public class MobilePushNotificationProcess {
                                         notification.getId(),
                                         notification.getMessage());
 
-                                if (!atLeastOneNotificationSend) {
-                                    /* If success then do not re-set to failure. */
-                                    notification.setNotificationStateToFailure();
-                                }
-                                failure++;
-
                                 break;
                             case SKIPPED:
                                 LOG.info("Push skipped, missing TOKEN rid={} id={} message={}",
                                         notification.getReceiptUserId(),
                                         notification.getId(),
                                         notification.getMessage());
+
                                 break;
                             default:
                                 LOG.error("NotificationSendStateEnum not defined {}", notificationSendState);
                         }
                     }
 
-                    if (!atLeastOneNotificationSend) {
-                        /** TODO In case of failure in sending notification to all registered device, then notify through email. */
+                    if (!atLeastOneNotificationSent) {
+                        switch (notification.getNotificationType()) {
+                            case RECEIPT:
+                                /* In case of failure in sending notification to all registered device, then notify through email. */
+                                MailTypeEnum mailType = mailService.sendReceiptProcessed(notification.getReceiptUserId(), notification.getMessage());
+                                if (mailType == MailTypeEnum.FAILURE) {
+                                    notification.setNotificationStateToFailure();
+                                    failure++;
+                                } else {
+                                    atLeastOneNotificationSent = true;
+                                }
+
+                                break;
+                            default:
+                                notification.setNotificationStateToFailure();
+                                failure++;
+                        }
+                    }
+
+                    if (atLeastOneNotificationSent) {
+                        notification.setNotificationStateToSuccess();
+                        success++;
                     }
 
                     /** Increase count when success or failure or skipped. */

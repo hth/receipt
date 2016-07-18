@@ -99,7 +99,7 @@ public class MailService {
     private String mailRecoverSubject;
     private String mailValidateSubject;
     private String mailRegistrationActiveSubject;
-    private String accountNotFound;
+    private String accountNotFoundSubject;
 
     private final Cache<String, String> invitees;
 
@@ -132,8 +132,8 @@ public class MailService {
             @Value ("${mail.registration.active.subject}")
             String mailRegistrationActiveSubject,
 
-            @Value ("${mail.account.not.found}")
-            String accountNotFound,
+            @Value ("${mail.account.not.found.subject}")
+            String accountNotFoundSubject,
 
             AccountService accountService,
             InviteService inviteService,
@@ -163,7 +163,7 @@ public class MailService {
         this.mailRecoverSubject = mailRecoverSubject;
         this.mailValidateSubject = mailValidateSubject;
         this.mailRegistrationActiveSubject = mailRegistrationActiveSubject;
-        this.accountNotFound = accountNotFound;
+        this.accountNotFoundSubject = accountNotFoundSubject;
 
         this.accountService = accountService;
         this.inviteService = inviteService;
@@ -195,7 +195,7 @@ public class MailService {
             MailEntity mail = new MailEntity()
                     .setToMail(userId)
                     .setToName(name)
-                    .setSubject(name + ": " + mailRegistrationActiveSubject)
+                    .setSubject(mailRegistrationActiveSubject)
                     .setMessage(freemarkerToString("mail/registration-active.ftl", rootMap))
                     .setMailStatus(MailStatusEnum.N);
             mailManager.save(mail);
@@ -227,7 +227,7 @@ public class MailService {
             MailEntity mail = new MailEntity()
                     .setToMail(userId)
                     .setToName(name)
-                    .setSubject(name + ": " + mailValidateSubject)
+                    .setSubject(mailValidateSubject)
                     .setMessage(freemarkerToString("mail/self-signup.ftl", rootMap))
                     .setMailStatus(MailStatusEnum.N);
             mailManager.save(mail);
@@ -257,7 +257,7 @@ public class MailService {
             try {
                 MailEntity mail = new MailEntity()
                         .setToMail(userId)
-                        .setSubject(accountNotFound)
+                        .setSubject(accountNotFoundSubject)
                         .setMessage(freemarkerToString("mail/account-recover-unregistered-user.ftl", rootMap))
                         .setMailStatus(MailStatusEnum.N);
                 mailManager.save(mail);
@@ -290,7 +290,7 @@ public class MailService {
                 MailEntity mail = new MailEntity()
                         .setToMail(userId)
                         .setToName(userAccount.getName())
-                        .setSubject(userAccount.getName() + ": " + mailRecoverSubject)
+                        .setSubject(mailRecoverSubject)
                         .setMessage(freemarkerToString("mail/account-recover.ftl", rootMap))
                         .setMailStatus(MailStatusEnum.N);
                 mailManager.save(mail);
@@ -655,5 +655,36 @@ public class MailService {
             status = reSendInvitation(invitedUserEmail, rid);
         }
         return status;
+    }
+
+    /**
+     * Send mail of receipt processed when notification delivery has failed or no TOKEN is registered for the device
+     * to receive notification.
+     *
+     * @param rid
+     * @param message
+     * @return
+     */
+    public MailTypeEnum sendReceiptProcessed(String rid, String message) {
+        UserAccountEntity userAccount = accountService.findByReceiptUserId(rid);
+
+        Map<String, String> rootMap = new HashMap<>();
+        rootMap.put("to", userAccount.getName());
+        rootMap.put("notification", message);
+
+        try {
+            MailEntity mail = new MailEntity()
+                    .setToMail(userAccount.getUserId())
+                    .setToName(userAccount.getName())
+                    .setSubject("ReceiptApp: " + message)
+                    .setMessage(freemarkerToString("mail/receipt-processed.ftl", rootMap))
+                    .setMailStatus(MailStatusEnum.N);
+            mailManager.save(mail);
+
+            return MailTypeEnum.SUCCESS;
+        } catch (IOException | TemplateException exception) {
+            LOG.error("Receipt processed email={}", exception.getLocalizedMessage(), exception);
+            return MailTypeEnum.FAILURE;
+        }
     }
 }
