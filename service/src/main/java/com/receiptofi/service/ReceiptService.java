@@ -2,12 +2,9 @@ package com.receiptofi.service;
 
 import com.receiptofi.domain.BizNameEntity;
 import com.receiptofi.domain.BizStoreEntity;
-import com.receiptofi.domain.CloudFileEntity;
 import com.receiptofi.domain.CommentEntity;
 import com.receiptofi.domain.DocumentEntity;
 import com.receiptofi.domain.ExpenseTagEntity;
-import com.receiptofi.domain.FileSystemEntity;
-import com.receiptofi.domain.FriendEntity;
 import com.receiptofi.domain.ItemEntity;
 import com.receiptofi.domain.ItemEntityOCR;
 import com.receiptofi.domain.ReceiptEntity;

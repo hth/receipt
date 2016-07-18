@@ -8,7 +8,6 @@ import com.receiptofi.repository.BizNameManager;
 import com.receiptofi.repository.BizStoreManager;
 import com.receiptofi.repository.ItemManager;
 import com.receiptofi.utils.CommonUtil;
-import com.receiptofi.utils.Formatter;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
