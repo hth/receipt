@@ -242,7 +242,7 @@ public class ReceiptDocumentValidator implements Validator {
     private void validateDate(Errors errors, ReceiptDocumentForm receiptDocumentForm) {
         try {
             Date receiptDate = DateUtil.getDateFromString(receiptDocumentForm.getReceiptDocument().getReceiptDate());
-            /** Since mid-night hence two days minus 6o seconds for previous day. */
+            /** Since mid-night hence two days minus 60 seconds for previous day. */
             Date nextDay = Date.from(LocalDate.now().plusDays(2).atStartOfDay(ZoneId.systemDefault()).toInstant().minusSeconds(60));
             if (receiptDate.after(nextDay)) {
                 errors.rejectValue(
@@ -250,6 +250,15 @@ public class ReceiptDocumentValidator implements Validator {
                         "field.date.future",
                         new Object[]{receiptDocumentForm.getReceiptDocument().getReceiptDate()},
                         "Date is set in future. Format should be MM/dd/yyyy 11:59:59 PM. Check for month and day.");
+            }
+
+            Date previousDay = Date.from(LocalDate.now().minusDays(60).atStartOfDay(ZoneId.systemDefault()).toInstant().plusSeconds(60));
+            if(receiptDate.before(previousDay)) {
+                errors.rejectValue(
+                        "receiptDocument.receiptDate",
+                        "field.date.past",
+                        new Object[]{receiptDocumentForm.getReceiptDocument().getReceiptDate()},
+                        "Date is set more than 60 days in past. Format should be MM/dd/yyyy 11:59:59 PM. Check for month and day.");
             }
         } catch (IllegalArgumentException exce) {
             errors.rejectValue(
