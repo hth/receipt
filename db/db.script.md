@@ -1,3 +1,8 @@
+### Date July 2 2016 - Build 1749
+Removed CN
+
+    db.getCollection('REGISTERED_DEVICE').update({},            {$unset : {CN: ''}}, false, true);
+
 ### Date July 2 2016 - Build 1721
 Caused because of inactive token.
     
