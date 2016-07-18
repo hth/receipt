@@ -1,4 +1,4 @@
-### Date July 2 2016 - Build 1749
+### Date July 17 2016 - Build 1749
 Removed CN
 
     db.getCollection('REGISTERED_DEVICE').update({},            {$unset : {CN: ''}}, false, true);
