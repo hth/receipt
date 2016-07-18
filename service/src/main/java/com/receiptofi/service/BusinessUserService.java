@@ -1,7 +1,6 @@
 package com.receiptofi.service;
 
 import com.receiptofi.domain.BusinessUserEntity;
-import com.receiptofi.domain.types.BusinessUserRegistrationStatusEnum;
 import com.receiptofi.domain.types.UserLevelEnum;
 import com.receiptofi.repository.BusinessUserManager;
 

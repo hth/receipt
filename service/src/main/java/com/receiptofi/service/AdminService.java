@@ -2,7 +2,6 @@ package com.receiptofi.service;
 
 import com.receiptofi.domain.UserAccountEntity;
 import com.receiptofi.domain.UserProfileEntity;
-import com.receiptofi.domain.types.RoleEnum;
 import com.receiptofi.domain.types.UserLevelEnum;
 
 import org.slf4j.Logger;
