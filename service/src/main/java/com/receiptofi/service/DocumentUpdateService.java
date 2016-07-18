@@ -33,7 +33,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -556,6 +555,7 @@ public class DocumentUpdateService {
             case M:
             case V:
             case T:
+            case O:
                 return "Document '" + originalFilename + "' " + documentRejectReason.getInSentence();
             default:
                 LOG.error("Document Reject Reason is not defined");

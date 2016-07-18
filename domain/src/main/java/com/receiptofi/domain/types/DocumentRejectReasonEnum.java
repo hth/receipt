@@ -11,7 +11,8 @@ public enum DocumentRejectReasonEnum {
     G("G", "Good Document", "is not Rejected."),
     M("M", "Missing required data", "is missing required data like business name, address, details of receipts."),
     V("V", "Not valid", "is not a valid receipt."),
-    T("T", "Multiple receipts and totals", "contains multiple receipts in image.");
+    T("T", "Multiple receipts and totals", "contains multiple receipts in image."),
+    O("O", "More than 60 days old", "is older than 60 days.");
 
     private final String name;
     private final String description;
