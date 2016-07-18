@@ -19,7 +19,10 @@ public enum DocumentStatusEnum {
     PROCESSED("Processed"),
     REPROCESS("Reprocess"),
 
-    /** Reject condition when its hard to process a receipts because of the image quality or invalid image. */
+    /**
+     * Reject condition when its hard to process a receipts because of the image quality or invalid image
+     * @see DocumentRejectReasonEnum
+     */
     REJECT("Reject"),
 
     /** Reject when system suggests document is duplicate. */
