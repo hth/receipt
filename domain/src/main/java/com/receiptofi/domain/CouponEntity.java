@@ -2,6 +2,7 @@ package com.receiptofi.domain;
 
 import com.receiptofi.domain.types.CouponTypeEnum;
 import com.receiptofi.domain.types.CouponUploadStatusEnum;
+import com.receiptofi.domain.util.ImagePathOnS3;
 
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
@@ -220,6 +221,7 @@ public class CouponEntity extends BaseEntity {
     public CouponEntity setFileSystemEntities(Collection<FileSystemEntity> fileSystemEntities) {
         this.fileSystemEntities = fileSystemEntities;
         this.couponUploadStatus = CouponUploadStatusEnum.A;
+        this.imagePath = ImagePathOnS3.populateImagePath(fileSystemEntities);
         return this;
     }
 
