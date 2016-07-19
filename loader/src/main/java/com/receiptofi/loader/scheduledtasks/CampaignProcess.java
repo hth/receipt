@@ -5,12 +5,12 @@ import com.receiptofi.domain.BizStoreEntity;
 import com.receiptofi.domain.CampaignEntity;
 import com.receiptofi.domain.CouponEntity;
 import com.receiptofi.domain.CronStatsEntity;
-import com.receiptofi.domain.FileSystemEntity;
 import com.receiptofi.domain.analytic.BizDimensionEntity;
 import com.receiptofi.domain.analytic.UserDimensionEntity;
 import com.receiptofi.domain.types.CampaignStatusEnum;
 import com.receiptofi.domain.types.CouponTypeEnum;
 import com.receiptofi.domain.types.CouponUploadStatusEnum;
+import com.receiptofi.domain.util.ImagePathOnS3;
 import com.receiptofi.service.BizService;
 import com.receiptofi.service.CampaignService;
 import com.receiptofi.service.CouponService;
@@ -18,8 +18,6 @@ import com.receiptofi.service.CronStatsService;
 import com.receiptofi.service.analytic.BizDimensionService;
 import com.receiptofi.service.analytic.UserDimensionService;
 import com.receiptofi.utils.Maths;
-
-import org.apache.commons.lang3.StringUtils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,7 +28,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -113,16 +110,6 @@ public class CampaignProcess {
                 String bizId = campaign.getBizId();
                 BizNameEntity bizName = bizService.getByBizNameId(bizId);
                 String businessName = bizName.getBusinessName();
-
-                StringBuilder sb = new StringBuilder();
-                Collection<FileSystemEntity> fileSystems = campaign.getFileSystemEntities();
-                if (null != fileSystems) {
-                    for (FileSystemEntity fileSystem : fileSystems) {
-                        sb.append(fileSystem.getKey()).append(",");
-                    }
-                }
-                String imagePath = StringUtils.chop(sb.toString());
-
                 BizDimensionEntity bizDimension = bizDimensionService.findBy(bizId);
                 if (bizDimension != null) {
                     Double totalDistribution = Math.ceil(
@@ -144,7 +131,7 @@ public class CampaignProcess {
                                     .setAvailable(campaign.getLive())
                                     .setExpire(campaign.getEnd())
                                     .setCouponType(CouponTypeEnum.B)
-                                    .setImagePath(imagePath)
+                                    .setImagePath(ImagePathOnS3.populateImagePath(campaign.getFileSystemEntities()))
                                     .setInitiatedFromId(businessCampaignId)
                                     .setCouponUploadStatus(CouponUploadStatusEnum.I);
 
