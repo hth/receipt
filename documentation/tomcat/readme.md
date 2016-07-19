@@ -1,22 +1,22 @@
 #Tomcat set up
-http://wolfpaulus.com/jounal/mac/tomcat7
+http://wolfpaulus.com/jounal/mac/tomcat8
 
 #### Installing Tomcat
 - Here are the easy to follow steps to get it up and running on your Mac
-- Download a binary distribution of the core module: apache-tomcat-7.0.47.tar.gz from here. I picked the tar.gz in Binary Distributions / Core section.
+- Download a binary distribution of the core module: apache-tomcat-8.0.36.tar.gz from here. I picked the tar.gz in Binary Distributions / Core section.
 - Opening/unarchiving the archive will create a folder structure in your Downloads folder: (btw, this free Unarchiver app is perfect for all kinds of compressed files and superior to the built-in Archive Utility.app)
 
-        ~/Downloads/apache-tomcat-7.0.47
+        ~/Downloads/apache-tomcat-8.0.36
     
 - Open to Terminal app to move the unarchived distribution to /usr/local
 
         sudo mkdir -p /usr/local
-        sudo mv ~/Downloads/apache-tomcat-7.0.47 /usr/local
+        sudo mv ~/Downloads/apache-tomcat-8.0.36 /usr/local
     
 - To make it easy to replace this release with future releases, we are going to create a symbolic link that we are going to use when referring to Tomcat (after removing the old link, you might have from installing a previous version):
 
         sudo rm -f /Library/Tomcat
-        sudo ln -s /usr/local/apache-tomcat-7.0.47 /Library/Tomcat
+        sudo ln -s /usr/local/apache-tomcat-8.0.36 /Library/Tomcat
     
 - Added `setenv.sh` and `launchd_wrapper.sh` script
 - Change ownership of the /Library/Tomcat folder hierarchy:

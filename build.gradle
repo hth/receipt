@@ -10,22 +10,22 @@ ext {
     webInf = file('/WEB-INF')
     freemarker = file("$webInf/freemarker")
     lib = file("$webInf/lib")
-    classes = file("$webInf/classes")
-    conf = file("$classes/conf")
-    cert = file("$classes/cert")
-    images = file("$classes/images")
+    javaClasses = file("$webInf/classes")
+    conf = file("$javaClasses/conf")
+    cert = file("$javaClasses/cert")
+    images = file("$javaClasses/images")
 
     warDir = file("$buildDir/explodedWar/$env")
     warWebInfDir = file("$warDir$webInf")
     warLibDir = file("$warDir$lib")
-    warClassesDir = file("$warDir$classes")
+    warClassesDir = file("$warDir$javaClasses")
     warConfDir = file("$warDir$conf")
     warCertDir = file("$warDir$cert")
     warWebInfClassesImagesDir = file("$warDir$images")
 
     activeProfilewarDir = file("$buildDir/activeProfile/$env")
     activeProfilewarWebInfDir = file("$activeProfilewarDir$webInf")
-    activeProfilewarClassesDir = file("$activeProfilewarDir$classes")
+    activeProfilewarClassesDir = file("$activeProfilewarDir$javaClasses")
     activeProfilewarConfDir = file("$activeProfilewarDir$conf")
     activeProfilewarFreemarkerDir = file("$activeProfilewarDir$freemarker")
 
@@ -218,11 +218,10 @@ subprojects {
         compile "com.braintreepayments.gateway:braintree-java:$braintree"
 
         /** --- Specific to Receipt Web Application ---- */
-        //TODO remove or use Redis
-        compile "$springDataGroup:spring-data-redis:1.7.2.RELEASE"
-        compile 'redis.clients:jedis:2.8.1'
+        compile "$springDataGroup:spring-data-redis:1.5.2.RELEASE"
+        compile 'redis.clients:jedis:2.7.2'
 
-        compile 'com.amazonaws:aws-java-sdk-s3:1.11.18'
+        compile 'com.amazonaws:aws-java-sdk-s3:1.11.0'
         compile 'org.quartz-scheduler:quartz:2.2.3'
         compile 'com.notnoop.apns:apns:1.0.0.Beta6'
         compile 'org.springframework.webflow:spring-webflow:2.4.2.RELEASE'
