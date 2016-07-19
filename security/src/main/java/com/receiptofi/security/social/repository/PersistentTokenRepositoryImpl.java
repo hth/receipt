@@ -4,6 +4,7 @@ import com.receiptofi.domain.social.RememberMeTokenEntity;
 import com.receiptofi.repository.social.RememberMeTokenManager;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.web.authentication.rememberme.PersistentRememberMeToken;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.stereotype.Repository;
@@ -21,6 +22,7 @@ import java.util.Date;
         "PMD.LongVariable"
 })
 @Repository
+@Qualifier ("persistentTokenRepositoryImpl")
 public class PersistentTokenRepositoryImpl implements PersistentTokenRepository {
 
     @Autowired private RememberMeTokenManager rememberMeTokenManager;
