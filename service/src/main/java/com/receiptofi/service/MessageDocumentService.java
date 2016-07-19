@@ -23,7 +23,12 @@ import java.util.List;
 @Service
 public class MessageDocumentService {
 
-    @Autowired private MessageDocumentManager messageDocumentManager;
+    private MessageDocumentManager messageDocumentManager;
+
+    @Autowired
+    public MessageDocumentService(MessageDocumentManager messageDocumentManager) {
+        this.messageDocumentManager = messageDocumentManager;
+    }
 
     public void resetDocumentsToInitialState(String receiptUserId) {
         messageDocumentManager.resetDocumentsToInitialState(receiptUserId);
