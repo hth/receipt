@@ -219,11 +219,11 @@ subprojects {
 
         /** --- Specific to Receipt Web Application ---- */
         //TODO remove or use Redis
-        compile "$springDataGroup:spring-data-redis:1.5.2.RELEASE"
-        compile 'redis.clients:jedis:2.7.2'
+        compile "$springDataGroup:spring-data-redis:1.7.2.RELEASE"
+        compile 'redis.clients:jedis:2.8.1'
 
-        compile 'com.amazonaws:aws-java-sdk-s3:1.11.0'
-        compile 'org.quartz-scheduler:quartz:2.2.2'
+        compile 'com.amazonaws:aws-java-sdk-s3:1.11.18'
+        compile 'org.quartz-scheduler:quartz:2.2.3'
         compile 'com.notnoop.apns:apns:1.0.0.Beta6'
         compile 'org.springframework.webflow:spring-webflow:2.4.2.RELEASE'
         /** ------- */
