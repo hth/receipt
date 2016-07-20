@@ -195,32 +195,6 @@
     <!-- JSM bean End                          -->
     <!-- ===================================== -->
 
-    <!-- ===================================== -->
-    <!-- Jedis/Redis Configuration NOT USED    -->
-    <!-- ===================================== -->
-    <!-- Jedis ConnectionFactory -->
-    <bean
-            id="jedisConnectionFactory"
-            class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory"
-            p:hostName="localhost"
-            p:port="6379"
-            p:usePool="true"/>
-
-    <!-- redis template definition -->
-    <bean
-            id="redisTemplate"
-            class="org.springframework.data.redis.core.RedisTemplate"
-            p:connectionFactory-ref="jedisConnectionFactory"/>
-
-    <!-- declare Redis Cache Manager -->
-    <bean
-            id="cacheManager"
-            class="org.springframework.data.redis.cache.RedisCacheManager"
-            c:template-ref="redisTemplate"/>
-    <!-- ===================================== -->
-    <!-- Jedis/Redis Configuration Ends        -->
-    <!-- ===================================== -->
-
     <bean id="freemarkerConfiguration" class="org.springframework.ui.freemarker.FreeMarkerConfigurationFactoryBean">
         <property name="templateLoaderPath" value="/WEB-INF/freemarker/"/>
     </bean>

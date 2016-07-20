@@ -361,8 +361,8 @@
             <element id="library" level="project" name="Gradle: org.springframework.security:spring-security-web:4.1.0.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-mongodb:1.9.2.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-commons:1.12.2.RELEASE" />
-            <element id="library" level="project" name="Gradle: org.mongodb:mongo-java-driver:3.2.2" />
-            <element id="library" level="project" name="Gradle: com.braintreepayments.gateway:braintree-java:2.63.0" />
+            <element id="library" level="project" name="Gradle: org.mongodb:mongo-java-driver:3.3.0" />
+            <element id="library" level="project" name="Gradle: com.braintreepayments.gateway:braintree-java:2.64.0" />
             <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-redis:1.5.2.RELEASE" />
             <element id="library" level="project" name="Gradle: redis.clients:jedis:2.7.2" />
             <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-s3:1.11.0" />
@@ -574,8 +574,8 @@
             <element id="library" level="project" name="Gradle: org.springframework.security:spring-security-web:4.1.0.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-mongodb:1.9.2.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-commons:1.12.2.RELEASE" />
-            <element id="library" level="project" name="Gradle: org.mongodb:mongo-java-driver:3.2.2" />
-            <element id="library" level="project" name="Gradle: com.braintreepayments.gateway:braintree-java:2.63.0" />
+            <element id="library" level="project" name="Gradle: org.mongodb:mongo-java-driver:3.3.0" />
+            <element id="library" level="project" name="Gradle: com.braintreepayments.gateway:braintree-java:2.64.0" />
             <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-redis:1.5.2.RELEASE" />
             <element id="library" level="project" name="Gradle: redis.clients:jedis:2.7.2" />
             <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-s3:1.11.0" />
@@ -787,8 +787,8 @@
             <element id="library" level="project" name="Gradle: org.springframework.security:spring-security-web:4.1.0.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-mongodb:1.9.2.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-commons:1.12.2.RELEASE" />
-            <element id="library" level="project" name="Gradle: org.mongodb:mongo-java-driver:3.2.2" />
-            <element id="library" level="project" name="Gradle: com.braintreepayments.gateway:braintree-java:2.63.0" />
+            <element id="library" level="project" name="Gradle: org.mongodb:mongo-java-driver:3.3.0" />
+            <element id="library" level="project" name="Gradle: com.braintreepayments.gateway:braintree-java:2.64.0" />
             <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-redis:1.5.2.RELEASE" />
             <element id="library" level="project" name="Gradle: redis.clients:jedis:2.7.2" />
             <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-s3:1.11.0" />
@@ -1004,8 +1004,8 @@
             <element id="library" level="project" name="Gradle: org.springframework.security:spring-security-web:4.1.0.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-mongodb:1.9.2.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-commons:1.12.2.RELEASE" />
-            <element id="library" level="project" name="Gradle: org.mongodb:mongo-java-driver:3.2.2" />
-            <element id="library" level="project" name="Gradle: com.braintreepayments.gateway:braintree-java:2.63.0" />
+            <element id="library" level="project" name="Gradle: org.mongodb:mongo-java-driver:3.3.0" />
+            <element id="library" level="project" name="Gradle: com.braintreepayments.gateway:braintree-java:2.64.0" />
             <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-redis:1.5.2.RELEASE" />
             <element id="library" level="project" name="Gradle: redis.clients:jedis:2.7.2" />
             <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-s3:1.11.0" />
@@ -1221,8 +1221,8 @@
             <element id="library" level="project" name="Gradle: org.springframework.security:spring-security-web:4.1.0.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-mongodb:1.9.2.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-commons:1.12.2.RELEASE" />
-            <element id="library" level="project" name="Gradle: org.mongodb:mongo-java-driver:3.2.2" />
-            <element id="library" level="project" name="Gradle: com.braintreepayments.gateway:braintree-java:2.63.0" />
+            <element id="library" level="project" name="Gradle: org.mongodb:mongo-java-driver:3.3.0" />
+            <element id="library" level="project" name="Gradle: com.braintreepayments.gateway:braintree-java:2.64.0" />
             <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-redis:1.5.2.RELEASE" />
             <element id="library" level="project" name="Gradle: redis.clients:jedis:2.7.2" />
             <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-s3:1.11.0" />
@@ -1450,8 +1450,8 @@
             <element id="library" level="project" name="Gradle: org.springframework.security:spring-security-web:4.1.0.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-mongodb:1.9.2.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-commons:1.12.2.RELEASE" />
-            <element id="library" level="project" name="Gradle: org.mongodb:mongo-java-driver:3.2.2" />
-            <element id="library" level="project" name="Gradle: com.braintreepayments.gateway:braintree-java:2.63.0" />
+            <element id="library" level="project" name="Gradle: org.mongodb:mongo-java-driver:3.3.0" />
+            <element id="library" level="project" name="Gradle: com.braintreepayments.gateway:braintree-java:2.64.0" />
             <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-redis:1.5.2.RELEASE" />
             <element id="library" level="project" name="Gradle: redis.clients:jedis:2.7.2" />
             <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-s3:1.11.0" />
@@ -1679,8 +1679,8 @@
             <element id="library" level="project" name="Gradle: org.springframework.security:spring-security-web:4.1.0.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-mongodb:1.9.2.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-commons:1.12.2.RELEASE" />
-            <element id="library" level="project" name="Gradle: org.mongodb:mongo-java-driver:3.2.2" />
-            <element id="library" level="project" name="Gradle: com.braintreepayments.gateway:braintree-java:2.63.0" />
+            <element id="library" level="project" name="Gradle: org.mongodb:mongo-java-driver:3.3.0" />
+            <element id="library" level="project" name="Gradle: com.braintreepayments.gateway:braintree-java:2.64.0" />
             <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-redis:1.5.2.RELEASE" />
             <element id="library" level="project" name="Gradle: redis.clients:jedis:2.7.2" />
             <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-s3:1.11.0" />
@@ -1895,8 +1895,8 @@
             <element id="library" level="project" name="Gradle: org.springframework.security:spring-security-web:4.1.0.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-mongodb:1.9.2.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-commons:1.12.2.RELEASE" />
-            <element id="library" level="project" name="Gradle: org.mongodb:mongo-java-driver:3.2.2" />
-            <element id="library" level="project" name="Gradle: com.braintreepayments.gateway:braintree-java:2.63.0" />
+            <element id="library" level="project" name="Gradle: org.mongodb:mongo-java-driver:3.3.0" />
+            <element id="library" level="project" name="Gradle: com.braintreepayments.gateway:braintree-java:2.64.0" />
             <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-redis:1.5.2.RELEASE" />
             <element id="library" level="project" name="Gradle: redis.clients:jedis:2.7.2" />
             <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-s3:1.11.0" />
@@ -2574,15 +2574,15 @@
         <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.beust/jcommander/1.35/a80acda9d5c2aa80afb8b6f858968b24a178f4bc/jcommander-1.35-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Gradle: com.braintreepayments.gateway:braintree-java:2.63.0">
+    <library name="Gradle: com.braintreepayments.gateway:braintree-java:2.64.0">
       <CLASSES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.braintreepayments.gateway/braintree-java/2.63.0/58ecb00af8d8ed733cf428ff5467dbd9831e3b8d/braintree-java-2.63.0.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.braintreepayments.gateway/braintree-java/2.64.0/9ca38fe7bd2ba58b6da60ca62db23717d47ba82b/braintree-java-2.64.0.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.braintreepayments.gateway/braintree-java/2.63.0/9136720f6d58cfb8c6ff75c27f6d9697592e41ad/braintree-java-2.63.0-javadoc.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.braintreepayments.gateway/braintree-java/2.64.0/9be4d40c91283e9459105bfd0131e2d18419a728/braintree-java-2.64.0-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.braintreepayments.gateway/braintree-java/2.63.0/add4ad3d9a60ec5ae6284074e89f6d8e163857de/braintree-java-2.63.0-sources.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.braintreepayments.gateway/braintree-java/2.64.0/83738bec47282378c12322784f4aee3a3079bef0/braintree-java-2.64.0-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="Gradle: com.drewnoakes:metadata-extractor:2.8.0">
@@ -4020,15 +4020,15 @@
         <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.mockito/mockito-all/1.10.19/8269667b73d9616600359a9b0ba1b1c7d0cf7a97/mockito-all-1.10.19-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Gradle: org.mongodb:mongo-java-driver:3.2.2">
+    <library name="Gradle: org.mongodb:mongo-java-driver:3.3.0">
       <CLASSES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.mongodb/mongo-java-driver/3.2.2/654b381c444d22e095363036767a52de1fda3ab0/mongo-java-driver-3.2.2.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.mongodb/mongo-java-driver/3.3.0/7d6c104620558aa9c1d5c9f06fccfefe34de5604/mongo-java-driver-3.3.0.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.mongodb/mongo-java-driver/3.2.2/48eaed895d8b85639de3e494e8860039de80c857/mongo-java-driver-3.2.2-javadoc.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.mongodb/mongo-java-driver/3.3.0/99965961dad90641bb97542c23c1c6abf9d6e838/mongo-java-driver-3.3.0-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.mongodb/mongo-java-driver/3.2.2/9e364591f7c95d8dc642a90e9632cf3cb8b66ea7/mongo-java-driver-3.2.2-sources.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.mongodb/mongo-java-driver/3.3.0/4ebe2ddf24fdb88a53b44dd23ee51157eb5af9cb/mongo-java-driver-3.3.0-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="Gradle: org.opengis:geoapi:3.0.0">
