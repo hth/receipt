@@ -62,17 +62,38 @@ import java.util.List;
 public class ExpensofiController {
     private static final Logger LOG = LoggerFactory.getLogger(ExpensofiController.class);
 
-    @Value ("${aws.s3.bucketName}")
     private String bucketName;
-
-    @Value ("${aws.s3.endpoint}")
     private String awsS3Endpoint;
 
-    @Autowired private ReceiptService receiptService;
-    @Autowired private NotificationService notificationService;
-    @Autowired private ItemAnalyticService itemAnalyticService;
-    @Autowired private DiskFileSystemProcess diskFileSystemProcess;
-    @Autowired private ExpensofiExcelView expensofiExcelView;
+    private final ReceiptService receiptService;
+    private final NotificationService notificationService;
+    private final ItemAnalyticService itemAnalyticService;
+    private final DiskFileSystemProcess diskFileSystemProcess;
+    private final ExpensofiExcelView expensofiExcelView;
+
+    @Autowired
+    public ExpensofiController(
+            @Value ("${aws.s3.bucketName}")
+            String bucketName,
+
+            @Value ("${aws.s3.endpoint}")
+            String awsS3Endpoint,
+
+            ReceiptService receiptService,
+            NotificationService notificationService,
+            DiskFileSystemProcess diskFileSystemProcess,
+            ItemAnalyticService itemAnalyticService,
+            ExpensofiExcelView expensofiExcelView
+    ) {
+        this.bucketName = bucketName;
+        this.awsS3Endpoint = awsS3Endpoint;
+
+        this.receiptService = receiptService;
+        this.notificationService = notificationService;
+        this.diskFileSystemProcess = diskFileSystemProcess;
+        this.itemAnalyticService = itemAnalyticService;
+        this.expensofiExcelView = expensofiExcelView;
+    }
 
     @RequestMapping (
             value = "/items",

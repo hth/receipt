@@ -23,7 +23,7 @@ public enum MobileSystemErrorCodeEnum {
     private String code;
     private String message;
 
-    private MobileSystemErrorCodeEnum(String code, String message) {
+    MobileSystemErrorCodeEnum(String code, String message) {
         this.code = code;
         this.message = message;
     }

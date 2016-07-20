@@ -173,7 +173,7 @@ public final class ExpensofiExcelView extends AbstractExcelView {
         }
     }
 
-    protected void persistWorkbookToFileSystem(Workbook workbook, String filename) throws IOException {
+    private void persistWorkbookToFileSystem(Workbook workbook, String filename) throws IOException {
         FileOutputStream out = null;
         try {
             Assert.notNull(expensofiReportLocation);
