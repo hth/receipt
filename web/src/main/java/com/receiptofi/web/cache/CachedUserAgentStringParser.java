@@ -41,7 +41,7 @@ public final class CachedUserAgentStringParser {
      * or the first access to SingletonHolder.INSTANCE, not before.
      */
     private static class SingletonHolder {
-        public static final CachedUserAgentStringParser INSTANCE = new CachedUserAgentStringParser();
+        static final CachedUserAgentStringParser INSTANCE = new CachedUserAgentStringParser();
 
         private SingletonHolder() {
         }
