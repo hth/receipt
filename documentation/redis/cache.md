@@ -1,5 +1,9 @@
 http://caseyscarborough.com/blog/2014/12/18/caching-data-in-spring-using-redis/
 
+## Install Redis using Brew
+    brew install redis
+    brew services start redis    
+
 ## Caching Data in Spring Using Redis
 18 Dec 2014 · By Casey Scarborough
 
