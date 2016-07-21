@@ -26,6 +26,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.Assert;
@@ -90,6 +91,7 @@ public class ReceiptWebService {
             method = RequestMethod.GET,
             headers = "Accept=application/json",
             produces = "application/json")
+    @Cacheable ("searchBusinessWithBusinessName")
     public Set<String> searchBusinessWithBusinessName(
             @RequestParam ("term")
             ScrubbedInput businessName
@@ -113,6 +115,7 @@ public class ReceiptWebService {
             method = RequestMethod.GET,
             headers = "Accept=application/json",
             produces = "application/json")
+    @Cacheable ("searchBiz")
     public Set<String> searchBiz(
             @RequestParam ("term")
             ScrubbedInput bizAddress,
@@ -142,6 +145,7 @@ public class ReceiptWebService {
             method = RequestMethod.GET,
             headers = "Accept=application/json",
             produces = "application/json")
+    @Cacheable ("searchPhone")
     public Set<String> searchPhone(
             @RequestParam ("term")
             ScrubbedInput bizPhone,
@@ -175,6 +179,7 @@ public class ReceiptWebService {
             method = RequestMethod.GET,
             headers = "Accept=application/json",
             produces = "application/json")
+    @Cacheable ("searchItem")
     public Set<String> searchItem(
             @RequestParam ("term")
             ScrubbedInput itemName,
