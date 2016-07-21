@@ -2,7 +2,12 @@ http://caseyscarborough.com/blog/2014/12/18/caching-data-in-spring-using-redis/
 
 ## Install Redis using Brew
     brew install redis
-    brew services start redis    
+    brew services start redis
+        
+## Cache Applicable 
+Apply cache on `GET` methods. 
+        
+        @Cacheable ("searchBusinessWithBusinessName")
 
 ## Caching Data in Spring Using Redis
 18 Dec 2014 · By Casey Scarborough
@@ -17,18 +22,18 @@ You'll need to install the spring-data-redis and jedis plugins. Add the followin
     <dependency>
         <groupId>org.springframework.data</groupId>
         <artifactId>spring-data-redis</artifactId>
-        <version>1.4.1.RELEASE</version>
+        <version>1.6.4.RELEASE</version>
     </dependency>
     
     <dependency>
         <groupId>redis.clients</groupId>
         <artifactId>jedis</artifactId>
-        <version>2.6.1</version>
+        <version>2.8.1</version>
     </dependency>
 If you're using Gradle, you can add the following to your build.gradle file:
 
-    compile "org.springframework.data:spring-data-redis:1.4.1.RELEASE"
-    compile "redis.clients:jedis:2.6.1"
+    compile "org.springframework.data:spring-data-redis:1.6.4.RELEASE"
+    compile "redis.clients:jedis:2.8.1"
 ## Enabling Cache Support in Your Spring Application
 To enable support for caching in your application, you'll want to create a new CacheManager bean. There are many different implementations of the CacheManager interface, but for this post we'll be using RedisCacheManager to allow integration with Redis.
 
