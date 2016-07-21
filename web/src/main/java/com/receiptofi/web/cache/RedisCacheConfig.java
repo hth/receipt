@@ -1,9 +1,11 @@
 package com.receiptofi.web.cache;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CachingConfigurerSupport;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
@@ -18,21 +20,27 @@ import org.springframework.data.redis.core.RedisTemplate;
 @EnableCaching
 public class RedisCacheConfig extends CachingConfigurerSupport {
 
+    @Value ("${redis.host}")
+    private String redisHost;
+
+    @Value("${redis.port}")
+    private int redisPort;
+
     @Bean
-    public JedisConnectionFactory redisConnectionFactory() {
-        JedisConnectionFactory redisConnectionFactory = new JedisConnectionFactory();
+    public JedisConnectionFactory jedisConnectionFactory() {
+        JedisConnectionFactory jedisConnectionFactory = new JedisConnectionFactory();
 
         // Defaults
-        redisConnectionFactory.setHostName("127.0.0.1");
-        redisConnectionFactory.setPort(6379);
-        redisConnectionFactory.setUsePool(true);
-        return redisConnectionFactory;
+        jedisConnectionFactory.setHostName(redisHost);
+        jedisConnectionFactory.setPort(redisPort);
+        jedisConnectionFactory.setUsePool(true);
+        return jedisConnectionFactory;
     }
 
     @Bean
-    public RedisTemplate<String, String> redisTemplate(RedisConnectionFactory cf) {
-        RedisTemplate<String, String> redisTemplate = new RedisTemplate<>();
-        redisTemplate.setConnectionFactory(cf);
+    public RedisTemplate<String, Object> redisTemplate() {
+        RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
+        redisTemplate.setConnectionFactory(jedisConnectionFactory());
         return redisTemplate;
     }
 
