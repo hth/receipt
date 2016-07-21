@@ -97,6 +97,7 @@ public class ReceiptWebService {
             ScrubbedInput businessName
     ) {
         try {
+            LOG.info("searchBusinessWithBusinessName businessName={}", businessName.getText());
             return fetcherService.findDistinctBizName(StringUtils.stripToEmpty(businessName.getText()));
         } catch (Exception fetchBusinessName) {
             LOG.warn("Error fetching business number, error={}", fetchBusinessName);
@@ -124,6 +125,9 @@ public class ReceiptWebService {
             ScrubbedInput businessName
     ) {
         try {
+            LOG.info("searchBiz bizAddress={} businessName={}",
+                    bizAddress.getText(), businessName.getText());
+
             return fetcherService.findDistinctBizAddress(
                     StringUtils.stripToEmpty(bizAddress.getText()),
                     StringUtils.stripToEmpty(businessName.getText()));
@@ -157,6 +161,9 @@ public class ReceiptWebService {
             ScrubbedInput bizAddress
     ) {
         try {
+            LOG.info("searchPhone bizPhone={} bizAddress={} businessName={}",
+                    bizPhone.getText(), bizAddress.getText(), businessName.getText());
+
             return fetcherService.findDistinctBizPhone(
                     StringUtils.stripToEmpty(bizPhone.getText()),
                     StringUtils.stripToEmpty(bizAddress.getText()),
@@ -188,6 +195,9 @@ public class ReceiptWebService {
             ScrubbedInput businessName
     ) {
         try {
+            LOG.info("searchItem itemName={} businessName={}",
+                    itemName.getText(), businessName.getText());
+
             return fetcherService.findDistinctItems(
                     StringUtils.stripToEmpty(itemName.getText()),
                     StringUtils.stripToEmpty(businessName.getText()));
