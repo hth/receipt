@@ -1,9 +1,12 @@
 package com.receiptofi.web.listener;
 
+import com.receiptofi.web.cache.RedisCacheConfig;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Component;
 
@@ -25,7 +28,14 @@ import javax.jms.JMSException;
 public class ReceiptofiInitializationCheckBean {
     private static final Logger LOG = LoggerFactory.getLogger(ReceiptofiInitializationCheckBean.class);
 
-    @Autowired private JmsTemplate jmsSenderTemplate;
+    private JmsTemplate jmsSenderTemplate;
+    private RedisCacheConfig redisCacheConfig;
+
+    @Autowired
+    public ReceiptofiInitializationCheckBean(JmsTemplate jmsSenderTemplate, RedisCacheConfig redisCacheConfig) {
+        this.jmsSenderTemplate = jmsSenderTemplate;
+        this.redisCacheConfig = redisCacheConfig;
+    }
 
     @PostConstruct
     public void checkActiveMQ() {
@@ -36,5 +46,15 @@ public class ReceiptofiInitializationCheckBean {
             LOG.error("ActiveMQ messaging is unavailable reason={}", e.getLocalizedMessage(), e);
             throw new RuntimeException(e.getMessage(), e);
         }
+    }
+
+    @PostConstruct
+    public void checkRedisConnection() {
+        RedisConnection redisConnection = redisCacheConfig.redisTemplate().getConnectionFactory().getConnection();
+        if (redisConnection.isClosed()) {
+            LOG.error("Redis Server could not be connected");
+            throw new RuntimeException("Redis Server could not be connected");
+        }
+        LOG.info("Redis Server connected");
     }
 }

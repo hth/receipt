@@ -348,7 +348,7 @@ public class LandingController {
      * @param monthYear
      * @return
      */
-    public ReceiptForMonth getReceiptForMonth(List<ReceiptEntity> allReceiptsForThisMonth, DateTime monthYear) {
+    private ReceiptForMonth getReceiptForMonth(List<ReceiptEntity> allReceiptsForThisMonth, DateTime monthYear) {
         ReceiptForMonth receiptForMonth = ReceiptForMonth.newInstance();
         receiptForMonth.setMonthYearDateTime(monthYear);
         for (ReceiptEntity receiptEntity : allReceiptsForThisMonth) {
