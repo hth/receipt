@@ -1,8 +1,8 @@
 ### Date July 23 2016 - Build 1767
-Update USER_PAID to USER
+Update USER_PAID to USER and update field name from ULE to UL
 
-    db.getCollection('USER_PROFILE').update({"ULE" : "USER_PAID"},   { $set: {"ULE": 'USER'} }, {multi: true});    
-        
+    db.getCollection('USER_PROFILE').update({"ULE" : "USER_PAID"},   { $set: {"ULE": "USER"} }, {multi: true});   
+    db.getCollection('USER_PROFILE').updateMany({}, {$rename: { "ULE": "UL" }})
 
 ### Date July 17 2016 - Build 1749
 Removed CN

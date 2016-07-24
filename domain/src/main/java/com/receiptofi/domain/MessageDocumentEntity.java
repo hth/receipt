@@ -26,18 +26,18 @@ import javax.validation.constraints.NotNull;
 public class MessageDocumentEntity extends BaseEntity {
 
     @Field ("EM")
-    String emailId;
+    private String emailId;
 
     @NotNull
     @Field ("RID")
-    String receiptUserId;
+    private String receiptUserId;
 
     @NotNull
     @Field ("DID")
     private String documentId;
 
     @NotNull
-    @Field ("ULE")
+    @Field ("UL")
     private UserLevelEnum level = UserLevelEnum.USER;
 
     @NotNull
