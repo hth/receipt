@@ -225,7 +225,7 @@ public class FriendService {
         return jsonFriends;
     }
 
-    public boolean updateFriendConnection(String id, String auth, ConnectionTypeEnum connectionType, String rid) {
+    public boolean updateConnection(String id, String auth, ConnectionTypeEnum connectionType, String rid) {
         switch (connectionType) {
             case A:
                 /** Accept connection. */
