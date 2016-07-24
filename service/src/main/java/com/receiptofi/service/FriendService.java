@@ -242,7 +242,7 @@ public class FriendService {
         }
     }
 
-    public boolean inviteAgain(String id, String authKey) {
+    boolean inviteAgain(String id, String authKey) {
         return friendManager.inviteAgain(id, authKey);
     }
 }
