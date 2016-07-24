@@ -41,8 +41,7 @@ public class BusinessUserService {
     void saveUpdateBusinessUser(String rid, UserLevelEnum userLevel, boolean active) {
         BusinessUserEntity businessUser = businessUserManager.findByRid(rid);
         switch (userLevel) {
-            case BUSINESS_SMALL:
-            case BUSINESS_LARGE:
+            case BUSINESS:
                 if (null == businessUser) {
                     businessUser = BusinessUserEntity.newInstance(rid);
                 }

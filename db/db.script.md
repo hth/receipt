@@ -1,4 +1,10 @@
 ### Date July 17 2016 - Build 1749
+Update USER_PAID to USER
+
+    db.getCollection('USER_PROFILE').update({"ULE" : "USER_PAID"},   { $set: {"ULE": 'USER'} }, {multi: true});    
+        
+
+### Date July 17 2016 - Build 1749
 Removed CN
 
     db.getCollection('REGISTERED_DEVICE').update({},            {$unset : {CN: ''}}, false, true);

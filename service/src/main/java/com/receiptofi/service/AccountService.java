@@ -415,21 +415,14 @@ public class AccountService {
                 userAccount.setRoles(roles);
                 break;
             case USER:
-            case USER_COMMUNITY:
-            case USER_PAID:
                 roles.add(RoleEnum.ROLE_USER);
                 userAccount.setRoles(roles);
                 break;
             case ENTERPRISE:
-            case ENTERPRISE_COMMUNITY:
-            case ENTERPRISE_PAID:
                 roles.add(RoleEnum.ROLE_ENTERPRISE);
                 userAccount.setRoles(roles);
                 break;
-            case BUSINESS_SMALL:
-                roles.add(RoleEnum.ROLE_USER);
-                roles.add(RoleEnum.ROLE_BUSINESS);
-            case BUSINESS_LARGE:
+            case BUSINESS:
                 roles.add(RoleEnum.ROLE_BUSINESS);
                 userAccount.setRoles(roles);
                 break;
