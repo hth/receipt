@@ -1,4 +1,4 @@
-### Date July 17 2016 - Build 1749
+### Date July 23 2016 - Build 1767
 Update USER_PAID to USER
 
     db.getCollection('USER_PROFILE').update({"ULE" : "USER_PAID"},   { $set: {"ULE": 'USER'} }, {multi: true});    
