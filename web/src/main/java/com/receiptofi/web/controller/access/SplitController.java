@@ -5,7 +5,7 @@ import com.google.gson.JsonObject;
 import com.receiptofi.domain.SplitExpensesEntity;
 import com.receiptofi.domain.json.JsonOweExpenses;
 import com.receiptofi.domain.site.ReceiptUser;
-import com.receiptofi.domain.types.FriendConnectionTypeEnum;
+import com.receiptofi.domain.types.ConnectionTypeEnum;
 import com.receiptofi.service.FriendService;
 import com.receiptofi.service.SplitExpensesService;
 import com.receiptofi.service.UserProfilePreferenceService;
@@ -109,7 +109,7 @@ public class SplitController {
             ScrubbedInput auth,
 
             @RequestParam ("ct")
-            FriendConnectionTypeEnum friendConnectionType
+            ConnectionTypeEnum connectionType
     ) {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         JsonObject jsonObject = new JsonObject();
@@ -118,7 +118,7 @@ public class SplitController {
                 friendService.updateFriendConnection(
                         id.getText(),
                         auth.getText(),
-                        friendConnectionType,
+                        connectionType,
                         receiptUser.getRid()));
         return jsonObject.toString();
     }

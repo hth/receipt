@@ -29,7 +29,7 @@ import com.receiptofi.domain.types.CommentTypeEnum;
 import com.receiptofi.domain.types.DocumentOfTypeEnum;
 import com.receiptofi.domain.types.DocumentStatusEnum;
 import com.receiptofi.domain.types.FileTypeEnum;
-import com.receiptofi.domain.types.FriendConnectionTypeEnum;
+import com.receiptofi.domain.types.ConnectionTypeEnum;
 import com.receiptofi.domain.types.NotificationGroupEnum;
 import com.receiptofi.domain.types.NotificationTypeEnum;
 import com.receiptofi.domain.types.SplitActionEnum;
@@ -148,7 +148,7 @@ public class ReceiptServiceITest extends ITest {
         friendService.updateFriendConnection(
                 friend.getId(),
                 friend.getAuthenticationKey(),
-                FriendConnectionTypeEnum.A,
+                ConnectionTypeEnum.A,
                 userAccount.getReceiptUserId());
 
         /** Split receipt with fid. */
@@ -231,7 +231,7 @@ public class ReceiptServiceITest extends ITest {
         friendService.updateFriendConnection(
                 friend.getId(),
                 friend.getAuthenticationKey(),
-                FriendConnectionTypeEnum.A,
+                ConnectionTypeEnum.A,
                 userAccount.getReceiptUserId());
 
         /** Split receipt with fid. */
@@ -313,7 +313,7 @@ public class ReceiptServiceITest extends ITest {
         friendService.updateFriendConnection(
                 friend.getId(),
                 friend.getAuthenticationKey(),
-                FriendConnectionTypeEnum.A,
+                ConnectionTypeEnum.A,
                 userAccount.getReceiptUserId());
 
         /** Split receipt with fid. */

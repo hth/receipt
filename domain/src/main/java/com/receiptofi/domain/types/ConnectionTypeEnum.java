@@ -4,7 +4,7 @@ package com.receiptofi.domain.types;
  * User: hitender
  * Date: 9/18/15 9:51 AM
  */
-public enum FriendConnectionTypeEnum {
+public enum ConnectionTypeEnum {
     A("A", "Accept"),
     D("D", "Decline"),
     C("C", "Cancel"),
@@ -13,7 +13,7 @@ public enum FriendConnectionTypeEnum {
     private final String description;
     private final String name;
 
-    FriendConnectionTypeEnum(String name, String description) {
+    ConnectionTypeEnum(String name, String description) {
         this.name = name;
         this.description = description;
     }
