@@ -7,7 +7,7 @@ import com.receiptofi.domain.FriendEntity;
 import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.domain.json.JsonAwaitingAcceptance;
 import com.receiptofi.domain.json.JsonFriend;
-import com.receiptofi.domain.types.FriendConnectionTypeEnum;
+import com.receiptofi.domain.types.ConnectionTypeEnum;
 import com.receiptofi.repository.FriendManager;
 
 import org.slf4j.Logger;
@@ -225,8 +225,8 @@ public class FriendService {
         return jsonFriends;
     }
 
-    public boolean updateFriendConnection(String id, String auth, FriendConnectionTypeEnum friendConnectionType, String rid) {
-        switch (friendConnectionType) {
+    public boolean updateFriendConnection(String id, String auth, ConnectionTypeEnum connectionType, String rid) {
+        switch (connectionType) {
             case A:
                 /** Accept connection. */
                 return updateResponse(id, auth, true, rid);
@@ -237,8 +237,8 @@ public class FriendService {
                 /** Decline connection. */
                 return updateResponse(id, auth, false, rid);
             default:
-                LOG.error("FriendConnectionType={} not defined", friendConnectionType);
-                throw new UnsupportedOperationException("FriendConnectionType not supported " + friendConnectionType);
+                LOG.error("ConnectionType={} not defined", connectionType);
+                throw new UnsupportedOperationException("ConnectionType not supported " + connectionType);
         }
     }
 

@@ -144,7 +144,7 @@ public final class MessageDocumentManagerImpl implements MessageDocumentManager 
     }
 
     private Sort sortBy() {
-        return new Sort(new Order(DESC, "ULE"), new Order(ASC, "C"));
+        return new Sort(new Order(DESC, "UL"), new Order(ASC, "C"));
     }
 
     @Override

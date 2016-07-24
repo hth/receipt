@@ -157,10 +157,9 @@ public class LandingController {
 //        modelAndView.addObject("months", landingService.addMonthsIfLessThanThree(receiptGroupedByMonth));
 //        landingForm.setReceiptGroupedByMonths(receiptGroupedByMonth);
 
-        if (receiptUser.getUserLevel().getValue() >= UserLevelEnum.USER_COMMUNITY.getValue()) {
-            List<ReceiptGroupedByBizLocation> receiptGroupedByBizLocations = landingService.getAllObjectsGroupedByBizLocation(receiptUser.getRid());
-            landingForm.setReceiptGroupedByBizLocations(receiptGroupedByBizLocations);
-        }
+        /** Make Map available to all the users. */
+        List<ReceiptGroupedByBizLocation> receiptGroupedByBizLocations = landingService.getAllObjectsGroupedByBizLocation(receiptUser.getRid());
+        landingForm.setReceiptGroupedByBizLocations(receiptGroupedByBizLocations);
 
         /** Used for donut chart of each receipts with respect to expense types in TAB 1. */
         LOG.info("Calculating Donut chart - receipt expense");

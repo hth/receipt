@@ -22,18 +22,13 @@ package com.receiptofi.domain.types;
 })
 public enum UserLevelEnum {
     USER("User", 10),
-    USER_COMMUNITY("User Community", 20),
-    USER_PAID("User Paid", 20),
-    ENTERPRISE("Enterprise", 30),
-    ENTERPRISE_COMMUNITY("Enterprise Community", 40),
-    ENTERPRISE_PAID("Enterprise Paid", 40),
-    BUSINESS_SMALL("Business Small", 50),
-    BUSINESS_LARGE("Business Large", 60),
-    TECH_RECEIPT("Receipt Tech", 70),
-    TECH_CAMPAIGN("Campaign Tech", 71),
-    SUPERVISOR("Super", 80),
-    ANALYSIS_READ("Analysis Read", 90),
-    ADMIN("Admin", 100);
+    ENTERPRISE("Enterprise", 20),
+    BUSINESS("Business", 30),
+    TECH_RECEIPT("Receipt Tech", 40),
+    TECH_CAMPAIGN("Campaign Tech", 41),
+    SUPERVISOR("Super", 50),
+    ANALYSIS_READ("Analysis Read", 60),
+    ADMIN("Admin", 90);
 
     private final String description;
     private final int value;

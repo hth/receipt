@@ -20,7 +20,6 @@
     <script src="${pageContext.request.contextPath}/static/external/js/cute-time/jquery.cuteTime.min.js"></script>
 </head>
 <body>
-<spring:eval expression="pageContext.request.userPrincipal.principal.userLevel eq T(com.receiptofi.domain.types.UserLevelEnum).BUSINESS_SMALL" var="hasAccess" />
 <div class="header_main">
     <div class="header_wrappermain">
         <div class="header_wrapper">
@@ -38,10 +37,6 @@
                 </a>
                 <a class="top-account-bar-text" href="/access/eval/feedback.htm">FEEDBACK</a>
                 <a class="top-account-bar-text" href="/access/userprofilepreference/i.htm">ACCOUNT</a>
-                <c:if test="${hasAccess}">
-                    <a class="top-account-bar-text" href="/access/reportAnalysis.htm">REPORT & ANALYSIS</a>
-                    <a class="top-account-bar-text" href="/access/split.htm">SPLIT EXPENSES</a>
-                </c:if>
                 <sec:authentication var="validated" property="principal.accountValidated"/>
                 <c:choose>
                     <c:when test="${!validated}">

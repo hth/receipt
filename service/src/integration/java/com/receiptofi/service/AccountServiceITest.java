@@ -169,7 +169,7 @@ public class AccountServiceITest extends ITest {
                     "    \"UT\" : {$date: \"2014-03-13T05:01:04.000Z\"},\n" +
                     "    \"BI\" : \"About me is here\",\n" +
                     "	 \"EM\" : \"user_community_1@receiptofi.com\",\n" +
-                    "    \"ULE\" : \"USER\",\n" +
+                    "    \"UL\" : \"USER\",\n" +
                     "    \"V\" : 1,\n" +
                     "    \"U\" : {$date: \"2014-05-12T06:23:42.281Z\"},\n" +
                     "    \"C\" : {$date: \"2014-05-12T06:23:42.281Z\"},\n" +
@@ -190,7 +190,7 @@ public class AccountServiceITest extends ITest {
                     "    \"TP_ID\" : \"pbU11ZeqqMY1lImnlTptEBSm_9s\",\n" +
                     "    \"TZ\" : 0,\n" +
                     "    \"UT\" : {$date: \"2014-04-16T09:29:46.000Z\"},\n" +
-                    "    \"ULE\" : \"USER\",\n" +
+                    "    \"UL\" : \"USER\",\n" +
                     "    \"V\" : 1,\n" +
                     "    \"U\" : {$date: \"2014-05-12T06:23:43.163Z\"},\n" +
                     "    \"C\" : {$date: \"2014-05-12T06:23:43.163Z\"},\n" +
@@ -203,7 +203,7 @@ public class AccountServiceITest extends ITest {
                     "    \"FN\" : \"User\",\n" +
                     "    \"LN\" : \"Two\",\n" +
                     "    \"EM\" : \"user_community_2@receiptofi.com\",\n" +
-                    "    \"ULE\" : \"USER\",\n" +
+                    "    \"UL\" : \"USER\",\n" +
                     "    \"V\" : 0,\n" +
                     "    \"U\" : {$date: \"2014-05-12T09:12:21.900Z\"},\n" +
                     "    \"C\" : {$date: \"2014-05-12T09:12:21.900Z\"},\n" +

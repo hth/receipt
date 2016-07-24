@@ -153,8 +153,8 @@ public class UserProfileEntity extends BaseEntity {
     private List<EducationExperience> education;
 
     @NotNull
-    @Field ("ULE")
-    private UserLevelEnum level = UserLevelEnum.USER_PAID;
+    @Field ("UL")
+    private UserLevelEnum level = UserLevelEnum.USER;
 
     @Field ("AD")
     private String address;
