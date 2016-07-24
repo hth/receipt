@@ -145,7 +145,7 @@ public class ReceiptServiceITest extends ITest {
 
         /** Accept connection. */
         FriendEntity friend = friendService.getConnection(primaryUserAccount.getReceiptUserId(), userAccount.getReceiptUserId());
-        friendService.updateFriendConnection(
+        friendService.updateConnection(
                 friend.getId(),
                 friend.getAuthenticationKey(),
                 ConnectionTypeEnum.A,
@@ -228,7 +228,7 @@ public class ReceiptServiceITest extends ITest {
 
         /** Accept connection. */
         FriendEntity friend = friendService.getConnection(primaryUserAccount.getReceiptUserId(), userAccount.getReceiptUserId());
-        friendService.updateFriendConnection(
+        friendService.updateConnection(
                 friend.getId(),
                 friend.getAuthenticationKey(),
                 ConnectionTypeEnum.A,
@@ -310,7 +310,7 @@ public class ReceiptServiceITest extends ITest {
 
         /** Accept connection. */
         FriendEntity friend = friendService.getConnection(primaryUserAccount.getReceiptUserId(), userAccount.getReceiptUserId());
-        friendService.updateFriendConnection(
+        friendService.updateConnection(
                 friend.getId(),
                 friend.getAuthenticationKey(),
                 ConnectionTypeEnum.A,

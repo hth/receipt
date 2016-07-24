@@ -115,7 +115,7 @@ public class SplitController {
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty(
                 LandingController.SUCCESS,
-                friendService.updateFriendConnection(
+                friendService.updateConnection(
                         id.getText(),
                         auth.getText(),
                         connectionType,
