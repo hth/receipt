@@ -166,7 +166,7 @@ public class MobilePushNotificationService {
                 try {
                     org.json.JSONObject jo = new org.json.JSONObject(resp);
                     if (jo.has("error")) {
-                        if (DateUtil.getDaysBetween(registeredDevice.getUpdated(), DateUtil.nowDate()) > 45) {
+                        if (DateUtil.getDaysBetween(registeredDevice.getUpdated(), DateUtil.nowTime()) > 45) {
                             LOG.warn("Deleting {} device older than 45 days rid={} did={}",
                                     registeredDevice.getDeviceType(), rid, registeredDevice.getDeviceId());
                             registeredDeviceManager.deleteHard(rid, registeredDevice.getDeviceId());
