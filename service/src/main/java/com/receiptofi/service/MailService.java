@@ -305,139 +305,33 @@ public class MailService {
     }
 
     /**
-     * Send invite.
+     * Send mail of receipt processed when notification delivery has failed or no TOKEN is registered for the device
+     * to receive notification.
      *
-     * @param invitedUserEmail Invited users email address
-     * @param invitedByRid     Existing users email address
+     * @param rid
+     * @param message
      * @return
      */
-    private boolean sendInvitation(String invitedUserEmail, String invitedByRid) {
-        UserAccountEntity invitedBy = accountService.findByReceiptUserId(invitedByRid);
-        if (invitedBy != null) {
-            InviteEntity inviteEntity = null;
-            try {
-                inviteEntity = inviteService.initiateInvite(invitedUserEmail, invitedBy);
+    public MailTypeEnum sendReceiptProcessed(String rid, String message) {
+        UserAccountEntity userAccount = accountService.findByReceiptUserId(rid);
 
-                FriendEntity friend = new FriendEntity(invitedByRid, inviteEntity.getInvited().getReceiptUserId());
-                friendService.save(friend);
-
-                formulateInvitationMail(invitedUserEmail, invitedBy, inviteEntity);
-                return true;
-            } catch (RuntimeException e) {
-                LOG.error("Error persisting InviteEntity, reason={}", e.getLocalizedMessage(), e);
-
-                if (inviteEntity != null) {
-                    friendService.deleteHard(invitedByRid, inviteEntity.getInvited().getReceiptUserId());
-                    deleteInvite(inviteEntity);
-                    LOG.warn("Due to failure in sending the invitation email. Deleting Invite={}, for={}",
-                            inviteEntity.getId(), inviteEntity.getEmail());
-                }
-            }
-        }
-        return false;
-    }
-
-    /**
-     * Re-send invite or send new invitation to existing (pending) invite to user.
-     *
-     * @param email        Invited users email address
-     * @param invitedByRid Existing users rid
-     * @return
-     */
-    private boolean reSendInvitation(String email, String invitedByRid) {
-        UserAccountEntity invitedBy = accountService.findByReceiptUserId(invitedByRid);
-        if (null != invitedBy) {
-            FriendEntity friend = null;
-            try {
-                InviteEntity invite = inviteService.reInviteActiveInvite(email, invitedBy);
-                boolean isNewInvite = false;
-                if (null == invite) {
-                    /**
-                     * Means invite may exists through another user.
-                     * Better to create a new invite for the requesting user.
-                     */
-                    invite = reCreateAnotherInvite(email, invitedBy);
-                    if (null == invite) {
-                        return false;
-                    }
-
-                    isNewInvite = true;
-                    friend = new FriendEntity(invitedByRid, invite.getInvited().getReceiptUserId());
-                    friendService.save(friend);
-                } else {
-                    invite.isActive();
-                    inviteService.save(invite);
-                }
-
-                if (null == friend) {
-                    friend = friendService.getConnection(invitedByRid, invite.getInvited().getReceiptUserId());
-                    if (!friend.isConnected() && friend.getReceiptUserId().equalsIgnoreCase(invitedByRid)) {
-                        /** When invitee has cancelled interest in their friend and would like to re-invite. */
-                        if (friendService.inviteAgain(friend.getId(), RandomString.newInstance().nextString())) {
-                            LOG.info("Re-invite connection from {} to {}", invitedByRid, invite.getInvited().getReceiptUserId());
-                        }
-                    }
-                }
-
-                formulateInvitationMail(email, invitedBy, invite);
-                if (!isNewInvite) {
-                    inviteService.save(invite);
-                }
-            } catch (Exception e) {
-                LOG.error("Error persisting InviteEntity, reason={}", e.getLocalizedMessage(), e);
-                if (friend != null) {
-                    friendService.deleteHard(friend.getReceiptUserId(), friend.getFriendUserId());
-                }
-                return false;
-            }
-        }
-        return true;
-    }
-
-    /**
-     * Invitation is created by the new user.
-     *
-     * @param email
-     * @param invitedBy
-     * @return
-     */
-    private InviteEntity reCreateAnotherInvite(String email, UserAccountEntity invitedBy) {
-        UserProfileEntity userProfile = accountService.doesUserExists(email);
-        try {
-            String auth = HashText.computeBCrypt(RandomString.newInstance().nextString());
-            InviteEntity invite = InviteEntity.newInstance(email, auth, userProfile, invitedBy);
-            inviteService.save(invite);
-            return invite;
-        } catch (Exception exception) {
-            LOG.error("Error occurred during creation of invited user={} reason={}",
-                    email, exception.getLocalizedMessage(), exception);
-            return null;
-        }
-    }
-
-    private void formulateInvitationMail(String email, UserAccountEntity invitedBy, InviteEntity inviteEntity) {
         Map<String, String> rootMap = new HashMap<>();
-        rootMap.put("from", invitedBy.getName());
-        rootMap.put("fromEmail", invitedBy.getUserId());
-        rootMap.put("to", email);
-        rootMap.put("link", inviteEntity.getAuthenticationKey());
-        rootMap.put("domain", domain);
-        rootMap.put("https", https);
+        rootMap.put("to", userAccount.getName());
+        rootMap.put("notification", message);
 
         try {
-            LOG.info("Invitation send to={}", StringUtils.isEmpty(devSentTo) ? email : devSentTo);
             MailEntity mail = new MailEntity()
-                    .setToMail(StringUtils.isEmpty(devSentTo) ? email : devSentTo)
-                    .setFromMail(inviteeEmail)
-                    .setFromName(emailAddressName)
-                    .setSubject(mailInviteSubject + " - " + invitedBy.getName())
-                    .setMessage(freemarkerToString("mail/invite.ftl", rootMap))
+                    .setToMail(userAccount.getUserId())
+                    .setToName(userAccount.getName())
+                    .setSubject("ReceiptApp: " + message)
+                    .setMessage(freemarkerToString("mail/receipt-processed.ftl", rootMap))
                     .setMailStatus(MailStatusEnum.N);
             mailManager.save(mail);
-        } catch (TemplateException | IOException exception) {
-            LOG.error("Invitation failure email inviteId={}, for={}",
-                    inviteEntity.getId(), inviteEntity.getEmail(), exception);
-            throw new RuntimeException(exception);
+
+            return MailTypeEnum.SUCCESS;
+        } catch (IOException | TemplateException exception) {
+            LOG.error("Receipt processed email={}", exception.getLocalizedMessage(), exception);
+            return MailTypeEnum.FAILURE;
         }
     }
 
@@ -445,25 +339,6 @@ public class MailService {
         Configuration cfg = freemarkerConfiguration.createConfiguration();
         Template template = cfg.getTemplate(ftl);
         return processTemplateIntoString(template, rootMap);
-    }
-
-    /**
-     * When invitation fails remove all the reference to the Invitation and the new user.
-     *
-     * @param invite
-     */
-    private void deleteInvite(InviteEntity invite) {
-        LOG.info("Deleting: Profile, Auth, Preferences, Invite as the invitation message failed to sent");
-        UserProfileEntity userProfile = accountService.doesUserExists(invite.getEmail());
-        UserAccountEntity userAccount = loginService.findByReceiptUserId(userProfile.getReceiptUserId());
-        UserAuthenticationEntity userAuthenticationEntity = userAccount.getUserAuthentication();
-        UserPreferenceEntity userPreferenceEntity = accountService.getPreference(userProfile);
-
-        userProfilePreferenceService.deleteHard(userPreferenceEntity);
-        userAuthenticationManager.deleteHard(userAuthenticationEntity);
-        userAccountManager.deleteHard(userAccount);
-        userProfilePreferenceService.deleteHard(userProfile);
-        inviteService.deleteHard(invite);
     }
 
     /**
@@ -644,33 +519,158 @@ public class MailService {
     }
 
     /**
-     * Send mail of receipt processed when notification delivery has failed or no TOKEN is registered for the device
-     * to receive notification.
+     * Send invite.
      *
-     * @param rid
-     * @param message
+     * @param invitedUserEmail Invited users email address
+     * @param invitedByRid     Existing users email address
      * @return
      */
-    public MailTypeEnum sendReceiptProcessed(String rid, String message) {
-        UserAccountEntity userAccount = accountService.findByReceiptUserId(rid);
+    private boolean sendInvitation(String invitedUserEmail, String invitedByRid) {
+        UserAccountEntity invitedBy = accountService.findByReceiptUserId(invitedByRid);
+        if (invitedBy != null) {
+            InviteEntity inviteEntity = null;
+            try {
+                inviteEntity = inviteService.initiateInvite(invitedUserEmail, invitedBy);
 
+                FriendEntity friend = new FriendEntity(invitedByRid, inviteEntity.getInvited().getReceiptUserId());
+                friendService.save(friend);
+
+                formulateInvitationMail(invitedUserEmail, invitedBy, inviteEntity);
+                return true;
+            } catch (RuntimeException e) {
+                LOG.error("Error persisting InviteEntity, reason={}", e.getLocalizedMessage(), e);
+
+                if (inviteEntity != null) {
+                    friendService.deleteHard(invitedByRid, inviteEntity.getInvited().getReceiptUserId());
+                    deleteInvite(inviteEntity);
+                    LOG.warn("Due to failure in sending the invitation email. Deleting Invite={}, for={}",
+                            inviteEntity.getId(), inviteEntity.getEmail());
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Re-send invite or send new invitation to existing (pending) invite to user.
+     *
+     * @param email        Invited users email address
+     * @param invitedByRid Existing users rid
+     * @return
+     */
+    private boolean reSendInvitation(String email, String invitedByRid) {
+        UserAccountEntity invitedBy = accountService.findByReceiptUserId(invitedByRid);
+        if (null != invitedBy) {
+            FriendEntity friend = null;
+            try {
+                InviteEntity invite = inviteService.reInviteActiveInvite(email, invitedBy);
+                boolean isNewInvite = false;
+                if (null == invite) {
+                    /**
+                     * Means invite may exists through another user.
+                     * Better to create a new invite for the requesting user.
+                     */
+                    invite = reCreateAnotherInvite(email, invitedBy);
+                    if (null == invite) {
+                        return false;
+                    }
+
+                    isNewInvite = true;
+                    friend = new FriendEntity(invitedByRid, invite.getInvited().getReceiptUserId());
+                    friendService.save(friend);
+                } else {
+                    invite.isActive();
+                    inviteService.save(invite);
+                }
+
+                if (null == friend) {
+                    friend = friendService.getConnection(invitedByRid, invite.getInvited().getReceiptUserId());
+                    if (!friend.isConnected() && friend.getReceiptUserId().equalsIgnoreCase(invitedByRid)) {
+                        /** When invitee has cancelled interest in their friend and would like to re-invite. */
+                        if (friendService.inviteAgain(friend.getId(), RandomString.newInstance().nextString())) {
+                            LOG.info("Re-invite connection from {} to {}", invitedByRid, invite.getInvited().getReceiptUserId());
+                        }
+                    }
+                }
+
+                formulateInvitationMail(email, invitedBy, invite);
+                if (!isNewInvite) {
+                    inviteService.save(invite);
+                }
+            } catch (Exception e) {
+                LOG.error("Error persisting InviteEntity, reason={}", e.getLocalizedMessage(), e);
+                if (friend != null) {
+                    friendService.deleteHard(friend.getReceiptUserId(), friend.getFriendUserId());
+                }
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Invitation is created by the new user.
+     *
+     * @param email
+     * @param invitedBy
+     * @return
+     */
+    private InviteEntity reCreateAnotherInvite(String email, UserAccountEntity invitedBy) {
+        UserProfileEntity userProfile = accountService.doesUserExists(email);
+        try {
+            String auth = HashText.computeBCrypt(RandomString.newInstance().nextString());
+            InviteEntity invite = InviteEntity.newInstance(email, auth, userProfile, invitedBy);
+            inviteService.save(invite);
+            return invite;
+        } catch (Exception exception) {
+            LOG.error("Error occurred during creation of invited user={} reason={}",
+                    email, exception.getLocalizedMessage(), exception);
+            return null;
+        }
+    }
+
+    private void formulateInvitationMail(String email, UserAccountEntity invitedBy, InviteEntity inviteEntity) {
         Map<String, String> rootMap = new HashMap<>();
-        rootMap.put("to", userAccount.getName());
-        rootMap.put("notification", message);
+        rootMap.put("from", invitedBy.getName());
+        rootMap.put("fromEmail", invitedBy.getUserId());
+        rootMap.put("to", email);
+        rootMap.put("link", inviteEntity.getAuthenticationKey());
+        rootMap.put("domain", domain);
+        rootMap.put("https", https);
 
         try {
+            LOG.info("Invitation send to={}", StringUtils.isEmpty(devSentTo) ? email : devSentTo);
             MailEntity mail = new MailEntity()
-                    .setToMail(userAccount.getUserId())
-                    .setToName(userAccount.getName())
-                    .setSubject("ReceiptApp: " + message)
-                    .setMessage(freemarkerToString("mail/receipt-processed.ftl", rootMap))
+                    .setToMail(StringUtils.isEmpty(devSentTo) ? email : devSentTo)
+                    .setFromMail(inviteeEmail)
+                    .setFromName(emailAddressName)
+                    .setSubject(mailInviteSubject + " - " + invitedBy.getName())
+                    .setMessage(freemarkerToString("mail/invite.ftl", rootMap))
                     .setMailStatus(MailStatusEnum.N);
             mailManager.save(mail);
-
-            return MailTypeEnum.SUCCESS;
-        } catch (IOException | TemplateException exception) {
-            LOG.error("Receipt processed email={}", exception.getLocalizedMessage(), exception);
-            return MailTypeEnum.FAILURE;
+        } catch (TemplateException | IOException exception) {
+            LOG.error("Invitation failure email inviteId={}, for={}",
+                    inviteEntity.getId(), inviteEntity.getEmail(), exception);
+            throw new RuntimeException(exception);
         }
+    }
+
+    /**
+     * When invitation fails remove all the reference to the Invitation and the new user.
+     *
+     * @param invite
+     */
+    private void deleteInvite(InviteEntity invite) {
+        LOG.info("Deleting: Profile, Auth, Preferences, Invite as the invitation message failed to sent");
+        UserProfileEntity userProfile = accountService.doesUserExists(invite.getEmail());
+        UserAccountEntity userAccount = loginService.findByReceiptUserId(userProfile.getReceiptUserId());
+        UserAuthenticationEntity userAuthenticationEntity = userAccount.getUserAuthentication();
+        UserPreferenceEntity userPreferenceEntity = accountService.getPreference(userProfile);
+
+        userProfilePreferenceService.deleteHard(userPreferenceEntity);
+        userAuthenticationManager.deleteHard(userAuthenticationEntity);
+        userAccountManager.deleteHard(userAccount);
+        userProfilePreferenceService.deleteHard(userProfile);
+        inviteService.deleteHard(invite);
     }
 }
