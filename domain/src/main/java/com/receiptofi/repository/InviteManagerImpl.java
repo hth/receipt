@@ -51,8 +51,13 @@ public final class InviteManagerImpl implements InviteManager {
 
     @Override
     public InviteEntity findByAuthenticationKey(String auth) {
-        Query query = query(where("AU").is(auth)).addCriteria(isActive()).addCriteria(isNotDeleted());
-        return mongoTemplate.findOne(query, InviteEntity.class, TABLE);
+        return mongoTemplate.findOne(
+                query(where("AU").is(auth).andOperator(
+                        isActive(),
+                        isNotDeleted())
+                ),
+                InviteEntity.class,
+                TABLE);
     }
 
     @Override
@@ -89,7 +94,12 @@ public final class InviteManagerImpl implements InviteManager {
 
     @Override
     public InviteEntity find(String emailId) {
-        Query query = query(where("EM").is(emailId)).addCriteria(isActive()).addCriteria(isNotDeleted());
-        return mongoTemplate.findOne(query, InviteEntity.class, TABLE);
+        return mongoTemplate.findOne(
+                query(where("EM").is(emailId).andOperator(
+                        isActive(),
+                        isNotDeleted())
+                ),
+                InviteEntity.class,
+                TABLE);
     }
 }

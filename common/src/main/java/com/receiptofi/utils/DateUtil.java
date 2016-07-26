@@ -99,7 +99,7 @@ public final class DateUtil {
         return now().toDate();
     }
 
-    public static Date nowDate() {
+    public static Date nowMidnightDate() {
         return midnight(now()).toDate();
     }
 
@@ -121,6 +121,12 @@ public final class DateUtil {
 
     public static Date getDateMinusMinutes(int minutes) {
         LocalDateTime localDateTime = LocalDateTime.now().minusMinutes(minutes);
+        Instant instant = localDateTime.atZone(ZoneId.systemDefault()).toInstant();
+        return Date.from(instant);
+    }
+
+    public static Date getDateMinusDay(long days) {
+        LocalDateTime localDateTime = LocalDateTime.now().minusDays(days);
         Instant instant = localDateTime.atZone(ZoneId.systemDefault()).toInstant();
         return Date.from(instant);
     }
