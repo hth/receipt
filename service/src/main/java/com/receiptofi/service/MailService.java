@@ -356,10 +356,10 @@ public class MailService {
         boolean isValid = EmailValidator.getInstance().isValid(invitedUserEmail);
 
         if (isValid && !invitedUserEmail.equals(uid)) {
-            UserProfileEntity userProfile = accountService.doesUserExists(invitedUserEmail);
-            UserAccountEntity userAccount = null;
-            if (userProfile != null) {
-                userAccount = accountService.findByReceiptUserId(userProfile.getReceiptUserId());
+            UserProfileEntity invitedUserProfile = accountService.doesUserExists(invitedUserEmail);
+            UserAccountEntity invitedUserAccount = null;
+            if (invitedUserProfile != null) {
+                invitedUserAccount = accountService.findByReceiptUserId(invitedUserProfile.getReceiptUserId());
             }
 
             if (StringUtils.isNotBlank(invitees.getIfPresent(invitedUserEmail))) {
@@ -380,27 +380,15 @@ public class MailService {
              * Best solution is to add automated re-invite using quartz/cron job. Make sure there is a count kept to
              * limit the number of invite.
              */
-            if (null == userProfile || null == userAccount || (!userAccount.isActive() && !userAccount.isDeleted())) {
-                responseStatus = invokeCorrectInvitation(invitedUserEmail, rid, userProfile);
-                if (responseStatus) {
-                    notificationService.addNotification(
-                            "Invitation sent to '" + invitedUserEmail + "'",
-                            NotificationTypeEnum.MESSAGE,
-                            NotificationGroupEnum.S,
-                            rid);
+            if (null == invitedUserProfile
+                    || null == invitedUserAccount
+                    || (!invitedUserAccount.isActive() && !invitedUserAccount.isDeleted())) {
 
-                    responseMessage = "Invitation Sent to: " + StringUtils.abbreviate(invitedUserEmail, 26);
-                } else {
-                    notificationService.addNotification(
-                            "Unsuccessful in sending invitation to '" + invitedUserEmail + "'",
-                            NotificationTypeEnum.MESSAGE,
-                            NotificationGroupEnum.S,
-                            rid);
+                responseStatus = invokeCorrectInvitation(invitedUserEmail, rid, invitedUserProfile);
+                responseMessage = addNotification(invitedUserEmail, rid, responseStatus);
 
-                    responseMessage = "Unsuccessful in sending invitation: " + StringUtils.abbreviate(invitedUserEmail, 26);
-                }
             } else {
-                FriendEntity friend = friendService.getConnection(rid, userProfile.getReceiptUserId());
+                FriendEntity friend = friendService.getConnection(rid, invitedUserProfile.getReceiptUserId());
                 if (null != friend && !friend.isConnected()) {
                     /** Auto connect if invited friend is connecting to invitee. */
                     if (friend.getFriendUserId().equalsIgnoreCase(rid) && StringUtils.isBlank(friend.getUnfriendUser())) {
@@ -409,7 +397,7 @@ public class MailService {
                         friendService.save(friend);
 
                         notificationService.addNotification(
-                                "New connection with " + userProfile.getName(),
+                                "New connection with " + invitedUserProfile.getName(),
                                 NotificationTypeEnum.MESSAGE,
                                 NotificationGroupEnum.S,
                                 rid);
@@ -418,7 +406,7 @@ public class MailService {
                                 "New connection with " + accountService.doesUserExists(uid).getName(),
                                 NotificationTypeEnum.MESSAGE,
                                 NotificationGroupEnum.S,
-                                userProfile.getReceiptUserId());
+                                invitedUserProfile.getReceiptUserId());
 
                         responseStatus = Boolean.TRUE;
                         responseMessage = "Connected with " + StringUtils.abbreviate(invitedUserEmail, 26);
@@ -428,7 +416,7 @@ public class MailService {
                         friendService.save(friend);
 
                         notificationService.addNotification(
-                                "Re-connection with " + userProfile.getName(),
+                                "Re-connection with " + invitedUserProfile.getName(),
                                 NotificationTypeEnum.MESSAGE,
                                 NotificationGroupEnum.S,
                                 rid);
@@ -437,7 +425,7 @@ public class MailService {
                                 "Re-connection with " + accountService.doesUserExists(uid).getName(),
                                 NotificationTypeEnum.MESSAGE,
                                 NotificationGroupEnum.S,
-                                userProfile.getReceiptUserId());
+                                invitedUserProfile.getReceiptUserId());
 
                         responseStatus = Boolean.TRUE;
                         responseMessage = "Connected with " + StringUtils.abbreviate(invitedUserEmail, 26);
@@ -457,17 +445,17 @@ public class MailService {
                                         + "' in invite to connect.",
                                 NotificationTypeEnum.MESSAGE,
                                 NotificationGroupEnum.S,
-                                userProfile.getReceiptUserId());
+                                invitedUserProfile.getReceiptUserId());
 
                         responseStatus = Boolean.TRUE;
                         responseMessage = "Invitation sent to " + StringUtils.abbreviate(invitedUserEmail, 26);
                     }
                 } else if (friend == null) {
-                    friend = new FriendEntity(rid, userProfile.getReceiptUserId());
+                    friend = new FriendEntity(rid, invitedUserProfile.getReceiptUserId());
                     friendService.save(friend);
 
                     notificationService.addNotification(
-                            "Sent friend request to " + userProfile.getName(),
+                            "Sent friend request to " + invitedUserProfile.getName(),
                             NotificationTypeEnum.MESSAGE,
                             NotificationGroupEnum.S,
                             rid);
@@ -476,7 +464,7 @@ public class MailService {
                             "New friend request from " + accountService.doesUserExists(uid).getName(),
                             NotificationTypeEnum.MESSAGE,
                             NotificationGroupEnum.S,
-                            userProfile.getReceiptUserId());
+                            invitedUserProfile.getReceiptUserId());
 
                     responseStatus = Boolean.TRUE;
                     responseMessage = "Friend request sent to " + StringUtils.abbreviate(invitedUserEmail, 26);
@@ -484,8 +472,8 @@ public class MailService {
 
                 LOG.info("{}, already registered. Setting invite. Thanks! active={} deleted={}",
                         invitedUserEmail,
-                        userProfile.isActive(),
-                        userProfile.isDeleted());
+                        invitedUserProfile.isActive(),
+                        invitedUserProfile.isDeleted());
             }
 
             invitees.invalidate(invitedUserEmail);
@@ -499,6 +487,28 @@ public class MailService {
 
         LOG.info("Invite mail={} status={} message={}", invitedUserEmail, responseStatus, responseMessage);
         return generateInviteResponse(responseStatus, responseMessage);
+    }
+
+    private String addNotification(String invitedUserEmail, String rid, Boolean responseStatus) {
+        String responseMessage;
+        if (responseStatus) {
+            notificationService.addNotification(
+                    "Invitation sent to '" + invitedUserEmail + "'",
+                    NotificationTypeEnum.MESSAGE,
+                    NotificationGroupEnum.S,
+                    rid);
+
+            responseMessage = "Invitation Sent to: " + StringUtils.abbreviate(invitedUserEmail, 26);
+        } else {
+            notificationService.addNotification(
+                    "Unsuccessful in sending invitation to '" + invitedUserEmail + "'",
+                    NotificationTypeEnum.MESSAGE,
+                    NotificationGroupEnum.S,
+                    rid);
+
+            responseMessage = "Unsuccessful in sending invitation: " + StringUtils.abbreviate(invitedUserEmail, 26);
+        }
+        return responseMessage;
     }
 
     private String generateInviteResponse(boolean responseStatus, String responseMessage) {
