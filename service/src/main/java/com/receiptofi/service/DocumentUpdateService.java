@@ -454,7 +454,7 @@ public class DocumentUpdateService {
         notificationService.addNotification(
                 fileDeleteMessage,
                 NotificationTypeEnum.DOCUMENT_DELETED,
-                NotificationGroupEnum.R,
+                NotificationGroupEnum.F,
                 document);
     }
 
