@@ -69,7 +69,6 @@ import java.util.stream.Collectors;
 public class CustomUserDetailsService implements UserDetailsService {
     private static final Logger LOG = LoggerFactory.getLogger(CustomUserDetailsService.class);
 
-    @Autowired private LoginService loginService;
     @Autowired private UserProfilePreferenceService userProfilePreferenceService;
     @Autowired private SocialConfig socialConfig;
     @Autowired private AccountService accountService;
@@ -98,7 +97,7 @@ public class CustomUserDetailsService implements UserDetailsService {
             LOG.warn("Not found user={}", email);
             throw new UsernameNotFoundException("Error in retrieving user");
         } else {
-            UserAccountEntity userAccount = loginService.findByReceiptUserId(userProfile.getReceiptUserId());
+            UserAccountEntity userAccount = accountService.findByReceiptUserId(userProfile.getReceiptUserId());
             LOG.info("user={} accountValidated={}", userAccount.getReceiptUserId(), userAccount.isAccountValidated());
 
             boolean condition = isUserActiveAndRegistrationTurnedOn(userAccount, userProfile);
@@ -173,7 +172,7 @@ public class CustomUserDetailsService implements UserDetailsService {
             LOG.warn("Not found provider user={}", puid);
             throw new UsernameNotFoundException("Error in retrieving user");
         } else {
-            UserAccountEntity userAccount = loginService.findByReceiptUserId(userProfile.getReceiptUserId());
+            UserAccountEntity userAccount = accountService.findByReceiptUserId(userProfile.getReceiptUserId());
             LOG.info("user={} accountValidated={}", userAccount.getReceiptUserId(), userAccount.isAccountValidated());
 
             boolean condition = isUserActiveAndRegistrationTurnedOn(userAccount, userProfile);
