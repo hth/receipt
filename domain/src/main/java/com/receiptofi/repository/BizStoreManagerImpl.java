@@ -81,7 +81,7 @@ public final class BizStoreManagerImpl implements BizStoreManager {
     }
 
     public BizStoreEntity noStore() {
-        return mongoTemplate.findOne(query(where("AD").is(StringUtils.EMPTY)), BizStoreEntity.class);
+        return mongoTemplate.findOne(query(where("AD").is("")), BizStoreEntity.class);
     }
 
     public BizStoreEntity findMatchingStore(String address, String phone) {

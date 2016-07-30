@@ -84,7 +84,7 @@ public class MobileAuthenticationController {
                         e.getLocalizedMessage(),
                         e.getResponseHeaders().toSingleValueMap(),
                         e);
-                String appendToReason = StringUtils.isBlank(map.get("pid").getText()) ? StringUtils.EMPTY : " " + map.get("pid");
+                String appendToReason = StringUtils.isBlank(map.get("pid").getText()) ? "" : " " + map.get("pid");
 
                 JsonObject error = new JsonObject();
                 error.addProperty("httpStatusCode", e.getStatusCode().value());

@@ -50,7 +50,7 @@ public class EvalFeedbackService {
     }
 
     public void addFeedback(String comment, int rating, CommonsMultipartFile fileData, String receiptUserId) {
-        String blobId = StringUtils.EMPTY;
+        String blobId = "";
         try {
             if (fileData.getSize() > 0) {
                 UploadDocumentImage uploadReceiptImage = UploadDocumentImage.newInstance(FileTypeEnum.F)

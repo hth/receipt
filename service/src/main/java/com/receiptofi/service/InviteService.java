@@ -81,17 +81,17 @@ public class InviteService {
             //First save is performed
             userAccount = accountService.createNewAccount(
                     invitedUserEmail,
-                    StringUtils.EMPTY,
-                    StringUtils.EMPTY,
-                    RandomString.newInstance(8).nextString(),
-                    StringUtils.EMPTY
+                    "",
+                    "",
+                    "",
+                    ""
             );
         } catch (RuntimeException e) {
             LOG.error("Error occurred during creation of invited user reason={}", e.getLocalizedMessage(), e);
             throw e;
         }
 
-        //Updating the record as inactive until user completes registration
+        /* Updating the record as inactive until user completes registration. */
         userAccount.inActive();
         userAccountManager.save(userAccount);
         return userAccount;

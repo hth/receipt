@@ -21,7 +21,7 @@ import java.util.List;
 })
 public final class UserSearchForm {
 
-    private String userName = StringUtils.EMPTY;
+    private String userName = "";
     private List<UserProfileEntity> userProfiles;
 
     /**

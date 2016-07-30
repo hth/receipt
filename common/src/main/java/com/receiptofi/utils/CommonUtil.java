@@ -36,7 +36,7 @@ public final class CommonUtil {
      */
     public static String phoneCleanup(String phone) {
         if (StringUtils.isNotEmpty(phone)) {
-            return phone.replaceAll("[^0-9]", StringUtils.EMPTY);
+            return phone.replaceAll("[^0-9]", "");
         }
         return phone;
     }
