@@ -143,8 +143,8 @@
                             <a href="/access/userprofilepreference/i.htm#tabs-3"
                                     class="rightside-li-middle-text">
                                 <c:choose>
-                                    <c:when test="${receipt.name.length() gt 34}">
-                                        <spring:eval expression="receipt.name.substring(0, 34)"/>...
+                                    <c:when test="${receipt.name.length() gt 38}">
+                                        <spring:eval expression="receipt.name.substring(0, 38)"/>...
                                     </c:when>
                                     <c:otherwise>
                                         <spring:eval expression="receipt.name"/>
@@ -156,8 +156,8 @@
                             <a href="${pageContext.request.contextPath}/access/receipt/${receipt.id}.htm"
                                     class="rightside-li-middle-text" target="_blank">
                                 <c:choose>
-                                    <c:when test="${receipt.name.length() gt 34}">
-                                        <spring:eval expression="receipt.name.substring(0, 34)"/>...
+                                    <c:when test="${receipt.name.length() gt 38}">
+                                        <spring:eval expression="receipt.name.substring(0, 38)"/>...
                                     </c:when>
                                     <c:otherwise>
                                         <spring:eval expression="receipt.name"/>
