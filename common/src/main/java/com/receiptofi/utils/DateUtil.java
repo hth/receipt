@@ -95,7 +95,7 @@ public final class DateUtil {
         return DateTime.now();
     }
 
-    public static Date nowTime() {
+    public static Date nowDate() {
         return now().toDate();
     }
 
