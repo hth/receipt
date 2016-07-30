@@ -1,4 +1,4 @@
-<%@ include file="../../../jsp/include.jsp"%>
+<%@ include file="../../../../jsp/include.jsp"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -66,72 +66,18 @@
         <sec:authorize access="hasRole('ROLE_BUSINESS')">
         <div class="business_reg">
             <div class="down_form" style="width: 90%">
-                <form:form commandName="businessRegistration">
-                    <h1 class="h1">Please complete your profile</h1>
-                    <hr>
-                    <input type="hidden" name="_flowExecutionKey" value="${flowExecutionKey}"/>
-
-                    <spring:hasBindErrors name="accountantRegistration">
-                    <div class="r-validation" style="width: 100%; margin: 0 0 0 0;">
-                        <ul>
-                            <c:if test="${errors.hasFieldErrors('firstName')}">
-                                <li><form:errors path="firstName" /></li>
-                            </c:if>
-                            <c:if test="${errors.hasFieldErrors('lastName')}">
-                                <li><form:errors path="lastName" /></li>
-                            </c:if>
-                            <c:if test="${errors.hasFieldErrors('address')}">
-                                <li><form:errors path="address" /></li>
-                            </c:if>
-                            <c:if test="${errors.hasFieldErrors('phone')}">
-                                <li><form:errors path="phone" /></li>
-                            </c:if>
-                        </ul>
-                    </div>
-                    </spring:hasBindErrors>
-
-                    <div class="row_field">
-                        <form:label path="firstName" cssClass="profile_label"
-                                cssErrorClass="profile_label lb_error">First name</form:label>
-                        <form:input path="firstName" size="20" cssClass="name_txt" />
-                    </div>
-                    <div class="row_field">
-                        <form:label path="lastName" cssClass="profile_label"
-                                cssErrorClass="profile_label lb_error">Last name</form:label>
-                        <form:input path="lastName" size="20" cssClass="name_txt" />
-                    </div>
-                    <div class="row_field">
-                        <form:label path="address" cssClass="profile_label"
-                                cssErrorClass="profile_label lb_error">Your Address</form:label>
-                        <form:input path="address" size="200" cssClass="name_txt" cssStyle="width: 600px;" />
-                    </div>
-                    <div class="row_field">
-                        <form:label path="phone" cssClass="profile_label"
-                                cssErrorClass="profile_label lb_error">Your Phone</form:label>
-                        <form:input path="phone" size="20" cssClass="name_txt" />
-                    </div>
-
-                    <c:if test="${!businessRegistration.emailValidated}">
-                    <div class="profile_label profile_label_note">
-                        <p>
-                        Your email address <span style="color: red; font-weight: bold">${businessRegistration.email}</span>
-                        has not been validated. Please validated email address to continue business account registration.
-                        </p>
-                        <p style="padding-top: 10px;">
-                        To resend account validation email, click here.
-                        </p>
-                    </div>
-                    </c:if>
-
-                    <div class="full">
-                        <c:if test="${businessRegistration.emailValidated}">
-                        <input type="submit" value="NEXT" class="read_btn" name="_eventId_submit"
-                                style="background: #2c97de; margin: 77px 10px 0 0;">
-                        </c:if>
-                        <input type="submit" value="CANCEL" class="read_btn" name="_eventId_cancel"
-                                style="background: #FC462A; margin: 77px 10px 0 0;">
-                    </div>
-                </form:form>
+                <c:choose>
+                    <c:when test="${businessRegistration.businessUser.businessUserRegistrationStatus eq 'C'}">
+                        <h1 class="h1">Registration complete</h1>
+                        <hr>
+                        Your details are being verified. Would notify you once the verification is complete.
+                    </c:when>
+                    <c:otherwise>
+                        <h1 class="h1">Registration not complete</h1>
+                        <hr>
+                        We could not verify your details. Please contact us or update profile.
+                    </c:otherwise>
+                </c:choose>
             </div>
         </div>
         </sec:authorize>

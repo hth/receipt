@@ -7,7 +7,6 @@ import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.repository.UserProfileManager;
 import com.receiptofi.service.AccountService;
 import com.receiptofi.service.InviteService;
-import com.receiptofi.service.LoginService;
 import com.receiptofi.utils.HashText;
 import com.receiptofi.utils.RandomString;
 import com.receiptofi.utils.ScrubbedInput;
@@ -67,11 +66,26 @@ public class InviteController {
     @Value ("${registration.turned.on}")
     private boolean registrationTurnedOn;
 
-    @Autowired private AccountService accountService;
-    @Autowired private LoginService loginService;
-    @Autowired private InviteService inviteService;
-    @Autowired private InviteAuthenticateValidator inviteAuthenticateValidator;
-    @Autowired private UserProfileManager userProfileManager;
+    @Value ("${accountantRegistrationFlow:redirect:/open/accountant/registration.htm}")
+    private String accountantRegistrationFlow;
+
+    private AccountService accountService;
+    private InviteService inviteService;
+    private InviteAuthenticateValidator inviteAuthenticateValidator;
+    private UserProfileManager userProfileManager;
+
+    @Autowired
+    public InviteController(
+            AccountService accountService,
+            InviteService inviteService,
+            InviteAuthenticateValidator inviteAuthenticateValidator,
+            UserProfileManager userProfileManager
+    ) {
+        this.accountService = accountService;
+        this.inviteService = inviteService;
+        this.inviteAuthenticateValidator = inviteAuthenticateValidator;
+        this.userProfileManager = userProfileManager;
+    }
 
     @RequestMapping (method = RequestMethod.GET, value = "authenticate")
     public String loadForm(
@@ -81,18 +95,39 @@ public class InviteController {
             @ModelAttribute ("inviteAuthenticateForm")
             InviteAuthenticateForm inviteAuthenticateForm,
 
-            ModelMap model
-    ) {
-        InviteEntity invite = inviteService.findInviteAuthenticationForKey(key.getText());
-        if (null != invite) {
-            inviteAuthenticateForm.setMail(new ScrubbedInput(invite.getEmail()));
-            inviteAuthenticateForm.setFirstName(new ScrubbedInput(invite.getInvited().getFirstName()));
-            inviteAuthenticateForm.setLastName(new ScrubbedInput(invite.getInvited().getLastName()));
-            inviteAuthenticateForm.getForgotAuthenticateForm().setAuthenticationKey(key.getText());
-            inviteAuthenticateForm.getForgotAuthenticateForm().setReceiptUserId(invite.getInvited().getReceiptUserId());
+            ModelMap model,
+            HttpServletResponse httpServletResponse
+    ) throws IOException {
+        InviteEntity invite = inviteService.findByAuthenticationKey(key.getText());
+        if (null == invite) {
+            httpServletResponse.sendError(HttpServletResponse.SC_NOT_FOUND);
+            return null;
         }
-        model.addAttribute("registrationTurnedOn", registrationTurnedOn);
-        return authenticatePage;
+
+        switch (invite.getUserLevel()) {
+            case USER:
+                model.addAttribute("registrationTurnedOn", registrationTurnedOn);
+                inviteAuthenticateForm
+                        .setMail(new ScrubbedInput(invite.getEmail()))
+                        .setFirstName(new ScrubbedInput(invite.getInvited().getFirstName()))
+                        .setLastName(new ScrubbedInput(invite.getInvited().getLastName()))
+                        .setUserLevel(invite.getUserLevel())
+                        .getForgotAuthenticateForm().setAuthenticationKey(key.getText())
+                        .setReceiptUserId(invite.getInvited().getReceiptUserId());
+                return authenticatePage;
+            case BUSINESS:
+                //TODO for business
+                return accountantRegistrationFlow + "?authenticationKey=" + invite.getAuthenticationKey();
+            case ACCOUNTANT:
+                return accountantRegistrationFlow + "?authenticationKey=" + invite.getAuthenticationKey();
+            case ENTERPRISE:
+                //TODO for enterprise
+                return accountantRegistrationFlow + "?authenticationKey=" + invite.getAuthenticationKey();
+            default:
+                LOG.error("Reached unsupported rid={} uid={} condition={}",
+                        invite.getInvited().getReceiptUserId(), invite.getEmail(), invite.getUserLevel());
+                throw new UnsupportedOperationException("Reached unsupported condition");
+        }
     }
 
     /**
@@ -119,14 +154,15 @@ public class InviteController {
             model.addAttribute("registrationTurnedOn", registrationTurnedOn);
             return authenticatePage;
         } else {
-            InviteEntity invite =
-                    inviteService.findInviteAuthenticationForKey(form.getForgotAuthenticateForm().getAuthenticationKey());
+            String key = form.getForgotAuthenticateForm().getAuthenticationKey();
+            InviteEntity invite = inviteService.findByAuthenticationKey(key);
             if (null == invite) {
                 redirectAttrs.addFlashAttribute(SUCCESS, "false");
             } else {
                 UserProfileEntity userProfile = invite.getInvited();
                 userProfile.setFirstName(form.getFirstName().getText());
                 userProfile.setLastName(form.getLastName().getText());
+                userProfile.setLevel(invite.getUserLevel());
                 userProfile.active();
 
                 UserAuthenticationEntity userAuthentication = UserAuthenticationEntity.newInstance(
@@ -134,7 +170,10 @@ public class InviteController {
                         HashText.computeBCrypt(RandomString.newInstance().nextString())
                 );
 
-                UserAccountEntity userAccount = loginService.findByReceiptUserId(userProfile.getReceiptUserId());
+                /* Updates ROLE based on Invite UserLevel. */
+                UserAccountEntity userAccount = accountService.changeAccountRolesToMatchUserLevel(
+                        userProfile.getReceiptUserId(),
+                        invite.getUserLevel());
 
                 userAuthentication.setId(userAccount.getUserAuthentication().getId());
                 userAuthentication.setVersion(userAccount.getUserAuthentication().getVersion());

@@ -63,12 +63,7 @@ function runCounter(max, field) {
     }
 }
 
-function submitInvitationForm() {
-    "use strict";
-
-    var inviteEmailId = $("#inviteEmailId").val();
-    var object = {mail: inviteEmailId};
-
+function extracted(object, inviteEmailId, link) {
     $.ajax({
         type: "POST",
         beforeSend: function (xhr) {
@@ -76,7 +71,7 @@ function submitInvitationForm() {
             $('#sendInvite_bt').css('background', '#2b3e51').attr('disabled', 'disabled');
             $('#inviteEmailId').attr('disabled', 'disabled');
         },
-        url: ctx + "/access/landing/invite.htm",
+        url: ctx + link,
         data: object,
         success: function (response) {
             console.debug(response);
@@ -85,16 +80,16 @@ function submitInvitationForm() {
             $('#inviteEmailId').removeAttr('disabled');
             if (json.status) {
                 $('#inviteTextMessage').html(json.message).addClass("r-success").css("margin-left", "0px").css("width", "100%").delay(5000)
-                    .fadeOut('fast', function() {
+                    .fadeOut('fast', function () {
                         if ($("#inviteEmailId").val() == '' || inviteEmailId == $("#inviteEmailId").val()) {
                             $("#inviteEmailId").val("").attr('placeholder', 'Email address of friend here ...');
                             $('#sendInvite_bt').css('background', '#808080').attr('disabled', 'disabled');
                         }
                         $("#inviteTextMessage").html("").removeClass("r-success").show();
-                });
+                    });
             } else {
                 $('#inviteTextMessage').html(json.message).addClass("r-error").css("margin-left", "0px").css("width", "100%").delay(5000)
-                    .fadeOut('fast', function() {
+                    .fadeOut('fast', function () {
                         if ($("#inviteEmailId").val() == '') {
                             $("#inviteEmailId").val("").attr('placeholder', 'Email address of friend here ...');
                             $('#sendInvite_bt').css('background', '#808080').attr('disabled', 'disabled');
@@ -107,6 +102,23 @@ function submitInvitationForm() {
             console.error(response, xhr.status, thrownError);
         }
     });
+}
+function submitInvitationForm() {
+    "use strict";
+
+    var inviteEmailId = $("#inviteEmailId").val();
+    var object = {mail: inviteEmailId};
+
+    extracted(object, inviteEmailId, "/access/landing/invite.htm");
+}
+
+function submitAccountantInvitationForm() {
+    "use strict";
+
+    var inviteEmailId = $("#inviteEmailId").val();
+    var object = {mail: inviteEmailId};
+
+    extracted(object, inviteEmailId, "/access/expenses/invite.htm");
 }
 
 function changeInviteText(field, text) {

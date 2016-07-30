@@ -161,7 +161,11 @@ public class AccountService {
         UserProfileEntity userProfile;
 
         try {
-            userAuthentication = getUserAuthenticationEntity(password);
+            if (StringUtils.isBlank(password)) {
+               userAuthentication = getUserAuthenticationEntity();
+            } else {
+                userAuthentication = getUserAuthenticationEntity(password);
+            }
         } catch (Exception e) {
             LOG.error("During saving UserAuthenticationEntity={}", e.getLocalizedMessage(), e);
             throw new RuntimeException("error saving user authentication ", e);
@@ -225,7 +229,7 @@ public class AccountService {
          * UserAuthenticationEntity is not required but needed. Social user will not be able to reset the authentication
          * since its a social account.
          */
-        UserAuthenticationEntity userAuthentication = getUserAuthenticationEntity(RandomString.newInstance().nextString());
+        UserAuthenticationEntity userAuthentication = getUserAuthenticationEntity();
         userAccount.setUserAuthentication(userAuthentication);
         registrationService.isRegistrationAllowed(userAccount);
         billAccount(userAccount);
@@ -379,7 +383,7 @@ public class AccountService {
      * @param userLevel
      * @return
      */
-    UserAccountEntity changeAccountRolesToMatchUserLevel(String rid, UserLevelEnum userLevel) {
+    public UserAccountEntity changeAccountRolesToMatchUserLevel(String rid, UserLevelEnum userLevel) {
         UserAccountEntity userAccount = findByReceiptUserId(rid);
         Set<RoleEnum> roles = new LinkedHashSet<>();
         switch (userLevel) {
@@ -426,6 +430,10 @@ public class AccountService {
                 roles.add(RoleEnum.ROLE_BUSINESS);
                 userAccount.setRoles(roles);
                 break;
+            case ACCOUNTANT:
+                roles.add(RoleEnum.ROLE_ACCOUNTANT);
+                userAccount.setRoles(roles);
+                break;
             default:
                 LOG.error("Reached unreachable condition, UserLevel={}", userLevel.name());
                 throw new RuntimeException("Reached unreachable condition " + userLevel.name());
@@ -433,10 +441,26 @@ public class AccountService {
         return userAccount;
     }
 
-    public UserAuthenticationEntity getUserAuthenticationEntity(String password) {
+    private UserAuthenticationEntity getUserAuthenticationEntity(String password) {
         UserAuthenticationEntity userAuthentication = UserAuthenticationEntity.newInstance(
                 HashText.computeBCrypt(password),
                 HashText.computeBCrypt(RandomString.newInstance().nextString())
+        );
+        userAuthenticationManager.save(userAuthentication);
+        return userAuthentication;
+    }
+
+    /**
+     * Use for Social signup or for invite. This should speed up the sign up process as it eliminates dual creation
+     * of BCrypt string.
+     *
+     * @return
+     */
+    public UserAuthenticationEntity getUserAuthenticationEntity() {
+        String code = HashText.computeBCrypt(RandomString.newInstance().nextString());
+        UserAuthenticationEntity userAuthentication = UserAuthenticationEntity.newInstance(
+                code,
+                code
         );
         userAuthenticationManager.save(userAuthentication);
         return userAuthentication;

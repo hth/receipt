@@ -11,6 +11,8 @@ import com.receiptofi.domain.value.ReceiptGrouped;
 import com.receiptofi.domain.value.ReceiptGroupedByBizLocation;
 import com.receiptofi.domain.value.ReceiptListViewGrouped;
 
+import org.bson.types.ObjectId;
+
 import org.joda.time.DateTime;
 
 import java.util.Date;
@@ -265,4 +267,13 @@ public interface ReceiptManager extends RepositoryManager<ReceiptEntity> {
      * Collection size.
      */
     long collectionSize();
+
+    /**
+     *
+     * @param rid
+     * @param expenseTags
+     * @param delayDuration delay by number of days
+     * @return
+     */
+    List<ReceiptEntity> getReceiptsWithExpenseTags(String rid, List<ObjectId> expenseTags, int delayDuration);
 }

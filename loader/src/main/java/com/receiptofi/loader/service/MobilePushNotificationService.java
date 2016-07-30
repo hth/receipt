@@ -2,9 +2,7 @@ package com.receiptofi.loader.service;
 
 import com.receiptofi.domain.RegisteredDeviceEntity;
 import com.receiptofi.domain.types.NotificationSendStateEnum;
-import com.receiptofi.domain.types.NotificationStateEnum;
 import com.receiptofi.repository.RegisteredDeviceManager;
-import com.receiptofi.service.MailService;
 import com.receiptofi.utils.CommonUtil;
 import com.receiptofi.utils.DateUtil;
 
@@ -166,7 +164,7 @@ public class MobilePushNotificationService {
                 try {
                     org.json.JSONObject jo = new org.json.JSONObject(resp);
                     if (jo.has("error")) {
-                        if (DateUtil.getDaysBetween(registeredDevice.getUpdated(), DateUtil.nowTime()) > 45) {
+                        if (DateUtil.getDaysBetween(registeredDevice.getUpdated(), DateUtil.nowDate()) > 45) {
                             LOG.warn("Deleting {} device older than 45 days rid={} did={}",
                                     registeredDevice.getDeviceType(), rid, registeredDevice.getDeviceId());
                             registeredDeviceManager.deleteHard(rid, registeredDevice.getDeviceId());
@@ -211,7 +209,7 @@ public class MobilePushNotificationService {
                 apnsService.push(registeredDevice.getToken(), payload);
                 Map<String, Date> inactiveDevices = apnsService.getInactiveDevices();
                 for (String id : inactiveDevices.keySet()) {
-                    if (DateUtil.getDaysBetween(registeredDevice.getUpdated(), DateUtil.nowTime()) > 45) {
+                    if (DateUtil.getDaysBetween(registeredDevice.getUpdated(), DateUtil.nowDate()) > 45) {
                         LOG.warn("Deleting {} device older than 45 days rid={} did={}",
                                 registeredDevice.getDeviceType(), rid, registeredDevice.getDeviceId());
                         registeredDeviceManager.deleteHard(rid, registeredDevice.getDeviceId());

@@ -268,9 +268,7 @@ public class ConnectionServiceImpl implements ConnectionService {
                 LOG.info("Skipped social userAccount update as it was last fetched within seconds={}", lastFetched);
             }
         } else {
-            UserAuthenticationEntity userAuthentication = accountService.getUserAuthenticationEntity(
-                    RandomString.newInstance().nextString()
-            );
+            UserAuthenticationEntity userAuthentication = accountService.getUserAuthenticationEntity();
             userAccountFromConnection.setUserAuthentication(userAuthentication);
             userAccountManager.save(userAccountFromConnection);
         }

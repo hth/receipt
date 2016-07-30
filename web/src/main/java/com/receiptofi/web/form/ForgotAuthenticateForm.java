@@ -45,16 +45,18 @@ public final class ForgotAuthenticateForm {
         return receiptUserId;
     }
 
-    public void setReceiptUserId(String receiptUserId) {
+    public ForgotAuthenticateForm setReceiptUserId(String receiptUserId) {
         this.receiptUserId = receiptUserId;
+        return this;
     }
 
     public String getAuthenticationKey() {
         return authenticationKey;
     }
 
-    public void setAuthenticationKey(String authenticationKey) {
+    public ForgotAuthenticateForm setAuthenticationKey(String authenticationKey) {
         this.authenticationKey = authenticationKey;
+        return this;
     }
 
     public boolean isEqual() {

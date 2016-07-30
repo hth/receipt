@@ -222,7 +222,7 @@ public class ITest extends RealMongoForTests {
 
         inviteManager = new InviteManagerImpl(getMongoTemplate());
         inviteService = new InviteService(accountService, inviteManager, userProfileManager, userAccountManager);
-        loginService = new LoginService(userAuthenticationManager, userAccountManager, browserManager);
+        loginService = new LoginService(userAuthenticationManager, browserManager);
         browserManager = new BrowserManagerImpl(getMongoTemplate());
 
         mailService = new MailService(
