@@ -177,7 +177,7 @@ public class BusinessRegistrationFlowActions {
 
     @SuppressWarnings ("unused")
     public void updateProfile(BusinessRegistration businessRegistration) {
-        DecodedAddress decodedAddress = DecodedAddress.newInstance(externalService.getGeocodingResults(businessRegistration.getAddress()));
+        DecodedAddress decodedAddress = DecodedAddress.newInstance(externalService.getGeocodingResults(businessRegistration.getAddress()), businessRegistration.getAddress());
         if (decodedAddress.isNotEmpty()) {
             businessRegistration.setAddress(decodedAddress.getFormattedAddress());
             businessRegistration.setCountryShortName(decodedAddress.getCountryShortName());
@@ -187,7 +187,7 @@ public class BusinessRegistrationFlowActions {
 
     @SuppressWarnings ("unused")
     public void updateBusiness(BusinessRegistration businessRegistration) {
-        DecodedAddress decodedAddress = DecodedAddress.newInstance(externalService.getGeocodingResults(businessRegistration.getBusinessAddress()));
+        DecodedAddress decodedAddress = DecodedAddress.newInstance(externalService.getGeocodingResults(businessRegistration.getBusinessAddress()), businessRegistration.getAddress());
         if (decodedAddress.isNotEmpty()) {
             businessRegistration.setBusinessAddress(decodedAddress.getFormattedAddress());
             businessRegistration.setBusinessCountryShortName(decodedAddress.getCountryShortName());

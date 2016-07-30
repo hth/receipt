@@ -51,7 +51,7 @@ public class ExternalService {
      */
     public void decodeAddress(BizStoreEntity bizStore) {
         try {
-            DecodedAddress decodedAddress = DecodedAddress.newInstance(getGeocodingResults(bizStore.getAddress()));
+            DecodedAddress decodedAddress = DecodedAddress.newInstance(getGeocodingResults(bizStore.getAddress()), bizStore.getAddress());
             if (decodedAddress.isNotEmpty()) {
                 bizStore.setAddress(decodedAddress.getFormattedAddress());
                 bizStore.setPostalCode(decodedAddress.getPostalCode());

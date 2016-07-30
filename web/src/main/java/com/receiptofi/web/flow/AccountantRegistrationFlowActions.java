@@ -72,7 +72,7 @@ public class AccountantRegistrationFlowActions {
 
     @SuppressWarnings ("unused")
     public void updateProfile(AccountantRegistration accountantRegistration) {
-        DecodedAddress decodedAddress = DecodedAddress.newInstance(externalService.getGeocodingResults(accountantRegistration.getAddress()));
+        DecodedAddress decodedAddress = DecodedAddress.newInstance(externalService.getGeocodingResults(accountantRegistration.getAddress()), accountantRegistration.getAddress());
         if (decodedAddress.isNotEmpty()) {
             accountantRegistration.setAddress(decodedAddress.getFormattedAddress());
             accountantRegistration.setCountryShortName(decodedAddress.getCountryShortName());
