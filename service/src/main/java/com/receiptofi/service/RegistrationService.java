@@ -74,7 +74,7 @@ public class RegistrationService {
      *
      * @param userAccount
      */
-    public void isRegistrationAllowed(UserAccountEntity userAccount) {
+    void isRegistrationAllowed(UserAccountEntity userAccount) {
         if (!registrationTurnedOn) {
             userAccount.setRegisteredWhenRegistrationIsOff(!registrationTurnedOn);
         }
