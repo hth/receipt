@@ -171,6 +171,7 @@ subprojects {
         mavenCentral()
         maven { url "http://repo.spring.io/libs-milestone" }
         maven { url "http://repo1.maven.org/maven2/" }
+        maven { url 'https://repo.spring.io/libs-snapshot' }
     }
 
     dependencies {
@@ -221,10 +222,10 @@ subprojects {
         compile "$springDataGroup:spring-data-redis:$redis"
         compile "redis.clients:jedis:$jedis"
 
-        compile 'com.amazonaws:aws-java-sdk-s3:1.11.0'
-        compile 'org.quartz-scheduler:quartz:2.2.3'
-        compile 'com.notnoop.apns:apns:1.0.0.Beta6'
-        compile 'org.springframework.webflow:spring-webflow:2.4.2.RELEASE'
+        compile "com.amazonaws:aws-java-sdk-s3:$amazonaws"
+        compile "org.quartz-scheduler:quartz:$quartz"
+        compile "com.notnoop.apns:apns:$apns"
+        compile "org.springframework.webflow:spring-webflow:$webflow"
         /** ------- */
 
         compile 'aopalliance:aopalliance:1.0'
@@ -244,7 +245,7 @@ subprojects {
 
         compile "com.google.guava:guava:$guava"
         compile 'com.google.code.gson:gson:2.6.2'
-        compile 'com.google.maps:google-maps-services:0.1.12'
+        compile 'com.google.maps:google-maps-services:0.1.15'
         compile 'com.googlecode.libphonenumber:libphonenumber:7.4.2'
         compile 'com.googlecode.owasp-java-html-sanitizer:owasp-java-html-sanitizer:r239'
 
