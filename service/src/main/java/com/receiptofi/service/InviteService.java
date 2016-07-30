@@ -3,6 +3,7 @@ package com.receiptofi.service;
 import com.receiptofi.domain.InviteEntity;
 import com.receiptofi.domain.UserAccountEntity;
 import com.receiptofi.domain.UserProfileEntity;
+import com.receiptofi.domain.types.UserLevelEnum;
 import com.receiptofi.repository.InviteManager;
 import com.receiptofi.repository.UserAccountManager;
 import com.receiptofi.repository.UserProfileManager;
@@ -55,12 +56,17 @@ public class InviteService {
      * @param invitedBy
      * @return
      */
-    public InviteEntity initiateInvite(String invitedUserEmail, UserAccountEntity invitedBy) {
+    InviteEntity initiateInvite(String invitedUserEmail, UserAccountEntity invitedBy, UserLevelEnum userLevel) {
         UserAccountEntity userAccount = createNewUserAccount(invitedUserEmail);
-        return createInvite(invitedUserEmail, invitedBy, userAccount);
+        return createInvite(invitedUserEmail, invitedBy, userAccount, userLevel);
     }
 
-    private InviteEntity createInvite(String invitedUserEmail, UserAccountEntity invitedBy, UserAccountEntity userAccount) {
+    private InviteEntity createInvite(
+            String invitedUserEmail,
+            UserAccountEntity invitedBy,
+            UserAccountEntity userAccount,
+            UserLevelEnum userLevel
+    ) {
         UserProfileEntity newInvitedUser = userProfileManager.findByReceiptUserId(userAccount.getReceiptUserId());
         newInvitedUser.inActive();
         userProfileManager.save(newInvitedUser);
@@ -69,7 +75,8 @@ public class InviteService {
                 invitedUserEmail,
                 HashText.computeBCrypt(RandomString.newInstance().nextString()),
                 newInvitedUser,
-                invitedBy
+                invitedBy,
+                userLevel
         );
         inviteManager.save(inviteEntity);
         return inviteEntity;
@@ -103,7 +110,7 @@ public class InviteService {
      * @param emailId
      * @return
      */
-    public InviteEntity reInviteActiveInvite(String emailId, UserAccountEntity invitedBy) {
+    InviteEntity reInviteActiveInvite(String emailId, UserAccountEntity invitedBy) {
         return inviteManager.reInviteActiveInvite(emailId, invitedBy);
     }
 
@@ -111,7 +118,7 @@ public class InviteService {
         return inviteManager.find(emailId);
     }
 
-    public InviteEntity findInviteAuthenticationForKey(String key) {
+    public InviteEntity findByAuthenticationKey(String key) {
         return inviteManager.findByAuthenticationKey(key);
     }
 
