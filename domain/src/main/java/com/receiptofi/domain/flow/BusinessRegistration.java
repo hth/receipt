@@ -18,8 +18,8 @@ import java.util.List;
  * User: hitender
  * Date: 7/27/16 5:29 PM
  */
-public class AccountantRegistration extends Register implements Serializable {
-    private static final Logger LOG = LoggerFactory.getLogger(AccountantRegistration.class);
+public class BusinessRegistration extends Register implements Serializable {
+    private static final Logger LOG = LoggerFactory.getLogger(BusinessRegistration.class);
     private static final long serialVersionUID = -6047892968409443583L;
 
     private String birthday;
@@ -28,7 +28,7 @@ public class AccountantRegistration extends Register implements Serializable {
     private boolean acceptsAgreement;
     private boolean registrationTurnedOn;
 
-    private AccountantRegistration(InviteEntity invite, boolean registrationTurnedOn) {
+    private BusinessRegistration(InviteEntity invite, boolean registrationTurnedOn) {
         this.rid = invite.getInvited().getReceiptUserId();
         this.email = invite.getInvited().getEmail();
         this.emailValidated = true;
@@ -36,8 +36,8 @@ public class AccountantRegistration extends Register implements Serializable {
         this.accountExists = false;
     }
 
-    public static AccountantRegistration newInstance(InviteEntity invite, boolean registrationTurnedOn) {
-        return new AccountantRegistration(invite, registrationTurnedOn);
+    public static BusinessRegistration newInstance(InviteEntity invite, boolean registrationTurnedOn) {
+        return new BusinessRegistration(invite, registrationTurnedOn);
     }
 
     public String getRid() {
@@ -137,7 +137,7 @@ public class AccountantRegistration extends Register implements Serializable {
         return phone;
     }
 
-    public AccountantRegistration setPhone(String phone) {
+    public BusinessRegistration setPhone(String phone) {
         this.phone = phone;
         return this;
     }

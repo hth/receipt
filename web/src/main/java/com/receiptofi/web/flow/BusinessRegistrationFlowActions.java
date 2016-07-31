@@ -1,7 +1,7 @@
 package com.receiptofi.web.flow;
 
 import com.receiptofi.domain.InviteEntity;
-import com.receiptofi.domain.flow.AccountantRegistration;
+import com.receiptofi.domain.flow.BusinessRegistration;
 import com.receiptofi.domain.shared.DecodedAddress;
 import com.receiptofi.service.ExternalService;
 import com.receiptofi.service.InviteService;
@@ -54,7 +54,7 @@ public class BusinessRegistrationFlowActions {
     }
 
     @SuppressWarnings ("unused")
-    public AccountantRegistration findInvite(String key) throws BusinessRegistrationException {
+    public BusinessRegistration findInvite(String key) throws BusinessRegistrationException {
         if (StringUtils.isBlank(key)) {
             LOG.error("Authorization key is missing");
             throw new BusinessRegistrationException("Authorization key is missing");
@@ -65,33 +65,33 @@ public class BusinessRegistrationFlowActions {
             throw new BusinessRegistrationException("Authorization key is used or is incorrect");
         }
 
-        return AccountantRegistration.newInstance(invite, registrationTurnedOn);
+        return BusinessRegistration.newInstance(invite, registrationTurnedOn);
     }
 
     @SuppressWarnings ("unused")
-    public void updateProfile(AccountantRegistration accountantRegistration) {
-        DecodedAddress decodedAddress = DecodedAddress.newInstance(externalService.getGeocodingResults(accountantRegistration.getAddress()), accountantRegistration.getAddress());
+    public void updateProfile(BusinessRegistration businessRegistration) {
+        DecodedAddress decodedAddress = DecodedAddress.newInstance(externalService.getGeocodingResults(businessRegistration.getAddress()), businessRegistration.getAddress());
         if (decodedAddress.isNotEmpty()) {
-            accountantRegistration.setAddress(decodedAddress.getFormattedAddress());
-            accountantRegistration.setCountryShortName(decodedAddress.getCountryShortName());
+            businessRegistration.setAddress(decodedAddress.getFormattedAddress());
+            businessRegistration.setCountryShortName(decodedAddress.getCountryShortName());
         }
-        accountantRegistration.setPhone(CommonUtil.phoneCleanup(accountantRegistration.getPhone()));
+        businessRegistration.setPhone(CommonUtil.phoneCleanup(businessRegistration.getPhone()));
     }
 
 
     /**
      * Validate business user profile.
      *
-     * @param accountantRegistration
+     * @param businessRegistration
      * @param messageContext
      * @return
      */
     @SuppressWarnings ("unused")
-    public String validateUserProfileDetails(AccountantRegistration accountantRegistration, MessageContext messageContext) {
-        LOG.info("Validate business user rid={}", accountantRegistration.getRid());
+    public String validateUserProfileDetails(BusinessRegistration businessRegistration, MessageContext messageContext) {
+        LOG.info("Validate business user rid={}", businessRegistration.getRid());
         String status = LandingController.SUCCESS;
 
-        if (StringUtils.isBlank(accountantRegistration.getFirstName())) {
+        if (StringUtils.isBlank(businessRegistration.getFirstName())) {
             messageContext.addMessage(
                     new MessageBuilder()
                             .error()
@@ -101,17 +101,17 @@ public class BusinessRegistrationFlowActions {
             status = "failure";
         }
 
-        if (StringUtils.isNotBlank(accountantRegistration.getFirstName()) && !Validate.isValidName(accountantRegistration.getFirstName())) {
+        if (StringUtils.isNotBlank(businessRegistration.getFirstName()) && !Validate.isValidName(businessRegistration.getFirstName())) {
             messageContext.addMessage(
                     new MessageBuilder()
                             .error()
                             .source("firstName")
-                            .defaultText("First name is not a valid name: " + accountantRegistration.getFirstName())
+                            .defaultText("First name is not a valid name: " + businessRegistration.getFirstName())
                             .build());
             status = "failure";
         }
 
-        if (accountantRegistration.getFirstName().length() < nameLength) {
+        if (businessRegistration.getFirstName().length() < nameLength) {
             messageContext.addMessage(
                     new MessageBuilder()
                             .error()
@@ -121,7 +121,7 @@ public class BusinessRegistrationFlowActions {
             status = "failure";
         }
 
-        if (StringUtils.isBlank(accountantRegistration.getLastName())) {
+        if (StringUtils.isBlank(businessRegistration.getLastName())) {
             messageContext.addMessage(
                     new MessageBuilder()
                             .error()
@@ -131,17 +131,17 @@ public class BusinessRegistrationFlowActions {
             status = "failure";
         }
 
-        if (StringUtils.isNotBlank(accountantRegistration.getLastName()) && !Validate.isValidName(accountantRegistration.getLastName())) {
+        if (StringUtils.isNotBlank(businessRegistration.getLastName()) && !Validate.isValidName(businessRegistration.getLastName())) {
             messageContext.addMessage(
                     new MessageBuilder()
                             .error()
                             .source("lastName")
-                            .defaultText("Last name is not a valid name: " + accountantRegistration.getLastName())
+                            .defaultText("Last name is not a valid name: " + businessRegistration.getLastName())
                             .build());
             status = "failure";
         }
 
-        if (StringUtils.isBlank(accountantRegistration.getAddress())) {
+        if (StringUtils.isBlank(businessRegistration.getAddress())) {
             messageContext.addMessage(
                     new MessageBuilder()
                             .error()
@@ -151,7 +151,7 @@ public class BusinessRegistrationFlowActions {
             status = "failure";
         }
 
-        if (StringUtils.isBlank(accountantRegistration.getPhoneNotFormatted())) {
+        if (StringUtils.isBlank(businessRegistration.getPhoneNotFormatted())) {
             messageContext.addMessage(
                     new MessageBuilder()
                             .error()
@@ -161,18 +161,18 @@ public class BusinessRegistrationFlowActions {
             status = "failure";
         }
 
-        if (StringUtils.isNotBlank(accountantRegistration.getPhoneNotFormatted())) {
-            boolean isValid = Formatter.isValidPhone(accountantRegistration.getPhoneNotFormatted());
+        if (StringUtils.isNotBlank(businessRegistration.getPhoneNotFormatted())) {
+            boolean isValid = Formatter.isValidPhone(businessRegistration.getPhoneNotFormatted());
             messageContext.addMessage(
                     new MessageBuilder()
                             .error()
                             .source("phone")
-                            .defaultText("Your Phone number '" + accountantRegistration.getPhoneNotFormatted() + "' is not valid")
+                            .defaultText("Your Phone number '" + businessRegistration.getPhoneNotFormatted() + "' is not valid")
                             .build());
             status = "failure";
         }
 
-        if (StringUtils.isNotBlank(accountantRegistration.getBirthday()) && !Constants.AGE_RANGE.matcher(accountantRegistration.getBirthday()).matches()) {
+        if (StringUtils.isNotBlank(businessRegistration.getBirthday()) && !Constants.AGE_RANGE.matcher(businessRegistration.getBirthday()).matches()) {
             messageContext.addMessage(
                     new MessageBuilder()
                             .error()
@@ -182,7 +182,7 @@ public class BusinessRegistrationFlowActions {
             status = "failure";
         }
 
-        if (!Validate.isValidMail(accountantRegistration.getEmail())) {
+        if (!Validate.isValidMail(businessRegistration.getEmail())) {
             messageContext.addMessage(
                     new MessageBuilder()
                             .error()
@@ -192,7 +192,7 @@ public class BusinessRegistrationFlowActions {
             status = "failure";
         }
 
-        if (accountantRegistration.getEmail() != null && accountantRegistration.getEmail().length() <= mailLength) {
+        if (businessRegistration.getEmail() != null && businessRegistration.getEmail().length() <= mailLength) {
             messageContext.addMessage(
                     new MessageBuilder()
                             .error()
@@ -202,7 +202,7 @@ public class BusinessRegistrationFlowActions {
             status = "failure";
         }
 
-        if (accountantRegistration.getPassword().length() < passwordLength) {
+        if (businessRegistration.getPassword().length() < passwordLength) {
             messageContext.addMessage(
                     new MessageBuilder()
                             .error()
@@ -212,7 +212,7 @@ public class BusinessRegistrationFlowActions {
             status = "failure";
         }
 
-        if (!accountantRegistration.isAcceptsAgreement()) {
+        if (!businessRegistration.isAcceptsAgreement()) {
             if (messageContext.getAllMessages().length > 0) {
                 messageContext.addMessage(
                         new MessageBuilder()
@@ -232,7 +232,7 @@ public class BusinessRegistrationFlowActions {
             }
         }
 
-        LOG.info("Validate business user rid={} status={}", accountantRegistration.getRid(), status);
+        LOG.info("Validate business user rid={} status={}", businessRegistration.getRid(), status);
         return status;
     }
 }
