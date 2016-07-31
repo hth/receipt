@@ -131,7 +131,7 @@ public class InviteController {
     }
 
     /**
-     * Completes user invitation sent through email
+     * Completes user invitation sent through email.
      *
      * @param form
      * @param model

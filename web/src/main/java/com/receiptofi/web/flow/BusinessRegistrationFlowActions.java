@@ -162,14 +162,15 @@ public class BusinessRegistrationFlowActions {
         }
 
         if (StringUtils.isNotBlank(businessRegistration.getPhoneNotFormatted())) {
-            boolean isValid = Formatter.isValidPhone(businessRegistration.getPhoneNotFormatted());
-            messageContext.addMessage(
-                    new MessageBuilder()
-                            .error()
-                            .source("phone")
-                            .defaultText("Your Phone number '" + businessRegistration.getPhoneNotFormatted() + "' is not valid")
-                            .build());
-            status = "failure";
+            if (!Formatter.isValidPhone(businessRegistration.getPhoneNotFormatted())) {
+                messageContext.addMessage(
+                        new MessageBuilder()
+                                .error()
+                                .source("phone")
+                                .defaultText("Your Phone number '" + businessRegistration.getPhoneNotFormatted() + "' is not valid")
+                                .build());
+                status = "failure";
+            }
         }
 
         if (StringUtils.isNotBlank(businessRegistration.getBirthday()) && !Constants.AGE_RANGE.matcher(businessRegistration.getBirthday()).matches()) {
