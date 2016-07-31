@@ -66,8 +66,8 @@ public class InviteController {
     @Value ("${registration.turned.on}")
     private boolean registrationTurnedOn;
 
-    @Value ("${accountantRegistrationFlow:redirect:/open/accountant/registration.htm}")
-    private String accountantRegistrationFlow;
+    @Value ("${businessRegistrationFlow:redirect:/open/business/registration.htm}")
+    private String businessRegistrationFlow;
 
     private AccountService accountService;
     private InviteService inviteService;
@@ -117,12 +117,12 @@ public class InviteController {
                 return authenticatePage;
             case BUSINESS:
                 //TODO for business
-                return accountantRegistrationFlow + "?authenticationKey=" + invite.getAuthenticationKey();
+                return businessRegistrationFlow + "?authenticationKey=" + invite.getAuthenticationKey();
             case ACCOUNTANT:
-                return accountantRegistrationFlow + "?authenticationKey=" + invite.getAuthenticationKey();
+                return businessRegistrationFlow + "?authenticationKey=" + invite.getAuthenticationKey();
             case ENTERPRISE:
                 //TODO for enterprise
-                return accountantRegistrationFlow + "?authenticationKey=" + invite.getAuthenticationKey();
+                return businessRegistrationFlow + "?authenticationKey=" + invite.getAuthenticationKey();
             default:
                 LOG.error("Reached unsupported rid={} uid={} condition={}",
                         invite.getInvited().getReceiptUserId(), invite.getEmail(), invite.getUserLevel());
