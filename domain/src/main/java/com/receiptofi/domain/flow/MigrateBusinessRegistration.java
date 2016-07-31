@@ -16,6 +16,8 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
+ * Migrate from User account to any business account.
+ *
  * User: hitender
  * Date: 5/20/16 8:24 AM
  */

@@ -67,6 +67,13 @@
         <intercept-url pattern="/open/**"
                        access="permitAll" />
 
+        <!-- user needs either role to migrate to any of the business account set to -->
+        <intercept-url pattern="/migrate/**"
+                       access="hasAnyRole(
+                       'ROLE_ACCOUNTANT',
+                       'ROLE_ENTERPRISE',
+                       'ROLE_BUSINESS')" />
+
         <intercept-url pattern="/access/signoff.htm"
                        access="hasAnyRole(
                        'ROLE_USER',
