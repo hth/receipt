@@ -1,7 +1,5 @@
 package com.receiptofi.web.flow;
 
-import com.google.i18n.phonenumbers.PhoneNumberUtil;
-
 import com.receiptofi.domain.InviteEntity;
 import com.receiptofi.domain.flow.AccountantRegistration;
 import com.receiptofi.domain.shared.DecodedAddress;

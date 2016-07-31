@@ -16,7 +16,7 @@ import com.receiptofi.service.FetcherService;
 import com.receiptofi.service.UserProfilePreferenceService;
 import com.receiptofi.utils.CommonUtil;
 import com.receiptofi.web.controller.access.LandingController;
-import com.receiptofi.web.flow.exception.BusinessRegistrationException;
+import com.receiptofi.web.flow.exception.MigrateToBusinessRegistrationException;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -32,12 +32,13 @@ import org.springframework.stereotype.Component;
 import java.util.Set;
 
 /**
+ * Helps migrate account to business account with correct Business Level.
  * User: hitender
  * Date: 5/20/16 9:51 PM
  */
 @Component
-public class BusinessRegistrationFlowActions {
-    private static final Logger LOG = LoggerFactory.getLogger(BusinessRegistrationFlowActions.class);
+public class MigrateToBusinessRegistrationFlowActions {
+    private static final Logger LOG = LoggerFactory.getLogger(MigrateToBusinessRegistrationFlowActions.class);
 
     private FetcherService fetcherService;
     private UserProfilePreferenceService userProfilePreferenceService;
@@ -46,9 +47,9 @@ public class BusinessRegistrationFlowActions {
     private BizService bizService;
     private ExternalService externalService;
 
-    @SuppressWarnings("all")
+    @SuppressWarnings ("all")
     @Autowired
-    public BusinessRegistrationFlowActions(
+    public MigrateToBusinessRegistrationFlowActions(
             FetcherService fetcherService,
             UserProfilePreferenceService userProfilePreferenceService,
             AccountService accountService,
@@ -105,11 +106,11 @@ public class BusinessRegistrationFlowActions {
     /**
      * @param businessRegistration
      * @return
-     * @throws BusinessRegistrationException
+     * @throws MigrateToBusinessRegistrationException
      */
     @SuppressWarnings ("unused")
     public BusinessRegistration completeRegistrationInformation(BusinessRegistration businessRegistration)
-            throws BusinessRegistrationException {
+            throws MigrateToBusinessRegistrationException {
         try {
             updateUserProfile(businessRegistration);
 
@@ -146,7 +147,7 @@ public class BusinessRegistrationFlowActions {
         } catch (Exception e) {
             LOG.error("Error updating business user profile rid={} reason={}",
                     businessRegistration.getRid(), e.getLocalizedMessage(), e);
-            throw new BusinessRegistrationException("Error updating profile", e);
+            throw new MigrateToBusinessRegistrationException("Error updating profile", e);
         }
     }
 

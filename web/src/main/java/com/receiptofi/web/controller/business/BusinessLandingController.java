@@ -58,7 +58,7 @@ public class BusinessLandingController {
     private static final Logger LOG = LoggerFactory.getLogger(BusinessLandingController.class);
 
     private String nextPage;
-    private String businessRegistrationFlow;
+    private String migrateBusinessRegistrationFlow;
 
     private BusinessUserService businessUserService;
     private BizDimensionService bizDimensionService;
@@ -70,15 +70,15 @@ public class BusinessLandingController {
             @Value ("${nextPage:/business/landing}")
             String nextPage,
 
-            @Value ("${businessRegistrationFlow:redirect:/business/registration.htm}")
-            String businessRegistrationFlow,
+            @Value ("${migrateBusinessRegistrationFlow:redirect:/migrate/business/registration.htm}")
+            String migrateBusinessRegistrationFlow,
 
             BusinessUserService businessUserService,
             BizDimensionService bizDimensionService,
             CampaignService campaignService,
             ImageSplitService imageSplitService) {
         this.nextPage = nextPage;
-        this.businessRegistrationFlow = businessRegistrationFlow;
+        this.migrateBusinessRegistrationFlow = migrateBusinessRegistrationFlow;
         this.businessUserService = businessUserService;
         this.bizDimensionService = bizDimensionService;
         this.campaignService = campaignService;
@@ -111,8 +111,8 @@ public class BusinessLandingController {
             case C:
             case I:
             case N:
-                LOG.info("Business Registration rid={} level={}", receiptUser.getRid(), receiptUser.getUserLevel());
-                return businessRegistrationFlow;
+                LOG.info("Migrate to business registration rid={} level={}", receiptUser.getRid(), receiptUser.getUserLevel());
+                return migrateBusinessRegistrationFlow;
             default:
                 LOG.error("Reached unsupported condition={}", businessUser.getBusinessUserRegistrationStatus());
                 throw new UnsupportedOperationException("Reached unsupported condition " + businessUser.getBusinessUserRegistrationStatus());
