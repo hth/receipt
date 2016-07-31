@@ -83,7 +83,7 @@
 
                     <div class="icon">
                         <form:label for="businessAddress" path="businessAddress" cssClass="cd-label">Business Address:</form:label>
-                        <form:input path="businessAddress" size="200" cssClass="company" cssStyle="width: 600px;" required="required" cssErrorClass="company error" />
+                        <form:input path="businessAddress" size="200" cssClass="company" required="required" cssErrorClass="company error" />
                     </div>
 
                     <div class="icon">

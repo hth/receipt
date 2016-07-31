@@ -100,7 +100,7 @@
 
                     <div class="icon">
                         <form:label for="address" path="address" cssClass="cd-label">Your Address:</form:label>
-                        <form:input path="address" size="200" cssClass="user" cssStyle="width: 600px;" required="required" cssErrorClass="user error" />
+                        <form:input path="address" size="200" cssClass="user" required="required" cssErrorClass="user error" />
                     </div>
 
                     <div class="icon">
