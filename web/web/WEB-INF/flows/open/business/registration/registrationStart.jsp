@@ -78,22 +78,24 @@
 
                     <div class="icon">
                         <form:label for="businessName" path="businessName" cssClass="cd-label">Business Name:</form:label>
-                        <form:input path="businessName" cssClass="user" required="required" cssErrorClass="user error" />
-                    </div>
-
-                    <div class="icon">
-                        <form:label for="businessTypes" path="businessTypes" cssClass="cd-label">Business Type:</form:label>
-                        <form:input path="businessTypes" cssClass="user" required="required" cssErrorClass="user error" />
+                        <form:input path="businessName" cssClass="company" required="required" cssErrorClass="company error" />
                     </div>
 
                     <div class="icon">
                         <form:label for="businessAddress" path="businessAddress" cssClass="cd-label">Business Address:</form:label>
-                        <form:input path="businessAddress" size="200" cssClass="user" cssStyle="width: 600px;" required="required" cssErrorClass="user error" />
+                        <form:input path="businessAddress" size="200" cssClass="company" cssStyle="width: 600px;" required="required" cssErrorClass="company error" />
                     </div>
 
                     <div class="icon">
                         <form:label for="businessPhone" path="businessPhone" cssClass="cd-label">Business Phone:</form:label>
-                        <form:input path="businessPhone" size="20" cssClass="user" required="required" cssErrorClass="user error" />
+                        <form:input path="businessPhone" size="20" cssClass="company" required="required" cssErrorClass="company error" />
+                    </div>
+
+                    <div>
+                        <h4>Business Type:</h4>
+                        <form:select path="businessTypes" multiple="true" required="required" style="height: 135px;" cssErrorClass="error">
+                            <form:options items="${businessRegistration.availableBusinessTypes}" itemValue="name" itemLabel="description" />
+                        </form:select>
                     </div>
                 </fieldset>
 
@@ -116,6 +118,33 @@
         All other trademarks and logos belong to their respective owners.<br>
     </footer>
 </div>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery-migrate/3.0.0/jquery-migrate.min.js"></script>
+<script>
+    jQuery(document).ready(function ($) {
+        if ($('.floating-labels').length > 0) {
+            floatLabels();
+        }
+
+        function floatLabels() {
+            var inputFields = $('.floating-labels .cd-label').next();
+            inputFields.each(function() {
+                var singleInput = $(this);
+                // check if user is filling one of the form fields
+                checkVal(singleInput);
+                singleInput.on('change keyup', function() {
+                    checkVal(singleInput);
+                });
+            });
+        }
+
+        function checkVal(inputField) {
+            (inputField.val() == '') ? inputField.prev('.cd-label').removeClass('float') : inputField.prev('.cd-label').addClass('float');
+        }
+    });
+</script>
+<script src="//receiptofi.com/js/main.min.js"></script>
+
 <script>
     (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
             function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
