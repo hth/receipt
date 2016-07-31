@@ -1,6 +1,7 @@
 package com.receiptofi.domain;
 
 import com.receiptofi.domain.types.BusinessUserRegistrationStatusEnum;
+import com.receiptofi.domain.types.UserLevelEnum;
 
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
@@ -42,21 +43,26 @@ public class BusinessUserEntity extends BaseEntity {
     @Field ("BIZ_NAME")
     private BizNameEntity bizName;
 
+    /* Set the kind of business is registered as. */
+    @Field ("UL")
+    private UserLevelEnum userLevel;
+
     @SuppressWarnings("unused")
     private BusinessUserEntity() {
         super();
     }
 
-    private BusinessUserEntity(String receiptUserId) {
+    private BusinessUserEntity(String receiptUserId, UserLevelEnum userLevel) {
         super();
         this.receiptUserId = receiptUserId;
+        this.userLevel = userLevel;
 
         /** When creating this record we are defaulting to Incomplete status. */
         this.businessUserRegistrationStatus = BusinessUserRegistrationStatusEnum.I;
     }
 
-    public static BusinessUserEntity newInstance(String receiptUserId) {
-        return new BusinessUserEntity(receiptUserId);
+    public static BusinessUserEntity newInstance(String receiptUserId, UserLevelEnum userLevel) {
+        return new BusinessUserEntity(receiptUserId, userLevel);
     }
 
     public String getReceiptUserId() {
