@@ -9,13 +9,13 @@
     <on-start>
         <set name="conversationScope.authenticationKey" value="requestParameters.authenticationKey" type="string" />
         <evaluate expression="businessRegistrationFlowActions.findInvite(authenticationKey)"
-                  result="flowScope.accountantRegistration" />
+                  result="flowScope.businessRegistration" />
     </on-start>
 
-    <view-state id="profileCompletion" model="accountantRegistration">
+    <view-state id="profileCompletion" model="businessRegistration">
         <on-entry>
             <!-- Populates all available business types -->
-            <evaluate result="accountantRegistration.availableBusinessTypes"
+            <evaluate result="businessRegistration.availableBusinessTypes"
                       expression="T(com.receiptofi.domain.types.BusinessTypeEnum).asList()" />
         </on-entry>
         <transition on="submit" to="validateUserProfile" />
@@ -23,25 +23,25 @@
     </view-state>
 
     <action-state id="validateUserProfile">
-        <evaluate expression="businessRegistrationFlowActions.validateUserProfileDetails(accountantRegistration, messageContext)" />
+        <evaluate expression="businessRegistrationFlowActions.validateUserProfileDetails(businessRegistration, messageContext)" />
         <transition on="success" to="registrationStart">
-            <evaluate expression="businessRegistrationFlowActions.updateProfile(accountantRegistration)" />
+            <evaluate expression="businessRegistrationFlowActions.updateProfile(businessRegistration)" />
         </transition>
         <transition on="failure" to="profileCompletion" />
     </action-state>
 
-    <view-state id="registrationStart" model="accountantRegistration">
-        <!--<transition on="submit" to="validateBusinessProfile" />-->
-        <!--<transition on="cancel" to="logout" />-->
+    <view-state id="registrationStart" model="businessRegistration">
+        <transition on="submit" to="validateBusinessProfile" />
+        <transition on="cancel" to="home" />
     </view-state>
 
-    <!--<action-state id="validateBusinessProfile">-->
+    <action-state id="validateBusinessProfile">
         <!--<evaluate expression="businessRegistrationFlowActions.validateBusinessDetails(businessRegistration, messageContext)" />-->
         <!--<transition on="success" to="registrationReview">-->
             <!--<evaluate expression="businessRegistrationFlowActions.updateBusiness(businessRegistration)" />-->
         <!--</transition>-->
-        <!--<transition on="failure" to="registrationStart" />-->
-    <!--</action-state>-->
+        <transition on="failure" to="registrationStart" />
+    </action-state>
 
     <!--<view-state id="registrationReview">-->
         <!--<transition on="confirm" to="completeRegistrationInformation" />-->

@@ -52,9 +52,9 @@
         <%--</fieldset>--%>
 
         <fieldset class="cd-form floating-labels">
-            <form:form commandName="accountantRegistration" autocomplete="true">
+            <form:form commandName="businessRegistration" autocomplete="true">
                 <input type="hidden" name="_flowExecutionKey" value="${flowExecutionKey}"/>
-                <spring:hasBindErrors name="accountantRegistration">
+                <spring:hasBindErrors name="businessRegistration">
                     <div class="r-validation" style="width: 100%; margin: 0 0 0 0;">
                         <ul>
                             <c:if test="${errors.hasFieldErrors('firstName')}">
@@ -137,7 +137,7 @@
 
                 <fieldset>
                     <c:choose>
-                        <c:when test="${accountantRegistration.accountExists}">
+                        <c:when test="${businessRegistration.accountExists}">
                             <input id="recover_btn_id" type="submit" value="Recover Password" name="recover" style="float: left;" />
                         </c:when>
                         <c:otherwise>
@@ -152,7 +152,7 @@
                     </div>
                 </fieldset>
 
-                <c:if test="${!accountantRegistration.registrationTurnedOn}">
+                <c:if test="${!businessRegistration.registrationTurnedOn}">
                     <div class="error-message">
                         <p>Registration is open, but site is not accepting new users. When site starts accepting new users,
                             you will be notified through email and your account would be turned active.</p>

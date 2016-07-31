@@ -1,77 +1,60 @@
 <%@ include file="../../../../jsp/include.jsp"%>
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang=""> <!--<![endif]-->
 <head>
-    <meta charset="utf-8"/>
-    <meta name="description" content=""/>
+    <meta charset="utf-8">
     <meta name="_csrf" content="${_csrf.token}"/>
     <meta name="_csrf_header" content="${_csrf.headerName}"/>
     <script>var ctx = "${pageContext.request.contextPath}"</script>
 
-    <title><fmt:message key="title"/></title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/style.css"/>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/stylelogin.css"/>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/colpick.css"/>
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
 
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-migrate/3.0.0/jquery-migrate.min.js"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
-    <script src="${pageContext.request.contextPath}/static/external/js/noble-count/jquery.NobleCount.min.js"></script>
-    <script src="${pageContext.request.contextPath}/static/external/js/cute-time/jquery.cuteTime.min.js"></script>
+    <link href='//fonts.googleapis.com/css?family=Open+Sans:400,300|Merriweather' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="//receiptofi.com/css/reset.css"> <!-- CSS reset -->
+    <link rel="stylesheet" href="//receiptofi.com/css/style.css"> <!-- Resource style -->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/stylelogin-nn.css"> <!-- Resource style -->
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.css">
+
+    <script src="//receiptofi.com/js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script> <!-- Modernizr -->
+
+    <title>Receiptofi | Receipt App to park your Receipts</title>
 </head>
 <body>
-<div class="header_main">
-    <div class="header_wrappermain">
-        <div class="header_wrapper">
-            <div class="header_left_contentmain">
-                <div id="logo">
-                    <h1><img src="https://www.receiptofi.com/img/Receipt-26x26.png" style="margin: -3px 0;"/><a href="/business/landing.htm">Receiptofi</a></h1>
-                </div>
-            </div>
-            <div class="header_right_login">
-                <a class="top-account-bar-text" style="margin-top: -1px;" href="#">
-                    <form action="${pageContext.request.contextPath}/access/signoff.htm" method="post">
-                        <input type="submit" value="LOG OUT" class="logout_btn"/>
-                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                    </form>
-                </a>
-                <a class="top-account-bar-text" href="/access/eval/feedback.htm">FEEDBACK</a>
-                <a class="top-account-bar-text" href="/access/userprofilepreference/i.htm">ACCOUNT</a>
-                <sec:authentication var="validated" property="principal.accountValidated"/>
-                <c:choose>
-                    <c:when test="${!validated}">
-                        <a class="top-account-bar-text user-email" href="/access/userprofilepreference/i.htm">
-                            <sec:authentication property="principal.username" />
-                            <span class="notification-counter">1</span>
-                        </a>
-                    </c:when>
-                    <c:otherwise>
-                        <a class="top-account-bar-text user-email" href="#">
-                            <sec:authentication property="principal.username" />
-                        </a>
-                    </c:otherwise>
-                </c:choose>
-            </div>
-        </div>
+<!--[if lt IE 8]>
+<p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+<![endif]-->
+<header class="cd-header">
+    <div id="cd-logo">
+        <a href="${pageContext.request.contextPath}/open/login.htm"><div id="cd-logo-img"></div></a>
     </div>
-</div>
-<header>
-</header>
-<div class="main clearfix">
-    <div class="sidebar_no_use">
-    </div>
-    <div class="rightside-content">
-        <sec:authorize access="hasRole('ROLE_BUSINESS')">
-        <div class="business_reg">
-            <div class="down_form" style="width: 90%">
-                <form:form commandName="businessRegistration">
-                    <h1 class="h1">Add business details</h1>
-                    <hr>
-                    <input type="hidden" name="_flowExecutionKey" value="${flowExecutionKey}"/>
 
-                    <spring:hasBindErrors name="businessRegistration">
+    <h3>Receiptofi</h3>
+
+    <nav class="cd-main-nav">
+        <ul>
+            <li><a href="${pageContext.request.contextPath}/open/login.htm">Sign In</a></li>
+            <li><a href="${pageContext.request.contextPath}/open/registration.htm">Register</a></li>
+        </ul>
+    </nav> <!-- cd-main-nav -->
+</header>
+
+<section class="cd-fixed-background" style="background-color: #93a748; min-height: 1054px;" data-type="slider-item">
+    <div class="cd-content">
+        <%--<fieldset class="cd-form floating-labels" id="login-title-fieldset">--%>
+        <%--<h2><fmt:message key="account.register.title" /></h2>--%>
+        <%--<p><fmt:message key="account.register.sub.title" /></p>--%>
+        <%--</fieldset>--%>
+
+        <fieldset class="cd-form floating-labels">
+            <form:form commandName="businessRegistration" autocomplete="true">
+                <input type="hidden" name="_flowExecutionKey" value="${flowExecutionKey}"/>
+                <spring:hasBindErrors name="businessRegistration">
                     <div class="r-validation" style="width: 100%; margin: 0 0 0 0;">
                         <ul>
                             <c:if test="${errors.hasFieldErrors('businessName')}">
@@ -88,57 +71,58 @@
                             </c:if>
                         </ul>
                     </div>
-                    </spring:hasBindErrors>
+                </spring:hasBindErrors>
 
-                    <div class="row_field">
-                        <form:label path="businessName" cssClass="profile_label" cssStyle="width: 145px;"
-                                cssErrorClass="profile_label lb_error">Business Name</form:label>
-                        <form:input path="businessName" size="20" cssClass="name_txt" />
-                    </div>
-                    <div class="row_field">
-                        <form:label path="businessTypes" cssClass="profile_label" cssStyle="width: 145px;"
-                                cssErrorClass="profile_label lb_error">Business Type</form:label>
+                <fieldset>
+                    <legend>Registration for Accountant / CPA Business</legend>
 
-                        <form:select path="businessTypes" cssClass="styled-select slate" multiple="true" style="height: 100px;">
-                            <form:options items="${businessRegistration.availableBusinessTypes}" itemValue="name" itemLabel="description" />
-                        </form:select>
-                    </div>
-                    <div class="row_field">
-                        <form:label path="businessAddress" cssClass="profile_label" cssStyle="width: 145px;"
-                                cssErrorClass="profile_label lb_error">Business Address</form:label>
-                        <form:input path="businessAddress" size="200" cssClass="name_txt" style="width: 600px;" />
-                    </div>
-                    <div class="row_field">
-                        <form:label path="businessPhone" cssClass="profile_label" cssStyle="width: 145px;"
-                                cssErrorClass="profile_label lb_error">Business Phone</form:label>
-                        <form:input path="businessPhone" size="20" cssClass="name_txt" />
+                    <div class="icon">
+                        <form:label for="businessName" path="businessName" cssClass="cd-label">Business Name:</form:label>
+                        <form:input path="businessName" cssClass="user" required="required" cssErrorClass="user error" />
                     </div>
 
-                    <div class="full">
-                        <c:if test="${businessRegistration.emailValidated}">
-                            <input type="submit" value="NEXT" class="read_btn" name="_eventId_submit"
-                                    style="background: #2c97de; margin: 77px 10px 0 0;">
-                        </c:if>
-                        <input type="submit" value="CANCEL" class="read_btn" name="_eventId_cancel"
-                                style="background: #FC462A; margin: 77px 10px 0 0;">
+                    <div class="icon">
+                        <form:label for="businessTypes" path="businessTypes" cssClass="cd-label">Business Type:</form:label>
+                        <form:input path="businessTypes" cssClass="user" required="required" cssErrorClass="user error" />
                     </div>
-                </form:form>
-            </div>
-        </div>
-        </sec:authorize>
+
+                    <div class="icon">
+                        <form:label for="businessAddress" path="businessAddress" cssClass="cd-label">Business Address:</form:label>
+                        <form:input path="businessAddress" size="200" cssClass="user" cssStyle="width: 600px;" required="required" cssErrorClass="user error" />
+                    </div>
+
+                    <div class="icon">
+                        <form:label for="businessPhone" path="businessPhone" cssClass="cd-label">Business Phone:</form:label>
+                        <form:input path="businessPhone" size="20" cssClass="user" required="required" cssErrorClass="user error" />
+                    </div>
+                </fieldset>
+
+                <fieldset>
+                    <div>
+                        <input type="submit" value="Next" class="read_btn" name="_eventId_submit"
+                                style="background: #2c97de; margin: 17px 10px 0 0;">
+                        <input type="submit" value="Cancel" class="read_btn" name="_eventId_cancel"
+                                style="background: #FC462A; margin: 17px 10px 0 0;" formnovalidate>
+                    </div>
+                </fieldset>
+            </form:form>
+        </fieldset>
     </div>
+</section>
+
+<div class="footer-container">
+    <footer class="wrapper fine-print">
+        &#169; 2016 Receiptofi, Inc. <a href="//receiptofi.com/termsofuse">Terms</a> and <a href="//receiptofi.com/privacypolicy">Privacy</a>.<br>
+        All other trademarks and logos belong to their respective owners.<br>
+    </footer>
 </div>
-<div class="footer-tooth clearfix">
-    <div class="footer-tooth-middle"></div>
-    <div class="footer-tooth-right"></div>
-</div>
-<div class="big_footer">
-    <div class="mfooter_up">
-    </div>
-    <div class="mfooter_down">
-        <p class="footer_copy">&#169; 2016 RECEIPTOFI, INC. ALL RIGHTS RESERVED.
-    </div>
-</div>
+<script>
+    (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+            function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+        e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+        e.src='//www.google-analytics.com/analytics.js';
+        r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
+    ga('create','UA-65975717-1','auto');ga('send','pageview');
+</script>
 </body>
-<script src="${pageContext.request.contextPath}/static/js/mainpop.js"></script>
 </html>
