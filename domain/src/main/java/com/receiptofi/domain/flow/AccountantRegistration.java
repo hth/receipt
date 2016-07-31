@@ -19,7 +19,7 @@ import java.util.List;
  * Date: 7/27/16 5:29 PM
  */
 public class AccountantRegistration extends Register implements Serializable {
-    private static final Logger LOG = LoggerFactory.getLogger(BusinessRegistration.class);
+    private static final Logger LOG = LoggerFactory.getLogger(AccountantRegistration.class);
     private static final long serialVersionUID = -6047892968409443583L;
 
     private String birthday;

@@ -19,13 +19,13 @@ import java.util.List;
  * User: hitender
  * Date: 5/20/16 8:24 AM
  */
-public class BusinessRegistration extends Register implements Serializable {
-    private static final Logger LOG = LoggerFactory.getLogger(BusinessRegistration.class);
+public class MigrateBusinessRegistration extends Register implements Serializable {
+    private static final Logger LOG = LoggerFactory.getLogger(MigrateBusinessRegistration.class);
     private static final long serialVersionUID = -6047892968409443583L;
 
     private BusinessUserEntity businessUser;
 
-    private BusinessRegistration(BusinessUserEntity businessUser, BizStoreEntity bizStore) {
+    private MigrateBusinessRegistration(BusinessUserEntity businessUser, BizStoreEntity bizStore) {
         this.rid = businessUser.getReceiptUserId();
         this.businessUser = businessUser;
         if (null != businessUser.getBizName()) {
@@ -40,8 +40,8 @@ public class BusinessRegistration extends Register implements Serializable {
         }
     }
 
-    public static BusinessRegistration newInstance(BusinessUserEntity businessUser, BizStoreEntity bizStore) {
-        return new BusinessRegistration(businessUser, bizStore);
+    public static MigrateBusinessRegistration newInstance(BusinessUserEntity businessUser, BizStoreEntity bizStore) {
+        return new MigrateBusinessRegistration(businessUser, bizStore);
     }
 
     public String getRid() {
@@ -52,7 +52,7 @@ public class BusinessRegistration extends Register implements Serializable {
         return email;
     }
 
-    public BusinessRegistration setEmail(String email) {
+    public MigrateBusinessRegistration setEmail(String email) {
         this.email = email;
         return this;
     }
@@ -61,7 +61,7 @@ public class BusinessRegistration extends Register implements Serializable {
         return firstName;
     }
 
-    public BusinessRegistration setFirstName(String firstName) {
+    public MigrateBusinessRegistration setFirstName(String firstName) {
         this.firstName = firstName;
         return this;
     }
@@ -70,7 +70,7 @@ public class BusinessRegistration extends Register implements Serializable {
         return lastName;
     }
 
-    public BusinessRegistration setLastName(String lastName) {
+    public MigrateBusinessRegistration setLastName(String lastName) {
         this.lastName = lastName;
         return this;
     }
@@ -79,7 +79,7 @@ public class BusinessRegistration extends Register implements Serializable {
         return address;
     }
 
-    public BusinessRegistration setAddress(String address) {
+    public MigrateBusinessRegistration setAddress(String address) {
         this.address = address;
         return this;
     }
@@ -88,7 +88,7 @@ public class BusinessRegistration extends Register implements Serializable {
         return countryShortName;
     }
 
-    public BusinessRegistration setCountryShortName(String countryShortName) {
+    public MigrateBusinessRegistration setCountryShortName(String countryShortName) {
         this.countryShortName = countryShortName;
         return this;
     }
@@ -106,7 +106,7 @@ public class BusinessRegistration extends Register implements Serializable {
         return phone;
     }
 
-    public BusinessRegistration setPhone(String phone) {
+    public MigrateBusinessRegistration setPhone(String phone) {
         this.phone = phone;
         return this;
     }
@@ -123,7 +123,7 @@ public class BusinessRegistration extends Register implements Serializable {
         return emailValidated;
     }
 
-    public BusinessRegistration setEmailValidated(boolean emailValidated) {
+    public MigrateBusinessRegistration setEmailValidated(boolean emailValidated) {
         this.emailValidated = emailValidated;
         return this;
     }

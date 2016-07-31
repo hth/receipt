@@ -10,7 +10,7 @@ import com.receiptofi.utils.Constants;
 import com.receiptofi.utils.Formatter;
 import com.receiptofi.utils.Validate;
 import com.receiptofi.web.controller.access.LandingController;
-import com.receiptofi.web.flow.exception.AccountantRegistrationException;
+import com.receiptofi.web.flow.exception.BusinessRegistrationException;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -28,8 +28,8 @@ import org.springframework.stereotype.Component;
  * Date: 7/27/16 4:04 PM
  */
 @Component
-public class AccountantRegistrationFlowActions {
-    private static final Logger LOG = LoggerFactory.getLogger(AccountantRegistrationFlowActions.class);
+public class BusinessRegistrationFlowActions {
+    private static final Logger LOG = LoggerFactory.getLogger(BusinessRegistrationFlowActions.class);
 
     private InviteService inviteService;
     private ExternalService externalService;
@@ -48,21 +48,21 @@ public class AccountantRegistrationFlowActions {
 
     @SuppressWarnings ("all")
     @Autowired
-    public AccountantRegistrationFlowActions(InviteService inviteService, ExternalService externalService) {
+    public BusinessRegistrationFlowActions(InviteService inviteService, ExternalService externalService) {
         this.inviteService = inviteService;
         this.externalService = externalService;
     }
 
     @SuppressWarnings ("unused")
-    public AccountantRegistration findInvite(String key) throws AccountantRegistrationException {
+    public AccountantRegistration findInvite(String key) throws BusinessRegistrationException {
         if (StringUtils.isBlank(key)) {
             LOG.error("Authorization key is missing");
-            throw new AccountantRegistrationException("Authorization key is missing");
+            throw new BusinessRegistrationException("Authorization key is missing");
         }
         InviteEntity invite = inviteService.findByAuthenticationKey(key);
         if (null == invite) {
             LOG.error("Authorization key is used or is incorrect={}", key);
-            throw new AccountantRegistrationException("Authorization key is used or is incorrect");
+            throw new BusinessRegistrationException("Authorization key is used or is incorrect");
         }
 
         return AccountantRegistration.newInstance(invite, registrationTurnedOn);
