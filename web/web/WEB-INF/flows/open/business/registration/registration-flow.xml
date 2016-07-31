@@ -36,33 +36,33 @@
     </view-state>
 
     <action-state id="validateBusinessProfile">
-        <!--<evaluate expression="businessRegistrationFlowActions.validateBusinessDetails(businessRegistration, messageContext)" />-->
-        <!--<transition on="success" to="registrationReview">-->
-            <!--<evaluate expression="businessRegistrationFlowActions.updateBusiness(businessRegistration)" />-->
-        <!--</transition>-->
+        <evaluate expression="businessRegistrationFlowActions.validateBusinessDetails(businessRegistration, messageContext)" />
+        <transition on="success" to="registrationReview">
+            <evaluate expression="businessRegistrationFlowActions.updateBusiness(businessRegistration)" />
+        </transition>
         <transition on="failure" to="registrationStart" />
     </action-state>
 
-    <!--<view-state id="registrationReview">-->
-        <!--<transition on="confirm" to="completeRegistrationInformation" />-->
-        <!--<transition on="revise" to="profileCompletion" />-->
-        <!--<transition on="cancel" to="logout" />-->
-    <!--</view-state>-->
+    <view-state id="registrationReview">
+        <transition on="confirm" to="completeRegistrationInformation" />
+        <transition on="revise" to="profileCompletion" />
+        <transition on="cancel" to="home" />
+    </view-state>
 
-    <!--<action-state id="completeRegistrationInformation">-->
-        <!--&lt;!&ndash; Need the result to show correct message on JSP &ndash;&gt;-->
-        <!--<evaluate result="businessRegistration"-->
-                  <!--expression="businessRegistrationFlowActions.completeRegistrationInformation(businessRegistration)"/>-->
+    <action-state id="completeRegistrationInformation">
+        <!-- Need the result to show correct message on JSP -->
+        <evaluate result="businessRegistration"
+                  expression="businessRegistrationFlowActions.completeRegistrationInformation(businessRegistration)"/>
 
-        <!--<transition on-exception="com.receiptofi.web.flow.exception.BusinessRegistrationException"-->
-                    <!--to="profileCompletion" />-->
+        <transition on-exception="com.receiptofi.web.flow.exception.BusinessRegistrationException"
+                    to="profileCompletion" />
 
-        <!--<transition to="registrationComplete"/>-->
-    <!--</action-state>-->
+        <transition to="registrationComplete"/>
+    </action-state>
 
-    <!--<view-state id="registrationComplete">-->
-        <!--<transition to="logout" />-->
-    <!--</view-state>-->
+    <view-state id="registrationComplete">
+        <transition to="logout" />
+    </view-state>
 
     <view-state id="home" view="externalRedirect:#{'/open/login.htm'}" />
 

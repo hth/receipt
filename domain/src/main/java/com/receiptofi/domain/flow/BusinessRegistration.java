@@ -175,6 +175,15 @@ public class BusinessRegistration extends Register implements Serializable {
     }
 
     public String getBusinessPhone() {
+        if (StringUtils.isNotBlank(businessPhone)) {
+            return CommonUtil.phoneFormatter(businessPhone, businessCountryShortName);
+        } else {
+            return businessPhone;
+        }
+    }
+
+    @Transient
+    public String getBusinessPhoneNotFormatted() {
         return businessPhone;
     }
 
