@@ -12,6 +12,13 @@
                   result="flowScope.businessRegistration" />
     </on-start>
 
+    <decision-state id="profileComplete">
+        <!-- registrationComplete will always be false as invite is inactive after completion -->
+        <if test="businessRegistrationFlowActions.isRegistrationComplete(businessRegistration)"
+            then="registrationComplete"
+            else="profileCompletion" />
+    </decision-state>
+
     <view-state id="profileCompletion" model="businessRegistration">
         <on-entry>
             <!-- Populates all available business types -->
@@ -44,7 +51,8 @@
     </action-state>
 
     <view-state id="registrationReview">
-        <transition on="confirm" to="completeRegistrationInformation" />
+        <!-- discard history to prevent back flow, invalidate to prevent back flow for all states -->
+        <transition on="confirm" to="completeRegistrationInformation" history="invalidate" />
         <transition on="revise" to="profileCompletion" />
         <transition on="cancel" to="home" />
     </view-state>
@@ -52,20 +60,16 @@
     <action-state id="completeRegistrationInformation">
         <!-- Need the result to show correct message on JSP -->
         <evaluate result="businessRegistration"
-                  expression="businessRegistrationFlowActions.completeRegistrationInformation(businessRegistration)"/>
+                  expression="businessRegistrationFlowActions.completeRegistrationInformation(businessRegistration, authenticationKey)"/>
 
         <transition on-exception="com.receiptofi.web.flow.exception.BusinessRegistrationException"
                     to="profileCompletion" />
-
         <transition to="registrationComplete"/>
     </action-state>
 
-    <view-state id="registrationComplete">
-        <transition to="logout" />
-    </view-state>
-
+    <view-state id="registrationComplete" />
     <view-state id="home" view="externalRedirect:#{'/open/login.htm'}" />
-
+    
     <global-transitions>
         <transition on="cancel" to="home" />
     </global-transitions>

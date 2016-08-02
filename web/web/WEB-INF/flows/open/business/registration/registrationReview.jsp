@@ -113,7 +113,7 @@
 
                 <fieldset>
                     <div>
-                        <input type="submit" value="Next" class="read_btn" name="_eventId_submit"
+                        <input type="submit" value="Cofirm" class="read_btn" name="_eventId_confirm"
                                 style="background: #2c97de; margin: 17px 10px 0 0;">
                         <input type="submit" value="Revise" class="read_btn" name="_eventId_revise"
                                 style="background: #2c97de; margin: 17px 10px 0 0;">
