@@ -185,8 +185,8 @@ public class ITest extends RealMongoForTests {
                 registrationService,
                 expensesService,
                 billingService,
-                notificationService
-        );
+                notificationService,
+                inviteManager);
 
         senderJMS = new FileUploadDocumentSenderJMS(properties.getProperty("queue-name"), jmsTemplate);
 

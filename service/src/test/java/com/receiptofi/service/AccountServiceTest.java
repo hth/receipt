@@ -13,6 +13,7 @@ import com.receiptofi.domain.ForgotRecoverEntity;
 import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.repository.ForgotRecoverManager;
 import com.receiptofi.repository.GenerateUserIdManager;
+import com.receiptofi.repository.InviteManager;
 import com.receiptofi.repository.UserAccountManager;
 import com.receiptofi.repository.UserAuthenticationManager;
 import com.receiptofi.repository.UserPreferenceManager;
@@ -40,6 +41,7 @@ public class AccountServiceTest {
     @Mock private ExpensesService expensesService;
     @Mock private BillingService billingService;
     @Mock private NotificationService notificationService;
+    @Mock private InviteManager inviteManager;
 
     private AccountService accountService;
 
@@ -60,8 +62,8 @@ public class AccountServiceTest {
                 registrationService,
                 expensesService,
                 billingService,
-                notificationService
-        );
+                notificationService,
+                inviteManager);
     }
 
     @Test
