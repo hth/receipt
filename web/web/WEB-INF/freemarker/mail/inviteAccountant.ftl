@@ -33,16 +33,21 @@
 	Hey,
 </p>
 <p>
-	Found it easy to show my expenses. Join and you will be able to see all my expenses without me bringing in any receipt.
+	Found it easy to show my expenses. Join and you will be able to see all my expenses without me
+	bringing in any receipts in person or sending it through courier.
 </p>
 <p>
-	You are all set, just click on the link below. Follow the steps and you will see a link which would show you my expenses.
+	You are all set, just click on the link below. Follow the steps and you will see a
+    link which would show you my expenses.
 </p>
 <p>
-	<a href="${https}://${domain}/open/invite/authenticate.htm?authenticationKey=${link}">ReceiptApp Sign Up ></a>
+	<a href="${https}://${domain}/open/invite/authenticate.htm?authenticationKey=${link}">
+        ReceiptApp Sign Up >
+    </a>
 </p>
 <p>
-	Or sign up using social connection. Social signup will add me to your ReceiptApp friends list to split expenses.
+	Or sign up using social connection. Social signup will add me to your ReceiptApp
+    friends list to split expenses.
 </p>
 <p>
 	<a href="${https}://${domain}/open/login.htm"><img src="cid:googlePlus.logo" alt="Google Signup" /></a>
