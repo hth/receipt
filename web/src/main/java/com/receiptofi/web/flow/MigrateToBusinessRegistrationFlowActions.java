@@ -122,11 +122,9 @@ public class MigrateToBusinessRegistrationFlowActions {
             bizName.setBusinessTypes(migrateBusinessRegistration.getBusinessTypes());
             bizService.saveName(bizName);
 
-            String businessAddress = migrateBusinessRegistration.getBusinessAddress();
             BizStoreEntity bizStore = bizService.findMatchingStore(
                     migrateBusinessRegistration.getBusinessAddress(),
                     migrateBusinessRegistration.getBusinessPhoneNotFormatted());
-
             if (bizStore == null) {
                 bizStore = BizStoreEntity.newInstance();
                 bizStore.setBizName(bizName);
