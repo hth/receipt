@@ -46,6 +46,9 @@ public class EmailValidateManagerImpl implements EmailValidateManager {
 
     @Override
     public void save(EmailValidateEntity object) {
+        if (object.getId() != null) {
+            object.setUpdated();
+        }
         mongoTemplate.save(object);
     }
 
