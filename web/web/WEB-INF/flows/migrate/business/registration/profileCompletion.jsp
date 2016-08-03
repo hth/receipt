@@ -117,7 +117,7 @@
                         Your email address <span style="color: red; font-weight: bold">${businessRegistration.email}</span>
                         has not been validated. Please validated email address to continue business account registration.
                         </p>
-                        <p style="padding-top: 10px;">
+                        <p style="padding-top: 20px;">
                         To resend account validation email, click here.
                         </p>
                     </div>
@@ -128,8 +128,6 @@
                         <input type="submit" value="NEXT" class="read_btn" name="_eventId_submit"
                                 style="background: #2c97de; margin: 77px 10px 0 0;">
                         </c:if>
-                        <input type="submit" value="CANCEL" class="read_btn" name="_eventId_cancel"
-                                style="background: #FC462A; margin: 77px 10px 0 0;">
                     </div>
                 </form:form>
             </div>

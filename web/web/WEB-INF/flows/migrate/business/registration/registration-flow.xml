@@ -24,7 +24,6 @@
                       expression="T(com.receiptofi.domain.types.BusinessTypeEnum).asList()" />
         </on-entry>
         <transition on="submit" to="validateUserProfile" />
-        <transition on="cancel" to="logout" />
     </view-state>
 
     <action-state id="validateUserProfile">
@@ -49,7 +48,8 @@
     </action-state>
 
     <view-state id="registrationReview">
-        <transition on="confirm" to="completeRegistrationInformation" />
+        <!-- discard history to prevent back flow, invalidate to prevent back flow for all states -->
+        <transition on="confirm" to="completeRegistrationInformation" history="invalidate"/>
         <transition on="revise" to="profileCompletion" />
         <transition on="cancel" to="logout" />
     </view-state>
@@ -65,10 +65,7 @@
         <transition to="registrationComplete"/>
     </action-state>
     
-    <view-state id="registrationComplete">
-        <transition to="logout" />
-    </view-state>
-    
+    <view-state id="registrationComplete" />
     <end-state id="logout" />
 
     <global-transitions>
