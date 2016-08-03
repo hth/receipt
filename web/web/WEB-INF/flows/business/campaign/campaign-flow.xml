@@ -79,5 +79,5 @@
         <transition to="home"/>
     </action-state>
 
-    <view-state id="home" view="externalRedirect:#{'/business/landing.htm'}" />
+    <end-state id="home" view="externalRedirect:#{'/business/landing.htm'}" />
 </flow>
