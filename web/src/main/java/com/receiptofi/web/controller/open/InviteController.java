@@ -7,6 +7,7 @@ import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.repository.UserProfileManager;
 import com.receiptofi.service.AccountService;
 import com.receiptofi.service.InviteService;
+import com.receiptofi.utils.DateUtil;
 import com.receiptofi.utils.HashText;
 import com.receiptofi.utils.RandomString;
 import com.receiptofi.utils.ScrubbedInput;
@@ -69,22 +70,16 @@ public class InviteController {
     @Value ("${businessRegistrationFlow:redirect:/open/business/registration.htm}")
     private String businessRegistrationFlow;
 
-    private AccountService accountService;
     private InviteService inviteService;
     private InviteAuthenticateValidator inviteAuthenticateValidator;
-    private UserProfileManager userProfileManager;
 
     @Autowired
     public InviteController(
-            AccountService accountService,
             InviteService inviteService,
-            InviteAuthenticateValidator inviteAuthenticateValidator,
-            UserProfileManager userProfileManager
+            InviteAuthenticateValidator inviteAuthenticateValidator
     ) {
-        this.accountService = accountService;
         this.inviteService = inviteService;
         this.inviteAuthenticateValidator = inviteAuthenticateValidator;
-        this.userProfileManager = userProfileManager;
     }
 
     @RequestMapping (method = RequestMethod.GET, value = "authenticate")
@@ -159,42 +154,17 @@ public class InviteController {
             if (null == invite) {
                 redirectAttrs.addFlashAttribute(SUCCESS, "false");
             } else {
-                UserProfileEntity userProfile = invite.getInvited();
-                userProfile.setFirstName(form.getFirstName().getText());
-                userProfile.setLastName(form.getLastName().getText());
-                userProfile.setLevel(invite.getUserLevel());
-                userProfile.active();
-
-                UserAuthenticationEntity userAuthentication = UserAuthenticationEntity.newInstance(
-                        HashText.computeBCrypt(form.getForgotAuthenticateForm().getPassword()),
-                        HashText.computeBCrypt(RandomString.newInstance().nextString())
+                boolean signupComplete = inviteService.completeProfileForInvitationSignup(
+                        form.getFirstName().getText(),
+                        form.getLastName().getText(),
+                        form.getBirthday().getText(),
+                        "",
+                        "",
+                        "",
+                        form.getForgotAuthenticateForm().getPassword(),
+                        invite
                 );
-
-                /* Updates ROLE based on Invite UserLevel. */
-                UserAccountEntity userAccount = accountService.changeAccountRolesToMatchUserLevel(
-                        userProfile.getReceiptUserId(),
-                        invite.getUserLevel());
-
-                userAuthentication.setId(userAccount.getUserAuthentication().getId());
-                userAuthentication.setVersion(userAccount.getUserAuthentication().getVersion());
-                userAuthentication.setCreated(userAccount.getUserAuthentication().getCreated());
-                try {
-                    userProfileManager.save(userProfile);
-                    accountService.updateAuthentication(userAuthentication);
-
-                    userAccount.setFirstName(userProfile.getFirstName());
-                    userAccount.setLastName(userProfile.getLastName());
-                    userAccount.active();
-                    userAccount.setAccountValidated(true);
-                    userAccount.setUserAuthentication(userAuthentication);
-                    accountService.saveUserAccount(userAccount);
-
-                    inviteService.invalidateAllEntries(invite);
-                    redirectAttrs.addFlashAttribute(SUCCESS, "true");
-                } catch (Exception e) {
-                    LOG.error("Error during updating of the old authentication keys={}", e.getLocalizedMessage(), e);
-                    redirectAttrs.addFlashAttribute(SUCCESS, "false");
-                }
+                redirectAttrs.addFlashAttribute(SUCCESS, Boolean.valueOf(signupComplete).toString());
             }
             return authenticateResult;
         }

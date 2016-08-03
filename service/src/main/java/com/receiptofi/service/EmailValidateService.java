@@ -35,7 +35,7 @@ public class EmailValidateService {
         return emailValidate;
     }
 
-    public void saveEmailValidateEntity(EmailValidateEntity emailValidate) {
+    void saveEmailValidateEntity(EmailValidateEntity emailValidate) {
         emailValidateManager.save(emailValidate);
     }
 
@@ -43,7 +43,7 @@ public class EmailValidateService {
         return emailValidateManager.findByAuthenticationKey(key);
     }
 
-    public void invalidateAllEntries(String receiptUserId) {
+    void invalidateAllEntries(String receiptUserId) {
         emailValidateManager.invalidateAllEntries(receiptUserId);
     }
 }

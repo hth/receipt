@@ -96,6 +96,7 @@ public class BusinessLandingController {
     public String loadForm(@ModelAttribute ("businessLandingForm") BusinessLandingForm businessLandingForm) {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         LOG.info("Landed on business page rid={} level={}", receiptUser.getRid(), receiptUser.getUserLevel());
+
         BusinessUserEntity businessUser = businessUserService.findBusinessUser(receiptUser.getRid());
         return nextPage(receiptUser, businessUser, businessLandingForm);
     }

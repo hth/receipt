@@ -1,5 +1,6 @@
 package com.receiptofi.domain.flow;
 
+import com.receiptofi.domain.BusinessUserEntity;
 import com.receiptofi.domain.InviteEntity;
 import com.receiptofi.domain.types.BusinessTypeEnum;
 import com.receiptofi.utils.CommonUtil;
@@ -27,6 +28,8 @@ public class BusinessRegistration extends Register implements Serializable {
     private boolean accountExists;
     private boolean acceptsAgreement;
     private boolean registrationTurnedOn;
+
+    private BusinessUserEntity businessUser;
 
     private BusinessRegistration(InviteEntity invite, boolean registrationTurnedOn) {
         this.rid = invite.getInvited().getReceiptUserId();
@@ -197,5 +200,13 @@ public class BusinessRegistration extends Register implements Serializable {
 
     public void setBusinessCountryShortName(String businessCountryShortName) {
         this.businessCountryShortName = businessCountryShortName;
+    }
+
+    public BusinessUserEntity getBusinessUser() {
+        return businessUser;
+    }
+
+    public void setBusinessUser(BusinessUserEntity businessUser) {
+        this.businessUser = businessUser;
     }
 }

@@ -1,16 +1,25 @@
 package com.receiptofi.web.flow;
 
+import com.receiptofi.domain.BizNameEntity;
+import com.receiptofi.domain.BizStoreEntity;
+import com.receiptofi.domain.BusinessUserEntity;
 import com.receiptofi.domain.InviteEntity;
 import com.receiptofi.domain.flow.BusinessRegistration;
 import com.receiptofi.domain.shared.DecodedAddress;
+import com.receiptofi.domain.types.BusinessUserRegistrationStatusEnum;
+import com.receiptofi.service.AccountService;
+import com.receiptofi.service.BizService;
+import com.receiptofi.service.BusinessUserService;
 import com.receiptofi.service.ExternalService;
 import com.receiptofi.service.InviteService;
+import com.receiptofi.service.UserProfilePreferenceService;
 import com.receiptofi.utils.CommonUtil;
 import com.receiptofi.utils.Constants;
 import com.receiptofi.utils.Formatter;
 import com.receiptofi.utils.Validate;
 import com.receiptofi.web.controller.access.LandingController;
 import com.receiptofi.web.flow.exception.BusinessRegistrationException;
+import com.receiptofi.web.flow.exception.MigrateToBusinessRegistrationException;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -33,6 +42,10 @@ public class BusinessRegistrationFlowActions {
 
     private InviteService inviteService;
     private ExternalService externalService;
+    private BusinessUserService businessUserService;
+    private BizService bizService;
+    private UserProfilePreferenceService userProfilePreferenceService;
+    private AccountService accountService;
 
     @Value ("${registration.turned.on}")
     private boolean registrationTurnedOn;
@@ -48,9 +61,19 @@ public class BusinessRegistrationFlowActions {
 
     @SuppressWarnings ("all")
     @Autowired
-    public BusinessRegistrationFlowActions(InviteService inviteService, ExternalService externalService) {
+    public BusinessRegistrationFlowActions(
+            InviteService inviteService,
+            ExternalService externalService,
+            BusinessUserService businessUserService,
+            BizService bizService,
+            UserProfilePreferenceService userProfilePreferenceService,
+            AccountService accountService) {
         this.inviteService = inviteService;
         this.externalService = externalService;
+        this.businessUserService = businessUserService;
+        this.bizService = bizService;
+        this.userProfilePreferenceService = userProfilePreferenceService;
+        this.accountService = accountService;
     }
 
     @SuppressWarnings ("unused")
@@ -69,13 +92,104 @@ public class BusinessRegistrationFlowActions {
     }
 
     @SuppressWarnings ("unused")
-    public void updateProfile(BusinessRegistration businessRegistration) {
-        DecodedAddress decodedAddress = DecodedAddress.newInstance(externalService.getGeocodingResults(businessRegistration.getAddress()), businessRegistration.getAddress());
-        if (decodedAddress.isNotEmpty()) {
-            businessRegistration.setAddress(decodedAddress.getFormattedAddress());
-            businessRegistration.setCountryShortName(decodedAddress.getCountryShortName());
+    public boolean isRegistrationComplete(BusinessRegistration br) {
+        BusinessUserEntity businessUser = businessUserService.findBusinessUser(br.getRid());
+        if (businessUser == null) {
+            return false;
         }
-        businessRegistration.setPhone(CommonUtil.phoneCleanup(businessRegistration.getPhone()));
+
+        switch (businessUser.getBusinessUserRegistrationStatus()) {
+            case C:
+                /**
+                 * Likelihood of this happening is zero. Because if its approved, they would never land here.
+                 * Once the registration is complete, invite is marked as inactive and it can't be re-used.
+                 * Even 'V' condition would not make the user land for registration.
+                 */
+                LOG.error("Reached unsupported rid={} condition={}", br.getRid(), businessUser.getBusinessUserRegistrationStatus());
+                throw new UnsupportedOperationException("Reached unsupported condition " + businessUser.getBusinessUserRegistrationStatus());
+            case I:
+            case N:
+                return false;
+            default:
+                LOG.error("Reached unsupported rid={} condition={}", br.getRid(), businessUser.getBusinessUserRegistrationStatus());
+                throw new UnsupportedOperationException("Reached unsupported condition " + businessUser.getBusinessUserRegistrationStatus());
+        }
+    }
+
+    /**
+     * @param br
+     * @return
+     * @throws BusinessRegistrationException
+     */
+    @SuppressWarnings ("unused")
+    public BusinessRegistration completeRegistrationInformation(BusinessRegistration br, String key)
+            throws BusinessRegistrationException {
+        try {
+            InviteEntity invite = inviteService.findByAuthenticationKey(key);
+            inviteService.completeProfileForInvitationSignup(
+                    br.getFirstName(),
+                    br.getLastName(),
+                    br.getBirthday(),
+                    br.getAddress(),
+                    br.getCountryShortName(),
+                    br.getPhone(),
+                    br.getPassword(),
+                    invite
+            );
+
+            BizNameEntity bizName = bizService.findMatchingBusiness(br.getBusinessName());
+            if (null == bizName) {
+                bizName = BizNameEntity.newInstance();
+                bizName.setBusinessName(br.getBusinessName());
+            }
+            bizName.setBusinessTypes(br.getBusinessTypes());
+            bizService.saveName(bizName);
+
+            BizStoreEntity bizStore = bizService.findMatchingStore(
+                    br.getBusinessAddress(),
+                    br.getBusinessPhoneNotFormatted());
+            if (bizStore == null) {
+                bizStore = BizStoreEntity.newInstance();
+                bizStore.setBizName(bizName);
+                bizStore.setPhone(br.getBusinessPhone());
+                bizStore.setAddress(br.getBusinessAddress());
+                validateAddress(bizStore);
+                bizService.saveStore(bizStore);
+            }
+
+            BusinessUserEntity businessUser = businessUserService.findBusinessUser(br.getRid());
+            if (null == businessUser) {
+                businessUser = BusinessUserEntity.newInstance(br.getRid(), invite.getUserLevel());
+            }
+            businessUser
+                    .setBizName(bizName)
+                    .setBusinessUserRegistrationStatus(BusinessUserRegistrationStatusEnum.C);
+
+            businessUserService.save(businessUser);
+            br.setBusinessUser(businessUser);
+            return br;
+        } catch (Exception e) {
+            LOG.error("Error updating business user profile rid={} reason={}",
+                    br.getRid(), e.getLocalizedMessage(), e);
+            throw new MigrateToBusinessRegistrationException("Error updating profile", e);
+        }
+    }
+
+    @SuppressWarnings ("unused")
+    public void validateAddress(BizStoreEntity bizStore) {
+        if (null == bizStore.getId() || !bizStore.isValidatedUsingExternalAPI()) {
+            externalService.decodeAddress(bizStore);
+        }
+    }
+
+    @SuppressWarnings ("unused")
+    public void updateProfile(BusinessRegistration br) {
+        DecodedAddress decodedAddress = DecodedAddress.newInstance(externalService.getGeocodingResults(br.getAddress()), br.getAddress());
+        if (decodedAddress.isNotEmpty()) {
+            br.setAddress(decodedAddress.getFormattedAddress());
+            br.setCountryShortName(decodedAddress.getCountryShortName());
+        }
+        br.setPhone(CommonUtil.phoneCleanup(br.getPhone()));
     }
 
     @SuppressWarnings ("unused")
@@ -87,8 +201,6 @@ public class BusinessRegistrationFlowActions {
         }
         businessRegistration.setBusinessPhone(CommonUtil.phoneCleanup(businessRegistration.getBusinessPhone()));
     }
-
-
 
     /**
      * Validate business user profile.

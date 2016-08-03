@@ -4,6 +4,7 @@ import com.receiptofi.domain.BillingHistoryEntity;
 import com.receiptofi.domain.EmailValidateEntity;
 import com.receiptofi.domain.ExpenseTagEntity;
 import com.receiptofi.domain.ForgotRecoverEntity;
+import com.receiptofi.domain.InviteEntity;
 import com.receiptofi.domain.UserAccountEntity;
 import com.receiptofi.domain.UserAuthenticationEntity;
 import com.receiptofi.domain.UserPreferenceEntity;
@@ -20,6 +21,7 @@ import com.receiptofi.domain.types.RoleEnum;
 import com.receiptofi.domain.types.UserLevelEnum;
 import com.receiptofi.repository.ForgotRecoverManager;
 import com.receiptofi.repository.GenerateUserIdManager;
+import com.receiptofi.repository.InviteManager;
 import com.receiptofi.repository.UserAccountManager;
 import com.receiptofi.repository.UserAuthenticationManager;
 import com.receiptofi.repository.UserPreferenceManager;
@@ -78,6 +80,9 @@ public class AccountService {
     private BillingService billingService;
     private NotificationService notificationService;
 
+    /* Hack to fix circular dependency of InviteService. */
+    private InviteManager inviteManager;
+
     private String[] expenseTags;
     private String[] expenseTagColors;
     private int promotionalPeriod;
@@ -103,8 +108,8 @@ public class AccountService {
             RegistrationService registrationService,
             ExpensesService expensesService,
             BillingService billingService,
-            NotificationService notificationService
-    ) {
+            NotificationService notificationService,
+            InviteManager inviteManager) {
         this.expenseTags = expenseTags;
         this.expenseTagColors = expenseTagColors;
         this.promotionalPeriod = promotionalPeriod;
@@ -120,6 +125,7 @@ public class AccountService {
         this.expensesService = expensesService;
         this.billingService = billingService;
         this.notificationService = notificationService;
+        this.inviteManager = inviteManager;
     }
 
     public UserProfileEntity doesUserExists(String mail) {
@@ -364,12 +370,12 @@ public class AccountService {
         userAuthenticationManager.save(userAuthentication);
     }
 
-    UserPreferenceEntity getPreference(UserProfileEntity userProfileEntity) {
-        return userPreferenceManager.getObjectUsingUserProfile(userProfileEntity);
+    UserPreferenceEntity getPreference(UserProfileEntity userProfile) {
+        return userPreferenceManager.getObjectUsingUserProfile(userProfile);
     }
 
-    public void saveUserAccount(UserAccountEntity userAccountEntity) {
-        userAccountManager.save(userAccountEntity);
+    public void saveUserAccount(UserAccountEntity userAccount) {
+        userAccountManager.save(userAccount);
     }
 
     private void updateAccountToValidated(String id, AccountInactiveReasonEnum accountInactiveReason) {
@@ -563,6 +569,20 @@ public class AccountService {
     }
 
     public void validateAccount(EmailValidateEntity emailValidate, UserAccountEntity userAccount) {
+        markAccountValidated(userAccount);
+
+        emailValidate.inActive();
+        emailValidateService.saveEmailValidateEntity(emailValidate);
+    }
+
+    public void validateAccount(InviteEntity invite, UserAccountEntity userAccount) {
+        markAccountValidated(userAccount);
+
+        invite.inActive();
+        inviteManager.save(invite);
+    }
+
+    private void markAccountValidated(UserAccountEntity userAccount) {
         if (null != userAccount.getAccountInactiveReason()) {
             switch (userAccount.getAccountInactiveReason()) {
                 case ANV:
@@ -576,10 +596,6 @@ public class AccountService {
             userAccount.setAccountValidated(true);
             saveUserAccount(userAccount);
         }
-
-        emailValidate.inActive();
-        emailValidate.setUpdated();
-        emailValidateService.saveEmailValidateEntity(emailValidate);
     }
 
     //TODO validate the code for getting correct age of user
