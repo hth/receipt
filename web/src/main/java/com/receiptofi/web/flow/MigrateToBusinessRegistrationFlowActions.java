@@ -4,7 +4,8 @@ import com.receiptofi.domain.BizNameEntity;
 import com.receiptofi.domain.BizStoreEntity;
 import com.receiptofi.domain.BusinessUserEntity;
 import com.receiptofi.domain.UserProfileEntity;
-import com.receiptofi.domain.flow.MigrateBusinessRegistration;
+import com.receiptofi.domain.flow.MigrateToBusinessRegistration;
+import com.receiptofi.domain.flow.Register;
 import com.receiptofi.domain.shared.DecodedAddress;
 import com.receiptofi.domain.site.ReceiptUser;
 import com.receiptofi.domain.types.BusinessUserRegistrationStatusEnum;
@@ -69,7 +70,7 @@ public class MigrateToBusinessRegistrationFlowActions {
     }
 
     @SuppressWarnings ("unused")
-    public MigrateBusinessRegistration createBusinessRegistration() {
+    public Register createBusinessRegistration() {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String rid = receiptUser.getRid();
 
@@ -79,72 +80,73 @@ public class MigrateToBusinessRegistrationFlowActions {
             bizStore = bizService.findOneBizStore(businessUser.getBizName().getId());
         }
         UserProfileEntity userProfile = userProfilePreferenceService.findByReceiptUserId(rid);
-        return MigrateBusinessRegistration.newInstance(businessUser, bizStore)
-                .setEmail(userProfile.getEmail())
+        MigrateToBusinessRegistration migrateToBusinessRegistration = MigrateToBusinessRegistration.newInstance(businessUser, bizStore);
+        migrateToBusinessRegistration.getRegisterUser().setEmail(userProfile.getEmail())
                 .setFirstName(userProfile.getFirstName())
                 .setLastName(userProfile.getLastName())
                 .setAddress(userProfile.getAddress())
                 .setCountryShortName(userProfile.getCountryShortName())
                 .setPhone(userProfile.getPhone())
                 .setEmailValidated(accountService.findByReceiptUserId(rid).isAccountValidated());
+        return migrateToBusinessRegistration;
     }
 
     @SuppressWarnings ("unused")
-    public boolean isRegistrationComplete(String rid, BusinessUserEntity businessUser) {
-        switch (businessUser.getBusinessUserRegistrationStatus()) {
+    public boolean isRegistrationComplete(Register register) {
+        switch (register.getRegisterBusiness().getBusinessUser().getBusinessUserRegistrationStatus()) {
             case C:
                 return true;
             case I:
             case N:
                 return false;
             default:
-                LOG.error("Reached unsupported rid={} condition={}", rid, businessUser.getBusinessUserRegistrationStatus());
-                throw new UnsupportedOperationException("Reached unsupported condition " + businessUser.getBusinessUserRegistrationStatus());
+                LOG.error("Reached unsupported rid={} condition={}", register.getRegisterUser().getRid(), register.getRegisterBusiness().getBusinessUser().getBusinessUserRegistrationStatus());
+                throw new UnsupportedOperationException("Reached unsupported condition " + register.getRegisterBusiness().getBusinessUser().getBusinessUserRegistrationStatus());
         }
     }
 
     /**
-     * @param migrateBusinessRegistration
+     * @param mr
      * @return
      * @throws MigrateToBusinessRegistrationException
      */
     @SuppressWarnings ("unused")
-    public MigrateBusinessRegistration completeRegistrationInformation(MigrateBusinessRegistration migrateBusinessRegistration)
+    public Register completeRegistrationInformation(Register mr)
             throws MigrateToBusinessRegistrationException {
         try {
-            updateUserProfile(migrateBusinessRegistration);
+            updateUserProfile(mr);
 
-            BizNameEntity bizName = bizService.findMatchingBusiness(migrateBusinessRegistration.getBusinessName());
+            BizNameEntity bizName = bizService.findMatchingBusiness(mr.getRegisterBusiness().getBusinessName());
             if (null == bizName) {
                 bizName = BizNameEntity.newInstance();
-                bizName.setBusinessName(migrateBusinessRegistration.getBusinessName());
+                bizName.setBusinessName(mr.getRegisterBusiness().getBusinessName());
             }
-            bizName.setBusinessTypes(migrateBusinessRegistration.getBusinessTypes());
+            bizName.setBusinessTypes(mr.getRegisterBusiness().getBusinessTypes());
             bizService.saveName(bizName);
 
             BizStoreEntity bizStore = bizService.findMatchingStore(
-                    migrateBusinessRegistration.getBusinessAddress(),
-                    migrateBusinessRegistration.getBusinessPhoneNotFormatted());
+                    mr.getRegisterBusiness().getBusinessAddress(),
+                    mr.getRegisterBusiness().getBusinessPhoneNotFormatted());
             if (bizStore == null) {
                 bizStore = BizStoreEntity.newInstance();
                 bizStore.setBizName(bizName);
-                bizStore.setPhone(migrateBusinessRegistration.getBusinessPhone());
-                bizStore.setAddress(migrateBusinessRegistration.getBusinessAddress());
+                bizStore.setPhone(mr.getRegisterBusiness().getBusinessPhone());
+                bizStore.setAddress(mr.getRegisterBusiness().getBusinessAddress());
                 validateAddress(bizStore);
                 bizService.saveStore(bizStore);
             }
 
-            BusinessUserEntity businessUser = businessUserService.findBusinessUser(migrateBusinessRegistration.getRid());
+            BusinessUserEntity businessUser = businessUserService.findBusinessUser(mr.getRegisterUser().getRid());
             businessUser
                     .setBizName(bizName)
                     .setBusinessUserRegistrationStatus(BusinessUserRegistrationStatusEnum.C);
 
             businessUserService.save(businessUser);
-            migrateBusinessRegistration.setBusinessUser(businessUser);
-            return migrateBusinessRegistration;
+            mr.getRegisterBusiness().setBusinessUser(businessUser);
+            return mr;
         } catch (Exception e) {
             LOG.error("Error updating business user profile rid={} reason={}",
-                    migrateBusinessRegistration.getRid(), e.getLocalizedMessage(), e);
+                    mr.getRegisterUser().getRid(), e.getLocalizedMessage(), e);
             throw new MigrateToBusinessRegistrationException("Error updating profile", e);
         }
     }
@@ -152,18 +154,18 @@ public class MigrateToBusinessRegistrationFlowActions {
     /**
      * Update user profile info.
      *
-     * @param br
+     * @param mr
      */
-    private void updateUserProfile(MigrateBusinessRegistration br) {
-        UserProfileEntity userProfile = userProfilePreferenceService.findByReceiptUserId(br.getRid());
+    private void updateUserProfile(Register mr) {
+        UserProfileEntity userProfile = userProfilePreferenceService.findByReceiptUserId(mr.getRegisterUser().getRid());
 
-        userProfile.setAddress(br.getAddress());
-        userProfile.setCountryShortName(br.getCountryShortName());
-        userProfile.setPhone(br.getPhoneNotFormatted());
+        userProfile.setAddress(mr.getRegisterUser().getAddress());
+        userProfile.setCountryShortName(mr.getRegisterUser().getCountryShortName());
+        userProfile.setPhone(mr.getRegisterUser().getPhoneNotFormatted());
         userProfilePreferenceService.updateProfile(userProfile);
 
-        if (!userProfile.getFirstName().equals(br.getFirstName()) && !userProfile.getLastName().equals(br.getLastName())) {
-            accountService.updateName(br.getFirstName(), br.getLastName(), br.getRid());
+        if (!userProfile.getFirstName().equals(mr.getRegisterUser().getFirstName()) && !userProfile.getLastName().equals(mr.getRegisterUser().getLastName())) {
+            accountService.updateName(mr.getRegisterUser().getFirstName(), mr.getRegisterUser().getLastName(), mr.getRegisterUser().getRid());
         }
     }
 
@@ -175,134 +177,134 @@ public class MigrateToBusinessRegistrationFlowActions {
     }
 
     @SuppressWarnings ("unused")
-    public void updateProfile(MigrateBusinessRegistration migrateBusinessRegistration) {
-        DecodedAddress decodedAddress = DecodedAddress.newInstance(externalService.getGeocodingResults(migrateBusinessRegistration.getAddress()), migrateBusinessRegistration.getAddress());
+    public void updateProfile(Register mr) {
+        DecodedAddress decodedAddress = DecodedAddress.newInstance(externalService.getGeocodingResults(mr.getRegisterUser().getAddress()), mr.getRegisterUser().getAddress());
         if (decodedAddress.isNotEmpty()) {
-            migrateBusinessRegistration.setAddress(decodedAddress.getFormattedAddress());
-            migrateBusinessRegistration.setCountryShortName(decodedAddress.getCountryShortName());
+            mr.getRegisterUser().setAddress(decodedAddress.getFormattedAddress());
+            mr.getRegisterUser().setCountryShortName(decodedAddress.getCountryShortName());
         }
-        migrateBusinessRegistration.setPhone(CommonUtil.phoneCleanup(migrateBusinessRegistration.getPhone()));
+        mr.getRegisterUser().setPhone(CommonUtil.phoneCleanup(mr.getRegisterUser().getPhone()));
     }
 
     @SuppressWarnings ("unused")
-    public void updateBusiness(MigrateBusinessRegistration migrateBusinessRegistration) {
-        DecodedAddress decodedAddress = DecodedAddress.newInstance(externalService.getGeocodingResults(migrateBusinessRegistration.getBusinessAddress()), migrateBusinessRegistration.getAddress());
+    public void updateBusiness(Register mr) {
+        DecodedAddress decodedAddress = DecodedAddress.newInstance(externalService.getGeocodingResults(mr.getRegisterBusiness().getBusinessAddress()), mr.getRegisterBusiness().getBusinessAddress());
         if (decodedAddress.isNotEmpty()) {
-            migrateBusinessRegistration.setBusinessAddress(decodedAddress.getFormattedAddress());
-            migrateBusinessRegistration.setBusinessCountryShortName(decodedAddress.getCountryShortName());
+            mr.getRegisterBusiness().setBusinessAddress(decodedAddress.getFormattedAddress());
+            mr.getRegisterBusiness().setBusinessCountryShortName(decodedAddress.getCountryShortName());
         }
-        migrateBusinessRegistration.setBusinessPhone(CommonUtil.phoneCleanup(migrateBusinessRegistration.getBusinessPhone()));
+        mr.getRegisterBusiness().setBusinessPhone(CommonUtil.phoneCleanup(mr.getRegisterBusiness().getBusinessPhone()));
     }
 
     /**
      * Validate business user profile.
      *
-     * @param migrateBusinessRegistration
+     * @param mr
      * @param messageContext
      * @return
      */
     @SuppressWarnings ("unused")
-    public String validateUserProfileDetails(MigrateBusinessRegistration migrateBusinessRegistration, MessageContext messageContext) {
-        LOG.info("Validate business user rid={}", migrateBusinessRegistration.getRid());
+    public String validateUserProfileDetails(Register mr, MessageContext messageContext) {
+        LOG.info("Validate business user rid={}", mr.getRegisterUser().getRid());
         String status = LandingController.SUCCESS;
 
-        if (StringUtils.isBlank(migrateBusinessRegistration.getFirstName())) {
+        if (StringUtils.isBlank(mr.getRegisterUser().getFirstName())) {
             messageContext.addMessage(
                     new MessageBuilder()
                             .error()
-                            .source("firstName")
+                            .source("registerUser.firstName")
                             .defaultText("First name cannot be empty")
                             .build());
             status = "failure";
         }
 
-        if (StringUtils.isBlank(migrateBusinessRegistration.getLastName())) {
+        if (StringUtils.isBlank(mr.getRegisterUser().getLastName())) {
             messageContext.addMessage(
                     new MessageBuilder()
                             .error()
-                            .source("lastName")
+                            .source("registerUser.lastName")
                             .defaultText("Last name cannot be empty")
                             .build());
             status = "failure";
         }
 
-        if (StringUtils.isBlank(migrateBusinessRegistration.getAddress())) {
+        if (StringUtils.isBlank(mr.getRegisterUser().getAddress())) {
             messageContext.addMessage(
                     new MessageBuilder()
                             .error()
-                            .source("address")
+                            .source("registerUser.address")
                             .defaultText("Your Address cannot be Empty")
                             .build());
             status = "failure";
         }
 
-        if (StringUtils.isBlank(migrateBusinessRegistration.getPhoneNotFormatted())) {
+        if (StringUtils.isBlank(mr.getRegisterUser().getPhoneNotFormatted())) {
             messageContext.addMessage(
                     new MessageBuilder()
                             .error()
-                            .source("phone")
+                            .source("registerUser.phone")
                             .defaultText("Your Phone cannot be Empty")
                             .build());
             status = "failure";
         }
 
-        LOG.info("Validate business user rid={} status={}", migrateBusinessRegistration.getRid(), status);
+        LOG.info("Validate business user rid={} status={}", mr.getRegisterUser().getRid(), status);
         return status;
     }
 
     /**
      * Validate business user profile.
      *
-     * @param migrateBusinessRegistration
+     * @param mr
      * @param messageContext
      * @return
      */
     @SuppressWarnings ("unused")
-    public String validateBusinessDetails(MigrateBusinessRegistration migrateBusinessRegistration, MessageContext messageContext) {
-        LOG.info("Validate business rid={}", migrateBusinessRegistration.getRid());
+    public String validateBusinessDetails(Register mr, MessageContext messageContext) {
+        LOG.info("Validate business rid={}", mr.getRegisterUser().getRid());
         String status = "success";
 
-        if (StringUtils.isBlank(migrateBusinessRegistration.getBusinessName())) {
+        if (StringUtils.isBlank(mr.getRegisterBusiness().getBusinessName())) {
             messageContext.addMessage(
                     new MessageBuilder()
                             .error()
-                            .source("businessName")
+                            .source("registerBusiness.businessName")
                             .defaultText("Business Name cannot be empty")
                             .build());
             status = "failure";
         }
 
-        if (null == migrateBusinessRegistration.getBusinessTypes()) {
+        if (null == mr.getRegisterBusiness().getBusinessTypes()) {
             messageContext.addMessage(
                     new MessageBuilder()
                             .error()
-                            .source("businessTypes")
+                            .source("registerBusiness.businessTypes")
                             .defaultText("Business Type is not selected")
                             .build());
             status = "failure";
         }
 
-        if (StringUtils.isBlank(migrateBusinessRegistration.getBusinessAddress())) {
+        if (StringUtils.isBlank(mr.getRegisterBusiness().getBusinessAddress())) {
             messageContext.addMessage(
                     new MessageBuilder()
                             .error()
-                            .source("businessAddress")
+                            .source("registerBusiness.businessAddress")
                             .defaultText("Business Address cannot be empty")
                             .build());
             status = "failure";
         }
 
-        if (StringUtils.isBlank(migrateBusinessRegistration.getBusinessPhoneNotFormatted())) {
+        if (StringUtils.isBlank(mr.getRegisterBusiness().getBusinessPhoneNotFormatted())) {
             messageContext.addMessage(
                     new MessageBuilder()
                             .error()
-                            .source("businessPhone")
+                            .source("registerBusiness.businessPhone")
                             .defaultText("Business Phone cannot be Empty")
                             .build());
             status = "failure";
         }
 
-        LOG.info("Validate business rid={} status={}", migrateBusinessRegistration.getRid(), status);
+        LOG.info("Validate business rid={} status={}", mr.getRegisterUser().getRid(), status);
         return status;
     }
 }
