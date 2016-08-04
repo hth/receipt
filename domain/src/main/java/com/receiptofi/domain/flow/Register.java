@@ -15,15 +15,7 @@ public class Register implements Serializable {
         return registerUser;
     }
 
-    public void setRegisterUser(RegisterUser registerUser) {
-        this.registerUser = registerUser;
-    }
-
     public RegisterBusiness getRegisterBusiness() {
         return registerBusiness;
-    }
-
-    public void setRegisterBusiness(RegisterBusiness registerBusiness) {
-        this.registerBusiness = registerBusiness;
     }
 }

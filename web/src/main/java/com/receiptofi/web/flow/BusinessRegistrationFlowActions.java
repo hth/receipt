@@ -85,8 +85,8 @@ public class BusinessRegistrationFlowActions {
     }
 
     @SuppressWarnings ("unused")
-    public boolean isRegistrationComplete(Register br) {
-        BusinessUserEntity businessUser = businessUserService.findBusinessUser(br.getRegisterUser().getRid());
+    public boolean isRegistrationComplete(Register register) {
+        BusinessUserEntity businessUser = businessUserService.findBusinessUser(register.getRegisterUser().getRid());
         if (businessUser == null) {
             return false;
         }
@@ -98,72 +98,72 @@ public class BusinessRegistrationFlowActions {
                  * Once the registration is complete, invite is marked as inactive and it can't be re-used.
                  * Even 'V' condition would not make the user land for registration.
                  */
-                LOG.error("Reached unsupported rid={} condition={}", br.getRegisterUser().getRid(), businessUser.getBusinessUserRegistrationStatus());
+                LOG.error("Reached unsupported rid={} condition={}", register.getRegisterUser().getRid(), businessUser.getBusinessUserRegistrationStatus());
                 throw new UnsupportedOperationException("Reached unsupported condition " + businessUser.getBusinessUserRegistrationStatus());
             case I:
             case N:
                 return false;
             default:
-                LOG.error("Reached unsupported rid={} condition={}", br.getRegisterUser().getRid(), businessUser.getBusinessUserRegistrationStatus());
+                LOG.error("Reached unsupported rid={} condition={}", register.getRegisterUser().getRid(), businessUser.getBusinessUserRegistrationStatus());
                 throw new UnsupportedOperationException("Reached unsupported condition " + businessUser.getBusinessUserRegistrationStatus());
         }
     }
 
     /**
-     * @param br
+     * @param register
      * @return
      * @throws BusinessRegistrationException
      */
     @SuppressWarnings ("unused")
-    public Register completeRegistrationInformation(Register br, String key)
+    public Register completeRegistrationInformation(Register register, String key)
             throws BusinessRegistrationException {
         try {
             InviteEntity invite = inviteService.findByAuthenticationKey(key);
             inviteService.completeProfileForInvitationSignup(
-                    br.getRegisterUser().getFirstName(),
-                    br.getRegisterUser().getLastName(),
-                    br.getRegisterUser().getBirthday(),
-                    br.getRegisterUser().getAddress(),
-                    br.getRegisterUser().getCountryShortName(),
-                    br.getRegisterUser().getPhone(),
-                    br.getRegisterUser().getPassword(),
+                    register.getRegisterUser().getFirstName(),
+                    register.getRegisterUser().getLastName(),
+                    register.getRegisterUser().getBirthday(),
+                    register.getRegisterUser().getAddress(),
+                    register.getRegisterUser().getCountryShortName(),
+                    register.getRegisterUser().getPhone(),
+                    register.getRegisterUser().getPassword(),
                     invite
             );
 
-            BizNameEntity bizName = bizService.findMatchingBusiness(br.getRegisterBusiness().getBusinessName());
+            BizNameEntity bizName = bizService.findMatchingBusiness(register.getRegisterBusiness().getBusinessName());
             if (null == bizName) {
                 bizName = BizNameEntity.newInstance();
-                bizName.setBusinessName(br.getRegisterBusiness().getBusinessName());
+                bizName.setBusinessName(register.getRegisterBusiness().getBusinessName());
             }
-            bizName.setBusinessTypes(br.getRegisterBusiness().getBusinessTypes());
+            bizName.setBusinessTypes(register.getRegisterBusiness().getBusinessTypes());
             bizService.saveName(bizName);
 
             BizStoreEntity bizStore = bizService.findMatchingStore(
-                    br.getRegisterBusiness().getBusinessAddress(),
-                    br.getRegisterBusiness().getBusinessPhoneNotFormatted());
+                    register.getRegisterBusiness().getBusinessAddress(),
+                    register.getRegisterBusiness().getBusinessPhoneNotFormatted());
             if (bizStore == null) {
                 bizStore = BizStoreEntity.newInstance();
                 bizStore.setBizName(bizName);
-                bizStore.setPhone(br.getRegisterBusiness().getBusinessPhone());
-                bizStore.setAddress(br.getRegisterBusiness().getBusinessAddress());
+                bizStore.setPhone(register.getRegisterBusiness().getBusinessPhone());
+                bizStore.setAddress(register.getRegisterBusiness().getBusinessAddress());
                 validateAddress(bizStore);
                 bizService.saveStore(bizStore);
             }
 
-            BusinessUserEntity businessUser = businessUserService.findBusinessUser(br.getRegisterUser().getRid());
+            BusinessUserEntity businessUser = businessUserService.findBusinessUser(register.getRegisterUser().getRid());
             if (null == businessUser) {
-                businessUser = BusinessUserEntity.newInstance(br.getRegisterUser().getRid(), invite.getUserLevel());
+                businessUser = BusinessUserEntity.newInstance(register.getRegisterUser().getRid(), invite.getUserLevel());
             }
             businessUser
                     .setBizName(bizName)
                     .setBusinessUserRegistrationStatus(BusinessUserRegistrationStatusEnum.C);
 
             businessUserService.save(businessUser);
-            br.getRegisterBusiness().setBusinessUser(businessUser);
-            return br;
+            register.getRegisterBusiness().setBusinessUser(businessUser);
+            return register;
         } catch (Exception e) {
             LOG.error("Error updating business user profile rid={} reason={}",
-                    br.getRegisterUser().getRid(), e.getLocalizedMessage(), e);
+                    register.getRegisterUser().getRid(), e.getLocalizedMessage(), e);
             throw new MigrateToBusinessRegistrationException("Error updating profile", e);
         }
     }
@@ -176,38 +176,38 @@ public class BusinessRegistrationFlowActions {
     }
 
     @SuppressWarnings ("unused")
-    public void updateProfile(Register br) {
-        DecodedAddress decodedAddress = DecodedAddress.newInstance(externalService.getGeocodingResults(br.getRegisterUser().getAddress()), br.getRegisterUser().getAddress());
+    public void updateProfile(Register register) {
+        DecodedAddress decodedAddress = DecodedAddress.newInstance(externalService.getGeocodingResults(register.getRegisterUser().getAddress()), register.getRegisterUser().getAddress());
         if (decodedAddress.isNotEmpty()) {
-            br.getRegisterUser().setAddress(decodedAddress.getFormattedAddress());
-            br.getRegisterUser().setCountryShortName(decodedAddress.getCountryShortName());
+            register.getRegisterUser().setAddress(decodedAddress.getFormattedAddress());
+            register.getRegisterUser().setCountryShortName(decodedAddress.getCountryShortName());
         }
-        br.getRegisterUser().setPhone(CommonUtil.phoneCleanup(br.getRegisterUser().getPhone()));
+        register.getRegisterUser().setPhone(CommonUtil.phoneCleanup(register.getRegisterUser().getPhone()));
     }
 
     @SuppressWarnings ("unused")
-    public void updateBusiness(Register br) {
-        DecodedAddress decodedAddress = DecodedAddress.newInstance(externalService.getGeocodingResults(br.getRegisterBusiness().getBusinessAddress()), br.getRegisterBusiness().getBusinessAddress());
+    public void updateBusiness(Register register) {
+        DecodedAddress decodedAddress = DecodedAddress.newInstance(externalService.getGeocodingResults(register.getRegisterBusiness().getBusinessAddress()), register.getRegisterBusiness().getBusinessAddress());
         if (decodedAddress.isNotEmpty()) {
-            br.getRegisterBusiness().setBusinessAddress(decodedAddress.getFormattedAddress());
-            br.getRegisterBusiness().setBusinessCountryShortName(decodedAddress.getCountryShortName());
+            register.getRegisterBusiness().setBusinessAddress(decodedAddress.getFormattedAddress());
+            register.getRegisterBusiness().setBusinessCountryShortName(decodedAddress.getCountryShortName());
         }
-        br.getRegisterBusiness().setBusinessPhone(CommonUtil.phoneCleanup(br.getRegisterBusiness().getBusinessPhone()));
+        register.getRegisterBusiness().setBusinessPhone(CommonUtil.phoneCleanup(register.getRegisterBusiness().getBusinessPhone()));
     }
 
     /**
      * Validate business user profile.
      *
-     * @param br
+     * @param register
      * @param messageContext
      * @return
      */
     @SuppressWarnings ("unused")
-    public String validateUserProfileDetails(Register br, MessageContext messageContext) {
-        LOG.info("Validate business user rid={}", br.getRegisterUser().getRid());
+    public String validateUserProfileDetails(Register register, MessageContext messageContext) {
+        LOG.info("Validate business user rid={}", register.getRegisterUser().getRid());
         String status = LandingController.SUCCESS;
 
-        if (StringUtils.isBlank(br.getRegisterUser().getFirstName())) {
+        if (StringUtils.isBlank(register.getRegisterUser().getFirstName())) {
             messageContext.addMessage(
                     new MessageBuilder()
                             .error()
@@ -217,17 +217,17 @@ public class BusinessRegistrationFlowActions {
             status = "failure";
         }
 
-        if (StringUtils.isNotBlank(br.getRegisterUser().getFirstName()) && !Validate.isValidName(br.getRegisterUser().getFirstName())) {
+        if (StringUtils.isNotBlank(register.getRegisterUser().getFirstName()) && !Validate.isValidName(register.getRegisterUser().getFirstName())) {
             messageContext.addMessage(
                     new MessageBuilder()
                             .error()
                             .source("registerUser.firstName")
-                            .defaultText("First name is not a valid name: " + br.getRegisterUser().getFirstName())
+                            .defaultText("First name is not a valid name: " + register.getRegisterUser().getFirstName())
                             .build());
             status = "failure";
         }
 
-        if (br.getRegisterUser().getFirstName().length() < nameLength) {
+        if (register.getRegisterUser().getFirstName().length() < nameLength) {
             messageContext.addMessage(
                     new MessageBuilder()
                             .error()
@@ -237,7 +237,7 @@ public class BusinessRegistrationFlowActions {
             status = "failure";
         }
 
-        if (StringUtils.isBlank(br.getRegisterUser().getLastName())) {
+        if (StringUtils.isBlank(register.getRegisterUser().getLastName())) {
             messageContext.addMessage(
                     new MessageBuilder()
                             .error()
@@ -247,17 +247,17 @@ public class BusinessRegistrationFlowActions {
             status = "failure";
         }
 
-        if (StringUtils.isNotBlank(br.getRegisterUser().getLastName()) && !Validate.isValidName(br.getRegisterUser().getLastName())) {
+        if (StringUtils.isNotBlank(register.getRegisterUser().getLastName()) && !Validate.isValidName(register.getRegisterUser().getLastName())) {
             messageContext.addMessage(
                     new MessageBuilder()
                             .error()
                             .source("registerUser.lastName")
-                            .defaultText("Last name is not a valid name: " + br.getRegisterUser().getLastName())
+                            .defaultText("Last name is not a valid name: " + register.getRegisterUser().getLastName())
                             .build());
             status = "failure";
         }
 
-        if (StringUtils.isBlank(br.getRegisterUser().getAddress())) {
+        if (StringUtils.isBlank(register.getRegisterUser().getAddress())) {
             messageContext.addMessage(
                     new MessageBuilder()
                             .error()
@@ -267,7 +267,7 @@ public class BusinessRegistrationFlowActions {
             status = "failure";
         }
 
-        if (StringUtils.isBlank(br.getRegisterUser().getPhoneNotFormatted())) {
+        if (StringUtils.isBlank(register.getRegisterUser().getPhoneNotFormatted())) {
             messageContext.addMessage(
                     new MessageBuilder()
                             .error()
@@ -277,19 +277,19 @@ public class BusinessRegistrationFlowActions {
             status = "failure";
         }
 
-        if (StringUtils.isNotBlank(br.getRegisterUser().getPhoneNotFormatted())) {
-            if (!Formatter.isValidPhone(br.getRegisterUser().getPhoneNotFormatted())) {
+        if (StringUtils.isNotBlank(register.getRegisterUser().getPhoneNotFormatted())) {
+            if (!Formatter.isValidPhone(register.getRegisterUser().getPhoneNotFormatted())) {
                 messageContext.addMessage(
                         new MessageBuilder()
                                 .error()
                                 .source("registerUser.phone")
-                                .defaultText("Your Phone number '" + br.getRegisterUser().getPhoneNotFormatted() + "' is not valid")
+                                .defaultText("Your Phone number '" + register.getRegisterUser().getPhoneNotFormatted() + "' is not valid")
                                 .build());
                 status = "failure";
             }
         }
 
-        if (StringUtils.isNotBlank(br.getRegisterUser().getBirthday()) && !Constants.AGE_RANGE.matcher(br.getRegisterUser().getBirthday()).matches()) {
+        if (StringUtils.isNotBlank(register.getRegisterUser().getBirthday()) && !Constants.AGE_RANGE.matcher(register.getRegisterUser().getBirthday()).matches()) {
             messageContext.addMessage(
                     new MessageBuilder()
                             .error()
@@ -299,7 +299,7 @@ public class BusinessRegistrationFlowActions {
             status = "failure";
         }
 
-        if (!Validate.isValidMail(br.getRegisterUser().getEmail())) {
+        if (!Validate.isValidMail(register.getRegisterUser().getEmail())) {
             messageContext.addMessage(
                     new MessageBuilder()
                             .error()
@@ -309,7 +309,7 @@ public class BusinessRegistrationFlowActions {
             status = "failure";
         }
 
-        if (br.getRegisterUser().getEmail() != null && br.getRegisterUser().getEmail().length() <= mailLength) {
+        if (register.getRegisterUser().getEmail() != null && register.getRegisterUser().getEmail().length() <= mailLength) {
             messageContext.addMessage(
                     new MessageBuilder()
                             .error()
@@ -319,7 +319,7 @@ public class BusinessRegistrationFlowActions {
             status = "failure";
         }
 
-        if (br.getRegisterUser().getPassword().length() < passwordLength) {
+        if (register.getRegisterUser().getPassword().length() < passwordLength) {
             messageContext.addMessage(
                     new MessageBuilder()
                             .error()
@@ -329,7 +329,7 @@ public class BusinessRegistrationFlowActions {
             status = "failure";
         }
 
-        if (!br.getRegisterUser().isAcceptsAgreement()) {
+        if (!register.getRegisterUser().isAcceptsAgreement()) {
             if (messageContext.getAllMessages().length > 0) {
                 messageContext.addMessage(
                         new MessageBuilder()
@@ -349,23 +349,23 @@ public class BusinessRegistrationFlowActions {
             }
         }
 
-        LOG.info("Validate business user rid={} status={}", br.getRegisterUser().getRid(), status);
+        LOG.info("Validate business user rid={} status={}", register.getRegisterUser().getRid(), status);
         return status;
     }
 
     /**
      * Validate business user profile.
      *
-     * @param br
+     * @param register
      * @param messageContext
      * @return
      */
     @SuppressWarnings ("unused")
-    public String validateBusinessDetails(Register br, MessageContext messageContext) {
-        LOG.info("Validate business rid={}", br.getRegisterUser().getRid());
+    public String validateBusinessDetails(Register register, MessageContext messageContext) {
+        LOG.info("Validate business rid={}", register.getRegisterUser().getRid());
         String status = "success";
 
-        if (StringUtils.isBlank(br.getRegisterBusiness().getBusinessName())) {
+        if (StringUtils.isBlank(register.getRegisterBusiness().getBusinessName())) {
             messageContext.addMessage(
                     new MessageBuilder()
                             .error()
@@ -375,7 +375,7 @@ public class BusinessRegistrationFlowActions {
             status = "failure";
         }
 
-        if (null == br.getRegisterBusiness().getBusinessTypes()) {
+        if (null == register.getRegisterBusiness().getBusinessTypes()) {
             messageContext.addMessage(
                     new MessageBuilder()
                             .error()
@@ -385,7 +385,7 @@ public class BusinessRegistrationFlowActions {
             status = "failure";
         }
 
-        if (StringUtils.isBlank(br.getRegisterBusiness().getBusinessAddress())) {
+        if (StringUtils.isBlank(register.getRegisterBusiness().getBusinessAddress())) {
             messageContext.addMessage(
                     new MessageBuilder()
                             .error()
@@ -395,7 +395,7 @@ public class BusinessRegistrationFlowActions {
             status = "failure";
         }
 
-        if (StringUtils.isBlank(br.getRegisterBusiness().getBusinessPhoneNotFormatted())) {
+        if (StringUtils.isBlank(register.getRegisterBusiness().getBusinessPhoneNotFormatted())) {
             messageContext.addMessage(
                     new MessageBuilder()
                             .error()
@@ -405,7 +405,7 @@ public class BusinessRegistrationFlowActions {
             status = "failure";
         }
 
-        LOG.info("Validate business rid={} status={}", br.getRegisterUser().getRid(), status);
+        LOG.info("Validate business rid={} status={}", register.getRegisterUser().getRid(), status);
         return status;
     }
 }
