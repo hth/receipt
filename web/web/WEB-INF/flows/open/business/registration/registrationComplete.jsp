@@ -13,7 +13,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <c:if test="${businessRegistration.businessUser.businessUserRegistrationStatus eq 'C'}">
+    <c:if test="${register.registerBusiness.businessUser.businessUserRegistrationStatus eq 'C'}">
     <meta http-equiv="Refresh" content="3;url=${pageContext.request.contextPath}/open/login.htm">
     </c:if>
     <link rel="apple-touch-icon" href="apple-touch-icon.png">

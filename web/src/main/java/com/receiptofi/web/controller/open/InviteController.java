@@ -95,7 +95,12 @@ public class InviteController {
     ) throws IOException {
         InviteEntity invite = inviteService.findByAuthenticationKey(key.getText());
         if (null == invite) {
+            LOG.info("Invite failed because its deleted/invalid auth={}", key);
             httpServletResponse.sendError(HttpServletResponse.SC_NOT_FOUND);
+            return null;
+        } else if(!invite.isActive()) {
+            LOG.info("Invite has been previously completed for auth={}", key);
+            httpServletResponse.sendError(HttpServletResponse.SC_GONE);
             return null;
         }
 

@@ -40,7 +40,7 @@
     </view-state>
 
     <action-state id="validateBusinessProfile">
-        <evaluate expression="migrateToBusinessRegistrationFlowActions.validateBusinessDetails(register, messageContext)" />
+        <evaluate expression="businessValidator.validateBusinessDetails(register, messageContext)" />
         <transition on="success" to="registrationReview">
             <evaluate expression="migrateToBusinessRegistrationFlowActions.updateBusiness(register)" />
         </transition>
