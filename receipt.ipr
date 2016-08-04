@@ -2338,6 +2338,7 @@
         <w>datepicker</w>
         <w>drilldown</w>
         <w>flipclock</w>
+        <w>formnovalidate</w>
         <w>geocoding</w>
         <w>googleapis</w>
         <w>highcharts</w>
