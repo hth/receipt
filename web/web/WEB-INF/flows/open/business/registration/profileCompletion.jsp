@@ -52,38 +52,18 @@
         <%--</fieldset>--%>
 
         <fieldset class="cd-form floating-labels">
-            <form:form commandName="businessRegistration" autocomplete="true">
+            <form:form commandName="register.registerUser" autocomplete="true">
                 <input type="hidden" name="_flowExecutionKey" value="${flowExecutionKey}"/>
-                <spring:hasBindErrors name="businessRegistration">
-                    <div class="r-validation" style="width: 100%; margin: 0 0 0 0;">
-                        <ul>
-                            <c:if test="${errors.hasFieldErrors('firstName')}">
-                                <li><form:errors path="firstName" /></li>
-                            </c:if>
-                            <c:if test="${errors.hasFieldErrors('lastName')}">
-                                <li><form:errors path="lastName" /></li>
-                            </c:if>
-                            <c:if test="${errors.hasFieldErrors('address')}">
-                                <li><form:errors path="address" /></li>
-                            </c:if>
-                            <c:if test="${errors.hasFieldErrors('phone')}">
-                                <li><form:errors path="phone" /></li>
-                            </c:if>
-                            <c:if test="${errors.hasFieldErrors('birthday')}">
-                                <li><form:errors path="birthday" /></li>
-                            </c:if>
-                            <c:if test="${errors.hasFieldErrors('email')}">
-                                <li><form:errors path="email" /></li>
-                            </c:if>
-                            <c:if test="${errors.hasFieldErrors('password')}">
-                                <li><form:errors path="password" /></li>
-                            </c:if>
-                            <c:if test="${errors.hasFieldErrors('acceptsAgreement')}">
-                                <li><form:errors path="acceptsAgreement" /></li>
-                            </c:if>
-                        </ul>
-                    </div>
-                </spring:hasBindErrors>
+
+                <c:if test="${!empty flowRequestContext.messageContext.allMessages}">
+                <div class="r-validation" style="width: 100%; margin: 0 0 0 0;">
+                    <ul>
+                        <c:forEach items="${flowRequestContext.messageContext.allMessages}" var="message">
+                            <li>${message.text}</li>
+                        </c:forEach>
+                    </ul>
+                </div>
+                </c:if>
 
                 <fieldset>
                     <legend>Registration for Accountant / CPA Business</legend>
@@ -126,7 +106,7 @@
 
                 <ul class="cd-form-list">
                     <li>
-                        <input type="checkbox" name="acceptsAgreement" id="acceptsAgreement">
+                        <input type="checkbox" name="registerUser.acceptsAgreement" id="acceptsAgreement">
                         <label for="acceptsAgreement">
                             <span class="cd-link"><a href="//receiptofi.com/termsofuse.html" target="_blank">Agree to Receiptofi Terms</a></span>
                         </label>
@@ -137,7 +117,7 @@
 
                 <fieldset>
                     <c:choose>
-                        <c:when test="${businessRegistration.accountExists}">
+                        <c:when test="${register.registerUser.accountExists}">
                             <input id="recover_btn_id" type="submit" value="Recover Password" name="recover" style="float: left;" />
                         </c:when>
                         <c:otherwise>
@@ -152,7 +132,7 @@
                     </div>
                 </fieldset>
 
-                <c:if test="${!businessRegistration.registrationTurnedOn}">
+                <c:if test="${!register.registerUser.registrationTurnedOn}">
                     <div class="error-message">
                         <p>Registration is open, but site is not accepting new users. When site starts accepting new users,
                             you will be notified through email and your account would be turned active.</p>

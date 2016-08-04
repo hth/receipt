@@ -9,20 +9,20 @@
     <on-start>
         <set name="conversationScope.authenticationKey" value="requestParameters.authenticationKey" type="string" />
         <evaluate expression="businessRegistrationFlowActions.findInvite(authenticationKey)"
-                  result="flowScope.businessRegistration" />
+                  result="flowScope.register" />
     </on-start>
 
     <decision-state id="profileComplete">
         <!-- registrationComplete will always be false as invite is inactive after completion -->
-        <if test="businessRegistrationFlowActions.isRegistrationComplete(businessRegistration)"
+        <if test="businessRegistrationFlowActions.isRegistrationComplete(register)"
             then="registrationComplete"
             else="profileCompletion" />
     </decision-state>
 
-    <view-state id="profileCompletion" model="businessRegistration">
+    <view-state id="profileCompletion" model="register">
         <on-entry>
             <!-- Populates all available business types -->
-            <evaluate result="businessRegistration.availableBusinessTypes"
+            <evaluate result="register.registerBusiness.availableBusinessTypes"
                       expression="T(com.receiptofi.domain.types.BusinessTypeEnum).asList()" />
         </on-entry>
         <transition on="submit" to="validateUserProfile" />
@@ -30,22 +30,22 @@
     </view-state>
 
     <action-state id="validateUserProfile">
-        <evaluate expression="businessRegistrationFlowActions.validateUserProfileDetails(businessRegistration, messageContext)" />
+        <evaluate expression="businessRegistrationFlowActions.validateUserProfileDetails(register, messageContext)" />
         <transition on="success" to="registrationStart">
-            <evaluate expression="businessRegistrationFlowActions.updateProfile(businessRegistration)" />
+            <evaluate expression="businessRegistrationFlowActions.updateProfile(register)" />
         </transition>
         <transition on="failure" to="profileCompletion" />
     </action-state>
 
-    <view-state id="registrationStart" model="businessRegistration">
+    <view-state id="registrationStart" model="register">
         <transition on="submit" to="validateBusinessProfile" />
         <transition on="cancel" to="home" />
     </view-state>
 
     <action-state id="validateBusinessProfile">
-        <evaluate expression="businessRegistrationFlowActions.validateBusinessDetails(businessRegistration, messageContext)" />
+        <evaluate expression="businessRegistrationFlowActions.validateBusinessDetails(register, messageContext)" />
         <transition on="success" to="registrationReview">
-            <evaluate expression="businessRegistrationFlowActions.updateBusiness(businessRegistration)" />
+            <evaluate expression="businessRegistrationFlowActions.updateBusiness(register)" />
         </transition>
         <transition on="failure" to="registrationStart" />
     </action-state>
@@ -59,8 +59,8 @@
 
     <action-state id="completeRegistrationInformation">
         <!-- Need the result to show correct message on JSP -->
-        <evaluate result="businessRegistration"
-                  expression="businessRegistrationFlowActions.completeRegistrationInformation(businessRegistration, authenticationKey)"/>
+        <evaluate result="register"
+                  expression="businessRegistrationFlowActions.completeRegistrationInformation(register, authenticationKey)"/>
 
         <transition on-exception="com.receiptofi.web.flow.exception.BusinessRegistrationException"
                     to="profileCompletion" />

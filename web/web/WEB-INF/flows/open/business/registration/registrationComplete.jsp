@@ -59,7 +59,7 @@
                 <div class="business_reg">
                     <div class="down_form" style="width: 90%">
                         <c:choose>
-                            <c:when test="${businessRegistration.businessUser.businessUserRegistrationStatus eq 'C'}">
+                            <c:when test="${register.registerBusiness.businessUser.businessUserRegistrationStatus eq 'C'}">
                                 <legend>Registration complete</legend>
                                 <p>Your details are being verified. Would notify you once the verification is complete.</p>
                                 <p>&nbsp;</p>

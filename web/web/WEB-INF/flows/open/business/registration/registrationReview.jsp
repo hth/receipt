@@ -52,68 +52,68 @@
         <%--</fieldset>--%>
 
         <fieldset class="cd-form floating-labels">
-            <form:form commandName="businessRegistration" autocomplete="true">
+            <form:form commandName="register" autocomplete="true">
                 <input type="hidden" name="_flowExecutionKey" value="${flowExecutionKey}"/>
 
                 <fieldset>
                     <legend>Registration for Accountant / CPA Business</legend>
 
                     <div class="icon">
-                        <form:label for="firstName" path="firstName" cssClass="cd-label">I like to call myself as:</form:label>
-                        <form:input path="firstName" cssClass="user" required="required" cssErrorClass="user error" readonly="true" />
+                        <form:label path="registerUser.firstName" cssClass="cd-label">I like to call myself as:</form:label>
+                        <form:input path="registerUser.firstName" cssClass="user" required="required" cssErrorClass="user error" readonly="true" />
                     </div>
 
                     <div class="icon">
-                        <form:label for="lastName" path="lastName" cssClass="cd-label">And last name is:</form:label>
-                        <form:input path="lastName" cssClass="user" required="required" cssErrorClass="user error" readonly="true" />
+                        <form:label path="registerUser.lastName" cssClass="cd-label">And last name is:</form:label>
+                        <form:input path="registerUser.lastName" cssClass="user" required="required" cssErrorClass="user error" readonly="true" />
                     </div>
 
                     <div class="icon">
-                        <form:label for="address" path="address" cssClass="cd-label">Your Address:</form:label>
-                        <form:input path="address" size="200" cssClass="user" required="required" cssErrorClass="user error" readonly="true" />
+                        <form:label path="registerUser.address" cssClass="cd-label">Your Address:</form:label>
+                        <form:input path="registerUser.address" size="200" cssClass="user" required="required" cssErrorClass="user error" readonly="true" />
                     </div>
 
                     <div class="icon">
-                        <form:label for="phone" path="phone" cssClass="cd-label">Your Phone:</form:label>
-                        <form:input path="phone" size="20" cssClass="user" required="required" cssErrorClass="user error" readonly="true" />
+                        <form:label path="registerUser.phone" cssClass="cd-label">Your Phone:</form:label>
+                        <form:input path="registerUser.phone" size="20" cssClass="user" required="required" cssErrorClass="user error" readonly="true" />
                     </div>
 
                     <div class="icon">
-                        <form:label for="birthday" path="birthday" cssClass="cd-label">How old are you?</form:label>
-                        <form:input path="birthday" cssClass="user" cssErrorClass="user error" readonly="true" />
+                        <form:label path="registerUser.birthday" cssClass="cd-label">How old are you?</form:label>
+                        <form:input path="registerUser.birthday" cssClass="user" cssErrorClass="user error" readonly="true" />
                     </div>
 
                     <div class="icon">
-                        <form:label for="email" path="email" cssClass="cd-label">Valid email as your login:</form:label>
-                        <form:input path="email" cssClass="email" required="required" type="email" cssErrorClass="email error" readonly="true" />
+                        <form:label path="registerUser.email" cssClass="cd-label">Valid email as your login:</form:label>
+                        <form:input path="registerUser.email" cssClass="email" required="required" type="email" cssErrorClass="email error" readonly="true" />
                     </div>
 
                     <div class="icon">
-                        <form:label for="businessName" path="businessName" cssClass="cd-label">Business Name:</form:label>
-                        <form:input path="businessName" cssClass="company" required="required" cssErrorClass="company error" readonly="true" />
+                        <form:label path="registerBusiness.businessName" cssClass="cd-label">Business Name:</form:label>
+                        <form:input path="registerBusiness.businessName" cssClass="company" required="required" cssErrorClass="company error" readonly="true" />
                     </div>
 
                     <div class="icon">
-                        <form:label for="businessAddress" path="businessAddress" cssClass="cd-label">Business Address:</form:label>
-                        <form:input path="businessAddress" size="200" cssClass="company" required="required" cssErrorClass="company error" readonly="true" />
+                        <form:label path="registerBusiness.businessAddress" cssClass="cd-label">Business Address:</form:label>
+                        <form:input path="registerBusiness.businessAddress" size="200" cssClass="company" required="required" cssErrorClass="company error" readonly="true" />
                     </div>
 
                     <div class="icon">
-                        <form:label for="businessPhone" path="businessPhone" cssClass="cd-label">Business Phone:</form:label>
-                        <form:input path="businessPhone" size="20" cssClass="company" required="required" cssErrorClass="company error" readonly="true" />
+                        <form:label path="registerBusiness.businessPhone" cssClass="cd-label">Business Phone:</form:label>
+                        <form:input path="registerBusiness.businessPhone" size="20" cssClass="company" required="required" cssErrorClass="company error" readonly="true" />
                     </div>
 
                     <div>
                         <h4>Business Type:</h4>
-                        <form:select path="businessTypes" multiple="true" required="required" style="height: 135px;" cssErrorClass="error">
-                            <form:options items="${businessRegistration.availableBusinessTypes}" itemValue="name" itemLabel="description" disabled="true" />
+                        <form:select path="registerBusiness.businessTypes" multiple="true" required="required" style="height: 135px;" cssErrorClass="error">
+                            <form:options items="${register.registerBusiness.availableBusinessTypes}" itemValue="name" itemLabel="description" disabled="true" />
                         </form:select>
                     </div>
                 </fieldset>
 
                 <fieldset>
                     <div>
-                        <input type="submit" value="Cofirm" class="read_btn" name="_eventId_confirm"
+                        <input type="submit" value="Confirm" class="read_btn" name="_eventId_confirm"
                                 style="background: #2c97de; margin: 17px 10px 0 0;">
                         <input type="submit" value="Revise" class="read_btn" name="_eventId_revise"
                                 style="background: #2c97de; margin: 17px 10px 0 0;">

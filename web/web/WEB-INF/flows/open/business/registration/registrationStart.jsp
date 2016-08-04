@@ -52,49 +52,41 @@
         <%--</fieldset>--%>
 
         <fieldset class="cd-form floating-labels">
-            <form:form commandName="businessRegistration" autocomplete="true">
+            <form:form commandName="register.registerBusiness" autocomplete="true">
                 <input type="hidden" name="_flowExecutionKey" value="${flowExecutionKey}"/>
-                <spring:hasBindErrors name="businessRegistration">
-                    <div class="r-validation" style="width: 100%; margin: 0 0 0 0;">
-                        <ul>
-                            <c:if test="${errors.hasFieldErrors('businessName')}">
-                                <li><form:errors path="businessName" /></li>
-                            </c:if>
-                            <c:if test="${errors.hasFieldErrors('businessTypes')}">
-                                <li><form:errors path="businessTypes" /></li>
-                            </c:if>
-                            <c:if test="${errors.hasFieldErrors('businessAddress')}">
-                                <li><form:errors path="businessAddress" /></li>
-                            </c:if>
-                            <c:if test="${errors.hasFieldErrors('businessPhone')}">
-                                <li><form:errors path="businessPhone" /></li>
-                            </c:if>
-                        </ul>
-                    </div>
-                </spring:hasBindErrors>
+
+                <c:if test="${!empty flowRequestContext.messageContext.allMessages}">
+                <div class="r-validation" style="width: 100%; margin: 0 0 0 0;">
+                    <ul>
+                        <c:forEach items="${flowRequestContext.messageContext.allMessages}" var="message">
+                            <li>${message.text}</li>
+                        </c:forEach>
+                    </ul>
+                </div>
+                </c:if>
 
                 <fieldset>
                     <legend>Registration for Accountant / CPA Business</legend>
 
                     <div class="icon">
-                        <form:label for="businessName" path="businessName" cssClass="cd-label">Business Name:</form:label>
+                        <form:label path="businessName" cssClass="cd-label">Business Name:</form:label>
                         <form:input path="businessName" cssClass="company" required="required" cssErrorClass="company error" />
                     </div>
 
                     <div class="icon">
-                        <form:label for="businessAddress" path="businessAddress" cssClass="cd-label">Business Address:</form:label>
+                        <form:label path="businessAddress" cssClass="cd-label">Business Address:</form:label>
                         <form:input path="businessAddress" size="200" cssClass="company" required="required" cssErrorClass="company error" />
                     </div>
 
                     <div class="icon">
-                        <form:label for="businessPhone" path="businessPhone" cssClass="cd-label">Business Phone:</form:label>
+                        <form:label path="businessPhone" cssClass="cd-label">Business Phone:</form:label>
                         <form:input path="businessPhone" size="20" cssClass="company" required="required" cssErrorClass="company error" />
                     </div>
 
                     <div>
                         <h4>Business Type:</h4>
                         <form:select path="businessTypes" multiple="true" required="required" style="height: 135px;" cssErrorClass="error">
-                            <form:options items="${businessRegistration.availableBusinessTypes}" itemValue="name" itemLabel="description" />
+                            <form:options items="${register.registerBusiness.availableBusinessTypes}" itemValue="name" itemLabel="description" />
                         </form:select>
                     </div>
                 </fieldset>
