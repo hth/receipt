@@ -82,9 +82,9 @@
                     </c:if>
 
                     <div class="row_field">
-                        <form:label path="businessName" cssClass="profile_label" cssStyle="width: 145px;"
+                        <form:label path="name" cssClass="profile_label" cssStyle="width: 145px;"
                                 cssErrorClass="profile_label lb_error">Business Name</form:label>
-                        <form:input path="businessName" size="20" cssClass="name_txt" />
+                        <form:input path="name" size="20" cssClass="name_txt" />
                     </div>
                     <div class="row_field">
                         <form:label path="businessTypes" cssClass="profile_label" cssStyle="width: 145px;"
@@ -95,14 +95,14 @@
                         </form:select>
                     </div>
                     <div class="row_field">
-                        <form:label path="businessAddress" cssClass="profile_label" cssStyle="width: 145px;"
+                        <form:label path="address" cssClass="profile_label" cssStyle="width: 145px;"
                                 cssErrorClass="profile_label lb_error">Business Address</form:label>
-                        <form:input path="businessAddress" size="200" cssClass="name_txt" style="width: 600px;" />
+                        <form:input path="address" size="200" cssClass="name_txt" style="width: 600px;" />
                     </div>
                     <div class="row_field">
-                        <form:label path="businessPhone" cssClass="profile_label" cssStyle="width: 145px;"
+                        <form:label path="phone" cssClass="profile_label" cssStyle="width: 145px;"
                                 cssErrorClass="profile_label lb_error">Business Phone</form:label>
-                        <form:input path="businessPhone" size="20" cssClass="name_txt" />
+                        <form:input path="phone" size="20" cssClass="name_txt" />
                     </div>
 
                     <div class="full">

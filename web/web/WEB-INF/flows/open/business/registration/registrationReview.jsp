@@ -89,18 +89,18 @@
                     </div>
 
                     <div class="icon">
-                        <form:label path="registerBusiness.businessName" cssClass="cd-label">Business Name:</form:label>
-                        <form:input path="registerBusiness.businessName" cssClass="company" required="required" cssErrorClass="company error" readonly="true" />
+                        <form:label path="registerBusiness.name" cssClass="cd-label">Business Name:</form:label>
+                        <form:input path="registerBusiness.name" cssClass="company" required="required" cssErrorClass="company error" readonly="true" />
                     </div>
 
                     <div class="icon">
-                        <form:label path="registerBusiness.businessAddress" cssClass="cd-label">Business Address:</form:label>
-                        <form:input path="registerBusiness.businessAddress" size="200" cssClass="company" required="required" cssErrorClass="company error" readonly="true" />
+                        <form:label path="registerBusiness.address" cssClass="cd-label">Business Address:</form:label>
+                        <form:input path="registerBusiness.address" size="200" cssClass="company" required="required" cssErrorClass="company error" readonly="true" />
                     </div>
 
                     <div class="icon">
-                        <form:label path="registerBusiness.businessPhone" cssClass="cd-label">Business Phone:</form:label>
-                        <form:input path="registerBusiness.businessPhone" size="20" cssClass="company" required="required" cssErrorClass="company error" readonly="true" />
+                        <form:label path="registerBusiness.phone" cssClass="cd-label">Business Phone:</form:label>
+                        <form:input path="registerBusiness.phone" size="20" cssClass="company" required="required" cssErrorClass="company error" readonly="true" />
                     </div>
 
                     <div>

@@ -93,9 +93,9 @@
                     </div>
 
                     <div class="row_field">
-                        <form:label path="registerBusiness.businessName" cssClass="profile_label" cssStyle="width: 145px;"
+                        <form:label path="registerBusiness.name" cssClass="profile_label" cssStyle="width: 145px;"
                                 cssErrorClass="profile_label lb_error">Business Name</form:label>
-                        <form:input path="registerBusiness.businessName" size="20" cssClass="name_txt" readonly="true" />
+                        <form:input path="registerBusiness.name" size="20" cssClass="name_txt" readonly="true" />
                     </div>
                     <div class="row_field">
                         <form:label path="registerBusiness.businessTypes" cssClass="profile_label" cssStyle="width: 145px;"
@@ -106,14 +106,14 @@
                         </form:select>
                     </div>
                     <div class="row_field">
-                        <form:label path="registerBusiness.businessAddress" cssClass="profile_label" cssStyle="width: 145px;"
+                        <form:label path="registerBusiness.address" cssClass="profile_label" cssStyle="width: 145px;"
                                 cssErrorClass="profile_label lb_error">Business Address</form:label>
-                        <form:input path="registerBusiness.businessAddress" size="200" cssClass="name_txt" readonly="true" style="width: 600px;" />
+                        <form:input path="registerBusiness.address" size="200" cssClass="name_txt" readonly="true" style="width: 600px;" />
                     </div>
                     <div class="row_field">
-                        <form:label path="registerBusiness.businessPhone" cssClass="profile_label" cssStyle="width: 145px;"
+                        <form:label path="registerBusiness.phone" cssClass="profile_label" cssStyle="width: 145px;"
                                 cssErrorClass="profile_label lb_error">Business Phone</form:label>
-                        <form:input path="registerBusiness.businessPhone" size="20" cssClass="name_txt" readonly="true" />
+                        <form:input path="registerBusiness.phone" size="20" cssClass="name_txt" readonly="true" />
                     </div>
 
                     <div class="full">

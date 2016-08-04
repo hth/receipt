@@ -116,22 +116,22 @@ public class MigrateToBusinessRegistrationFlowActions {
         try {
             updateUserProfile(register);
 
-            BizNameEntity bizName = bizService.findMatchingBusiness(register.getRegisterBusiness().getBusinessName());
+            BizNameEntity bizName = bizService.findMatchingBusiness(register.getRegisterBusiness().getName());
             if (null == bizName) {
                 bizName = BizNameEntity.newInstance();
-                bizName.setBusinessName(register.getRegisterBusiness().getBusinessName());
+                bizName.setBusinessName(register.getRegisterBusiness().getName());
             }
             bizName.setBusinessTypes(register.getRegisterBusiness().getBusinessTypes());
             bizService.saveName(bizName);
 
             BizStoreEntity bizStore = bizService.findMatchingStore(
-                    register.getRegisterBusiness().getBusinessAddress(),
+                    register.getRegisterBusiness().getAddress(),
                     register.getRegisterBusiness().getBusinessPhoneNotFormatted());
             if (bizStore == null) {
                 bizStore = BizStoreEntity.newInstance();
                 bizStore.setBizName(bizName);
-                bizStore.setPhone(register.getRegisterBusiness().getBusinessPhone());
-                bizStore.setAddress(register.getRegisterBusiness().getBusinessAddress());
+                bizStore.setPhone(register.getRegisterBusiness().getPhone());
+                bizStore.setAddress(register.getRegisterBusiness().getAddress());
                 validateAddress(bizStore);
                 bizService.saveStore(bizStore);
             }
@@ -188,12 +188,12 @@ public class MigrateToBusinessRegistrationFlowActions {
 
     @SuppressWarnings ("unused")
     public void updateBusiness(Register register) {
-        DecodedAddress decodedAddress = DecodedAddress.newInstance(externalService.getGeocodingResults(register.getRegisterBusiness().getBusinessAddress()), register.getRegisterBusiness().getBusinessAddress());
+        DecodedAddress decodedAddress = DecodedAddress.newInstance(externalService.getGeocodingResults(register.getRegisterBusiness().getAddress()), register.getRegisterBusiness().getAddress());
         if (decodedAddress.isNotEmpty()) {
-            register.getRegisterBusiness().setBusinessAddress(decodedAddress.getFormattedAddress());
-            register.getRegisterBusiness().setBusinessCountryShortName(decodedAddress.getCountryShortName());
+            register.getRegisterBusiness().setAddress(decodedAddress.getFormattedAddress());
+            register.getRegisterBusiness().setCountryShortName(decodedAddress.getCountryShortName());
         }
-        register.getRegisterBusiness().setBusinessPhone(CommonUtil.phoneCleanup(register.getRegisterBusiness().getBusinessPhone()));
+        register.getRegisterBusiness().setPhone(CommonUtil.phoneCleanup(register.getRegisterBusiness().getPhone()));
     }
 
     /**
@@ -264,7 +264,7 @@ public class MigrateToBusinessRegistrationFlowActions {
         LOG.info("Validate business rid={}", register.getRegisterUser().getRid());
         String status = "success";
 
-        if (StringUtils.isBlank(register.getRegisterBusiness().getBusinessName())) {
+        if (StringUtils.isBlank(register.getRegisterBusiness().getName())) {
             messageContext.addMessage(
                     new MessageBuilder()
                             .error()
@@ -284,7 +284,7 @@ public class MigrateToBusinessRegistrationFlowActions {
             status = "failure";
         }
 
-        if (StringUtils.isBlank(register.getRegisterBusiness().getBusinessAddress())) {
+        if (StringUtils.isBlank(register.getRegisterBusiness().getAddress())) {
             messageContext.addMessage(
                     new MessageBuilder()
                             .error()

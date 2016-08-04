@@ -69,18 +69,18 @@
                     <legend>Registration for Accountant / CPA Business</legend>
 
                     <div class="icon">
-                        <form:label path="businessName" cssClass="cd-label">Business Name:</form:label>
-                        <form:input path="businessName" cssClass="company" required="required" cssErrorClass="company error" />
+                        <form:label path="name" cssClass="cd-label">Business Name:</form:label>
+                        <form:input path="name" cssClass="company" required="required" cssErrorClass="company error" />
                     </div>
 
                     <div class="icon">
-                        <form:label path="businessAddress" cssClass="cd-label">Business Address:</form:label>
-                        <form:input path="businessAddress" size="200" cssClass="company" required="required" cssErrorClass="company error" />
+                        <form:label path="address" cssClass="cd-label">Business Address:</form:label>
+                        <form:input path="address" size="200" cssClass="company" required="required" cssErrorClass="company error" />
                     </div>
 
                     <div class="icon">
-                        <form:label path="businessPhone" cssClass="cd-label">Business Phone:</form:label>
-                        <form:input path="businessPhone" size="20" cssClass="company" required="required" cssErrorClass="company error" />
+                        <form:label path="phone" cssClass="cd-label">Business Phone:</form:label>
+                        <form:input path="phone" size="20" cssClass="company" required="required" cssErrorClass="company error" />
                     </div>
 
                     <div>

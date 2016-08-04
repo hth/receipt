@@ -22,14 +22,14 @@ public class MigrateToBusinessRegistration extends Register implements Serializa
         getRegisterBusiness().setBusinessUser(businessUser);
         getRegisterUser().setRid(businessUser.getReceiptUserId());
         if (null != businessUser.getBizName()) {
-            getRegisterBusiness().setBusinessName(businessUser.getBizName().getBusinessName());
+            getRegisterBusiness().setName(businessUser.getBizName().getBusinessName());
             getRegisterBusiness().setBusinessTypes(businessUser.getBizName().getBusinessTypes());
         }
 
         if (null != bizStore) {
-            getRegisterBusiness().setBusinessAddress(bizStore.getAddress());
-            getRegisterBusiness().setBusinessPhone(bizStore.getPhone());
-            getRegisterBusiness().setBusinessCountryShortName(bizStore.getCountryShortName());
+            getRegisterBusiness().setAddress(bizStore.getAddress());
+            getRegisterBusiness().setPhone(bizStore.getPhone());
+            getRegisterBusiness().setCountryShortName(bizStore.getCountryShortName());
         }
     }
 

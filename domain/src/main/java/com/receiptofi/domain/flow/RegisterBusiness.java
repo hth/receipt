@@ -17,23 +17,23 @@ import java.util.List;
  */
 public class RegisterBusiness implements Serializable {
 
-    private String businessName;
+    private String name;
     /** Business types are initialized in flow. Why? Show off. */
     private List<BusinessTypeEnum> businessTypes;
-    private String businessAddress;
-    private String businessPhone;
-    private String businessCountryShortName;
+    private String address;
+    private String phone;
+    private String countryShortName;
     private BusinessUserEntity businessUser;
 
     @Transient
     private List<BusinessTypeEnum> availableBusinessTypes;
 
-    public String getBusinessName() {
-        return businessName;
+    public String getName() {
+        return name;
     }
 
-    public void setBusinessName(String businessName) {
-        this.businessName = businessName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public List<BusinessTypeEnum> getBusinessTypes() {
@@ -44,37 +44,37 @@ public class RegisterBusiness implements Serializable {
         this.businessTypes = businessTypes;
     }
 
-    public String getBusinessAddress() {
-        return businessAddress;
+    public String getAddress() {
+        return address;
     }
 
-    public void setBusinessAddress(String businessAddress) {
-        this.businessAddress = businessAddress;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
-    public String getBusinessPhone() {
-        if (StringUtils.isNotBlank(businessPhone)) {
-            return CommonUtil.phoneFormatter(businessPhone, businessCountryShortName);
+    public String getPhone() {
+        if (StringUtils.isNotBlank(phone)) {
+            return CommonUtil.phoneFormatter(phone, countryShortName);
         } else {
-            return businessPhone;
+            return phone;
         }
     }
 
     @Transient
     public String getBusinessPhoneNotFormatted() {
-        return businessPhone;
+        return phone;
     }
 
-    public void setBusinessPhone(String businessPhone) {
-        this.businessPhone = businessPhone;
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
-    public String getBusinessCountryShortName() {
-        return businessCountryShortName;
+    public String getCountryShortName() {
+        return countryShortName;
     }
 
-    public void setBusinessCountryShortName(String businessCountryShortName) {
-        this.businessCountryShortName = businessCountryShortName;
+    public void setCountryShortName(String countryShortName) {
+        this.countryShortName = countryShortName;
     }
 
     public BusinessUserEntity getBusinessUser() {
