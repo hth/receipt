@@ -16,8 +16,8 @@ import org.springframework.stereotype.Component;
  * Date: 8/4/16 11:25 AM
  */
 @Component
-public class BusinessValidator {
-    private static final Logger LOG = LoggerFactory.getLogger(BusinessValidator.class);
+public class BusinessFlowValidator {
+    private static final Logger LOG = LoggerFactory.getLogger(BusinessFlowValidator.class);
 
     /**
      * Validate business user profile.

@@ -30,7 +30,7 @@
     </view-state>
 
     <action-state id="validateUserProfile">
-        <evaluate expression="businessRegistrationFlowActions.validateUserProfileDetails(register, messageContext)" />
+        <evaluate expression="userFlowValidator.validateUserProfileSignupDetails(register, messageContext)" />
         <transition on="success" to="registrationStart">
             <evaluate expression="businessRegistrationFlowActions.updateProfile(register)" />
         </transition>
@@ -43,7 +43,7 @@
     </view-state>
 
     <action-state id="validateBusinessProfile">
-        <evaluate expression="businessValidator.validateBusinessDetails(register, messageContext)" />
+        <evaluate expression="businessFlowValidator.validateBusinessDetails(register, messageContext)" />
         <transition on="success" to="registrationReview">
             <evaluate expression="businessRegistrationFlowActions.updateBusiness(register)" />
         </transition>
