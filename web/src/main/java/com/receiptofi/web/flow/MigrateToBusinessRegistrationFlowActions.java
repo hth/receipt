@@ -16,17 +16,12 @@ import com.receiptofi.service.ExternalService;
 import com.receiptofi.service.FetcherService;
 import com.receiptofi.service.UserProfilePreferenceService;
 import com.receiptofi.utils.CommonUtil;
-import com.receiptofi.web.controller.access.LandingController;
 import com.receiptofi.web.flow.exception.MigrateToBusinessRegistrationException;
-
-import org.apache.commons.lang3.StringUtils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.binding.message.MessageBuilder;
-import org.springframework.binding.message.MessageContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 

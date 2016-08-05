@@ -13,10 +13,6 @@ import com.receiptofi.service.BusinessUserService;
 import com.receiptofi.service.ExternalService;
 import com.receiptofi.service.InviteService;
 import com.receiptofi.utils.CommonUtil;
-import com.receiptofi.utils.Constants;
-import com.receiptofi.utils.Formatter;
-import com.receiptofi.utils.Validate;
-import com.receiptofi.web.controller.access.LandingController;
 import com.receiptofi.web.flow.exception.BusinessRegistrationException;
 import com.receiptofi.web.flow.exception.MigrateToBusinessRegistrationException;
 
@@ -27,8 +23,6 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.binding.message.MessageBuilder;
-import org.springframework.binding.message.MessageContext;
 import org.springframework.stereotype.Component;
 
 /**
