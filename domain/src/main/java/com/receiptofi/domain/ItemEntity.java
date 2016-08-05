@@ -42,7 +42,7 @@ import javax.validation.constraints.Size;
 @Document (collection = "ITEM")
 @CompoundIndexes ({@CompoundIndex (name = "item_ri_bi_rid_idx", def = "{'RI': -1, 'BI' : -1, 'RID': -1}")})
 public class ItemEntity extends BaseEntity {
-    private static int ITEM_NAME_MAX_LENGTH = 26;
+    private static final int ITEM_NAME_MAX_LENGTH = 26;
 
     @Size (min = 1, max = 128)
     @Field ("IN")
