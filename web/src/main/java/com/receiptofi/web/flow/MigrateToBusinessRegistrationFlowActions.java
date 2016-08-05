@@ -6,7 +6,6 @@ import com.receiptofi.domain.BusinessUserEntity;
 import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.domain.flow.MigrateToBusinessRegistration;
 import com.receiptofi.domain.flow.Register;
-import com.receiptofi.domain.shared.DecodedAddress;
 import com.receiptofi.domain.site.ReceiptUser;
 import com.receiptofi.domain.types.BusinessUserRegistrationStatusEnum;
 import com.receiptofi.service.AccountService;
@@ -15,7 +14,6 @@ import com.receiptofi.service.BusinessUserService;
 import com.receiptofi.service.ExternalService;
 import com.receiptofi.service.FetcherService;
 import com.receiptofi.service.UserProfilePreferenceService;
-import com.receiptofi.utils.CommonUtil;
 import com.receiptofi.web.flow.exception.MigrateToBusinessRegistrationException;
 
 import org.slf4j.Logger;
@@ -33,7 +31,7 @@ import java.util.Set;
  * Date: 5/20/16 9:51 PM
  */
 @Component
-public class MigrateToBusinessRegistrationFlowActions {
+public class MigrateToBusinessRegistrationFlowActions extends RegistrationFlowActions {
     private static final Logger LOG = LoggerFactory.getLogger(MigrateToBusinessRegistrationFlowActions.class);
 
     private FetcherService fetcherService;
@@ -41,7 +39,6 @@ public class MigrateToBusinessRegistrationFlowActions {
     private AccountService accountService;
     private BusinessUserService businessUserService;
     private BizService bizService;
-    private ExternalService externalService;
 
     @SuppressWarnings ("all")
     @Autowired
@@ -52,12 +49,12 @@ public class MigrateToBusinessRegistrationFlowActions {
             BusinessUserService businessUserService,
             BizService bizService,
             ExternalService externalService) {
+        super(externalService, bizService);
         this.fetcherService = fetcherService;
         this.userProfilePreferenceService = userProfilePreferenceService;
         this.accountService = accountService;
         this.businessUserService = businessUserService;
         this.bizService = bizService;
-        this.externalService = externalService;
     }
 
     public Set<String> findDistinctBizName(String bizName) {
@@ -110,27 +107,7 @@ public class MigrateToBusinessRegistrationFlowActions {
             throws MigrateToBusinessRegistrationException {
         try {
             updateUserProfile(register);
-
-            BizNameEntity bizName = bizService.findMatchingBusiness(register.getRegisterBusiness().getName());
-            if (null == bizName) {
-                bizName = BizNameEntity.newInstance();
-                bizName.setBusinessName(register.getRegisterBusiness().getName());
-            }
-            bizName.setBusinessTypes(register.getRegisterBusiness().getBusinessTypes());
-            bizService.saveName(bizName);
-
-            BizStoreEntity bizStore = bizService.findMatchingStore(
-                    register.getRegisterBusiness().getAddress(),
-                    register.getRegisterBusiness().getBusinessPhoneNotFormatted());
-            if (bizStore == null) {
-                bizStore = BizStoreEntity.newInstance();
-                bizStore.setBizName(bizName);
-                bizStore.setPhone(register.getRegisterBusiness().getPhone());
-                bizStore.setAddress(register.getRegisterBusiness().getAddress());
-                validateAddress(bizStore);
-                bizService.saveStore(bizStore);
-            }
-
+            BizNameEntity bizName = registerBusinessDetails(register);
             BusinessUserEntity businessUser = businessUserService.findBusinessUser(register.getRegisterUser().getRid());
             businessUser
                     .setBizName(bizName)
@@ -162,32 +139,5 @@ public class MigrateToBusinessRegistrationFlowActions {
         if (!userProfile.getFirstName().equals(register.getRegisterUser().getFirstName()) && !userProfile.getLastName().equals(register.getRegisterUser().getLastName())) {
             accountService.updateName(register.getRegisterUser().getFirstName(), register.getRegisterUser().getLastName(), register.getRegisterUser().getRid());
         }
-    }
-
-    @SuppressWarnings ("unused")
-    public void validateAddress(BizStoreEntity bizStore) {
-        if (null == bizStore.getId() || !bizStore.isValidatedUsingExternalAPI()) {
-            externalService.decodeAddress(bizStore);
-        }
-    }
-
-    @SuppressWarnings ("unused")
-    public void updateProfile(Register register) {
-        DecodedAddress decodedAddress = DecodedAddress.newInstance(externalService.getGeocodingResults(register.getRegisterUser().getAddress()), register.getRegisterUser().getAddress());
-        if (decodedAddress.isNotEmpty()) {
-            register.getRegisterUser().setAddress(decodedAddress.getFormattedAddress());
-            register.getRegisterUser().setCountryShortName(decodedAddress.getCountryShortName());
-        }
-        register.getRegisterUser().setPhone(CommonUtil.phoneCleanup(register.getRegisterUser().getPhone()));
-    }
-
-    @SuppressWarnings ("unused")
-    public void updateBusiness(Register register) {
-        DecodedAddress decodedAddress = DecodedAddress.newInstance(externalService.getGeocodingResults(register.getRegisterBusiness().getAddress()), register.getRegisterBusiness().getAddress());
-        if (decodedAddress.isNotEmpty()) {
-            register.getRegisterBusiness().setAddress(decodedAddress.getFormattedAddress());
-            register.getRegisterBusiness().setCountryShortName(decodedAddress.getCountryShortName());
-        }
-        register.getRegisterBusiness().setPhone(CommonUtil.phoneCleanup(register.getRegisterBusiness().getPhone()));
     }
 }
