@@ -62,8 +62,8 @@ public class AccountServiceITest extends ITest {
                 registrationService,
                 expensesService,
                 billingService,
-                notificationService
-        );
+                notificationService,
+                inviteManager);
 
         userProfileCollection = getCollection(userProfileCollectionName);
         populateUserProfileCollection();

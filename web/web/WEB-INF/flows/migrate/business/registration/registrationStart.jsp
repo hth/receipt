@@ -1,4 +1,4 @@
-<%@ include file="../../../jsp/include.jsp"%>
+<%@ include file="../../../../jsp/include.jsp"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -66,61 +66,52 @@
         <sec:authorize access="hasRole('ROLE_BUSINESS')">
         <div class="business_reg">
             <div class="down_form" style="width: 90%">
-                <form:form commandName="businessRegistration">
+                <form:form commandName="register.registerBusiness">
                     <h1 class="h1">Add business details</h1>
                     <hr>
                     <input type="hidden" name="_flowExecutionKey" value="${flowExecutionKey}"/>
 
-                    <spring:hasBindErrors name="businessRegistration">
+                    <c:if test="${!empty flowRequestContext.messageContext.allMessages}">
                     <div class="r-validation" style="width: 100%; margin: 0 0 0 0;">
                         <ul>
-                            <c:if test="${errors.hasFieldErrors('businessName')}">
-                                <li><form:errors path="businessName" /></li>
-                            </c:if>
-                            <c:if test="${errors.hasFieldErrors('businessTypes')}">
-                                <li><form:errors path="businessTypes" /></li>
-                            </c:if>
-                            <c:if test="${errors.hasFieldErrors('businessAddress')}">
-                                <li><form:errors path="businessAddress" /></li>
-                            </c:if>
-                            <c:if test="${errors.hasFieldErrors('businessPhone')}">
-                                <li><form:errors path="businessPhone" /></li>
-                            </c:if>
+                            <c:forEach items="${flowRequestContext.messageContext.allMessages}" var="message">
+                                <li>${message.text}</li>
+                            </c:forEach>
                         </ul>
                     </div>
-                    </spring:hasBindErrors>
+                    </c:if>
 
                     <div class="row_field">
-                        <form:label path="businessName" cssClass="profile_label" cssStyle="width: 145px;"
+                        <form:label path="name" cssClass="profile_label" cssStyle="width: 145px;"
                                 cssErrorClass="profile_label lb_error">Business Name</form:label>
-                        <form:input path="businessName" size="20" cssClass="name_txt" />
+                        <form:input path="name" size="20" cssClass="name_txt" />
                     </div>
                     <div class="row_field">
                         <form:label path="businessTypes" cssClass="profile_label" cssStyle="width: 145px;"
                                 cssErrorClass="profile_label lb_error">Business Type</form:label>
 
                         <form:select path="businessTypes" cssClass="styled-select slate" multiple="true" style="height: 100px;">
-                            <form:options items="${businessRegistration.availableBusinessTypes}" itemValue="name" itemLabel="description" />
+                            <form:options items="${register.registerBusiness.availableBusinessTypes}" itemValue="name" itemLabel="description" />
                         </form:select>
                     </div>
                     <div class="row_field">
-                        <form:label path="businessAddress" cssClass="profile_label" cssStyle="width: 145px;"
+                        <form:label path="address" cssClass="profile_label" cssStyle="width: 145px;"
                                 cssErrorClass="profile_label lb_error">Business Address</form:label>
-                        <form:input path="businessAddress" size="200" cssClass="name_txt" style="width: 600px;" />
+                        <form:input path="address" size="200" cssClass="name_txt" style="width: 600px;" />
                     </div>
                     <div class="row_field">
-                        <form:label path="businessPhone" cssClass="profile_label" cssStyle="width: 145px;"
+                        <form:label path="phone" cssClass="profile_label" cssStyle="width: 145px;"
                                 cssErrorClass="profile_label lb_error">Business Phone</form:label>
-                        <form:input path="businessPhone" size="20" cssClass="name_txt" />
+                        <form:input path="phone" size="20" cssClass="name_txt" />
                     </div>
 
                     <div class="full">
-                        <c:if test="${businessRegistration.emailValidated}">
+                        <c:if test="${register.registerUser.emailValidated}">
                             <input type="submit" value="NEXT" class="read_btn" name="_eventId_submit"
                                     style="background: #2c97de; margin: 77px 10px 0 0;">
                         </c:if>
                         <input type="submit" value="CANCEL" class="read_btn" name="_eventId_cancel"
-                                style="background: #FC462A; margin: 77px 10px 0 0;">
+                                style="background: #FC462A; margin: 77px 10px 0 0;" formnovalidate>
                     </div>
                 </form:form>
             </div>

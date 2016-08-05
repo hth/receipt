@@ -1,4 +1,4 @@
-<%@ include file="../../../jsp/include.jsp"%>
+<%@ include file="../../../../jsp/include.jsp"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -66,29 +66,20 @@
         <sec:authorize access="hasRole('ROLE_BUSINESS')">
         <div class="business_reg">
             <div class="down_form" style="width: 90%">
-                <form:form commandName="businessRegistration">
+                <form:form commandName="register.registerUser">
                     <h1 class="h1">Please complete your profile</h1>
                     <hr>
                     <input type="hidden" name="_flowExecutionKey" value="${flowExecutionKey}"/>
 
-                    <spring:hasBindErrors name="businessRegistration">
+                    <c:if test="${!empty flowRequestContext.messageContext.allMessages}">
                     <div class="r-validation" style="width: 100%; margin: 0 0 0 0;">
                         <ul>
-                            <c:if test="${errors.hasFieldErrors('firstName')}">
-                                <li><form:errors path="firstName" /></li>
-                            </c:if>
-                            <c:if test="${errors.hasFieldErrors('lastName')}">
-                                <li><form:errors path="lastName" /></li>
-                            </c:if>
-                            <c:if test="${errors.hasFieldErrors('address')}">
-                                <li><form:errors path="address" /></li>
-                            </c:if>
-                            <c:if test="${errors.hasFieldErrors('phone')}">
-                                <li><form:errors path="phone" /></li>
-                            </c:if>
+                            <c:forEach items="${flowRequestContext.messageContext.allMessages}" var="message">
+                            <li>${message.text}</li>
+                            </c:forEach>
                         </ul>
                     </div>
-                    </spring:hasBindErrors>
+                    </c:if>
 
                     <div class="row_field">
                         <form:label path="firstName" cssClass="profile_label"
@@ -111,25 +102,23 @@
                         <form:input path="phone" size="20" cssClass="name_txt" />
                     </div>
 
-                    <c:if test="${!businessRegistration.emailValidated}">
+                    <c:if test="${!register.registerUser.emailValidated}">
                     <div class="profile_label profile_label_note">
                         <p>
-                        Your email address <span style="color: red; font-weight: bold">${businessRegistration.email}</span>
+                        Your email address <span style="color: red; font-weight: bold">${register.registerUser.email}</span>
                         has not been validated. Please validated email address to continue business account registration.
                         </p>
-                        <p style="padding-top: 10px;">
+                        <p style="padding-top: 20px;">
                         To resend account validation email, click here.
                         </p>
                     </div>
                     </c:if>
 
                     <div class="full">
-                        <c:if test="${businessRegistration.emailValidated}">
+                        <c:if test="${register.registerUser.emailValidated}">
                         <input type="submit" value="NEXT" class="read_btn" name="_eventId_submit"
                                 style="background: #2c97de; margin: 77px 10px 0 0;">
                         </c:if>
-                        <input type="submit" value="CANCEL" class="read_btn" name="_eventId_cancel"
-                                style="background: #FC462A; margin: 77px 10px 0 0;">
                     </div>
                 </form:form>
             </div>

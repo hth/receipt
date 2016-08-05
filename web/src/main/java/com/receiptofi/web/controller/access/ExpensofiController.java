@@ -157,7 +157,7 @@ public class ExpensofiController {
                 LOG.error("Failure in creating and saving excel report to file system: " + e.getLocalizedMessage(), e);
             }
         }
-        return new ExcelFileName(StringUtils.EMPTY).asJson();
+        return new ExcelFileName("").asJson();
     }
 
     private void updateReceiptWithExcelFilename(ReceiptEntity receiptEntity, String filename) {

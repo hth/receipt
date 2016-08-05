@@ -1,5 +1,6 @@
 package com.receiptofi.web.form;
 
+import com.receiptofi.domain.types.UserLevelEnum;
 import com.receiptofi.utils.ScrubbedInput;
 
 /**
@@ -19,6 +20,7 @@ public final class InviteAuthenticateForm {
     private ScrubbedInput lastName;
     private ScrubbedInput mail;
     private ScrubbedInput birthday;
+    private UserLevelEnum userLevel;
     private ForgotAuthenticateForm forgotAuthenticateForm;
     private boolean acceptsAgreement;
 
@@ -34,24 +36,36 @@ public final class InviteAuthenticateForm {
         return mail;
     }
 
-    public void setMail(ScrubbedInput mail) {
+    public InviteAuthenticateForm setMail(ScrubbedInput mail) {
         this.mail = mail;
+        return this;
     }
 
     public ScrubbedInput getFirstName() {
         return firstName;
     }
 
-    public void setFirstName(ScrubbedInput firstName) {
+    public InviteAuthenticateForm setFirstName(ScrubbedInput firstName) {
         this.firstName = firstName;
+        return this;
     }
 
     public ScrubbedInput getLastName() {
         return lastName;
     }
 
-    public void setLastName(ScrubbedInput lastName) {
+    public InviteAuthenticateForm setLastName(ScrubbedInput lastName) {
         this.lastName = lastName;
+        return this;
+    }
+
+    public UserLevelEnum getUserLevel() {
+        return userLevel;
+    }
+
+    public InviteAuthenticateForm setUserLevel(UserLevelEnum userLevel) {
+        this.userLevel = userLevel;
+        return this;
     }
 
     public ForgotAuthenticateForm getForgotAuthenticateForm() {

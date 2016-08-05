@@ -4,6 +4,7 @@ import com.receiptofi.domain.BillingHistoryEntity;
 import com.receiptofi.domain.EmailValidateEntity;
 import com.receiptofi.domain.ExpenseTagEntity;
 import com.receiptofi.domain.ForgotRecoverEntity;
+import com.receiptofi.domain.InviteEntity;
 import com.receiptofi.domain.UserAccountEntity;
 import com.receiptofi.domain.UserAuthenticationEntity;
 import com.receiptofi.domain.UserPreferenceEntity;
@@ -20,6 +21,7 @@ import com.receiptofi.domain.types.RoleEnum;
 import com.receiptofi.domain.types.UserLevelEnum;
 import com.receiptofi.repository.ForgotRecoverManager;
 import com.receiptofi.repository.GenerateUserIdManager;
+import com.receiptofi.repository.InviteManager;
 import com.receiptofi.repository.UserAccountManager;
 import com.receiptofi.repository.UserAuthenticationManager;
 import com.receiptofi.repository.UserPreferenceManager;
@@ -78,6 +80,9 @@ public class AccountService {
     private BillingService billingService;
     private NotificationService notificationService;
 
+    /* Hack to fix circular dependency of InviteService. */
+    private InviteManager inviteManager;
+
     private String[] expenseTags;
     private String[] expenseTagColors;
     private int promotionalPeriod;
@@ -103,8 +108,8 @@ public class AccountService {
             RegistrationService registrationService,
             ExpensesService expensesService,
             BillingService billingService,
-            NotificationService notificationService
-    ) {
+            NotificationService notificationService,
+            InviteManager inviteManager) {
         this.expenseTags = expenseTags;
         this.expenseTagColors = expenseTagColors;
         this.promotionalPeriod = promotionalPeriod;
@@ -120,6 +125,7 @@ public class AccountService {
         this.expensesService = expensesService;
         this.billingService = billingService;
         this.notificationService = notificationService;
+        this.inviteManager = inviteManager;
     }
 
     public UserProfileEntity doesUserExists(String mail) {
@@ -161,7 +167,11 @@ public class AccountService {
         UserProfileEntity userProfile;
 
         try {
-            userAuthentication = getUserAuthenticationEntity(password);
+            if (StringUtils.isBlank(password)) {
+               userAuthentication = getUserAuthenticationEntity();
+            } else {
+                userAuthentication = getUserAuthenticationEntity(password);
+            }
         } catch (Exception e) {
             LOG.error("During saving UserAuthenticationEntity={}", e.getLocalizedMessage(), e);
             throw new RuntimeException("error saving user authentication ", e);
@@ -225,7 +235,7 @@ public class AccountService {
          * UserAuthenticationEntity is not required but needed. Social user will not be able to reset the authentication
          * since its a social account.
          */
-        UserAuthenticationEntity userAuthentication = getUserAuthenticationEntity(RandomString.newInstance().nextString());
+        UserAuthenticationEntity userAuthentication = getUserAuthenticationEntity();
         userAccount.setUserAuthentication(userAuthentication);
         registrationService.isRegistrationAllowed(userAccount);
         billAccount(userAccount);
@@ -360,12 +370,12 @@ public class AccountService {
         userAuthenticationManager.save(userAuthentication);
     }
 
-    UserPreferenceEntity getPreference(UserProfileEntity userProfileEntity) {
-        return userPreferenceManager.getObjectUsingUserProfile(userProfileEntity);
+    UserPreferenceEntity getPreference(UserProfileEntity userProfile) {
+        return userPreferenceManager.getObjectUsingUserProfile(userProfile);
     }
 
-    public void saveUserAccount(UserAccountEntity userAccountEntity) {
-        userAccountManager.save(userAccountEntity);
+    public void saveUserAccount(UserAccountEntity userAccount) {
+        userAccountManager.save(userAccount);
     }
 
     private void updateAccountToValidated(String id, AccountInactiveReasonEnum accountInactiveReason) {
@@ -379,7 +389,7 @@ public class AccountService {
      * @param userLevel
      * @return
      */
-    UserAccountEntity changeAccountRolesToMatchUserLevel(String rid, UserLevelEnum userLevel) {
+    public UserAccountEntity changeAccountRolesToMatchUserLevel(String rid, UserLevelEnum userLevel) {
         UserAccountEntity userAccount = findByReceiptUserId(rid);
         Set<RoleEnum> roles = new LinkedHashSet<>();
         switch (userLevel) {
@@ -426,6 +436,10 @@ public class AccountService {
                 roles.add(RoleEnum.ROLE_BUSINESS);
                 userAccount.setRoles(roles);
                 break;
+            case ACCOUNTANT:
+                roles.add(RoleEnum.ROLE_ACCOUNTANT);
+                userAccount.setRoles(roles);
+                break;
             default:
                 LOG.error("Reached unreachable condition, UserLevel={}", userLevel.name());
                 throw new RuntimeException("Reached unreachable condition " + userLevel.name());
@@ -433,10 +447,26 @@ public class AccountService {
         return userAccount;
     }
 
-    public UserAuthenticationEntity getUserAuthenticationEntity(String password) {
+    private UserAuthenticationEntity getUserAuthenticationEntity(String password) {
         UserAuthenticationEntity userAuthentication = UserAuthenticationEntity.newInstance(
                 HashText.computeBCrypt(password),
                 HashText.computeBCrypt(RandomString.newInstance().nextString())
+        );
+        userAuthenticationManager.save(userAuthentication);
+        return userAuthentication;
+    }
+
+    /**
+     * Use for Social signup or for invite. This should speed up the sign up process as it eliminates dual creation
+     * of BCrypt string.
+     *
+     * @return
+     */
+    public UserAuthenticationEntity getUserAuthenticationEntity() {
+        String code = HashText.computeBCrypt(RandomString.newInstance().nextString());
+        UserAuthenticationEntity userAuthentication = UserAuthenticationEntity.newInstance(
+                code,
+                code
         );
         userAuthenticationManager.save(userAuthentication);
         return userAuthentication;
@@ -539,6 +569,20 @@ public class AccountService {
     }
 
     public void validateAccount(EmailValidateEntity emailValidate, UserAccountEntity userAccount) {
+        markAccountValidated(userAccount);
+
+        emailValidate.inActive();
+        emailValidateService.saveEmailValidateEntity(emailValidate);
+    }
+
+    public void validateAccount(InviteEntity invite, UserAccountEntity userAccount) {
+        markAccountValidated(userAccount);
+
+        invite.inActive();
+        inviteManager.save(invite);
+    }
+
+    private void markAccountValidated(UserAccountEntity userAccount) {
         if (null != userAccount.getAccountInactiveReason()) {
             switch (userAccount.getAccountInactiveReason()) {
                 case ANV:
@@ -552,10 +596,6 @@ public class AccountService {
             userAccount.setAccountValidated(true);
             saveUserAccount(userAccount);
         }
-
-        emailValidate.inActive();
-        emailValidate.setUpdated();
-        emailValidateService.saveEmailValidateEntity(emailValidate);
     }
 
     //TODO validate the code for getting correct age of user

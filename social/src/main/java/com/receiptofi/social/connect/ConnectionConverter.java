@@ -71,8 +71,8 @@ public class ConnectionConverter {
         UserAccountEntity userAccount = UserAccountEntity.newInstance(
                 receiptUserId,
                 userId,
-                StringUtils.EMPTY,
-                StringUtils.EMPTY,
+                "",
+                "",
                 UserAuthenticationEntity.blankInstance()
         );
         userAccount.setProviderId(ProviderEnum.valueOf(data.getProviderId().toUpperCase()));

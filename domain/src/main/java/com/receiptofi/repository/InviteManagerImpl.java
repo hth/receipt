@@ -52,10 +52,7 @@ public final class InviteManagerImpl implements InviteManager {
     @Override
     public InviteEntity findByAuthenticationKey(String auth) {
         return mongoTemplate.findOne(
-                query(where("AU").is(auth).andOperator(
-                        isActive(),
-                        isNotDeleted())
-                ),
+                query(where("AU").is(auth).andOperator(isNotDeleted())),
                 InviteEntity.class,
                 TABLE);
     }

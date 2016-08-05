@@ -32,7 +32,7 @@
     </view-state>
 
     <action-state id="validateCampaignDetails">
-        <evaluate expression="businessCampaignFlowActions.validateCampaignDetails(couponCampaign, messageContext)" />
+        <evaluate expression="businessCampaignFlowValidator.validateCampaignDetails(couponCampaign, messageContext)" />
         <transition on="success" to="campaignCoupon">
             <evaluate expression="businessCampaignFlowActions.createUpdateCampaign(couponCampaign)" />
         </transition>
@@ -47,7 +47,7 @@
     </view-state>
 
     <action-state id="validateCampaignCoupon">
-        <evaluate expression="businessCampaignFlowActions.validateCampaignCoupon(couponCampaign, messageContext)" />
+        <evaluate expression="businessCampaignFlowValidator.validateCampaignCoupon(couponCampaign, messageContext)" />
         <transition on="success" to="campaignReview">
             <evaluate expression="businessCampaignFlowActions.createUpdateCampaign(couponCampaign)" />
         </transition>
@@ -79,5 +79,5 @@
         <transition to="home"/>
     </action-state>
 
-    <view-state id="home" view="externalRedirect:#{'/business/landing.htm'}" />
+    <end-state id="home" view="externalRedirect:#{'/business/landing.htm'}" />
 </flow>

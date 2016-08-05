@@ -46,6 +46,9 @@ public class EmailValidateManagerImpl implements EmailValidateManager {
 
     @Override
     public void save(EmailValidateEntity object) {
+        if (object.getId() != null) {
+            object.setUpdated();
+        }
         mongoTemplate.save(object);
     }
 
@@ -57,7 +60,7 @@ public class EmailValidateManagerImpl implements EmailValidateManager {
     @Override
     public EmailValidateEntity findByAuthenticationKey(String auth) {
         return mongoTemplate.findOne(
-                query(where("AUTH").is(auth)).addCriteria(isNotDeleted()),
+                query(where("AUTH").is(auth).andOperator(isNotDeleted())),
                 EmailValidateEntity.class,
                 TABLE
         );

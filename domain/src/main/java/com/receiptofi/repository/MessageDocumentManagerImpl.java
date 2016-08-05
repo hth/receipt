@@ -110,8 +110,8 @@ public final class MessageDocumentManagerImpl implements MessageDocumentManager 
             } catch (Exception e) {
                 LOG.error("Update failed reason={}", e.getLocalizedMessage(), e);
                 object.setRecordLocked(false);
-                object.setReceiptUserId(StringUtils.EMPTY);
-                object.setEmailId(StringUtils.EMPTY);
+                object.setReceiptUserId("");
+                object.setEmailId("");
                 try {
                     save(object);
                 } catch (Exception e1) {

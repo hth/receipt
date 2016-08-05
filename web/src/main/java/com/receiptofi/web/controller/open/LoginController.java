@@ -5,6 +5,7 @@ import com.receiptofi.service.LoginService;
 import com.receiptofi.service.RegistrationService;
 import com.receiptofi.web.cache.CachedUserAgentStringParser;
 import com.receiptofi.web.form.UserLoginForm;
+import com.receiptofi.web.util.HttpRequestResponseParser;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -117,7 +118,7 @@ public class LoginController {
         if (cookies != null && cookies.length > 0) {
             Cookie cookie = cookies[0];
             String cookieId = cookie.getValue();
-            String ip = getClientIpAddress(request);
+            String ip = HttpRequestResponseParser.getClientIpAddress(request);
 
             String browser = res.getBrowser().description;
             String browserVersion = res.getBrowser().version;
@@ -143,34 +144,5 @@ public class LoginController {
         }
 
         return "redirect:" + onLoginAuthenticationSuccessHandler.determineTargetUrl(authentication);
-    }
-
-    /**
-     * Returns clients IP address.
-     *
-     * @param request
-     * @return
-     */
-    private String getClientIpAddress(HttpServletRequest request) {
-        String ip = request.getHeader("X-Forwarded-For");
-        if (null == ip || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-            ip = request.getHeader("Proxy-Client-IP");
-        }
-        if (null == ip || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-            ip = request.getHeader("WL-Proxy-Client-IP");
-        }
-        if (null == ip || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-            ip = request.getHeader("HTTP_CLIENT_IP");
-        }
-        if (null == ip || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-            ip = request.getHeader("HTTP_X_FORWARDED_FOR");
-        }
-        if (null == ip || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-            ip = request.getRemoteAddr();
-        }
-        if (null == ip) {
-            LOG.warn("IP Address found is NULL");
-        }
-        return ip;
     }
 }

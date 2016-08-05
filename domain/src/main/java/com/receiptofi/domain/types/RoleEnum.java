@@ -20,6 +20,9 @@ public enum RoleEnum {
     /** A regular user */
     ROLE_USER,
 
+    /** Account */
+    ROLE_ACCOUNTANT,
+
     /** A business user */
     ROLE_BUSINESS,
 

@@ -11,7 +11,7 @@ import java.util.List;
 import javax.validation.constraints.NotNull;
 
 /**
- * Uni directional exhibition of RID expenses with EID.
+ * Uni directional exhibition of RID expenses with AID.
  * User: hitender
  * Date: 7/23/16 8:35 AM
  */
@@ -21,25 +21,25 @@ import javax.validation.constraints.NotNull;
         "PMD.MethodArgumentCouldBeFinal",
         "PMD.LongVariable"
 })
-@Document (collection = "EXPENSE_TALLY")
+@Document (collection = "ACCOUNTANT")
 @CompoundIndexes (value = {
         @CompoundIndex (
-                name = "expense_tally_rid_tid_idx",
-                def = "{'RID': 1, 'TID': 1}",
+                name = "accountant_rid_aid_idx",
+                def = "{'RID': 1, 'AID': 1}",
                 background = true,
                 unique = true)
 })
-public class ExpenseTallyEntity extends BaseEntity {
+public class AccountantEntity extends BaseEntity {
 
     /* Initiator. */
     @NotNull
     @Field ("RID")
     private String receiptUserId;
 
-    /* Tally user has to be Business User. */
+    /* Account user has to be with Accountant Role. */
     @NotNull
-    @Field ("TID")
-    private String tallyUserId;
+    @Field ("AID")
+    private String accountantUserId;
 
     /* Set to true on acceptance by friend user. */
     @Field ("AC")
@@ -60,30 +60,33 @@ public class ExpenseTallyEntity extends BaseEntity {
     @Field ("ET")
     private List<String> expenseTags;
 
-    /* Delay sharing receipt by number of days. */
-    @Field ("DE")
-    private int delayExhibit;
+    /* Delay sharing receipt by number of days. For privacy sake. */
+    @Field ("DD")
+    private int delayDuration;
 
     /* Day when connection was accepted. */
     @Field ("CS")
     private Date connectSince;
 
-    private ExpenseTallyEntity(String receiptUserId, String tallyUserId, String authenticationKey) {
+    @Field ("AH")
+    private List<AccessHistory> accessHistories;
+
+    private AccountantEntity(String receiptUserId, String accountantUserId, String authenticationKey) {
         this.receiptUserId = receiptUserId;
-        this.tallyUserId = tallyUserId;
+        this.accountantUserId = accountantUserId;
         this.authenticationKey = authenticationKey;
     }
 
-    public static ExpenseTallyEntity newInstance(String receiptUserId, String tallyUserId, String authenticationKey) {
-        return new ExpenseTallyEntity(receiptUserId, tallyUserId, authenticationKey);
+    public static AccountantEntity newInstance(String receiptUserId, String tallyUserId, String authenticationKey) {
+        return new AccountantEntity(receiptUserId, tallyUserId, authenticationKey);
     }
 
     public String getReceiptUserId() {
         return receiptUserId;
     }
 
-    public String getTallyUserId() {
-        return tallyUserId;
+    public String getAccountantUserId() {
+        return accountantUserId;
     }
 
     public boolean isAcceptConnection() {
@@ -126,12 +129,12 @@ public class ExpenseTallyEntity extends BaseEntity {
         this.expenseTags = expenseTags;
     }
 
-    public int getDelayExhibit() {
-        return delayExhibit;
+    public int getDelayDuration() {
+        return delayDuration;
     }
 
-    public void setDelayExhibit(int delayExhibit) {
-        this.delayExhibit = delayExhibit;
+    public void setDelayDuration(int delayDuration) {
+        this.delayDuration = delayDuration;
     }
 
     public Date getConnectSince() {
@@ -142,15 +145,23 @@ public class ExpenseTallyEntity extends BaseEntity {
         this.connectSince = connectSince;
     }
 
+    public List<AccessHistory> getAccessHistories() {
+        return accessHistories;
+    }
+
+    public void setAccessHistories(List<AccessHistory> accessHistories) {
+        this.accessHistories = accessHistories;
+    }
+
     @Override
     public String toString() {
         return "ExhibitExpenseEntity{" +
                 "receiptUserId='" + receiptUserId + '\'' +
-                ", tallyUserId='" + tallyUserId + '\'' +
+                ", accountantUserId='" + accountantUserId + '\'' +
                 ", acceptConnection=" + acceptConnection +
                 ", connected=" + connected +
                 ", disconnectInitiator='" + disconnectInitiator + '\'' +
-                ", delayExhibit=" + delayExhibit +
+                ", delayDuration=" + delayDuration +
                 ", connectSince=" + connectSince +
                 '}';
     }

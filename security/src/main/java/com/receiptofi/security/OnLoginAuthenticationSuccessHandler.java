@@ -52,6 +52,9 @@ public class OnLoginAuthenticationSuccessHandler extends SimpleUrlAuthentication
     @Value ("${empLanding:/emp/landing.htm}")
     private String empLanding;
 
+    @Value ("${accountantLanding:/accountant/landing.htm}")
+    private String accountantLanding;
+
     @Value ("${adminLanding:/admin/landing.htm}")
     private String adminLanding;
 
@@ -129,6 +132,8 @@ public class OnLoginAuthenticationSuccessHandler extends SimpleUrlAuthentication
                 return empReceiptLanding;
             case ROLE_CAMPAIGN:
                 return empCampaignLanding;
+            case ROLE_ACCOUNTANT:
+                return accountantLanding;
             case ROLE_ADMIN:
                 return adminLanding;
             case ROLE_ANALYSIS_READ:

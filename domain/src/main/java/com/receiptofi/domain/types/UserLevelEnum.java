@@ -22,6 +22,7 @@ package com.receiptofi.domain.types;
 })
 public enum UserLevelEnum {
     USER("User", 10),
+    ACCOUNTANT("Accountant", 11),
     ENTERPRISE("Enterprise", 20),
     BUSINESS("Business", 30),
     TECH_RECEIPT("Receipt Tech", 40),

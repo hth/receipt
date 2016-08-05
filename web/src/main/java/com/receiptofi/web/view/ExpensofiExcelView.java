@@ -276,8 +276,8 @@ public final class ExpensofiExcelView extends AbstractExcelView {
             style.setAlignment(HSSFCellStyle.ALIGN_RIGHT);
         } else {
             if (null == value) {
-                LOG.debug("OTHER: {} ({})", StringUtils.EMPTY, StringUtils.EMPTY.getClass());
-                cell.setCellValue(new HSSFRichTextString(StringUtils.EMPTY));
+                LOG.debug("OTHER: {} ({})", "", StringUtils.EMPTY.getClass());
+                cell.setCellValue(new HSSFRichTextString(""));
             } else {
                 LOG.debug("OTHER: {} ({})", value, value.getClass());
                 cell.setCellValue(new HSSFRichTextString(value.toString()));

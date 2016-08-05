@@ -274,7 +274,7 @@
 	</div>
 </div>
 
-<spring:eval expression="pageContext.request.userPrincipal.principal.userLevel ge T(com.receiptofi.domain.types.UserLevelEnum).USER_COMMUNITY" var="isValidForMap" />
+<spring:eval expression="pageContext.request.userPrincipal.principal.userLevel ge T(com.receiptofi.domain.types.UserLevelEnum).USER" var="isValidForMap" />
 <div id="off_screen">
     <div id="map-canvas"></div>
 </div>
@@ -363,13 +363,27 @@
                             <c:when test="${receipt.billedStatus eq 'NB'}">
                                 <a href="/access/userprofilepreference/i.htm#tabs-3"
                                         class="rightside-li-middle-text">
-                                    <spring:eval expression="receipt.name"/>
+                                    <c:choose>
+                                        <c:when test="${receipt.name.length() gt 34}">
+                                            <spring:eval expression="receipt.name.substring(0, 34)"/>...
+                                        </c:when>
+                                        <c:otherwise>
+                                            <spring:eval expression="receipt.name"/>
+                                        </c:otherwise>
+                                    </c:choose>
                                 </a>
                             </c:when>
                             <c:otherwise>
                                 <a href="${pageContext.request.contextPath}/access/receipt/${receipt.id}.htm"
                                         class="rightside-li-middle-text" target="_blank">
-                                    <spring:eval expression="receipt.name"/>
+                                    <c:choose>
+                                        <c:when test="${receipt.name.length() gt 34}">
+                                            <spring:eval expression="receipt.name.substring(0, 34)"/>...
+                                        </c:when>
+                                        <c:otherwise>
+                                            <spring:eval expression="receipt.name"/>
+                                        </c:otherwise>
+                                    </c:choose>
                                 </a>
                             </c:otherwise>
                             </c:choose>

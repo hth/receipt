@@ -7,7 +7,6 @@ import com.receiptofi.domain.UserAuthenticationEntity;
 import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.domain.types.MailTypeEnum;
 import com.receiptofi.service.AccountService;
-import com.receiptofi.service.LoginService;
 import com.receiptofi.service.MailService;
 import com.receiptofi.service.UserProfilePreferenceService;
 import com.receiptofi.utils.HashText;
@@ -89,7 +88,6 @@ public class ForgotController {
     private UserProfilePreferenceService userProfilePreferenceService;
     private ForgotAuthenticateValidator forgotAuthenticateValidator;
     private MailService mailService;
-    private LoginService loginService;
 
     @Autowired
     public ForgotController(
@@ -97,15 +95,13 @@ public class ForgotController {
             ForgotRecoverValidator forgotRecoverValidator,
             UserProfilePreferenceService userProfilePreferenceService,
             ForgotAuthenticateValidator forgotAuthenticateValidator,
-            MailService mailService,
-            LoginService loginService
+            MailService mailService
     ) {
         this.accountService = accountService;
         this.forgotRecoverValidator = forgotRecoverValidator;
         this.userProfilePreferenceService = userProfilePreferenceService;
         this.forgotAuthenticateValidator = forgotAuthenticateValidator;
         this.mailService = mailService;
-        this.loginService = loginService;
     }
 
     @RequestMapping (
@@ -257,25 +253,21 @@ public class ForgotController {
             if (null == forgotRecover) {
                 modelMap.addAttribute(SUCCESS, false);
             } else {
-                UserProfileEntity userProfileEntity = userProfilePreferenceService.findByReceiptUserId(
-                        forgotRecover.getReceiptUserId());
-                Assert.notNull(userProfileEntity);
+                UserProfileEntity userProfile = userProfilePreferenceService.findByReceiptUserId(forgotRecover.getReceiptUserId());
+                Assert.notNull(userProfile);
 
-                UserAuthenticationEntity userAuthenticationEntity = UserAuthenticationEntity.newInstance(
+                UserAuthenticationEntity userAuthentication = UserAuthenticationEntity.newInstance(
                         HashText.computeBCrypt(forgotAuthenticateForm.getPassword()),
                         HashText.computeBCrypt(RandomString.newInstance().nextString())
                 );
 
-                UserAuthenticationEntity userAuthenticationLoaded = loginService.findByReceiptUserId(
-                        userProfileEntity.getReceiptUserId()
-                ).getUserAuthentication();
-
-                userAuthenticationEntity.setId(userAuthenticationLoaded.getId());
-                userAuthenticationEntity.setVersion(userAuthenticationLoaded.getVersion());
-                userAuthenticationEntity.setCreated(userAuthenticationLoaded.getCreated());
-                userAuthenticationEntity.setUpdated();
+                UserAuthenticationEntity userAuthenticationLoaded = accountService.findByReceiptUserId(userProfile.getReceiptUserId()).getUserAuthentication();
+                userAuthentication.setId(userAuthenticationLoaded.getId());
+                userAuthentication.setVersion(userAuthenticationLoaded.getVersion());
+                userAuthentication.setCreated(userAuthenticationLoaded.getCreated());
+                userAuthentication.setUpdated();
                 try {
-                    accountService.updateAuthentication(userAuthenticationEntity);
+                    accountService.updateAuthentication(userAuthentication);
                     accountService.invalidateAllEntries(forgotRecover.getReceiptUserId());
                     modelMap.addAttribute(SUCCESS, true);
                 } catch (Exception e) {

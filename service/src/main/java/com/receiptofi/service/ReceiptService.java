@@ -21,9 +21,12 @@ import com.receiptofi.domain.types.SplitActionEnum;
 import com.receiptofi.repository.ItemOCRManager;
 import com.receiptofi.repository.ReceiptManager;
 import com.receiptofi.service.routes.FileUploadDocumentSenderJMS;
+import com.receiptofi.utils.CommonUtil;
 import com.receiptofi.utils.Maths;
 
 import org.apache.commons.lang3.StringUtils;
+
+import org.bson.types.ObjectId;
 
 import org.joda.time.DateTime;
 
@@ -31,6 +34,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Role;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
@@ -672,6 +677,14 @@ public class ReceiptService {
 
     public List<ReceiptEntity> getReceiptsWithoutQC() {
         return receiptManager.getReceiptsWithoutQC();
+    }
+
+    @PreAuthorize ("hasAnyRole('ROLE_BUSINESS')")
+    public List<ReceiptEntity> getReceiptsWithExpenseTags(String rid, List<String> expenseTags, int delayDuration) {
+        return receiptManager.getReceiptsWithExpenseTags(
+                rid,
+                CommonUtil.convertStringArrayToObjectIdArray(expenseTags),
+                delayDuration);
     }
 
     private void addNotificationWhenShared(ReceiptEntity receipt, String rid) {

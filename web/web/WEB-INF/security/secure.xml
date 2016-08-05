@@ -67,9 +67,17 @@
         <intercept-url pattern="/open/**"
                        access="permitAll" />
 
+        <!-- user needs either role to migrate to any of the business account set to -->
+        <intercept-url pattern="/migrate/**"
+                       access="hasAnyRole(
+                       'ROLE_ACCOUNTANT',
+                       'ROLE_ENTERPRISE',
+                       'ROLE_BUSINESS')" />
+
         <intercept-url pattern="/access/signoff.htm"
                        access="hasAnyRole(
                        'ROLE_USER',
+                       'ROLE_ACCOUNTANT',
                        'ROLE_ENTERPRISE',
                        'ROLE_BUSINESS',
                        'ROLE_ADMIN',
@@ -81,6 +89,7 @@
         <intercept-url pattern="/access/eval/**"
                        access="hasAnyRole(
                        'ROLE_USER',
+                       'ROLE_ACCOUNTANT',
                        'ROLE_ENTERPRISE',
                        'ROLE_BUSINESS',
                        'ROLE_ADMIN',
@@ -91,6 +100,7 @@
         <intercept-url pattern="/access/userprofilepreference/**"
                        access="hasAnyRole(
                        'ROLE_USER',
+                       'ROLE_ACCOUNTANT',
                        'ROLE_ENTERPRISE',
                        'ROLE_BUSINESS',
                        'ROLE_ADMIN',
@@ -101,6 +111,7 @@
         <intercept-url pattern="/access/**"
                        access="hasAnyRole(
                        'ROLE_USER',
+                       'ROLE_ACCOUNTANT',
                        'ROLE_ADMIN',
                        'ROLE_TECHNICIAN',
                        'ROLE_CAMPAIGN',
@@ -129,6 +140,9 @@
 
         <intercept-url pattern="/business/**"
                        access="hasRole('ROLE_BUSINESS')" />
+
+        <intercept-url pattern="/accountant/**"
+                       access="hasRole('ROLE_ACCOUNTANT')" />
 
         <intercept-url pattern="/enterprise/**"
                        access="hasRole('ROLE_ENTERPRISE')" />

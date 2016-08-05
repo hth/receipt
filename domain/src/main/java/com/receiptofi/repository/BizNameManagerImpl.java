@@ -81,7 +81,7 @@ public final class BizNameManagerImpl implements BizNameManager {
 
     @Override
     public BizNameEntity noName() {
-        return mongoTemplate.findOne(query(where("N").is(StringUtils.EMPTY)), BizNameEntity.class, TABLE);
+        return mongoTemplate.findOne(query(where("N").is("")), BizNameEntity.class, TABLE);
     }
 
     @Override

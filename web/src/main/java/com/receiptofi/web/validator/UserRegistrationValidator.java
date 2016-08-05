@@ -50,6 +50,7 @@ public class UserRegistrationValidator implements Validator {
     public void validate(Object obj, Errors errors) {
         LOG.debug("Executing validation");
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "firstName", "field.required", new Object[]{"First name"});
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "lastName", "field.required", new Object[]{"Last name"});
 
         /** Example of validation message: Email Address cannot be left blank. */
         /** Example of validation message: Email Address field.required. */
@@ -72,7 +73,7 @@ public class UserRegistrationValidator implements Validator {
                         "Minimum length of four characters");
             }
 
-            if (StringUtils.isNotBlank(userRegistration.getLastName()) && !Validate.isValidName(userRegistration.getLastName())) {
+            if (!Validate.isValidName(userRegistration.getLastName())) {
                 errors.rejectValue("lastName",
                         "field.invalid",
                         new Object[]{"Last name", userRegistration.getLastName()},

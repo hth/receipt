@@ -3,6 +3,7 @@ package com.receiptofi.social.service;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
+import com.receiptofi.domain.InviteEntity;
 import com.receiptofi.domain.UserAccountEntity;
 import com.receiptofi.domain.UserAuthenticationEntity;
 import com.receiptofi.domain.UserProfileEntity;
@@ -12,7 +13,8 @@ import com.receiptofi.domain.types.ProviderEnum;
 import com.receiptofi.domain.types.RoleEnum;
 import com.receiptofi.repository.GenerateUserIdManager;
 import com.receiptofi.service.AccountService;
-import com.receiptofi.service.LoginService;
+import com.receiptofi.service.InviteService;
+import com.receiptofi.service.MailService;
 import com.receiptofi.service.UserProfilePreferenceService;
 import com.receiptofi.social.UserAccountDuplicateException;
 import com.receiptofi.social.annotation.Social;
@@ -69,19 +71,23 @@ import java.util.stream.Collectors;
 public class CustomUserDetailsService implements UserDetailsService {
     private static final Logger LOG = LoggerFactory.getLogger(CustomUserDetailsService.class);
 
-    @Autowired private LoginService loginService;
     @Autowired private UserProfilePreferenceService userProfilePreferenceService;
     @Autowired private SocialConfig socialConfig;
     @Autowired private AccountService accountService;
     @Autowired private ConnectionService connectionService;
     @Autowired private GenerateUserIdManager generateUserIdManager;
     @Autowired private GoogleAccessTokenService googleAccessTokenService;
+    @Autowired private InviteService inviteService;
+    @Autowired private MailService mailService;
 
     @Value ("${mail.validation.timeout.period}")
     private int mailValidationTimeoutPeriod;
 
     @Value ("${CustomUserDetailsService.account.not.validated.message}")
     private String accountNotValidatedMessage;
+
+    @Value ("${CustomUserDetailsService.account.signup.incomplete.message}")
+    private String accountSignupIncompleteMessage;
 
     /**
      * @param email - lower case string
@@ -98,10 +104,10 @@ public class CustomUserDetailsService implements UserDetailsService {
             LOG.warn("Not found user={}", email);
             throw new UsernameNotFoundException("Error in retrieving user");
         } else {
-            UserAccountEntity userAccount = loginService.findByReceiptUserId(userProfile.getReceiptUserId());
+            UserAccountEntity userAccount = accountService.findByReceiptUserId(userProfile.getReceiptUserId());
             LOG.info("user={} accountValidated={}", userAccount.getReceiptUserId(), userAccount.isAccountValidated());
 
-            boolean condition = isUserActiveAndRegistrationTurnedOn(userAccount, userProfile);
+            boolean condition = isUserActiveAndRegistrationTurnedOn(userAccount);
             if (!condition && null == userAccount.getProviderId()) {
                 /** Throw exception when its NOT a social signup. */
                 throw new RuntimeException("Registration is turned off. We will notify you on your registered email " +
@@ -129,7 +135,7 @@ public class CustomUserDetailsService implements UserDetailsService {
      * @param userAccount
      * @return
      */
-    private boolean isUserActiveAndRegistrationTurnedOn(UserAccountEntity userAccount, UserProfileEntity userProfile) {
+    private boolean isUserActiveAndRegistrationTurnedOn(UserAccountEntity userAccount) {
         if (userAccount.isRegisteredWhenRegistrationIsOff()) {
             /**
              * Do not throw exception here as Social API will get exception that would not be handled properly.
@@ -151,6 +157,32 @@ public class CustomUserDetailsService implements UserDetailsService {
                     LOG.error("Reached condition for invalid account rid={}", userAccount.getReceiptUserId());
                     return false;
             }
+        } else if (!userAccount.isActive() && null == userAccount.getAccountInactiveReason()) {
+            LOG.info("Invited user did not complete signup rid={}", userAccount.getReceiptUserId());
+
+            InviteEntity invite = inviteService.find(userAccount.getUserId());
+            if (invite.isActive()) {
+                switch (invite.getUserLevel()) {
+                    case ACCOUNTANT:
+                        mailService.sendAccountantInvite(invite.getEmail(), invite.getInvitedBy().getReceiptUserId(), invite.getInvitedBy().getUserId());
+                        break;
+                    case USER:
+                        mailService.sendInvite(invite.getEmail(), invite.getInvitedBy().getReceiptUserId(), invite.getInvitedBy().getUserId());
+                        break;
+                    case BUSINESS:
+                        //TODO
+                        break;
+                    case ENTERPRISE:
+                        //TODO
+                        break;
+                    default:
+                        LOG.error("Reached unsupported rid={} uid={} condition={}",
+                                invite.getInvited().getReceiptUserId(), invite.getEmail(), invite.getUserLevel());
+                        throw new UnsupportedOperationException("Reached unsupported condition");
+                }
+                throw new RuntimeException(accountSignupIncompleteMessage);
+            }
+            return false;
         } else {
             LOG.error("Reached condition for invalid account rid={}", userAccount.getReceiptUserId());
             return false;
@@ -173,10 +205,10 @@ public class CustomUserDetailsService implements UserDetailsService {
             LOG.warn("Not found provider user={}", puid);
             throw new UsernameNotFoundException("Error in retrieving user");
         } else {
-            UserAccountEntity userAccount = loginService.findByReceiptUserId(userProfile.getReceiptUserId());
+            UserAccountEntity userAccount = accountService.findByReceiptUserId(userProfile.getReceiptUserId());
             LOG.info("user={} accountValidated={}", userAccount.getReceiptUserId(), userAccount.isAccountValidated());
 
-            boolean condition = isUserActiveAndRegistrationTurnedOn(userAccount, userProfile);
+            boolean condition = isUserActiveAndRegistrationTurnedOn(userAccount);
             return new ReceiptUser(
                     StringUtils.isBlank(userAccount.getUserId()) ? userProfile.getProviderUserId() : userAccount.getUserId(),
                     userAccount.getUserAuthentication().getPassword(),

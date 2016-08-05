@@ -41,9 +41,10 @@ public class BusinessUserService {
     void saveUpdateBusinessUser(String rid, UserLevelEnum userLevel, boolean active) {
         BusinessUserEntity businessUser = businessUserManager.findByRid(rid);
         switch (userLevel) {
+            //TODO add Accountant and Enterprise
             case BUSINESS:
                 if (null == businessUser) {
-                    businessUser = BusinessUserEntity.newInstance(rid);
+                    businessUser = BusinessUserEntity.newInstance(rid, UserLevelEnum.BUSINESS);
                 }
 
                 if (active) {

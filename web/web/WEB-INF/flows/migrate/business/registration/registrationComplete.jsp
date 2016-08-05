@@ -1,4 +1,4 @@
-<%@ include file="../../../jsp/include.jsp"%>
+<%@ include file="../../../../jsp/include.jsp"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -67,7 +67,7 @@
         <div class="business_reg">
             <div class="down_form" style="width: 90%">
                 <c:choose>
-                    <c:when test="${businessRegistration.businessUser.businessUserRegistrationStatus eq 'C'}">
+                    <c:when test="${register.registerBusiness.businessUser.businessUserRegistrationStatus eq 'C'}">
                         <h1 class="h1">Registration complete</h1>
                         <hr>
                         Your details are being verified. Would notify you once the verification is complete.

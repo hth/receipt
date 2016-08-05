@@ -333,7 +333,7 @@ public class LandingService {
         List<ItemEntityOCR> items;
         try {
             //No more using OCR
-            String receiptOCRTranslation = StringUtils.EMPTY;
+            String receiptOCRTranslation = "";
             //String receiptOCRTranslation = ABBYYCloudService.instance().performRecognition(uploadReceiptImage.getFileData().getBytes());
             //TODO remove Temp Code
             //String receiptOCRTranslation = FileUtils.readFileToString(new File("/Users/hitender/Documents/workspace-sts-3.1.0.RELEASE/Target.txt"));

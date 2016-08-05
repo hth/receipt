@@ -1,5 +1,7 @@
 package com.receiptofi.domain;
 
+import com.receiptofi.domain.types.UserLevelEnum;
+
 import org.hibernate.validator.constraints.Email;
 
 import org.springframework.data.mongodb.core.index.CompoundIndex;
@@ -45,26 +47,34 @@ public class InviteEntity extends BaseEntity {
     @Field ("INV")
     private UserAccountEntity invitedBy;
 
+    /* Set the kind of invite like Business or Enterprise or for User. */
+    @NotNull
+    @Field ("UL")
+    private UserLevelEnum userLevel;
+
     private InviteEntity(
             String email,
             String authenticationKey,
             UserProfileEntity invited,
-            UserAccountEntity invitedBy
+            UserAccountEntity invitedBy,
+            UserLevelEnum userLevel
     ) {
         super();
         this.email = email;
         this.authenticationKey = authenticationKey;
         this.invited = invited;
         this.invitedBy = invitedBy;
+        this.userLevel = userLevel;
     }
 
     public static InviteEntity newInstance(
             String email,
             String authenticationKey,
             UserProfileEntity invited,
-            UserAccountEntity invitedBy
+            UserAccountEntity invitedBy,
+            UserLevelEnum userLevel
     ) {
-        return new InviteEntity(email, authenticationKey, invited, invitedBy);
+        return new InviteEntity(email, authenticationKey, invited, invitedBy, userLevel);
     }
 
     public String getEmail() {
@@ -97,5 +107,9 @@ public class InviteEntity extends BaseEntity {
 
     public void setInvitedBy(UserAccountEntity invitedBy) {
         this.invitedBy = invitedBy;
+    }
+
+    public UserLevelEnum getUserLevel() {
+        return userLevel;
     }
 }

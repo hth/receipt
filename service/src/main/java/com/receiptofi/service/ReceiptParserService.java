@@ -39,7 +39,7 @@ public class ReceiptParserService {
 
     public void read(String receiptOCRTranslation, DocumentEntity documentEntity, List<ItemEntityOCR> items) {
         StringTokenizer st = new StringTokenizer(receiptOCRTranslation, "\n");
-        String save = StringUtils.EMPTY;
+        String save = "";
         int sequence = 1;
         while (st.hasMoreTokens()) {
             String s = st.nextToken();
@@ -49,7 +49,7 @@ public class ReceiptParserService {
                 save = save + s;
                 LOG.debug(save);
                 items.add(processItem(save, sequence, documentEntity));
-                s = StringUtils.EMPTY;
+                s = "";
             } else if (dateMatcher.find()) {
                 // http://stackoverflow.com/questions/600733/using-java-to-find-substring-of-a-bigger-string-using-regular-expression
                 // String date = d.group(1);
@@ -62,7 +62,7 @@ public class ReceiptParserService {
 
         //At least have one item added for place holder. This will help is cloning for more items later.
         if (items.isEmpty()) {
-            items.add(processItem(StringUtils.EMPTY, 1, documentEntity));
+            items.add(processItem("", 1, documentEntity));
         }
     }
 

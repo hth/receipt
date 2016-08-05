@@ -211,7 +211,7 @@ public class UserProfilePreferenceController {
             }
         } catch (Exception e) {
             LOG.error("Error updating profile={} reason={}", receiptUser.getRid(), e.getLocalizedMessage(), e);
-            result.rejectValue("tagName", StringUtils.EMPTY, e.getLocalizedMessage());
+            result.rejectValue("tagName", "", e.getLocalizedMessage());
             redirectAttrs.addFlashAttribute("result", result);
         }
 
@@ -266,7 +266,7 @@ public class UserProfilePreferenceController {
                     expensesService.saveExpenseTag(expenseTag);
                 } else {
                     result.rejectValue("tagName",
-                            StringUtils.EMPTY,
+                            "",
                             "Maximum number of TAG(s) allowed " +
                                     expenseTagCountMax +
                                     ". Could not add " +
@@ -285,7 +285,7 @@ public class UserProfilePreferenceController {
             }
         } catch (Exception e) {
             LOG.error("Error saving expenseTag={} reason={}", expenseTagForm.getTagName(), e.getLocalizedMessage(), e);
-            result.rejectValue("tagName", StringUtils.EMPTY, e.getLocalizedMessage());
+            result.rejectValue("tagName", "", e.getLocalizedMessage());
             redirectAttrs.addFlashAttribute("result", result);
         }
 

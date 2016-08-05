@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns="http://www.springframework.org/schema/webflow"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/webflow
+       http://www.springframework.org/schema/webflow/spring-webflow-2.4.xsd">
+
+    <secured attributes="ROLE_ACCOUNTANT, ROLE_ENTERPRISE, ROLE_BUSINESS" match="any" />
+
+    <on-start>
+        <evaluate expression="migrateToBusinessRegistrationFlowActions.createBusinessRegistration()"
+                  result="flowScope.register" />
+    </on-start>
+
+    <decision-state id="profileComplete">
+        <if test="migrateToBusinessRegistrationFlowActions.isRegistrationComplete(register)"
+            then="registrationComplete"
+            else="profileCompletion" />
+    </decision-state>
+
+    <view-state id="profileCompletion" model="register">
+        <on-entry>
+            <!-- Populates all available business types -->
+            <evaluate result="register.registerBusiness.availableBusinessTypes"
+                      expression="T(com.receiptofi.domain.types.BusinessTypeEnum).asList()" />
+        </on-entry>
+        <transition on="submit" to="validateUserProfile" />
+    </view-state>
+
+    <action-state id="validateUserProfile">
+        <evaluate expression="userFlowValidator.validateUserProfileDetails(register, messageContext)" />
+        <transition on="success" to="registrationStart">
+            <evaluate expression="migrateToBusinessRegistrationFlowActions.updateProfile(register)" />
+        </transition>
+        <transition on="failure" to="profileCompletion" />
+    </action-state>
+
+    <view-state id="registrationStart" model="register">
+        <transition on="submit" to="validateBusinessProfile" />
+        <transition on="cancel" to="logout" />
+    </view-state>
+
+    <action-state id="validateBusinessProfile">
+        <evaluate expression="businessFlowValidator.validateBusinessDetails(register, messageContext)" />
+        <transition on="success" to="registrationReview">
+            <evaluate expression="migrateToBusinessRegistrationFlowActions.updateBusiness(register)" />
+        </transition>
+        <transition on="failure" to="registrationStart" />
+    </action-state>
+
+    <view-state id="registrationReview">
+        <!-- discard history to prevent back flow, invalidate to prevent back flow for all states -->
+        <transition on="confirm" to="completeRegistrationInformation" history="invalidate"/>
+        <transition on="revise" to="profileCompletion" />
+        <transition on="cancel" to="logout" />
+    </view-state>
+
+    <action-state id="completeRegistrationInformation">
+        <!-- Need the result to show correct message on JSP -->
+        <evaluate result="register"
+                  expression="migrateToBusinessRegistrationFlowActions.completeRegistrationInformation(register)"/>
+
+        <transition on-exception="com.receiptofi.web.flow.exception.MigrateToBusinessRegistrationException"
+                    to="profileCompletion" />
+
+        <transition to="registrationComplete"/>
+    </action-state>
+    
+    <view-state id="registrationComplete" />
+    <end-state id="logout" />
+
+    <global-transitions>
+        <transition on="cancel" to="logout" />
+    </global-transitions>
+</flow>

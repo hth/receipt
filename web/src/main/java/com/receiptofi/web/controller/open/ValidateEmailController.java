@@ -75,29 +75,29 @@ public class ValidateEmailController {
     ) throws IOException {
         EmailValidateEntity emailValidate = emailValidateService.findByAuthenticationKey(key.getText());
         if (null == emailValidate) {
-            LOG.info("email address authentication failed for deleted/invalid auth={}", key);
+            LOG.info("Email address authentication failed because its deleted/invalid auth={}", key);
             httpServletResponse.sendError(HttpServletResponse.SC_NOT_FOUND);
             return null;
         } else if(!emailValidate.isActive()) {
-            LOG.info("email address authentication previously validated for auth={}", key);
+            LOG.info("Email address authentication previously validated for auth={}", key);
             httpServletResponse.sendError(HttpServletResponse.SC_GONE);
             return null;
-        } else {
-            UserAccountEntity userAccount = accountService.findByReceiptUserId(emailValidate.getReceiptUserId());
-            if (userAccount.isAccountValidated()) {
-                redirectAttrs.addFlashAttribute("success", "false");
-                LOG.info("email address authentication failed for user={}", userAccount.getReceiptUserId());
-            } else {
-                accountService.validateAccount(emailValidate, userAccount);
-                redirectAttrs.addFlashAttribute("success", "true");
-                redirectAttrs.addFlashAttribute(
-                        "userRegisteredWhenRegistrationIsOff",
-                        userAccount.isRegisteredWhenRegistrationIsOff());
-
-                LOG.info("email address authentication success for user={}", userAccount.getReceiptUserId());
-            }
-            return validateResult;
         }
+
+        UserAccountEntity userAccount = accountService.findByReceiptUserId(emailValidate.getReceiptUserId());
+        if (userAccount.isAccountValidated()) {
+            redirectAttrs.addFlashAttribute("success", "false");
+            LOG.info("email address authentication failed for user={}", userAccount.getReceiptUserId());
+        } else {
+            accountService.validateAccount(emailValidate, userAccount);
+            redirectAttrs.addFlashAttribute("success", "true");
+            redirectAttrs.addFlashAttribute(
+                    "userRegisteredWhenRegistrationIsOff",
+                    userAccount.isRegisteredWhenRegistrationIsOff());
+
+            LOG.info("email address authentication success for user={}", userAccount.getReceiptUserId());
+        }
+        return validateResult;
     }
 
     @RequestMapping (method = RequestMethod.GET, value = "/result")

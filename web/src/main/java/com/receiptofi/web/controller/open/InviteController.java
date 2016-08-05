@@ -7,7 +7,7 @@ import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.repository.UserProfileManager;
 import com.receiptofi.service.AccountService;
 import com.receiptofi.service.InviteService;
-import com.receiptofi.service.LoginService;
+import com.receiptofi.utils.DateUtil;
 import com.receiptofi.utils.HashText;
 import com.receiptofi.utils.RandomString;
 import com.receiptofi.utils.ScrubbedInput;
@@ -67,11 +67,20 @@ public class InviteController {
     @Value ("${registration.turned.on}")
     private boolean registrationTurnedOn;
 
-    @Autowired private AccountService accountService;
-    @Autowired private LoginService loginService;
-    @Autowired private InviteService inviteService;
-    @Autowired private InviteAuthenticateValidator inviteAuthenticateValidator;
-    @Autowired private UserProfileManager userProfileManager;
+    @Value ("${businessRegistrationFlow:redirect:/open/business/registration.htm}")
+    private String businessRegistrationFlow;
+
+    private InviteService inviteService;
+    private InviteAuthenticateValidator inviteAuthenticateValidator;
+
+    @Autowired
+    public InviteController(
+            InviteService inviteService,
+            InviteAuthenticateValidator inviteAuthenticateValidator
+    ) {
+        this.inviteService = inviteService;
+        this.inviteAuthenticateValidator = inviteAuthenticateValidator;
+    }
 
     @RequestMapping (method = RequestMethod.GET, value = "authenticate")
     public String loadForm(
@@ -81,22 +90,48 @@ public class InviteController {
             @ModelAttribute ("inviteAuthenticateForm")
             InviteAuthenticateForm inviteAuthenticateForm,
 
-            ModelMap model
-    ) {
-        InviteEntity invite = inviteService.findInviteAuthenticationForKey(key.getText());
-        if (null != invite) {
-            inviteAuthenticateForm.setMail(new ScrubbedInput(invite.getEmail()));
-            inviteAuthenticateForm.setFirstName(new ScrubbedInput(invite.getInvited().getFirstName()));
-            inviteAuthenticateForm.setLastName(new ScrubbedInput(invite.getInvited().getLastName()));
-            inviteAuthenticateForm.getForgotAuthenticateForm().setAuthenticationKey(key.getText());
-            inviteAuthenticateForm.getForgotAuthenticateForm().setReceiptUserId(invite.getInvited().getReceiptUserId());
+            ModelMap model,
+            HttpServletResponse httpServletResponse
+    ) throws IOException {
+        InviteEntity invite = inviteService.findByAuthenticationKey(key.getText());
+        if (null == invite) {
+            LOG.info("Invite failed because its deleted/invalid auth={}", key);
+            httpServletResponse.sendError(HttpServletResponse.SC_NOT_FOUND);
+            return null;
+        } else if(!invite.isActive()) {
+            LOG.info("Invite has been previously completed for auth={}", key);
+            httpServletResponse.sendError(HttpServletResponse.SC_GONE);
+            return null;
         }
-        model.addAttribute("registrationTurnedOn", registrationTurnedOn);
-        return authenticatePage;
+
+        switch (invite.getUserLevel()) {
+            case USER:
+                model.addAttribute("registrationTurnedOn", registrationTurnedOn);
+                inviteAuthenticateForm
+                        .setMail(new ScrubbedInput(invite.getEmail()))
+                        .setFirstName(new ScrubbedInput(invite.getInvited().getFirstName()))
+                        .setLastName(new ScrubbedInput(invite.getInvited().getLastName()))
+                        .setUserLevel(invite.getUserLevel())
+                        .getForgotAuthenticateForm().setAuthenticationKey(key.getText())
+                        .setReceiptUserId(invite.getInvited().getReceiptUserId());
+                return authenticatePage;
+            case BUSINESS:
+                //TODO for business
+                return businessRegistrationFlow + "?authenticationKey=" + invite.getAuthenticationKey();
+            case ACCOUNTANT:
+                return businessRegistrationFlow + "?authenticationKey=" + invite.getAuthenticationKey();
+            case ENTERPRISE:
+                //TODO for enterprise
+                return businessRegistrationFlow + "?authenticationKey=" + invite.getAuthenticationKey();
+            default:
+                LOG.error("Reached unsupported rid={} uid={} condition={}",
+                        invite.getInvited().getReceiptUserId(), invite.getEmail(), invite.getUserLevel());
+                throw new UnsupportedOperationException("Reached unsupported condition");
+        }
     }
 
     /**
-     * Completes user invitation sent through email
+     * Completes user invitation sent through email.
      *
      * @param form
      * @param model
@@ -119,43 +154,22 @@ public class InviteController {
             model.addAttribute("registrationTurnedOn", registrationTurnedOn);
             return authenticatePage;
         } else {
-            InviteEntity invite =
-                    inviteService.findInviteAuthenticationForKey(form.getForgotAuthenticateForm().getAuthenticationKey());
+            String key = form.getForgotAuthenticateForm().getAuthenticationKey();
+            InviteEntity invite = inviteService.findByAuthenticationKey(key);
             if (null == invite) {
                 redirectAttrs.addFlashAttribute(SUCCESS, "false");
             } else {
-                UserProfileEntity userProfile = invite.getInvited();
-                userProfile.setFirstName(form.getFirstName().getText());
-                userProfile.setLastName(form.getLastName().getText());
-                userProfile.active();
-
-                UserAuthenticationEntity userAuthentication = UserAuthenticationEntity.newInstance(
-                        HashText.computeBCrypt(form.getForgotAuthenticateForm().getPassword()),
-                        HashText.computeBCrypt(RandomString.newInstance().nextString())
+                boolean signupComplete = inviteService.completeProfileForInvitationSignup(
+                        form.getFirstName().getText(),
+                        form.getLastName().getText(),
+                        form.getBirthday().getText(),
+                        "",
+                        "",
+                        "",
+                        form.getForgotAuthenticateForm().getPassword(),
+                        invite
                 );
-
-                UserAccountEntity userAccount = loginService.findByReceiptUserId(userProfile.getReceiptUserId());
-
-                userAuthentication.setId(userAccount.getUserAuthentication().getId());
-                userAuthentication.setVersion(userAccount.getUserAuthentication().getVersion());
-                userAuthentication.setCreated(userAccount.getUserAuthentication().getCreated());
-                try {
-                    userProfileManager.save(userProfile);
-                    accountService.updateAuthentication(userAuthentication);
-
-                    userAccount.setFirstName(userProfile.getFirstName());
-                    userAccount.setLastName(userProfile.getLastName());
-                    userAccount.active();
-                    userAccount.setAccountValidated(true);
-                    userAccount.setUserAuthentication(userAuthentication);
-                    accountService.saveUserAccount(userAccount);
-
-                    inviteService.invalidateAllEntries(invite);
-                    redirectAttrs.addFlashAttribute(SUCCESS, "true");
-                } catch (Exception e) {
-                    LOG.error("Error during updating of the old authentication keys={}", e.getLocalizedMessage(), e);
-                    redirectAttrs.addFlashAttribute(SUCCESS, "false");
-                }
+                redirectAttrs.addFlashAttribute(SUCCESS, Boolean.valueOf(signupComplete).toString());
             }
             return authenticateResult;
         }

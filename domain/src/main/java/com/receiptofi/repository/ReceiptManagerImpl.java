@@ -52,6 +52,7 @@ import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -585,5 +586,24 @@ public class ReceiptManagerImpl implements ReceiptManager {
                 ),
                 ReceiptEntity.class,
                 TABLE);
+    }
+
+    @Override
+    public List<ReceiptEntity> getReceiptsWithExpenseTags(String rid, List<ObjectId> expenseTags, int delayDuration) {
+        if (0 < expenseTags.size()) {
+            return mongoTemplate.find(
+                    query(where("RID").is(rid)
+                            .and("RTXD").lt(DateUtil.getDateMinusDay(delayDuration))
+                            .and("EXPENSE_TAG.$id").in(expenseTags)
+                            .andOperator(
+                                    isActive(),
+                                    isNotDeleted()
+                            )
+                    ),
+                    ReceiptEntity.class,
+                    TABLE);
+        }
+
+        return new ArrayList<>();
     }
 }

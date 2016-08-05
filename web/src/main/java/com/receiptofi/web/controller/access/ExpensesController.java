@@ -5,6 +5,7 @@ import com.receiptofi.domain.ItemEntity;
 import com.receiptofi.domain.site.ReceiptUser;
 import com.receiptofi.service.ExpensesService;
 import com.receiptofi.service.ItemService;
+import com.receiptofi.service.MailService;
 import com.receiptofi.utils.ScrubbedInput;
 import com.receiptofi.web.form.ExpenseForm;
 
@@ -19,6 +20,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,10 +46,21 @@ public class ExpensesController {
     @Value ("${ExpensesController.nextPage:/expenses}")
     private String nextPage;
 
-    @Autowired private ItemService itemService;
-    @Autowired private ExpensesService expensesService;
+    private ItemService itemService;
+    private ExpensesService expensesService;
+    private MailService mailService;
 
-    @RequestMapping (value = "{tag}", method = RequestMethod.GET)
+    @Autowired
+    public ExpensesController(
+            ItemService itemService,
+            ExpensesService expensesService,
+            MailService mailService) {
+        this.itemService = itemService;
+        this.expensesService = expensesService;
+        this.mailService = mailService;
+    }
+
+    @RequestMapping (value = "/{tag}", method = RequestMethod.GET)
     public String forExpenseType(
             @PathVariable
             ScrubbedInput tag,
@@ -77,5 +91,19 @@ public class ExpensesController {
         expenseForm.setItems(items);
 
         return nextPage;
+    }
+
+    @RequestMapping (value = "/invite", method = RequestMethod.POST)
+    @ResponseBody
+    public String inviteAccountant(
+            @RequestParam(value = "mail")
+            ScrubbedInput mail
+    ) {
+        //Always lower case the email address
+        String invitedUserEmail = mail.getText().toLowerCase();
+        ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        LOG.info("Invitation being sent to mail={} rid={}", invitedUserEmail, receiptUser.getRid());
+        return mailService.sendAccountantInvite(invitedUserEmail, receiptUser.getRid(), receiptUser.getUsername());
     }
 }

@@ -123,6 +123,15 @@ public final class Formatter {
         }
     }
 
+    public static boolean isValidPhone(String phone) {
+        try {
+            PHONE_INSTANCE.parse(phone, FORMAT_TO_US);
+            return true;
+        } catch (NumberParseException e) {
+            return false;
+        }
+    }
+
     public static String toSmallDate(Date date) {
         return SDF_SMALL.format(date);
     }
