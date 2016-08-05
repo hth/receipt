@@ -2,19 +2,16 @@ package com.receiptofi.web.flow;
 
 import static com.receiptofi.utils.DateUtil.DF_MMDDYYYY;
 
-import com.receiptofi.domain.CampaignEntity;
 import com.receiptofi.domain.BusinessUserEntity;
+import com.receiptofi.domain.CampaignEntity;
 import com.receiptofi.domain.flow.CouponCampaign;
 import com.receiptofi.domain.site.ReceiptUser;
 import com.receiptofi.domain.types.CampaignStatusEnum;
-import com.receiptofi.service.CampaignService;
 import com.receiptofi.service.BusinessUserService;
+import com.receiptofi.service.CampaignService;
 import com.receiptofi.utils.DateUtil;
 import com.receiptofi.utils.ScrubbedInput;
-import com.receiptofi.web.controller.access.LandingController;
 import com.receiptofi.web.flow.exception.BusinessCampaignException;
-
-import org.apache.commons.lang3.StringUtils;
 
 import org.joda.time.DateTime;
 
@@ -22,13 +19,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.binding.message.MessageBuilder;
-import org.springframework.binding.message.MessageContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
-
-import java.text.ParseException;
-import java.util.Date;
 
 /**
  * User: hitender
@@ -93,6 +85,13 @@ public class BusinessCampaignFlowActions {
     }
 
     @SuppressWarnings ("unused")
+    public boolean isCampaignPendingApproval(CouponCampaign couponCampaign) {
+        return couponCampaign.getCampaignStatus() == CampaignStatusEnum.P
+                || couponCampaign.getCampaignStatus() == CampaignStatusEnum.A
+                || couponCampaign.getCampaignStatus() == CampaignStatusEnum.L;
+    }
+
+    @SuppressWarnings ("unused")
     public void createUpdateCampaign(CouponCampaign couponCampaign) {
         try {
             campaignService.save(couponCampaign);
@@ -103,6 +102,7 @@ public class BusinessCampaignFlowActions {
         }
     }
 
+    @SuppressWarnings ("unused")
     public void completeCampaign(String campaignId, String bizId) {
         try {
             campaignService.completeCampaign(campaignId, bizId);
@@ -113,6 +113,7 @@ public class BusinessCampaignFlowActions {
         }
     }
 
+    @SuppressWarnings ("unused")
     public void stopCampaign(String campaignId, String bizId) {
         try {
             campaignService.stopCampaign(campaignId, bizId);
@@ -121,12 +122,5 @@ public class BusinessCampaignFlowActions {
                     campaignId, bizId, e.getLocalizedMessage(), e);
             throw new BusinessCampaignException("Error saving campaign", e);
         }
-    }
-
-
-    public boolean isCampaignPendingApproval(CouponCampaign couponCampaign) {
-        return couponCampaign.getCampaignStatus() == CampaignStatusEnum.P
-                || couponCampaign.getCampaignStatus() == CampaignStatusEnum.A
-                || couponCampaign.getCampaignStatus() == CampaignStatusEnum.L;
     }
 }
