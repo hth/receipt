@@ -241,7 +241,6 @@ public class ITest extends RealMongoForTests {
                 freemarkerConfiguration,
                 emailValidateService,
                 friendService,
-                loginService,
                 userAuthenticationManager,
                 userAccountManager,
                 userProfilePreferenceService,
