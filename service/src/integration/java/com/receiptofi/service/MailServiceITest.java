@@ -82,7 +82,6 @@ public class MailServiceITest extends ITest {
                 freemarkerConfiguration,
                 emailValidateService,
                 friendService,
-                loginService,
                 userAuthenticationManager,
                 userAccountManager,
                 userProfilePreferenceService,
