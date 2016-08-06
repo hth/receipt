@@ -31,7 +31,7 @@ import java.util.Date;
 public class ReceiptGrouped implements Serializable {
     private static final Logger LOG = LoggerFactory.getLogger(ReceiptGrouped.class);
 
-    private static final SimpleDateFormat fullCalendarSDF = new SimpleDateFormat("yyyy-MM-dd");
+    private static final SimpleDateFormat FULL_CALENDAR_SDF = new SimpleDateFormat("yyyy-MM-dd");
 
     @NumberFormat (style = NumberFormat.Style.CURRENCY)
     private BigDecimal splitTotal;
@@ -83,7 +83,7 @@ public class ReceiptGrouped implements Serializable {
 
     @SuppressWarnings ("unused")
     public String getDateForFullCalendar() {
-        return fullCalendarSDF.format(getDate());
+        return FULL_CALENDAR_SDF.format(getDate());
     }
 
     public DateTime getDateTime() {

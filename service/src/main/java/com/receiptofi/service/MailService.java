@@ -72,7 +72,6 @@ public class MailService {
     private InviteService inviteService;
     private FreeMarkerConfigurationFactory freemarkerConfiguration;
     private EmailValidateService emailValidateService;
-    private LoginService loginService;
     private UserAuthenticationManager userAuthenticationManager;
     private UserAccountManager userAccountManager;
     private UserProfilePreferenceService userProfilePreferenceService;
@@ -133,7 +132,6 @@ public class MailService {
 
             EmailValidateService emailValidateService,
             FriendService friendService,
-            LoginService loginService,
             UserAuthenticationManager userAuthenticationManager,
             UserAccountManager userAccountManager,
             UserProfilePreferenceService userProfilePreferenceService,
@@ -160,7 +158,6 @@ public class MailService {
         this.freemarkerConfiguration = freemarkerConfiguration;
         this.emailValidateService = emailValidateService;
         this.friendService = friendService;
-        this.loginService = loginService;
         this.userAuthenticationManager = userAuthenticationManager;
         this.userAccountManager = userAccountManager;
         this.userProfilePreferenceService = userProfilePreferenceService;
