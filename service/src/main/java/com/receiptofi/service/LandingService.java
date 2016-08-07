@@ -30,7 +30,6 @@ import com.receiptofi.utils.Maths;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringEscapeUtils;
-import org.apache.commons.lang3.StringUtils;
 
 import org.joda.time.DateTime;
 
