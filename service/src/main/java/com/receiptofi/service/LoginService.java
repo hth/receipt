@@ -4,7 +4,6 @@ import com.receiptofi.domain.BrowserEntity;
 import com.receiptofi.domain.UserAccountEntity;
 import com.receiptofi.domain.UserAuthenticationEntity;
 import com.receiptofi.repository.BrowserManager;
-import com.receiptofi.repository.UserAccountManager;
 import com.receiptofi.repository.UserAuthenticationManager;
 
 import org.slf4j.Logger;

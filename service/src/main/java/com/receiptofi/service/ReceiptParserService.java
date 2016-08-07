@@ -7,8 +7,6 @@ import com.receiptofi.domain.DocumentEntity;
 import com.receiptofi.domain.ItemEntityOCR;
 import com.receiptofi.domain.types.TaxEnum;
 
-import org.apache.commons.lang3.StringUtils;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

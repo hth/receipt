@@ -1,7 +1,6 @@
 package com.receiptofi.service;
 
 import static com.receiptofi.domain.types.UserLevelEnum.ACCOUNTANT;
-import static com.receiptofi.domain.types.UserLevelEnum.BUSINESS;
 import static com.receiptofi.domain.types.UserLevelEnum.USER;
 import static org.springframework.ui.freemarker.FreeMarkerTemplateUtils.processTemplateIntoString;
 
