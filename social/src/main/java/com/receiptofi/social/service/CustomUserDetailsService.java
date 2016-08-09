@@ -133,7 +133,7 @@ public class CustomUserDetailsService implements UserDetailsService {
      * @param userAccount
      * @return
      */
-    private boolean isUserActiveAndRegistrationTurnedOn(UserAccountEntity userAccount) {
+    public boolean isUserActiveAndRegistrationTurnedOn(UserAccountEntity userAccount) {
         if (userAccount.isRegisteredWhenRegistrationIsOff()) {
             /**
              * Do not throw exception here as Social API will get exception that would not be handled properly.
@@ -571,7 +571,7 @@ public class CustomUserDetailsService implements UserDetailsService {
      * @param roles
      * @return collection of granted authorities
      */
-    private Collection<? extends GrantedAuthority> getAuthorities(Set<RoleEnum> roles) {
+    public Collection<? extends GrantedAuthority> getAuthorities(Set<RoleEnum> roles) {
         List<GrantedAuthority> authList = new ArrayList<>(RoleEnum.values().length);
         authList.addAll(roles.stream().map(roleEnum -> new SimpleGrantedAuthority(roleEnum.name())).collect(Collectors.toList()));
         return authList;
