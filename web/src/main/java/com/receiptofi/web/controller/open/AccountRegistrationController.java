@@ -6,9 +6,12 @@ package com.receiptofi.web.controller.open;
 import com.receiptofi.domain.EmailValidateEntity;
 import com.receiptofi.domain.UserAccountEntity;
 import com.receiptofi.domain.UserProfileEntity;
+import com.receiptofi.domain.site.ReceiptUser;
+import com.receiptofi.security.OnLoginAuthenticationSuccessHandler;
 import com.receiptofi.service.AccountService;
 import com.receiptofi.service.EmailValidateService;
 import com.receiptofi.service.MailService;
+import com.receiptofi.social.service.CustomUserDetailsService;
 import com.receiptofi.utils.DateUtil;
 import com.receiptofi.utils.ParseJsonStringToMap;
 import com.receiptofi.utils.ScrubbedInput;
@@ -23,6 +26,11 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -34,6 +42,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
+import java.util.Collection;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -56,6 +65,8 @@ public class AccountRegistrationController {
     private AccountService accountService;
     private MailService mailService;
     private EmailValidateService emailValidateService;
+    private OnLoginAuthenticationSuccessHandler onLoginAuthenticationSuccessHandler;
+    private CustomUserDetailsService customUserDetailsService;
 
     @Value ("${registrationPage:registration}")
     private String registrationPage;
@@ -86,12 +97,15 @@ public class AccountRegistrationController {
             UserRegistrationValidator userRegistrationValidator,
             AccountService accountService,
             MailService mailService,
-            EmailValidateService emailValidateService
-    ) {
+            EmailValidateService emailValidateService,
+            OnLoginAuthenticationSuccessHandler onLoginAuthenticationSuccessHandler,
+            CustomUserDetailsService customUserDetailsService) {
         this.userRegistrationValidator = userRegistrationValidator;
         this.accountService = accountService;
         this.mailService = mailService;
         this.emailValidateService = emailValidateService;
+        this.onLoginAuthenticationSuccessHandler = onLoginAuthenticationSuccessHandler;
+        this.customUserDetailsService = customUserDetailsService;
     }
 
     @RequestMapping (method = RequestMethod.GET)
@@ -157,9 +171,31 @@ public class AccountRegistrationController {
                 userAccount.getName(),
                 accountValidate.getAuthenticationKey());
 
-        /** Do not add business logic here. Mobile service uses createAccount. */
-        LOG.info("success");
-        return registrationSuccess;
+        LOG.info("Account registered success");
+        if (!registrationTurnedOn) {
+            LOG.info("Registration is off, sending to {}", registrationSuccess);
+            return registrationSuccess;
+        }
+
+        /* Login user after successful registration */
+        userProfile = accountService.doesUserExists(userAccount.getUserId());
+        Collection<? extends GrantedAuthority> authorities = customUserDetailsService.getAuthorities(userAccount.getRoles());
+        UserDetails userDetails = new ReceiptUser(
+                userProfile.getEmail(),
+                userAccount.getUserAuthentication().getPassword(),
+                authorities,
+                userProfile.getReceiptUserId(),
+                userProfile.getProviderId(),
+                userProfile.getLevel(),
+                customUserDetailsService.isUserActiveAndRegistrationTurnedOn(userAccount),
+                userAccount.isAccountValidated()
+        );
+        Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, userRegistrationForm.getPassword(), authorities);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        String redirectTo = onLoginAuthenticationSuccessHandler.determineTargetUrl(authentication);
+        LOG.info("Redirecting user to {}", redirectTo);
+        return "redirect:" + redirectTo;
     }
 
     /**

@@ -7,7 +7,7 @@
     <secured attributes="ROLE_ANONYMOUS" match="all" />
     
     <on-start>
-        <set name="conversationScope.authenticationKey" value="requestParameters.authenticationKey" type="string" />
+        <evaluate expression="webFlowUtils.getFlashAttribute(externalContext, 'authenticationKey')" result="conversationScope.authenticationKey" />
         <evaluate expression="businessRegistrationFlowActions.findInvite(authenticationKey)"
                   result="flowScope.register" />
     </on-start>

@@ -91,6 +91,7 @@ public class InviteController {
             InviteAuthenticateForm inviteAuthenticateForm,
 
             ModelMap model,
+            RedirectAttributes redirectAttrs,
             HttpServletResponse httpServletResponse
     ) throws IOException {
         InviteEntity invite = inviteService.findByAuthenticationKey(key.getText());
@@ -117,12 +118,15 @@ public class InviteController {
                 return authenticatePage;
             case BUSINESS:
                 //TODO for business
-                return businessRegistrationFlow + "?authenticationKey=" + invite.getAuthenticationKey();
+                redirectAttrs.addFlashAttribute("authenticationKey", invite.getAuthenticationKey());
+                return businessRegistrationFlow;
             case ACCOUNTANT:
-                return businessRegistrationFlow + "?authenticationKey=" + invite.getAuthenticationKey();
+                redirectAttrs.addFlashAttribute("authenticationKey", invite.getAuthenticationKey());
+                return businessRegistrationFlow;
             case ENTERPRISE:
                 //TODO for enterprise
-                return businessRegistrationFlow + "?authenticationKey=" + invite.getAuthenticationKey();
+                redirectAttrs.addFlashAttribute("authenticationKey", invite.getAuthenticationKey());
+                return businessRegistrationFlow;
             default:
                 LOG.error("Reached unsupported rid={} uid={} condition={}",
                         invite.getInvited().getReceiptUserId(), invite.getEmail(), invite.getUserLevel());
