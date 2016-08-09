@@ -15,6 +15,14 @@ import javax.servlet.http.HttpServletRequest;
 @Component
 public class WebFlowUtils {
 
+    /**
+     * Accessed from Webflow.
+     *
+     * @param context
+     * @param attributeName
+     * @return
+     */
+    @SuppressWarnings ("unused")
     public Object getFlashAttribute(ExternalContext context, String attributeName) {
         Map<String, ?> flashMap = RequestContextUtils.getInputFlashMap((HttpServletRequest) context.getNativeRequest());
         return flashMap != null ? flashMap.get(attributeName) : null;
