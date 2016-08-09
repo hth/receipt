@@ -91,4 +91,13 @@ public class UserAuthenticationEntity extends BaseEntity {
         }
         return authenticationKey;
     }
+
+    /**
+     * Note: Do not show password and authenticationKey
+     * @return
+     */
+    @Override
+    public String toString() {
+        return "UserAuthenticationEntity{}";
+    }
 }
