@@ -65,26 +65,6 @@ public class LoginController {
     // TODO(hth) add later to my answer http://stackoverflow.com/questions/3457134/how-to-display-a-formatted-datetime-in-spring-mvc-3-0
 
     /**
-     * @return UserAuthenticationEntity
-     * @link http://stackoverflow.com/questions/1069958/neither-bindingresult-nor-plain-target-object-for-bean-name-available-as-request
-     * @info: OR you could just replace it in Form Request method getReceiptUser model.addAttribute("receiptUser", UserAuthenticationEntity.findReceiptUser(""));
-     */
-    @ModelAttribute ("userLoginForm")
-    public UserLoginForm getUserLoginForm() {
-        return UserLoginForm.newInstance();
-    }
-
-    @PostConstruct
-    public void init() {
-        LOG.info("Init of login controller");
-    }
-
-    @PreDestroy
-    public void cleanUp() {
-        LOG.info("Cleanup of login controller");
-    }
-
-    /**
      * isEnabled() false exists when properties registration.turned.on is false and user is trying to gain access
      * or signup through one of the provider. This is last line of defense for user signing in through social provider.
      * <p>
@@ -106,6 +86,9 @@ public class LoginController {
     public String loadForm(
             @RequestHeader ("User-Agent")
             String userAgent,
+
+            @ModelAttribute ("userLoginForm")
+            UserLoginForm userLoginForm,
 
             Locale locale,
             ModelMap map,
