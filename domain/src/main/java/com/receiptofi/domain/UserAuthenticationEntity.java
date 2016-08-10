@@ -51,7 +51,9 @@ public class UserAuthenticationEntity extends BaseEntity {
     }
 
     /**
+     *
      * @param password
+     * @param authenticationKey
      */
     private UserAuthenticationEntity(String password, String authenticationKey) {
         super();
