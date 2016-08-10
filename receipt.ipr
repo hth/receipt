@@ -301,6 +301,9 @@
             <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-mongodb:1.10.0.M1" />
             <element id="library" level="project" name="Gradle: org.mongodb:mongo-java-driver:3.3.0" />
             <element id="library" level="project" name="Gradle: com.braintreepayments.gateway:braintree-java:2.64.0" />
+            <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-redis:1.7.2.RELEASE" />
+            <element id="library" level="project" name="Gradle: redis.clients:jedis:2.9.0" />
+            <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-s3:1.11.24" />
             <element id="library" level="project" name="Gradle: org.quartz-scheduler:quartz:2.2.3" />
             <element id="library" level="project" name="Gradle: com.notnoop.apns:apns:1.0.0.Beta6" />
             <element id="library" level="project" name="Gradle: org.springframework.webflow:spring-webflow:2.4.4.RELEASE" />
@@ -348,7 +351,10 @@
             <element id="library" level="project" name="Gradle: org.springframework.security:spring-security-acl:4.1.1.RELEASE" />
             <element id="library" level="project" name="Gradle: org.slf4j:jcl-over-slf4j:1.7.21" />
             <element id="library" level="project" name="Gradle: org.osgi:org.osgi.core:4.2.0" />
+            <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-keyvalue:1.1.2.RELEASE" />
             <element id="library" level="project" name="Gradle: org.apache.commons:commons-pool2:2.4.2" />
+            <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-kms:1.11.24" />
+            <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-core:1.11.24" />
             <element id="library" level="project" name="Gradle: c3p0:c3p0:0.9.1.1" />
             <element id="library" level="project" name="Gradle: commons-httpclient:commons-httpclient:3.1" />
             <element id="library" level="project" name="Gradle: opensymphony:ognl:2.6.11" />
@@ -405,6 +411,7 @@
             <element id="library" level="project" name="Gradle: org.jrobin:jrobin:1.5.9" />
             <element id="library" level="project" name="Gradle: org.hamcrest:hamcrest-core:1.3" />
             <element id="library" level="project" name="Gradle: org.springframework:spring-jdbc:4.3.1.RELEASE" />
+            <element id="library" level="project" name="Gradle: com.fasterxml.jackson.dataformat:jackson-dataformat-cbor:2.6.6" />
             <element id="library" level="project" name="Gradle: org.springframework.webflow:spring-js-resources:2.4.4.RELEASE" />
             <element id="library" level="project" name="Gradle: com.squareup.okio:okio:1.6.0" />
             <element id="library" level="project" name="Gradle: commons-lang:commons-lang:2.6" />
@@ -455,13 +462,6 @@
               <element id="dir-copy" path="$PROJECT_DIR$/domain/build/resources/main" />
             </element>
             <element id="library" level="project" name="Gradle: javax.servlet:jstl:1.2" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.data/spring-data-redis/1.7.2.RELEASE/1ab47167a3dd5ee5adb78d59ef4d405e0bc7307d/spring-data-redis-1.7.2.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/redis.clients/jedis/2.9.0/292bc9cc26553acd3cccc26f2f95620bf88a04c2/jedis-2.9.0.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/aws-java-sdk-s3/1.11.24/abe0776038d6dcf96b79fd56a173bad8a19d7b2c/aws-java-sdk-s3-1.11.24.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.data/spring-data-keyvalue/1.1.2.RELEASE/c4ccf998dc6861be13bce3a209979a028f91c0c7/spring-data-keyvalue-1.1.2.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/aws-java-sdk-kms/1.11.24/79b7b0e275f0d6228fb82a95a90d77b320983113/aws-java-sdk-kms-1.11.24.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/aws-java-sdk-core/1.11.24/ae509454e092c683cc0a4afb19adaae3604fdbf8/aws-java-sdk-core-1.11.24.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.dataformat/jackson-dataformat-cbor/2.6.6/34c7b7ff495fc6b049612bdc9db0900a68e112f8/jackson-dataformat-cbor-2.6.6.jar" />
           </element>
         </element>
         <element id="directory" name="META-INF">
@@ -517,6 +517,9 @@
             <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-mongodb:1.10.0.M1" />
             <element id="library" level="project" name="Gradle: org.mongodb:mongo-java-driver:3.3.0" />
             <element id="library" level="project" name="Gradle: com.braintreepayments.gateway:braintree-java:2.64.0" />
+            <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-redis:1.7.2.RELEASE" />
+            <element id="library" level="project" name="Gradle: redis.clients:jedis:2.9.0" />
+            <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-s3:1.11.24" />
             <element id="library" level="project" name="Gradle: org.quartz-scheduler:quartz:2.2.3" />
             <element id="library" level="project" name="Gradle: com.notnoop.apns:apns:1.0.0.Beta6" />
             <element id="library" level="project" name="Gradle: org.springframework.webflow:spring-webflow:2.4.4.RELEASE" />
@@ -564,7 +567,10 @@
             <element id="library" level="project" name="Gradle: org.springframework.security:spring-security-acl:4.1.1.RELEASE" />
             <element id="library" level="project" name="Gradle: org.slf4j:jcl-over-slf4j:1.7.21" />
             <element id="library" level="project" name="Gradle: org.osgi:org.osgi.core:4.2.0" />
+            <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-keyvalue:1.1.2.RELEASE" />
             <element id="library" level="project" name="Gradle: org.apache.commons:commons-pool2:2.4.2" />
+            <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-kms:1.11.24" />
+            <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-core:1.11.24" />
             <element id="library" level="project" name="Gradle: c3p0:c3p0:0.9.1.1" />
             <element id="library" level="project" name="Gradle: commons-httpclient:commons-httpclient:3.1" />
             <element id="library" level="project" name="Gradle: opensymphony:ognl:2.6.11" />
@@ -621,6 +627,7 @@
             <element id="library" level="project" name="Gradle: org.jrobin:jrobin:1.5.9" />
             <element id="library" level="project" name="Gradle: org.hamcrest:hamcrest-core:1.3" />
             <element id="library" level="project" name="Gradle: org.springframework:spring-jdbc:4.3.1.RELEASE" />
+            <element id="library" level="project" name="Gradle: com.fasterxml.jackson.dataformat:jackson-dataformat-cbor:2.6.6" />
             <element id="library" level="project" name="Gradle: org.springframework.webflow:spring-js-resources:2.4.4.RELEASE" />
             <element id="library" level="project" name="Gradle: com.squareup.okio:okio:1.6.0" />
             <element id="library" level="project" name="Gradle: commons-lang:commons-lang:2.6" />
@@ -671,13 +678,6 @@
               <element id="dir-copy" path="$PROJECT_DIR$/domain/build/resources/main" />
             </element>
             <element id="library" level="project" name="Gradle: javax.servlet:jstl:1.2" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.data/spring-data-redis/1.7.2.RELEASE/1ab47167a3dd5ee5adb78d59ef4d405e0bc7307d/spring-data-redis-1.7.2.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/redis.clients/jedis/2.9.0/292bc9cc26553acd3cccc26f2f95620bf88a04c2/jedis-2.9.0.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/aws-java-sdk-s3/1.11.24/abe0776038d6dcf96b79fd56a173bad8a19d7b2c/aws-java-sdk-s3-1.11.24.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.data/spring-data-keyvalue/1.1.2.RELEASE/c4ccf998dc6861be13bce3a209979a028f91c0c7/spring-data-keyvalue-1.1.2.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/aws-java-sdk-kms/1.11.24/79b7b0e275f0d6228fb82a95a90d77b320983113/aws-java-sdk-kms-1.11.24.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/aws-java-sdk-core/1.11.24/ae509454e092c683cc0a4afb19adaae3604fdbf8/aws-java-sdk-core-1.11.24.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.dataformat/jackson-dataformat-cbor/2.6.6/34c7b7ff495fc6b049612bdc9db0900a68e112f8/jackson-dataformat-cbor-2.6.6.jar" />
           </element>
         </element>
         <element id="directory" name="META-INF">
@@ -733,6 +733,9 @@
             <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-mongodb:1.10.0.M1" />
             <element id="library" level="project" name="Gradle: org.mongodb:mongo-java-driver:3.3.0" />
             <element id="library" level="project" name="Gradle: com.braintreepayments.gateway:braintree-java:2.64.0" />
+            <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-redis:1.7.2.RELEASE" />
+            <element id="library" level="project" name="Gradle: redis.clients:jedis:2.9.0" />
+            <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-s3:1.11.24" />
             <element id="library" level="project" name="Gradle: org.quartz-scheduler:quartz:2.2.3" />
             <element id="library" level="project" name="Gradle: com.notnoop.apns:apns:1.0.0.Beta6" />
             <element id="library" level="project" name="Gradle: org.springframework.webflow:spring-webflow:2.4.4.RELEASE" />
@@ -780,7 +783,10 @@
             <element id="library" level="project" name="Gradle: org.springframework.security:spring-security-acl:4.1.1.RELEASE" />
             <element id="library" level="project" name="Gradle: org.slf4j:jcl-over-slf4j:1.7.21" />
             <element id="library" level="project" name="Gradle: org.osgi:org.osgi.core:4.2.0" />
+            <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-keyvalue:1.1.2.RELEASE" />
             <element id="library" level="project" name="Gradle: org.apache.commons:commons-pool2:2.4.2" />
+            <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-kms:1.11.24" />
+            <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-core:1.11.24" />
             <element id="library" level="project" name="Gradle: c3p0:c3p0:0.9.1.1" />
             <element id="library" level="project" name="Gradle: commons-httpclient:commons-httpclient:3.1" />
             <element id="library" level="project" name="Gradle: opensymphony:ognl:2.6.11" />
@@ -837,6 +843,7 @@
             <element id="library" level="project" name="Gradle: org.jrobin:jrobin:1.5.9" />
             <element id="library" level="project" name="Gradle: org.hamcrest:hamcrest-core:1.3" />
             <element id="library" level="project" name="Gradle: org.springframework:spring-jdbc:4.3.1.RELEASE" />
+            <element id="library" level="project" name="Gradle: com.fasterxml.jackson.dataformat:jackson-dataformat-cbor:2.6.6" />
             <element id="library" level="project" name="Gradle: org.springframework.webflow:spring-js-resources:2.4.4.RELEASE" />
             <element id="library" level="project" name="Gradle: com.squareup.okio:okio:1.6.0" />
             <element id="library" level="project" name="Gradle: commons-lang:commons-lang:2.6" />
@@ -891,13 +898,6 @@
               <element id="dir-copy" path="$PROJECT_DIR$/service/build/resources/main" />
             </element>
             <element id="library" level="project" name="Gradle: javax.servlet:jstl:1.2" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.data/spring-data-redis/1.7.2.RELEASE/1ab47167a3dd5ee5adb78d59ef4d405e0bc7307d/spring-data-redis-1.7.2.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/redis.clients/jedis/2.9.0/292bc9cc26553acd3cccc26f2f95620bf88a04c2/jedis-2.9.0.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/aws-java-sdk-s3/1.11.24/abe0776038d6dcf96b79fd56a173bad8a19d7b2c/aws-java-sdk-s3-1.11.24.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.data/spring-data-keyvalue/1.1.2.RELEASE/c4ccf998dc6861be13bce3a209979a028f91c0c7/spring-data-keyvalue-1.1.2.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/aws-java-sdk-kms/1.11.24/79b7b0e275f0d6228fb82a95a90d77b320983113/aws-java-sdk-kms-1.11.24.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/aws-java-sdk-core/1.11.24/ae509454e092c683cc0a4afb19adaae3604fdbf8/aws-java-sdk-core-1.11.24.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.dataformat/jackson-dataformat-cbor/2.6.6/34c7b7ff495fc6b049612bdc9db0900a68e112f8/jackson-dataformat-cbor-2.6.6.jar" />
           </element>
         </element>
         <element id="directory" name="META-INF">
@@ -953,6 +953,9 @@
             <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-mongodb:1.10.0.M1" />
             <element id="library" level="project" name="Gradle: org.mongodb:mongo-java-driver:3.3.0" />
             <element id="library" level="project" name="Gradle: com.braintreepayments.gateway:braintree-java:2.64.0" />
+            <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-redis:1.7.2.RELEASE" />
+            <element id="library" level="project" name="Gradle: redis.clients:jedis:2.9.0" />
+            <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-s3:1.11.24" />
             <element id="library" level="project" name="Gradle: org.quartz-scheduler:quartz:2.2.3" />
             <element id="library" level="project" name="Gradle: com.notnoop.apns:apns:1.0.0.Beta6" />
             <element id="library" level="project" name="Gradle: org.springframework.webflow:spring-webflow:2.4.4.RELEASE" />
@@ -1000,7 +1003,10 @@
             <element id="library" level="project" name="Gradle: org.springframework.security:spring-security-acl:4.1.1.RELEASE" />
             <element id="library" level="project" name="Gradle: org.slf4j:jcl-over-slf4j:1.7.21" />
             <element id="library" level="project" name="Gradle: org.osgi:org.osgi.core:4.2.0" />
+            <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-keyvalue:1.1.2.RELEASE" />
             <element id="library" level="project" name="Gradle: org.apache.commons:commons-pool2:2.4.2" />
+            <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-kms:1.11.24" />
+            <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-core:1.11.24" />
             <element id="library" level="project" name="Gradle: c3p0:c3p0:0.9.1.1" />
             <element id="library" level="project" name="Gradle: commons-httpclient:commons-httpclient:3.1" />
             <element id="library" level="project" name="Gradle: opensymphony:ognl:2.6.11" />
@@ -1057,6 +1063,7 @@
             <element id="library" level="project" name="Gradle: org.jrobin:jrobin:1.5.9" />
             <element id="library" level="project" name="Gradle: org.hamcrest:hamcrest-core:1.3" />
             <element id="library" level="project" name="Gradle: org.springframework:spring-jdbc:4.3.1.RELEASE" />
+            <element id="library" level="project" name="Gradle: com.fasterxml.jackson.dataformat:jackson-dataformat-cbor:2.6.6" />
             <element id="library" level="project" name="Gradle: org.springframework.webflow:spring-js-resources:2.4.4.RELEASE" />
             <element id="library" level="project" name="Gradle: com.squareup.okio:okio:1.6.0" />
             <element id="library" level="project" name="Gradle: commons-lang:commons-lang:2.6" />
@@ -1111,13 +1118,6 @@
               <element id="dir-copy" path="$PROJECT_DIR$/service/build/resources/main" />
             </element>
             <element id="library" level="project" name="Gradle: javax.servlet:jstl:1.2" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.data/spring-data-redis/1.7.2.RELEASE/1ab47167a3dd5ee5adb78d59ef4d405e0bc7307d/spring-data-redis-1.7.2.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/redis.clients/jedis/2.9.0/292bc9cc26553acd3cccc26f2f95620bf88a04c2/jedis-2.9.0.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/aws-java-sdk-s3/1.11.24/abe0776038d6dcf96b79fd56a173bad8a19d7b2c/aws-java-sdk-s3-1.11.24.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.data/spring-data-keyvalue/1.1.2.RELEASE/c4ccf998dc6861be13bce3a209979a028f91c0c7/spring-data-keyvalue-1.1.2.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/aws-java-sdk-kms/1.11.24/79b7b0e275f0d6228fb82a95a90d77b320983113/aws-java-sdk-kms-1.11.24.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/aws-java-sdk-core/1.11.24/ae509454e092c683cc0a4afb19adaae3604fdbf8/aws-java-sdk-core-1.11.24.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.dataformat/jackson-dataformat-cbor/2.6.6/34c7b7ff495fc6b049612bdc9db0900a68e112f8/jackson-dataformat-cbor-2.6.6.jar" />
           </element>
         </element>
         <element id="directory" name="META-INF">
@@ -1173,6 +1173,9 @@
             <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-mongodb:1.10.0.M1" />
             <element id="library" level="project" name="Gradle: org.mongodb:mongo-java-driver:3.3.0" />
             <element id="library" level="project" name="Gradle: com.braintreepayments.gateway:braintree-java:2.64.0" />
+            <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-redis:1.7.2.RELEASE" />
+            <element id="library" level="project" name="Gradle: redis.clients:jedis:2.9.0" />
+            <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-s3:1.11.24" />
             <element id="library" level="project" name="Gradle: org.quartz-scheduler:quartz:2.2.3" />
             <element id="library" level="project" name="Gradle: com.notnoop.apns:apns:1.0.0.Beta6" />
             <element id="library" level="project" name="Gradle: org.springframework.webflow:spring-webflow:2.4.4.RELEASE" />
@@ -1220,7 +1223,10 @@
             <element id="library" level="project" name="Gradle: org.springframework.security:spring-security-acl:4.1.1.RELEASE" />
             <element id="library" level="project" name="Gradle: org.slf4j:jcl-over-slf4j:1.7.21" />
             <element id="library" level="project" name="Gradle: org.osgi:org.osgi.core:4.2.0" />
+            <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-keyvalue:1.1.2.RELEASE" />
             <element id="library" level="project" name="Gradle: org.apache.commons:commons-pool2:2.4.2" />
+            <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-kms:1.11.24" />
+            <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-core:1.11.24" />
             <element id="library" level="project" name="Gradle: c3p0:c3p0:0.9.1.1" />
             <element id="library" level="project" name="Gradle: commons-httpclient:commons-httpclient:3.1" />
             <element id="library" level="project" name="Gradle: opensymphony:ognl:2.6.11" />
@@ -1277,6 +1283,7 @@
             <element id="library" level="project" name="Gradle: org.jrobin:jrobin:1.5.9" />
             <element id="library" level="project" name="Gradle: org.hamcrest:hamcrest-core:1.3" />
             <element id="library" level="project" name="Gradle: org.springframework:spring-jdbc:4.3.1.RELEASE" />
+            <element id="library" level="project" name="Gradle: com.fasterxml.jackson.dataformat:jackson-dataformat-cbor:2.6.6" />
             <element id="library" level="project" name="Gradle: org.springframework.webflow:spring-js-resources:2.4.4.RELEASE" />
             <element id="library" level="project" name="Gradle: com.squareup.okio:okio:1.6.0" />
             <element id="library" level="project" name="Gradle: commons-lang:commons-lang:2.6" />
@@ -1343,13 +1350,6 @@
               <element id="module-output" name="loader_main" />
               <element id="dir-copy" path="$PROJECT_DIR$/loader/build/resources/main" />
             </element>
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.data/spring-data-redis/1.7.2.RELEASE/1ab47167a3dd5ee5adb78d59ef4d405e0bc7307d/spring-data-redis-1.7.2.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/redis.clients/jedis/2.9.0/292bc9cc26553acd3cccc26f2f95620bf88a04c2/jedis-2.9.0.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/aws-java-sdk-s3/1.11.24/abe0776038d6dcf96b79fd56a173bad8a19d7b2c/aws-java-sdk-s3-1.11.24.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.data/spring-data-keyvalue/1.1.2.RELEASE/c4ccf998dc6861be13bce3a209979a028f91c0c7/spring-data-keyvalue-1.1.2.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/aws-java-sdk-kms/1.11.24/79b7b0e275f0d6228fb82a95a90d77b320983113/aws-java-sdk-kms-1.11.24.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/aws-java-sdk-core/1.11.24/ae509454e092c683cc0a4afb19adaae3604fdbf8/aws-java-sdk-core-1.11.24.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.dataformat/jackson-dataformat-cbor/2.6.6/34c7b7ff495fc6b049612bdc9db0900a68e112f8/jackson-dataformat-cbor-2.6.6.jar" />
           </element>
         </element>
         <element id="directory" name="META-INF">
@@ -1405,6 +1405,9 @@
             <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-mongodb:1.10.0.M1" />
             <element id="library" level="project" name="Gradle: org.mongodb:mongo-java-driver:3.3.0" />
             <element id="library" level="project" name="Gradle: com.braintreepayments.gateway:braintree-java:2.64.0" />
+            <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-redis:1.7.2.RELEASE" />
+            <element id="library" level="project" name="Gradle: redis.clients:jedis:2.9.0" />
+            <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-s3:1.11.24" />
             <element id="library" level="project" name="Gradle: org.quartz-scheduler:quartz:2.2.3" />
             <element id="library" level="project" name="Gradle: com.notnoop.apns:apns:1.0.0.Beta6" />
             <element id="library" level="project" name="Gradle: org.springframework.webflow:spring-webflow:2.4.4.RELEASE" />
@@ -1452,7 +1455,10 @@
             <element id="library" level="project" name="Gradle: org.springframework.security:spring-security-acl:4.1.1.RELEASE" />
             <element id="library" level="project" name="Gradle: org.slf4j:jcl-over-slf4j:1.7.21" />
             <element id="library" level="project" name="Gradle: org.osgi:org.osgi.core:4.2.0" />
+            <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-keyvalue:1.1.2.RELEASE" />
             <element id="library" level="project" name="Gradle: org.apache.commons:commons-pool2:2.4.2" />
+            <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-kms:1.11.24" />
+            <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-core:1.11.24" />
             <element id="library" level="project" name="Gradle: c3p0:c3p0:0.9.1.1" />
             <element id="library" level="project" name="Gradle: commons-httpclient:commons-httpclient:3.1" />
             <element id="library" level="project" name="Gradle: opensymphony:ognl:2.6.11" />
@@ -1509,6 +1515,7 @@
             <element id="library" level="project" name="Gradle: org.jrobin:jrobin:1.5.9" />
             <element id="library" level="project" name="Gradle: org.hamcrest:hamcrest-core:1.3" />
             <element id="library" level="project" name="Gradle: org.springframework:spring-jdbc:4.3.1.RELEASE" />
+            <element id="library" level="project" name="Gradle: com.fasterxml.jackson.dataformat:jackson-dataformat-cbor:2.6.6" />
             <element id="library" level="project" name="Gradle: org.springframework.webflow:spring-js-resources:2.4.4.RELEASE" />
             <element id="library" level="project" name="Gradle: com.squareup.okio:okio:1.6.0" />
             <element id="library" level="project" name="Gradle: commons-lang:commons-lang:2.6" />
@@ -1575,13 +1582,6 @@
               <element id="module-output" name="loader_main" />
               <element id="dir-copy" path="$PROJECT_DIR$/loader/build/resources/main" />
             </element>
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.data/spring-data-redis/1.7.2.RELEASE/1ab47167a3dd5ee5adb78d59ef4d405e0bc7307d/spring-data-redis-1.7.2.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/redis.clients/jedis/2.9.0/292bc9cc26553acd3cccc26f2f95620bf88a04c2/jedis-2.9.0.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/aws-java-sdk-s3/1.11.24/abe0776038d6dcf96b79fd56a173bad8a19d7b2c/aws-java-sdk-s3-1.11.24.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.data/spring-data-keyvalue/1.1.2.RELEASE/c4ccf998dc6861be13bce3a209979a028f91c0c7/spring-data-keyvalue-1.1.2.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/aws-java-sdk-kms/1.11.24/79b7b0e275f0d6228fb82a95a90d77b320983113/aws-java-sdk-kms-1.11.24.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/aws-java-sdk-core/1.11.24/ae509454e092c683cc0a4afb19adaae3604fdbf8/aws-java-sdk-core-1.11.24.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.dataformat/jackson-dataformat-cbor/2.6.6/34c7b7ff495fc6b049612bdc9db0900a68e112f8/jackson-dataformat-cbor-2.6.6.jar" />
           </element>
         </element>
         <element id="directory" name="META-INF">
@@ -1637,6 +1637,9 @@
             <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-mongodb:1.10.0.M1" />
             <element id="library" level="project" name="Gradle: org.mongodb:mongo-java-driver:3.3.0" />
             <element id="library" level="project" name="Gradle: com.braintreepayments.gateway:braintree-java:2.64.0" />
+            <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-redis:1.7.2.RELEASE" />
+            <element id="library" level="project" name="Gradle: redis.clients:jedis:2.9.0" />
+            <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-s3:1.11.24" />
             <element id="library" level="project" name="Gradle: org.quartz-scheduler:quartz:2.2.3" />
             <element id="library" level="project" name="Gradle: com.notnoop.apns:apns:1.0.0.Beta6" />
             <element id="library" level="project" name="Gradle: org.springframework.webflow:spring-webflow:2.4.4.RELEASE" />
@@ -1684,7 +1687,10 @@
             <element id="library" level="project" name="Gradle: org.springframework.security:spring-security-acl:4.1.1.RELEASE" />
             <element id="library" level="project" name="Gradle: org.slf4j:jcl-over-slf4j:1.7.21" />
             <element id="library" level="project" name="Gradle: org.osgi:org.osgi.core:4.2.0" />
+            <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-keyvalue:1.1.2.RELEASE" />
             <element id="library" level="project" name="Gradle: org.apache.commons:commons-pool2:2.4.2" />
+            <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-kms:1.11.24" />
+            <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-core:1.11.24" />
             <element id="library" level="project" name="Gradle: c3p0:c3p0:0.9.1.1" />
             <element id="library" level="project" name="Gradle: commons-httpclient:commons-httpclient:3.1" />
             <element id="library" level="project" name="Gradle: opensymphony:ognl:2.6.11" />
@@ -1741,6 +1747,7 @@
             <element id="library" level="project" name="Gradle: org.jrobin:jrobin:1.5.9" />
             <element id="library" level="project" name="Gradle: org.hamcrest:hamcrest-core:1.3" />
             <element id="library" level="project" name="Gradle: org.springframework:spring-jdbc:4.3.1.RELEASE" />
+            <element id="library" level="project" name="Gradle: com.fasterxml.jackson.dataformat:jackson-dataformat-cbor:2.6.6" />
             <element id="library" level="project" name="Gradle: org.springframework.webflow:spring-js-resources:2.4.4.RELEASE" />
             <element id="library" level="project" name="Gradle: com.squareup.okio:okio:1.6.0" />
             <element id="library" level="project" name="Gradle: commons-lang:commons-lang:2.6" />
@@ -1794,13 +1801,6 @@
               <element id="module-output" name="domain_main" />
               <element id="dir-copy" path="$PROJECT_DIR$/domain/build/resources/main" />
             </element>
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.data/spring-data-redis/1.7.2.RELEASE/1ab47167a3dd5ee5adb78d59ef4d405e0bc7307d/spring-data-redis-1.7.2.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/redis.clients/jedis/2.9.0/292bc9cc26553acd3cccc26f2f95620bf88a04c2/jedis-2.9.0.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/aws-java-sdk-s3/1.11.24/abe0776038d6dcf96b79fd56a173bad8a19d7b2c/aws-java-sdk-s3-1.11.24.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.data/spring-data-keyvalue/1.1.2.RELEASE/c4ccf998dc6861be13bce3a209979a028f91c0c7/spring-data-keyvalue-1.1.2.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/aws-java-sdk-kms/1.11.24/79b7b0e275f0d6228fb82a95a90d77b320983113/aws-java-sdk-kms-1.11.24.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/aws-java-sdk-core/1.11.24/ae509454e092c683cc0a4afb19adaae3604fdbf8/aws-java-sdk-core-1.11.24.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.dataformat/jackson-dataformat-cbor/2.6.6/34c7b7ff495fc6b049612bdc9db0900a68e112f8/jackson-dataformat-cbor-2.6.6.jar" />
           </element>
         </element>
         <element id="directory" name="META-INF">
@@ -1856,6 +1856,9 @@
             <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-mongodb:1.10.0.M1" />
             <element id="library" level="project" name="Gradle: org.mongodb:mongo-java-driver:3.3.0" />
             <element id="library" level="project" name="Gradle: com.braintreepayments.gateway:braintree-java:2.64.0" />
+            <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-redis:1.7.2.RELEASE" />
+            <element id="library" level="project" name="Gradle: redis.clients:jedis:2.9.0" />
+            <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-s3:1.11.24" />
             <element id="library" level="project" name="Gradle: org.quartz-scheduler:quartz:2.2.3" />
             <element id="library" level="project" name="Gradle: com.notnoop.apns:apns:1.0.0.Beta6" />
             <element id="library" level="project" name="Gradle: org.springframework.webflow:spring-webflow:2.4.4.RELEASE" />
@@ -1903,7 +1906,10 @@
             <element id="library" level="project" name="Gradle: org.springframework.security:spring-security-acl:4.1.1.RELEASE" />
             <element id="library" level="project" name="Gradle: org.slf4j:jcl-over-slf4j:1.7.21" />
             <element id="library" level="project" name="Gradle: org.osgi:org.osgi.core:4.2.0" />
+            <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-keyvalue:1.1.2.RELEASE" />
             <element id="library" level="project" name="Gradle: org.apache.commons:commons-pool2:2.4.2" />
+            <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-kms:1.11.24" />
+            <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-core:1.11.24" />
             <element id="library" level="project" name="Gradle: c3p0:c3p0:0.9.1.1" />
             <element id="library" level="project" name="Gradle: commons-httpclient:commons-httpclient:3.1" />
             <element id="library" level="project" name="Gradle: opensymphony:ognl:2.6.11" />
@@ -1960,6 +1966,7 @@
             <element id="library" level="project" name="Gradle: org.jrobin:jrobin:1.5.9" />
             <element id="library" level="project" name="Gradle: org.hamcrest:hamcrest-core:1.3" />
             <element id="library" level="project" name="Gradle: org.springframework:spring-jdbc:4.3.1.RELEASE" />
+            <element id="library" level="project" name="Gradle: com.fasterxml.jackson.dataformat:jackson-dataformat-cbor:2.6.6" />
             <element id="library" level="project" name="Gradle: org.springframework.webflow:spring-js-resources:2.4.4.RELEASE" />
             <element id="library" level="project" name="Gradle: com.squareup.okio:okio:1.6.0" />
             <element id="library" level="project" name="Gradle: commons-lang:commons-lang:2.6" />
@@ -2013,13 +2020,6 @@
               <element id="module-output" name="domain_main" />
               <element id="dir-copy" path="$PROJECT_DIR$/domain/build/resources/main" />
             </element>
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.data/spring-data-redis/1.7.2.RELEASE/1ab47167a3dd5ee5adb78d59ef4d405e0bc7307d/spring-data-redis-1.7.2.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/redis.clients/jedis/2.9.0/292bc9cc26553acd3cccc26f2f95620bf88a04c2/jedis-2.9.0.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/aws-java-sdk-s3/1.11.24/abe0776038d6dcf96b79fd56a173bad8a19d7b2c/aws-java-sdk-s3-1.11.24.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.data/spring-data-keyvalue/1.1.2.RELEASE/c4ccf998dc6861be13bce3a209979a028f91c0c7/spring-data-keyvalue-1.1.2.RELEASE.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/aws-java-sdk-kms/1.11.24/79b7b0e275f0d6228fb82a95a90d77b320983113/aws-java-sdk-kms-1.11.24.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/aws-java-sdk-core/1.11.24/ae509454e092c683cc0a4afb19adaae3604fdbf8/aws-java-sdk-core-1.11.24.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.dataformat/jackson-dataformat-cbor/2.6.6/34c7b7ff495fc6b049612bdc9db0900a68e112f8/jackson-dataformat-cbor-2.6.6.jar" />
           </element>
         </element>
         <element id="directory" name="META-INF">

@@ -51,7 +51,9 @@ public class UserAuthenticationEntity extends BaseEntity {
     }
 
     /**
+     *
      * @param password
+     * @param authenticationKey
      */
     private UserAuthenticationEntity(String password, String authenticationKey) {
         super();
@@ -90,5 +92,14 @@ public class UserAuthenticationEntity extends BaseEntity {
             LOG.error("failed to encode authenticationKey reason={}", e.getLocalizedMessage(), e);
         }
         return authenticationKey;
+    }
+
+    /**
+     * Note: Do not show password and authenticationKey
+     * @return
+     */
+    @Override
+    public String toString() {
+        return "UserAuthenticationEntity{}";
     }
 }
