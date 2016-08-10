@@ -26,8 +26,6 @@ import net.pieroxy.ua.detection.UserAgentDetectionResult;
 
 import java.util.Locale;
 
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 

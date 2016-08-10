@@ -5,7 +5,6 @@ import com.receiptofi.domain.site.ReceiptUser;
 import com.receiptofi.service.AccountantService;
 import com.receiptofi.service.BusinessUserService;
 import com.receiptofi.web.form.accountant.AccountantLandingForm;
-import com.receiptofi.web.form.business.BusinessLandingForm;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,7 +16,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.ModelAndView;
 
 /**
  * User: hitender
