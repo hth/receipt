@@ -98,11 +98,10 @@ public class BusinessLandingController {
         LOG.info("Landed on business page rid={} level={}", receiptUser.getRid(), receiptUser.getUserLevel());
 
         BusinessUserEntity businessUser = businessUserService.findBusinessUser(receiptUser.getRid());
-        return nextPage(receiptUser, businessUser, businessLandingForm);
+        return nextPage(businessUser, businessLandingForm);
     }
 
     private String nextPage(
-            ReceiptUser receiptUser,
             BusinessUserEntity businessUser,
             BusinessLandingForm businessLandingForm) {
         switch (businessUser.getBusinessUserRegistrationStatus()) {
@@ -112,7 +111,7 @@ public class BusinessLandingController {
             case C:
             case I:
             case N:
-                LOG.info("Migrate to business registration rid={} level={}", receiptUser.getRid(), receiptUser.getUserLevel());
+                LOG.info("Migrate to business registration rid={} level={}", businessUser.getReceiptUserId(), businessUser.getUserLevel());
                 return migrateBusinessRegistrationFlow;
             default:
                 LOG.error("Reached unsupported condition={}", businessUser.getBusinessUserRegistrationStatus());

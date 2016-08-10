@@ -100,4 +100,8 @@ public class BusinessUserEntity extends BaseEntity {
         this.bizName = bizName;
         return this;
     }
+
+    public UserLevelEnum getUserLevel() {
+        return userLevel;
+    }
 }
