@@ -109,9 +109,6 @@ public class InviteController {
                         .setReceiptUserId(invite.getInvited().getReceiptUserId());
                 return authenticatePage;
             case BUSINESS:
-                //TODO for business
-                redirectAttrs.addFlashAttribute("authenticationKey", invite.getAuthenticationKey());
-                return businessRegistrationFlow;
             case ACCOUNTANT:
                 redirectAttrs.addFlashAttribute("authenticationKey", invite.getAuthenticationKey());
                 return businessRegistrationFlow;
