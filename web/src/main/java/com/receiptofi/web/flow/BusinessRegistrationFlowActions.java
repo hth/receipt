@@ -10,8 +10,8 @@ import com.receiptofi.service.BizService;
 import com.receiptofi.service.BusinessUserService;
 import com.receiptofi.service.ExternalService;
 import com.receiptofi.service.InviteService;
+import com.receiptofi.web.controller.open.LoginController;
 import com.receiptofi.web.flow.exception.BusinessRegistrationException;
-import com.receiptofi.web.flow.exception.MigrateToBusinessRegistrationException;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -32,6 +32,7 @@ public class BusinessRegistrationFlowActions extends RegistrationFlowActions {
 
     private InviteService inviteService;
     private BusinessUserService businessUserService;
+    private LoginController loginController;
 
     @Value ("${registration.turned.on}")
     private boolean registrationTurnedOn;
@@ -42,10 +43,12 @@ public class BusinessRegistrationFlowActions extends RegistrationFlowActions {
             InviteService inviteService,
             ExternalService externalService,
             BusinessUserService businessUserService,
-            BizService bizService) {
+            BizService bizService,
+            LoginController loginController) {
         super(externalService, bizService);
         this.inviteService = inviteService;
         this.businessUserService = businessUserService;
+        this.loginController = loginController;
     }
 
     @SuppressWarnings ("unused")
@@ -94,7 +97,7 @@ public class BusinessRegistrationFlowActions extends RegistrationFlowActions {
      * @throws BusinessRegistrationException
      */
     @SuppressWarnings ("unused")
-    public Register completeRegistrationInformation(Register register, String key)
+    public String completeRegistrationInformation(Register register, String key)
             throws BusinessRegistrationException {
         try {
             InviteEntity invite = inviteService.findByAuthenticationKey(key);
@@ -120,11 +123,14 @@ public class BusinessRegistrationFlowActions extends RegistrationFlowActions {
 
             businessUserService.save(businessUser);
             register.getRegisterBusiness().setBusinessUser(businessUser);
-            return register;
+            String redirectTo = loginController.continueLoginAfterRegistration(register.getRegisterUser().getRid());
+            LOG.info("Redirecting user to {}", redirectTo);
+
+            return redirectTo;
         } catch (Exception e) {
             LOG.error("Error updating business user profile rid={} reason={}",
                     register.getRegisterUser().getRid(), e.getLocalizedMessage(), e);
-            throw new MigrateToBusinessRegistrationException("Error updating profile", e);
+            throw new BusinessRegistrationException("Error updating profile", e);
         }
     }
 }

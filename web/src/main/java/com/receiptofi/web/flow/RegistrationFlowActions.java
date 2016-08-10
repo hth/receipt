@@ -12,12 +12,12 @@ import com.receiptofi.utils.CommonUtil;
  * User: hitender
  * Date: 8/5/16 7:32 AM
  */
-public class RegistrationFlowActions {
+class RegistrationFlowActions {
 
     private ExternalService externalService;
     private BizService bizService;
 
-    public RegistrationFlowActions(ExternalService externalService, BizService bizService) {
+    RegistrationFlowActions(ExternalService externalService, BizService bizService) {
         this.externalService = externalService;
         this.bizService = bizService;
     }
@@ -42,7 +42,7 @@ public class RegistrationFlowActions {
         register.getRegisterBusiness().setPhone(CommonUtil.phoneCleanup(register.getRegisterBusiness().getPhone()));
     }
 
-    void validateAddress(BizStoreEntity bizStore) {
+    private void validateAddress(BizStoreEntity bizStore) {
         if (null == bizStore.getId() || !bizStore.isValidatedUsingExternalAPI()) {
             externalService.decodeAddress(bizStore);
         }

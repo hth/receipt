@@ -67,6 +67,7 @@ public class AccountRegistrationController {
     private EmailValidateService emailValidateService;
     private OnLoginAuthenticationSuccessHandler onLoginAuthenticationSuccessHandler;
     private CustomUserDetailsService customUserDetailsService;
+    private LoginController loginController;
 
     @Value ("${registrationPage:registration}")
     private String registrationPage;
@@ -99,13 +100,15 @@ public class AccountRegistrationController {
             MailService mailService,
             EmailValidateService emailValidateService,
             OnLoginAuthenticationSuccessHandler onLoginAuthenticationSuccessHandler,
-            CustomUserDetailsService customUserDetailsService) {
+            CustomUserDetailsService customUserDetailsService,
+            LoginController loginController) {
         this.userRegistrationValidator = userRegistrationValidator;
         this.accountService = accountService;
         this.mailService = mailService;
         this.emailValidateService = emailValidateService;
         this.onLoginAuthenticationSuccessHandler = onLoginAuthenticationSuccessHandler;
         this.customUserDetailsService = customUserDetailsService;
+        this.loginController = loginController;
     }
 
     @RequestMapping (method = RequestMethod.GET)
@@ -176,23 +179,7 @@ public class AccountRegistrationController {
             return registrationSuccess;
         }
 
-        /* Login user after successful registration */
-        userProfile = accountService.doesUserExists(userAccount.getUserId());
-        Collection<? extends GrantedAuthority> authorities = customUserDetailsService.getAuthorities(userAccount.getRoles());
-        UserDetails userDetails = new ReceiptUser(
-                userProfile.getEmail(),
-                userAccount.getUserAuthentication().getPassword(),
-                authorities,
-                userProfile.getReceiptUserId(),
-                userProfile.getProviderId(),
-                userProfile.getLevel(),
-                customUserDetailsService.isUserActiveAndRegistrationTurnedOn(userAccount),
-                userAccount.isAccountValidated()
-        );
-        Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, userRegistrationForm.getPassword(), authorities);
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-
-        String redirectTo = onLoginAuthenticationSuccessHandler.determineTargetUrl(authentication);
+        String redirectTo = loginController.continueLoginAfterRegistration(userAccount.getReceiptUserId());
         LOG.info("Redirecting user to {}", redirectTo);
         return "redirect:" + redirectTo;
     }
