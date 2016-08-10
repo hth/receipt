@@ -59,7 +59,7 @@
 
     <action-state id="completeRegistrationInformation">
         <!-- Need the result to show correct message on JSP -->
-        <evaluate result="register"
+        <evaluate result="flowScope.redirectTo"
                   expression="businessRegistrationFlowActions.completeRegistrationInformation(register, authenticationKey)"/>
 
         <transition on-exception="com.receiptofi.web.flow.exception.BusinessRegistrationException"
@@ -67,7 +67,7 @@
         <transition to="registrationComplete"/>
     </action-state>
 
-    <view-state id="registrationComplete" />
+    <view-state id="registrationComplete" view="externalRedirect:#{redirectTo}"/>
     <view-state id="home" view="externalRedirect:#{'/open/login.htm'}" />
     
     <global-transitions>

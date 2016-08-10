@@ -1,15 +1,7 @@
 package com.receiptofi.web.controller.open;
 
 import com.receiptofi.domain.InviteEntity;
-import com.receiptofi.domain.UserAccountEntity;
-import com.receiptofi.domain.UserAuthenticationEntity;
-import com.receiptofi.domain.UserProfileEntity;
-import com.receiptofi.repository.UserProfileManager;
-import com.receiptofi.service.AccountService;
 import com.receiptofi.service.InviteService;
-import com.receiptofi.utils.DateUtil;
-import com.receiptofi.utils.HashText;
-import com.receiptofi.utils.RandomString;
 import com.receiptofi.utils.ScrubbedInput;
 import com.receiptofi.web.form.InviteAuthenticateForm;
 import com.receiptofi.web.util.HttpRequestResponseParser;
