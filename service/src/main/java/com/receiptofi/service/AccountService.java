@@ -656,7 +656,7 @@ public class AccountService {
                 userAccount.getReceiptUserId());
     }
 
-    UserProfileEntity findProfileByReceiptUserId(String receiptUserId) {
+    public UserProfileEntity findProfileByReceiptUserId(String receiptUserId) {
         return userProfileManager.findByReceiptUserId(receiptUserId);
     }
 }

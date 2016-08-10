@@ -161,7 +161,7 @@ public class LoginController {
         UserAccountEntity userAccount = accountService.findByReceiptUserId(rid);
         Assert.notNull(userAccount, "UserAccount not found rid=" + rid);
 
-        UserProfileEntity userProfile = accountService.doesUserExists(rid);
+        UserProfileEntity userProfile = accountService.findProfileByReceiptUserId(rid);
         Collection<? extends GrantedAuthority> authorities = customUserDetailsService.getAuthorities(userAccount.getRoles());
         UserDetails userDetails = new ReceiptUser(
                 userProfile.getEmail(),
