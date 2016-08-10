@@ -160,8 +160,6 @@ public class AccountRegistrationController {
         }
 
         LOG.info("Registered new user Id={}", userAccount.getReceiptUserId());
-        redirectAttrs.addFlashAttribute("email", userAccount.getUserId());
-
         EmailValidateEntity accountValidate = emailValidateService.saveAccountValidate(
                 userAccount.getReceiptUserId(),
                 userAccount.getUserId());
@@ -174,6 +172,7 @@ public class AccountRegistrationController {
         LOG.info("Account registered success");
         if (!registrationTurnedOn) {
             LOG.info("Registration is off, sending to {}", registrationSuccess);
+            redirectAttrs.addFlashAttribute("email", userAccount.getUserId());
             return registrationSuccess;
         }
 
