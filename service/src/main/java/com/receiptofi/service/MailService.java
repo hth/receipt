@@ -716,7 +716,8 @@ public class MailService {
                     message = freemarkerToString("mail/inviteBusiness.ftl", rootMap);
                     break;
                 default:
-                    throw new RuntimeException("");
+                    LOG.error("Reached unsupported condition {}", invite.getUserLevel());
+                    throw new java.lang.UnsupportedOperationException("Reached unsupported condition " + invite.getUserLevel());
             }
             LOG.info("Invitation send to={}", StringUtils.isEmpty(devSentTo) ? email : devSentTo);
             MailEntity mail = new MailEntity()
