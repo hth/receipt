@@ -63,13 +63,13 @@ class TextInputScrubber {
         }
 
         try {
-            return URLDecoder.decode(input, "UTF-8");
+            return URLDecoder.decode(input, ScrubbedInput.UTF_8);
         } catch (IllegalArgumentException e) {
             LOG.warn("Unable to decode the input={}, next trying replacing text.", input);
             String replacedInput = input.replaceAll("%(?![0-9a-fA-F]{2})", "%25");
             replacedInput = replacedInput.replaceAll("\\+", "%2B");
             try {
-                return URLDecoder.decode(replacedInput, "UTF-8");
+                return URLDecoder.decode(replacedInput, ScrubbedInput.UTF_8);
             } catch (UnsupportedEncodingException e1) {
                 LOG.error("Unable to decode the input={}", input, e);
                 return "";
