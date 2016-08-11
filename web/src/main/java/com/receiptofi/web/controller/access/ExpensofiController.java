@@ -15,6 +15,7 @@ import com.receiptofi.service.ItemAnalyticService;
 import com.receiptofi.service.NotificationService;
 import com.receiptofi.service.ReceiptService;
 import com.receiptofi.utils.FileUtil;
+import com.receiptofi.utils.ScrubbedInput;
 import com.receiptofi.web.helper.AnchorFileInExcel;
 import com.receiptofi.web.helper.json.ExcelFileName;
 import com.receiptofi.web.view.ExpensofiExcelView;
@@ -180,7 +181,7 @@ public class ExpensofiController {
     }
 
     private JsonArray getJsonElements(String itemIds) throws UnsupportedEncodingException {
-        String result = URLDecoder.decode(itemIds, "UTF-8");
+        String result = URLDecoder.decode(itemIds, ScrubbedInput.UTF_8);
         result = result.substring(0, result.length() - 1);
 
         JsonObject jsonObject = (JsonObject) new JsonParser().parse(result);

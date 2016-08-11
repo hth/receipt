@@ -17,6 +17,7 @@ import java.io.Serializable;
 })
 public class ScrubbedInput implements Serializable {
     private static final long serialVersionUID = -4941918823207463880L;
+    public static final String UTF_8 = "UTF-8";
 
     protected String text;
 
