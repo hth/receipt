@@ -1,6 +1,5 @@
 package com.receiptofi.service;
 
-import static com.receiptofi.domain.types.UserLevelEnum.ACCOUNTANT;
 import static com.receiptofi.domain.types.UserLevelEnum.USER;
 import static org.springframework.ui.freemarker.FreeMarkerTemplateUtils.processTemplateIntoString;
 
@@ -490,14 +489,15 @@ public class MailService {
     }
 
     /**
-     * Send Accountant Invite to user.
+     * Send Business Invite. This invite could be for Business or Accountant based on userLevel.
      *
-     * @param invitedUserEmail Invitee's email address
-     * @param rid              RID of person inviting
-     * @param uid              UID of person inviting
+     * @param invitedUserEmail  Invitee's email address
+     * @param rid               RID of person inviting
+     * @param uid               UID of person inviting
+     * @param userLevel         Kind of account being created is based on userLevel
      * @return
      */
-    public String sendAccountantInvite(String invitedUserEmail, String rid, String uid) {
+    public String sendBusinessInvite(String invitedUserEmail, String rid, String uid, UserLevelEnum userLevel) {
         LOG.info("invitedUserEmail={} by rid={} uid={}", invitedUserEmail, rid, uid);
         Boolean responseStatus = Boolean.FALSE;
         String responseMessage;
@@ -523,7 +523,7 @@ public class MailService {
              * Best solution is to add automated re-invite using quartz/cron job. Make sure there is a count kept to
              * limit the number of invite.
              */
-            responseStatus = invokeCorrectInvitation(invitedUserEmail, rid, invitedUserProfile, ACCOUNTANT);
+            responseStatus = invokeCorrectInvitation(invitedUserEmail, rid, invitedUserProfile, userLevel);
             responseMessage = addNotification(invitedUserEmail, rid, responseStatus);
 
             invitees.invalidate(invitedUserEmail);
@@ -711,6 +711,9 @@ public class MailService {
                     break;
                 case ACCOUNTANT:
                     message = freemarkerToString("mail/inviteAccountant.ftl", rootMap);
+                    break;
+                case BUSINESS:
+                    message = freemarkerToString("mail/inviteBusiness.ftl", rootMap);
                     break;
                 default:
                     throw new RuntimeException("");

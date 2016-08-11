@@ -161,14 +161,16 @@ public class CustomUserDetailsService implements UserDetailsService {
             InviteEntity invite = inviteService.find(userAccount.getUserId());
             if (invite.isActive()) {
                 switch (invite.getUserLevel()) {
+                    case BUSINESS:
                     case ACCOUNTANT:
-                        mailService.sendAccountantInvite(invite.getEmail(), invite.getInvitedBy().getReceiptUserId(), invite.getInvitedBy().getUserId());
+                        mailService.sendBusinessInvite(
+                                invite.getEmail(),
+                                invite.getInvitedBy().getReceiptUserId(),
+                                invite.getInvitedBy().getUserId(),
+                                invite.getUserLevel());
                         break;
                     case USER:
                         mailService.sendInvite(invite.getEmail(), invite.getInvitedBy().getReceiptUserId(), invite.getInvitedBy().getUserId());
-                        break;
-                    case BUSINESS:
-                        //TODO
                         break;
                     case ENTERPRISE:
                         //TODO
