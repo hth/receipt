@@ -26,6 +26,8 @@ import java.net.URLDecoder;
 class TextInputScrubber {
     private static final Logger LOG = LoggerFactory.getLogger(TextInputScrubber.class);
 
+    private static final PolicyFactory policyFactory = new HtmlPolicyBuilder().toFactory();
+
     private TextInputScrubber() {
     }
 
@@ -41,7 +43,6 @@ class TextInputScrubber {
             return input;
         }
 
-        PolicyFactory policyFactory = new HtmlPolicyBuilder().toFactory();
         int preSanitizeLength;
         String sanitizedText = input;
         while (true) {
