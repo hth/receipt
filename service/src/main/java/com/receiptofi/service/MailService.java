@@ -494,7 +494,7 @@ public class MailService {
      * @param invitedUserEmail  Invitee's email address
      * @param rid               RID of person inviting
      * @param uid               UID of person inviting
-     * @param userLevel         Kind of account being created is based on userLevel
+     * @param userLevel         Account being created and invite being sent is based on userLevel
      * @return
      */
     public String sendBusinessInvite(String invitedUserEmail, String rid, String uid, UserLevelEnum userLevel) {
@@ -583,6 +583,7 @@ public class MailService {
      *
      * @param invitedUserEmail Invited users email address
      * @param invitedByRid     Existing users email address
+     * @param userLevel
      * @return
      */
     private boolean sendInvitation(String invitedUserEmail, String invitedByRid, UserLevelEnum userLevel) {
@@ -618,6 +619,7 @@ public class MailService {
      *
      * @param email        Invited users email address
      * @param invitedByRid Existing users rid
+     * @param userLevel
      * @return
      */
     private boolean reSendInvitation(String email, String invitedByRid, UserLevelEnum userLevel) {
@@ -678,6 +680,7 @@ public class MailService {
      *
      * @param email
      * @param invitedBy
+     * @param userLevel
      * @return
      */
     private InviteEntity reCreateAnotherInvite(String email, UserAccountEntity invitedBy, UserLevelEnum userLevel) {
