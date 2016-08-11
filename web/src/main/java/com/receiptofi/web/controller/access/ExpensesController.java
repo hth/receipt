@@ -3,6 +3,7 @@ package com.receiptofi.web.controller.access;
 import com.receiptofi.domain.ExpenseTagEntity;
 import com.receiptofi.domain.ItemEntity;
 import com.receiptofi.domain.site.ReceiptUser;
+import com.receiptofi.domain.types.UserLevelEnum;
 import com.receiptofi.service.ExpensesService;
 import com.receiptofi.service.ItemService;
 import com.receiptofi.service.MailService;
@@ -48,16 +49,13 @@ public class ExpensesController {
 
     private ItemService itemService;
     private ExpensesService expensesService;
-    private MailService mailService;
 
     @Autowired
     public ExpensesController(
             ItemService itemService,
-            ExpensesService expensesService,
-            MailService mailService) {
+            ExpensesService expensesService) {
         this.itemService = itemService;
         this.expensesService = expensesService;
-        this.mailService = mailService;
     }
 
     @RequestMapping (value = "/{tag}", method = RequestMethod.GET)
@@ -91,19 +89,5 @@ public class ExpensesController {
         expenseForm.setItems(items);
 
         return nextPage;
-    }
-
-    @RequestMapping (value = "/invite", method = RequestMethod.POST)
-    @ResponseBody
-    public String inviteAccountant(
-            @RequestParam(value = "mail")
-            ScrubbedInput mail
-    ) {
-        //Always lower case the email address
-        String invitedUserEmail = mail.getText().toLowerCase();
-        ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-        LOG.info("Invitation being sent to mail={} rid={}", invitedUserEmail, receiptUser.getRid());
-        return mailService.sendAccountantInvite(invitedUserEmail, receiptUser.getRid(), receiptUser.getUsername());
     }
 }

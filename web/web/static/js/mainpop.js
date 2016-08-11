@@ -118,7 +118,16 @@ function submitAccountantInvitationForm() {
     var inviteEmailId = $("#inviteEmailId").val();
     var object = {mail: inviteEmailId};
 
-    extracted(object, inviteEmailId, "/access/expenses/invite.htm");
+    extracted(object, inviteEmailId, "/access/invite/accountant.htm");
+}
+
+function submitBusinessInvitationForm() {
+    "use strict";
+
+    var inviteEmailId = $("#inviteEmailId").val();
+    var object = {mail: inviteEmailId};
+
+    extracted(object, inviteEmailId, "/access/invite/business.htm");
 }
 
 function changeInviteText(field, text) {
