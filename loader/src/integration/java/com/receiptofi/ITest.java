@@ -72,7 +72,6 @@ public class ITest extends RealMongoForTests {
     public UserPreferenceManager userPreferenceManager;
     public ForgotRecoverManager forgotRecoverManager;
     public GenerateUserIdManager generateUserIdManager;
-    public GenerateUserIdService generateUserIdService;
     public EmailValidateManager emailValidateManager;
     public EmailValidateService emailValidateService;
 
@@ -137,7 +136,6 @@ public class ITest extends RealMongoForTests {
         userPreferenceManager = new UserPreferenceManagerImpl(getMongoTemplate());
         forgotRecoverManager = new ForgotRecoverManagerImpl(getMongoTemplate());
         generateUserIdManager = new GenerateUserIdManagerImpl(getMongoTemplate());
-        generateUserIdService = new GenerateUserIdService(500, generateUserIdManager, userAccountManager);
         emailValidateManager = new EmailValidateManagerImpl(getMongoTemplate());
         emailValidateService = new EmailValidateService(emailValidateManager);
         registrationService = new RegistrationService(
@@ -182,7 +180,7 @@ public class ITest extends RealMongoForTests {
                 userProfileManager,
                 userPreferenceManager,
                 forgotRecoverManager,
-                generateUserIdService,
+                generateUserIdManager,
                 emailValidateService,
                 registrationService,
                 expensesService,
