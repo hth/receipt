@@ -33,6 +33,4 @@ public interface UserAccountManager extends RepositoryManager<UserAccountEntity>
     List<UserAccountEntity> findAllForBilling(int skipDocuments, int limit);
 
     List<UserAccountEntity> findAllTechnician();
-
-    List<UserAccountEntity> getLastSoManyRecords(int limit);
 }
