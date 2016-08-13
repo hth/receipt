@@ -1,3 +1,6 @@
+import com.eriwen.gradle.css.tasks.MinifyCssTask
+import com.eriwen.gradle.js.tasks.MinifyJsTask
+
 apply plugin: 'maven-publish'
 
 if (!hasProperty('env')) {
@@ -77,15 +80,17 @@ subprojects {
 
     sourceSets {
         test {
-            //Make files under integration compiled
-            resources {
-                srcDir 'src/test/resources'
-                srcDir 'src/integration/resources'
-            }
-            java {
-                srcDir 'src/test/java'
-                srcDir 'src/integration/java'
-            }
+            resources.srcDirs = ['src/test/resources']
+            java.srcDirs = ['src/test/java']
+        }
+
+        //Make files under integration compiled
+        integration {
+            resources.srcDirs = ['src/integration/resources']
+            java.srcDirs = ['src/integration/java']
+
+            compileClasspath += main.output + test.output
+            runtimeClasspath += main.output + test.output
         }
     }
 
@@ -338,6 +343,17 @@ subprojects {
             html.enabled = true
         }
     }
+
+    //Integration
+    configurations {
+        integrationCompile.extendsFrom testCompile
+        integrationRuntime.extendsFrom testRuntime
+    }
+
+    task integration(type: Test, description: 'Runs the integration tests.', group: 'Verification') {
+        testClassesDir = sourceSets.integration.output.classesDir
+        classpath = sourceSets.integration.runtimeClasspath
+    }
 }
 
 project(':common') {
@@ -528,7 +544,7 @@ javascript.source {
 }
 
 css.source.custom.css.files.eachWithIndex { cssFile, idx ->
-    tasks.create(name: "dominifyCss${idx}", type: com.eriwen.gradle.css.tasks.MinifyCssTask) {
+    tasks.create(name: "dominifyCss${idx}", type: MinifyCssTask) {
         if (cssFile.getParentFile().getName() != "css") {
             source = cssFile
             dest = "${buildDir}/tmp/css/${cssFile.getParentFile().getName()}/${cssFile.name}"
@@ -547,7 +563,7 @@ css.source.custom.css.files.eachWithIndex { cssFile, idx ->
 }
 
 javascript.source.custom.js.files.eachWithIndex { jsFile, idx ->
-    tasks.create(name: "dominifyJs${idx}", type: com.eriwen.gradle.js.tasks.MinifyJsTask) {
+    tasks.create(name: "dominifyJs${idx}", type: MinifyJsTask) {
         if (jsFile.getParentFile().getName() != "js") {
             source = jsFile
             dest = "${buildDir}/tmp/js/${jsFile.getParentFile().getName()}/${jsFile.name}"
@@ -839,4 +855,4 @@ publishing {
 //Line below is not required because defaultTasks order is followed
 //testReport.mustRunAfter war
 //publishToMavenLocal for local
-defaultTasks 'clean', 'setUpProfileForJunit', 'build', 'jar', 'war', 'test', 'testReport', 'jacocoTestReport', 'publish'
+defaultTasks 'clean', 'setUpProfileForJunit', 'build', 'jar', 'war', 'test', 'integration', 'testReport', 'jacocoTestReport', 'publish'

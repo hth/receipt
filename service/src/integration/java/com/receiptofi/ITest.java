@@ -361,7 +361,7 @@ public class ITest extends RealMongoForTests {
     public File getFile() {
         File file = new File("service/src/integration/resources/test-image.png");
         if (!file.exists()) {
-            file = new File("build/resources/test/test-image.png");
+            file = new File("build/resources/integration/test-image.png");
         }
         Assert.assertTrue("File does not exists=" + file.getAbsolutePath(), file.exists());
         return file;
