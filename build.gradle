@@ -1,3 +1,6 @@
+import com.eriwen.gradle.css.tasks.MinifyCssTask
+import com.eriwen.gradle.js.tasks.MinifyJsTask
+
 apply plugin: 'maven-publish'
 
 if (!hasProperty('env')) {
@@ -541,7 +544,7 @@ javascript.source {
 }
 
 css.source.custom.css.files.eachWithIndex { cssFile, idx ->
-    tasks.create(name: "dominifyCss${idx}", type: com.eriwen.gradle.css.tasks.MinifyCssTask) {
+    tasks.create(name: "dominifyCss${idx}", type: MinifyCssTask) {
         if (cssFile.getParentFile().getName() != "css") {
             source = cssFile
             dest = "${buildDir}/tmp/css/${cssFile.getParentFile().getName()}/${cssFile.name}"
@@ -560,7 +563,7 @@ css.source.custom.css.files.eachWithIndex { cssFile, idx ->
 }
 
 javascript.source.custom.js.files.eachWithIndex { jsFile, idx ->
-    tasks.create(name: "dominifyJs${idx}", type: com.eriwen.gradle.js.tasks.MinifyJsTask) {
+    tasks.create(name: "dominifyJs${idx}", type: MinifyJsTask) {
         if (jsFile.getParentFile().getName() != "js") {
             source = jsFile
             dest = "${buildDir}/tmp/js/${jsFile.getParentFile().getName()}/${jsFile.name}"
