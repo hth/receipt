@@ -2044,18 +2044,25 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="common_integration" target="1.8" />
       <module name="common_main" target="1.8" />
       <module name="common_test" target="1.8" />
+      <module name="domain_integration" target="1.8" />
       <module name="domain_main" target="1.8" />
       <module name="domain_test" target="1.8" />
+      <module name="loader_integration" target="1.8" />
       <module name="loader_main" target="1.8" />
       <module name="loader_test" target="1.8" />
+      <module name="security_integration" target="1.8" />
       <module name="security_main" target="1.8" />
       <module name="security_test" target="1.8" />
+      <module name="service_integration" target="1.8" />
       <module name="service_main" target="1.8" />
       <module name="service_test" target="1.8" />
+      <module name="social_integration" target="1.8" />
       <module name="social_main" target="1.8" />
       <module name="social_test" target="1.8" />
+      <module name="web_integration" target="1.8" />
       <module name="web_main" target="1.8" />
       <module name="web_test" target="1.8" />
     </bytecodeTargetLevel>
@@ -2376,26 +2383,33 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/common/common.iml" filepath="$PROJECT_DIR$/.idea/modules/common/common.iml" group="common" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/common/common_integration.iml" filepath="$PROJECT_DIR$/.idea/modules/common/common_integration.iml" group="common" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/common/common_main.iml" filepath="$PROJECT_DIR$/.idea/modules/common/common_main.iml" group="common" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/common/common_test.iml" filepath="$PROJECT_DIR$/.idea/modules/common/common_test.iml" group="common" />
       <module fileurl="file://$PROJECT_DIR$/documentation/documentation.iml" filepath="$PROJECT_DIR$/documentation/documentation.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/domain/domain.iml" filepath="$PROJECT_DIR$/.idea/modules/domain/domain.iml" group="domain" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/domain/domain_integration.iml" filepath="$PROJECT_DIR$/.idea/modules/domain/domain_integration.iml" group="domain" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/domain/domain_main.iml" filepath="$PROJECT_DIR$/.idea/modules/domain/domain_main.iml" group="domain" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/domain/domain_test.iml" filepath="$PROJECT_DIR$/.idea/modules/domain/domain_test.iml" group="domain" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/loader/loader.iml" filepath="$PROJECT_DIR$/.idea/modules/loader/loader.iml" group="loader" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/loader/loader_integration.iml" filepath="$PROJECT_DIR$/.idea/modules/loader/loader_integration.iml" group="loader" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/loader/loader_main.iml" filepath="$PROJECT_DIR$/.idea/modules/loader/loader_main.iml" group="loader" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/loader/loader_test.iml" filepath="$PROJECT_DIR$/.idea/modules/loader/loader_test.iml" group="loader" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/receipt.iml" filepath="$PROJECT_DIR$/.idea/modules/receipt.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/security/security.iml" filepath="$PROJECT_DIR$/.idea/modules/security/security.iml" group="security" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/security/security_integration.iml" filepath="$PROJECT_DIR$/.idea/modules/security/security_integration.iml" group="security" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/security/security_main.iml" filepath="$PROJECT_DIR$/.idea/modules/security/security_main.iml" group="security" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/security/security_test.iml" filepath="$PROJECT_DIR$/.idea/modules/security/security_test.iml" group="security" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/service/service.iml" filepath="$PROJECT_DIR$/.idea/modules/service/service.iml" group="service" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/service/service_integration.iml" filepath="$PROJECT_DIR$/.idea/modules/service/service_integration.iml" group="service" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/service/service_main.iml" filepath="$PROJECT_DIR$/.idea/modules/service/service_main.iml" group="service" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/service/service_test.iml" filepath="$PROJECT_DIR$/.idea/modules/service/service_test.iml" group="service" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/social/social.iml" filepath="$PROJECT_DIR$/.idea/modules/social/social.iml" group="social" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/social/social_integration.iml" filepath="$PROJECT_DIR$/.idea/modules/social/social_integration.iml" group="social" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/social/social_main.iml" filepath="$PROJECT_DIR$/.idea/modules/social/social_main.iml" group="social" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/social/social_test.iml" filepath="$PROJECT_DIR$/.idea/modules/social/social_test.iml" group="social" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/web/web.iml" filepath="$PROJECT_DIR$/.idea/modules/web/web.iml" group="web" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/web/web_integration.iml" filepath="$PROJECT_DIR$/.idea/modules/web/web_integration.iml" group="web" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/web/web_main.iml" filepath="$PROJECT_DIR$/.idea/modules/web/web_main.iml" group="web" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/web/web_test.iml" filepath="$PROJECT_DIR$/.idea/modules/web/web_test.iml" group="web" />
     </modules>
