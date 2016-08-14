@@ -91,7 +91,7 @@ public class ReceiptWebService {
             method = RequestMethod.GET,
             headers = "Accept=application/json",
             produces = "application/json")
-    @Cacheable ("searchBusinessWithBusinessName")
+    @Cacheable (value = "searchBusinessWithBusinessName", keyGenerator = "customKeyGenerator")
     public Set<String> searchBusinessWithBusinessName(
             @RequestParam ("term")
             ScrubbedInput businessName
@@ -116,7 +116,7 @@ public class ReceiptWebService {
             method = RequestMethod.GET,
             headers = "Accept=application/json",
             produces = "application/json")
-    @Cacheable ("searchBiz")
+    @Cacheable (value = "searchBiz", keyGenerator = "customKeyGenerator")
     public Set<String> searchBiz(
             @RequestParam ("term")
             ScrubbedInput bizAddress,
@@ -149,7 +149,7 @@ public class ReceiptWebService {
             method = RequestMethod.GET,
             headers = "Accept=application/json",
             produces = "application/json")
-    @Cacheable ("searchPhone")
+    @Cacheable (value = "searchPhone", keyGenerator = "customKeyGenerator")
     public Set<String> searchPhone(
             @RequestParam ("term")
             ScrubbedInput bizPhone,
@@ -186,7 +186,7 @@ public class ReceiptWebService {
             method = RequestMethod.GET,
             headers = "Accept=application/json",
             produces = "application/json")
-    @Cacheable ("searchItem")
+    @Cacheable (value = "searchItem", keyGenerator = "customKeyGenerator")
     public Set<String> searchItem(
             @RequestParam ("term")
             ScrubbedInput itemName,

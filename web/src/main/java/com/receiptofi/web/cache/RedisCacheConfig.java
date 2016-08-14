@@ -57,7 +57,7 @@ public class RedisCacheConfig extends CachingConfigurerSupport {
      * @return
      */
     @Bean
-    public KeyGenerator keyGenerator() {
+    public KeyGenerator customKeyGenerator() {
         return (o, method, objects) -> {
             // This will generate a unique key of the class name, the method name,
             // and all method parameters appended.
