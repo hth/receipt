@@ -29,27 +29,26 @@ public class MongoUsersConnectionRepository implements UsersConnectionRepository
 
     private String userId;
 
-    @Autowired private ConnectionService connectionService;
-
+    private ConnectionService connectionService;
     private ConnectionFactoryLocator connectionFactoryLocator;
     private TextEncryptor textEncryptor;
     private ConnectionSignUp connectionSignUp;
 
     @Autowired
-    public MongoUsersConnectionRepository(String userId,
-                                          ConnectionService connectionService,
-                                          ConnectionFactoryLocator connectionFactoryLocator,
-                                          TextEncryptor textEncryptor) {
-
+    public MongoUsersConnectionRepository(
+            String userId,
+            ConnectionService connectionService,
+            ConnectionFactoryLocator connectionFactoryLocator,
+            TextEncryptor textEncryptor) {
         this.userId = userId;
         this.connectionService = connectionService;
         this.connectionFactoryLocator = connectionFactoryLocator;
         this.textEncryptor = textEncryptor;
     }
 
-    public MongoUsersConnectionRepository(ConnectionFactoryLocator connectionFactoryLocator,
-                                          TextEncryptor textEncryptor) {
-
+    public MongoUsersConnectionRepository(
+            ConnectionFactoryLocator connectionFactoryLocator,
+            TextEncryptor textEncryptor) {
         this.connectionFactoryLocator = connectionFactoryLocator;
         this.textEncryptor = textEncryptor;
     }
