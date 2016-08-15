@@ -15,6 +15,7 @@ import com.receiptofi.service.routes.FileUploadDocumentSenderJMS;
 
 import org.apache.commons.io.IOUtils;
 
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mock.web.MockMultipartFile;
@@ -72,6 +73,8 @@ public class ITest extends RealMongoForTests {
     public UserPreferenceManager userPreferenceManager;
     public ForgotRecoverManager forgotRecoverManager;
     public GenerateUserIdManager generateUserIdManager;
+    public GenerateUserIdService generateUserIdService;
+    public SkippedRidsService skippedRidsService;
     public EmailValidateManager emailValidateManager;
     public EmailValidateService emailValidateService;
 
@@ -113,6 +116,7 @@ public class ITest extends RealMongoForTests {
     @Mock public Configuration configuration;
     @Mock public Template template;
     @Mock public JmsTemplate jmsTemplate;
+    @Mock public RedisTemplate<String, Object> redisTemplate;
 
     @Before
     public void setup() throws IOException {
@@ -134,6 +138,8 @@ public class ITest extends RealMongoForTests {
         userPreferenceManager = new UserPreferenceManagerImpl(getMongoTemplate());
         forgotRecoverManager = new ForgotRecoverManagerImpl(getMongoTemplate());
         generateUserIdManager = new GenerateUserIdManagerImpl(getMongoTemplate());
+        skippedRidsService = new SkippedRidsService(100, "SKIPPED_RIDS", generateUserIdManager, userAccountManager, redisTemplate);
+        generateUserIdService = new GenerateUserIdService(generateUserIdManager, skippedRidsService);
         emailValidateManager = new EmailValidateManagerImpl(getMongoTemplate());
         emailValidateService = new EmailValidateService(emailValidateManager);
         registrationService = new RegistrationService(
@@ -178,7 +184,7 @@ public class ITest extends RealMongoForTests {
                 userProfileManager,
                 userPreferenceManager,
                 forgotRecoverManager,
-                generateUserIdManager,
+                generateUserIdService,
                 emailValidateService,
                 registrationService,
                 expensesService,

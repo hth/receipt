@@ -1,6 +1,6 @@
 package com.receiptofi.web.listener;
 
-import com.receiptofi.web.cache.RedisCacheConfig;
+import com.receiptofi.service.cache.RedisCacheConfig;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

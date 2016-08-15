@@ -15,7 +15,6 @@ import com.receiptofi.domain.UserAccountEntity;
 import com.receiptofi.domain.types.AccountInactiveReasonEnum;
 import com.receiptofi.domain.types.ProviderEnum;
 import com.receiptofi.domain.types.RoleEnum;
-import com.receiptofi.repository.util.AppendAdditionalFields;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,6 +25,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.WriteResultChecking;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
@@ -161,5 +161,13 @@ public class UserAccountManagerImpl implements UserAccountManager {
                         )).with(new Sort(DESC, "RID")),
                 UserAccountEntity.class
         );
+    }
+
+    @Override
+    public List<UserAccountEntity> getLastSoManyRecords(int limit) {
+        Query query = query(where("RID").exists(true)).limit(limit).with(new Sort(DESC, "RID"));
+        query.fields().include("RID");
+
+        return mongoTemplate.find(query, UserAccountEntity.class, TABLE);
     }
 }

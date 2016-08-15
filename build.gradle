@@ -222,11 +222,10 @@ subprojects {
         compile "org.mongodb:mongo-java-driver:$mongoJavaDriver"
 
         compile "com.braintreepayments.gateway:braintree-java:$braintree"
-
-        /** --- Specific to Receipt Web Application ---- */
         compile "$springDataGroup:spring-data-redis:$redis"
         compile "redis.clients:jedis:$jedis"
 
+        /** --- Specific to Receipt Web Application ---- */
         compile "com.amazonaws:aws-java-sdk-s3:$amazonaws"
         compile "org.quartz-scheduler:quartz:$quartz"
         compile "com.notnoop.apns:apns:$apns"
