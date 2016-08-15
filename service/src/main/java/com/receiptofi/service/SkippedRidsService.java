@@ -109,7 +109,7 @@ public class SkippedRidsService {
             start = GenerateUserIds.STARTING_USER_ID;
         }
 
-        while (start <= lastGenerateUserId) {
+        while (start < lastGenerateUserId) {
             skippedRids.add(start);
             start++;
         }
