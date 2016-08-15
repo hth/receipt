@@ -33,9 +33,6 @@
 
     <!--suppress SpringModelInspection -->
     <util:properties id="environmentProperty" location="classpath:/conf/dev.properties" />
-    <!-- Currently not being used -->
-    <!--suppress SpringModelInspection -->
-    <context:property-placeholder location="classpath:/conf/redis.properties"                   order="1" ignore-unresolvable="true" />
     <!--suppress SpringModelInspection -->
     <context:property-placeholder location="classpath:/conf/config.properties"                  order="1" ignore-unresolvable="true" />
     <!--suppress SpringModelInspection -->

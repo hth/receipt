@@ -1,4 +1,4 @@
-package com.receiptofi.web.cache;
+package com.receiptofi.service.cache;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.CacheManager;

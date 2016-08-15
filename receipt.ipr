@@ -26,7 +26,6 @@
               <element id="file-copy" path="$PROJECT_DIR$/web/resources/conf/application-messages.properties" />
               <element id="file-copy" path="$PROJECT_DIR$/web/resources/conf/config.properties" />
               <element id="file-copy" path="$PROJECT_DIR$/web/resources/conf/pass.properties" />
-              <element id="file-copy" path="$PROJECT_DIR$/web/resources/conf/redis.properties" />
               <element id="file-copy" path="$PROJECT_DIR$/web/environment/dev/dev.properties" />
             </element>
             <element id="directory" name="cert">
