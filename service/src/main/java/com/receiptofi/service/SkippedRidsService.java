@@ -45,7 +45,7 @@ public class SkippedRidsService {
             @Value ("${lookBackUntilRid:500}")
             int lookBackUntilRid,
 
-            @Value ("${redis.key.skippedRids:SKIPPED_RIDS}")
+            @Value ("${redis.key.skippedRids}")
             String keySkippedRids,
 
             GenerateUserIdManager generateUserIdManager,
