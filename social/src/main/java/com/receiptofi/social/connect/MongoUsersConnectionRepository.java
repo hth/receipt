@@ -52,14 +52,6 @@ public class MongoUsersConnectionRepository implements UsersConnectionRepository
         this.textEncryptor = textEncryptor;
     }
 
-    public void removeConnections(ProviderEnum providerId) {
-        connectionService.remove(userId, providerId);
-    }
-
-    public void removeConnection(ConnectionKey connectionKey) {
-        connectionService.remove(userId, connectionKey);
-    }
-
     /**
      * Find or create new user account.
      *
