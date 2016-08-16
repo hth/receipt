@@ -73,7 +73,7 @@ public class SkippedRidsService {
             this.redisTemplate.opsForValue().set(keySkippedRids, dequeRids);
         }
 
-        LOG.info("Size of skipped rids={} ids={}", dequeRids.size(), getSkippedRids());
+        LOG.info("Size of skipped rids={} ids={}", dequeRids.size(), dequeRids);
     }
 
     boolean hasSkippedRidsFound() {
