@@ -11,7 +11,6 @@ import com.receiptofi.domain.annotation.Mobile;
 import com.receiptofi.domain.site.ReceiptUser;
 import com.receiptofi.domain.types.ProviderEnum;
 import com.receiptofi.domain.types.RoleEnum;
-import com.receiptofi.repository.GenerateUserIdManager;
 import com.receiptofi.service.AccountService;
 import com.receiptofi.service.GenerateUserIdService;
 import com.receiptofi.service.InviteService;

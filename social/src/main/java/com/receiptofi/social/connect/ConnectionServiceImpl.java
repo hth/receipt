@@ -9,7 +9,6 @@ import com.receiptofi.domain.UserAuthenticationEntity;
 import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.domain.types.ProviderEnum;
 import com.receiptofi.domain.types.RoleEnum;
-import com.receiptofi.repository.GenerateUserIdManager;
 import com.receiptofi.repository.UserAccountManager;
 import com.receiptofi.repository.UserProfileManager;
 import com.receiptofi.service.AccountService;

@@ -4,12 +4,9 @@ import com.receiptofi.domain.types.ProviderEnum;
 import com.receiptofi.social.annotation.Social;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.encrypt.TextEncryptor;
 import org.springframework.social.connect.Connection;
 import org.springframework.social.connect.ConnectionFactoryLocator;
-import org.springframework.social.connect.ConnectionKey;
 import org.springframework.social.connect.ConnectionRepository;
-import org.springframework.social.connect.ConnectionSignUp;
 import org.springframework.social.connect.UsersConnectionRepository;
 
 import java.util.List;
@@ -29,40 +26,19 @@ public class MongoUsersConnectionRepository implements UsersConnectionRepository
 
     private String userId;
 
-    private ConnectionService connectionService;
+    /** Note: Do not remove autowired for connectionService. */
+    @Autowired  private ConnectionService connectionService;
+
     private ConnectionFactoryLocator connectionFactoryLocator;
-    private TextEncryptor textEncryptor;
-    private ConnectionSignUp connectionSignUp;
 
     @Autowired
-    public MongoUsersConnectionRepository(
-            String userId,
-            ConnectionService connectionService,
-            ConnectionFactoryLocator connectionFactoryLocator,
-            TextEncryptor textEncryptor) {
+    public MongoUsersConnectionRepository(String userId, ConnectionFactoryLocator connectionFactoryLocator) {
         this.userId = userId;
-        this.connectionService = connectionService;
         this.connectionFactoryLocator = connectionFactoryLocator;
-        this.textEncryptor = textEncryptor;
     }
 
-    public MongoUsersConnectionRepository(
-            ConnectionFactoryLocator connectionFactoryLocator,
-            TextEncryptor textEncryptor) {
+    public MongoUsersConnectionRepository(ConnectionFactoryLocator connectionFactoryLocator) {
         this.connectionFactoryLocator = connectionFactoryLocator;
-        this.textEncryptor = textEncryptor;
-    }
-
-    public void setConnectionSignUp(ConnectionSignUp connectionSignUp) {
-        this.connectionSignUp = connectionSignUp;
-    }
-
-    public void removeConnections(ProviderEnum providerId) {
-        connectionService.remove(userId, providerId);
-    }
-
-    public void removeConnection(ConnectionKey connectionKey) {
-        connectionService.remove(userId, connectionKey);
     }
 
     /**
@@ -91,6 +67,6 @@ public class MongoUsersConnectionRepository implements UsersConnectionRepository
         if (null == userId) {
             throw new IllegalArgumentException("UserId cannot be null");
         }
-        return new MongoConnectionRepository(userId, connectionService, connectionFactoryLocator, textEncryptor);
+        return new MongoConnectionRepository(userId, connectionService, connectionFactoryLocator);
     }
 }

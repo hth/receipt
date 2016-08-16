@@ -7,7 +7,6 @@ import com.receiptofi.social.connect.ConnectionServiceImpl;
 import com.receiptofi.social.connect.MongoUsersConnectionRepository;
 import com.receiptofi.social.service.CustomUserDetailsService;
 import com.receiptofi.social.user.SignInAdapterImpl;
-import com.receiptofi.social.user.SimpleConnectionSignUp;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -92,9 +91,7 @@ public class SocialConfig {
     @Bean
     public UsersConnectionRepository usersConnectionRepository() {
         LOG.info("Initializing usersConnectionRepository");
-        MongoUsersConnectionRepository repository = new MongoUsersConnectionRepository(connectionFactoryLocator(), Encryptors.noOpText());
-        repository.setConnectionSignUp(new SimpleConnectionSignUp());
-        return repository;
+        return new MongoUsersConnectionRepository(connectionFactoryLocator());
     }
 
     /**

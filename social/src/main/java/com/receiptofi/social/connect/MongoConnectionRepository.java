@@ -7,7 +7,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.security.crypto.encrypt.TextEncryptor;
 import org.springframework.social.connect.Connection;
 import org.springframework.social.connect.ConnectionFactoryLocator;
 import org.springframework.social.connect.ConnectionKey;
@@ -30,23 +29,20 @@ import java.util.Set;
         "PMD.LongVariable"
 })
 @Social
-public class MongoConnectionRepository implements ConnectionRepository {
+class MongoConnectionRepository implements ConnectionRepository {
     private static final Logger LOG = LoggerFactory.getLogger(MongoConnectionRepository.class);
 
     private final String userId;
     private final ConnectionService connectionService;
     private final ConnectionFactoryLocator connectionFactoryLocator;
-    private final TextEncryptor textEncryptor;
 
-    public MongoConnectionRepository(String userId,
-                                     ConnectionService connectionService,
-                                     ConnectionFactoryLocator connectionFactoryLocator,
-                                     TextEncryptor textEncryptor) {
-
+    MongoConnectionRepository(
+            String userId,
+            ConnectionService connectionService,
+            ConnectionFactoryLocator connectionFactoryLocator) {
         this.userId = userId;
         this.connectionService = connectionService;
         this.connectionFactoryLocator = connectionFactoryLocator;
-        this.textEncryptor = textEncryptor;
     }
 
     public MultiValueMap<String, Connection<?>> findAllConnections() {
@@ -61,7 +57,7 @@ public class MongoConnectionRepository implements ConnectionRepository {
         for (Connection<?> connection : resultList) {
             String providerId = connection.getKey().getProviderId();
             if (connections.get(providerId).isEmpty()) {
-                connections.put(providerId, new LinkedList<Connection<?>>());
+                connections.put(providerId, new LinkedList<>());
             }
             connections.add(providerId, connection);
         }
