@@ -31,7 +31,7 @@ public class ConnectionConverter {
         this.textEncryptor = textEncryptor;
     }
 
-    public Connection<?> convert(UserAccountEntity userAccount) {
+    Connection<?> convert(UserAccountEntity userAccount) {
         if (null == userAccount) {
             return null;
         }
@@ -63,7 +63,7 @@ public class ConnectionConverter {
      * @param cnn
      * @return
      */
-    public UserAccountEntity convert(String userId, String receiptUserId, Connection<?> cnn) {
+    UserAccountEntity convert(String userId, String receiptUserId, Connection<?> cnn) {
         ConnectionData data = cnn.createData();
 
         UserAccountEntity userAccount = UserAccountEntity.newInstance(
@@ -87,7 +87,7 @@ public class ConnectionConverter {
         return userAccount;
     }
 
-    public UserAccountEntity convert(String userId, Connection<?> cnn) {
+    UserAccountEntity convert(String userId, Connection<?> cnn) {
         return convert(userId, null, cnn);
     }
 
