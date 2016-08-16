@@ -44,7 +44,7 @@ import java.util.Map;
 })
 @Social
 @Service
-public class GoogleAccessTokenService {
+class GoogleAccessTokenService {
     private static final Logger LOG = LoggerFactory.getLogger(GoogleAccessTokenService.class);
     private String googleAuthenticationTokenRetrieval;
     private String googleClientId;
@@ -71,7 +71,7 @@ public class GoogleAccessTokenService {
      * @param authorizationCode
      * @return
      */
-    public Map<String, ScrubbedInput> getTokenForAuthorizationCode(String authorizationCode) {
+    Map<String, ScrubbedInput> getTokenForAuthorizationCode(String authorizationCode) {
         HttpClient client = HttpClientBuilder.create().build();
         HttpPost post = new HttpPost(googleAuthenticationTokenRetrieval);
         LOG.info("Auth code={}", authorizationCode);

@@ -3,7 +3,6 @@ package com.receiptofi.social.connect;
 import com.receiptofi.domain.types.ProviderEnum;
 import com.receiptofi.social.annotation.Social;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.social.connect.Connection;
 import org.springframework.social.connect.ConnectionFactoryLocator;
 import org.springframework.social.connect.ConnectionRepository;
@@ -24,21 +23,12 @@ import java.util.Set;
 @Social
 public class MongoUsersConnectionRepository implements UsersConnectionRepository {
 
-    private String userId;
-
-    /** Note: Do not remove autowired for connectionService. */
-    @Autowired  private ConnectionService connectionService;
-
     private ConnectionFactoryLocator connectionFactoryLocator;
+    private ConnectionService connectionService;
 
-    @Autowired
-    public MongoUsersConnectionRepository(String userId, ConnectionFactoryLocator connectionFactoryLocator) {
-        this.userId = userId;
+    public MongoUsersConnectionRepository(ConnectionFactoryLocator connectionFactoryLocator, ConnectionService connectionService) {
         this.connectionFactoryLocator = connectionFactoryLocator;
-    }
-
-    public MongoUsersConnectionRepository(ConnectionFactoryLocator connectionFactoryLocator) {
-        this.connectionFactoryLocator = connectionFactoryLocator;
+        this.connectionService = connectionService;
     }
 
     /**
