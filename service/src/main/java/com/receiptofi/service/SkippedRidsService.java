@@ -71,9 +71,8 @@ public class SkippedRidsService {
         } else {
             this.redisTemplate.expire(keySkippedRids, 1, TimeUnit.DAYS);
             this.redisTemplate.opsForValue().set(keySkippedRids, dequeRids);
+            LOG.warn("Size of skipped rids={} ids={}", dequeRids.size(), dequeRids);
         }
-
-        LOG.warn("Size of skipped rids={} ids={}", dequeRids.size(), dequeRids);
     }
 
     boolean hasSkippedRidsFound() {
