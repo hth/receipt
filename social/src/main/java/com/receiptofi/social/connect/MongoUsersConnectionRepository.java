@@ -91,6 +91,6 @@ public class MongoUsersConnectionRepository implements UsersConnectionRepository
         if (null == userId) {
             throw new IllegalArgumentException("UserId cannot be null");
         }
-        return new MongoConnectionRepository(userId, connectionService, connectionFactoryLocator, textEncryptor);
+        return new MongoConnectionRepository(userId, connectionService, connectionFactoryLocator);
     }
 }

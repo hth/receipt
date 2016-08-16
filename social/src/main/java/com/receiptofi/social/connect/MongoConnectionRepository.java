@@ -36,17 +36,14 @@ class MongoConnectionRepository implements ConnectionRepository {
     private final String userId;
     private final ConnectionService connectionService;
     private final ConnectionFactoryLocator connectionFactoryLocator;
-    private final TextEncryptor textEncryptor;
 
     MongoConnectionRepository(
             String userId,
             ConnectionService connectionService,
-            ConnectionFactoryLocator connectionFactoryLocator,
-            TextEncryptor textEncryptor) {
+            ConnectionFactoryLocator connectionFactoryLocator) {
         this.userId = userId;
         this.connectionService = connectionService;
         this.connectionFactoryLocator = connectionFactoryLocator;
-        this.textEncryptor = textEncryptor;
     }
 
     public MultiValueMap<String, Connection<?>> findAllConnections() {
