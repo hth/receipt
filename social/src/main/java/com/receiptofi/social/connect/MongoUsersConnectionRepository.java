@@ -34,7 +34,6 @@ public class MongoUsersConnectionRepository implements UsersConnectionRepository
 
     private ConnectionFactoryLocator connectionFactoryLocator;
     private TextEncryptor textEncryptor;
-    private ConnectionSignUp connectionSignUp;
 
     @Autowired
     public MongoUsersConnectionRepository(
@@ -51,10 +50,6 @@ public class MongoUsersConnectionRepository implements UsersConnectionRepository
             TextEncryptor textEncryptor) {
         this.connectionFactoryLocator = connectionFactoryLocator;
         this.textEncryptor = textEncryptor;
-    }
-
-    public void setConnectionSignUp(ConnectionSignUp connectionSignUp) {
-        this.connectionSignUp = connectionSignUp;
     }
 
     public void removeConnections(ProviderEnum providerId) {

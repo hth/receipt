@@ -92,9 +92,7 @@ public class SocialConfig {
     @Bean
     public UsersConnectionRepository usersConnectionRepository() {
         LOG.info("Initializing usersConnectionRepository");
-        MongoUsersConnectionRepository repository = new MongoUsersConnectionRepository(connectionFactoryLocator(), Encryptors.noOpText());
-        repository.setConnectionSignUp(new SimpleConnectionSignUp());
-        return repository;
+        return new MongoUsersConnectionRepository(connectionFactoryLocator(), Encryptors.noOpText());
     }
 
     /**
