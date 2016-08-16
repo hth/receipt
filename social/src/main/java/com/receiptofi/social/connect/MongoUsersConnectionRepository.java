@@ -33,23 +33,15 @@ public class MongoUsersConnectionRepository implements UsersConnectionRepository
     @Autowired  private ConnectionService connectionService;
 
     private ConnectionFactoryLocator connectionFactoryLocator;
-    private TextEncryptor textEncryptor;
 
     @Autowired
-    public MongoUsersConnectionRepository(
-            String userId,
-            ConnectionFactoryLocator connectionFactoryLocator,
-            TextEncryptor textEncryptor) {
+    public MongoUsersConnectionRepository(String userId, ConnectionFactoryLocator connectionFactoryLocator) {
         this.userId = userId;
         this.connectionFactoryLocator = connectionFactoryLocator;
-        this.textEncryptor = textEncryptor;
     }
 
-    public MongoUsersConnectionRepository(
-            ConnectionFactoryLocator connectionFactoryLocator,
-            TextEncryptor textEncryptor) {
+    public MongoUsersConnectionRepository(ConnectionFactoryLocator connectionFactoryLocator) {
         this.connectionFactoryLocator = connectionFactoryLocator;
-        this.textEncryptor = textEncryptor;
     }
 
     /**
