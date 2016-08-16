@@ -29,7 +29,9 @@ public class MongoUsersConnectionRepository implements UsersConnectionRepository
 
     private String userId;
 
-    private ConnectionService connectionService;
+    /** Note: Do not remove autowired for connectionService. */
+    @Autowired  private ConnectionService connectionService;
+
     private ConnectionFactoryLocator connectionFactoryLocator;
     private TextEncryptor textEncryptor;
     private ConnectionSignUp connectionSignUp;
@@ -37,11 +39,9 @@ public class MongoUsersConnectionRepository implements UsersConnectionRepository
     @Autowired
     public MongoUsersConnectionRepository(
             String userId,
-            ConnectionService connectionService,
             ConnectionFactoryLocator connectionFactoryLocator,
             TextEncryptor textEncryptor) {
         this.userId = userId;
-        this.connectionService = connectionService;
         this.connectionFactoryLocator = connectionFactoryLocator;
         this.textEncryptor = textEncryptor;
     }
