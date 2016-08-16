@@ -3,6 +3,7 @@ package com.receiptofi.social.config;
 import com.receiptofi.service.RegistrationService;
 import com.receiptofi.social.annotation.Social;
 import com.receiptofi.social.connect.ConnectionConverter;
+import com.receiptofi.social.connect.ConnectionService;
 import com.receiptofi.social.connect.ConnectionServiceImpl;
 import com.receiptofi.social.connect.MongoUsersConnectionRepository;
 import com.receiptofi.social.service.CustomUserDetailsService;
@@ -70,6 +71,9 @@ public class SocialConfig {
     @Autowired
     private RegistrationService registrationService;
 
+    @Autowired
+    private ConnectionService connectionService;
+
     /**
      * When a new provider is added to the app, register its {@link org.springframework.social.connect.ConnectionFactory} here.
      *
@@ -91,7 +95,7 @@ public class SocialConfig {
     @Bean
     public UsersConnectionRepository usersConnectionRepository() {
         LOG.info("Initializing usersConnectionRepository");
-        return new MongoUsersConnectionRepository(connectionFactoryLocator());
+        return new MongoUsersConnectionRepository(connectionFactoryLocator(), connectionService);
     }
 
     /**
