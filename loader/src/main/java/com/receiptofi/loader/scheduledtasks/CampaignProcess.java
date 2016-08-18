@@ -23,6 +23,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -43,6 +44,7 @@ import java.util.List;
 public class CampaignProcess {
     private static final Logger LOG = LoggerFactory.getLogger(CampaignProcess.class);
 
+    private final String goLiveSwitch;
     private CampaignService campaignService;
     private BizDimensionService bizDimensionService;
     private CronStatsService cronStatsService;
@@ -52,11 +54,15 @@ public class CampaignProcess {
 
     @Autowired
     public CampaignProcess(
+            @Value ("${CampaignProcess.go.live.switch}")
+            String goLiveSwitch,
+
             CampaignService campaignService,
             BizDimensionService bizDimensionService,
             CronStatsService cronStatsService, BizService bizService,
             UserDimensionService userDimensionService,
             CouponService couponService) {
+        this.goLiveSwitch = goLiveSwitch;
         this.campaignService = campaignService;
         this.bizDimensionService = bizDimensionService;
         this.cronStatsService = cronStatsService;
@@ -76,11 +82,16 @@ public class CampaignProcess {
         CronStatsEntity cronStats = new CronStatsEntity(
                 CampaignProcess.class.getName(),
                 "setToLiveCampaign",
-                "ON");
+                goLiveSwitch);
+
+        if ("OFF".equalsIgnoreCase(goLiveSwitch)) {
+            LOG.info("feature is {}", goLiveSwitch);
+            return;
+        }
 
         List<CampaignEntity> campaigns = campaignService.findCampaignWithStatus(CampaignStatusEnum.S);
         if (campaigns.isEmpty()) {
-            /** No campaigns to upload. */
+            /** No campaigns set to live found. */
             return;
         } else {
             LOG.info("Campaigns set to go live, count={}", campaigns.size());
