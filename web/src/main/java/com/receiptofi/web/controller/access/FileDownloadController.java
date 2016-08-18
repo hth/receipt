@@ -55,12 +55,22 @@ import javax.servlet.http.HttpServletResponse;
 public class FileDownloadController {
     private static final Logger LOG = LoggerFactory.getLogger(FileDownloadController.class);
 
-    @Autowired private FileDBService fileDBService;
-    @Autowired private DiskFileSystemProcess diskFileSystemProcess;
-    @Autowired private ReceiptService receiptService;
+    private FileDBService fileDBService;
+    private DiskFileSystemProcess diskFileSystemProcess;
+    private ReceiptService receiptService;
 
     @Value ("${imageNotFoundPlaceHolder:/static/images/no_image.gif}")
     private String imageNotFound;
+
+    @Autowired
+    public FileDownloadController(
+            FileDBService fileDBService,
+            DiskFileSystemProcess diskFileSystemProcess,
+            ReceiptService receiptService) {
+        this.fileDBService = fileDBService;
+        this.diskFileSystemProcess = diskFileSystemProcess;
+        this.receiptService = receiptService;
+    }
 
     /**
      * Servers images
