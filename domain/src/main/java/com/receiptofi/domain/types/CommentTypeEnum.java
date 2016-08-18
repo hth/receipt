@@ -14,7 +14,7 @@ package com.receiptofi.domain.types;
 public enum CommentTypeEnum {
     N("N", "Notes", 250),
     R("R", "Recheck", 250),
-    C("C", "Coupon", 600);
+    C("C", "Campaign", 600);
 
     private final String description;
     private final String name;

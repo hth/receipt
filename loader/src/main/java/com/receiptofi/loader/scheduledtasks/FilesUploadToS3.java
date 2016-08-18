@@ -67,7 +67,9 @@ public class FilesUploadToS3 {
     private final String bucketName;
     private final String receiptFolderName;
     private final String couponFolderName;
-    private final String filesUploadSwitch;
+    private final String receiptUploadSwitch;
+    private final String couponUploadSwitch;
+    private final String campaignUploadSwitch;
 
     private DocumentService documentService;
     private FileDBService fileDBService;
@@ -90,8 +92,14 @@ public class FilesUploadToS3 {
             @Value ("${aws.s3.couponBucketName}")
             String couponFolderName,
 
-            @Value ("${FilesUploadToS3.filesUploadSwitch}")
-            String filesUploadSwitch,
+            @Value ("${FilesUploadToS3.receipt.switch}")
+            String receiptUploadSwitch,
+
+            @Value ("${FilesUploadToS3.coupon.switch}")
+            String couponUploadSwitch,
+
+            @Value ("${FilesUploadToS3.campaign.switch}")
+            String campaignUploadSwitch,
 
             DocumentService documentService,
             FileDBService fileDBService,
@@ -105,7 +113,9 @@ public class FilesUploadToS3 {
         this.bucketName = bucketName;
         this.receiptFolderName = receiptFolderName;
         this.couponFolderName = couponFolderName;
-        this.filesUploadSwitch = filesUploadSwitch;
+        this.receiptUploadSwitch = receiptUploadSwitch;
+        this.couponUploadSwitch = couponUploadSwitch;
+        this.campaignUploadSwitch = campaignUploadSwitch;
 
         this.documentService = documentService;
         this.fileDBService = fileDBService;
@@ -129,15 +139,15 @@ public class FilesUploadToS3 {
         CronStatsEntity cronStats = new CronStatsEntity(
                 FilesUploadToS3.class.getName(),
                 "ReceiptUpload",
-                filesUploadSwitch);
+                receiptUploadSwitch);
 
         /**
          * TODO prevent test db connection from dev. As this moves files to 'dev' bucket in S3 and test environment fails to upload to 'test' bucket.
          * NOTE: This is one of the reason you should not connect to test database from dev environment. Or have a
          * fail safe to prevent uploading to dev bucket when connected to test database.
          */
-        if ("OFF".equalsIgnoreCase(filesUploadSwitch)) {
-            LOG.info("feature is {}", filesUploadSwitch);
+        if ("OFF".equalsIgnoreCase(receiptUploadSwitch)) {
+            LOG.info("feature is {}", receiptUploadSwitch);
             return;
         }
 
@@ -230,15 +240,15 @@ public class FilesUploadToS3 {
         CronStatsEntity cronStats = new CronStatsEntity(
                 FilesUploadToS3.class.getName(),
                 "CouponUpload",
-                filesUploadSwitch);
+                couponUploadSwitch);
 
         /**
          * TODO prevent test db connection from dev. As this moves files to 'dev' bucket in S3 and test environment fails to upload to 'test' bucket.
          * NOTE: This is one of the reason you should not connect to test database from dev environment. Or have a
          * fail safe to prevent uploading to dev bucket when connected to test database.
          */
-        if ("OFF".equalsIgnoreCase(filesUploadSwitch)) {
-            LOG.info("feature is {}", filesUploadSwitch);
+        if ("OFF".equalsIgnoreCase(couponUploadSwitch)) {
+            LOG.info("feature is {}", couponUploadSwitch);
             return;
         }
 
@@ -327,15 +337,15 @@ public class FilesUploadToS3 {
         CronStatsEntity cronStats = new CronStatsEntity(
                 FilesUploadToS3.class.getName(),
                 "campaignUpload",
-                filesUploadSwitch);
+                campaignUploadSwitch);
 
         /**
          * TODO prevent test db connection from dev. As this moves files to 'dev' bucket in S3 and test environment fails to upload to 'test' bucket.
          * NOTE: This is one of the reason you should not connect to test database from dev environment. Or have a
          * fail safe to prevent uploading to dev bucket when connected to test database.
          */
-        if ("OFF".equalsIgnoreCase(filesUploadSwitch)) {
-            LOG.info("feature is {}", filesUploadSwitch);
+        if ("OFF".equalsIgnoreCase(campaignUploadSwitch)) {
+            LOG.info("feature is {}", campaignUploadSwitch);
             return;
         }
 
