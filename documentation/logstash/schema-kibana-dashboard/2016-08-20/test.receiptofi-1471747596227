@@ -1,5 +1,5 @@
 {
-  "title": "live.receiptofi",
+  "title": "test.receiptofi",
   "services": {
     "query": {
       "list": {
@@ -62,7 +62,7 @@
         "0": {
           "type": "terms",
           "field": "_type",
-          "value": "live_app",
+          "value": "test_app",
           "mandate": "must",
           "active": true,
           "alias": "",
@@ -71,7 +71,7 @@
         "1": {
           "type": "time",
           "field": "@timestamp",
-          "from": "now-12h",
+          "from": "now-2d",
           "to": "now",
           "mandate": "must",
           "active": true,
@@ -130,7 +130,7 @@
           },
           "auto_int": true,
           "resolution": 100,
-          "interval": "5m",
+          "interval": "30m",
           "intervals": [
             "auto",
             "1s",
@@ -167,7 +167,8 @@
             "value_type": "cumulative",
             "query_as_alias": true
           },
-          "title": "Events Over Time"
+          "title": "Events Over Time",
+          "error": "FacetPhaseExecutionException[Facet [0]: (key) field [@timestamp] not found]"
         },
         {
           "span": 4,
@@ -203,7 +204,7 @@
           },
           "auto_int": true,
           "resolution": 100,
-          "interval": "5m",
+          "interval": "30m",
           "intervals": [
             "auto",
             "1s",
@@ -240,7 +241,8 @@
             "value_type": "cumulative",
             "query_as_alias": true
           },
-          "title": "Upload Documents"
+          "title": "Upload Documents",
+          "error": "FacetPhaseExecutionException[Facet [4]: (key) field [@timestamp] not found]"
         }
       ],
       "notice": false
@@ -276,7 +278,8 @@
             "message",
             "logger_name",
             "@timestamp",
-            "X-REQUEST-ID"
+            "X-REQUEST-ID",
+            "stack_trace"
           ],
           "highlight": [],
           "sortable": true,

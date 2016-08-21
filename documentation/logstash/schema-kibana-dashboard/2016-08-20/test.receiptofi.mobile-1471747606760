@@ -51,11 +51,20 @@
         "5": {
           "id": 5,
           "color": "#1F78C1",
-          "alias": "",
+          "alias": "Receipt",
           "pin": true,
           "type": "lucene",
           "enable": true,
           "query": "\"upload document successfully\""
+        },
+        "6": {
+          "id": 6,
+          "color": "#F2C96D",
+          "alias": "Coupon",
+          "pin": true,
+          "type": "lucene",
+          "enable": true,
+          "query": "Starting coupon upload"
         }
       },
       "ids": [
@@ -64,7 +73,8 @@
         2,
         3,
         4,
-        5
+        5,
+        6
       ]
     },
     "filter": {
@@ -179,7 +189,8 @@
           "show_query": true,
           "legend_counts": true,
           "zerofill": true,
-          "derivative": false
+          "derivative": false,
+          "error": "SearchPhaseExecutionException[Failed to execute phase [query], all shards failed]"
         },
         {
           "span": 4,
@@ -253,7 +264,8 @@
             "value_type": "cumulative",
             "query_as_alias": true
           },
-          "title": "Upload Documents"
+          "title": "Upload Documents",
+          "error": "SearchPhaseExecutionException[Failed to execute phase [query], all shards failed]"
         }
       ],
       "notice": false
@@ -267,7 +279,7 @@
       "panels": [
         {
           "title": "All events",
-          "error": false,
+          "error": "SearchPhaseExecutionException[Failed to execute phase [query], all shards failed]",
           "span": 12,
           "editable": true,
           "group": [
@@ -310,10 +322,11 @@
               2,
               3,
               4,
-              5
+              5,
+              6
             ]
           },
-          "field_list": true,
+          "field_list": false,
           "status": "Stable",
           "trimFactor": 500,
           "normTimes": true,
@@ -336,7 +349,7 @@
   "pulldowns": [
     {
       "type": "query",
-      "collapse": false,
+      "collapse": true,
       "notice": false,
       "query": "*",
       "pinned": true,
