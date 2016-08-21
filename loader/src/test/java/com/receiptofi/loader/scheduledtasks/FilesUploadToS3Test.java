@@ -59,6 +59,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Properties;
 
 /**
@@ -120,7 +121,7 @@ public class FilesUploadToS3Test {
                 prop.getProperty("aws.s3.bucketName"),
                 prop.getProperty("aws.s3.bucketName"),
                 prop.getProperty("aws.s3.couponBucketName"),
-                prop.getProperty("FilesUploadToS3.receipt.switch"),
+                "ON",
                 prop.getProperty("FilesUploadToS3.coupon.switch"),
                 prop.getProperty("FilesUploadToS3.campaign.switch"),
                 documentService,
@@ -210,7 +211,7 @@ public class FilesUploadToS3Test {
 
     @Test
     public void testUpload() throws IOException {
-        when(documentService.getAllProcessedDocuments()).thenReturn(Arrays.asList(documentEntity));
+        when(documentService.getAllProcessedDocuments()).thenReturn(Collections.singletonList(documentEntity));
         when(amazonS3Service.getS3client()).thenReturn(s3Client);
         when(imageSplitService.bufferedImage(any(File.class))).thenReturn(bufferedImage);
 
@@ -226,7 +227,7 @@ public class FilesUploadToS3Test {
 
     @Test
     public void testImageRotation() throws IOException {
-        when(documentService.getAllProcessedDocuments()).thenReturn(Arrays.asList(documentEntity));
+        when(documentService.getAllProcessedDocuments()).thenReturn(Collections.singletonList(documentEntity));
         when(amazonS3Service.getS3client()).thenReturn(s3Client);
         when(imageSplitService.bufferedImage(any(File.class))).thenReturn(bufferedImage);
         when(bufferedImage.getWidth()).thenReturn(100);
