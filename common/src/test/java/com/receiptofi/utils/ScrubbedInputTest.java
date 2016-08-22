@@ -14,5 +14,4 @@ public class ScrubbedInputTest {
         ScrubbedInput scrubbedInput = new ScrubbedInput("Golden Circle 25% DR 2 Litre");
         assertEquals("Golden Circle 25% DR 2 Litre", scrubbedInput.getText());
     }
-
 }
