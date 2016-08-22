@@ -28,8 +28,14 @@ import java.util.Map;
 @Service
 public class DocumentDailyStatService {
 
-    @Autowired DocumentManager documentManager;
-    @Autowired DocumentDailyStatManager documentDailyStatManager;
+    private DocumentManager documentManager;
+    private DocumentDailyStatManager documentDailyStatManager;
+
+    @Autowired
+    public DocumentDailyStatService(DocumentManager documentManager, DocumentDailyStatManager documentDailyStatManager) {
+        this.documentManager = documentManager;
+        this.documentDailyStatManager = documentDailyStatManager;
+    }
 
     public DocumentDailyStatEntity getLastEntry() {
         return documentDailyStatManager.getLastEntry();
