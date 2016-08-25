@@ -12,6 +12,8 @@ import com.receiptofi.utils.DateUtil;
 import com.receiptofi.utils.ScrubbedInput;
 import com.receiptofi.web.form.business.CampaignListForm;
 
+import org.apache.commons.lang3.StringUtils;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,11 +21,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.validation.BeanPropertyBindingResult;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
  * User: hitender
@@ -77,10 +82,21 @@ public class CampaignLandingController {
             CouponCampaign couponCampaign,
 
             @PathVariable ("campaignId")
-            ScrubbedInput campaignId
+            ScrubbedInput campaignId,
+
+            ModelMap model
     ) {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         LOG.info("load campaign rid={} campaignId={}", receiptUser.getRid(), campaignId);
+
+        if (model.containsKey("result")) {
+            BeanPropertyBindingResult result = (BeanPropertyBindingResult) model.get("result");
+
+            /* PRG pattern. */
+            if ("couponCampaign".equalsIgnoreCase(result.getObjectName())) {
+                model.addAttribute("org.springframework.validation.BindingResult.couponCampaign", result);
+            }
+        }
 
         CampaignEntity campaign = campaignService.findById(campaignId.getText(), receiptUser.getUserLevel());
         BusinessUserEntity businessUser = businessUserService.findBusinessUser(campaign.getRid());
@@ -110,19 +126,33 @@ public class CampaignLandingController {
             @PathVariable ("campaignId")
             ScrubbedInput campaignId,
 
-            @RequestParam ("reason")
-            ScrubbedInput reason
+            CouponCampaign couponCampaign,
+            BindingResult result,
+            RedirectAttributes redirectAttrs
     ) {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         LOG.info("{} campaign campaignId={} by rid={}",
                 CampaignStatusEnum.D.getDescription(), campaignId, receiptUser.getRid());
+
+        /* Validate Campaign. */
+        if (StringUtils.isBlank(couponCampaign.getReason().getText())) {
+            result.rejectValue("reason",
+                    "field.reason",
+                    new Object[]{"Reason", Integer.valueOf("15")},
+                    "Reason cannot be left blank, required length 15 characters");
+
+            redirectAttrs.addFlashAttribute("result", result);
+
+            /* PRG pattern. */
+            return "redirect:" + "/emp/campaign/" + campaignId.getText() + ".htm";
+        }
 
         campaignService.updateCampaignStatus(
                 campaignId.getText(),
                 receiptUser.getRid(),
                 receiptUser.getUserLevel(),
                 CampaignStatusEnum.D,
-                reason.getText());
+                couponCampaign.getReason().getText());
 
         return "redirect:" + campaignLanding + ".htm";
     }

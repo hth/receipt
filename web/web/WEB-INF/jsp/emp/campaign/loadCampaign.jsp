@@ -69,8 +69,14 @@
                 <form:form commandName="couponCampaign">
                     <h1 class="h1">${couponCampaign.businessName}</h1>
                     <hr>
-                    <input type="hidden" id="campaignId" value="${couponCampaign.campaignId}"/>
-                    <input type="hidden" id="bizId" value="${couponCampaign.bizId}"/>
+
+                    <spring:hasBindErrors name="couponCampaign">
+                    <div class="r-validation" style="width: 98%; margin: 0 0 0 0;">
+                        <c:if test="${errors.hasFieldErrors('reason')}">
+                            <form:errors path="reason" /><br>
+                        </c:if>
+                    </div>
+                    </spring:hasBindErrors>
 
                     <div class="row_field">
                         <form:label path="freeText" cssClass="profile_label"
@@ -119,7 +125,7 @@
                         <div class="row_field">
                             <form:label path="campaignStatus" cssClass="profile_label"
                                     cssErrorClass="profile_label lb_error">State</form:label>
-                            <form:input path="campaignStatus.description" size="20" cssClass="name_txt" cssStyle="width: 200px; border: 0;" readonly="true" />
+                            <span class="name_txt" style="width: 200px; border: 0;">${couponCampaign.campaignStatus.description}</span>
                         </div>
                         <div class="row_field">
                             <form:label path="reason" cssClass="profile_label"
