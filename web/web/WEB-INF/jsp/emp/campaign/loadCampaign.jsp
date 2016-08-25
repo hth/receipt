@@ -67,15 +67,15 @@
         <div class="business_reg">
             <div class="down_form" style="width: 90%">
                 <form:form commandName="couponCampaign">
-                    <h1 class="h1">Submit New Coupon Campaign</h1>
+                    <h1 class="h1">${couponCampaign.businessName}</h1>
                     <hr>
                     <input type="hidden" id="campaignId" value="${couponCampaign.campaignId}"/>
                     <input type="hidden" id="bizId" value="${couponCampaign.bizId}"/>
 
                     <div class="row_field">
                         <form:label path="freeText" cssClass="profile_label"
-                                cssErrorClass="profile_label lb_error">Coupon Text</form:label>
-                        <form:input path="freeText" size="200" cssClass="name_txt" cssStyle="width: 250px;" readonly="true"/>
+                                cssErrorClass="profile_label lb_error">Campaign Text</form:label>
+                        <form:input path="freeText" size="200" cssClass="name_txt" cssStyle="width: 285px;" readonly="true"/>
                     </div>
                     <div class="row_field">
                         <form:label path="additionalInfo" cssClass="profile_label"
@@ -100,19 +100,30 @@
                         <form:input path="live" size="20" cssClass="name_txt" cssStyle="width: 100px;" readonly="true" />
                     </div>
                     <div id="fine-uploader-validation" class="upload-text"></div>
-                    <div class="row_field">
-                        <form:label path="distributionPercent" cssClass="profile_label"
-                                cssErrorClass="profile_label lb_error" cssStyle="width: 300px;">% Of Customers Receiving Coupons:</form:label>
-                        <form:input path="distributionPercent" size="20" cssClass="name_txt" cssStyle="border: 0;" readonly="true"/>
-                    </div>
                     <div id="container"></div>
+
+                    <div class="row_field">
+                        <form:label path="distributionPercentPatrons" cssClass="profile_label"
+                                cssErrorClass="profile_label lb_error" cssStyle="width: 350px;">% Patrons Receiving Campaign</form:label>
+                        <form:input path="distributionPercentPatrons" size="20" cssClass="name_txt" cssStyle="border: 0;" readonly="true"/>
+                    </div>
+                    <div class="row_field">
+                        <form:label path="distributionPercentNonPatrons" cssClass="profile_label"
+                                cssErrorClass="profile_label lb_error" cssStyle="width: 350px;">% Non Patrons Receiving Campaign</form:label>
+                        <form:input path="distributionPercentNonPatrons" size="20" cssClass="name_txt" cssStyle="border: 0;" readonly="true"/>
+                    </div>
                     <div class="full">
                         <c:if test="${couponCampaign.campaignStatus ne 'N'}">
-                            <div class="row_field">
-                                <form:label path="campaignStatus" cssClass="profile_label"
-                                        cssErrorClass="profile_label lb_error">State</form:label>
-                                <form:input path="campaignStatus.description" size="20" cssClass="name_txt" cssStyle="width: 200px; border: 0;" readonly="true" />
-                            </div>
+                        <div class="row_field">
+                            <form:label path="campaignStatus" cssClass="profile_label"
+                                    cssErrorClass="profile_label lb_error">State</form:label>
+                            <form:input path="campaignStatus.description" size="20" cssClass="name_txt" cssStyle="width: 200px; border: 0;" readonly="true" />
+                        </div>
+                        <div class="row_field">
+                            <form:label path="reason" cssClass="profile_label"
+                                    cssErrorClass="profile_label lb_error">Decline Reason</form:label>
+                            <form:input path="reason" size="200" cssClass="name_txt" cssStyle="width: 285px;"/>
+                        </div>
                         </c:if>
                         <c:choose>
                             <c:when test="${couponCampaign.campaignStatus eq 'P'}">

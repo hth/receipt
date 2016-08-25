@@ -16,11 +16,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
-import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 import javax.script.ScriptEngine;
@@ -55,13 +53,11 @@ enum FormatterSingleton {
         "PMD.LongVariable"
 })
 public final class Formatter {
-    /** For double */
-    public static final DecimalFormat DF = new DecimalFormat("#.##");
-    public static final SimpleDateFormat SDF_SMALL = new SimpleDateFormat("MM-dd-yyyy");
-    public static final DateTimeFormatter DOB_FORMATTER = DateTimeFormatter.ofPattern("MM/dd/yyyy");
     private static final Logger LOG = LoggerFactory.getLogger(Formatter.class);
-    //Defaults to US
+
+    /* Defaults to US. */
     private static final String FORMAT_TO_US = "US";
+    private static final SimpleDateFormat SDF_SMALL = new SimpleDateFormat("MM-dd-yyyy");
 
     private static final PhoneNumberUtil PHONE_INSTANCE = FormatterSingleton.INSTANCE.phoneInstance();
     private static final NumberFormat CURRENCY_INSTANCE = FormatterSingleton.INSTANCE.currencyInstance();

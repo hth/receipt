@@ -26,10 +26,10 @@ import com.receiptofi.domain.ReceiptEntity;
 import com.receiptofi.domain.UserAccountEntity;
 import com.receiptofi.domain.shared.UploadDocumentImage;
 import com.receiptofi.domain.types.CommentTypeEnum;
+import com.receiptofi.domain.types.ConnectionTypeEnum;
 import com.receiptofi.domain.types.DocumentOfTypeEnum;
 import com.receiptofi.domain.types.DocumentStatusEnum;
 import com.receiptofi.domain.types.FileTypeEnum;
-import com.receiptofi.domain.types.ConnectionTypeEnum;
 import com.receiptofi.domain.types.NotificationGroupEnum;
 import com.receiptofi.domain.types.NotificationTypeEnum;
 import com.receiptofi.domain.types.SplitActionEnum;
@@ -514,7 +514,7 @@ public class ReceiptServiceITest extends ITest {
         document.setTotal("1.00");
         document.setSubTotal("1.00");
         document.setDocumentOfType(DocumentOfTypeEnum.RECEIPT);
-        document.setReceiptDate(DateUtil.DateType.FRM_1.getFormatter().print(DateUtil.now()));
+        document.setReceiptDate(DateUtil.dateToString(DateUtil.nowDate(), DateUtil.DateType.FRM_1.getFormatter()));
         BizNameEntity bizName = getBizName("Costco");
         document.setBizName(bizName);
         BizStoreEntity bizStore = getBizStore(

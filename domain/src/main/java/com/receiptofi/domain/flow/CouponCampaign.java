@@ -1,7 +1,9 @@
 package com.receiptofi.domain.flow;
 
+import com.receiptofi.domain.CampaignStatsEntity;
 import com.receiptofi.domain.FileSystemEntity;
 import com.receiptofi.domain.types.CampaignStatusEnum;
+import com.receiptofi.domain.types.CampaignTypeEnum;
 import com.receiptofi.utils.DateUtil;
 import com.receiptofi.utils.ScrubbedInput;
 
@@ -14,6 +16,8 @@ import org.springframework.data.annotation.Transient;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * User: hitender
@@ -34,10 +38,14 @@ public class CouponCampaign implements Serializable {
     private String start;
     private String end;
     private String live;
-    private String distributionPercent;
+
     private CampaignStatusEnum campaignStatus;
     private Collection<FileSystemEntity> fileSystemEntities;
-    //TODO(hth) add reason to show up for rejection of campaign, add it in BusinessCampaignEntity
+
+    private String distributionPercentPatrons;
+    private String distributionPercentNonPatrons;
+
+    private String reason;
 
     @SuppressWarnings ("unused")
     private CouponCampaign() {
@@ -139,18 +147,35 @@ public class CouponCampaign implements Serializable {
         return DateUtil.getDaysBetween(start, end);
     }
 
-    public String getDistributionPercent() {
-        return distributionPercent;
+    public String getDistributionPercentPatrons() {
+        return distributionPercentPatrons;
     }
 
-    public CouponCampaign setDistributionPercent(String distributionPercent) {
-        this.distributionPercent = distributionPercent;
+    public CouponCampaign setDistributionPercentPatrons(String distributionPercentPatrons) {
+        this.distributionPercentPatrons = distributionPercentPatrons;
         return this;
     }
 
-    public int getDistributionPercentAsInt() {
-        if (StringUtils.isNotBlank(distributionPercent)) {
-            return Integer.parseInt(distributionPercent.substring(0, distributionPercent.length() - 1));
+    private int getDistributionPercentLocalAsInt() {
+        if (StringUtils.isNotBlank(distributionPercentPatrons)) {
+            return Integer.parseInt(distributionPercentPatrons.substring(0, distributionPercentPatrons.length() - 1));
+        } else {
+            return 0;
+        }
+    }
+
+    public String getDistributionPercentNonPatrons() {
+        return distributionPercentNonPatrons;
+    }
+
+    public CouponCampaign setDistributionPercentNonPatrons(String distributionPercentNonPatrons) {
+        this.distributionPercentNonPatrons = distributionPercentNonPatrons;
+        return this;
+    }
+
+    private int getDistributionPercentAllAsInt() {
+        if (StringUtils.isNotBlank(distributionPercentNonPatrons)) {
+            return Integer.parseInt(distributionPercentNonPatrons.substring(0, distributionPercentNonPatrons.length() - 1));
         } else {
             return 0;
         }
@@ -172,5 +197,21 @@ public class CouponCampaign implements Serializable {
     public CouponCampaign setFileSystemEntities(Collection<FileSystemEntity> fileSystemEntities) {
         this.fileSystemEntities = fileSystemEntities;
         return this;
+    }
+
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
+    }
+
+    @Transient
+    public Map<String, CampaignStatsEntity> getCampaignStats() {
+        Map<String, CampaignStatsEntity> campaignStats = new LinkedHashMap<>();
+        campaignStats.put(CampaignTypeEnum.P.getName(), new CampaignStatsEntity(getDistributionPercentLocalAsInt()));
+        campaignStats.put(CampaignTypeEnum.NP.getName(), new CampaignStatsEntity(getDistributionPercentAllAsInt()));
+        return campaignStats;
     }
 }

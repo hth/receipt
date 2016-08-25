@@ -1,7 +1,5 @@
 package com.receiptofi.service;
 
-import static com.receiptofi.utils.DateUtil.DF_MMDDYYYY;
-
 import com.receiptofi.domain.CampaignEntity;
 import com.receiptofi.domain.CommentEntity;
 import com.receiptofi.domain.FileSystemEntity;
@@ -12,6 +10,7 @@ import com.receiptofi.domain.types.CommentTypeEnum;
 import com.receiptofi.domain.types.FileTypeEnum;
 import com.receiptofi.domain.types.UserLevelEnum;
 import com.receiptofi.repository.CampaignManager;
+import com.receiptofi.utils.DateUtil;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -24,7 +23,6 @@ import org.springframework.stereotype.Service;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.text.ParseException;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
@@ -76,63 +74,58 @@ public class CampaignService {
         return campaignManager.findById(campaignId, userLevel);
     }
 
-    public void save(CouponCampaign couponCampaign) throws ParseException {
-        try {
-            CampaignEntity campaign;
-            CommentEntity comment = null;
-            if (StringUtils.isNotBlank(couponCampaign.getCampaignId())) {
-                campaign = campaignManager.findById(couponCampaign.getCampaignId(), couponCampaign.getBizId());
-                campaign.setRid(couponCampaign.getRid())
-                        .setBizId(couponCampaign.getBizId())
-                        .setFreeText(couponCampaign.getFreeText().getText())
-                        .setStart(DF_MMDDYYYY.parse(couponCampaign.getStart()))
-                        .setEnd(DF_MMDDYYYY.parse(couponCampaign.getEnd()))
-                        .setLive(DF_MMDDYYYY.parse(couponCampaign.getLive()))
-                        .setDistributionPercent(couponCampaign.getDistributionPercentAsInt());
+    public void save(CouponCampaign couponCampaign) {
+        CampaignEntity campaign;
+        CommentEntity comment = null;
+        if (StringUtils.isNotBlank(couponCampaign.getCampaignId())) {
+            campaign = campaignManager.findById(couponCampaign.getCampaignId(), couponCampaign.getBizId());
+            campaign.setRid(couponCampaign.getRid())
+                    .setBizId(couponCampaign.getBizId())
+                    .setFreeText(couponCampaign.getFreeText().getText())
+                    .setStart(DateUtil.convertToDate(couponCampaign.getStart()))
+                    .setEnd(DateUtil.convertToDate(couponCampaign.getEnd()))
+                    .setLive(DateUtil.convertToDate(couponCampaign.getLive()))
+                    .setCampaignStats(couponCampaign.getCampaignStats());
 
-                comment = campaign.getAdditionalInfo();
-                if (comment != null) {
-                    comment.setText(couponCampaign.getAdditionalInfo().getText());
-                } else if (StringUtils.isNotBlank(couponCampaign.getAdditionalInfo().getText())) {
-                    comment = createNewComment(couponCampaign);
-                }
-            } else {
-                campaign = CampaignEntity.newInstance(
-                        couponCampaign.getRid(),
-                        couponCampaign.getBizId(),
-                        couponCampaign.getFreeText().toString(),
-                        DF_MMDDYYYY.parse(couponCampaign.getStart()),
-                        DF_MMDDYYYY.parse(couponCampaign.getEnd()),
-                        DF_MMDDYYYY.parse(couponCampaign.getLive())
-                );
-
-                if (StringUtils.isNotBlank(couponCampaign.getAdditionalInfo().getText())) {
-                    comment = createNewComment(couponCampaign);
-                }
+            comment = campaign.getAdditionalInfo();
+            if (comment != null) {
+                comment.setText(couponCampaign.getAdditionalInfo().getText());
+            } else if (StringUtils.isNotBlank(couponCampaign.getAdditionalInfo().getText())) {
+                comment = createNewComment(couponCampaign);
             }
+        } else {
+            campaign = CampaignEntity.newInstance(
+                    couponCampaign.getRid(),
+                    couponCampaign.getBizId(),
+                    couponCampaign.getFreeText().toString(),
+                    DateUtil.convertToDate(couponCampaign.getStart()),
+                    DateUtil.convertToDate(couponCampaign.getEnd()),
+                    DateUtil.convertToDate(couponCampaign.getLive())
+            );
 
-            if (null != comment) {
-                commentService.save(comment);
-                campaign.setAdditionalInfo(comment);
+            if (StringUtils.isNotBlank(couponCampaign.getAdditionalInfo().getText())) {
+                comment = createNewComment(couponCampaign);
             }
-            switch(campaign.getCampaignStatus()) {
-                case A:
-                case P:
-                    campaign.setCampaignStatus(CampaignStatusEnum.N);
-                    break;
-                default:
-                    break;
-            }
-
-            save(campaign);
-
-            couponCampaign.setCampaignId(campaign.getId())
-                    .setCampaignStatus(campaign.getCampaignStatus())
-                    .setFileSystemEntities(campaign.getFileSystemEntities());
-        } catch (ParseException e) {
-            LOG.error("Error saving reason={}", e.getLocalizedMessage(), e);
-            throw e;
         }
+
+        if (null != comment) {
+            commentService.save(comment);
+            campaign.setAdditionalInfo(comment);
+        }
+        switch(campaign.getCampaignStatus()) {
+            case A:
+            case P:
+                campaign.setCampaignStatus(CampaignStatusEnum.N);
+                break;
+            default:
+                break;
+        }
+
+        save(campaign);
+
+        couponCampaign.setCampaignId(campaign.getId())
+                .setCampaignStatus(campaign.getCampaignStatus())
+                .setFileSystemEntities(campaign.getFileSystemEntities());
     }
 
     public void save(CampaignEntity businessCampaign) {
@@ -221,7 +214,8 @@ public class CampaignService {
     public void updateCampaignStatus(
             String campaignId,
             UserLevelEnum userLevel,
-            CampaignStatusEnum campaignStatus) {
-        campaignManager.updateCampaignStatus(campaignId, userLevel, campaignStatus);
+            CampaignStatusEnum campaignStatus,
+            String reason) {
+        campaignManager.updateCampaignStatus(campaignId, userLevel, campaignStatus, reason);
     }
 }

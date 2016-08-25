@@ -5,10 +5,10 @@ package com.receiptofi.domain.types;
  * Date: 6/8/16 10:33 PM
  */
 public enum CampaignTypeEnum {
-    L("L", "Promote to your loyal customers"),
-    /** Across different business. */
-    X("X", "Promote to new customers"),
-    A("A", "Promote to all");
+    /** To your patrons. */
+    P("P", "Promote to patrons"),
+    /** Promote to not your patrons. */
+    NP("NP", "Promote to non patrons");
 
     private final String description;
     private final String name;

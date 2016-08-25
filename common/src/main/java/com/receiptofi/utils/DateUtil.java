@@ -9,22 +9,19 @@ import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Interval;
 import org.joda.time.PeriodType;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.util.Assert;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAdjusters;
 import java.util.Date;
 import java.util.Locale;
@@ -46,8 +43,7 @@ public final class DateUtil {
     private static final int HOUR_IN_SECONDS = MINUTE_IN_SECONDS * MINUTE_IN_SECONDS;
     public static final int HOURS = 24;
     public static final int DAY_IN_SECONDS = HOUR_IN_SECONDS * 24;
-
-    public static final DateFormat DF_MMDDYYYY = new SimpleDateFormat("MM/dd/yyyy", Locale.US);
+    private static final DateTimeFormatter DF_MM_DD_YYYY = DateTimeFormatter.ofPattern("MM/dd/yyyy", Locale.US);
 
     private DateUtil() {
     }
@@ -71,7 +67,7 @@ public final class DateUtil {
             String date = StringUtils.trim(dateAsStr.trim().replaceAll("-", "/")).replaceAll("[\\t\\n\\r]+", " ");
             for (DateType dateType : DateType.values()) {
                 if (date.matches(dateType.getRegex())) {
-                    return DateTime.parse(date, dateType.getFormatter()).toDate();
+                    return convertToDate(date, dateType.getFormatter());
                 }
             }
         }
@@ -132,7 +128,7 @@ public final class DateUtil {
     }
 
     /**
-     * Converts age tp birthday.
+     * Converts age to birthday.
      *
      * @param age any number greater than zero
      * @return start of the year as birthday
@@ -145,7 +141,7 @@ public final class DateUtil {
 
         LocalDate localDate = LocalDate.now().minusYears(years);
         localDate = localDate.with(TemporalAdjusters.firstDayOfYear());
-        return localDate.format(Formatter.DOB_FORMATTER);
+        return localDate.format(DF_MM_DD_YYYY);
     }
 
     public static String parseAgeForBirthday(String age) {
@@ -178,14 +174,29 @@ public final class DateUtil {
      * @return
      */
     public static int getDaysBetween(String start, String end) {
-        try {
-            Assert.isTrue(StringUtils.isNotBlank(start), "Start date string is null");
-            Assert.notNull(StringUtils.isNotBlank(end), "End date string is null");
-            return getDaysBetween(DF_MMDDYYYY.parse(start), DF_MMDDYYYY.parse(end));
-        } catch (ParseException e) {
-            LOG.warn("Failed to parse date start={} end={}", start, end);
-            return -1;
-        }
+        Assert.isTrue(StringUtils.isNotBlank(start), "Start date string is null");
+        Assert.notNull(StringUtils.isNotBlank(end), "End date string is null");
+        return getDaysBetween(convertToDate(start), convertToDate(end));
+    }
+
+    public static Date convertToDate(String date) {
+        return convertToDate(LocalDate.parse(date, DF_MM_DD_YYYY));
+    }
+
+    private static Date convertToDate(String date, DateTimeFormatter dateTimeFormatter) {
+        return convertToDate(LocalDate.parse(date, dateTimeFormatter));
+    }
+
+    private static Date convertToDate(LocalDate localDate) {
+        return Date.from(localDate.atStartOfDay(ZoneOffset.UTC).toInstant());
+    }
+
+    public static String dateToString(Date date) {
+        return DF_MM_DD_YYYY.format(date.toInstant().atZone(ZoneOffset.UTC));
+    }
+
+    public static String dateToString(Date date, DateTimeFormatter dateTimeFormatter) {
+        return dateTimeFormatter.format(date.toInstant().atZone(ZoneOffset.UTC));
     }
 
     /**
@@ -279,7 +290,7 @@ public final class DateUtil {
         DateType(String regex, String example, String formatter) {
             this.regex = regex;
             this.example = example;
-            this.formatter = DateTimeFormat.forPattern(formatter);
+            this.formatter = DateTimeFormatter.ofPattern(formatter);
         }
 
         public String getRegex() {

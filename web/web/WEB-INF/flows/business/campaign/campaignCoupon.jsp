@@ -79,8 +79,11 @@
                 <spring:hasBindErrors name="couponCampaign">
                 <div class="r-validation" style="width: 100%; margin: 0 0 0 0;">
                     <ul>
-                        <c:if test="${errors.hasFieldErrors('distributionPercent')}">
-                            <li><form:errors path="distributionPercent" /></li>
+                        <c:if test="${errors.hasFieldErrors('distributionPercentPatrons')}">
+                            <li><form:errors path="distributionPercentPatrons" /></li>
+                        </c:if>
+                        <c:if test="${errors.hasFieldErrors('distributionPercentNonPatrons')}">
+                            <li><form:errors path="distributionPercentNonPatrons" /></li>
                         </c:if>
                     </ul>
                 </div>
@@ -92,15 +95,26 @@
                 <div class="row_field">
                     <span id="couponImageSize" class="si-general-text remaining-characters"><sup>*</sup> Image max width 600px</span>
                 </div>
+
                 <div class="row_field">
-                    <form:label path="distributionPercent" cssClass="profile_label" cssErrorClass="profile_label lb_error" cssStyle="width: 300px;">
-                        % Of Customers Receiving Coupons:
+                    <form:label path="distributionPercentPatrons" cssClass="profile_label" cssErrorClass="profile_label lb_error" cssStyle="width: 310px;">
+                        % Of Patrons Receiving Coupons
                     </form:label>
-                    <form:input path="distributionPercent" size="20" cssClass="name_txt" cssStyle="border: 0;" readonly="true"/>
+                    <form:input path="distributionPercentPatrons" size="20" cssClass="name_txt" cssStyle="border: 0;" readonly="true"/>
                 </div>
                 <div class="row_field">
-                    <div id="slider-vertical" style="height:15px; width: 325px;"></div>
+                    <div id="slider-vertical-local" style="height:15px; width: 325px;"></div>
                 </div>
+                <div class="row_field">
+                    <form:label path="distributionPercentNonPatrons" cssClass="profile_label" cssErrorClass="profile_label lb_error" cssStyle="width: 310px;">
+                        % Of Non Patrons Receiving Coupons
+                    </form:label>
+                    <form:input path="distributionPercentNonPatrons" size="20" cssClass="name_txt" cssStyle="border: 0;" readonly="true"/>
+                </div>
+                <div class="row_field">
+                    <div id="slider-vertical-all" style="height:15px; width: 325px;"></div>
+                </div>
+
                 <div class="full">
                     <input type="submit" value="NEXT" class="read_btn" name="_eventId_submit" style="background: #2c97de; margin: 77px 10px 0 0;">
                     <input type="submit" value="CANCEL" class="read_btn" name="_eventId_cancel" style="background: #FC462A; margin: 77px 10px 0 0;">
@@ -181,17 +195,29 @@
 </script>
 <script>
     $(function () {
-        $("#slider-vertical").slider({
+        $("#slider-vertical-local").slider({
             orientation: "horizontal",
             range: "min",
             min: 0,
             max: 100,
             value: 25,
             slide: function (event, ui) {
-                $("#distributionPercent").val(ui.value + "%");
+                $("#distributionPercentPatrons").val(ui.value + "%");
             }
         });
-        $("#distributionPercent").val($("#slider-vertical").slider("value") + "%");
+        $("#distributionPercentPatrons").val($("#slider-vertical-local").slider("value") + "%");
+
+        $("#slider-vertical-all").slider({
+            orientation: "horizontal",
+            range: "min",
+            min: 0,
+            max: 100,
+            value: 25,
+            slide: function (event, ui) {
+                $("#distributionPercentNonPatrons").val(ui.value + "%");
+            }
+        });
+        $("#distributionPercentNonPatrons").val($("#slider-vertical-all").slider("value") + "%");
     });
 </script>
 <script src="${pageContext.request.contextPath}/static/js/mainpop.js"></script>
