@@ -213,9 +213,10 @@ public class CampaignService {
 
     public void updateCampaignStatus(
             String campaignId,
+            String validateByRid,
             UserLevelEnum userLevel,
             CampaignStatusEnum campaignStatus,
             String reason) {
-        campaignManager.updateCampaignStatus(campaignId, userLevel, campaignStatus, reason);
+        campaignManager.updateCampaignStatus(campaignId, validateByRid, userLevel, campaignStatus, reason);
     }
 }

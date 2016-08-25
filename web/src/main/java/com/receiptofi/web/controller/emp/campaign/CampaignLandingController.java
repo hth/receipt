@@ -110,8 +110,8 @@ public class CampaignLandingController {
             @PathVariable ("campaignId")
             ScrubbedInput campaignId,
 
-            @RequestParam ("rejectReason")
-            ScrubbedInput rejectReason
+            @RequestParam ("reason")
+            ScrubbedInput reason
     ) {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         LOG.info("{} campaign campaignId={} by rid={}",
@@ -119,9 +119,10 @@ public class CampaignLandingController {
 
         campaignService.updateCampaignStatus(
                 campaignId.getText(),
+                receiptUser.getRid(),
                 receiptUser.getUserLevel(),
                 CampaignStatusEnum.D,
-                rejectReason.getText());
+                reason.getText());
 
         return "redirect:" + campaignLanding + ".htm";
     }
@@ -130,13 +131,17 @@ public class CampaignLandingController {
             value = "/{campaignId}",
             method = RequestMethod.POST,
             params = "campaign-approve")
-    public String approveCampaign(@PathVariable ("campaignId") String campaignId) {
+    public String approveCampaign(
+            @PathVariable ("campaignId")
+            String campaignId
+    ) {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         LOG.info("{} campaign campaignId={} by rid={}",
                 CampaignStatusEnum.A.getDescription(), campaignId, receiptUser.getRid());
 
         campaignService.updateCampaignStatus(
                 campaignId,
+                receiptUser.getRid(),
                 receiptUser.getUserLevel(),
                 CampaignStatusEnum.A,
                 "");

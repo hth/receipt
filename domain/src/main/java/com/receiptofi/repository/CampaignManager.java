@@ -32,11 +32,13 @@ public interface CampaignManager extends RepositoryManager<CampaignEntity> {
      * Note: Should be accessed by UserLevelEnum SUPERVISOR or TECH_CAMPAIGN.
      *
      * @param campaignId
+     * @param validateByRid
      * @param userLevel
      * @param campaignStatus
      */
     void updateCampaignStatus(
             String campaignId,
+            String validateByRid,
             UserLevelEnum userLevel,
             CampaignStatusEnum campaignStatus,
             String reason);
