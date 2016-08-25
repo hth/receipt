@@ -9,7 +9,6 @@ import com.receiptofi.domain.types.CampaignTypeEnum;
 import com.receiptofi.service.BusinessUserService;
 import com.receiptofi.service.CampaignService;
 import com.receiptofi.utils.DateUtil;
-import com.receiptofi.utils.ScrubbedInput;
 import com.receiptofi.web.flow.exception.BusinessCampaignException;
 
 import org.joda.time.DateTime;
@@ -76,8 +75,8 @@ public class BusinessCampaignFlowActions {
                 .setLive(DateUtil.dateToString(businessCampaign.getLive()))
                 .setStart(DateUtil.dateToString(businessCampaign.getStart()))
                 .setEnd(DateUtil.dateToString(businessCampaign.getEnd()))
-                .setFreeText(new ScrubbedInput(businessCampaign.getFreeText()))
-                .setAdditionalInfo(businessCampaign.getAdditionalInfo() != null ? new ScrubbedInput(businessCampaign.getAdditionalInfo().getText()) : new ScrubbedInput(""))
+                .setFreeText(businessCampaign.getFreeText())
+                .setAdditionalInfo(businessCampaign.getAdditionalInfo() != null ? businessCampaign.getAdditionalInfo().getText() : "")
                 .setDistributionPercentPatrons(businessCampaign.getCampaignStats() == null ? "25" + "%" : businessCampaign.getCampaignStats().get(CampaignTypeEnum.P.getName()).getDistributionPercent() + "%")
                 .setDistributionPercentNonPatrons(businessCampaign.getCampaignStats() == null ? "25" + "%" : businessCampaign.getCampaignStats().get(CampaignTypeEnum.NP.getName()).getDistributionPercent() + "%")
                 .setCampaignStatus(businessCampaign.getCampaignStatus())

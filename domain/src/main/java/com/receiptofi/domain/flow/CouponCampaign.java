@@ -27,112 +27,112 @@ public class CouponCampaign implements Serializable {
     private static final Logger LOG = LoggerFactory.getLogger(CouponCampaign.class);
     private static final long serialVersionUID = 5707616575086343836L;
 
-    private String campaignId;
-    private String rid;
-    private String bizId;
+    private ScrubbedInput campaignId;
+    private ScrubbedInput rid;
+    private ScrubbedInput bizId;
 
     @Transient
-    private String businessName;
+    private ScrubbedInput businessName;
     private ScrubbedInput freeText;
     private ScrubbedInput additionalInfo;
-    private String start;
-    private String end;
-    private String live;
+    private ScrubbedInput start;
+    private ScrubbedInput end;
+    private ScrubbedInput live;
 
     private CampaignStatusEnum campaignStatus;
     private Collection<FileSystemEntity> fileSystemEntities;
 
-    private String distributionPercentPatrons;
-    private String distributionPercentNonPatrons;
+    private ScrubbedInput distributionPercentPatrons;
+    private ScrubbedInput distributionPercentNonPatrons;
 
-    private String reason;
+    private ScrubbedInput reason;
 
     @SuppressWarnings ("unused")
     private CouponCampaign() {
     }
 
     public CouponCampaign(String campaignId) {
-        this.campaignId = campaignId;
+        this.campaignId = new ScrubbedInput(campaignId);
     }
 
     public String getCampaignId() {
-        return campaignId;
+        return campaignId.getText();
     }
 
     public CouponCampaign setCampaignId(String campaignId) {
-        this.campaignId = campaignId;
+        this.campaignId = new ScrubbedInput(campaignId);
         return this;
     }
 
     public String getRid() {
-        return rid;
+        return rid.getText();
     }
 
     public CouponCampaign setRid(String rid) {
-        this.rid = rid;
+        this.rid = new ScrubbedInput(rid);
         return this;
     }
 
     public String getBizId() {
-        return bizId;
+        return bizId.getText();
     }
 
     public CouponCampaign setBizId(String bizId) {
-        this.bizId = bizId;
+        this.bizId = new ScrubbedInput(bizId);
         return this;
     }
 
     public String getBusinessName() {
-        return businessName;
+        return businessName.getText();
     }
 
     public CouponCampaign setBusinessName(String businessName) {
-        this.businessName = businessName;
+        this.businessName = new ScrubbedInput(businessName);
         return this;
     }
 
-    public ScrubbedInput getFreeText() {
-        return freeText;
+    public String getFreeText() {
+        return freeText.getText();
     }
 
-    public CouponCampaign setFreeText(ScrubbedInput freeText) {
-        this.freeText = freeText;
+    public CouponCampaign setFreeText(String freeText) {
+        this.freeText = new ScrubbedInput(freeText);
         return this;
     }
 
-    public ScrubbedInput getAdditionalInfo() {
-        return additionalInfo;
+    public String getAdditionalInfo() {
+        return additionalInfo.getText();
     }
 
-    public CouponCampaign setAdditionalInfo(ScrubbedInput additionalInfo) {
-        this.additionalInfo = additionalInfo;
+    public CouponCampaign setAdditionalInfo(String additionalInfo) {
+        this.additionalInfo = new ScrubbedInput(additionalInfo);
         return this;
     }
 
     public String getStart() {
-        return start;
+        return start.getText();
     }
 
     public CouponCampaign setStart(String start) {
-        this.start = start;
+        this.start = new ScrubbedInput(start);
         return this;
     }
 
     public String getEnd() {
-        return end;
+        return end.getText();
     }
 
     public CouponCampaign setEnd(String end) {
-        this.end = end;
+        this.end = new ScrubbedInput(end);
         return this;
     }
 
     public String getLive() {
-        return live;
+        return live.getText();
     }
 
     public CouponCampaign setLive(String live) {
-        this.live = live;
+        this.live = new ScrubbedInput(live);
         return this;
     }
 
@@ -144,38 +144,38 @@ public class CouponCampaign implements Serializable {
     @SuppressWarnings ("unused")
     @Transient
     public int getDaysBetween() {
-        return DateUtil.getDaysBetween(start, end);
+        return DateUtil.getDaysBetween(start.getText(), end.getText());
     }
 
     public String getDistributionPercentPatrons() {
-        return distributionPercentPatrons;
+        return distributionPercentPatrons.getText();
     }
 
     public CouponCampaign setDistributionPercentPatrons(String distributionPercentPatrons) {
-        this.distributionPercentPatrons = distributionPercentPatrons;
+        this.distributionPercentPatrons = new ScrubbedInput(distributionPercentPatrons);
         return this;
     }
 
     private int getDistributionPercentLocalAsInt() {
-        if (StringUtils.isNotBlank(distributionPercentPatrons)) {
-            return Integer.parseInt(distributionPercentPatrons.substring(0, distributionPercentPatrons.length() - 1));
+        if (StringUtils.isNotBlank(distributionPercentPatrons.getText())) {
+            return Integer.parseInt(distributionPercentPatrons.getText().substring(0, distributionPercentPatrons.getText().length() - 1));
         } else {
             return 0;
         }
     }
 
     public String getDistributionPercentNonPatrons() {
-        return distributionPercentNonPatrons;
+        return distributionPercentNonPatrons.getText();
     }
 
     public CouponCampaign setDistributionPercentNonPatrons(String distributionPercentNonPatrons) {
-        this.distributionPercentNonPatrons = distributionPercentNonPatrons;
+        this.distributionPercentNonPatrons = new ScrubbedInput(distributionPercentNonPatrons);
         return this;
     }
 
     private int getDistributionPercentAllAsInt() {
-        if (StringUtils.isNotBlank(distributionPercentNonPatrons)) {
-            return Integer.parseInt(distributionPercentNonPatrons.substring(0, distributionPercentNonPatrons.length() - 1));
+        if (StringUtils.isNotBlank(distributionPercentNonPatrons.getText())) {
+            return Integer.parseInt(distributionPercentNonPatrons.getText().substring(0, distributionPercentNonPatrons.getText().length() - 1));
         } else {
             return 0;
         }
@@ -200,11 +200,11 @@ public class CouponCampaign implements Serializable {
     }
 
     public String getReason() {
-        return reason;
+        return reason == null ? "" : reason.getText();
     }
 
     public void setReason(String reason) {
-        this.reason = reason;
+        this.reason = new ScrubbedInput(reason);
     }
 
     @Transient
