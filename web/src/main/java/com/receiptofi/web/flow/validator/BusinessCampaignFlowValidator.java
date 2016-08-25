@@ -1,7 +1,5 @@
 package com.receiptofi.web.flow.validator;
 
-import static com.receiptofi.utils.DateUtil.DF_MMDDYYYY;
-
 import com.receiptofi.domain.flow.CouponCampaign;
 import com.receiptofi.utils.DateUtil;
 import com.receiptofi.web.controller.access.LandingController;
@@ -17,7 +15,6 @@ import org.springframework.binding.message.MessageBuilder;
 import org.springframework.binding.message.MessageContext;
 import org.springframework.stereotype.Component;
 
-import java.text.ParseException;
 import java.util.Date;
 
 /**
@@ -36,15 +33,9 @@ public class BusinessCampaignFlowValidator {
                 couponCampaign.getBusinessName());
 
         String status = LandingController.SUCCESS;
-
-        Date live = null, start = null, end = null;
-        try {
-            live = DF_MMDDYYYY.parse(couponCampaign.getLive());
-            start = DF_MMDDYYYY.parse(couponCampaign.getStart());
-            end = DF_MMDDYYYY.parse(couponCampaign.getEnd());
-        } catch (ParseException e) {
-            LOG.error(e.getLocalizedMessage());
-        }
+        Date live = DateUtil.convertToDate(couponCampaign.getLive());
+        Date start = DateUtil.convertToDate(couponCampaign.getStart());
+        Date end = DateUtil.convertToDate(couponCampaign.getEnd());
 
         if (StringUtils.isBlank(couponCampaign.getFreeText().getText())) {
             messageContext.addMessage(
@@ -74,18 +65,18 @@ public class BusinessCampaignFlowValidator {
             status = "failure";
         }
 
-        if (null != live && live.compareTo(DateUtil.getUTCDate()) < 0) {
+        if (live.compareTo(DateUtil.getUTCDate()) < 0) {
             messageContext.addMessage(
                     new MessageBuilder()
                             .error()
                             .source("live")
                             .defaultText("First Available has to be greater than " +
-                                    DF_MMDDYYYY.format(new DateTime(DateUtil.getUTCDate()).plusDays(1).toDate()))
+                                    DateUtil.dateToString(new DateTime(DateUtil.getUTCDate()).plusDays(1).toDate()))
                             .build());
             status = "failure";
         }
 
-        if (null != start && null != live && start.compareTo(live) < 0) {
+        if (start.compareTo(live) < 0) {
             messageContext.addMessage(
                     new MessageBuilder()
                             .error()
@@ -98,7 +89,7 @@ public class BusinessCampaignFlowValidator {
             status = "failure";
         }
 
-        if (null != start && null != end && end.compareTo(start) < 0) {
+        if (end.compareTo(start) < 0) {
             messageContext.addMessage(
                     new MessageBuilder()
                             .error()
@@ -109,7 +100,7 @@ public class BusinessCampaignFlowValidator {
             status = "failure";
         }
 
-        if (null != start && null != end && end.compareTo(start) == 0) {
+        if (end.compareTo(start) == 0) {
             messageContext.addMessage(
                     new MessageBuilder()
                             .error()
@@ -139,7 +130,7 @@ public class BusinessCampaignFlowValidator {
 
         String status = LandingController.SUCCESS;
 
-        if (StringUtils.isBlank(couponCampaign.getDistributionPercent())) {
+        if (StringUtils.isBlank(couponCampaign.getDistributionPercentPatrons())) {
             messageContext.addMessage(
                     new MessageBuilder()
                             .error()
@@ -149,12 +140,12 @@ public class BusinessCampaignFlowValidator {
             status = "failure";
         }
 
-        if (couponCampaign.getDistributionPercentAsInt() <= 0) {
+        if (StringUtils.isBlank(couponCampaign.getDistributionPercentNonPatrons())) {
             messageContext.addMessage(
                     new MessageBuilder()
                             .error()
                             .source("distributionPercent")
-                            .defaultText("Distribution cannot be set to zero.")
+                            .defaultText("Distribution cannot be empty.")
                             .build());
             status = "failure";
         }

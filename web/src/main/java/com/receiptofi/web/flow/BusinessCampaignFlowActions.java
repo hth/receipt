@@ -1,12 +1,11 @@
 package com.receiptofi.web.flow;
 
-import static com.receiptofi.utils.DateUtil.DF_MMDDYYYY;
-
 import com.receiptofi.domain.BusinessUserEntity;
 import com.receiptofi.domain.CampaignEntity;
 import com.receiptofi.domain.flow.CouponCampaign;
 import com.receiptofi.domain.site.ReceiptUser;
 import com.receiptofi.domain.types.CampaignStatusEnum;
+import com.receiptofi.domain.types.CampaignTypeEnum;
 import com.receiptofi.service.BusinessUserService;
 import com.receiptofi.service.CampaignService;
 import com.receiptofi.utils.DateUtil;
@@ -58,9 +57,9 @@ public class BusinessCampaignFlowActions {
                 .setRid(rid)
                 .setBusinessName(businessUser.getBizName().getBusinessName())
                 .setBizId(businessUser.getBizName().getId())
-                .setLive(DF_MMDDYYYY.format(utcDate.plusDays(1).toDate()))
-                .setStart(DF_MMDDYYYY.format(utcDate.plusDays(1).toDate()))
-                .setEnd(DF_MMDDYYYY.format(utcDate.plusDays(8).toDate()));
+                .setLive(DateUtil.dateToString(utcDate.plusDays(1).toDate()))
+                .setStart(DateUtil.dateToString(utcDate.plusDays(1).toDate()))
+                .setEnd(DateUtil.dateToString(utcDate.plusDays(8).toDate()));
     }
 
     @SuppressWarnings ("unused")
@@ -74,12 +73,13 @@ public class BusinessCampaignFlowActions {
                 .setRid(rid)
                 .setBusinessName(businessUser.getBizName().getBusinessName())
                 .setBizId(businessUser.getBizName().getId())
-                .setLive(DF_MMDDYYYY.format(businessCampaign.getLive()))
-                .setStart(DF_MMDDYYYY.format(businessCampaign.getStart()))
-                .setEnd(DF_MMDDYYYY.format(businessCampaign.getEnd()))
+                .setLive(DateUtil.dateToString(businessCampaign.getLive()))
+                .setStart(DateUtil.dateToString(businessCampaign.getStart()))
+                .setEnd(DateUtil.dateToString(businessCampaign.getEnd()))
                 .setFreeText(new ScrubbedInput(businessCampaign.getFreeText()))
                 .setAdditionalInfo(businessCampaign.getAdditionalInfo() != null ? new ScrubbedInput(businessCampaign.getAdditionalInfo().getText()) : new ScrubbedInput(""))
-                .setDistributionPercent(businessCampaign.getDistributionPercent() + "%")
+                .setDistributionPercentPatrons(businessCampaign.getCampaignStats() == null ? "25" + "%" : businessCampaign.getCampaignStats().get(CampaignTypeEnum.P.getName()).getDistributionPercent() + "%")
+                .setDistributionPercentNonPatrons(businessCampaign.getCampaignStats() == null ? "25" + "%" : businessCampaign.getCampaignStats().get(CampaignTypeEnum.NP.getName()).getDistributionPercent() + "%")
                 .setCampaignStatus(businessCampaign.getCampaignStatus())
                 .setFileSystemEntities(businessCampaign.getFileSystemEntities());
     }

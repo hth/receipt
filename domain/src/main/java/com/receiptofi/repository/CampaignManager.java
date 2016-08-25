@@ -38,7 +38,8 @@ public interface CampaignManager extends RepositoryManager<CampaignEntity> {
     void updateCampaignStatus(
             String campaignId,
             UserLevelEnum userLevel,
-            CampaignStatusEnum campaignStatus);
+            CampaignStatusEnum campaignStatus,
+            String reason);
 
     /**
      * Finds all approved campaign.

@@ -1,7 +1,6 @@
 package com.receiptofi.domain;
 
 import com.receiptofi.domain.types.CampaignStatusEnum;
-import com.receiptofi.domain.types.CampaignTypeEnum;
 import com.receiptofi.utils.DateUtil;
 
 import org.springframework.data.annotation.Transient;
@@ -52,17 +51,6 @@ public class CampaignEntity extends BaseEntity {
     @Field ("LP")
     private Date live;
 
-    @Field ("CT")
-    private CampaignTypeEnum campaignType = CampaignTypeEnum.L;
-
-    /** Number of coupon to release. */
-    @Field ("DP")
-    private int distributionPercent;
-
-    /** Number of coupon distributed. Computed by system. */
-    @Field ("TD")
-    private int totalDistribution;
-
     @DBRef
     @Field ("FS")
     private Collection<FileSystemEntity> fileSystemEntities;
@@ -78,6 +66,12 @@ public class CampaignEntity extends BaseEntity {
     @DBRef
     @Field ("AI")
     private CommentEntity additionalInfo;
+
+    @Field ("ST")
+    private Map<String, CampaignStatsEntity> campaignStats;
+
+    @Field ("RS")
+    private String reason;
 
     @SuppressWarnings("unused")
     private CampaignEntity() {
@@ -153,39 +147,12 @@ public class CampaignEntity extends BaseEntity {
         return this;
     }
 
-    public CampaignTypeEnum getCampaignType() {
-        return campaignType;
-    }
-
-    public CampaignEntity setCampaignType(CampaignTypeEnum campaignType) {
-        this.campaignType = campaignType;
-        return this;
-    }
-
     public Collection<FileSystemEntity> getFileSystemEntities() {
         return fileSystemEntities;
     }
 
     public CampaignEntity setFileSystemEntities(Collection<FileSystemEntity> fileSystemEntities) {
         this.fileSystemEntities = fileSystemEntities;
-        return this;
-    }
-
-    public int getDistributionPercent() {
-        return distributionPercent;
-    }
-
-    public CampaignEntity setDistributionPercent(int distributionPercent) {
-        this.distributionPercent = distributionPercent;
-        return this;
-    }
-
-    public int getTotalDistribution() {
-        return totalDistribution;
-    }
-
-    public CampaignEntity setTotalDistribution(int totalDistribution) {
-        this.totalDistribution = totalDistribution;
         return this;
     }
 
@@ -212,6 +179,22 @@ public class CampaignEntity extends BaseEntity {
         return this;
     }
 
+    public Map<String, CampaignStatsEntity> getCampaignStats() {
+        return campaignStats;
+    }
+
+    public void setCampaignStats(Map<String, CampaignStatsEntity> campaignStats) {
+        this.campaignStats = campaignStats;
+    }
+
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
+    }
+
     @Transient
     public int getDaysBetween() {
         return DateUtil.getDaysBetween(start, end);
@@ -227,9 +210,6 @@ public class CampaignEntity extends BaseEntity {
                 ", start=" + start +
                 ", end=" + end +
                 ", live=" + live +
-                ", campaignType=" + campaignType +
-                ", distributionPercent=" + distributionPercent +
-                ", totalDistribution=" + totalDistribution +
                 ", fileSystemEntities=" + fileSystemEntities +
                 ", campaignStatus=" + campaignStatus +
                 ", historicalCampaignStates=" + historicalCampaignStates +

@@ -134,7 +134,7 @@ public class BusinessLandingController {
                     .setVisitCount(bizDimension.getVisitCount());
         }
 
-        businessLandingForm.setCampaignListForm(new CampaignListForm().setBusinessCampaigns(campaignService.findBy(bizNameId)));
+        businessLandingForm.setCampaignListForm(new CampaignListForm().setCampaigns(campaignService.findBy(bizNameId)));
     }
 
     /**

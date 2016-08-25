@@ -137,7 +137,10 @@ public class MigrateToBusinessRegistrationFlowActions extends RegistrationFlowAc
         userProfilePreferenceService.updateProfile(userProfile);
 
         if (!userProfile.getFirstName().equals(register.getRegisterUser().getFirstName()) && !userProfile.getLastName().equals(register.getRegisterUser().getLastName())) {
-            accountService.updateName(register.getRegisterUser().getFirstName(), register.getRegisterUser().getLastName(), register.getRegisterUser().getRid());
+            accountService.updateName(
+                    register.getRegisterUser().getFirstName(),
+                    register.getRegisterUser().getLastName(),
+                    register.getRegisterUser().getRid());
         }
     }
 }

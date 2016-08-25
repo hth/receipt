@@ -11,7 +11,7 @@ import java.util.List;
 public class CampaignListForm {
 
     private long campaignCount;
-    private List<CampaignEntity> businessCampaigns;
+    private List<CampaignEntity> campaigns;
 
     public long getCampaignCount() {
         return campaignCount;
@@ -22,12 +22,12 @@ public class CampaignListForm {
         return this;
     }
 
-    public List<CampaignEntity> getBusinessCampaigns() {
-        return businessCampaigns;
+    public List<CampaignEntity> getCampaigns() {
+        return campaigns;
     }
 
-    public CampaignListForm setBusinessCampaigns(List<CampaignEntity> businessCampaigns) {
-        this.businessCampaigns = businessCampaigns;
+    public CampaignListForm setCampaigns(List<CampaignEntity> campaigns) {
+        this.campaigns = campaigns;
         return this;
     }
 }

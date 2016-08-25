@@ -133,19 +133,29 @@ public class CampaignManagerImpl implements CampaignManager {
     public void updateCampaignStatus(
             String campaignId,
             UserLevelEnum userLevel,
-            CampaignStatusEnum campaignStatus
+            CampaignStatusEnum campaignStatus,
+            String reason
     ) {
         LOG.info("campaignId={} userLevel={}", campaignId, userLevel);
 
         switch (userLevel) {
             case SUPERVISOR:
             case TECH_CAMPAIGN:
-                mongoTemplate.updateFirst(
-                        query(where("id").is(campaignId)),
-                        entityUpdate(update("CS", campaignStatus)),
-                        CampaignEntity.class,
-                        TABLE
-                );
+                if (campaignStatus == CampaignStatusEnum.D) {
+                    mongoTemplate.updateFirst(
+                            query(where("id").is(campaignId)),
+                            entityUpdate(update("CS", campaignStatus).set("RS", reason)),
+                            CampaignEntity.class,
+                            TABLE
+                    );
+                } else {
+                    mongoTemplate.updateFirst(
+                            query(where("id").is(campaignId)),
+                            entityUpdate(update("CS", campaignStatus).set("RS", reason)),
+                            CampaignEntity.class,
+                            TABLE
+                    );
+                }
                 break;
             default:
                 throw new UnsupportedOperationException("Not authorized to modify campaign");

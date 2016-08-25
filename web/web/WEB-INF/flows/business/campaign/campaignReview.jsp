@@ -107,40 +107,48 @@
                                 cssStyle="width: 100px;" readonly="true" />
                     </div>
                     <div id="fine-uploader-validation" class="upload-text"></div>
-                    <div class="row_field">
-                        <form:label path="distributionPercent" cssClass="profile_label"
-                                cssErrorClass="profile_label lb_error" cssStyle="width: 300px;">% Of Customers Receiving Coupons:</form:label>
-                        <form:input path="distributionPercent" size="20"
-                                cssClass="name_txt" cssStyle="border: 0;" readonly="true"/>
-                    </div>
                     <div id="container"></div>
-                    <div class="full">
+
                     <div class="row_field">
-                        <form:label path="campaignStatus" cssClass="profile_label"
-                                cssErrorClass="profile_label lb_error">Current State</form:label>
-                        <form:input path="campaignStatus.description" size="20"
-                                cssClass="name_txt" cssStyle="width: 400px; border: 0;" readonly="true" />
+                        <form:label path="distributionPercentPatrons" cssClass="profile_label" cssErrorClass="profile_label lb_error" cssStyle="width: 300px;">
+                            Patrons Receiving Campaign
+                        </form:label>
+                        <form:input path="distributionPercentPatrons" size="20" cssClass="name_txt" cssStyle="border: 0;" readonly="true"/>
                     </div>
-                    <c:choose>
-                    <c:when test="${couponCampaign.campaignStatus ne 'L'}">
-                        <c:if test="${couponCampaign.campaignStatus ne 'P' && couponCampaign.campaignStatus ne 'A'}">
-                        <input type="submit" value="CONFIRM" class="read_btn" name="_eventId_confirm"
-                                style="background: #2c97de; margin: 77px 10px 0 0;">
-                        </c:if>
-                        <input type="submit" value="REVISE" class="read_btn" name="_eventId_revise"
-                                style="background: #2c97de; margin: 77px 10px 0 0;">
-                        <input type="submit" value="CANCEL" class="read_btn" name="_eventId_cancel"
-                                style="background: #FC462A; margin: 77px 10px 0 0;">
-                    </c:when>
-                    <c:when test="${couponCampaign.campaignStatus eq 'L'}">
-                        <input type="submit" value="STOP CAMPAIGN" class="read_btn" name="_eventId_stop_campaign"
-                                style="background: #FC462A; margin: 77px 10px 0 0;">
-                    </c:when>
-                    <c:otherwise>
-                        <input type="submit" value="HOME" class="read_btn" name="_eventId_cancel"
-                                style="background: #2c97de; margin: 77px 10px 0 0;">
-                    </c:otherwise>
-                    </c:choose>
+                    <div class="row_field">
+                        <form:label path="distributionPercentNonPatrons" cssClass="profile_label" cssErrorClass="profile_label lb_error" cssStyle="width: 300px;">
+                            Non Patrons Receiving Campaign
+                        </form:label>
+                        <form:input path="distributionPercentNonPatrons" size="20" cssClass="name_txt" cssStyle="border: 0;" readonly="true"/>
+                    </div>
+
+                    <div class="full">
+                        <div class="row_field">
+                            <form:label path="campaignStatus" cssClass="profile_label"
+                                    cssErrorClass="profile_label lb_error">Current State</form:label>
+                            <form:input path="campaignStatus.description" size="20"
+                                    cssClass="name_txt" cssStyle="width: 400px; border: 0;" readonly="true" />
+                        </div>
+                        <c:choose>
+                        <c:when test="${couponCampaign.campaignStatus ne 'L'}">
+                            <c:if test="${couponCampaign.campaignStatus ne 'P' && couponCampaign.campaignStatus ne 'A'}">
+                            <input type="submit" value="CONFIRM" class="read_btn" name="_eventId_confirm"
+                                    style="background: #2c97de; margin: 77px 10px 0 0;">
+                            </c:if>
+                            <input type="submit" value="REVISE" class="read_btn" name="_eventId_revise"
+                                    style="background: #2c97de; margin: 77px 10px 0 0;">
+                            <input type="submit" value="CANCEL" class="read_btn" name="_eventId_cancel"
+                                    style="background: #FC462A; margin: 77px 10px 0 0;">
+                        </c:when>
+                        <c:when test="${couponCampaign.campaignStatus eq 'L'}">
+                            <input type="submit" value="STOP CAMPAIGN" class="read_btn" name="_eventId_stop_campaign"
+                                    style="background: #FC462A; margin: 77px 10px 0 0;">
+                        </c:when>
+                        <c:otherwise>
+                            <input type="submit" value="HOME" class="read_btn" name="_eventId_cancel"
+                                    style="background: #2c97de; margin: 77px 10px 0 0;">
+                        </c:otherwise>
+                        </c:choose>
                     </div>
                 </form:form>
             </div>

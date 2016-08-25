@@ -153,4 +153,23 @@ public class RegisterUser implements Serializable {
         this.emailValidated = emailValidated;
         return this;
     }
+
+    @Override
+    public String toString() {
+        return "RegisterUser{" +
+                "rid='" + rid + '\'' +
+                ", email='" + email + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", address='" + address + '\'' +
+                ", countryShortName='" + countryShortName + '\'' +
+                ", phone='" + phone + '\'' +
+                ", emailValidated=" + emailValidated +
+                ", birthday='" + birthday + '\'' +
+                ", password='" + password + '\'' +
+                ", accountExists=" + accountExists +
+                ", acceptsAgreement=" + acceptsAgreement +
+                ", registrationTurnedOn=" + registrationTurnedOn +
+                '}';
+    }
 }

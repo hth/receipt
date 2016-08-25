@@ -64,14 +64,17 @@ public class InviteController {
 
     private InviteService inviteService;
     private InviteAuthenticateValidator inviteAuthenticateValidator;
+    private LoginController loginController;
 
     @Autowired
     public InviteController(
             InviteService inviteService,
-            InviteAuthenticateValidator inviteAuthenticateValidator
+            InviteAuthenticateValidator inviteAuthenticateValidator,
+            LoginController loginController
     ) {
         this.inviteService = inviteService;
         this.inviteAuthenticateValidator = inviteAuthenticateValidator;
+        this.loginController = loginController;
     }
 
     @RequestMapping (method = RequestMethod.GET, value = "authenticate")
@@ -149,9 +152,7 @@ public class InviteController {
         } else {
             String key = form.getForgotAuthenticateForm().getAuthenticationKey();
             InviteEntity invite = inviteService.findByAuthenticationKey(key);
-            if (null == invite) {
-                redirectAttrs.addFlashAttribute(SUCCESS, "false");
-            } else {
+            if (null != invite) {
                 boolean signupComplete = inviteService.completeProfileForInvitationSignup(
                         form.getFirstName().getText(),
                         form.getLastName().getText(),
@@ -162,8 +163,17 @@ public class InviteController {
                         form.getForgotAuthenticateForm().getPassword(),
                         invite
                 );
-                redirectAttrs.addFlashAttribute(SUCCESS, Boolean.valueOf(signupComplete).toString());
+
+                if (signupComplete) {
+                    String redirectTo = loginController.continueLoginAfterRegistration(invite.getInvited().getReceiptUserId());
+                    LOG.info("Redirecting user to {}", redirectTo);
+                    return "redirect:" + redirectTo;
+                }
+
+                LOG.warn("Failed completing registration invite rid={}", invite.getInvited().getReceiptUserId());
             }
+
+            redirectAttrs.addFlashAttribute(SUCCESS, "false");
             return authenticateResult;
         }
     }
