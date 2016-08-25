@@ -94,18 +94,47 @@ public class UserProfilePreferenceController {
     @Value ("${mail.validation.timeout.period}")
     private int mailValidationTimeoutPeriod;
 
-    @Autowired private UserProfilePreferenceService userProfilePreferenceService;
-    @Autowired private AccountService accountService;
-    @Autowired private ItemService itemService;
-    @Autowired private ExpenseTagValidator expenseTagValidator;
-    @Autowired private ProfileValidator profileValidator;
-    @Autowired private MailService mailService;
-    @Autowired private EmailValidateService emailValidateService;
-    @Autowired private FileSystemService fileSystemService;
-    @Autowired private BillingService billingService;
-    @Autowired private ExpensesService expensesService;
-    @Autowired private ReceiptService receiptService;
-    @Autowired private AdminService adminService;
+    private final UserProfilePreferenceService userProfilePreferenceService;
+    private final AccountService accountService;
+    private final ItemService itemService;
+    private final ExpenseTagValidator expenseTagValidator;
+    private final ProfileValidator profileValidator;
+    private final MailService mailService;
+    private final EmailValidateService emailValidateService;
+    private final FileSystemService fileSystemService;
+    private final BillingService billingService;
+    private final ExpensesService expensesService;
+    private final ReceiptService receiptService;
+    private final AdminService adminService;
+
+    @Autowired
+    public UserProfilePreferenceController(
+            UserProfilePreferenceService userProfilePreferenceService,
+            ProfileValidator profileValidator,
+            AccountService accountService,
+            MailService mailService,
+            BillingService billingService,
+            ReceiptService receiptService,
+            AdminService adminService,
+            ExpenseTagValidator expenseTagValidator,
+            ExpensesService expensesService,
+            ItemService itemService,
+            EmailValidateService emailValidateService,
+            FileSystemService fileSystemService
+    ) {
+        this.userProfilePreferenceService = userProfilePreferenceService;
+        this.profileValidator = profileValidator;
+        this.accountService = accountService;
+        this.mailService = mailService;
+        this.billingService = billingService;
+        this.receiptService = receiptService;
+        this.adminService = adminService;
+        this.expenseTagValidator = expenseTagValidator;
+        this.expensesService = expensesService;
+        this.itemService = itemService;
+        this.emailValidateService = emailValidateService;
+        this.fileSystemService = fileSystemService;
+    }
 
     @PreAuthorize ("hasAnyRole('ROLE_USER', 'ROLE_BUSINESS', 'ROLE_ENTERPRISE')")
     @RequestMapping (value = "/i", method = RequestMethod.GET)
