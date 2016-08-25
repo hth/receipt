@@ -70,13 +70,32 @@ public class ReceiptController {
     @Value ("${ReceiptController.nextPageByBiz:/receiptByBiz}")
     private String nextPageByBiz;
 
-    @Autowired private ReceiptService receiptService;
-    @Autowired private ItemService itemService;
-    @Autowired private BizNameManager bizNameManager;
-    @Autowired private ExpensesService expensesService;
-    @Autowired private FriendService friendService;
-    @Autowired private SplitExpensesService splitExpensesService;
-    @Autowired private UserProfilePreferenceService userProfilePreferenceService;
+    private final ReceiptService receiptService;
+    private final ItemService itemService;
+    private final BizNameManager bizNameManager;
+    private final ExpensesService expensesService;
+    private final FriendService friendService;
+    private final SplitExpensesService splitExpensesService;
+    private final UserProfilePreferenceService userProfilePreferenceService;
+
+    @Autowired
+    public ReceiptController(
+            BizNameManager bizNameManager,
+            UserProfilePreferenceService userProfilePreferenceService,
+            ExpensesService expensesService,
+            FriendService friendService,
+            ItemService itemService,
+            ReceiptService receiptService,
+            SplitExpensesService splitExpensesService
+    ) {
+        this.bizNameManager = bizNameManager;
+        this.userProfilePreferenceService = userProfilePreferenceService;
+        this.expensesService = expensesService;
+        this.friendService = friendService;
+        this.itemService = itemService;
+        this.receiptService = receiptService;
+        this.splitExpensesService = splitExpensesService;
+    }
 
     @RequestMapping (value = "/{receiptId}", method = RequestMethod.GET)
     public String loadForm(
