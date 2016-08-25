@@ -60,13 +60,26 @@ public class UpdateController {
     private static final String NEXT_PAGE_RECHECK = "/emp/receipt/recheck";
     private static final String REDIRECT_EMP_LANDING_HTM = "redirect:/emp/receipt/landing.htm";
 
-    @Autowired private ReceiptDocumentValidator receiptDocumentValidator;
-    @Autowired private DocumentRejectValidator documentRejectValidator;
-    @Autowired private DocumentUpdateService documentUpdateService;
-    @Autowired private DocumentService documentService;
+    private final ReceiptDocumentValidator receiptDocumentValidator;
+    private final DocumentRejectValidator documentRejectValidator;
+    private final DocumentUpdateService documentUpdateService;
+    private final DocumentService documentService;
 
     @Value ("${duplicate.receipt}")
     private String duplicateReceiptMessage;
+
+    @Autowired
+    public UpdateController(
+            ReceiptDocumentValidator receiptDocumentValidator,
+            DocumentService documentService,
+            DocumentUpdateService documentUpdateService,
+            DocumentRejectValidator documentRejectValidator
+    ) {
+        this.receiptDocumentValidator = receiptDocumentValidator;
+        this.documentService = documentService;
+        this.documentUpdateService = documentUpdateService;
+        this.documentRejectValidator = documentRejectValidator;
+    }
 
     /**
      * For Technician: Loads new receipts.

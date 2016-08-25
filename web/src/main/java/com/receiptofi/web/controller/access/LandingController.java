@@ -89,12 +89,12 @@ public class LandingController {
     @Value ("${LandingController.calendar.nextPage:/z/landingTabs}")
     private String calendarNextPage;
 
-    @Autowired private LandingService landingService;
-    @Autowired private NotificationService notificationService;
-    @Autowired private MailService mailService;
-    @Autowired private FileSystemService fileSystemService;
-    @Autowired private DocumentUpdateService documentUpdateService;
-    @Autowired private MessageDocumentService messageDocumentService;
+    private final LandingService landingService;
+    private final NotificationService notificationService;
+    private final MailService mailService;
+    private final FileSystemService fileSystemService;
+    private final DocumentUpdateService documentUpdateService;
+    private final MessageDocumentService messageDocumentService;
 
     private static final DateTimeFormatter DTF = DateTimeFormat.forPattern("MMM, yyyy");
 
@@ -109,6 +109,23 @@ public class LandingController {
 
     @Value ("${duplicate.document.reject.rid}")
     private String documentRejectRid;
+
+    @Autowired
+    public LandingController(
+            MailService mailService,
+            NotificationService notificationService,
+            FileSystemService fileSystemService,
+            DocumentUpdateService documentUpdateService,
+            MessageDocumentService messageDocumentService,
+            LandingService landingService
+    ) {
+        this.mailService = mailService;
+        this.notificationService = notificationService;
+        this.fileSystemService = fileSystemService;
+        this.documentUpdateService = documentUpdateService;
+        this.messageDocumentService = messageDocumentService;
+        this.landingService = landingService;
+    }
 
     @Timed
     @ExceptionMetered

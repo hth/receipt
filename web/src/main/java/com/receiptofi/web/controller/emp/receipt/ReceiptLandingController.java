@@ -54,7 +54,7 @@ public class ReceiptLandingController {
 
         ModelAndView modelAndView = new ModelAndView(receiptLanding);
 
-        /**
+        /*
          * Note: findPending has to be before findUpdateWithLimit because records are update in the second query
          * and this gets duplicates
          *
