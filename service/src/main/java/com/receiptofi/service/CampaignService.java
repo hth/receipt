@@ -81,7 +81,7 @@ public class CampaignService {
             campaign = campaignManager.findById(couponCampaign.getCampaignId(), couponCampaign.getBizId());
             campaign.setRid(couponCampaign.getRid())
                     .setBizId(couponCampaign.getBizId())
-                    .setFreeText(couponCampaign.getFreeText().getText())
+                    .setFreeText(couponCampaign.getFreeText())
                     .setStart(DateUtil.convertToDate(couponCampaign.getStart()))
                     .setEnd(DateUtil.convertToDate(couponCampaign.getEnd()))
                     .setLive(DateUtil.convertToDate(couponCampaign.getLive()))
@@ -89,21 +89,21 @@ public class CampaignService {
 
             comment = campaign.getAdditionalInfo();
             if (comment != null) {
-                comment.setText(couponCampaign.getAdditionalInfo().getText());
-            } else if (StringUtils.isNotBlank(couponCampaign.getAdditionalInfo().getText())) {
+                comment.setText(couponCampaign.getAdditionalInfo());
+            } else if (StringUtils.isNotBlank(couponCampaign.getAdditionalInfo())) {
                 comment = createNewComment(couponCampaign);
             }
         } else {
             campaign = CampaignEntity.newInstance(
                     couponCampaign.getRid(),
                     couponCampaign.getBizId(),
-                    couponCampaign.getFreeText().toString(),
+                    couponCampaign.getFreeText(),
                     DateUtil.convertToDate(couponCampaign.getStart()),
                     DateUtil.convertToDate(couponCampaign.getEnd()),
                     DateUtil.convertToDate(couponCampaign.getLive())
             );
 
-            if (StringUtils.isNotBlank(couponCampaign.getAdditionalInfo().getText())) {
+            if (StringUtils.isNotBlank(couponCampaign.getAdditionalInfo())) {
                 comment = createNewComment(couponCampaign);
             }
         }
@@ -151,7 +151,7 @@ public class CampaignService {
 
     private CommentEntity createNewComment(CouponCampaign businessCampaign) {
         return CommentEntity.newInstance(businessCampaign.getRid(), CommentTypeEnum.C)
-                .setText(businessCampaign.getAdditionalInfo().getText());
+                .setText(businessCampaign.getAdditionalInfo());
     }
 
     /**

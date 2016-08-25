@@ -37,7 +37,7 @@ public class BusinessCampaignFlowValidator {
         Date start = DateUtil.convertToDate(couponCampaign.getStart());
         Date end = DateUtil.convertToDate(couponCampaign.getEnd());
 
-        if (StringUtils.isBlank(couponCampaign.getFreeText().getText())) {
+        if (StringUtils.isBlank(couponCampaign.getFreeText())) {
             messageContext.addMessage(
                     new MessageBuilder()
                             .error()
@@ -45,7 +45,7 @@ public class BusinessCampaignFlowValidator {
                             .defaultText("Please enter Coupon Text to help explain the deal to your customers")
                             .build());
             status = "failure";
-        } else if (couponCampaign.getFreeText().getText().length() > 30) {
+        } else if (couponCampaign.getFreeText().length() > 30) {
             messageContext.addMessage(
                     new MessageBuilder()
                             .error()
@@ -55,7 +55,7 @@ public class BusinessCampaignFlowValidator {
             status = "failure";
         }
 
-        if (couponCampaign.getAdditionalInfo().getText().length() > 600) {
+        if (couponCampaign.getAdditionalInfo().length() > 600) {
             messageContext.addMessage(
                     new MessageBuilder()
                             .error()

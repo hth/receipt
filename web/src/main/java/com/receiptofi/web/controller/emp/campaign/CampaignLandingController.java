@@ -108,8 +108,8 @@ public class CampaignLandingController {
                 .setLive(DateUtil.dateToString(campaign.getLive()))
                 .setStart(DateUtil.dateToString(campaign.getStart()))
                 .setEnd(DateUtil.dateToString(campaign.getEnd()))
-                .setFreeText(new ScrubbedInput(campaign.getFreeText()))
-                .setAdditionalInfo(campaign.getAdditionalInfo() != null ? new ScrubbedInput(campaign.getAdditionalInfo().getText()) : new ScrubbedInput(""))
+                .setFreeText(campaign.getFreeText())
+                .setAdditionalInfo(campaign.getAdditionalInfo() != null ? campaign.getAdditionalInfo().getText() : "")
                 .setDistributionPercentPatrons(campaign.getCampaignStats().get(CampaignTypeEnum.P.getName()).getDistributionPercent() + "%")
                 .setDistributionPercentNonPatrons(campaign.getCampaignStats().get(CampaignTypeEnum.NP.getName()).getDistributionPercent() + "%")
                 .setCampaignStatus(campaign.getCampaignStatus())
@@ -135,7 +135,7 @@ public class CampaignLandingController {
                 CampaignStatusEnum.D.getDescription(), campaignId, receiptUser.getRid());
 
         /* Validate Campaign. */
-        if (StringUtils.isBlank(couponCampaign.getReason().getText())) {
+        if (StringUtils.isBlank(couponCampaign.getReason())) {
             result.rejectValue("reason",
                     "field.reason",
                     new Object[]{"Reason", Integer.valueOf("15")},
@@ -152,7 +152,7 @@ public class CampaignLandingController {
                 receiptUser.getRid(),
                 receiptUser.getUserLevel(),
                 CampaignStatusEnum.D,
-                couponCampaign.getReason().getText());
+                couponCampaign.getReason());
 
         return "redirect:" + campaignLanding + ".htm";
     }
