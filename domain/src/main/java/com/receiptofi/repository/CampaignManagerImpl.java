@@ -21,6 +21,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.WriteResultChecking;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.Assert;
 
 import java.util.List;
 
@@ -141,7 +142,8 @@ public class CampaignManagerImpl implements CampaignManager {
         switch (userLevel) {
             case SUPERVISOR:
             case TECH_CAMPAIGN:
-                if (campaignStatus == CampaignStatusEnum.D) {
+                if (CampaignStatusEnum.D == campaignStatus) {
+                    Assert.hasText(reason, "Reason cannot be empty when " + CampaignStatusEnum.D.getDescription());
                     mongoTemplate.updateFirst(
                             query(where("id").is(campaignId)),
                             entityUpdate(update("CS", campaignStatus).set("RS", reason)),
@@ -151,7 +153,7 @@ public class CampaignManagerImpl implements CampaignManager {
                 } else {
                     mongoTemplate.updateFirst(
                             query(where("id").is(campaignId)),
-                            entityUpdate(update("CS", campaignStatus).set("RS", reason)),
+                            entityUpdate(update("CS", campaignStatus)),
                             CampaignEntity.class,
                             TABLE
                     );
