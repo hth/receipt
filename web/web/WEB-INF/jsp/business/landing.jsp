@@ -116,7 +116,10 @@
                     </tr>
                     <tr>
                         <td style="padding: 10px; border: 1px solid #ccc" colspan="3">
-                            Last Modified: <fmt:formatDate pattern="MMMM dd, yyyy" value="${item.updated}"/>
+                            <c:if test="${item.campaignStatus eq 'D'}">
+                                <span style="float:left;">Reason: ${item.reason}</span>
+                            </c:if>
+                            <span style="float:right;">Last Modified: <fmt:formatDate pattern="MMMM dd, yyyy" value="${item.updated}"/></span>
                         </td>
                     </tr>
                     </c:forEach>

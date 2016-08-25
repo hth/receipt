@@ -133,6 +133,7 @@ public class CampaignManagerImpl implements CampaignManager {
     @Override
     public void updateCampaignStatus(
             String campaignId,
+            String validateByRid,
             UserLevelEnum userLevel,
             CampaignStatusEnum campaignStatus,
             String reason
@@ -143,17 +144,17 @@ public class CampaignManagerImpl implements CampaignManager {
             case SUPERVISOR:
             case TECH_CAMPAIGN:
                 if (CampaignStatusEnum.D == campaignStatus) {
-                    Assert.hasText(reason, "Reason cannot be empty when " + CampaignStatusEnum.D.getDescription());
+                    Assert.hasText(reason, "Reason cannot be empty when " + campaignStatus.getDescription());
                     mongoTemplate.updateFirst(
                             query(where("id").is(campaignId)),
-                            entityUpdate(update("CS", campaignStatus).set("RS", reason)),
+                            entityUpdate(update("CS", campaignStatus).set("VB", validateByRid).set("RS", reason)),
                             CampaignEntity.class,
                             TABLE
                     );
                 } else {
                     mongoTemplate.updateFirst(
                             query(where("id").is(campaignId)),
-                            entityUpdate(update("CS", campaignStatus)),
+                            entityUpdate(update("CS", campaignStatus).set("VB", validateByRid)),
                             CampaignEntity.class,
                             TABLE
                     );

@@ -70,6 +70,9 @@ public class CampaignEntity extends BaseEntity {
     @Field ("ST")
     private Map<String, CampaignStatsEntity> campaignStats;
 
+    @Field ("VB")
+    private String validateByRid;
+
     @Field ("RS")
     private String reason;
 
@@ -185,6 +188,14 @@ public class CampaignEntity extends BaseEntity {
 
     public void setCampaignStats(Map<String, CampaignStatsEntity> campaignStats) {
         this.campaignStats = campaignStats;
+    }
+
+    public String getValidateByRid() {
+        return validateByRid;
+    }
+
+    public void setValidateByRid(String validateByRid) {
+        this.validateByRid = validateByRid;
     }
 
     public String getReason() {
