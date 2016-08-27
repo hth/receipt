@@ -64,10 +64,11 @@ public final class DateUtil {
         LOG.info("Supplied date={}", dateAsStr);
 
         if (StringUtils.isNotBlank(dateAsStr)) {
-            String date = StringUtils.trim(dateAsStr.trim().replaceAll("-", "/")).replaceAll("[\\t\\n\\r]+", " ");
+            String date = StringUtils.trim(dateAsStr.trim().toUpperCase().replaceAll("-", "/")).replaceAll("[\\t\\n\\r]+", " ");
             for (DateType dateType : DateType.values()) {
                 if (date.matches(dateType.getRegex())) {
-                    return convertToDate(date, dateType.getFormatter());
+                    LOG.debug("DateType={} regex={} example={}", dateType.name(), dateType.regex, dateType.example);
+                    return convertToDateTime(date, dateType.getFormatter());
                 }
             }
         }
@@ -180,7 +181,7 @@ public final class DateUtil {
     }
 
     public static Date convertToDate(String date) {
-        return convertToDate(LocalDate.parse(date, DF_MM_DD_YYYY));
+        return convertToDate(date, DF_MM_DD_YYYY);
     }
 
     private static Date convertToDate(String date, DateTimeFormatter dateTimeFormatter) {
@@ -191,8 +192,16 @@ public final class DateUtil {
         return Date.from(localDate.atStartOfDay(ZoneOffset.UTC).toInstant());
     }
 
+    private static Date convertToDateTime(String date, DateTimeFormatter dateTimeFormatter) {
+        return convertToDateTime(LocalDateTime.parse(date, dateTimeFormatter));
+    }
+
+    private static Date convertToDateTime(LocalDateTime localDateTime) {
+        return Date.from(localDateTime.toInstant(ZoneOffset.UTC));
+    }
+
     public static String dateToString(Date date) {
-        return DF_MM_DD_YYYY.format(date.toInstant().atZone(ZoneOffset.UTC));
+        return dateToString(date, DF_MM_DD_YYYY);
     }
 
     public static String dateToString(Date date, DateTimeFormatter dateTimeFormatter) {
@@ -213,73 +222,135 @@ public final class DateUtil {
         return interval.toPeriod(PeriodType.days()).getDays();
     }
 
-    //todo add support for small AM|PM
+    /* Date string should have time appended since its a DateTimeFormatter. */
     public enum DateType {
-        FRM_1(
-                "\\d{1,2}/\\d{1,2}/\\d{4}\\s\\d{1,2}:\\d{2}(PM|pm|AM|am)",
-                "12/15/2012 02:13PM",
-                "MM/dd/yyyy hh:mma"
-        ),
-        FRM_2(
-                "\\d{1,2}/\\d{1,2}/\\d{2}\\s\\d{1,2}:\\d{2}",
-                "12/24/12 19:03",
-                "MM/dd/yy kk:mm"
-        ),
-        FRM_3(
-                "\\d{1,2}/\\d{1,2}/\\d{4}\\s\\d{1,2}:\\d{2}",
-                "12/24/2012 19:03",
-                "MM/dd/yyyy kk:mm"
-        ),
-        FRM_4(
-                "\\d{1,2}/\\d{1,2}/\\d{2}\\s\\d{1,2}:\\d{2}:\\d{2}",
-                "12/25/12 16:54:57",
-                "MM/dd/yy kk:mm:ss"
-        ),
-        FRM_5(
-                "\\d{1,2}/\\d{1,2}/\\d{4}\\s\\d{1,2}:\\d{2}:\\d{2}",
-                "12/15/2012 16:46:53",
-                "MM/dd/yyyy kk:mm:ss"
-        ),
-        FRM_6(
-                "\\d{1,2}/\\d{1,2}/\\d{4}\\s(PM|AM)\\s\\d{1,2}:\\d{2}:\\d{2}",
-                "12/15/2012 PM 04:49:45",
-                "MM/dd/yyyy a hh:mm:ss"
-        ),
-        FRM_7(
-                "\\d{1,2}/\\d{1,2}/\\d{4}\\s\\d{1,2}:\\d{2}\\s(PM|pm|AM|am)",
-                "08/29/2012 03:07 PM",
-                "MM/dd/yyyy hh:mm a"
-        ),
-        FRM_8(
-                "\\d{1,2}/\\d{1,2}/\\d{4}\\s\\d{1,2}:\\d{2}:\\d{2}\\s(PM|pm|AM|am)",
-                "12/26/2012 5:29:44 PM",
-                "MM/dd/yyyy hh:mm:ss a"
-        ),
-        FRM_9(
-                "\\d{1,2}/\\d{1,2}/\\d{2}\\s\\d{1,2}:\\d{2}:\\d{2}\\s(PM|pm|AM|am)",
-                "12/26/12 5:29:44 PM",
-                "MM/dd/yy hh:mm:ss a"
-        ),
-        FRM_10(
-                "\\d{1,2}/\\d{1,2}/\\d{4}",
-                "12/26/2012",
-                "MM/dd/yyyy"
-        ),
-        FRM_11(
-                "\\d{1,2}/\\d{1,2}/\\d{2}",
-                "12/26/12",
-                "MM/dd/yy"
-        ),
-        FRM_12(
-                "\\d{1,2}/\\d{1,2}/\\d{2}\\s\\d{1,2}:\\d{2}\\s(PM|pm|AM|am)",
-                "12/26/12 7:30 PM",
-                "MM/dd/yy hh:mm a"
-        ),
-        FRM_13(
-                "\\d{1,2}/\\d{1,2}/\\d{2}\\s\\d{1,2}:\\d{2}(PM|pm|AM|am)",
-                "12/26/12 7:30PM",
-                "MM/dd/yy hh:mma"
-        );
+        DT1("\\d{2}/\\d{2}/\\d{4}\\s\\d{2}:\\d{2}:\\d{2}\\s(AM|PM)",
+                "01/01/2016 03:03:03 AM",
+                "MM/dd/yyyy hh:mm:ss a"),
+
+        DT101("\\d{2}/\\d{2}/\\d{4}\\s\\d{1}:\\d{2}:\\d{2}\\s(AM|PM)",
+                "01/01/2016 3:03:03 AM",
+                "MM/dd/yyyy h:mm:ss a"),
+
+        DT102("\\d{2}/\\d{2}/\\d{4}\\s\\d{1}:\\d{2}:\\d{2}",
+                "01/01/2016 3:03:03",
+                "MM/dd/yyyy k:mm:ss"),
+
+        DT2("\\d{2}/\\d{2}/\\d{4}\\s\\d{2}:\\d{2}:\\d{2}",
+                "01/01/2016 23:03:03",
+                "MM/dd/yyyy kk:mm:ss"),
+
+        DT3("\\d{1}/\\d{2}/\\d{4}\\s\\d{2}:\\d{2}:\\d{2}\\s(AM|PM)",
+                "1/01/2016 03:03:03 AM",
+                "M/dd/yyyy hh:mm:ss a"),
+
+        DT301("\\d{1}/\\d{2}/\\d{4}\\s\\d{1}:\\d{2}:\\d{2}\\s(AM|PM)",
+                "1/01/2016 3:03:03 AM",
+                "M/dd/yyyy h:mm:ss a"),
+
+        DT302("\\d{1}/\\d{2}/\\d{4}\\s\\d{1}:\\d{2}:\\d{2}",
+                "1/01/2016 3:03:03",
+                "M/dd/yyyy k:mm:ss"),
+
+        DT4("\\d{1}/\\d{2}/\\d{4}\\s\\d{2}:\\d{2}:\\d{2}",
+                "1/01/2016 23:03:03",
+                "M/dd/yyyy kk:mm:ss"),
+
+        DT5("\\d{2}/\\d{1}/\\d{4}\\s\\d{2}:\\d{2}:\\d{2}\\s(AM|PM)",
+                "01/1/2016 03:03:03 AM",
+                "MM/d/yyyy hh:mm:ss a"),
+
+        DT501("\\d{2}/\\d{1}/\\d{4}\\s\\d{1}:\\d{2}:\\d{2}\\s(AM|PM)",
+                "01/1/2016 3:03:03 AM",
+                "MM/d/yyyy h:mm:ss a"),
+
+        DT502("\\d{2}/\\d{1}/\\d{4}\\s\\d{1}:\\d{2}:\\d{2}",
+                "01/1/2016 3:03:03",
+                "MM/d/yyyy k:mm:ss"),
+
+        DT6("\\d{2}/\\d{1}/\\d{4}\\s\\d{2}:\\d{2}:\\d{2}",
+                "01/1/2016 23:03:03",
+                "MM/d/yyyy kk:mm:ss"),
+
+        DT7("\\d{1}/\\d{1}/\\d{4}\\s\\d{2}:\\d{2}:\\d{2}\\s(AM|PM)",
+                "1/1/2016 03:03:03 AM",
+                "M/d/yyyy hh:mm:ss a"),
+
+        DT701("\\d{1}/\\d{1}/\\d{4}\\s\\d{1}:\\d{2}:\\d{2}\\s(AM|PM)",
+                "1/1/2016 3:03:03 AM",
+                "M/d/yyyy h:mm:ss a"),
+
+        DT702("\\d{1}/\\d{1}/\\d{4}\\s\\d{1}:\\d{2}:\\d{2}",
+                "1/1/2016 3:03:03",
+                "M/d/yyyy k:mm:ss"),
+
+        DT8("\\d{1}/\\d{1}/\\d{4}\\s\\d{2}:\\d{2}:\\d{2}",
+                "1/1/2016 23:03:03",
+                "M/d/yyyy kk:mm:ss"),
+
+        DT9("\\d{2}/\\d{2}/\\d{4}\\s\\d{2}:\\d{2}\\s(AM|PM)",
+                "01/01/2016 03:03 AM",
+                "MM/dd/yyyy hh:mm a"),
+
+        DT901("\\d{2}/\\d{2}/\\d{4}\\s\\d{1}:\\d{2}\\s(AM|PM)",
+                "01/01/2016 3:03 AM",
+                "MM/dd/yyyy h:mm a"),
+
+        DT902("\\d{2}/\\d{2}/\\d{4}\\s\\d{1}:\\d{2}",
+                "01/01/2016 3:03",
+                "MM/dd/yyyy k:mm"),
+
+        DT10("\\d{2}/\\d{2}/\\d{4}\\s\\d{2}:\\d{2}",
+                "01/01/2016 23:03",
+                "MM/dd/yyyy kk:mm"),
+
+        DT11("\\d{1}/\\d{2}/\\d{4}\\s\\d{2}:\\d{2}\\s(AM|PM)",
+                "1/01/2016 03:03 AM",
+                "M/dd/yyyy hh:mm a"),
+
+        DT1101("\\d{1}/\\d{2}/\\d{4}\\s\\d{1}:\\d{2}\\s(AM|PM)",
+                "1/01/2016 3:03 AM",
+                "M/dd/yyyy h:mm a"),
+
+        DT1102("\\d{1}/\\d{2}/\\d{4}\\s\\d{1}:\\d{2}",
+                "1/01/2016 3:03",
+                "M/dd/yyyy k:mm"),
+
+        DT12("\\d{1}/\\d{2}/\\d{4}\\s\\d{2}:\\d{2}",
+                "1/01/2016 23:03",
+                "M/dd/yyyy kk:mm"),
+
+        DT13("\\d{2}/\\d{1}/\\d{4}\\s\\d{2}:\\d{2}\\s(AM|PM)",
+                "01/1/2016 03:03 AM",
+                "MM/d/yyyy hh:mm a"),
+
+        DT1301("\\d{2}/\\d{1}/\\d{4}\\s\\d{1}:\\d{2}\\s(AM|PM)",
+                "01/1/2016 3:03 AM",
+                "MM/d/yyyy h:mm a"),
+
+        DT1302("\\d{2}/\\d{1}/\\d{4}\\s\\d{1}:\\d{2}",
+                "01/1/2016 3:03",
+                "MM/d/yyyy k:mm"),
+
+        DT14("\\d{2}/\\d{1}/\\d{4}\\s\\d{2}:\\d{2}",
+                "01/1/2016 23:03",
+                "MM/d/yyyy kk:mm"),
+
+        DT15("\\d{1}/\\d{1}/\\d{4}\\s\\d{2}:\\d{2}\\s(AM|PM)",
+                "1/1/2016 03:03 AM",
+                "M/d/yyyy hh:mm a"),
+
+        DT1501("\\d{1}/\\d{1}/\\d{4}\\s\\d{1}:\\d{2}\\s(AM|PM)",
+                "1/1/2016 3:03 AM",
+                "M/d/yyyy h:mm a"),
+
+        DT1502("\\d{1}/\\d{1}/\\d{4}\\s\\d{1}:\\d{2}",
+                "1/1/2016 3:03",
+                "M/d/yyyy k:mm"),
+
+        DT16("\\d{1}/\\d{1}/\\d{4}\\s\\d{2}:\\d{2}",
+                "1/1/2016 23:03",
+                "M/d/yyyy kk:mm");
 
         private final String regex;
 
@@ -290,7 +361,7 @@ public final class DateUtil {
         DateType(String regex, String example, String formatter) {
             this.regex = regex;
             this.example = example;
-            this.formatter = DateTimeFormatter.ofPattern(formatter);
+            this.formatter = DateTimeFormatter.ofPattern(formatter, Locale.US);
         }
 
         public String getRegex() {
