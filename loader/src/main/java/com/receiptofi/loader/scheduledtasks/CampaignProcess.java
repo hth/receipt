@@ -107,7 +107,7 @@ public class CampaignProcess {
                 for(String campaignType : distributions.keySet()) {
                     switch (CampaignTypeEnum.valueOf(campaignType)) {
                         case P:
-                            distributionLocal(campaign, distributions.get(campaignType));
+                            patronDistribution(campaign, distributions.get(campaignType));
                             break;
                         case NP:
                             break;
@@ -139,7 +139,7 @@ public class CampaignProcess {
         LOG.info("S3 upload success={} skipped={} failure={} total={}", success, skipped, failure, size);
     }
 
-    private void distributionLocal(CampaignEntity campaign, CampaignStatsEntity campaignStats) {
+    private void patronDistribution(CampaignEntity campaign, CampaignStatsEntity campaignStats) {
         int distributionSuccess = 0, distributionFailure = 0, distributionSkipped = 0;
 
         String businessCampaignId = campaign.getId();
