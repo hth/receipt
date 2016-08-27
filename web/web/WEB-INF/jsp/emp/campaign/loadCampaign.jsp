@@ -107,7 +107,8 @@
                     </div>
 
                     <div class="row_field">
-                        <div id="container" style="padding: 30px 30px 30px 0;"></div>
+                        <span class="profile_label">Image</span>
+                        <div id="container"></div>
                     </div>
 
                     <div class="row_field">
