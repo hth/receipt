@@ -156,7 +156,11 @@ public class CouponCampaign implements Serializable {
         return this;
     }
 
-    @SuppressWarnings ("unused")
+    /**
+     * Used in flow for slider.
+     *
+     * @return
+     */
     public int getDistributionPercentPatronsAsInt() {
         if (null != distributionPercentPatrons && StringUtils.isNotBlank(distributionPercentPatrons.getText())) {
             return Integer.parseInt(distributionPercentPatrons.getText().substring(0, distributionPercentPatrons.getText().length() - 1));
@@ -174,7 +178,11 @@ public class CouponCampaign implements Serializable {
         return this;
     }
 
-    @SuppressWarnings ("unused")
+    /**
+     * Used in flow for slider.
+     *
+     * @return
+     */
     public int getDistributionPercentNonPatronsAsInt() {
         if (null != distributionPercentNonPatrons && StringUtils.isNotBlank(distributionPercentNonPatrons.getText())) {
             return Integer.parseInt(distributionPercentNonPatrons.getText().substring(0, distributionPercentNonPatrons.getText().length() - 1));
