@@ -4,6 +4,7 @@ import com.receiptofi.domain.analytic.UserDimensionEntity;
 import com.receiptofi.repository.analytic.UserDimensionManager;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.geo.GeoResults;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -30,5 +31,14 @@ public class UserDimensionService {
 
     public List<UserDimensionEntity> getAllStoreUsers(String storeId) {
         return userDimensionManager.getAllStoreUsers(storeId);
+    }
+
+    public GeoResults<UserDimensionEntity> findAllNonPatrons(
+            double longitude,
+            double latitude,
+            int distributionRadius,
+            String storeId,
+            String countryShortName) {
+        return userDimensionManager.findAllNonPatrons(longitude, latitude, distributionRadius, storeId, countryShortName);
     }
 }

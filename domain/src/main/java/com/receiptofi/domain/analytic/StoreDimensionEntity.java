@@ -19,7 +19,8 @@ import org.springframework.data.mongodb.core.mapping.Field;
 })
 @Document (collection = "Z_STORE_DIM")
 @CompoundIndexes (value = {
-        @CompoundIndex (name = "store_dim_idx", def = "{'bizId': 1}", unique = false, background = true)
+        @CompoundIndex (name = "store_dim_idx", def = "{'bizId': 1}", background = true),
+        @CompoundIndex (name = "store_dim_geo_idx", def = "{'COR': '2dsphere'}", background = true),
 })
 public class StoreDimensionEntity extends BaseEntity {
 

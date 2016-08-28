@@ -19,7 +19,8 @@ import org.springframework.data.mongodb.core.mapping.Field;
 })
 @Document (collection = "Z_USER_DIM")
 @CompoundIndexes (value = {
-        @CompoundIndex (name = "user_dim_idx", def = "{'storeId': 1}", unique = false, background = true)
+        @CompoundIndex (name = "user_dim_idx", def = "{'storeId': 1}", background = true),
+        @CompoundIndex (name = "user_dim_geo_idx", def = "{'COR': '2dsphere'}", background = true),
 })
 public class UserDimensionEntity extends BaseEntity {
 

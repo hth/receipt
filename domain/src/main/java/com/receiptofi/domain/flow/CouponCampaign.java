@@ -92,7 +92,7 @@ public class CouponCampaign implements Serializable {
     }
 
     public String getFreeText() {
-        return freeText.getText();
+        return null == freeText ? "" : freeText.getText();
     }
 
     public CouponCampaign setFreeText(String freeText) {
@@ -101,7 +101,7 @@ public class CouponCampaign implements Serializable {
     }
 
     public String getAdditionalInfo() {
-        return additionalInfo.getText();
+        return null == additionalInfo ? "" : additionalInfo.getText();
     }
 
     public CouponCampaign setAdditionalInfo(String additionalInfo) {
@@ -148,7 +148,7 @@ public class CouponCampaign implements Serializable {
     }
 
     public String getDistributionPercentPatrons() {
-        return distributionPercentPatrons.getText();
+        return null == distributionPercentPatrons ? "" : distributionPercentNonPatrons.getText();
     }
 
     public CouponCampaign setDistributionPercentPatrons(String distributionPercentPatrons) {
@@ -165,7 +165,7 @@ public class CouponCampaign implements Serializable {
     }
 
     public String getDistributionPercentNonPatrons() {
-        return distributionPercentNonPatrons.getText();
+        return null == distributionPercentNonPatrons ? "" : distributionPercentNonPatrons.getText();
     }
 
     public CouponCampaign setDistributionPercentNonPatrons(String distributionPercentNonPatrons) {

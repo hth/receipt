@@ -23,6 +23,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -130,6 +131,7 @@ public class CampaignManagerImpl implements CampaignManager {
         );
     }
 
+    //TODO check if spring security role propagates all the way to Repository layer
     @Override
     public void updateCampaignStatus(
             String campaignId,
@@ -161,16 +163,17 @@ public class CampaignManagerImpl implements CampaignManager {
                 }
                 break;
             default:
+                LOG.error("Reached unsupported userLevel={}", userLevel);
                 throw new UnsupportedOperationException("Not authorized to modify campaign");
         }
     }
 
     @Override
-    public List<CampaignEntity> findCampaignWithStatus(int limit, CampaignStatusEnum campaignStatus) {
+    public List<CampaignEntity> findCampaignWithStatus(int limit, CampaignStatusEnum campaignStatus, Date since) {
         return mongoTemplate.find(
-                query(
-                        where("CS").is(campaignStatus)
-                ).limit(limit).with(new Sort(Sort.Direction.ASC, "LP")),
+                query(where("CS").is(campaignStatus).and("LP").lt(since))
+                        .limit(limit)
+                        .with(new Sort(Sort.Direction.ASC, "LP")),
                 CampaignEntity.class,
                 TABLE
         );

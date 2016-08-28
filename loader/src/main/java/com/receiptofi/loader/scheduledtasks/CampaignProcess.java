@@ -1,5 +1,7 @@
 package com.receiptofi.loader.scheduledtasks;
 
+import com.mongodb.DuplicateKeyException;
+
 import com.receiptofi.domain.BizNameEntity;
 import com.receiptofi.domain.BizStoreEntity;
 import com.receiptofi.domain.CampaignEntity;
@@ -26,6 +28,8 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.geo.GeoResult;
+import org.springframework.data.geo.GeoResults;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -47,6 +51,7 @@ import java.util.Map;
 public class CampaignProcess {
     private static final Logger LOG = LoggerFactory.getLogger(CampaignProcess.class);
 
+    private final String campaignUploadSwitch;
     private final String goLiveSwitch;
     private CampaignService campaignService;
     private BizDimensionService bizDimensionService;
@@ -57,6 +62,9 @@ public class CampaignProcess {
 
     @Autowired
     public CampaignProcess(
+            @Value ("${FilesUploadToS3.campaign.switch}")
+            String campaignUploadSwitch,
+
             @Value ("${CampaignProcess.go.live.switch}")
             String goLiveSwitch,
 
@@ -65,6 +73,7 @@ public class CampaignProcess {
             CronStatsService cronStatsService, BizService bizService,
             UserDimensionService userDimensionService,
             CouponService couponService) {
+        this.campaignUploadSwitch = campaignUploadSwitch;
         this.goLiveSwitch = goLiveSwitch;
         this.campaignService = campaignService;
         this.bizDimensionService = bizDimensionService;
@@ -88,12 +97,14 @@ public class CampaignProcess {
                 goLiveSwitch);
 
         if ("OFF".equalsIgnoreCase(goLiveSwitch)) {
-            LOG.info("feature is {}", goLiveSwitch);
+            LOG.debug("feature is {} and campaignUploadSwitch={}", goLiveSwitch, campaignUploadSwitch);
             return;
         }
 
         List<CampaignEntity> campaigns = campaignService.findCampaignWithStatus(CampaignStatusEnum.S);
         if (campaigns.isEmpty()) {
+            LOG.info("Campaign upload feature is {}", campaignUploadSwitch);
+
             /** No campaigns set to live found. */
             return;
         } else {
@@ -107,12 +118,14 @@ public class CampaignProcess {
                 for(String campaignType : distributions.keySet()) {
                     switch (CampaignTypeEnum.valueOf(campaignType)) {
                         case P:
-                            distributionLocal(campaign, distributions.get(campaignType));
+                            patronDistribution(campaign, distributions.get(campaignType));
                             break;
                         case NP:
+                            nonPatronDistribution(campaign, distributions.get(campaignType));
                             break;
                         default:
-
+                            LOG.error("Reached unsupported id={}", campaign.getId());
+                            throw new UnsupportedOperationException("Reached unsupported condition");
                     }
                 }
 
@@ -139,13 +152,14 @@ public class CampaignProcess {
         LOG.info("S3 upload success={} skipped={} failure={} total={}", success, skipped, failure, size);
     }
 
-    private void distributionLocal(CampaignEntity campaign, CampaignStatsEntity campaignStats) {
+    private void patronDistribution(CampaignEntity campaign, CampaignStatsEntity campaignStats) {
         int distributionSuccess = 0, distributionFailure = 0, distributionSkipped = 0;
 
         String businessCampaignId = campaign.getId();
         String bizId = campaign.getBizId();
         BizNameEntity bizName = bizService.getByBizNameId(bizId);
         String businessName = bizName.getBusinessName();
+
         BizDimensionEntity bizDimension = bizDimensionService.findBy(bizId);
         if (bizDimension != null) {
             Double totalDistribution = Math.ceil(
@@ -156,27 +170,16 @@ public class CampaignProcess {
                             100
                     ).doubleValue());
 
+            int distributionUserFoundCount = 0;
             List<BizStoreEntity> bizStores = bizService.getAllBizStores(bizId);
             for (BizStoreEntity bizStore : bizStores) {
                 List<UserDimensionEntity> userDimensions = userDimensionService.getAllStoreUsers(bizStore.getId());
                 for (UserDimensionEntity userDimension : userDimensions) {
-                    CouponEntity coupon = new CouponEntity()
-                            .setRid(userDimension.getRid())
-                            .setBusinessName(businessName)
-                            .setFreeText(campaign.getFreeText())
-                            .setAvailable(campaign.getLive())
-                            .setExpire(campaign.getEnd())
-                            .setCouponType(CouponTypeEnum.B)
-                            .setImagePath(ImagePathOnS3.populateImagePath(campaign.getFileSystemEntities()))
-                            .setInitiatedFromId(businessCampaignId)
-                            .setCouponUploadStatus(CouponUploadStatusEnum.I);
+                    distributionUserFoundCount++;
 
-                    try {
-                        couponService.save(coupon);
+                    if (saveCoupon(businessCampaignId, businessName, userDimension.getRid(), campaign)) {
                         distributionSuccess++;
-                    } catch (Exception e) {
-                        LOG.warn("Failed to save coupon rid={} bizId={} campaignId={}",
-                                userDimension.getRid(), bizId, businessCampaignId);
+                    } else {
                         distributionFailure++;
                     }
 
@@ -185,10 +188,73 @@ public class CampaignProcess {
                     }
                 }
             }
+
+            LOG.debug("Found total campaign P distribution count={}", distributionUserFoundCount);
         } else {
             LOG.warn("No biz dimension found for id={} bizId={}", campaign.getId(), campaign.getBizId());
             distributionSkipped++;
         }
+
+        campaignStats.setDistributionSuccess(distributionSuccess);
+        campaignStats.setDistributionFailure(distributionFailure);
+        campaignStats.setDistributionSkipped(distributionSkipped);
+    }
+
+    private boolean saveCoupon(String businessCampaignId, String businessName, String rid, CampaignEntity campaign) {
+        try {
+            CouponEntity coupon = new CouponEntity()
+                    .setRid(rid)
+                    .setBusinessName(businessName)
+                    .setFreeText(campaign.getFreeText())
+                    .setAvailable(campaign.getLive())
+                    .setExpire(campaign.getEnd())
+                    .setCouponType(CouponTypeEnum.B)
+                    .setImagePath(ImagePathOnS3.populateImagePath(campaign.getFileSystemEntities()))
+                    .setInitiatedFromId(businessCampaignId)
+                    .setCouponUploadStatus(CouponUploadStatusEnum.I);
+            couponService.save(coupon);
+            return true;
+        } catch (DuplicateKeyException e) {
+            LOG.warn("Campaign already exists for rid={} campaignId={} businessName={}", rid, campaign.getId(), businessName);
+            return false;
+        } catch(Exception e) {
+            LOG.warn("Failed to save campaign for rid={} campaignId={} businessName={}", rid, campaign.getId(), businessName);
+            return false;
+        }
+    }
+
+    private void nonPatronDistribution(CampaignEntity campaign, CampaignStatsEntity campaignStats) {
+        int distributionSuccess = 0, distributionFailure = 0, distributionSkipped = 0;
+
+        String businessCampaignId = campaign.getId();
+        String bizId = campaign.getBizId();
+        BizNameEntity bizName = bizService.getByBizNameId(bizId);
+        String businessName = bizName.getBusinessName();
+
+        int distributionUserFoundCount = 0;
+        List<BizStoreEntity> bizStores = bizService.getAllBizStores(bizId);
+        for (BizStoreEntity bizStore : bizStores) {
+
+            GeoResults<UserDimensionEntity> userDimensions = userDimensionService.findAllNonPatrons(
+                    bizStore.getLng(),
+                    bizStore.getLat(),
+                    campaignStats.getDistributionRadius(),
+                    bizStore.getId(),
+                    bizStore.getCountryShortName()
+            );
+
+            for (GeoResult<UserDimensionEntity> userDimension : userDimensions) {
+                distributionUserFoundCount++;
+
+                if (saveCoupon(businessCampaignId, businessName, userDimension.getContent().getRid(), campaign)) {
+                    distributionSuccess++;
+                } else {
+                    distributionFailure++;
+                }
+            }
+        }
+
+        LOG.debug("Found total campaign NP distribution count={}", distributionUserFoundCount);
 
         campaignStats.setDistributionSuccess(distributionSuccess);
         campaignStats.setDistributionFailure(distributionFailure);

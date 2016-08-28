@@ -10,8 +10,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.geo.Distance;
+import org.springframework.data.geo.GeoResults;
+import org.springframework.data.geo.Metrics;
+import org.springframework.data.geo.Point;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.query.NearQuery;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
@@ -62,5 +67,27 @@ public class UserDimensionManagerImpl implements UserDimensionManager {
                 UserDimensionEntity.class,
                 TABLE
         );
+    }
+
+    @Override
+    public GeoResults<UserDimensionEntity> findAllNonPatrons(
+            double longitude,
+            double latitude,
+            int distributionRadius,
+            String storeId,
+            String countryShortName
+    ) {
+        NearQuery nearQuery = NearQuery
+                .near(new Point(longitude, latitude))
+                .maxDistance(new Distance(distributionRadius, Metrics.MILES));
+
+        Query query = query(
+                where("storeId").ne(storeId)
+                        .and("country").is(countryShortName)
+        );
+        query.fields().include("RID");
+
+        /* Includes more than RID. So include is not needed. */
+        return mongoTemplate.geoNear(nearQuery.query(query), UserDimensionEntity.class);
     }
 }
