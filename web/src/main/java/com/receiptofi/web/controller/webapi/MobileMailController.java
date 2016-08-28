@@ -47,8 +47,14 @@ public class MobileMailController {
     @Value ("${web.access.api.token}")
     private String webApiAccessToken;
 
-    @Autowired private MailService mailService;
-    @Autowired private AccountService accountService;
+    private final MailService mailService;
+    private final AccountService accountService;
+
+    @Autowired
+    public MobileMailController(MailService mailService, AccountService accountService) {
+        this.mailService = mailService;
+        this.accountService = accountService;
+    }
 
     @RequestMapping (
             value = "/accountSignup",
