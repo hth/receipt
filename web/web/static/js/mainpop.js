@@ -130,6 +130,20 @@ function submitBusinessInvitationForm() {
     extracted(object, inviteEmailId, "/access/invite/business.htm");
 }
 
+function computeDeliveryCount(id, url) {
+    $.ajax({
+        type: "GET",
+        url: ctx + url,
+        success: function (response) {
+            console.log(response);
+            $(id).html(response.m).show();
+        },
+        error: function (response, xhr, ajaxOptions, thrownError) {
+            console.error(response, xhr.status, thrownError);
+        }
+    });
+}
+
 function changeInviteText(field, text) {
     if (text === 'blur') {
         if (field.value == '') {

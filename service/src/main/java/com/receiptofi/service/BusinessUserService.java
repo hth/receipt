@@ -70,6 +70,10 @@ public class BusinessUserService {
         return businessUserManager.findBusinessUser(rid);
     }
 
+    public boolean doesBusinessUserExists(String rid, String bizId) {
+        return businessUserManager.doesBusinessUserExists(rid, bizId);
+    }
+
     public void save(BusinessUserEntity businessUser) {
         businessUserManager.save(businessUser);
     }

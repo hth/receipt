@@ -15,6 +15,8 @@ public interface UserDimensionManager extends RepositoryManager<UserDimensionEnt
 
     List<UserDimensionEntity> getAllStoreUsers(String storeId);
 
+    long getBusinessUserCount(String bizId);
+
     GeoResults<UserDimensionEntity> findAllNonPatrons(
             double longitude,
             double latitude,
