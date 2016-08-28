@@ -4,6 +4,7 @@ import com.receiptofi.domain.CampaignEntity;
 import com.receiptofi.domain.types.CampaignStatusEnum;
 import com.receiptofi.domain.types.UserLevelEnum;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -49,5 +50,5 @@ public interface CampaignManager extends RepositoryManager<CampaignEntity> {
      * @param limit
      * @return
      */
-    List<CampaignEntity> findCampaignWithStatus(int limit, CampaignStatusEnum campaignStatus);
+    List<CampaignEntity> findCampaignWithStatus(int limit, CampaignStatusEnum campaignStatus, Date since);
 }

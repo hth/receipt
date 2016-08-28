@@ -8,20 +8,24 @@ import org.springframework.data.mongodb.core.mapping.Field;
  */
 public class CampaignStatsEntity {
     /** Number of coupon to release. */
-    @Field ("DP")
+    @Field ("P")
     private int distributionPercent;
 
     /** Number of coupon distributed. Computed by system. */
-    @Field ("DS")
+    @Field ("S")
     private int distributionSuccess;
 
     /** Number of coupon distributed. Computed by system. */
-    @Field ("DF")
+    @Field ("F")
     private int distributionFailure;
 
     /** Number of coupon distributed. Computed by system. */
-    @Field ("DK")
+    @Field ("K")
     private int distributionSkipped;
+
+    /** Default Radius for distributing campaign. */
+    @Field ("R")
+    private int distributionRadius = 3;
 
     public CampaignStatsEntity(int distributionPercent) {
         this.distributionPercent = distributionPercent;
@@ -57,5 +61,13 @@ public class CampaignStatsEntity {
 
     public void setDistributionSkipped(int distributionSkipped) {
         this.distributionSkipped = distributionSkipped;
+    }
+
+    public int getDistributionRadius() {
+        return distributionRadius;
+    }
+
+    public void setDistributionRadius(int distributionRadius) {
+        this.distributionRadius = distributionRadius;
     }
 }

@@ -48,10 +48,15 @@ public class CampaignService {
     private FileSystemService fileSystemService;
     private CouponService couponService;
 
+    private long moveCampaignLiveByDays = 7;
+
     @Autowired
     public CampaignService(
             @Value ("${limit: 5}")
             int limit,
+
+            @Value ("${braintree.environment}")
+            String brainTreeEnvironment,
 
             CampaignManager campaignManager,
             CommentService commentService,
@@ -64,6 +69,10 @@ public class CampaignService {
         this.fileDBService = fileDBService;
         this.fileSystemService = fileSystemService;
         this.couponService = couponService;
+
+        if ("PRODUCTION".equals(brainTreeEnvironment)) {
+            moveCampaignLiveByDays = 0;
+        }
     }
 
     public CampaignEntity findById(String campaignId, String bizId) {
@@ -204,7 +213,7 @@ public class CampaignService {
     }
 
     public List<CampaignEntity> findCampaignWithStatus(CampaignStatusEnum campaignStatus) {
-        return campaignManager.findCampaignWithStatus(limit, campaignStatus);
+        return campaignManager.findCampaignWithStatus(limit, campaignStatus, DateUtil.getDateMinusDay(moveCampaignLiveByDays));
     }
 
     public long countPendingApproval() {
