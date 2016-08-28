@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.geo.Distance;
 import org.springframework.data.geo.GeoResults;
 import org.springframework.data.geo.Metrics;
@@ -64,6 +65,17 @@ public class UserDimensionManagerImpl implements UserDimensionManager {
 
         return mongoTemplate.find(
                 query,
+                UserDimensionEntity.class,
+                TABLE
+        );
+    }
+
+    @Override
+    @Cacheable (value = "businessUserCount", keyGenerator = "customKeyGenerator")
+    public long getBusinessUserCount(String bizId) {
+        LOG.info("Getting user count for bizId={}", bizId);
+        return mongoTemplate.count(
+                query(where("bizId").is(bizId)),
                 UserDimensionEntity.class,
                 TABLE
         );

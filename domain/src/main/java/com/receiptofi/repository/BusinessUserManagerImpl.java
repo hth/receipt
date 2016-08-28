@@ -8,6 +8,8 @@ import static org.springframework.data.mongodb.core.query.Query.query;
 import com.receiptofi.domain.BaseEntity;
 import com.receiptofi.domain.BusinessUserEntity;
 
+import org.bson.types.ObjectId;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -52,6 +54,19 @@ public class BusinessUserManagerImpl implements BusinessUserManager {
                         .andOperator(
                             isActive(),
                             isNotDeleted()
+                        )
+                ),
+                BusinessUserEntity.class,
+                TABLE);
+    }
+
+    @Override
+    public boolean doesBusinessUserExists(String rid, String bizId) {
+        return mongoTemplate.exists(
+                query(where("RID").is(rid).and("BIZ_NAME.$id").is(new ObjectId(bizId))
+                        .andOperator(
+                                isActive(),
+                                isNotDeleted()
                         )
                 ),
                 BusinessUserEntity.class,

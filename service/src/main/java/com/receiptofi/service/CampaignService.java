@@ -48,7 +48,7 @@ public class CampaignService {
     private FileSystemService fileSystemService;
     private CouponService couponService;
 
-    private long moveCampaignLiveByDays = 7;
+    private long bringForwardCampaignLiveByDays = 7;
 
     @Autowired
     public CampaignService(
@@ -71,7 +71,8 @@ public class CampaignService {
         this.couponService = couponService;
 
         if ("PRODUCTION".equals(brainTreeEnvironment)) {
-            moveCampaignLiveByDays = 0;
+            /* On production, keep the days as now. */
+            bringForwardCampaignLiveByDays = 0;
         }
     }
 
@@ -177,7 +178,7 @@ public class CampaignService {
             UploadDocumentImage image,
             Collection<FileSystemEntity> fileSystems
     ) throws IOException {
-        /** Save image first. */
+        /* Save image first. */
         String blobId = fileDBService.saveFile(image);
         image.setBlobId(blobId);
         LOG.info("Saved new image rid={}", image.getRid());
@@ -213,7 +214,7 @@ public class CampaignService {
     }
 
     public List<CampaignEntity> findCampaignWithStatus(CampaignStatusEnum campaignStatus) {
-        return campaignManager.findCampaignWithStatus(limit, campaignStatus, DateUtil.getDateMinusDay(moveCampaignLiveByDays));
+        return campaignManager.findCampaignWithStatus(limit, campaignStatus, DateUtil.getDateMinusDay(bringForwardCampaignLiveByDays));
     }
 
     public long countPendingApproval() {

@@ -100,19 +100,19 @@
                     <form:label path="distributionPercentPatrons" cssClass="profile_label" cssErrorClass="profile_label lb_error" cssStyle="width: 310px;">
                         % Of Patrons Receiving Coupons
                     </form:label>
-                    <form:input path="distributionPercentPatrons" size="20" cssClass="name_txt" cssStyle="border: 0;" readonly="true"/>
+                    <form:input path="distributionPercentPatrons" size="20" cssClass="name_txt" cssStyle="border: 0; width: 90px;" readonly="true"/> <span id="campaignDeliveryPatronId"></span>
                 </div>
                 <div class="row_field">
-                    <div id="slider-vertical-local" style="height:15px; width: 325px;"></div>
+                    <div id="slider-vertical-patrons" style="height:15px; width: 325px;"></div>
                 </div>
                 <div class="row_field">
                     <form:label path="distributionPercentNonPatrons" cssClass="profile_label" cssErrorClass="profile_label lb_error" cssStyle="width: 310px;">
                         % Of Non Patrons Receiving Coupons
                     </form:label>
-                    <form:input path="distributionPercentNonPatrons" size="20" cssClass="name_txt" cssStyle="border: 0;" readonly="true"/>
+                    <form:input path="distributionPercentNonPatrons" size="20" cssClass="name_txt" cssStyle="border: 0;  width: 90px;" readonly="true"/> <span id="campaignDeliveryNonPatronId"></span>
                 </div>
                 <div class="row_field">
-                    <div id="slider-vertical-all" style="height:15px; width: 325px;"></div>
+                    <div id="slider-vertical-non-patrons" style="height:15px; width: 325px;"></div>
                 </div>
 
                 <div class="full">
@@ -195,29 +195,35 @@
 </script>
 <script>
     $(function () {
-        $("#slider-vertical-local").slider({
+        $('#slider-vertical-patrons').slider({
             orientation: "horizontal",
             range: "min",
             min: 0,
             max: 100,
-            value: 25,
+            value: ${couponCampaign.distributionPercentPatronsAsInt},
             slide: function (event, ui) {
                 $("#distributionPercentPatrons").val(ui.value + "%");
+                computeDeliveryCount(
+                        '#campaignDeliveryPatronId',
+                        "/business/api/pc/${couponCampaign.bizId}/" + ui.value + ".htm");
             }
         });
-        $("#distributionPercentPatrons").val($("#slider-vertical-local").slider("value") + "%");
+        $('#distributionPercentPatrons').val($('#slider-vertical-patrons').slider("value") + "%");
 
-        $("#slider-vertical-all").slider({
+        $('#slider-vertical-non-patrons').slider({
             orientation: "horizontal",
             range: "min",
             min: 0,
             max: 100,
-            value: 25,
+            value: ${couponCampaign.distributionPercentNonPatronsAsInt},
             slide: function (event, ui) {
                 $("#distributionPercentNonPatrons").val(ui.value + "%");
+                computeDeliveryCount(
+                        '#campaignDeliveryNonPatronId',
+                        "/business/api/npc/${couponCampaign.bizId}/" + ui.value + ".htm");
             }
         });
-        $("#distributionPercentNonPatrons").val($("#slider-vertical-all").slider("value") + "%");
+        $('#distributionPercentNonPatrons').val($('#slider-vertical-non-patrons').slider("value") + "%");
     });
 </script>
 <script src="${pageContext.request.contextPath}/static/js/mainpop.js"></script>

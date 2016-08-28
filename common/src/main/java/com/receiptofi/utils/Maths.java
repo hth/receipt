@@ -32,9 +32,9 @@ public final class Maths {
     /** Scale for Display is always two. */
     public static final int SCALE_TWO = 2;
     /** Minimum scale has to be four. Formatted to two decimal place for view but save data with four decimal places. */
-    public static final int SCALE_FOUR = 4;
+    static final int SCALE_FOUR = 4;
 
-    public static final int SCALE_SIX = 6;
+    private static final int SCALE_SIX = 6;
     /** Accepted range in lowest denomination in cents here or any other currency. */
     public static final double ACCEPTED_RANGE_IN_LOWEST_DENOMINATION = 0.01;
 
@@ -186,7 +186,7 @@ public final class Maths {
         return multiply(value, Maths.multiply(BigDecimal.TEN, BigDecimal.TEN));
     }
 
-    public static boolean isNumeric(String str) {
+    private static boolean isNumeric(String str) {
         NumberFormat formatter = NumberFormat.getInstance();
         ParsePosition pos = new ParsePosition(0);
         formatter.parse(str, pos);
