@@ -156,8 +156,9 @@ public class CouponCampaign implements Serializable {
         return this;
     }
 
-    private int getDistributionPercentLocalAsInt() {
-        if (StringUtils.isNotBlank(distributionPercentPatrons.getText())) {
+    @SuppressWarnings ("unused")
+    public int getDistributionPercentPatronsAsInt() {
+        if (null != distributionPercentPatrons && StringUtils.isNotBlank(distributionPercentPatrons.getText())) {
             return Integer.parseInt(distributionPercentPatrons.getText().substring(0, distributionPercentPatrons.getText().length() - 1));
         } else {
             return 0;
@@ -173,8 +174,9 @@ public class CouponCampaign implements Serializable {
         return this;
     }
 
-    private int getDistributionPercentAllAsInt() {
-        if (StringUtils.isNotBlank(distributionPercentNonPatrons.getText())) {
+    @SuppressWarnings ("unused")
+    public int getDistributionPercentNonPatronsAsInt() {
+        if (null != distributionPercentNonPatrons && StringUtils.isNotBlank(distributionPercentNonPatrons.getText())) {
             return Integer.parseInt(distributionPercentNonPatrons.getText().substring(0, distributionPercentNonPatrons.getText().length() - 1));
         } else {
             return 0;
@@ -210,8 +212,8 @@ public class CouponCampaign implements Serializable {
     @Transient
     public Map<String, CampaignStatsEntity> getCampaignStats() {
         Map<String, CampaignStatsEntity> campaignStats = new LinkedHashMap<>();
-        campaignStats.put(CampaignTypeEnum.P.getName(), new CampaignStatsEntity(getDistributionPercentLocalAsInt()));
-        campaignStats.put(CampaignTypeEnum.NP.getName(), new CampaignStatsEntity(getDistributionPercentAllAsInt()));
+        campaignStats.put(CampaignTypeEnum.P.getName(), new CampaignStatsEntity(getDistributionPercentPatronsAsInt()));
+        campaignStats.put(CampaignTypeEnum.NP.getName(), new CampaignStatsEntity(getDistributionPercentNonPatronsAsInt()));
         return campaignStats;
     }
 }
