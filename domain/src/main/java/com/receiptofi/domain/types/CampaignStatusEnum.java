@@ -13,7 +13,7 @@ public enum CampaignStatusEnum {
     /** State after APPROVED and before making system LIVE. */
     S("S", "Campaign set to go live"),
     L("L", "Live"),
-    E("E", "End Campaign");
+    E("E", "Campaign Ended");
 
     private final String description;
     private final String name;

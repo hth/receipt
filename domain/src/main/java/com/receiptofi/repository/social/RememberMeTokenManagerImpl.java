@@ -48,7 +48,7 @@ public class RememberMeTokenManagerImpl implements RememberMeTokenManager {
 
     @Override
     public void deleteTokensWithUsername(String username) {
-        mongoTemplate.remove(query(where("UN").is(username)), TABLE);
+        mongoTemplate.remove(query(where("UN").is(username)), RememberMeTokenEntity.class, TABLE);
     }
 
     @Override
