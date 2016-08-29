@@ -127,10 +127,19 @@
                                 cssErrorClass="profile_label lb_error">First Available</form:label>
                         <form:input path="live" size="20" cssClass="name_txt" cssStyle="width: 100px;" />
                     </div>
-                    <div class="full">
+                    <c:choose>
+                    <c:when test="${couponCampaign.campaignStatus ne 'E'}">
+                        <div class="row_field">
                         <input type="submit" value="NEXT" class="read_btn" name="_eventId_submit" style="background: #2c97de; margin: 77px 10px 0 0;">
                         <input type="submit" value="CANCEL" class="read_btn" name="_eventId_cancel" style="background: #FC462A; margin: 77px 10px 0 0;">
-                    </div>
+                        </div>
+                    </c:when>
+                    <c:when test="${couponCampaign.campaignStatus eq 'E'}">
+                        <div class="row_field" style="padding-top: 60px;">
+                            <span style="font-weight: bold;">Cannot modify campaign with status: ${couponCampaign.campaignStatus.description}</span>
+                        </div>
+                    </c:when>
+                    </c:choose>
                 </form:form>
             </div>
         </div>
