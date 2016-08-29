@@ -47,6 +47,11 @@ public class RememberMeTokenManagerImpl implements RememberMeTokenManager {
     }
 
     @Override
+    public boolean existsBySeries(String series) {
+        return mongoTemplate.exists(query(where("S").is(series)), RememberMeTokenEntity.class, TABLE);
+    }
+
+    @Override
     public void deleteTokensWithUsername(String username) {
         mongoTemplate.remove(query(where("UN").is(username)), RememberMeTokenEntity.class, TABLE);
     }
@@ -61,9 +66,9 @@ public class RememberMeTokenManagerImpl implements RememberMeTokenManager {
     }
 
     @Override
-    public void updateToken(String tokenId, String tokenValue) {
+    public void updateToken(String series, String tokenValue) {
         mongoTemplate.updateFirst(
-                query(where("id").is(tokenId)),
+                query(where("S").is(series)),
                 entityUpdate(update("TV", tokenValue)),
                 RememberMeTokenEntity.class,
                 TABLE
