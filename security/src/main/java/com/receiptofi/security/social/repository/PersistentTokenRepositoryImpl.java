@@ -25,7 +25,12 @@ import java.util.Date;
 @Qualifier ("persistentTokenRepositoryImpl")
 public class PersistentTokenRepositoryImpl implements PersistentTokenRepository {
 
-    @Autowired private RememberMeTokenManager rememberMeTokenManager;
+    private final RememberMeTokenManager rememberMeTokenManager;
+
+    @Autowired
+    public PersistentTokenRepositoryImpl(RememberMeTokenManager rememberMeTokenManager) {
+        this.rememberMeTokenManager = rememberMeTokenManager;
+    }
 
     @Override
     public void createNewToken(PersistentRememberMeToken token) {
@@ -37,9 +42,7 @@ public class PersistentTokenRepositoryImpl implements PersistentTokenRepository 
     public void updateToken(String series, String tokenValue, Date lastUsed) {
         RememberMeTokenEntity token = rememberMeTokenManager.findBySeries(series);
         if (token != null) {
-            token.setTokenValue(tokenValue);
-            token.setUpdated();
-            rememberMeTokenManager.save(token);
+            rememberMeTokenManager.updateToken(token.getId(), tokenValue);
         }
     }
 
