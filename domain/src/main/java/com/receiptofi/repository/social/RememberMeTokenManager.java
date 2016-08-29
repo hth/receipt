@@ -11,4 +11,6 @@ public interface RememberMeTokenManager extends RepositoryManager<RememberMeToke
     RememberMeTokenEntity findBySeries(String series);
 
     void deleteTokensWithUsername(String username);
+
+    void updateToken(String tokenId, String tokenValue);
 }

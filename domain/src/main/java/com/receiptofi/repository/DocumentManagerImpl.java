@@ -3,6 +3,7 @@
  */
 package com.receiptofi.repository;
 
+import static com.receiptofi.repository.util.AppendAdditionalFields.entityUpdate;
 import static com.receiptofi.repository.util.AppendAdditionalFields.isActive;
 import static com.receiptofi.repository.util.AppendAdditionalFields.isDeleted;
 import static com.receiptofi.repository.util.AppendAdditionalFields.isNotActive;
@@ -119,9 +120,11 @@ public final class DocumentManagerImpl implements DocumentManager {
     @Override
     public long numberOfPendingReceipts(String rid) {
         return mongoTemplate.count(
-                query(where("RID").is(rid))
-                        .addCriteria(isActive())
-                        .addCriteria(isNotDeleted()),
+                query(where("RID").is(rid)
+                        .andOperator(
+                                isActive(),
+                                isNotDeleted())
+                ),
                 TABLE
         );
     }
@@ -129,9 +132,11 @@ public final class DocumentManagerImpl implements DocumentManager {
     @Override
     public long numberOfRejectedReceipts(String rid) {
         return mongoTemplate.count(
-                query(where("RID").is(rid).and("DS").is(DocumentStatusEnum.REJECT))
-                        .addCriteria(isNotActive())
-                        .addCriteria(isDeleted()),
+                query(where("RID").is(rid).and("DS").is(DocumentStatusEnum.REJECT)
+                        .andOperator(
+                                isNotActive(),
+                                isDeleted())
+                ),
                 TABLE
         );
     }
@@ -249,8 +254,9 @@ public final class DocumentManagerImpl implements DocumentManager {
     public void cloudUploadSuccessful(String documentId) {
         mongoTemplate.updateFirst(
                 query(where("id").is(documentId)),
-                update("IU", true),
-                DocumentEntity.class
+                entityUpdate(update("IU", true)),
+                DocumentEntity.class,
+                TABLE
         );
     }
 
@@ -258,8 +264,9 @@ public final class DocumentManagerImpl implements DocumentManager {
     public void markNotified(String documentId) {
         mongoTemplate.updateFirst(
                 query(where("id").is(documentId)),
-                update("NU", true),
-                DocumentEntity.class
+                entityUpdate(update("NU", true)),
+                DocumentEntity.class,
+                TABLE
         );
     }
 
