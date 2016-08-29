@@ -81,6 +81,8 @@ public class CampaignProcess {
         this.bizService = bizService;
         this.userDimensionService = userDimensionService;
         this.couponService = couponService;
+
+        LOG.info("feature is {} and campaignUploadSwitch={}", goLiveSwitch, campaignUploadSwitch);
     }
 
     /**
@@ -97,7 +99,6 @@ public class CampaignProcess {
                 goLiveSwitch);
 
         if ("OFF".equalsIgnoreCase(goLiveSwitch)) {
-            LOG.debug("feature is {} and campaignUploadSwitch={}", goLiveSwitch, campaignUploadSwitch);
             return;
         }
 
