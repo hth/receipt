@@ -57,7 +57,7 @@ public class PersistentTokenRepositoryImpl implements PersistentTokenRepository 
                     token.getUpdated()
             );
         }
-        /** This can happen when data is reset or token is missing. Returning null will send user to login page */
+        /* This can happen when data is reset or token is missing. Returning null will send user to login page */
         return null;
     }
 
