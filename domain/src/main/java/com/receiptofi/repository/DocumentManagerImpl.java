@@ -119,9 +119,11 @@ public final class DocumentManagerImpl implements DocumentManager {
     @Override
     public long numberOfPendingReceipts(String rid) {
         return mongoTemplate.count(
-                query(where("RID").is(rid))
-                        .addCriteria(isActive())
-                        .addCriteria(isNotDeleted()),
+                query(where("RID").is(rid)
+                        .andOperator(
+                                isActive(),
+                                isNotDeleted())
+                ),
                 TABLE
         );
     }
@@ -129,9 +131,11 @@ public final class DocumentManagerImpl implements DocumentManager {
     @Override
     public long numberOfRejectedReceipts(String rid) {
         return mongoTemplate.count(
-                query(where("RID").is(rid).and("DS").is(DocumentStatusEnum.REJECT))
-                        .addCriteria(isNotActive())
-                        .addCriteria(isDeleted()),
+                query(where("RID").is(rid).and("DS").is(DocumentStatusEnum.REJECT)
+                        .andOperator(
+                                isNotActive(),
+                                isDeleted())
+                ),
                 TABLE
         );
     }
