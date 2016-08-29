@@ -34,15 +34,13 @@ public class PersistentTokenRepositoryImpl implements PersistentTokenRepository 
 
     @Override
     public void createNewToken(PersistentRememberMeToken token) {
-        RememberMeTokenEntity newToken = new RememberMeTokenEntity(token);
-        rememberMeTokenManager.save(newToken);
+        rememberMeTokenManager.save(new RememberMeTokenEntity(token));
     }
 
     @Override
     public void updateToken(String series, String tokenValue, Date lastUsed) {
-        RememberMeTokenEntity token = rememberMeTokenManager.findBySeries(series);
-        if (token != null) {
-            rememberMeTokenManager.updateToken(token.getId(), tokenValue);
+        if (rememberMeTokenManager.existsBySeries(series)) {
+            rememberMeTokenManager.updateToken(series, tokenValue);
         }
     }
 
