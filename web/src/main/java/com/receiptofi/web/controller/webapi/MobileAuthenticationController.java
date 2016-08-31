@@ -50,7 +50,12 @@ public class MobileAuthenticationController {
     @Value ("${web.access.api.token}")
     private String webApiAccessToken;
 
-    @Autowired private CustomUserDetailsService customUserDetailsService;
+    private final CustomUserDetailsService customUserDetailsService;
+
+    @Autowired
+    public MobileAuthenticationController(CustomUserDetailsService customUserDetailsService) {
+        this.customUserDetailsService = customUserDetailsService;
+    }
 
     @RequestMapping (
             value = "/auth-create",

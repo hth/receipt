@@ -32,7 +32,12 @@ public class MobileRegistrationController {
     @Value ("${web.access.api.token}")
     private String webApiAccessToken;
 
-    @Autowired RegistrationService registrationService;
+    private final RegistrationService registrationService;
+
+    @Autowired
+    public MobileRegistrationController(RegistrationService registrationService) {
+        this.registrationService = registrationService;
+    }
 
     @RequestMapping (
             value = "/accepting",
