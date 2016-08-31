@@ -33,21 +33,13 @@ public interface BizStoreManager extends RepositoryManager<BizStoreEntity> {
     /**
      * Used for Ajax. Populates BizStoreEntity with just fieldName.
      *
-     * @param bizAddress
-     * @param bizNameEntity
-     * @return
-     */
-    List<BizStoreEntity> getAllWithJustSpecificField(String bizAddress, BizNameEntity bizNameEntity, String fieldName);
-
-    /**
-     * Used for Ajax. Populates BizStoreEntity with just fieldName.
-     *
      * @param bizPhone
      * @param bizAddress
-     * @param bizNameEntity
+     * @param bizId
+     * @param fieldName
      * @return
      */
-    List<BizStoreEntity> getAllWithJustSpecificField(String bizPhone, String bizAddress, BizNameEntity bizNameEntity, String fieldName);
+    List<BizStoreEntity> getAllWithJustSpecificField(String bizPhone, String bizAddress, String bizId, String fieldName);
 
     /**
      * BizStore sorted on create date and limited to latest records

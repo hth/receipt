@@ -35,10 +35,23 @@ import java.util.stream.Collectors;
 public class FetcherService {
     private static final Logger LOG = LoggerFactory.getLogger(FetcherService.class);
 
-    @Autowired private ItemManager itemManager;
-    @Autowired private BizNameManager bizNameManager;
-    @Autowired private BizStoreManager bizStoreManager;
-    @Autowired private FileSystemService fileSystemService;
+    private final ItemManager itemManager;
+    private final BizNameManager bizNameManager;
+    private final BizStoreManager bizStoreManager;
+    private final FileSystemService fileSystemService;
+
+    @Autowired
+    public FetcherService(
+            FileSystemService fileSystemService,
+            ItemManager itemManager,
+            BizNameManager bizNameManager,
+            BizStoreManager bizStoreManager
+    ) {
+        this.fileSystemService = fileSystemService;
+        this.itemManager = itemManager;
+        this.bizNameManager = bizNameManager;
+        this.bizStoreManager = bizStoreManager;
+    }
 
     /**
      * This method is called from AJAX to get the matching list of users in the system.
@@ -58,15 +71,16 @@ public class FetcherService {
      * @param bizName
      * @return
      */
-    public Set<String> findDistinctBizAddress(String bizAddress, String bizName) {
-        LOG.debug("Search for Biz address={} within name={}", bizAddress, bizName);
+    public Set<String> findDistinctBizAddress(String bizAddress, String bizName, String bizPhone) {
+        LOG.debug("Search for Biz address={} within name={} phone={}", bizAddress, bizName, bizPhone);
         Set<String> address = new HashSet<>();
 
         BizNameEntity bizNameEntity = bizNameManager.findOneByName(bizName);
         if (null != bizNameEntity) {
             List<BizStoreEntity> list = bizStoreManager.getAllWithJustSpecificField(
+                    bizPhone,
                     bizAddress,
-                    bizNameEntity,
+                    bizNameEntity.getId(),
                     BizStoreEntity.ADDRESS_FIELD_NAME);
 
             address.addAll(list.stream().map(BizStoreEntity::getAddress).collect(Collectors.toList()));
@@ -91,7 +105,7 @@ public class FetcherService {
             List<BizStoreEntity> list = bizStoreManager.getAllWithJustSpecificField(
                     bizPhone,
                     bizAddress,
-                    bizNameEntity,
+                    bizNameEntity.getId(),
                     BizStoreEntity.PHONE_FIELD_NAME);
 
             phone.addAll(list.stream().map(bizStore -> CommonUtil.phoneFormatter(bizStore.getPhone(), bizStore.getCountryShortName())).collect(Collectors.toList()));
