@@ -86,7 +86,7 @@ public class DiskFileSystemProcess {
                 String[] files = directory.list(cutoff);
                 found = files.length;
                 for (String filename : files) {
-                    removeExpiredExcel(getExcelFile(filename));
+                    removeExpiredExcel(FileUtil.getExcelFile(expensofiReportLocation, filename));
                     receiptService.removeExpensofiFilenameReference(filename);
                     deletedExcelFiles++;
                 }
@@ -107,16 +107,8 @@ public class DiskFileSystemProcess {
         }
     }
 
-    public File getExcelFile(String filename) {
-        return new File(expensofiReportLocation + File.separator + filename);
-    }
-
-    public void removeExpiredExcel(File file) {
+    private void removeExpiredExcel(File file) {
         FileUtils.deleteQuietly(file);
-    }
-
-    public void removeExpiredExcel(String filename) {
-        removeExpiredExcel(getExcelFile(filename));
     }
 
     /**

@@ -155,4 +155,8 @@ public class FileUtil {
     public static double fileSizeInMB(long length) {
         return length / FILE_SIZE_IN_MB;
     }
+
+    public static File getExcelFile(String expensofiReportLocation, String filename) {
+        return new File(expensofiReportLocation + File.separator + filename);
+    }
 }
