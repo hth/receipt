@@ -103,6 +103,7 @@ function extracted(object, inviteEmailId, link) {
         }
     });
 }
+
 function submitInvitationForm() {
     "use strict";
 
