@@ -135,7 +135,8 @@
                         url: '${pageContext. request. contextPath}/ws/r/find_address.htm',
                         data: {
                             term: request.term,
-                            nameParam: $("#businessName").val()
+                            nameParam: $("#businessName").val() ,
+                            phoneParam : $("#phone").val()
                         },
                         contentType: "*/*",
                         dataTypes: "application/json",
@@ -197,6 +198,7 @@
         $(document).ready(function() {
             $( "#total" ).autocomplete({
                 source: function (request, response) {
+                    console.log("check for duplicate called");
                     $('#existingErrorMessage').hide();
                     $.ajax({
                         url: '${pageContext. request. contextPath}/ws/r/check_for_duplicate.htm',

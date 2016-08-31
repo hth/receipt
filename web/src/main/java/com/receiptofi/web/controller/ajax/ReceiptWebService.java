@@ -14,6 +14,7 @@ import com.receiptofi.service.FetcherService;
 import com.receiptofi.service.ItemService;
 import com.receiptofi.service.LandingService;
 import com.receiptofi.service.ReceiptService;
+import com.receiptofi.utils.CommonUtil;
 import com.receiptofi.utils.DateUtil;
 import com.receiptofi.utils.Formatter;
 import com.receiptofi.utils.HashText;
@@ -163,7 +164,10 @@ public class ReceiptWebService {
             ScrubbedInput bizAddress,
 
             @RequestParam ("nameParam")
-            ScrubbedInput businessName
+            ScrubbedInput businessName,
+
+            @RequestParam (value = "phoneParam")
+            ScrubbedInput bizPhone
     ) {
         try {
             LOG.info("searchBiz bizAddress={} businessName={}",
@@ -171,7 +175,9 @@ public class ReceiptWebService {
 
             return fetcherService.findDistinctBizAddress(
                     StringUtils.stripToEmpty(bizAddress.getText()),
-                    StringUtils.stripToEmpty(businessName.getText()));
+                    StringUtils.stripToEmpty(businessName.getText()),
+                    CommonUtil.phoneCleanup(StringUtils.stripToEmpty(bizPhone.getText()))
+            );
         } catch (Exception fetchBusinessAddress) {
             LOG.warn("Error fetching business address, error={}", fetchBusinessAddress);
             return new HashSet<>();
@@ -206,7 +212,7 @@ public class ReceiptWebService {
                     bizPhone.getText(), bizAddress.getText(), businessName.getText());
 
             return fetcherService.findDistinctBizPhone(
-                    StringUtils.stripToEmpty(bizPhone.getText()),
+                    CommonUtil.phoneCleanup(StringUtils.stripToEmpty(bizPhone.getText())),
                     StringUtils.stripToEmpty(bizAddress.getText()),
                     StringUtils.stripToEmpty(businessName.getText())
             );

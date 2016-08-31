@@ -101,15 +101,16 @@ public class FetcherService {
      * @param bizName
      * @return
      */
-    public Set<String> findDistinctBizAddress(String bizAddress, String bizName) {
-        LOG.debug("Search for Biz address={} within name={}", bizAddress, bizName);
+    public Set<String> findDistinctBizAddress(String bizAddress, String bizName, String bizPhone) {
+        LOG.debug("Search for Biz address={} within name={} phone={}", bizAddress, bizName, bizPhone);
         Set<String> address = new HashSet<>();
 
         BizNameEntity bizNameEntity = bizNameManager.findOneByName(bizName);
         if (null != bizNameEntity) {
             List<BizStoreEntity> list = bizStoreManager.getAllWithJustSpecificField(
+                    bizPhone,
                     bizAddress,
-                    bizNameEntity,
+                    bizNameEntity.getId(),
                     BizStoreEntity.ADDRESS_FIELD_NAME);
 
             address.addAll(list.stream().map(BizStoreEntity::getAddress).collect(Collectors.toList()));
@@ -134,7 +135,7 @@ public class FetcherService {
             List<BizStoreEntity> list = bizStoreManager.getAllWithJustSpecificField(
                     bizPhone,
                     bizAddress,
-                    bizNameEntity,
+                    bizNameEntity.getId(),
                     BizStoreEntity.PHONE_FIELD_NAME);
 
             phone.addAll(list.stream().map(bizStore -> CommonUtil.phoneFormatter(bizStore.getPhone(), bizStore.getCountryShortName())).collect(Collectors.toList()));
