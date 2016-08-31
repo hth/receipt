@@ -1,7 +1,6 @@
 package com.receiptofi.loader.scheduledtasks;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
@@ -63,12 +62,6 @@ public class DiskFileSystemProcessTest {
         verify(receiptService, times(1)).removeExpensofiFilenameReference(any(String.class));
         assertTrue(diskFileSystemProcess.getCronStats().getStats().containsKey("deletedExcelFiles"));
         assertEquals("0", diskFileSystemProcess.getCronStats().getStats().get("deletedExcelFiles"));
-    }
-
-    @Test
-    public void removeExpiredExcel() {
-        diskFileSystemProcess.removeExpiredExcel(createdFile.getName());
-        assertFalse(createdFile.exists());
     }
 
     @Test

@@ -7,7 +7,6 @@ import com.mongodb.gridfs.GridFSDBFile;
 
 import com.receiptofi.domain.ReceiptEntity;
 import com.receiptofi.domain.site.ReceiptUser;
-import com.receiptofi.loader.scheduledtasks.DiskFileSystemProcess;
 import com.receiptofi.service.FileDBService;
 import com.receiptofi.service.ReceiptService;
 import com.receiptofi.utils.FileUtil;
@@ -55,20 +54,18 @@ import javax.servlet.http.HttpServletResponse;
 public class FileDownloadController {
     private static final Logger LOG = LoggerFactory.getLogger(FileDownloadController.class);
 
+    @Value ("${expensofiReportLocation}")
+    private String expensofiReportLocation;
+
     private FileDBService fileDBService;
-    private DiskFileSystemProcess diskFileSystemProcess;
     private ReceiptService receiptService;
 
     @Value ("${imageNotFoundPlaceHolder:/static/images/no_image.gif}")
     private String imageNotFound;
 
     @Autowired
-    public FileDownloadController(
-            FileDBService fileDBService,
-            DiskFileSystemProcess diskFileSystemProcess,
-            ReceiptService receiptService) {
+    public FileDownloadController(FileDBService fileDBService, ReceiptService receiptService) {
         this.fileDBService = fileDBService;
-        this.diskFileSystemProcess = diskFileSystemProcess;
         this.receiptService = receiptService;
     }
 
@@ -129,7 +126,7 @@ public class FileDownloadController {
             ReceiptEntity receipt = receiptService.findReceipt(receiptId.getText(), receiptUser.getRid());
             setHeaderForExcel(receipt, response);
 
-            InputStream inputStream = new FileInputStream(diskFileSystemProcess.getExcelFile(receipt.getExpenseReportInFS()));
+            InputStream inputStream = new FileInputStream(FileUtil.getExcelFile(expensofiReportLocation, receipt.getExpenseReportInFS()));
             IOUtils.copy(inputStream, response.getOutputStream());
         } catch (IOException e) {
             LOG.error("Excel retrieval error occurred Receipt={} for user={} reason={}",

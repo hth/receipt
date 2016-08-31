@@ -10,7 +10,6 @@ import com.receiptofi.domain.ReceiptEntity;
 import com.receiptofi.domain.site.ReceiptUser;
 import com.receiptofi.domain.types.NotificationGroupEnum;
 import com.receiptofi.domain.types.NotificationTypeEnum;
-import com.receiptofi.loader.scheduledtasks.DiskFileSystemProcess;
 import com.receiptofi.service.ItemAnalyticService;
 import com.receiptofi.service.NotificationService;
 import com.receiptofi.service.ReceiptService;
@@ -20,6 +19,7 @@ import com.receiptofi.web.helper.AnchorFileInExcel;
 import com.receiptofi.web.helper.json.ExcelFileName;
 import com.receiptofi.web.view.ExpensofiExcelView;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -63,13 +63,15 @@ import java.util.List;
 public class ExpensofiController {
     private static final Logger LOG = LoggerFactory.getLogger(ExpensofiController.class);
 
+    @Value ("${expensofiReportLocation}")
+    private String expensofiReportLocation;
+
     private String bucketName;
     private String awsS3Endpoint;
 
     private final ReceiptService receiptService;
     private final NotificationService notificationService;
     private final ItemAnalyticService itemAnalyticService;
-    private final DiskFileSystemProcess diskFileSystemProcess;
     private final ExpensofiExcelView expensofiExcelView;
 
     @Autowired
@@ -82,7 +84,6 @@ public class ExpensofiController {
 
             ReceiptService receiptService,
             NotificationService notificationService,
-            DiskFileSystemProcess diskFileSystemProcess,
             ItemAnalyticService itemAnalyticService,
             ExpensofiExcelView expensofiExcelView
     ) {
@@ -91,7 +92,6 @@ public class ExpensofiController {
 
         this.receiptService = receiptService;
         this.notificationService = notificationService;
-        this.diskFileSystemProcess = diskFileSystemProcess;
         this.itemAnalyticService = itemAnalyticService;
         this.expensofiExcelView = expensofiExcelView;
     }
@@ -163,7 +163,7 @@ public class ExpensofiController {
 
     private void updateReceiptWithExcelFilename(ReceiptEntity receiptEntity, String filename) {
         if (StringUtils.isNotEmpty(receiptEntity.getExpenseReportInFS())) {
-            diskFileSystemProcess.removeExpiredExcel(receiptEntity.getExpenseReportInFS());
+            FileUtils.deleteQuietly(FileUtil.getExcelFile(expensofiReportLocation, filename));
         }
         receiptEntity.setExpenseReportInFS(filename);
         receiptService.updateReceiptWithExpReportFilename(receiptEntity);
