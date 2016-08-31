@@ -28,8 +28,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class IndexController {
     private static final Logger LOG = LoggerFactory.getLogger(IndexController.class);
 
+    private final RegistrationService registrationService;
+
     @Autowired
-    private RegistrationService registrationService;
+    public IndexController(RegistrationService registrationService) {
+        this.registrationService = registrationService;
+    }
 
     /**
      * isEnabled() false exists when properties registration.turned.on is false and user is trying to gain access

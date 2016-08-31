@@ -157,39 +157,29 @@ public final class BizStoreManagerImpl implements BizStoreManager {
 
     @Override
     public List<BizStoreEntity> getAllWithJustSpecificField(
-            String bizAddress,
-            BizNameEntity bizNameEntity,
-            String fieldName
-    ) {
-        Query query;
-        if (StringUtils.isBlank(bizAddress)) {
-            query = query(where("BIZ_NAME.$id").is(new ObjectId(bizNameEntity.getId())));
-        } else {
-            query = query(where("AD").regex("^" + bizAddress, "i")
-                            .and("BIZ_NAME.$id").is(new ObjectId(bizNameEntity.getId()))
-            );
-        }
-        query.fields().include(fieldName);
-        return mongoTemplate.find(query, BizStoreEntity.class);
-    }
-
-    @Override
-    public List<BizStoreEntity> getAllWithJustSpecificField(
             String bizPhone,
             String bizAddress,
-            BizNameEntity bizNameEntity,
+            String bizId,
             String fieldName
     ) {
         Query query;
-        if (StringUtils.isBlank(bizPhone)) {
-            Criteria criteriaB = where("AD").is(bizAddress);
-            Criteria criteriaC = where("BIZ_NAME.$id").is(new ObjectId(bizNameEntity.getId()));
+        if (StringUtils.isBlank(bizAddress) && StringUtils.isBlank(bizPhone)) {
+            Criteria criteriaC = where("BIZ_NAME.$id").is(new ObjectId(bizId));
+            query = query(criteriaC);
+        } else if (StringUtils.isNotBlank(bizAddress) && StringUtils.isBlank(bizPhone)) {
+            Criteria criteriaB = where("AD").regex("^" + bizAddress, "i");
+            Criteria criteriaC = where("BIZ_NAME.$id").is(new ObjectId(bizId));
 
             query = query(criteriaC).addCriteria(criteriaB);
+        } else if (StringUtils.isNotBlank(bizPhone) && StringUtils.isBlank(bizAddress)) {
+            Criteria criteriaA = where("PH").regex("^" + bizPhone, "i");
+            Criteria criteriaC = where("BIZ_NAME.$id").is(new ObjectId(bizId));
+
+            query = query(criteriaC).addCriteria(criteriaA);
         } else {
             Criteria criteriaA = where("PH").regex("^" + bizPhone, "i");
-            Criteria criteriaB = where("AD").is(bizAddress);
-            Criteria criteriaC = where("BIZ_NAME.$id").is(new ObjectId(bizNameEntity.getId()));
+            Criteria criteriaB = where("AD").regex("^" + bizAddress, "i");
+            Criteria criteriaC = where("BIZ_NAME.$id").is(new ObjectId(bizId));
 
             query = query(criteriaC).addCriteria(criteriaB).addCriteria(criteriaA);
         }
