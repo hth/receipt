@@ -3,20 +3,23 @@ http://wolfpaulus.com/jounal/mac/tomcat8
 
 #### Installing Tomcat
 - Here are the easy to follow steps to get it up and running on your Mac
-- Download a binary distribution of the core module: apache-tomcat-8.0.36.tar.gz from here. I picked the tar.gz in Binary Distributions / Core section.
-- Opening/unarchiving the archive will create a folder structure in your Downloads folder: (btw, this free Unarchiver app is perfect for all kinds of compressed files and superior to the built-in Archive Utility.app)
+- Download a binary distribution of the core module: apache-tomcat-8.5.4.tar.gz from here. I picked the tar.gz in Binary Distributions / Core section.
+- Opening/unarchive the archive will create a folder structure in your Downloads folder: (btw, this free Unarchiver app is perfect for all kinds of compressed files and superior to the built-in Archive Utility.app)
 
         ~/Downloads/apache-tomcat-8.0.36
+        ~/Downloads/apache-tomcat-8.5.4
     
 - Open to Terminal app to move the unarchived distribution to /usr/local
 
         sudo mkdir -p /usr/local
         sudo mv ~/Downloads/apache-tomcat-8.0.36 /usr/local
+        sudo mv ~/Downloads/apache-tomcat-8.5.4 /usr/local
     
 - To make it easy to replace this release with future releases, we are going to create a symbolic link that we are going to use when referring to Tomcat (after removing the old link, you might have from installing a previous version):
 
         sudo rm -f /Library/Tomcat
         sudo ln -s /usr/local/apache-tomcat-8.0.36 /Library/Tomcat
+        sudo ln -s /usr/local/apache-tomcat-8.5.4 /Library/Tomcat
     
 - Added `setenv.sh` and `launchd_wrapper.sh` script
 - Change ownership of the /Library/Tomcat folder hierarchy:
@@ -26,6 +29,12 @@ http://wolfpaulus.com/jounal/mac/tomcat8
 - Make all scripts executable:
 
         sudo chmod +x /Library/Tomcat/bin/*.sh
+        
+- Warnings [consider increasing the maximum size of the cache]
+       
+In Tomcat 8.5.4, $CATALINA_BASE/conf/context.xml add block below before </Context>
+       
+       <Resources cachingAllowed="true" cacheMaxSize="100000" />
 
 http://stas-blogspot.blogspot.ch/2011/07/most-complete-list-of-xx-options-for.html
 
@@ -36,7 +45,7 @@ This should configured in `context.xml` as follows: 20 seconds below
     <Context unloadDelay="20000">
 
 ### Remove whitespaces
-If your servlet container doesn't support the JSP 2.1 trimDirectiveWhitespaces property, then you need to consult its
+If your servlet container does not support the JSP 2.1 trimDirectiveWhitespaces property, then you need to consult its
 JspServlet documentation for any initialization parameters. In for example Tomcat, you can configure it as well by
 setting trimSpaces init-param to true in for JspServlet in Tomcat's /conf/web.xml:
 
