@@ -13,7 +13,7 @@ Follow
 
 ####################################
 
-1) If facivon.ico is changed in Catelina Home/Webapps/ROOT then all web apps will show this image url to root- apache-tomcat-x.x.xx/webapps/ROOT
+1) If favicon.ico is changed in Catalina Home/Webapps/ROOT then all web apps will show this image url to root- apache-tomcat-x.x.xx/webapps/ROOT
 
 2) To change icon of each application specify following in head section < link rel="shortcut icon" href="/favicon.ico" type="image/x-icon"
 
