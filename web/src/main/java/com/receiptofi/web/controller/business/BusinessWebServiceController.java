@@ -16,6 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -41,14 +42,19 @@ import javax.servlet.http.HttpServletResponse;
 public class BusinessWebServiceController {
     private static final Logger LOG = LoggerFactory.getLogger(BusinessWebServiceController.class);
 
+    private String brainTreeEnvironment;
     private UserDimensionService userDimensionService;
     private BusinessUserService businessUserService;
 
     @Autowired
     public BusinessWebServiceController(
+            @Value ("${braintree.environment}")
+            String brainTreeEnvironment,
+
             UserDimensionService userDimensionService,
             BusinessUserService businessUserService
     ) {
+        this.brainTreeEnvironment = brainTreeEnvironment;
         this.userDimensionService = userDimensionService;
         this.businessUserService = businessUserService;
     }
@@ -106,27 +112,34 @@ public class BusinessWebServiceController {
     }
 
     private String translateCount(int count) {
-        JsonObject jsonObject = new JsonObject();
+        String m;
         if (count < 10) {
-            jsonObject.addProperty("m", "Delivered to few");
+            m = "Delivered to few";
         } else if (count < 100) {
-            jsonObject.addProperty("m", "Delivery in hundreds");
+            m = "Delivery in hundreds";
         } else if (count < 10_00) {
-            jsonObject.addProperty("m", "Delivery in tens of hundreds");
+            m = "Delivery in tens of hundreds";
         } else if (count < 10_000) {
-            jsonObject.addProperty("m", "Delivery in tens of thousands");
+            m = "Delivery in tens of thousands";
         } else if (count < 100_000) {
-            jsonObject.addProperty("m", "Delivery in hundreds of thousands");
+            m = "Delivery in hundreds of thousands";
         } else if (count < 1_000_000) {
-            jsonObject.addProperty("m", "Delivery in millions");
+            m = "Delivery in millions";
         } else if (count < 10_000_000) {
-            jsonObject.addProperty("m", "Delivery in tens of millions");
+            m = "Delivery in tens of millions";
         } else if (count < 100_000_000) {
-            jsonObject.addProperty("m", "Delivery in hundreds of millions");
+            m = "Delivery in hundreds of millions";
         } else {
-            jsonObject.addProperty("m", "Delivery in billions");
+            m = "Delivery in billions";
         }
 
+        /* TODO(hth) Remove SANDBOX and PRODUCTION condition here as this can slow the response time. */
+        JsonObject jsonObject = new JsonObject();
+        if ("PRODUCTION".equals(brainTreeEnvironment)) {
+            jsonObject.addProperty("m", m);
+        } else {
+            jsonObject.addProperty("m", m + " (" + count + ")");
+        }
         return new Gson().toJson(jsonObject);
     }
 }

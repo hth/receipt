@@ -35,13 +35,20 @@ import javax.servlet.http.HttpServletResponse;
 public class SubscriptionController {
     private static final Logger LOG = LoggerFactory.getLogger(SubscriptionController.class);
 
-    @Autowired private PaymentGatewayService paymentGatewayService;
-    @Autowired private SubscriptionService subscriptionService;
+    private final PaymentGatewayService paymentGatewayService;
+    private final SubscriptionService subscriptionService;
+
+    @Autowired
+    public SubscriptionController(SubscriptionService subscriptionService, PaymentGatewayService paymentGatewayService) {
+        this.subscriptionService = subscriptionService;
+        this.paymentGatewayService = paymentGatewayService;
+    }
 
     @RequestMapping (method = RequestMethod.GET)
     @ResponseBody
     public String getSubscription(
-            @RequestParam (required = true) String bt_challenge
+            @RequestParam (required = true)
+            String bt_challenge
     ) {
         LOG.info("Subscription called with bt_challenge");
         return paymentGatewayService.getGateway().webhookNotification().verify(bt_challenge);
@@ -50,10 +57,13 @@ public class SubscriptionController {
     @RequestMapping (method = RequestMethod.POST)
     @ResponseBody
     public String postSubscription(
-            @RequestParam (required = true) String bt_signature,
-            @RequestParam (required = true) String bt_payload,
-            HttpServletResponse httpServletResponse
+            @RequestParam (required = true)
+            String bt_signature,
 
+            @RequestParam (required = true)
+            String bt_payload,
+
+            HttpServletResponse httpServletResponse
     ) throws IOException {
         WebhookNotification notification;
         try {
