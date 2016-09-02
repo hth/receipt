@@ -14,8 +14,6 @@ import com.receiptofi.domain.BaseEntity;
 import com.receiptofi.domain.MessageDocumentEntity;
 import com.receiptofi.domain.types.DocumentStatusEnum;
 
-import org.apache.commons.lang3.StringUtils;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -102,11 +100,12 @@ public final class MessageDocumentManagerImpl implements MessageDocumentManager 
 
         List<MessageDocumentEntity> list = findWithLimit(status);
         for (MessageDocumentEntity object : list) {
-            object.setEmailId(emailId);
-            object.setReceiptUserId(receiptUserId);
-            object.setRecordLocked(true);
             try {
-                save(object);
+                mongoTemplate.updateFirst(
+                        query(where("id").is(object.getId())),
+                        entityUpdate(update("EM", emailId).set("RID", receiptUserId).set("LOK", true)),
+                        MessageDocumentEntity.class,
+                        TABLE);
             } catch (Exception e) {
                 LOG.error("Update failed reason={}", e.getLocalizedMessage(), e);
                 object.setRecordLocked(false);
