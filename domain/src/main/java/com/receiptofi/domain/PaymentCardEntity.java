@@ -21,12 +21,12 @@ import javax.validation.constraints.NotNull;
         "PMD.MethodArgumentCouldBeFinal",
         "PMD.LongVariable"
 })
-@Document (collection = "CREDIT_CARD")
+@Document (collection = "PAYMENT_CARD")
 @CompoundIndexes (value = {
-        @CompoundIndex (name = "credit_card_idx", def = "{'RID': 1}", background = true),
-        @CompoundIndex (name = "credit_card_cd_idx", def = "{'RID': 1, 'CD': 1}", unique = true, background = true)
+        @CompoundIndex (name = "payment_card_idx", def = "{'RID': 1}", background = true),
+        @CompoundIndex (name = "payment_card_cd_idx", def = "{'RID': 1, 'CD': 1}", unique = true, background = true)
 })
-public class CreditCardEntity extends BaseEntity {
+public class PaymentCardEntity extends BaseEntity {
     @NotNull
     @Field ("RID")
     private String rid;
@@ -43,15 +43,15 @@ public class CreditCardEntity extends BaseEntity {
     @Field ("UC")
     private int usedCount;
 
-    private CreditCardEntity(String rid, CardNetworkEnum cardNetwork, String cardDigit, Date lastUsed) {
+    private PaymentCardEntity(String rid, CardNetworkEnum cardNetwork, String cardDigit, Date lastUsed) {
         this.rid = rid;
         this.cardNetwork = cardNetwork;
         this.cardDigit = cardDigit;
         this.lastUsed = lastUsed;
     }
 
-    public static CreditCardEntity newInstance(String rid, CardNetworkEnum cardNetwork, String cardDigit, Date lastUsed) {
-        return new CreditCardEntity(rid, cardNetwork, cardDigit, lastUsed);
+    public static PaymentCardEntity newInstance(String rid, CardNetworkEnum cardNetwork, String cardDigit, Date lastUsed) {
+        return new PaymentCardEntity(rid, cardNetwork, cardDigit, lastUsed);
     }
 
     public String getRid() {

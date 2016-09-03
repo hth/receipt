@@ -162,8 +162,8 @@ public class ReceiptEntity extends BaseEntity {
     private boolean qualityCheck = false;
 
     @DBRef
-    @Field ("CC")
-    private CreditCardEntity creditCard;
+    @Field ("PC")
+    private PaymentCardEntity paymentCard;
 
     /** To keep bean happy. */
     public ReceiptEntity() {
@@ -409,12 +409,12 @@ public class ReceiptEntity extends BaseEntity {
         this.qualityCheck = qualityCheck;
     }
 
-    public CreditCardEntity getCreditCard() {
-        return creditCard;
+    public PaymentCardEntity getPaymentCard() {
+        return paymentCard;
     }
 
-    public void setCreditCard(CreditCardEntity creditCard) {
-        this.creditCard = creditCard;
+    public void setPaymentCard(PaymentCardEntity paymentCard) {
+        this.paymentCard = paymentCard;
     }
 
     @Transient

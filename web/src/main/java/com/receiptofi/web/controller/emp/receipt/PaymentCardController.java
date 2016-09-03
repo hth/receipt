@@ -1,9 +1,9 @@
 package com.receiptofi.web.controller.emp.receipt;
 
-import com.receiptofi.domain.CreditCardEntity;
-import com.receiptofi.domain.json.JsonCreditCard;
+import com.receiptofi.domain.PaymentCardEntity;
+import com.receiptofi.domain.json.JsonPaymentCard;
 import com.receiptofi.domain.site.ReceiptUser;
-import com.receiptofi.service.CreditCardService;
+import com.receiptofi.service.PaymentCardService;
 import com.receiptofi.utils.ScrubbedInput;
 
 import org.slf4j.Logger;
@@ -31,15 +31,15 @@ import java.util.stream.Collectors;
         "PMD.LongVariable"
 })
 @RestController
-@RequestMapping (value = "/emp/cc")
-public class CreditCardController {
-    private static final Logger LOG = LoggerFactory.getLogger(CreditCardController.class);
+@RequestMapping (value = "/emp/pc")
+public class PaymentCardController {
+    private static final Logger LOG = LoggerFactory.getLogger(PaymentCardController.class);
 
-    private CreditCardService creditCardService;
+    private PaymentCardService paymentCardService;
 
     @Autowired
-    public CreditCardController(CreditCardService creditCardService) {
-        this.creditCardService = creditCardService;
+    public PaymentCardController(PaymentCardService paymentCardService) {
+        this.paymentCardService = paymentCardService;
     }
 
     @RequestMapping (
@@ -47,15 +47,15 @@ public class CreditCardController {
             method = RequestMethod.GET,
             headers = "Accept=application/json",
             produces = "application/json")
-    @Cacheable (value = "getCreditCards", keyGenerator = "customKeyGenerator")
-    public List<JsonCreditCard> getCreditCards(
+    @Cacheable (value = "getPaymentCards", keyGenerator = "customKeyGenerator")
+    public List<JsonPaymentCard> getPaymentCards(
             @PathVariable
             ScrubbedInput rid
     ) {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        LOG.info("credit cards for rid={} by emp={}", rid.getText(), receiptUser.getRid());
+        LOG.info("payment cards for rid={} by emp={}", rid.getText(), receiptUser.getRid());
 
-        List<CreditCardEntity> cards = creditCardService.getCreditCards(rid.getText());
-        return cards.stream().map(JsonCreditCard::new).collect(Collectors.toList());
+        List<PaymentCardEntity> cards = paymentCardService.getPaymentCards(rid.getText());
+        return cards.stream().map(JsonPaymentCard::new).collect(Collectors.toList());
     }
 }

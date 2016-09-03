@@ -1,6 +1,6 @@
 package com.receiptofi.repository;
 
-import com.receiptofi.domain.CreditCardEntity;
+import com.receiptofi.domain.PaymentCardEntity;
 
 import java.util.Date;
 import java.util.List;
@@ -9,7 +9,7 @@ import java.util.List;
  * User: hitender
  * Date: 8/30/16 6:27 PM
  */
-public interface CreditCardManager extends RepositoryManager<CreditCardEntity> {
+public interface PaymentCardManager extends RepositoryManager<PaymentCardEntity> {
     void updateLastUsed(String rid, String cardDigit, Date lastUsed);
 
     /**
@@ -22,7 +22,7 @@ public interface CreditCardManager extends RepositoryManager<CreditCardEntity> {
 
     void increaseUsed(String rid, String cardDigit);
 
-    CreditCardEntity findCard(String rid, String cardDigit);
+    PaymentCardEntity findCard(String rid, String cardDigit);
 
-    List<CreditCardEntity> getCreditCards(String rid);
+    List<PaymentCardEntity> getPaymentCards(String rid);
 }
