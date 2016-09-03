@@ -147,7 +147,7 @@ public class FilesUploadToS3 {
          * fail safe to prevent uploading to dev bucket when connected to test database.
          */
         if ("OFF".equalsIgnoreCase(receiptUploadSwitch)) {
-            LOG.info("feature is {}", receiptUploadSwitch);
+            LOG.debug("feature is {}", receiptUploadSwitch);
             return;
         }
 
@@ -248,7 +248,7 @@ public class FilesUploadToS3 {
          * fail safe to prevent uploading to dev bucket when connected to test database.
          */
         if ("OFF".equalsIgnoreCase(couponUploadSwitch)) {
-            LOG.info("feature is {}", couponUploadSwitch);
+            LOG.debug("feature is {}", couponUploadSwitch);
             return;
         }
 
@@ -345,7 +345,7 @@ public class FilesUploadToS3 {
          * fail safe to prevent uploading to dev bucket when connected to test database.
          */
         if ("OFF".equalsIgnoreCase(campaignUploadSwitch)) {
-            LOG.info("feature is {}", campaignUploadSwitch);
+            LOG.debug("feature is {}", campaignUploadSwitch);
             return;
         }
 
