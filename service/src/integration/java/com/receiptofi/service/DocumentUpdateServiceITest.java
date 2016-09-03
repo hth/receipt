@@ -52,7 +52,8 @@ public class DocumentUpdateServiceITest extends ITest {
                 storageManager,
                 fileSystemService,
                 billingService,
-                expensesService);
+                expensesService,
+                creditCardService);
 
 
         ReceiptEntity receipt = populateReceipt();

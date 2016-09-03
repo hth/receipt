@@ -1,24 +1,16 @@
 package com.receiptofi.service;
 
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyListOf;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.atLeastOnce;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import com.receiptofi.domain.BaseEntity;
 import com.receiptofi.domain.BizNameEntity;
 import com.receiptofi.domain.DocumentEntity;
-import com.receiptofi.domain.ForgotRecoverEntity;
-import com.receiptofi.domain.ItemEntity;
-import com.receiptofi.domain.ItemEntityOCR;
 import com.receiptofi.domain.ReceiptEntity;
-import com.receiptofi.domain.types.DeviceTypeEnum;
 import com.receiptofi.domain.types.NotificationGroupEnum;
 import com.receiptofi.domain.types.NotificationTypeEnum;
-import com.receiptofi.repository.DocumentManager;
 import com.receiptofi.repository.ItemManager;
 import com.receiptofi.repository.ItemOCRManager;
 import com.receiptofi.repository.MessageDocumentManager;
@@ -51,6 +43,7 @@ public class DocumentUpdateServiceTest {
     @Mock private FileSystemService fileSystemService;
     @Mock private BillingService billingService;
     @Mock private ExpensesService expensesService;
+    @Mock private CreditCardService creditCardService;
 
     @Mock private ReceiptEntity receipt;
     @Mock private DocumentEntity document;
@@ -74,8 +67,8 @@ public class DocumentUpdateServiceTest {
                 storageManager,
                 fileSystemService,
                 billingService,
-                expensesService
-        );
+                expensesService,
+                creditCardService);
     }
 
 

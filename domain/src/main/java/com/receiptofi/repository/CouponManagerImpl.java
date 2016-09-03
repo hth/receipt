@@ -2,14 +2,13 @@ package com.receiptofi.repository;
 
 import static com.receiptofi.repository.util.AppendAdditionalFields.entityUpdate;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
-import static org.springframework.data.mongodb.core.query.Query.*;
+import static org.springframework.data.mongodb.core.query.Query.query;
 import static org.springframework.data.mongodb.core.query.Update.update;
 
 import com.mongodb.WriteResult;
 
 import com.receiptofi.domain.BaseEntity;
 import com.receiptofi.domain.CouponEntity;
-import com.receiptofi.domain.DocumentEntity;
 import com.receiptofi.domain.types.CouponUploadStatusEnum;
 
 import org.apache.commons.lang3.StringUtils;
@@ -95,7 +94,8 @@ public class CouponManagerImpl implements CouponManager {
                                 .set("IP", imagePathOnCloud)
                                 .unset("LID")
                 ),
-                CouponEntity.class
+                CouponEntity.class,
+                TABLE
         );
     }
 
@@ -104,7 +104,8 @@ public class CouponManagerImpl implements CouponManager {
         WriteResult writeResult = mongoTemplate.updateMulti(
                 query(where("IF").is(campaignId)),
                 entityUpdate(update("A", false)),
-                CouponEntity.class
+                CouponEntity.class,
+                TABLE
         );
 
         LOG.info("Marked inactive coupon count={} campaignId={}", writeResult.getN(), campaignId);

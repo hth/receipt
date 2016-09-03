@@ -88,7 +88,7 @@ public class MobilePushNotificationProcess {
                 notifyUserSwitch);
 
         if ("OFF".equalsIgnoreCase(notifyUserSwitch)) {
-            LOG.info("feature is {}", notifyUserSwitch);
+            LOG.debug("feature is {}", notifyUserSwitch);
             return;
         }
 
@@ -183,7 +183,7 @@ public class MobilePushNotificationProcess {
                 notifyUserSwitch);
 
         if ("OFF".equalsIgnoreCase(notifyUserSwitch)) {
-            LOG.info("feature is {}", notifyUserSwitch);
+            LOG.debug("feature is {}", notifyUserSwitch);
             return;
         }
 

@@ -114,7 +114,7 @@ public class ReceiptEntity extends BaseEntity {
     private CommentEntity recheckComment;
 
     @DBRef
-    @Field ("CN")
+    @Field ("NO")
     private CommentEntity notes;
 
     @DBRef
@@ -160,6 +160,10 @@ public class ReceiptEntity extends BaseEntity {
 
     @Field ("QC")
     private boolean qualityCheck = false;
+
+    @DBRef
+    @Field ("CC")
+    private CreditCardEntity creditCard;
 
     /** To keep bean happy. */
     public ReceiptEntity() {
@@ -403,6 +407,14 @@ public class ReceiptEntity extends BaseEntity {
 
     public void setQualityCheck(boolean qualityCheck) {
         this.qualityCheck = qualityCheck;
+    }
+
+    public CreditCardEntity getCreditCard() {
+        return creditCard;
+    }
+
+    public void setCreditCard(CreditCardEntity creditCard) {
+        this.creditCard = creditCard;
     }
 
     @Transient

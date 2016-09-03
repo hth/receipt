@@ -64,12 +64,12 @@ public class ReceiptService {
     private FileUploadDocumentSenderJMS senderJMS;
     private CommentService commentService;
     private FileSystemService fileSystemService;
-    private CloudFileService cloudFileService;
     private ExpensesService expensesService;
     private NotificationService notificationService;
     private FriendService friendService;
     private SplitExpensesService splitExpensesService;
     private DocumentService documentService;
+    private CreditCardService creditCardService;
 
     @Autowired
     public ReceiptService(
@@ -81,11 +81,11 @@ public class ReceiptService {
             FileUploadDocumentSenderJMS senderJMS,
             CommentService commentService,
             FileSystemService fileSystemService,
-            CloudFileService cloudFileService,
             ExpensesService expensesService,
             NotificationService notificationService,
             FriendService friendService,
-            SplitExpensesService splitExpensesService) {
+            SplitExpensesService splitExpensesService,
+            CreditCardService creditCardService) {
         this.receiptManager = receiptManager;
         this.documentService = documentService;
         this.itemService = itemService;
@@ -94,11 +94,11 @@ public class ReceiptService {
         this.senderJMS = senderJMS;
         this.commentService = commentService;
         this.fileSystemService = fileSystemService;
-        this.cloudFileService = cloudFileService;
         this.expensesService = expensesService;
         this.notificationService = notificationService;
         this.friendService = friendService;
         this.splitExpensesService = splitExpensesService;
+        this.creditCardService = creditCardService;
     }
 
     /**
@@ -196,6 +196,9 @@ public class ReceiptService {
                 }
             }
 
+            if (null != receipt.getCreditCard()) {
+                creditCardService.decreaseUsed(receipt.getReceiptUserId(), receipt.getCreditCard().getCardDigit());
+            }
             receiptManager.deleteSoft(receipt);
 
             /** Added document deleted successfully. */
@@ -295,6 +298,9 @@ public class ReceiptService {
                      * wrong during populating other data.
                      */
                     receipt.setReceiptStatus(DocumentStatusEnum.REPROCESS);
+                    if (null != receipt.getCreditCard()) {
+                        creditCardService.increaseUsed(receipt.getReceiptUserId(), receipt.getCreditCard().getCardDigit());
+                    }
                     receiptManager.save(receipt);
                     documentService.save(receiptOCR);
                     itemOCRManager.deleteWhereReceipt(receiptOCR);
