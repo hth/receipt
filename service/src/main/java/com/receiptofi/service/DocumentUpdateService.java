@@ -9,12 +9,14 @@ import com.mongodb.DBObject;
 import com.mongodb.gridfs.GridFSDBFile;
 
 import com.receiptofi.domain.CommentEntity;
+import com.receiptofi.domain.CreditCardEntity;
 import com.receiptofi.domain.DocumentEntity;
 import com.receiptofi.domain.ExpenseTagEntity;
 import com.receiptofi.domain.FileSystemEntity;
 import com.receiptofi.domain.ItemEntity;
 import com.receiptofi.domain.ReceiptEntity;
 import com.receiptofi.domain.UserProfileEntity;
+import com.receiptofi.domain.types.CardNetworkEnum;
 import com.receiptofi.domain.types.DocumentOfTypeEnum;
 import com.receiptofi.domain.types.DocumentRejectReasonEnum;
 import com.receiptofi.domain.types.DocumentStatusEnum;
@@ -69,6 +71,7 @@ public class DocumentUpdateService {
     private FileSystemService fileSystemService;
     private BillingService billingService;
     private ExpensesService expensesService;
+    private CreditCardService creditCardService;
 
     @Autowired
     public DocumentUpdateService(
@@ -84,8 +87,8 @@ public class DocumentUpdateService {
             StorageManager storageManager,
             FileSystemService fileSystemService,
             BillingService billingService,
-            ExpensesService expensesService
-    ) {
+            ExpensesService expensesService,
+            CreditCardService creditCardService) {
 
         this.documentService = documentService;
         this.itemOCRManager = itemOCRManager;
@@ -100,6 +103,7 @@ public class DocumentUpdateService {
         this.fileSystemService = fileSystemService;
         this.billingService = billingService;
         this.expensesService = expensesService;
+        this.creditCardService = creditCardService;
     }
 
     /**
@@ -121,6 +125,8 @@ public class DocumentUpdateService {
             updateFileSystemEntityWithVersion(receipt, document, documentEntity);
 
             bizService.saveNewBusinessAndOrStore(receipt);
+
+            addCardDetailsIfAny(receipt, document);
             receipt.addProcessedBy(transaction, technicianId);
             billingService.updateReceiptWithBillingHistory(receipt);
             receiptManager.save(receipt);
@@ -266,6 +272,7 @@ public class DocumentUpdateService {
                 receipt.setNotes(null);
             }
 
+            addCardDetailsIfAny(receipt, document);
             receipt.addProcessedBy(transaction, technicianId);
             billingService.updateReceiptWithBillingHistory(receipt);
             receiptManager.save(receipt);
@@ -322,6 +329,23 @@ public class DocumentUpdateService {
                 LOG.warn("Rollback complete for re-processing document");
             }
             throw new RuntimeException("Failed re-processing document " + exce);
+        }
+    }
+
+    private void addCardDetailsIfAny(ReceiptEntity receipt, DocumentEntity document) {
+        if (StringUtils.isNotBlank(document.getCardDigit()) && document.getCardNetwork() != CardNetworkEnum.U) {
+            CreditCardEntity creditCard = creditCardService.findCard(receipt.getReceiptUserId(), document.getCardDigit());
+            if (null == creditCard) {
+                creditCard = CreditCardEntity.newInstance(
+                        receipt.getReceiptUserId(),
+                        document.getCardNetwork(),
+                        document.getCardDigit(),
+                        receipt.getReceiptDate());
+
+                creditCardService.save(creditCard);
+            }
+            creditCardService.updateLastUsed(receipt.getReceiptUserId(), creditCard.getCardDigit(), receipt.getReceiptDate());
+            receipt.setCreditCard(creditCard);
         }
     }
 

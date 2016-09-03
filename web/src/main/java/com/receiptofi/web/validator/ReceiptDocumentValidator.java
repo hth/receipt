@@ -114,6 +114,7 @@ public class ReceiptDocumentValidator implements Validator {
 
         validateDate(errors, receiptDocumentForm);
         validateAddressAndPhone(errors, receiptDocumentForm);
+        validateCreditCard(errors, receiptDocumentForm);
 
         int count = 0;
         BigDecimal subTotal = BigDecimal.ZERO;
@@ -320,6 +321,55 @@ public class ReceiptDocumentValidator implements Validator {
                     "field.businessName",
                     new Object[]{foundStore.getBizName().getBusinessName(), bizName.getBusinessName()},
                     foundStore.getBizName().getBusinessName() + " is sharing the same address and phone number as " + bizName.getBusinessName());
+        }
+    }
+
+    private void validateCreditCard(Errors errors, ReceiptDocumentForm receiptDocumentForm) {
+        if (StringUtils.isNotBlank(receiptDocumentForm.getReceiptDocument().getCardDigit())) {
+            CreditCardEntity creditCard = creditCardService.findCard(
+                    receiptDocumentForm.getReceiptDocument().getReceiptUserId(),
+                    receiptDocumentForm.getReceiptDocument().getCardDigit()
+            );
+
+            if (null != creditCard
+                    && null != receiptDocumentForm.getReceiptDocument().getCardNetwork()
+                    && creditCard.getCardNetwork() != receiptDocumentForm.getReceiptDocument().getCardNetwork()) {
+
+                errors.rejectValue(
+                        "receiptDocument.cardNetwork",
+                        "field.cardNetwork.another.exists",
+                        new Object[]{receiptDocumentForm.getReceiptDocument().getCardDigit(), creditCard.getCardNetwork().getDescription()},
+                        receiptDocumentForm.getReceiptDocument().getCardDigit() + " belongs to " + creditCard.getCardNetwork().getDescription());
+            } else if (null == creditCard
+                    && receiptDocumentForm.getReceiptDocument().getCardNetwork() == CardNetworkEnum.U
+                    && StringUtils.isNotBlank(receiptDocumentForm.getReceiptDocument().getCardDigit())) {
+
+                errors.rejectValue(
+                        "receiptDocument.cardNetwork",
+                        "field.cardNetwork.not.selected",
+                        new Object[]{receiptDocumentForm.getReceiptDocument().getCardDigit()},
+                        "Select card network");
+            } else if (null == creditCard
+                    && receiptDocumentForm.getReceiptDocument().getCardNetwork() != CardNetworkEnum.U
+                    && StringUtils.isBlank(receiptDocumentForm.getReceiptDocument().getCardDigit())) {
+
+                errors.rejectValue(
+                        "receiptDocument.cardDigit",
+                        "field.cardNetwork.missing.digit",
+                        new Object[]{receiptDocumentForm.getReceiptDocument().getCardNetwork().getDescription()},
+                        receiptDocumentForm.getReceiptDocument().getCardNetwork().getDescription() + " missing card numbers");
+            }
+        }
+
+        if (null != receiptDocumentForm.getReceiptDocument().getCardNetwork()
+                && receiptDocumentForm.getReceiptDocument().getCardNetwork() != CardNetworkEnum.U
+                && StringUtils.isBlank(receiptDocumentForm.getReceiptDocument().getCardDigit())) {
+
+            errors.rejectValue(
+                    "receiptDocument.cardDigit",
+                    "field.cardNetwork.missing.digit",
+                    new Object[]{receiptDocumentForm.getReceiptDocument().getCardNetwork().getDescription()},
+                    receiptDocumentForm.getReceiptDocument().getCardNetwork().getDescription() + " missing card numbers");
         }
     }
 }

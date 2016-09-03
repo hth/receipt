@@ -418,11 +418,11 @@
                             <tr>
                                 <td colspan="5">
                                     <div class="leftAlign">
-                                        <form:label for="receiptDocument.bizName.businessName" path="receiptDocument.bizName.businessName" cssErrorClass="error">Biz Name: </form:label>
+                                        <form:label path="receiptDocument.bizName.businessName" cssErrorClass="error">Biz Name: </form:label>
                                         <form:input path="receiptDocument.bizName.businessName" id="businessName" size="52"/>
                                     </div>
                                     <div class="rightAlign">
-                                        <form:label for="receiptDocument.receiptDate" path="receiptDocument.receiptDate" cssErrorClass="error">Date: </form:label>
+                                        <form:label path="receiptDocument.receiptDate" cssErrorClass="error">Date: </form:label>
                                         <form:input path="receiptDocument.receiptDate" id="date" size="32" class="tooltip" title="Accepted Date Format: 'MM/dd/yyyy 23:59:59', or 'MM/dd/yyyy 11:59:59 PM'"/>
                                     </div>
                                 </td>
@@ -436,11 +436,11 @@
                             <tr>
                                 <td colspan="5">
                                     <div class="leftAlign">
-                                        <form:label for="receiptDocument.bizStore.address" path="receiptDocument.bizStore.address" cssErrorClass="error">Address: </form:label>
+                                        <form:label path="receiptDocument.bizStore.address" cssErrorClass="error">Address: </form:label>
                                         <form:input path="receiptDocument.bizStore.address" id="address" size="70"/>
                                     </div>
                                     <div class="rightAlign">
-                                        <form:label for="receiptDocument.bizStore.phone" path="receiptDocument.bizStore.phone" cssErrorClass="error">Phone: </form:label>
+                                        <form:label path="receiptDocument.bizStore.phone" cssErrorClass="error">Phone: </form:label>
                                         <form:input path="receiptDocument.bizStore.phone" id="phone" size="20"/>
                                     </div>
                                 </td>
@@ -477,7 +477,20 @@
                                 </tr>
                             </c:forEach>
                             <tr>
-                                <td colspan="3" style="text-align: right; font-size: 12px; font-weight: bold">
+                                <td colspan="3" style="text-align: left; vertical-align: top">
+                                    <form:label path="receiptDocument.cardNetwork" cssErrorClass="error">Credit / Debit card: </form:label>
+                                    <form:select path="receiptDocument.cardNetwork">
+                                        <form:options itemValue="name" itemLabel="description" />
+                                    </form:select>
+                                    <form:errors path="receiptDocument.cardNetwork" cssClass="error" />
+                                    &nbsp;&nbsp;
+                                    <form:label path="receiptDocument.cardDigit" cssErrorClass="error">#</form:label>
+                                    <form:input path="receiptDocument.cardDigit" id="cardDigit" size="4"/>
+                                    <form:errors path="receiptDocument.cardDigit" cssClass="error" />
+                                    &nbsp;&nbsp;&nbsp;
+                                    (Last four digits)&nbsp;
+                                </td>
+                                <td colspan="1" style="text-align: right; font-size: 12px; font-weight: bold">
                                     <span>&nbsp;&nbsp;Tax &nbsp;</span>
                                 </td>
                                 <td colspan="1" style="font-size: 12px; font-weight: bold">
@@ -521,7 +534,7 @@
                             </tr>
                             <tr>
                                 <td colspan="5">
-                                    <form:label for="receiptDocument.notes.text" path="receiptDocument.notes.text" cssErrorClass="error">
+                                    <form:label path="receiptDocument.notes.text" cssErrorClass="error">
                                         Receipt Notes:
                                     </form:label>
                                 </td>
@@ -541,7 +554,7 @@
                             </tr>
                             <tr>
                                 <td colspan="5">
-                                    <form:label for="receiptDocument.recheckComment.text" path="receiptDocument.recheckComment.text" cssErrorClass="error">
+                                    <form:label path="receiptDocument.recheckComment.text" cssErrorClass="error">
                                         Re-Check message:
                                     </form:label>
                                 </td>

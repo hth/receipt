@@ -3,6 +3,7 @@
  */
 package com.receiptofi.domain;
 
+import com.receiptofi.domain.types.CardNetworkEnum;
 import com.receiptofi.domain.types.DocumentOfTypeEnum;
 import com.receiptofi.domain.types.DocumentRejectReasonEnum;
 import com.receiptofi.domain.types.DocumentStatusEnum;
@@ -80,7 +81,7 @@ public class DocumentEntity extends BaseEntity {
     private CommentEntity recheckComment;
 
     @DBRef
-    @Field ("CN")
+    @Field ("NO")
     private CommentEntity notes;
 
     @NotNull
@@ -100,6 +101,12 @@ public class DocumentEntity extends BaseEntity {
 
     @Field ("NU")
     private boolean notifyUser;
+
+    @Field ("CN")
+    private CardNetworkEnum cardNetwork;
+
+    @Field ("CD")
+    private String cardDigit;
 
     public static DocumentEntity newInstance() {
         return new DocumentEntity();
@@ -248,6 +255,22 @@ public class DocumentEntity extends BaseEntity {
 
     public void setNotifyUser(boolean notifyUser) {
         this.notifyUser = notifyUser;
+    }
+
+    public CardNetworkEnum getCardNetwork() {
+        return cardNetwork;
+    }
+
+    public void setCardNetwork(CardNetworkEnum cardNetwork) {
+        this.cardNetwork = cardNetwork;
+    }
+
+    public String getCardDigit() {
+        return cardDigit;
+    }
+
+    public void setCardDigit(String cardDigit) {
+        this.cardDigit = cardDigit;
     }
 
     @Override

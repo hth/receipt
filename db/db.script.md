@@ -1,3 +1,9 @@
+### Date Aug 30 2016 - Build 1819
+Changed Field name from "CN" to "NO" for comment notes
+
+    db.getCollection('RECEIPT').updateMany({}, {$rename: { "CN": "NO" }})
+    db.getCollection('DOCUMENT').updateMany({}, {$rename: { "CN": "NO" }})
+
 ### Date July 23 2016 - Build 1767
 Update USER_PAID to USER and update field name from ULE to UL
 
