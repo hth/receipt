@@ -14,6 +14,7 @@ import com.receiptofi.utils.Maths;
 import com.receiptofi.web.form.ReceiptDocumentForm;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -325,45 +326,52 @@ public class ReceiptDocumentValidator implements Validator {
     }
 
     private void validateCreditCard(Errors errors, ReceiptDocumentForm receiptDocumentForm) {
-        if (StringUtils.isNotBlank(receiptDocumentForm.getReceiptDocument().getCardDigit())) {
-            CreditCardEntity creditCard = creditCardService.findCard(
-                    receiptDocumentForm.getReceiptDocument().getReceiptUserId(),
-                    receiptDocumentForm.getReceiptDocument().getCardDigit()
-            );
+        String cardDigit = receiptDocumentForm.getReceiptDocument().getCardDigit();
+        String rid = receiptDocumentForm.getReceiptDocument().getReceiptUserId();
+        if (StringUtils.isNotBlank(cardDigit)) {
 
-            if (null != creditCard
-                    && null != receiptDocumentForm.getReceiptDocument().getCardNetwork()
-                    && creditCard.getCardNetwork() != receiptDocumentForm.getReceiptDocument().getCardNetwork()) {
+            if (NumberUtils.isNumber(cardDigit)) {
+                CreditCardEntity creditCard = creditCardService.findCard(rid, cardDigit);
+                if (null != creditCard
+                        && null != receiptDocumentForm.getReceiptDocument().getCardNetwork()
+                        && creditCard.getCardNetwork() != receiptDocumentForm.getReceiptDocument().getCardNetwork()) {
 
-                errors.rejectValue(
-                        "receiptDocument.cardNetwork",
-                        "field.cardNetwork.another.exists",
-                        new Object[]{receiptDocumentForm.getReceiptDocument().getCardDigit(), creditCard.getCardNetwork().getDescription()},
-                        receiptDocumentForm.getReceiptDocument().getCardDigit() + " belongs to " + creditCard.getCardNetwork().getDescription());
-            } else if (null == creditCard
-                    && receiptDocumentForm.getReceiptDocument().getCardNetwork() == CardNetworkEnum.U
-                    && StringUtils.isNotBlank(receiptDocumentForm.getReceiptDocument().getCardDigit())) {
+                    errors.rejectValue(
+                            "receiptDocument.cardNetwork",
+                            "field.cardNetwork.another.exists",
+                            new Object[]{cardDigit, creditCard.getCardNetwork().getDescription()},
+                            cardDigit + " belongs to " + creditCard.getCardNetwork().getDescription());
+                } else if (null == creditCard
+                        && receiptDocumentForm.getReceiptDocument().getCardNetwork() == CardNetworkEnum.U
+                        && StringUtils.isNotBlank(cardDigit)) {
 
-                errors.rejectValue(
-                        "receiptDocument.cardNetwork",
-                        "field.cardNetwork.not.selected",
-                        new Object[]{receiptDocumentForm.getReceiptDocument().getCardDigit()},
-                        "Select card network");
-            } else if (null == creditCard
-                    && receiptDocumentForm.getReceiptDocument().getCardNetwork() != CardNetworkEnum.U
-                    && StringUtils.isBlank(receiptDocumentForm.getReceiptDocument().getCardDigit())) {
+                    errors.rejectValue(
+                            "receiptDocument.cardNetwork",
+                            "field.cardNetwork.not.selected",
+                            new Object[]{cardDigit},
+                            "Select card network");
+                } else if (null == creditCard
+                        && receiptDocumentForm.getReceiptDocument().getCardNetwork() != CardNetworkEnum.U
+                        && StringUtils.isBlank(cardDigit)) {
 
+                    errors.rejectValue(
+                            "receiptDocument.cardDigit",
+                            "field.cardNetwork.missing.digit",
+                            new Object[]{receiptDocumentForm.getReceiptDocument().getCardNetwork().getDescription()},
+                            receiptDocumentForm.getReceiptDocument().getCardNetwork().getDescription() + " missing card numbers");
+                }
+            } else {
                 errors.rejectValue(
                         "receiptDocument.cardDigit",
-                        "field.cardNetwork.missing.digit",
+                        "field.cardNetwork.not.digit",
                         new Object[]{receiptDocumentForm.getReceiptDocument().getCardNetwork().getDescription()},
-                        receiptDocumentForm.getReceiptDocument().getCardNetwork().getDescription() + " missing card numbers");
+                        cardDigit + " is not a number");
             }
         }
 
         if (null != receiptDocumentForm.getReceiptDocument().getCardNetwork()
                 && receiptDocumentForm.getReceiptDocument().getCardNetwork() != CardNetworkEnum.U
-                && StringUtils.isBlank(receiptDocumentForm.getReceiptDocument().getCardDigit())) {
+                && StringUtils.isBlank(cardDigit)) {
 
             errors.rejectValue(
                     "receiptDocument.cardDigit",
