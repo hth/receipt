@@ -2,8 +2,11 @@ package com.receiptofi.web.validator;
 
 import com.receiptofi.domain.BizNameEntity;
 import com.receiptofi.domain.BizStoreEntity;
+import com.receiptofi.domain.CreditCardEntity;
 import com.receiptofi.domain.ItemEntityOCR;
+import com.receiptofi.domain.types.CardNetworkEnum;
 import com.receiptofi.service.BizService;
+import com.receiptofi.service.CreditCardService;
 import com.receiptofi.service.ExternalService;
 import com.receiptofi.utils.DateUtil;
 import com.receiptofi.utils.Formatter;
@@ -43,11 +46,17 @@ public class ReceiptDocumentValidator implements Validator {
 
     private ExternalService externalService;
     private BizService bizService;
+    private CreditCardService creditCardService;
 
     @Autowired
-    public ReceiptDocumentValidator(ExternalService externalService, BizService bizService) {
+    public ReceiptDocumentValidator(
+            ExternalService externalService,
+            BizService bizService,
+            CreditCardService creditCardService
+    ) {
         this.externalService = externalService;
         this.bizService = bizService;
+        this.creditCardService = creditCardService;
     }
 
     @Override
@@ -74,6 +83,18 @@ public class ReceiptDocumentValidator implements Validator {
         );
         ValidationUtils.rejectIfEmptyOrWhitespace(
                 errors,
+                "receiptDocument.bizStore.address",
+                "field.required",
+                new Object[]{"Address"}
+        );
+        ValidationUtils.rejectIfEmptyOrWhitespace(
+                errors,
+                "receiptDocument.bizStore.phone",
+                "field.required",
+                new Object[]{"Phone"}
+        );
+        ValidationUtils.rejectIfEmptyOrWhitespace(
+                errors,
                 "receiptDocument.total",
                 "field.required",
                 new Object[]{"Total"}
@@ -83,6 +104,12 @@ public class ReceiptDocumentValidator implements Validator {
                 "receiptDocument.subTotal",
                 "field.required",
                 new Object[]{"Sub Total"}
+        );
+        ValidationUtils.rejectIfEmptyOrWhitespace(
+                errors,
+                "receiptDocument.tax",
+                "field.required",
+                new Object[]{"Tax"}
         );
 
         validateDate(errors, receiptDocumentForm);
@@ -213,13 +240,15 @@ public class ReceiptDocumentValidator implements Validator {
                             "Cannot compute because of previous error(s)"
                     );
                 } else {
-                    BigDecimal tax = Formatter.getCurrencyFormatted(receiptDocumentForm.getReceiptDocument().getTax());
-                    //Since this is going to be displayed to user setting the scale to two.
-                    BigDecimal calculatedTotal = Maths.add(submittedSubTotal, tax).setScale(Maths.SCALE_TWO);
-                    if (calculatedTotal.compareTo(total) != 0) {
-                        errors.rejectValue("receiptDocument.total", "field.receipt.total",
-                                new Object[]{receiptDocumentForm.getReceiptDocument().getTotal(), calculatedTotal.toString()},
-                                "Summation not adding up");
+                    if (StringUtils.isNotBlank(receiptDocumentForm.getReceiptDocument().getTax())) {
+                        BigDecimal tax = Formatter.getCurrencyFormatted(receiptDocumentForm.getReceiptDocument().getTax());
+                        //Since this is going to be displayed to user setting the scale to two.
+                        BigDecimal calculatedTotal = Maths.add(submittedSubTotal, tax).setScale(Maths.SCALE_TWO);
+                        if (calculatedTotal.compareTo(total) != 0) {
+                            errors.rejectValue("receiptDocument.total", "field.receipt.total",
+                                    new Object[]{receiptDocumentForm.getReceiptDocument().getTotal(), calculatedTotal.toString()},
+                                    "Summation not adding up");
+                        }
                     }
                 }
             } catch (ParseException | NumberFormatException exception) {
@@ -242,7 +271,7 @@ public class ReceiptDocumentValidator implements Validator {
     private void validateDate(Errors errors, ReceiptDocumentForm receiptDocumentForm) {
         try {
             Date receiptDate = DateUtil.getDateFromString(receiptDocumentForm.getReceiptDocument().getReceiptDate());
-            /** Since mid-night hence two days minus 60 seconds for previous day. */
+            /* Since mid-night hence two days minus 60 seconds for previous day. */
             Date nextDay = Date.from(LocalDate.now().plusDays(2).atStartOfDay(ZoneId.systemDefault()).toInstant().minusSeconds(60));
             if (receiptDate.after(nextDay)) {
                 errors.rejectValue(
@@ -280,7 +309,7 @@ public class ReceiptDocumentValidator implements Validator {
         BizStoreEntity bizStore = receiptDocumentForm.getReceiptDocument().getBizStore();
 
         BizStoreEntity foundStore = bizService.findMatchingStore(bizStore.getAddress(), bizStore.getPhone());
-        if (null == foundStore) {
+        if (null == foundStore && StringUtils.isNotBlank(bizStore.getAddress())) {
             externalService.decodeAddress(bizStore);
             foundStore = bizService.findMatchingStore(bizStore.getAddress(), bizStore.getPhone());
         }

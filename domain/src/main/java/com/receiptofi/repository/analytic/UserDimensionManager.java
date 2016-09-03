@@ -6,6 +6,7 @@ import com.receiptofi.repository.RepositoryManager;
 import org.springframework.data.geo.GeoResults;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * User: hitender
@@ -23,4 +24,21 @@ public interface UserDimensionManager extends RepositoryManager<UserDimensionEnt
             int distributionRadius,
             String storeId,
             String countryShortName);
+
+    /**
+     * Find all the business name visited by user with RID.
+     *
+     * @param rid
+     * @return
+     */
+    Set<String> findUserAssociatedAllDistinctBizStr(String rid);
+
+    /**
+     * Find matching business name visited by user with RID.
+     *
+     * @param bizName
+     * @param rid
+     * @return
+     */
+    Set<String> findUserAssociatedBizName(String bizName, String rid);
 }

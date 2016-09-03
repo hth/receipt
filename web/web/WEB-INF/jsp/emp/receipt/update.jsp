@@ -95,9 +95,35 @@
 	</script>
 
     <script type="text/javascript">
+        String.prototype.leftTrim = function() {
+            return this.replace(/^\s+/,"");
+        };
+
         $(document).ready(function() {
             $( "#businessName" ).autocomplete({
-                source: "${pageContext. request. contextPath}/ws/r/find_company.htm"
+                source: function (request, response) {
+                    var s = request.term;
+                    var spaces = s.length - s.leftTrim().length;
+                    var bizName;
+                    if (spaces == 1) {
+                        bizName = "^" + s.trim();
+                    }
+                    if (spaces > 1) {
+                        bizName = "^^" + s.trim();
+                    }
+
+                    $.ajax({
+                        url: '${pageContext. request. contextPath}/ws/r/find_s_business.htm',
+                        data: {
+                            term: bizName,
+                            rid: $("input#rid").val()
+                        },
+                        success: function (data) {
+                            console.log('response=', data);
+                            response(data);
+                        }
+                    });
+                }
             });
 
         });
@@ -377,7 +403,7 @@
                             <form:errors path="errorMessage"    cssClass="error" id="existingErrorMessage"/>
                             <form:errors path="receiptDocument" cssClass="error" />
                             <form:hidden path="receiptDocument.id"/>
-                            <form:hidden path="receiptDocument.receiptUserId"/>
+                            <form:hidden path="receiptDocument.receiptUserId" id="rid" />
                             <form:hidden path="receiptDocument.version"/>
                             <form:hidden path="receiptDocument.documentStatus"/>
                             <form:hidden path="receiptDocument.referenceDocumentId"/>
@@ -392,7 +418,7 @@
                                         </div>
                                         <div class="rightAlign">
                                             <form:label for="receiptDocument.receiptDate" path="receiptDocument.receiptDate" cssErrorClass="error">Date: </form:label>
-                                            <form:input path="receiptDocument.receiptDate" id="date" size="32" class="tooltip" title="Accepted Date Format: 'MM/dd/yyyy 23:59:59', or 'MM/dd/yyyy 11:59:59 PM' or 'MM/dd/yyyy'"/>
+                                            <form:input path="receiptDocument.receiptDate" id="date" size="32" class="tooltip" title="Accepted Date Format: 'MM/dd/yyyy 23:59:59', or 'MM/dd/yyyy 11:59:59 PM'"/>
                                         </div>
                                     </td>
                                 </tr>

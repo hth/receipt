@@ -21,6 +21,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 @CompoundIndexes (value = {
         @CompoundIndex (name = "user_dim_idx", def = "{'storeId': 1}", background = true),
         @CompoundIndex (name = "user_dim_biz_idx", def = "{'bizId': 1}", background = true),
+        @CompoundIndex (name = "user_dim_rid_idx", def = "{'RID': 1}", background = true),
         @CompoundIndex (name = "user_dim_geo_idx", def = "{'COR': '2dsphere'}", background = true),
 })
 public class UserDimensionEntity extends BaseEntity {
@@ -31,7 +32,6 @@ public class UserDimensionEntity extends BaseEntity {
     @Field ("storeId")
     private String storeId;
 
-    //TODO add
     @Field ("bizId")
     private String bizId;
 
