@@ -4,6 +4,7 @@ import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
 
 import com.receiptofi.domain.BaseEntity;
+import com.receiptofi.domain.analytic.BizDimensionEntity;
 import com.receiptofi.domain.analytic.UserDimensionEntity;
 
 import org.slf4j.Logger;
@@ -21,7 +22,9 @@ import org.springframework.data.mongodb.core.query.NearQuery;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * User: hitender
@@ -42,10 +45,12 @@ public class UserDimensionManagerImpl implements UserDimensionManager {
             "collection");
 
     private MongoTemplate mongoTemplate;
+    private BizDimensionManager bizDimensionManager;
 
     @Autowired
-    public UserDimensionManagerImpl(MongoTemplate mongoTemplate) {
+    public UserDimensionManagerImpl(MongoTemplate mongoTemplate, BizDimensionManager bizDimensionManager) {
         this.mongoTemplate = mongoTemplate;
+        this.bizDimensionManager = bizDimensionManager;
     }
 
     @Override
@@ -101,5 +106,55 @@ public class UserDimensionManagerImpl implements UserDimensionManager {
 
         /* Includes more than RID. So include is not needed. */
         return mongoTemplate.geoNear(nearQuery.query(query), UserDimensionEntity.class);
+    }
+
+    @Override
+    public Set<String> findUserAssociatedAllDistinctBizStr(String rid) {
+        Query query = query(where("RID").is(rid));
+        query.fields().include("bizId");
+
+        List<UserDimensionEntity> userDimensions = mongoTemplate.find(
+                query,
+                UserDimensionEntity.class,
+                TABLE
+        );
+
+        Set<String> bizNames = new HashSet<>();
+        for (UserDimensionEntity userDimensionEntity : userDimensions) {
+            query = query(where("bizId").is(userDimensionEntity.getBizId()));
+            query.fields().include("bizName");
+
+            BizDimensionEntity bizDimension = mongoTemplate.findOne(query, BizDimensionEntity.class);
+            if (null != bizDimension) {
+                bizNames.add(bizDimension.getBizName());
+            }
+        }
+
+        return bizNames;
+    }
+
+    @Override
+    public Set<String> findUserAssociatedBizName(String bizName, String rid) {
+        Query query = query(where("RID").is(rid));
+        query.fields().include("bizId");
+
+        List<UserDimensionEntity> userDimensions = mongoTemplate.find(
+                query,
+                UserDimensionEntity.class,
+                TABLE
+        );
+
+        Set<String> bizNames = new HashSet<>();
+        for (UserDimensionEntity userDimensionEntity : userDimensions) {
+            query = query(where("bizId").is(userDimensionEntity.getBizId()).and("bizName").regex("^" + bizName, "i"));
+            query.fields().include("bizName");
+
+            BizDimensionEntity bizDimension = mongoTemplate.findOne(query, BizDimensionEntity.class);
+            if (null != bizDimension) {
+                bizNames.add(bizDimension.getBizName());
+            }
+        }
+
+        return bizNames;
     }
 }

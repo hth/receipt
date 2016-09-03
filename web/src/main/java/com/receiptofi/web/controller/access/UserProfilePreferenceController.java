@@ -85,10 +85,10 @@ public class UserProfilePreferenceController {
     @Value ("${UserProfilePreferenceController.nextPage:/userprofilepreference}")
     private String nextPage;
 
-    @Value ("${UserProfilePreferenceController.ExpenseTagCountMax:5}")
+    @Value ("${UserProfilePreferenceController.ExpenseTagCountMax}")
     private int expenseTagCountMax;
 
-    @Value ("${UserProfilePreferenceController.ExpenseTagSize:12}")
+    @Value ("${UserProfilePreferenceController.ExpenseTagSize}")
     private int expenseTagSize;
 
     @Value ("${mail.validation.timeout.period}")

@@ -64,10 +64,30 @@ public class ReceiptofiServletContextListener implements ServletContextListener 
         }
 
         checkEnvironment(messages);
+        checkIfPropertiesExists(environment);
 
-        LOG.info("AWS S3 upload status={}", environment.getProperty("FilesUploadToS3.filesUploadSwitch"));
         if (hasAccessToFileSystem(config)) {
             LOG.info("Found and has access, to directory={}", config.getProperty("expensofiReportLocation"));
+        }
+    }
+
+    private void checkIfPropertiesExists(Properties environment) {
+        if (environment.getProperty("FilesUploadToS3.receipt.switch").isEmpty()) {
+            throw new RuntimeException("Could not find property");
+        } else {
+            LOG.info("AWS S3 receipt upload status={}", environment.getProperty("FilesUploadToS3.receipt.switch"));
+        }
+
+        if (environment.getProperty("FilesUploadToS3.coupon.switch").isEmpty()) {
+            throw new RuntimeException("Could not find property");
+        } else {
+            LOG.info("AWS S3 coupon upload status={}", environment.getProperty("FilesUploadToS3.coupon.switch"));
+        }
+
+        if (environment.getProperty("FilesUploadToS3.campaign.switch").isEmpty()) {
+            throw new RuntimeException("Could not find property");
+        } else {
+            LOG.info("AWS S3 campaign upload status={}", environment.getProperty("FilesUploadToS3.campaign.switch"));
         }
     }
 
