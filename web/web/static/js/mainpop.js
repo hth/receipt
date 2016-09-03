@@ -393,7 +393,7 @@ function userProfilePreferences() {
     $('#tagName').NobleCount('#textCount', {
         on_negative: 'error',
         on_positive: 'success',
-        max_chars: 12
+        max_chars: 22
     });
 
     $("#tagName").on('click', function () {
@@ -416,7 +416,7 @@ function clickedExpenseTag(button) {
 
     $('#tagName').focus().val(tagName);
     $('.color-box').css('background-color', $(button).attr('style').split(" ")[1]);
-    $('#textCount').text(12 - tagName.length);
+    $('#textCount').text(22 - tagName.length);
 
     $('#expenseTagSaveUpdate_bt').val('UPDATE');
     $('#expenseTagDelete_bt').attr('hidden', false);

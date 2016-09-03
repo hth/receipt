@@ -6,6 +6,7 @@ import com.receiptofi.web.form.ExpenseTagForm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
@@ -25,7 +26,10 @@ import org.springframework.validation.Validator;
 @Component
 public class ExpenseTagValidator implements Validator {
     private static final Logger LOG = LoggerFactory.getLogger(ExpenseTagValidator.class);
-    private static final int EXPENSE_TAG_MAX_CHAR = 12;
+
+    @Value ("${UserProfilePreferenceController.ExpenseTagSize}")
+    private int expenseTagSize;
+
     private static final int EXPENSE_COLOR_TAG_MAX_CHAR = 7;
 
     @Override
@@ -40,17 +44,17 @@ public class ExpenseTagValidator implements Validator {
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "tagColor", "field.required", new Object[]{"Tag color"});
 
         ExpenseTagForm expenseTagForm = (ExpenseTagForm) obj;
-        if (expenseTagForm.getTagName() != null && expenseTagForm.getTagName().length() > EXPENSE_TAG_MAX_CHAR) {
-            LOG.error("Expense Tag '{}' greater than size={} ", expenseTagForm.getTagName(), EXPENSE_TAG_MAX_CHAR);
+        if (expenseTagForm.getTagName() != null && expenseTagForm.getTagName().length() > expenseTagSize) {
+            LOG.error("Expense Tag '{}' greater than size={} ", expenseTagForm.getTagName(), expenseTagSize);
             errors.rejectValue(
                     "tagName",
                     "expenseTag.tagName",
-                    new Object[]{EXPENSE_TAG_MAX_CHAR},
-                    "Tag name cannot exceed " + EXPENSE_TAG_MAX_CHAR + " characters.");
+                    new Object[]{expenseTagSize},
+                    "Tag name cannot exceed " + expenseTagSize + " characters.");
         }
 
         if (expenseTagForm.getTagColor() != null && expenseTagForm.getTagColor().length() > EXPENSE_COLOR_TAG_MAX_CHAR) {
-            LOG.error("Expense Tag '{}' greater than size={} ", expenseTagForm.getTagName(), EXPENSE_COLOR_TAG_MAX_CHAR);
+            LOG.error("Expense Tag '{}' hex color greater than size={} ", expenseTagForm.getTagName(), EXPENSE_COLOR_TAG_MAX_CHAR);
             errors.rejectValue(
                     "tagColor",
                     "expenseTag.tagColor",
