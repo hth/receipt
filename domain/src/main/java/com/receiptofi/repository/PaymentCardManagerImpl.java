@@ -6,7 +6,7 @@ import static org.springframework.data.mongodb.core.query.Query.query;
 import static org.springframework.data.mongodb.core.query.Update.update;
 
 import com.receiptofi.domain.BaseEntity;
-import com.receiptofi.domain.CreditCardEntity;
+import com.receiptofi.domain.PaymentCardEntity;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,34 +31,34 @@ import java.util.List;
         "PMD.LongVariable"
 })
 @Repository
-public class CreditCardManagerImpl implements CreditCardManager {
-    private static final Logger LOG = LoggerFactory.getLogger(CreditCardManagerImpl.class);
+public class PaymentCardManagerImpl implements PaymentCardManager {
+    private static final Logger LOG = LoggerFactory.getLogger(PaymentCardManagerImpl.class);
     private static final String TABLE = BaseEntity.getClassAnnotationValue(
-            CreditCardEntity.class,
+            PaymentCardEntity.class,
             Document.class,
             "collection");
 
     private MongoTemplate mongoTemplate;
 
     @Autowired
-    public CreditCardManagerImpl(MongoTemplate mongoTemplate) {
+    public PaymentCardManagerImpl(MongoTemplate mongoTemplate) {
         this.mongoTemplate = mongoTemplate;
     }
 
     @Override
-    public void save(CreditCardEntity object) {
+    public void save(PaymentCardEntity object) {
         mongoTemplate.save(object, TABLE);
     }
 
     @Override
     public void updateLastUsed(String rid, String cardDigit, Date lastUsed) {
-        CreditCardEntity creditCard = findCard(rid, cardDigit);
+        PaymentCardEntity paymentCard = findCard(rid, cardDigit);
 
-        if (null != creditCard && creditCard.getLastUsed().before(lastUsed)) {
+        if (null != paymentCard && paymentCard.getLastUsed().before(lastUsed)) {
             mongoTemplate.updateFirst(
                     query(where("RID").is(rid).and("CD").is(cardDigit)),
                     entityUpdate(update("LU", lastUsed).inc("UC", 1)),
-                    CreditCardEntity.class,
+                    PaymentCardEntity.class,
                     TABLE
             );
         } else {
@@ -71,7 +71,7 @@ public class CreditCardManagerImpl implements CreditCardManager {
         mongoTemplate.updateFirst(
                 query(where("RID").is(rid).and("CD").is(cardDigit)),
                 entityUpdate(new Update().inc("UC", -1)),
-                CreditCardEntity.class,
+                PaymentCardEntity.class,
                 TABLE
         );
     }
@@ -81,31 +81,31 @@ public class CreditCardManagerImpl implements CreditCardManager {
         mongoTemplate.updateFirst(
                 query(where("RID").is(rid).and("CD").is(cardDigit)),
                 entityUpdate(new Update().inc("UC", 1)),
-                CreditCardEntity.class,
+                PaymentCardEntity.class,
                 TABLE
         );
     }
 
     @Override
-    public List<CreditCardEntity> getCreditCards(String rid) {
+    public List<PaymentCardEntity> getPaymentCards(String rid) {
         return mongoTemplate.find(
                 query(where("RID").is(rid)),
-                CreditCardEntity.class,
+                PaymentCardEntity.class,
                 TABLE
         );
     }
 
     @Override
-    public CreditCardEntity findCard(String rid, String cardDigit) {
+    public PaymentCardEntity findCard(String rid, String cardDigit) {
         return mongoTemplate.findOne(
                 query(where("RID").is(rid).and("CD").is(cardDigit)),
-                CreditCardEntity.class,
+                PaymentCardEntity.class,
                 TABLE
         );
     }
 
     @Override
-    public void deleteHard(CreditCardEntity object) {
+    public void deleteHard(PaymentCardEntity object) {
         throw new UnsupportedOperationException("This method is not supported");
     }
 }

@@ -106,8 +106,8 @@ public class ITest extends RealMongoForTests {
     public DocumentUpdateService documentUpdateService;
     public MessageDocumentManager messageDocumentManager;
     public MailManager mailManager;
-    public CreditCardManager creditCardManager;
-    public CreditCardService creditCardService;
+    public PaymentCardManager paymentCardManager;
+    public PaymentCardService paymentCardService;
 
     public BusinessUserManager businessUserManager;
     public BusinessUserService businessUserService;
@@ -220,7 +220,7 @@ public class ITest extends RealMongoForTests {
                 notificationService,
                 friendService,
                 splitExpensesService,
-                creditCardService);
+                paymentCardService);
 
         externalService = new ExternalService(properties.getProperty("google-server-api-key"));
         bizStoreManager = new BizStoreManagerImpl(getMongoTemplate());
@@ -274,8 +274,8 @@ public class ITest extends RealMongoForTests {
                 receiptParserService
         );
 
-        creditCardManager = new CreditCardManagerImpl(getMongoTemplate());
-        creditCardService = new CreditCardService(creditCardManager);
+        paymentCardManager = new PaymentCardManagerImpl(getMongoTemplate());
+        paymentCardService = new PaymentCardService(paymentCardManager);
         messageDocumentManager = new MessageDocumentManagerImpl(10, getMongoTemplate());
         documentUpdateService = new DocumentUpdateService(
                 documentService,
@@ -291,7 +291,7 @@ public class ITest extends RealMongoForTests {
                 fileSystemService,
                 billingService,
                 expensesService,
-                creditCardService);
+                paymentCardService);
     }
 
     public ReceiptEntity populateReceiptWithComments(UserAccountEntity userAccount) throws IOException {

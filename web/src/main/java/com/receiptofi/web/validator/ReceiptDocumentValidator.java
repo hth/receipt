@@ -2,11 +2,11 @@ package com.receiptofi.web.validator;
 
 import com.receiptofi.domain.BizNameEntity;
 import com.receiptofi.domain.BizStoreEntity;
-import com.receiptofi.domain.CreditCardEntity;
+import com.receiptofi.domain.PaymentCardEntity;
 import com.receiptofi.domain.ItemEntityOCR;
 import com.receiptofi.domain.types.CardNetworkEnum;
 import com.receiptofi.service.BizService;
-import com.receiptofi.service.CreditCardService;
+import com.receiptofi.service.PaymentCardService;
 import com.receiptofi.service.ExternalService;
 import com.receiptofi.utils.DateUtil;
 import com.receiptofi.utils.Formatter;
@@ -47,17 +47,17 @@ public class ReceiptDocumentValidator implements Validator {
 
     private ExternalService externalService;
     private BizService bizService;
-    private CreditCardService creditCardService;
+    private PaymentCardService paymentCardService;
 
     @Autowired
     public ReceiptDocumentValidator(
             ExternalService externalService,
             BizService bizService,
-            CreditCardService creditCardService
+            PaymentCardService paymentCardService
     ) {
         this.externalService = externalService;
         this.bizService = bizService;
-        this.creditCardService = creditCardService;
+        this.paymentCardService = paymentCardService;
     }
 
     @Override
@@ -115,7 +115,7 @@ public class ReceiptDocumentValidator implements Validator {
 
         validateDate(errors, receiptDocumentForm);
         validateAddressAndPhone(errors, receiptDocumentForm);
-        validateCreditCard(errors, receiptDocumentForm);
+        validatePaymentCard(errors, receiptDocumentForm);
 
         int count = 0;
         BigDecimal subTotal = BigDecimal.ZERO;
@@ -325,23 +325,23 @@ public class ReceiptDocumentValidator implements Validator {
         }
     }
 
-    private void validateCreditCard(Errors errors, ReceiptDocumentForm receiptDocumentForm) {
+    private void validatePaymentCard(Errors errors, ReceiptDocumentForm receiptDocumentForm) {
         String cardDigit = receiptDocumentForm.getReceiptDocument().getCardDigit();
         String rid = receiptDocumentForm.getReceiptDocument().getReceiptUserId();
         if (StringUtils.isNotBlank(cardDigit)) {
 
             if (NumberUtils.isNumber(cardDigit)) {
-                CreditCardEntity creditCard = creditCardService.findCard(rid, cardDigit);
-                if (null != creditCard
+                PaymentCardEntity paymentCard = paymentCardService.findCard(rid, cardDigit);
+                if (null != paymentCard
                         && null != receiptDocumentForm.getReceiptDocument().getCardNetwork()
-                        && creditCard.getCardNetwork() != receiptDocumentForm.getReceiptDocument().getCardNetwork()) {
+                        && paymentCard.getCardNetwork() != receiptDocumentForm.getReceiptDocument().getCardNetwork()) {
 
                     errors.rejectValue(
                             "receiptDocument.cardNetwork",
                             "field.cardNetwork.another.exists",
-                            new Object[]{cardDigit, creditCard.getCardNetwork().getDescription()},
-                            cardDigit + " belongs to " + creditCard.getCardNetwork().getDescription());
-                } else if (null == creditCard
+                            new Object[]{cardDigit, paymentCard.getCardNetwork().getDescription()},
+                            cardDigit + " belongs to " + paymentCard.getCardNetwork().getDescription());
+                } else if (null == paymentCard
                         && receiptDocumentForm.getReceiptDocument().getCardNetwork() == CardNetworkEnum.U
                         && StringUtils.isNotBlank(cardDigit)) {
 
@@ -350,7 +350,7 @@ public class ReceiptDocumentValidator implements Validator {
                             "field.cardNetwork.not.selected",
                             new Object[]{cardDigit},
                             "Select card network");
-                } else if (null == creditCard
+                } else if (null == paymentCard
                         && receiptDocumentForm.getReceiptDocument().getCardNetwork() != CardNetworkEnum.U
                         && StringUtils.isBlank(cardDigit)) {
 

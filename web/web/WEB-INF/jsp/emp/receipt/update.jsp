@@ -483,7 +483,7 @@
                                 </tr>
                                 <tr>
                                     <td colspan="3" style="text-align: left; vertical-align: top">
-                                        <form:label path="receiptDocument.cardNetwork" cssErrorClass="error">Credit / Debit card: </form:label>
+                                        <form:label path="receiptDocument.cardNetwork" cssErrorClass="error">Payment card: </form:label>
                                         <form:select path="receiptDocument.cardNetwork">
                                             <form:options itemValue="name" itemLabel="description" />
                                         </form:select>

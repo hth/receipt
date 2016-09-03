@@ -9,7 +9,7 @@ import com.mongodb.DBObject;
 import com.mongodb.gridfs.GridFSDBFile;
 
 import com.receiptofi.domain.CommentEntity;
-import com.receiptofi.domain.CreditCardEntity;
+import com.receiptofi.domain.PaymentCardEntity;
 import com.receiptofi.domain.DocumentEntity;
 import com.receiptofi.domain.ExpenseTagEntity;
 import com.receiptofi.domain.FileSystemEntity;
@@ -71,7 +71,7 @@ public class DocumentUpdateService {
     private FileSystemService fileSystemService;
     private BillingService billingService;
     private ExpensesService expensesService;
-    private CreditCardService creditCardService;
+    private PaymentCardService paymentCardService;
 
     @Autowired
     public DocumentUpdateService(
@@ -88,7 +88,7 @@ public class DocumentUpdateService {
             FileSystemService fileSystemService,
             BillingService billingService,
             ExpensesService expensesService,
-            CreditCardService creditCardService) {
+            PaymentCardService paymentCardService) {
 
         this.documentService = documentService;
         this.itemOCRManager = itemOCRManager;
@@ -103,7 +103,7 @@ public class DocumentUpdateService {
         this.fileSystemService = fileSystemService;
         this.billingService = billingService;
         this.expensesService = expensesService;
-        this.creditCardService = creditCardService;
+        this.paymentCardService = paymentCardService;
     }
 
     /**
@@ -334,18 +334,18 @@ public class DocumentUpdateService {
 
     private void addCardDetailsIfAny(ReceiptEntity receipt, DocumentEntity document) {
         if (StringUtils.isNotBlank(document.getCardDigit()) && document.getCardNetwork() != CardNetworkEnum.U) {
-            CreditCardEntity creditCard = creditCardService.findCard(receipt.getReceiptUserId(), document.getCardDigit());
-            if (null == creditCard) {
-                creditCard = CreditCardEntity.newInstance(
+            PaymentCardEntity paymentCard = paymentCardService.findCard(receipt.getReceiptUserId(), document.getCardDigit());
+            if (null == paymentCard) {
+                paymentCard = PaymentCardEntity.newInstance(
                         receipt.getReceiptUserId(),
                         document.getCardNetwork(),
                         document.getCardDigit(),
                         receipt.getReceiptDate());
 
-                creditCardService.save(creditCard);
+                paymentCardService.save(paymentCard);
             }
-            creditCardService.updateLastUsed(receipt.getReceiptUserId(), creditCard.getCardDigit(), receipt.getReceiptDate());
-            receipt.setCreditCard(creditCard);
+            paymentCardService.updateLastUsed(receipt.getReceiptUserId(), paymentCard.getCardDigit(), receipt.getReceiptDate());
+            receipt.setPaymentCard(paymentCard);
         }
     }
 

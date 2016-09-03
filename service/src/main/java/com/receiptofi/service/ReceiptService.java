@@ -69,7 +69,7 @@ public class ReceiptService {
     private FriendService friendService;
     private SplitExpensesService splitExpensesService;
     private DocumentService documentService;
-    private CreditCardService creditCardService;
+    private PaymentCardService paymentCardService;
 
     @Autowired
     public ReceiptService(
@@ -85,7 +85,7 @@ public class ReceiptService {
             NotificationService notificationService,
             FriendService friendService,
             SplitExpensesService splitExpensesService,
-            CreditCardService creditCardService) {
+            PaymentCardService paymentCardService) {
         this.receiptManager = receiptManager;
         this.documentService = documentService;
         this.itemService = itemService;
@@ -98,7 +98,7 @@ public class ReceiptService {
         this.notificationService = notificationService;
         this.friendService = friendService;
         this.splitExpensesService = splitExpensesService;
-        this.creditCardService = creditCardService;
+        this.paymentCardService = paymentCardService;
     }
 
     /**
@@ -196,8 +196,8 @@ public class ReceiptService {
                 }
             }
 
-            if (null != receipt.getCreditCard()) {
-                creditCardService.decreaseUsed(receipt.getReceiptUserId(), receipt.getCreditCard().getCardDigit());
+            if (null != receipt.getPaymentCard()) {
+                paymentCardService.decreaseUsed(receipt.getReceiptUserId(), receipt.getPaymentCard().getCardDigit());
             }
             receiptManager.deleteSoft(receipt);
 
@@ -298,8 +298,8 @@ public class ReceiptService {
                      * wrong during populating other data.
                      */
                     receipt.setReceiptStatus(DocumentStatusEnum.REPROCESS);
-                    if (null != receipt.getCreditCard()) {
-                        creditCardService.increaseUsed(receipt.getReceiptUserId(), receipt.getCreditCard().getCardDigit());
+                    if (null != receipt.getPaymentCard()) {
+                        paymentCardService.increaseUsed(receipt.getReceiptUserId(), receipt.getPaymentCard().getCardDigit());
                     }
                     receiptManager.save(receipt);
                     documentService.save(receiptOCR);

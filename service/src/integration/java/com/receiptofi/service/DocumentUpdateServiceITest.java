@@ -53,7 +53,7 @@ public class DocumentUpdateServiceITest extends ITest {
                 fileSystemService,
                 billingService,
                 expensesService,
-                creditCardService);
+                paymentCardService);
 
 
         ReceiptEntity receipt = populateReceipt();

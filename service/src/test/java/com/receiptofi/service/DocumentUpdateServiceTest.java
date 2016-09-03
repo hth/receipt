@@ -43,7 +43,7 @@ public class DocumentUpdateServiceTest {
     @Mock private FileSystemService fileSystemService;
     @Mock private BillingService billingService;
     @Mock private ExpensesService expensesService;
-    @Mock private CreditCardService creditCardService;
+    @Mock private PaymentCardService paymentCardService;
 
     @Mock private ReceiptEntity receipt;
     @Mock private DocumentEntity document;
@@ -68,7 +68,7 @@ public class DocumentUpdateServiceTest {
                 fileSystemService,
                 billingService,
                 expensesService,
-                creditCardService);
+                paymentCardService);
     }
 
 

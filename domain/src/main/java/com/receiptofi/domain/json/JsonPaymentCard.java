@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import com.receiptofi.domain.CreditCardEntity;
+import com.receiptofi.domain.PaymentCardEntity;
 
 import org.apache.commons.lang3.time.DateFormatUtils;
 
@@ -32,7 +32,7 @@ import java.util.TimeZone;
 @JsonPropertyOrder (alphabetic = true)
 @JsonIgnoreProperties (ignoreUnknown = true)
 //@JsonInclude(JsonInclude.Include.NON_NULL)
-public class JsonCreditCard {
+public class JsonPaymentCard {
 
     @JsonProperty ("cn")
     private String cardNetwork;
@@ -49,12 +49,12 @@ public class JsonCreditCard {
     @JsonProperty ("a")
     private boolean active;
 
-    public JsonCreditCard(CreditCardEntity creditCard) {
-        this.cardNetwork = creditCard.getCardNetwork().getName();
-        this.cardDigit = creditCard.getCardDigit();
-        this.lastUsed = DateFormatUtils.format(creditCard.getLastUsed(), ISO8601_FMT, TimeZone.getTimeZone("UTC"));
-        this.usedCount = creditCard.getUsedCount();
-        this.active = creditCard.isActive();
+    public JsonPaymentCard(PaymentCardEntity paymentCard) {
+        this.cardNetwork = paymentCard.getCardNetwork().getName();
+        this.cardDigit = paymentCard.getCardDigit();
+        this.lastUsed = DateFormatUtils.format(paymentCard.getLastUsed(), ISO8601_FMT, TimeZone.getTimeZone("UTC"));
+        this.usedCount = paymentCard.getUsedCount();
+        this.active = paymentCard.isActive();
     }
 
     public String getCardNetwork() {
