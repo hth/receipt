@@ -7,6 +7,7 @@ import com.receiptofi.domain.ItemEntity;
 import com.receiptofi.repository.BizNameManager;
 import com.receiptofi.repository.BizStoreManager;
 import com.receiptofi.repository.ItemManager;
+import com.receiptofi.service.analytic.UserDimensionService;
 import com.receiptofi.utils.CommonUtil;
 
 import org.slf4j.Logger;
@@ -35,10 +36,25 @@ import java.util.stream.Collectors;
 public class FetcherService {
     private static final Logger LOG = LoggerFactory.getLogger(FetcherService.class);
 
-    @Autowired private ItemManager itemManager;
-    @Autowired private BizNameManager bizNameManager;
-    @Autowired private BizStoreManager bizStoreManager;
-    @Autowired private FileSystemService fileSystemService;
+    private final ItemManager itemManager;
+    private final BizNameManager bizNameManager;
+    private final BizStoreManager bizStoreManager;
+    private final FileSystemService fileSystemService;
+    private final UserDimensionService userDimensionService;
+
+    @Autowired
+    public FetcherService(
+            BizStoreManager bizStoreManager,
+            ItemManager itemManager,
+            BizNameManager bizNameManager,
+            FileSystemService fileSystemService,
+            UserDimensionService userDimensionService) {
+        this.bizStoreManager = bizStoreManager;
+        this.itemManager = itemManager;
+        this.bizNameManager = bizNameManager;
+        this.fileSystemService = fileSystemService;
+        this.userDimensionService = userDimensionService;
+    }
 
     /**
      * This method is called from AJAX to get the matching list of users in the system.
@@ -46,9 +62,36 @@ public class FetcherService {
      * @param bizName
      * @return
      */
-    public Set<String> findDistinctBizName(String bizName) {
+    public Set<String> findAllDistinctBizName(String bizName) {
         LOG.debug("Search for Biz Name={}", bizName);
         Set<String> titles = bizNameManager.findAllDistinctBizStr(bizName);
+        LOG.debug("found business count={}", titles.size());
+        return titles;
+    }
+
+    /**
+     * Find all the business name visited by user with RID.
+     *
+     * @param rid
+     * @return
+     */
+    public Set<String> findUserAssociatedAllDistinctBizStr(String rid) {
+        LOG.debug("Search for Biz Names for rid={}", rid);
+        Set<String> titles = userDimensionService.findUserAssociatedAllDistinctBizStr(rid);
+        LOG.debug("found business count={}", titles.size());
+        return titles;
+    }
+
+    /**
+     * Find matching business name visited by user with RID.
+     *
+     * @param bizName
+     * @param rid
+     * @return
+     */
+    public Set<String> findUserAssociatedBizName(String bizName, String rid) {
+        LOG.debug("Search for Biz Names bizName={} for rid={}", bizName, rid);
+        Set<String> titles = userDimensionService.findUserAssociatedBizName(bizName, rid);
         LOG.debug("found business count={}", titles.size());
         return titles;
     }

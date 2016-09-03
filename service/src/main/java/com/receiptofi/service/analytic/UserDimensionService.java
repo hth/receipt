@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Set;
 
 /**
  * User: hitender
@@ -47,5 +48,13 @@ public class UserDimensionService {
             String storeId,
             String countryShortName) {
         return userDimensionManager.findAllNonPatrons(longitude, latitude, distributionRadius, storeId, countryShortName);
+    }
+
+    public Set<String> findUserAssociatedAllDistinctBizStr(String rid) {
+        return userDimensionManager.findUserAssociatedAllDistinctBizStr(rid);
+    }
+
+    public Set<String> findUserAssociatedBizName(String bizName, String rid) {
+        return userDimensionManager.findUserAssociatedBizName(bizName, rid);
     }
 }

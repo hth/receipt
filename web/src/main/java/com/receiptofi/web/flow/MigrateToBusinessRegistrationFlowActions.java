@@ -57,8 +57,8 @@ public class MigrateToBusinessRegistrationFlowActions extends RegistrationFlowAc
         this.bizService = bizService;
     }
 
-    public Set<String> findDistinctBizName(String bizName) {
-        return fetcherService.findDistinctBizName(bizName);
+    public Set<String> findAllDistinctBizName(String bizName) {
+        return fetcherService.findAllDistinctBizName(bizName);
     }
 
     @SuppressWarnings ("unused")

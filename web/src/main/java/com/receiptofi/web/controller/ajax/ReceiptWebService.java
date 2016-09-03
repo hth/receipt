@@ -87,7 +87,7 @@ public class ReceiptWebService {
      */
     @PreAuthorize ("hasAnyRole('ROLE_ADMIN', 'ROLE_TECHNICIAN', 'ROLE_SUPERVISOR')")
     @RequestMapping (
-            value = "/find_company",
+            value = "/find_business",
             method = RequestMethod.GET,
             headers = "Accept=application/json",
             produces = "application/json")
@@ -98,7 +98,48 @@ public class ReceiptWebService {
     ) {
         try {
             LOG.info("searchBusinessWithBusinessName businessName={}", businessName.getText());
-            return fetcherService.findDistinctBizName(StringUtils.stripToEmpty(businessName.getText()));
+            return fetcherService.findAllDistinctBizName(StringUtils.stripToEmpty(businessName.getText()));
+        } catch (Exception fetchBusinessName) {
+            LOG.warn("Error fetching business number, error={}", fetchBusinessName);
+            return new HashSet<>();
+        }
+    }
+
+    /**
+     * @param businessName
+     * @return
+     */
+    @PreAuthorize ("hasAnyRole('ROLE_ADMIN', 'ROLE_TECHNICIAN', 'ROLE_SUPERVISOR')")
+    @RequestMapping (
+            value = "/find_s_business",
+            method = RequestMethod.GET,
+            headers = "Accept=application/json",
+            produces = "application/json")
+    @Cacheable (value = "searchUserAssociatedBusinessWithBusinessName", keyGenerator = "customKeyGenerator")
+    public Set<String> searchUserAssociatedBusinessWithBusinessName(
+            @RequestParam ("term")
+            ScrubbedInput businessName,
+
+            @RequestParam ("rid")
+            ScrubbedInput rid
+    ) {
+        try {
+            LOG.info("searchBusinessWithBusinessName businessName={}", businessName.getText());
+            String search = businessName.getText();
+            int index = search.lastIndexOf("^") + 1;
+            String bizName = StringUtils.stripToEmpty(search.substring(index, search.length()));
+
+            if (index == 1) {
+                LOG.info("{}", index);
+                if (StringUtils.isBlank(bizName)) {
+                    return fetcherService.findUserAssociatedAllDistinctBizStr(rid.getText());
+                } else {
+                    return fetcherService.findUserAssociatedBizName(bizName, rid.getText());
+                }
+            }
+
+            LOG.info("{}", index);
+            return fetcherService.findAllDistinctBizName(bizName);
         } catch (Exception fetchBusinessName) {
             LOG.warn("Error fetching business number, error={}", fetchBusinessName);
             return new HashSet<>();
@@ -263,6 +304,10 @@ public class ReceiptWebService {
             ScrubbedInput receiptUserId
     ) throws IOException, ParseException, NumberFormatException {
         try {
+            if (StringUtils.isBlank(date.getText())) {
+                return false;
+            }
+
             Date receiptDate = DateUtil.getDateFromString(StringUtils.stripToEmpty(date.getText()));
             Double receiptTotal = Formatter.getCurrencyFormatted(StringUtils.stripToEmpty(total.getText())).doubleValue();
 

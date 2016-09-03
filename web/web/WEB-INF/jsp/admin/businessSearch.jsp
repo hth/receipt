@@ -213,7 +213,7 @@
 <script type="text/javascript">
     $(document).ready(function() {
         $( "#businessName" ).autocomplete({
-            source: "${pageContext. request. contextPath}/ws/r/find_company.htm"
+            source: "${pageContext. request. contextPath}/ws/r/find_business.htm"
         });
 
     });
