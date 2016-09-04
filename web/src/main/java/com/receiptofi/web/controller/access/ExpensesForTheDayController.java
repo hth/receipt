@@ -30,10 +30,15 @@ import java.util.List;
 })
 @Controller
 @RequestMapping (value = "/access/day")
-public class ThisDayController {
+public class ExpensesForTheDayController {
     private static final String nextPage = "/day";
 
-    @Autowired private ReceiptService receiptService;
+    private final ReceiptService receiptService;
+
+    @Autowired
+    public ExpensesForTheDayController(ReceiptService receiptService) {
+        this.receiptService = receiptService;
+    }
 
     @RequestMapping (method = RequestMethod.GET)
     public String getThisDay(
