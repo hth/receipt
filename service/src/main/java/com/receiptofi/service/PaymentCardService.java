@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * User: hitender
@@ -51,5 +52,10 @@ public class PaymentCardService {
 
     public List<PaymentCardEntity> getPaymentCards(String rid) {
         return paymentCardManager.getPaymentCards(rid);
+    }
+
+    public List<String> getPaymentCardDigits(String rid) {
+        List<PaymentCardEntity> paymentCards = getPaymentCards(rid);
+        return paymentCards.stream().map(PaymentCardEntity::getCardDigit).collect(Collectors.toList());
     }
 }

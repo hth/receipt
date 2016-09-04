@@ -50,7 +50,7 @@ public class JsonPaymentCard {
     private boolean active;
 
     public JsonPaymentCard(PaymentCardEntity paymentCard) {
-        this.cardNetwork = paymentCard.getCardNetwork().getName();
+        this.cardNetwork = paymentCard.getCardNetwork().name();
         this.cardDigit = paymentCard.getCardDigit();
         this.lastUsed = DateFormatUtils.format(paymentCard.getLastUsed(), ISO8601_FMT, TimeZone.getTimeZone("UTC"));
         this.usedCount = paymentCard.getUsedCount();
