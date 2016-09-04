@@ -39,8 +39,12 @@ public class ReportAnalysisController {
     @Value ("${ReportAnalysisController.nextPage:/reportAnalysis}")
     private String nextPage;
 
+    private final LandingService landingService;
+
     @Autowired
-    private LandingService landingService;
+    public ReportAnalysisController(LandingService landingService) {
+        this.landingService = landingService;
+    }
 
     @PreAuthorize ("hasRole('ROLE_USER')")
     @RequestMapping (method = RequestMethod.GET)

@@ -131,6 +131,8 @@
                 <li><a href="#tabs-1">PROFILE</a></li>
                 <sec:authorize access="hasRole('ROLE_USER')">
                 <li><a href="#tabs-2">PREFERENCES</a></li>
+                </sec:authorize>
+                <sec:authorize access="hasAnyRole('ROLE_ACCOUNTANT', 'ROLE_BUSINESS', 'ROLE_ENTERPRISE')">
                 <li><a href="#tabs-3">BILLING</a></li>
                 </sec:authorize>
                 <sec:authorize access="hasRole('ROLE_ADMIN')">
@@ -314,7 +316,9 @@
                     </div>
                 </form:form>
             </div>
+            </sec:authorize>
 
+            <sec:authorize access="hasAnyRole('ROLE_ACCOUNTANT', 'ROLE_BUSINESS', 'ROLE_ENTERPRISE')">
             <div id="tabs-3" class="ajx-content report_my">
                 <h1 class="h1">BILLING &amp; USAGE</h1>
                 <hr>
