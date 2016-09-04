@@ -39,13 +39,18 @@ import java.util.List;
 public class NotificationController {
     private static final Logger LOG = LoggerFactory.getLogger(LandingController.class);
 
-    @Autowired private NotificationService notificationService;
+    private final NotificationService notificationService;
 
     /**
      * maps to notification.jsp
      */
     @Value ("${next.page:/notification}")
     private String nextPage;
+
+    @Autowired
+    public NotificationController(NotificationService notificationService) {
+        this.notificationService = notificationService;
+    }
 
     @PreAuthorize ("hasRole('ROLE_USER')")
     @RequestMapping (
