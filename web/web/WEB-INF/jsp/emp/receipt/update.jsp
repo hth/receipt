@@ -607,6 +607,11 @@
             $('#expectedTax').text('{ Calculated Tax : ' + (totalValue/subTotalValue -1).toFixed(4) + ' % }');
         }
     });
+    $(document).ready(function() {
+        $( "#cardDigit" ).autocomplete({
+            source: "${pageContext. request. contextPath}/emp/pc/d/" + $("input#rid").val() + ".htm"
+        });
+    });
 </script>
 
 <script>
