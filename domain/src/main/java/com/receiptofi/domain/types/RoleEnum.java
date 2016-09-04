@@ -14,30 +14,30 @@ package com.receiptofi.domain.types;
 })
 public enum RoleEnum {
 
-    /** Has read access */
+    /** Has read access. */
     ROLE_ANALYSIS_READ,
 
-    /** A regular user */
+    /** A regular user. */
     ROLE_USER,
 
-    /** Account */
+    /** Account. */
     ROLE_ACCOUNTANT,
 
-    /** A business user */
+    /** A business user. */
     ROLE_BUSINESS,
 
-    /** An enterprise user who has multiple receipt user */
+    /** An enterprise user who has multiple receipt user. */
     ROLE_ENTERPRISE,
 
-    /** Validate and process data */
+    /** Validate and process data. */
     ROLE_TECHNICIAN,
 
-    /** Approve Campaign */
+    /** Approve Campaign. */
     ROLE_CAMPAIGN,
 
-    /** Has complete access */
+    /** Has view access pending things for to ROLE_TECHNICIAN, ROLE_CAMPAIGN. */
     ROLE_SUPERVISOR,
 
-    /** Has administrator role */
+    /** Has administrator role. */
     ROLE_ADMIN
 }
