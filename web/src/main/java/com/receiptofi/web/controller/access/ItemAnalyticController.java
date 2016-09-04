@@ -52,8 +52,14 @@ public class ItemAnalyticController {
     @Value ("${ItemAnalyticController.itemLimit:20}")
     private int itemLimit;
 
-    @Autowired private ItemAnalyticService itemAnalyticService;
-    @Autowired private ExpensesService expensesService;
+    private final ItemAnalyticService itemAnalyticService;
+    private final ExpensesService expensesService;
+
+    @Autowired
+    public ItemAnalyticController(ExpensesService expensesService, ItemAnalyticService itemAnalyticService) {
+        this.expensesService = expensesService;
+        this.itemAnalyticService = itemAnalyticService;
+    }
 
     @RequestMapping (value = "{itemId}", method = RequestMethod.GET)
     public String loadForm(
