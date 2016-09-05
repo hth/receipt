@@ -125,6 +125,9 @@ public class DocumentUpdateService {
             updateFileSystemEntityWithVersion(receipt, document, documentEntity);
 
             bizService.saveNewBusinessAndOrStore(receipt);
+            if (null != receipt.getBizStore() && StringUtils.isNotBlank(receipt.getBizStore().getCountryShortName())) {
+                receipt.setCountryShortName(receipt.getBizStore().getCountryShortName());
+            }
 
             addCardDetailsIfAny(receipt, document);
             receipt.addProcessedBy(transaction, technicianId);
@@ -214,6 +217,10 @@ public class DocumentUpdateService {
             updateFileSystemEntityWithVersion(receipt, document, documentEntity);
 
             bizService.saveNewBusinessAndOrStore(receipt);
+            if (null != receipt.getBizStore() && StringUtils.isNotBlank(receipt.getBizStore().getCountryShortName())) {
+                receipt.setCountryShortName(receipt.getBizStore().getCountryShortName());
+            }
+
             if (StringUtils.isNotEmpty(receipt.getId())) {
                 fetchedReceipt = receiptManager.findReceiptWhileRecheck(receipt.getId(), document.getReceiptUserId());
                 if (null == fetchedReceipt) {
