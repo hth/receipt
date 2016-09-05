@@ -609,7 +609,7 @@
     });
     $(document).ready(function() {
         $( "#cardDigit" ).autocomplete({
-            source: "${pageContext. request. contextPath}/emp/pc/d/" + $("input#rid").val() + ".htm"
+            source: "${pageContext. request. contextPath}/emp/receipt/pc/d/" + $("input#rid").val() + ".htm"
         });
     });
 </script>

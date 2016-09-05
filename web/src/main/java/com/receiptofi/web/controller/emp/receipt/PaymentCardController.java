@@ -32,7 +32,7 @@ import java.util.stream.Collectors;
         "PMD.LongVariable"
 })
 @Controller
-@RequestMapping (value = "/emp/pc")
+@RequestMapping (value = "/emp/receipt/pc")
 public class PaymentCardController {
     private static final Logger LOG = LoggerFactory.getLogger(PaymentCardController.class);
 
