@@ -230,8 +230,7 @@ public class ReceiptEntity extends BaseEntity {
      */
     @Transient
     public String getTotalString() {
-        java.text.NumberFormat numberFormat = LocaleUtil.getNumberFormat(getBizStore().getCountryShortName());
-        return numberFormat.format(total);
+        return LocaleUtil.getNumberFormat(getBizStore().getCountryShortName()).format(total);
     }
 
     public Double getTax() {
