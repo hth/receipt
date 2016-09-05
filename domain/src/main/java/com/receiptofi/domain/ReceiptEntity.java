@@ -165,6 +165,10 @@ public class ReceiptEntity extends BaseEntity {
     @Field ("PC")
     private PaymentCardEntity paymentCard;
 
+    @NotNull
+    @Field ("CS")
+    private String countryShortName;
+
     /** To keep bean happy. */
     public ReceiptEntity() {
         super();
@@ -414,6 +418,14 @@ public class ReceiptEntity extends BaseEntity {
 
     public void setPaymentCard(PaymentCardEntity paymentCard) {
         this.paymentCard = paymentCard;
+    }
+
+    public String getCountryShortName() {
+        return countryShortName;
+    }
+
+    public void setCountryShortName(String countryShortName) {
+        this.countryShortName = countryShortName;
     }
 
     @Transient
