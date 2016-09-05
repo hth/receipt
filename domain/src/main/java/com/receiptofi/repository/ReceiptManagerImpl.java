@@ -371,7 +371,7 @@ public class ReceiptManagerImpl implements ReceiptManager {
 
         mongoTemplate.updateFirst(
                 query(where("id").is(object.getId())),
-                entityUpdate(update("D", true).set("CS", checksum)),
+                entityUpdate(update("D", true).set("CZ", checksum)),
                 ReceiptEntity.class);
     }
 
@@ -382,7 +382,7 @@ public class ReceiptManagerImpl implements ReceiptManager {
      */
     private void removeCompleteReminiscenceOfSoftDeletedReceipt(String checksum) {
         List<ReceiptEntity> duplicateDeletedReceipts = mongoTemplate.find(
-                query(where("CS").is(checksum)),
+                query(where("CZ").is(checksum)),
                 ReceiptEntity.class,
                 TABLE);
 
@@ -454,7 +454,7 @@ public class ReceiptManagerImpl implements ReceiptManager {
     }
 
     private Query checksumQuery(String checksum) {
-        return query(where("CS").is(checksum));
+        return query(where("CZ").is(checksum));
     }
 
     /**

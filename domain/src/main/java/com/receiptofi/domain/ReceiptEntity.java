@@ -47,7 +47,7 @@ import javax.validation.constraints.NotNull;
 /** Updated index. */
 @CompoundIndexes (value = {
         @CompoundIndex (name = "receipt_idx", def = "{'RTXD': -1, 'RID': 1}", background = true),
-        @CompoundIndex (name = "receipt_unique_idx", def = "{'CS': -1}", unique = true, background = true),
+        @CompoundIndex (name = "receipt_unique_idx", def = "{'CZ': -1}", unique = true, background = true),
         @CompoundIndex (name = "receipt_expense_report_idx", def = "{'EXF': -1}", background = true),
         @CompoundIndex (name = "receipt_friend_reference_idx", def = "{'RF': -1}", background = true)
 })
@@ -134,7 +134,7 @@ public class ReceiptEntity extends BaseEntity {
     /**
      * Used to flush or avoid duplicate receipt entry.
      */
-    @Field ("CS")
+    @Field ("CZ")
     private String checksum;
 
     @NotNull
