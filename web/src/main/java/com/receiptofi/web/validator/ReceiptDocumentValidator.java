@@ -5,6 +5,7 @@ import com.receiptofi.domain.BizStoreEntity;
 import com.receiptofi.domain.PaymentCardEntity;
 import com.receiptofi.domain.ItemEntityOCR;
 import com.receiptofi.domain.types.CardNetworkEnum;
+import com.receiptofi.domain.types.DocumentStatusEnum;
 import com.receiptofi.service.BizService;
 import com.receiptofi.service.PaymentCardService;
 import com.receiptofi.service.ExternalService;
@@ -67,6 +68,7 @@ public class ReceiptDocumentValidator implements Validator {
 
     @Override
     public void validate(Object obj, Errors errors) {
+        Date since = DateUtil.nowDate();
         ReceiptDocumentForm receiptDocumentForm = (ReceiptDocumentForm) obj;
         LOG.debug("Validating receiptDocument={}", receiptDocumentForm.getReceiptDocument().getId());
 
@@ -268,6 +270,10 @@ public class ReceiptDocumentValidator implements Validator {
                 );
             }
         }
+
+        LOG.info("Complete validating receiptDocument={} duration={}ms",
+                receiptDocumentForm.getReceiptDocument().getId(),
+                DateUtil.getMillisBetween(since, new Date()));
     }
 
     private void validateDate(Errors errors, ReceiptDocumentForm receiptDocumentForm) {
@@ -283,13 +289,15 @@ public class ReceiptDocumentValidator implements Validator {
                         "Date is set in future. Format should be MM/dd/yyyy 11:59:59 PM. Check for month and day.");
             }
 
-            Date previousDay = Date.from(LocalDate.now().minusDays(60).atStartOfDay(ZoneId.systemDefault()).toInstant().plusSeconds(60));
-            if(receiptDate.before(previousDay)) {
-                errors.rejectValue(
-                        "receiptDocument.receiptDate",
-                        "field.date.past",
-                        new Object[]{receiptDocumentForm.getReceiptDocument().getReceiptDate()},
-                        "Date is set more than 60 days in past. Format should be MM/dd/yyyy 11:59:59 PM. Check for month and day.");
+            if (receiptDocumentForm.getReceiptDocument().getDocumentStatus() == DocumentStatusEnum.PENDING) {
+                Date previousDay = Date.from(LocalDate.now().minusDays(60).atStartOfDay(ZoneId.systemDefault()).toInstant().plusSeconds(60));
+                if (receiptDate.before(previousDay)) {
+                    errors.rejectValue(
+                            "receiptDocument.receiptDate",
+                            "field.date.past",
+                            new Object[]{receiptDocumentForm.getReceiptDocument().getReceiptDate()},
+                            "Date is set more than 60 days in past. Format should be MM/dd/yyyy 11:59:59 PM. Check for month and day.");
+                }
             }
         } catch (IllegalArgumentException exce) {
             errors.rejectValue(

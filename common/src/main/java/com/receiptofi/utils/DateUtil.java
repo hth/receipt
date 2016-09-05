@@ -222,6 +222,24 @@ public final class DateUtil {
         return interval.toPeriod(PeriodType.days()).getDays();
     }
 
+    public static int getMillisBetween(Date start, Date end) {
+        Assert.notNull(start, "Start date is null");
+        Assert.notNull(end, "End date is null");
+        Interval interval = new Interval(start.getTime(), end.getTime());
+        return interval.toPeriod(PeriodType.millis()).getMillis();
+    }
+
+    public static int getSecondsBetween(Date start, Date end) {
+        return getMillisBetween(start, end) / 1000;
+    }
+
+    public static int getMinuteBetween(Date start, Date end) {
+        Assert.notNull(start, "Start date is null");
+        Assert.notNull(end, "End date is null");
+        Interval interval = new Interval(start.getTime(), end.getTime());
+        return interval.toPeriod(PeriodType.minutes()).getMinutes();
+    }
+
     /* Date string should have time appended since its a DateTimeFormatter. */
     public enum DateType {
         DT1("\\d{2}/\\d{2}/\\d{4}\\s\\d{2}:\\d{2}:\\d{2}\\s(AM|PM)",
