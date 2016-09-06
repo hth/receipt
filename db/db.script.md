@@ -1,6 +1,40 @@
 ### Date Sept 6 2016 - Build 1832
 Changed Field name from "CN" to "NO" for comment notes
 
+- Update Paytm.com to map to Paytm and then delete Paytm.com
+    
+        db.getCollection('BIZ_NAME').find({N:"Paytm"})
+        db.getCollection('BIZ_NAME').find({N:"Paytm.com"})
+        
+        db.getCollection('RECEIPT').find({"BIZ_NAME.$id" : ObjectId("564c07aff4a3b6d5de8b2ec8")}) 
+        db.getCollection('RECEIPT').find({"BIZ_NAME.$id" : ObjectId("5624d1c9f4a3b633386ad5e2")}) 
+        db.getCollection('RECEIPT').update(
+            {"BIZ_NAME.$id" : ObjectId("5624d1c9f4a3b633386ad5e2")},   
+            {$set: {"BIZ_NAME.$id" : ObjectId("564c07aff4a3b6d5de8b2ec8")} }, 
+            {multi: true});
+            
+        db.getCollection('DOCUMENT').find({"BIZ_NAME.$id" : ObjectId("5624d1c9f4a3b633386ad5e2")}).count()
+        db.getCollection('DOCUMENT').update(
+            {"BIZ_NAME.$id" : ObjectId("5624d1c9f4a3b633386ad5e2")},   
+            {$set: {"BIZ_NAME.$id" : ObjectId("564c07aff4a3b6d5de8b2ec8")} }, 
+            {multi: true});
+        db.getCollection('RECEIPT').find({"BIZ_NAME.$id" : ObjectId("5624d1c9f4a3b633386ad5e2")}).count()
+        db.getCollection('DOCUMENT').find({"BIZ_NAME.$id" : ObjectId("5624d1c9f4a3b633386ad5e2")}).count()
+        
+        db.getCollection('BIZ_STORE').find({"BIZ_NAME.$id":ObjectId("564c07aff4a3b6d5de8b2ec8")})        
+        db.getCollection('RECEIPT').update(
+            {"BIZ_NAME.$id" : ObjectId("564c07aff4a3b6d5de8b2ec8")},   
+            {$set: {"BIZ_STORE.$id" : ObjectId("564c07b0f4a3b6d5de8b2ec9")} }, 
+            {multi: true});
+            
+        db.getCollection('DOCUMENT').update(
+            {"BIZ_NAME.$id" : ObjectId("564c07aff4a3b6d5de8b2ec8")},   
+            {$set: {"BIZ_STORE.$id" : ObjectId("564c07b0f4a3b6d5de8b2ec9")} }, 
+            {multi: true});    
+        
+        db.getCollection('BIZ_STORE').remove({"BIZ_NAME.$id":ObjectId("5624d1c9f4a3b633386ad5e2")})
+        db.getCollection('BIZ_NAME').remove({N:"Paytm.com", _id:ObjectId("5624d1c9f4a3b633386ad5e2")})
+
 - Update Biz Store Address 
 
         db.getCollection('BIZ_STORE').find({})
