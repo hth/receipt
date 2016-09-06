@@ -47,6 +47,10 @@ public class BizStoreEntity extends BaseEntity {
     @Field ("AD")
     private String address;
 
+    @NotNull
+    @Field ("FA")
+    private String formattedAddress;
+
     @Field ("PC")
     private String postalCode;
 
@@ -120,6 +124,14 @@ public class BizStoreEntity extends BaseEntity {
 
     public void setAddress(String address) {
         this.address = StringUtils.strip(address);
+    }
+
+    public String getFormattedAddress() {
+        return formattedAddress;
+    }
+
+    public void setFormattedAddress(String formattedAddress) {
+        this.formattedAddress = formattedAddress;
     }
 
     public String getPostalCode() {

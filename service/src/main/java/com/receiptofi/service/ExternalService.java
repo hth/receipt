@@ -53,7 +53,8 @@ public class ExternalService {
         try {
             DecodedAddress decodedAddress = DecodedAddress.newInstance(getGeocodingResults(bizStore.getAddress()), bizStore.getAddress());
             if (decodedAddress.isNotEmpty()) {
-                bizStore.setAddress(decodedAddress.getFormattedAddress());
+                bizStore.setAddress(decodedAddress.getAddress());
+                bizStore.setFormattedAddress(decodedAddress.getFormattedAddress());
                 bizStore.setPostalCode(decodedAddress.getPostalCode());
                 bizStore.setCountryShortName(decodedAddress.getCountryShortName());
                 if (null != decodedAddress.getCoordinate()) {
