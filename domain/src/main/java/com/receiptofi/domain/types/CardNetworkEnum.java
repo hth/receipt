@@ -9,7 +9,8 @@ public enum CardNetworkEnum {
     A("A", "American Express"),
     D("D", "Discover"),
     M("M", "MasterCard"),
-    V("V", "Visa");
+    V("V", "Visa"),
+    C("C", "Debit Card");
 
     private final String description;
     private final String name;

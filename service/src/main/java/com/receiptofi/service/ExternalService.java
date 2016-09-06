@@ -81,10 +81,22 @@ public class ExternalService {
         }
     }
 
+    /**
+     * Keeps looking for a valid address and location until it finds one.
+     *
+     * @param address
+     * @return
+     */
     public GeocodingResult[] getGeocodingResults(String address) {
         try {
             Assert.hasText(address, "Address is empty");
-            return GeocodingApi.geocode(context, address).await();
+            GeocodingResult[] geocodingResults = GeocodingApi.geocode(context, address).await();
+            if (geocodingResults.length != 0) {
+                return geocodingResults;
+            }
+
+            int index = address.indexOf(",") + 1;
+            return getGeocodingResults(address.substring(index, address.length()).trim());
         } catch (Exception e) {
             LOG.error("Failed fetching from google address={} reason={}", address, e.getLocalizedMessage(), e);
         }
