@@ -37,6 +37,9 @@ public class JsonBizStore {
     @JsonProperty ("address")
     private String address = "";
 
+    @JsonProperty ("fa")
+    private String formattedAddress = "";
+
     @JsonProperty ("phone")
     private String phone = "";
 
@@ -57,6 +60,7 @@ public class JsonBizStore {
 
     private JsonBizStore(BizStoreEntity bizStore) {
         this.address = bizStore.getAddress();
+        this.formattedAddress = bizStore.getFormattedAddress();
         this.phone = bizStore.getPhoneFormatted();
         if (null != bizStore.getCoordinate()) {
             this.lat = Double.toString(bizStore.getLat());

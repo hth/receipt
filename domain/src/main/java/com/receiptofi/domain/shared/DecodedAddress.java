@@ -16,6 +16,7 @@ import org.springframework.util.Assert;
 public class DecodedAddress {
     private static final Logger LOG = LoggerFactory.getLogger(DecodedAddress.class);
 
+    private String address;
     private String formattedAddress;
     private String postalCode;
     private String countryShortName;
@@ -24,7 +25,6 @@ public class DecodedAddress {
     private double[] coordinate;
     private String placeId;
     private boolean empty = true;
-    private static final int ADDRESS_LENGTH_DELTA = 10;
 
     /** Based on size of the address, the bigger address is selected. */
     private DecodedAddress(GeocodingResult[] results, String address) {
@@ -33,11 +33,8 @@ public class DecodedAddress {
             Assert.notNull(results[0].geometry, "Address is null hence geometry is null");
             Assert.notNull(results[0].geometry.location, "Geometry is null hence location is null");
 
+            this.address = address;
             formattedAddress = results[0].formattedAddress;
-            if (formattedAddress.length() < address.length() - ADDRESS_LENGTH_DELTA) {
-                LOG.info("Override net address with typed address, address={} formattedAddress={}", address, formattedAddress);
-                formattedAddress = address;
-            }
 
             for (AddressComponent addressComponent : results[0].addressComponents) {
                 for (AddressComponentType addressComponentType : addressComponent.types) {
@@ -70,7 +67,19 @@ public class DecodedAddress {
         return new DecodedAddress(results, address);
     }
 
-    /** Based on size of the address, the bigger address is selected. */
+    /**
+     * Address entered, searched or as on receipt.
+     * Example:
+     *  Lot F7, 1st Floor, Bangsar Shopping Centre, No 1, Jln Tetawi 1, Bangsar Baru 59700 K Lumpur
+     *  OR Tambo Airport Rd, Level 2, Domtex Building, OR Tambo International Airport, Johannesburg, 1627, South Africa
+     *
+     * External source could not locate these address. So to preserve whats entered (as un-altered) we save the address.
+     */
+    public String getAddress() {
+        return address;
+    }
+
+    /** Address sourced from third party. External source. */
     public String getFormattedAddress() {
         return formattedAddress;
     }
