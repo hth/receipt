@@ -609,6 +609,13 @@ public class ReceiptManagerImpl implements ReceiptManager {
 
     @Override
     public List<ReceiptEntity> getAllReceipts() {
-        return mongoTemplate.findAll(ReceiptEntity.class, TABLE);
+        return mongoTemplate.find(
+                query(new Criteria()
+                        .orOperator(
+                                where("CS").exists(false),
+                                where("CS").is("")
+                        )),
+                ReceiptEntity.class,
+                TABLE);
     }
 }
