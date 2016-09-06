@@ -15,7 +15,7 @@ Changed Field name from "CN" to "NO" for comment notes
         )
         db.getCollection('BIZ_STORE').find({})         
 
-- Drop index, this will be recreated
+- Drop index, this will be recreated. CS is indexed. Hence needs to dropped first before changing field name.
         
         db.getCollection('RECEIPT').dropIndex("receipt_unique_idx")
     
