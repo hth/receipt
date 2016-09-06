@@ -1,18 +1,33 @@
-### Date Aug 30 2016 - Build 1819
+### Date Sept 6 2016 - Build 1832
 Changed Field name from "CN" to "NO" for comment notes
 
-- Drop index
+- Update Biz Store Address 
+
+        db.getCollection('BIZ_STORE').find({})
+        db.getCollection('BIZ_STORE').find().snapshot().forEach(
+          function (e) {           
+            // update document, using its own properties
+            e.FA = e.AD;
+        
+            // save the updated document
+            db.getCollection('BIZ_STORE').save(e);
+          }
+        )
+        db.getCollection('BIZ_STORE').find({})         
+
+- Drop index, this will be recreated
         
         db.getCollection('RECEIPT').dropIndex("receipt_unique_idx")
     
 - CS was checksum. Changed to CZ.
 
         db.getCollection('RECEIPT').updateMany({}, {$rename: { "CS": "CZ" }})
-    
-- NO is notes changed from CommentNotes
-    
-        db.getCollection('RECEIPT').updateMany({}, {$rename: { "CN": "NO" }})
-        db.getCollection('DOCUMENT').updateMany({}, {$rename: { "CN": "NO" }})
+
+### Date Aug 30 2016 - Build 1819
+Changed Field name from "CN" to "NO" for comment notes. NO is notes changed from CommentNotes
+
+    db.getCollection('RECEIPT').updateMany({}, {$rename: { "CN": "NO" }})
+    db.getCollection('DOCUMENT').updateMany({}, {$rename: { "CN": "NO" }})
 
 ### Date July 23 2016 - Build 1767
 Update USER_PAID to USER and update field name from ULE to UL
