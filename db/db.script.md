@@ -1,11 +1,11 @@
 ### Date Sept 6 2016 - Build 1832
-Brew 
+- Brew update activemq to 5.14.0  
 
-    brew update
-    brew info activemq
-    brew intsall activemq
-    brew doctor
-    brew cleanup
+        brew update
+        brew info activemq
+        brew install activemq
+        brew doctor
+        brew cleanup
 
 - Drop index, this will be recreated. CS is indexed. Hence needs to dropped first before changing field name.
         
