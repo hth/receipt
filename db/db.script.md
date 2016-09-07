@@ -1,4 +1,12 @@
 ### Date Sept 6 2016 - Build 1832
+Brew 
+
+    brew update
+    brew info activemq
+    brew intsall activemq
+    brew doctor
+    brew cleanup
+
 - Drop index, this will be recreated. CS is indexed. Hence needs to dropped first before changing field name.
         
         db.getCollection('RECEIPT').dropIndex("receipt_unique_idx")
