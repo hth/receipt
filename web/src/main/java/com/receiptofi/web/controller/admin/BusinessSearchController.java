@@ -56,12 +56,26 @@ public class BusinessSearchController {
     @Value ("${editPage:/admin/businessEdit}")
     private String editPage;
 
-    @Autowired private ExternalService externalService;
-    @Autowired private BizService bizService;
-    @Autowired private ReceiptService receiptService;
+    private final ExternalService externalService;
+    private final BizService bizService;
+    private final ReceiptService receiptService;
+    private final BizValidator bizValidator;
+    private final BizSearchValidator bizSearchValidator;
 
-    @Autowired private BizValidator bizValidator;
-    @Autowired private BizSearchValidator bizSearchValidator;
+    @Autowired
+    public BusinessSearchController(
+            ReceiptService receiptService,
+            BizService bizService,
+            ExternalService externalService,
+            BizValidator bizValidator,
+            BizSearchValidator bizSearchValidator
+    ) {
+        this.receiptService = receiptService;
+        this.bizService = bizService;
+        this.externalService = externalService;
+        this.bizValidator = bizValidator;
+        this.bizSearchValidator = bizSearchValidator;
+    }
 
     @RequestMapping (value = "/businessSearch", method = RequestMethod.GET)
     public String loadSearchForm(
@@ -89,13 +103,13 @@ public class BusinessSearchController {
             @ModelAttribute ("bizForm")
             BizForm bizForm
     ) {
-        BizNameEntity bizNameEntity = bizService.getByBizNameId(nameId.getText());
-        Assert.notNull(bizNameEntity, "BizName null for nameId=" + nameId);
-        bizForm.setBizNameEntity(bizNameEntity);
+        BizNameEntity bizName = bizService.getByBizNameId(nameId.getText());
+        Assert.notNull(bizName, "BizName null for nameId=" + nameId);
+        bizForm.setBizNameEntity(bizName);
 
         if (StringUtils.isNotEmpty(storeId.getText())) {
-            BizStoreEntity bizStoreEntity = bizService.getByStoreId(storeId.getText());
-            bizForm.setBizStore(bizStoreEntity);
+            BizStoreEntity bizStore = bizService.getByStoreId(storeId.getText());
+            bizForm.setBizStore(bizStore);
         }
 
         return editPage;
@@ -135,15 +149,15 @@ public class BusinessSearchController {
     ) {
         redirectAttrs.addFlashAttribute("bizForm", bizForm);
 
-        BizStoreEntity bizStoreEntity;
+        BizStoreEntity bizStore;
         if (StringUtils.isNotEmpty(bizForm.getAddressId())) {
             //TODO verify this getAddressId()
-            bizStoreEntity = bizService.getByStoreId(bizForm.getAddressId());
-            bizStoreEntity.setAddress(bizForm.getAddress());
-            bizStoreEntity.setPhone(bizForm.getPhone());
+            bizStore = bizService.getByStoreId(bizForm.getAddressId());
+            bizStore.setAddress(bizForm.getAddress());
+            bizStore.setPhone(bizForm.getPhone());
             try {
-                externalService.decodeAddress(bizStoreEntity);
-                bizService.saveStore(bizStoreEntity);
+                externalService.decodeAddress(bizStore);
+                bizService.saveStore(bizStore);
             } catch (Exception e) {
                 LOG.error("Failed to edit address/phone: {} {} reason={}", bizForm.getAddress(), bizForm.getPhone(), e.getLocalizedMessage(), e);
                 bizForm.setErrorMessage("Failed to edit address/phone: " + bizForm.getAddress() + ", " + bizForm.getPhone() + ", :" + e.getLocalizedMessage());
@@ -152,13 +166,13 @@ public class BusinessSearchController {
             }
         }
 
-        BizNameEntity bizNameEntity;
+        BizNameEntity bizName;
         if (StringUtils.isNotEmpty(bizForm.getNameId())) {
-            bizNameEntity = bizService.getByBizNameId(bizForm.getNameId());
-            bizNameEntity.setBusinessName(bizForm.getBusinessName());
+            bizName = bizService.getByBizNameId(bizForm.getNameId());
+            bizName.setBusinessName(bizForm.getBusinessName());
             try {
-                bizService.saveName(bizNameEntity);
-                LOG.info("Business '" + bizNameEntity.getBusinessName() + "' updated successfully");
+                bizService.saveName(bizName);
+                LOG.info("Business '" + bizName.getBusinessName() + "' updated successfully");
             } catch (Exception e) {
                 LOG.error("Failed to edit name: " + bizForm.getBusinessName() + ", " + e.getLocalizedMessage());
                 bizForm.setErrorMessage("Failed to edit name: " + bizForm.getBusinessName() + ", " + e.getLocalizedMessage());
@@ -167,8 +181,8 @@ public class BusinessSearchController {
             }
         }
 
-        Set<BizStoreEntity> bizStoreEntities = searchBizStoreEntities(bizForm);
-        bizForm.setLast10BizStore(bizStoreEntities);
+        Set<BizStoreEntity> bizStores = searchBizStoreEntities(bizForm);
+        bizForm.setLast10BizStore(bizStores);
         //Re-direct to prevent resubmit
         return "redirect:" + nextPage + ".htm";
     }
@@ -192,33 +206,33 @@ public class BusinessSearchController {
 
         redirectAttrs.addFlashAttribute("bizForm", bizForm);
 
-        BizStoreEntity bizStoreEntity;
+        BizStoreEntity bizStore;
         if (StringUtils.isNotEmpty(bizForm.getAddressId())) {
             //TODO verify this getAddressId()
-            bizStoreEntity = bizService.getByStoreId(bizForm.getAddressId());
-            BizNameEntity bizNameEntity = bizStoreEntity.getBizName();
+            bizStore = bizService.getByStoreId(bizForm.getAddressId());
+            BizNameEntity bizName = bizStore.getBizName();
 
             Set<BizStoreEntity> bizStoreEntities = new HashSet<>();
-            bizStoreEntities.add(bizStoreEntity);
+            bizStoreEntities.add(bizStore);
             bizForm.setReceiptCount(receiptService.countReceiptForBizStore(bizStoreEntities));
-            if (bizForm.getReceiptCount().get(bizStoreEntity.getId()) == 0) {
-                bizService.deleteBizStore(bizStoreEntity);
+            if (bizForm.getReceiptCount().get(bizStore.getId()) == 0) {
+                bizService.deleteBizStore(bizStore);
                 bizForm.setSuccessMessage("Deleted store successfully");
-                LOG.info("Deleted stored: " + bizStoreEntity.getAddress() + ", id: " + bizStoreEntity.getId() + ", by user={}", receiptUser.getRid());
+                LOG.info("Deleted stored: " + bizStore.getAddress() + ", id: " + bizStore.getId() + ", by user={}", receiptUser.getRid());
 
                 //To make sure no orphan biz name are lingering around
-                if (receiptService.countAllReceiptForABizName(bizNameEntity) == 0) {
-                    bizService.deleteBizName(bizNameEntity);
+                if (receiptService.countAllReceiptForABizName(bizName) == 0) {
+                    bizService.deleteBizName(bizName);
                     bizForm.setSuccessMessage("Deleted biz name successfully");
-                    LOG.info("Deleted biz name: " + bizNameEntity.getBusinessName() + ", id: " + bizNameEntity.getId() + ", by user={}", receiptUser.getRid());
+                    LOG.info("Deleted biz name: " + bizName.getBusinessName() + ", id: " + bizName.getId() + ", by user={}", receiptUser.getRid());
                 }
             } else {
                 bizForm.setErrorMessage("Could not delete the store as its currently being referred by a receipt");
             }
         }
 
-        Set<BizStoreEntity> bizStoreEntities = searchBizStoreEntities(bizForm);
-        bizForm.setLast10BizStore(bizStoreEntities);
+        Set<BizStoreEntity> bizStores = searchBizStoreEntities(bizForm);
+        bizForm.setLast10BizStore(bizStores);
         //Re-direct to prevent resubmit
         return "redirect:" + nextPage + ".htm";
     }
@@ -244,11 +258,11 @@ public class BusinessSearchController {
             /** Re-direct to prevent resubmit. */
             return "redirect:" + nextPage + ".htm";
         } else {
-            BizStoreEntity bizStoreEntity = BizStoreEntity.newInstance();
-            bizStoreEntity.setAddress(bizForm.getAddress());
-            bizStoreEntity.setPhone(bizForm.getPhone());
+            BizStoreEntity bizStore = BizStoreEntity.newInstance();
+            bizStore.setAddress(bizForm.getAddress());
+            bizStore.setPhone(bizForm.getPhone());
             try {
-                externalService.decodeAddress(bizStoreEntity);
+                externalService.decodeAddress(bizStore);
             } catch (Exception e) {
                 LOG.error("Failed to edit address/phone={} {} reason={}",
                         bizForm.getAddress(),
@@ -266,15 +280,15 @@ public class BusinessSearchController {
                 return "redirect:" + nextPage + ".htm";
             }
 
-            ReceiptEntity receiptEntity = ReceiptEntity.newInstance();
-            receiptEntity.setBizStore(bizStoreEntity);
+            ReceiptEntity receipt = ReceiptEntity.newInstance();
+            receipt.setBizStore(bizStore);
 
-            BizNameEntity bizNameEntity = BizNameEntity.newInstance();
-            bizNameEntity.setBusinessName(bizForm.getBusinessName());
-            receiptEntity.setBizName(bizNameEntity);
+            BizNameEntity bizName = BizNameEntity.newInstance();
+            bizName.setBusinessName(bizForm.getBusinessName());
+            receipt.setBizName(bizName);
             try {
-                bizService.saveNewBusinessAndOrStore(receiptEntity);
-                bizForm.setSuccessMessage("Business '" + receiptEntity.getBizName().getBusinessName() + "' added successfully");
+                bizService.saveNewBusinessAndOrStore(receipt);
+                bizForm.setSuccessMessage("Business '" + receipt.getBizName().getBusinessName() + "' added successfully");
             } catch (Exception e) {
                 LOG.error("Failed to edit name={} reason={}", bizForm.getBusinessName(), e.getLocalizedMessage(), e);
                 bizForm.setErrorMessage("Failed to edit name: " + bizForm.getBusinessName() + ", " + e.getLocalizedMessage());
@@ -282,14 +296,14 @@ public class BusinessSearchController {
                 return "redirect:" + nextPage + ".htm";
             }
 
-            if (receiptEntity.getBizName().getId().equals(receiptEntity.getBizStore().getBizName().getId())) {
-                bizForm.setAddedBizStore(receiptEntity.getBizStore());
-                bizForm.setLast10BizStore(bizService.getAllStoresForSameBusinessNameId(receiptEntity));
+            if (receipt.getBizName().getId().equals(receipt.getBizStore().getBizName().getId())) {
+                bizForm.setAddedBizStore(receipt.getBizStore());
+                bizForm.setLast10BizStore(bizService.getAllStoresForSameBusinessNameId(receipt));
                 redirectAttrs.addFlashAttribute("bizForm", bizForm);
             } else {
                 bizForm.setErrorMessage(
                         "Address uniquely identified with another Biz Name: " +
-                                receiptEntity.getBizStore().getBizName().getBusinessName());
+                                receipt.getBizStore().getBizName().getBusinessName());
             }
             /** Re-direct to prevent resubmit. */
             return "redirect:" + nextPage + ".htm";
@@ -317,8 +331,8 @@ public class BusinessSearchController {
             //Re-direct to prevent resubmit
             return "redirect:" + nextPage + ".htm";
         } else {
-            Set<BizStoreEntity> bizStoreEntities = searchBizStoreEntities(bizForm);
-            bizForm.setLast10BizStore(bizStoreEntities);
+            Set<BizStoreEntity> bizStores = searchBizStoreEntities(bizForm);
+            bizForm.setLast10BizStore(bizStores);
             redirectAttrs.addFlashAttribute("bizForm", bizForm);
             //Re-direct to prevent resubmit
             return "redirect:" + nextPage + ".htm";
@@ -335,10 +349,10 @@ public class BusinessSearchController {
         String businessName = StringUtils.trim(bizForm.getBusinessName());
         String address = StringUtils.trim(bizForm.getAddress());
         String phone = StringUtils.trim(CommonUtil.phoneCleanup(bizForm.getPhone()));
-        Set<BizStoreEntity> bizStoreEntities = bizService.bizSearch(businessName, address, phone);
-        bizForm.setSuccessMessage("Found '" + bizStoreEntities.size() + "' matching business(es).");
+        Set<BizStoreEntity> bizStores = bizService.bizSearch(businessName, address, phone);
+        bizForm.setSuccessMessage("Found '" + bizStores.size() + "' matching business(es).");
 
-        bizForm.setReceiptCount(receiptService.countReceiptForBizStore(bizStoreEntities));
-        return bizStoreEntities;
+        bizForm.setReceiptCount(receiptService.countReceiptForBizStore(bizStores));
+        return bizStores;
     }
 }
