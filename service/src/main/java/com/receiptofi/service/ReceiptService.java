@@ -711,4 +711,8 @@ public class ReceiptService {
                 NotificationGroupEnum.R,
                 receipt);
     }
+
+    public void updateReceiptCSWhenStoreUpdated(String countryShortName, String bizStoreId) {
+        receiptManager.updateReceiptCSWhenStoreUpdated(countryShortName, bizStoreId);
+    }
 }
