@@ -25,8 +25,8 @@ public final class BizForm {
     private String address;
     private String phone;
 
-    private String nameId;
-    private String addressId;
+    private String bizNameId;
+    private String bizStoreId;
 
     private Set<BizStoreEntity> last10BizStore;
     private Map<String, Long> receiptCount = new HashMap<>();
@@ -67,30 +67,30 @@ public final class BizForm {
         this.phone = phone;
     }
 
-    public String getNameId() {
-        return nameId;
+    public String getBizNameId() {
+        return bizNameId;
     }
 
-    public void setNameId(String nameId) {
-        this.nameId = nameId;
+    public void setBizNameId(String bizNameId) {
+        this.bizNameId = bizNameId;
     }
 
-    public String getAddressId() {
-        return addressId;
+    public String getBizStoreId() {
+        return bizStoreId;
     }
 
-    public void setAddressId(String addressId) {
-        this.addressId = addressId;
+    public void setBizStoreId(String bizStoreId) {
+        this.bizStoreId = bizStoreId;
     }
 
     public void setBizNameEntity(BizNameEntity bizName) {
         this.businessName = bizName.getBusinessName();
-        this.nameId = bizName.getId();
+        this.bizNameId = bizName.getId();
     }
 
     public void setBizStore(BizStoreEntity bizStore) {
         this.address = bizStore.getAddress();
-        this.addressId = bizStore.getId();
+        this.bizStoreId = bizStore.getId();
         this.phone = bizStore.getPhoneFormatted();
     }
 

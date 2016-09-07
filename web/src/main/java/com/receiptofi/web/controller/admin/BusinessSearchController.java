@@ -94,21 +94,21 @@ public class BusinessSearchController {
 
     @RequestMapping (value = "/businessSearch/edit", method = RequestMethod.GET)
     public String editStore(
-            @RequestParam ("nameId")
-            ScrubbedInput nameId,
+            @RequestParam ("bizNameId")
+            ScrubbedInput bizNameId,
 
-            @RequestParam ("storeId")
-            ScrubbedInput storeId,
+            @RequestParam ("bizStoreId")
+            ScrubbedInput bizStoreId,
 
             @ModelAttribute ("bizForm")
             BizForm bizForm
     ) {
-        BizNameEntity bizName = bizService.getByBizNameId(nameId.getText());
-        Assert.notNull(bizName, "BizName null for nameId=" + nameId);
+        BizNameEntity bizName = bizService.getByBizNameId(bizNameId.getText());
+        Assert.notNull(bizName, "BizName null for nameId=" + bizNameId);
         bizForm.setBizNameEntity(bizName);
 
-        if (StringUtils.isNotEmpty(storeId.getText())) {
-            BizStoreEntity bizStore = bizService.getByStoreId(storeId.getText());
+        if (StringUtils.isNotEmpty(bizStoreId.getText())) {
+            BizStoreEntity bizStore = bizService.getByStoreId(bizStoreId.getText());
             bizForm.setBizStore(bizStore);
         }
 
@@ -150,9 +150,9 @@ public class BusinessSearchController {
         redirectAttrs.addFlashAttribute("bizForm", bizForm);
 
         BizStoreEntity bizStore;
-        if (StringUtils.isNotEmpty(bizForm.getAddressId())) {
-            //TODO verify this getAddressId()
-            bizStore = bizService.getByStoreId(bizForm.getAddressId());
+        if (StringUtils.isNotEmpty(bizForm.getBizStoreId())) {
+            //TODO verify this getBizStoreId()
+            bizStore = bizService.getByStoreId(bizForm.getBizStoreId());
             bizStore.setAddress(bizForm.getAddress());
             bizStore.setPhone(bizForm.getPhone());
             try {
@@ -162,13 +162,13 @@ public class BusinessSearchController {
                 LOG.error("Failed to edit address/phone: {} {} reason={}", bizForm.getAddress(), bizForm.getPhone(), e.getLocalizedMessage(), e);
                 bizForm.setErrorMessage("Failed to edit address/phone: " + bizForm.getAddress() + ", " + bizForm.getPhone() + ", :" + e.getLocalizedMessage());
                 //Re-direct to prevent resubmit
-                return "redirect:" + "business/edit" + ".htm" + "?nameId=" + bizForm.getNameId() + "&storeId=" + bizForm.getAddressId();
+                return "redirect:" + "business/edit" + ".htm" + "?bizNameId=" + bizForm.getBizNameId() + "&bizStoreId=" + bizForm.getBizStoreId();
             }
         }
 
         BizNameEntity bizName;
-        if (StringUtils.isNotEmpty(bizForm.getNameId())) {
-            bizName = bizService.getByBizNameId(bizForm.getNameId());
+        if (StringUtils.isNotEmpty(bizForm.getBizNameId())) {
+            bizName = bizService.getByBizNameId(bizForm.getBizNameId());
             bizName.setBusinessName(bizForm.getBusinessName());
             try {
                 bizService.saveName(bizName);
@@ -177,7 +177,7 @@ public class BusinessSearchController {
                 LOG.error("Failed to edit name: " + bizForm.getBusinessName() + ", " + e.getLocalizedMessage());
                 bizForm.setErrorMessage("Failed to edit name: " + bizForm.getBusinessName() + ", " + e.getLocalizedMessage());
                 //Re-direct to prevent resubmit
-                return "redirect:" + "business/edit" + ".htm" + "?nameId=" + bizForm.getNameId() + "&storeId=" + bizForm.getAddressId();
+                return "redirect:" + "business/edit" + ".htm" + "?bizNameId=" + bizForm.getBizNameId() + "&bizStoreId=" + bizForm.getBizStoreId();
             }
         }
 
@@ -207,9 +207,9 @@ public class BusinessSearchController {
         redirectAttrs.addFlashAttribute("bizForm", bizForm);
 
         BizStoreEntity bizStore;
-        if (StringUtils.isNotEmpty(bizForm.getAddressId())) {
-            //TODO verify this getAddressId()
-            bizStore = bizService.getByStoreId(bizForm.getAddressId());
+        if (StringUtils.isNotEmpty(bizForm.getBizStoreId())) {
+            //TODO verify this getBizStoreId()
+            bizStore = bizService.getByStoreId(bizForm.getBizStoreId());
             BizNameEntity bizName = bizStore.getBizName();
 
             Set<BizStoreEntity> bizStoreEntities = new HashSet<>();
