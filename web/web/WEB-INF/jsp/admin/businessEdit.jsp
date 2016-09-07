@@ -66,7 +66,7 @@
         <div class="down_form" style="width: 1530px;">
             <h2 class="h2" style="padding-bottom:5px; text-decoration: underline;">Edit Business or Store information</h2>
             <form:form method="post" modelAttribute="bizForm" action="../businessSearch.htm">
-                <form:hidden path="nameId" />
+                <form:hidden path="bizNameId" />
                 <form:hidden path="bizStoreId" />
 
                 <c:if test="${!empty bizForm.errorMessage}">
@@ -141,11 +141,11 @@
                             <a href="#" class="rightside-li-middle-text" style="width: 20px; padding-left: 0; !important;" target="_blank">
                                 <img src="${pageContext.request.contextPath}/static/images/search-icon-small.png" style="width: 20px; height: 20px; margin-top: 20px;">
                             </a>
-                            <a href="${pageContext.request.contextPath}/admin/businessSearch/edit.htm?nameId=${bizStore.bizName.id}&storeId="
+                            <a href="${pageContext.request.contextPath}/admin/businessSearch/edit.htm?bizNameId=${bizStore.bizName.id}&bizStoreId="
                                     class="rightside-li-middle-text" style="width: 350px;" target="_blank">
                                 <spring:eval expression="bizStore.bizName.businessName" /> &nbsp;(<spring:eval expression="bizForm.receiptCount.get(bizStore.id)" />)
                             </a>
-                            <a href="${pageContext.request.contextPath}/admin/businessSearch/edit.htm?nameId=${bizStore.bizName.id}&storeId=${bizStore.id}"
+                            <a href="${pageContext.request.contextPath}/admin/businessSearch/edit.htm?bizNameId=${bizStore.bizName.id}&bizStoreId=${bizStore.id}"
                                     class="rightside-li-middle-text" style="width: 655px;" target="_blank">
                                 <spring:eval expression="bizStore.address" />
                             </a>
