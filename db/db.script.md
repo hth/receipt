@@ -1,4 +1,37 @@
 ### Date Sept 6 2016 - Build 1832
+- Brew update activemq to 5.14.0  
+
+        brew update
+        brew info activemq
+        brew install activemq
+        brew doctor
+        brew cleanup
+        
+        Add business    - South Carolina Education Lottery
+        Address         - 1309 Assembly Street Columbia, SC 29201
+        Phone           - 803-253-4004
+        
+        - Find and confirm BIZ_STORE id
+        
+        db.getCollection('RECEIPT').find(
+            {
+                "BIZ_NAME.$id" : ObjectId("5755eaa6f4a3b6c5ce89b5dc"), 
+                "BIZ_STORE.$id" : ObjectId("5755eaa6f4a3b6c5ce89b5dd")
+            }
+        )
+        
+        - Update the BizName and BizStore for this record with new record thats created
+        
+        db.getCollection('BIZ_NAME').find({"N" : "South Carolina Education Lottery"})
+        db.getCollection('BIZ_STORE').find({"BIZ_NAME.$id" : ObjectId("57cfc8121b27d739ef65da36")})
+        
+        Get Ids and replace with existing "South carolina education lottery"
+        
+        - And then remove BizStore or delete from website 
+        
+        Then remove BIZ_STORE 5755eaa6f4a3b6c5ce89b5dd
+        db.getCollection('RECEIPT').remove({"_id" : ObjectId("5755eaa6f4a3b6c5ce89b5dd")});
+
 - Drop index, this will be recreated. CS is indexed. Hence needs to dropped first before changing field name.
         
         db.getCollection('RECEIPT').dropIndex("receipt_unique_idx")

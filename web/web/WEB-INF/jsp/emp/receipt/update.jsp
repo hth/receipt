@@ -105,10 +105,10 @@
                     var s = request.term;
                     var spaces = s.length - s.leftTrim().length;
                     var bizName;
-                    if (spaces == 1) {
+                    if (spaces == 0) {
                         bizName = "^" + s.trim();
                     }
-                    if (spaces > 1) {
+                    if (spaces >= 1) {
                         bizName = "^^" + s.trim();
                     }
 
