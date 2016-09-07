@@ -158,6 +158,8 @@ public class BusinessSearchController {
             try {
                 externalService.decodeAddress(bizStore);
                 bizService.saveStore(bizStore);
+
+                /* Update all the CS for receipts where store address has updated. */
                 receiptService.updateReceiptCSWhenStoreUpdated(bizStore.getCountryShortName(), bizStore.getId());
             } catch (Exception e) {
                 LOG.error("Failed to edit address/phone: {} {} reason={}", bizForm.getAddress(), bizForm.getPhone(), e.getLocalizedMessage(), e);

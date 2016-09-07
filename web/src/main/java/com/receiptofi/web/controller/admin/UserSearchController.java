@@ -37,7 +37,12 @@ public class UserSearchController {
     @Value ("${nextPage:/admin/userSearch}")
     private String nextPage;
 
-    @Autowired private AdminLandingService adminLandingService;
+    private final AdminLandingService adminLandingService;
+
+    @Autowired
+    public UserSearchController(AdminLandingService adminLandingService) {
+        this.adminLandingService = adminLandingService;
+    }
 
     /**
      * Gymnastic for PRG example.
