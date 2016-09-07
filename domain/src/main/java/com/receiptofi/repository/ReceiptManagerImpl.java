@@ -17,6 +17,8 @@ import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
 import static org.springframework.data.mongodb.core.query.Update.update;
 
+import com.mongodb.WriteResult;
+
 import com.receiptofi.domain.BaseEntity;
 import com.receiptofi.domain.BizNameEntity;
 import com.receiptofi.domain.BizStoreEntity;
@@ -407,6 +409,16 @@ public class ReceiptManagerImpl implements ReceiptManager {
     @Override
     public long collectionSize() {
         return mongoTemplate.getCollection(TABLE).count();
+    }
+
+    @Override
+    public void updateReceiptCSWhenStoreUpdated(String countryShortName, String bizStoreId) {
+        WriteResult writeResult = mongoTemplate.updateMulti(
+                query(where("BIZ_STORE.$id").is(new ObjectId(bizStoreId))),
+                entityUpdate(update("CS", countryShortName)),
+                ReceiptEntity.class);
+
+        LOG.debug("Updated records count={} ack={}", writeResult.getN(), writeResult.wasAcknowledged());
     }
 
     @Override

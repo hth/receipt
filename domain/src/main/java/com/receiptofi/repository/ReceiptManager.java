@@ -269,7 +269,14 @@ public interface ReceiptManager extends RepositoryManager<ReceiptEntity> {
     long collectionSize();
 
     /**
+     * Updates countryShortName for all the receipts where store id matches.
      *
+     * @param countryShortName
+     * @param bizStoreId
+     */
+    void updateReceiptCSWhenStoreUpdated(String countryShortName, String bizStoreId);
+
+    /**
      * @param rid
      * @param expenseTags
      * @param delayDuration delay by number of days
