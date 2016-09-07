@@ -8,6 +8,7 @@ import com.receiptofi.service.BizService;
 import com.receiptofi.service.ExternalService;
 import com.receiptofi.service.ReceiptService;
 import com.receiptofi.utils.CommonUtil;
+import com.receiptofi.utils.ScrubbedInput;
 import com.receiptofi.web.form.BizForm;
 import com.receiptofi.web.validator.BizSearchValidator;
 import com.receiptofi.web.validator.BizValidator;
@@ -22,6 +23,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -79,19 +81,20 @@ public class BusinessSearchController {
     @RequestMapping (value = "/businessSearch/edit", method = RequestMethod.GET)
     public String editStore(
             @RequestParam ("nameId")
-            String nameId,
+            ScrubbedInput nameId,
 
             @RequestParam ("storeId")
-            String storeId,
+            ScrubbedInput storeId,
 
             @ModelAttribute ("bizForm")
             BizForm bizForm
     ) {
-        BizNameEntity bizNameEntity = bizService.getByBizNameId(nameId);
+        BizNameEntity bizNameEntity = bizService.getByBizNameId(nameId.getText());
+        Assert.notNull(bizNameEntity, "BizName null for nameId=" + nameId);
         bizForm.setBizNameEntity(bizNameEntity);
 
-        if (StringUtils.isNotEmpty(storeId)) {
-            BizStoreEntity bizStoreEntity = bizService.getByStoreId(storeId);
+        if (StringUtils.isNotEmpty(storeId.getText())) {
+            BizStoreEntity bizStoreEntity = bizService.getByStoreId(storeId.getText());
             bizForm.setBizStore(bizStoreEntity);
         }
 

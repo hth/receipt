@@ -88,7 +88,6 @@
             <element id="library" level="project" name="Gradle: net.bull.javamelody:javamelody-core:1.60.0" />
             <element id="library" level="project" name="Gradle: org.slf4j:jcl-over-slf4j:1.7.21" />
             <element id="library" level="project" name="Gradle: org.slf4j:slf4j-api:1.7.21" />
-            <element id="library" level="project" name="Gradle: org.apache.activemq:activemq-client:5.13.3" />
             <element id="library" level="project" name="Gradle: org.springframework.social:spring-social-core:1.1.4.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework.social:spring-social-google:1.0.0.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework.social:spring-social-web:1.1.4.RELEASE" />
@@ -328,7 +327,6 @@
             <element id="library" level="project" name="Gradle: javax.mail:mail:1.4.7" />
             <element id="library" level="project" name="Gradle: javax.validation:validation-api:1.1.0.Final" />
             <element id="library" level="project" name="Gradle: javax.inject:javax.inject:1" />
-            <element id="library" level="project" name="Gradle: org.apache.activemq:activemq-client:5.13.3" />
             <element id="library" level="project" name="Gradle: org.apache.commons:commons-lang3:3.4" />
             <element id="library" level="project" name="Gradle: org.apache.tika:tika-parsers:1.13" />
             <element id="library" level="project" name="Gradle: org.apache.tika:tika-core:1.13" />
@@ -459,6 +457,7 @@
               <element id="dir-copy" path="$PROJECT_DIR$/domain/build/resources/main" />
             </element>
             <element id="library" level="project" name="Gradle: javax.servlet:jstl:1.2" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.activemq/activemq-client/5.14.0/e667e31cbb81c0e90adc069975cc56fdb748db75/activemq-client-5.14.0.jar" />
           </element>
         </element>
         <element id="directory" name="META-INF">
@@ -544,7 +543,6 @@
             <element id="library" level="project" name="Gradle: javax.mail:mail:1.4.7" />
             <element id="library" level="project" name="Gradle: javax.validation:validation-api:1.1.0.Final" />
             <element id="library" level="project" name="Gradle: javax.inject:javax.inject:1" />
-            <element id="library" level="project" name="Gradle: org.apache.activemq:activemq-client:5.13.3" />
             <element id="library" level="project" name="Gradle: org.apache.commons:commons-lang3:3.4" />
             <element id="library" level="project" name="Gradle: org.apache.tika:tika-parsers:1.13" />
             <element id="library" level="project" name="Gradle: org.apache.tika:tika-core:1.13" />
@@ -675,6 +673,7 @@
               <element id="dir-copy" path="$PROJECT_DIR$/domain/build/resources/main" />
             </element>
             <element id="library" level="project" name="Gradle: javax.servlet:jstl:1.2" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.activemq/activemq-client/5.14.0/e667e31cbb81c0e90adc069975cc56fdb748db75/activemq-client-5.14.0.jar" />
           </element>
         </element>
         <element id="directory" name="META-INF">
@@ -760,7 +759,6 @@
             <element id="library" level="project" name="Gradle: javax.mail:mail:1.4.7" />
             <element id="library" level="project" name="Gradle: javax.validation:validation-api:1.1.0.Final" />
             <element id="library" level="project" name="Gradle: javax.inject:javax.inject:1" />
-            <element id="library" level="project" name="Gradle: org.apache.activemq:activemq-client:5.13.3" />
             <element id="library" level="project" name="Gradle: org.apache.commons:commons-lang3:3.4" />
             <element id="library" level="project" name="Gradle: org.apache.tika:tika-parsers:1.13" />
             <element id="library" level="project" name="Gradle: org.apache.tika:tika-core:1.13" />
@@ -895,6 +893,7 @@
               <element id="dir-copy" path="$PROJECT_DIR$/service/build/resources/main" />
             </element>
             <element id="library" level="project" name="Gradle: javax.servlet:jstl:1.2" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.activemq/activemq-client/5.14.0/e667e31cbb81c0e90adc069975cc56fdb748db75/activemq-client-5.14.0.jar" />
           </element>
         </element>
         <element id="directory" name="META-INF">
@@ -980,7 +979,6 @@
             <element id="library" level="project" name="Gradle: javax.mail:mail:1.4.7" />
             <element id="library" level="project" name="Gradle: javax.validation:validation-api:1.1.0.Final" />
             <element id="library" level="project" name="Gradle: javax.inject:javax.inject:1" />
-            <element id="library" level="project" name="Gradle: org.apache.activemq:activemq-client:5.13.3" />
             <element id="library" level="project" name="Gradle: org.apache.commons:commons-lang3:3.4" />
             <element id="library" level="project" name="Gradle: org.apache.tika:tika-parsers:1.13" />
             <element id="library" level="project" name="Gradle: org.apache.tika:tika-core:1.13" />
@@ -1115,6 +1113,7 @@
               <element id="dir-copy" path="$PROJECT_DIR$/service/build/resources/main" />
             </element>
             <element id="library" level="project" name="Gradle: javax.servlet:jstl:1.2" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.activemq/activemq-client/5.14.0/e667e31cbb81c0e90adc069975cc56fdb748db75/activemq-client-5.14.0.jar" />
           </element>
         </element>
         <element id="directory" name="META-INF">
@@ -1200,7 +1199,6 @@
             <element id="library" level="project" name="Gradle: javax.mail:mail:1.4.7" />
             <element id="library" level="project" name="Gradle: javax.validation:validation-api:1.1.0.Final" />
             <element id="library" level="project" name="Gradle: javax.inject:javax.inject:1" />
-            <element id="library" level="project" name="Gradle: org.apache.activemq:activemq-client:5.13.3" />
             <element id="library" level="project" name="Gradle: org.apache.commons:commons-lang3:3.4" />
             <element id="library" level="project" name="Gradle: org.apache.tika:tika-parsers:1.13" />
             <element id="library" level="project" name="Gradle: org.apache.tika:tika-core:1.13" />
@@ -1347,6 +1345,7 @@
               <element id="module-output" name="loader_main" />
               <element id="dir-copy" path="$PROJECT_DIR$/loader/build/resources/main" />
             </element>
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.activemq/activemq-client/5.14.0/e667e31cbb81c0e90adc069975cc56fdb748db75/activemq-client-5.14.0.jar" />
           </element>
         </element>
         <element id="directory" name="META-INF">
@@ -1432,7 +1431,6 @@
             <element id="library" level="project" name="Gradle: javax.mail:mail:1.4.7" />
             <element id="library" level="project" name="Gradle: javax.validation:validation-api:1.1.0.Final" />
             <element id="library" level="project" name="Gradle: javax.inject:javax.inject:1" />
-            <element id="library" level="project" name="Gradle: org.apache.activemq:activemq-client:5.13.3" />
             <element id="library" level="project" name="Gradle: org.apache.commons:commons-lang3:3.4" />
             <element id="library" level="project" name="Gradle: org.apache.tika:tika-parsers:1.13" />
             <element id="library" level="project" name="Gradle: org.apache.tika:tika-core:1.13" />
@@ -1579,6 +1577,7 @@
               <element id="module-output" name="loader_main" />
               <element id="dir-copy" path="$PROJECT_DIR$/loader/build/resources/main" />
             </element>
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.activemq/activemq-client/5.14.0/e667e31cbb81c0e90adc069975cc56fdb748db75/activemq-client-5.14.0.jar" />
           </element>
         </element>
         <element id="directory" name="META-INF">
@@ -1664,7 +1663,6 @@
             <element id="library" level="project" name="Gradle: javax.mail:mail:1.4.7" />
             <element id="library" level="project" name="Gradle: javax.validation:validation-api:1.1.0.Final" />
             <element id="library" level="project" name="Gradle: javax.inject:javax.inject:1" />
-            <element id="library" level="project" name="Gradle: org.apache.activemq:activemq-client:5.13.3" />
             <element id="library" level="project" name="Gradle: org.apache.commons:commons-lang3:3.4" />
             <element id="library" level="project" name="Gradle: org.apache.tika:tika-parsers:1.13" />
             <element id="library" level="project" name="Gradle: org.apache.tika:tika-core:1.13" />
@@ -1798,6 +1796,7 @@
               <element id="module-output" name="domain_main" />
               <element id="dir-copy" path="$PROJECT_DIR$/domain/build/resources/main" />
             </element>
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.activemq/activemq-client/5.14.0/e667e31cbb81c0e90adc069975cc56fdb748db75/activemq-client-5.14.0.jar" />
           </element>
         </element>
         <element id="directory" name="META-INF">
@@ -1883,7 +1882,6 @@
             <element id="library" level="project" name="Gradle: javax.mail:mail:1.4.7" />
             <element id="library" level="project" name="Gradle: javax.validation:validation-api:1.1.0.Final" />
             <element id="library" level="project" name="Gradle: javax.inject:javax.inject:1" />
-            <element id="library" level="project" name="Gradle: org.apache.activemq:activemq-client:5.13.3" />
             <element id="library" level="project" name="Gradle: org.apache.commons:commons-lang3:3.4" />
             <element id="library" level="project" name="Gradle: org.apache.tika:tika-parsers:1.13" />
             <element id="library" level="project" name="Gradle: org.apache.tika:tika-core:1.13" />
@@ -2017,6 +2015,7 @@
               <element id="module-output" name="domain_main" />
               <element id="dir-copy" path="$PROJECT_DIR$/domain/build/resources/main" />
             </element>
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.activemq/activemq-client/5.14.0/e667e31cbb81c0e90adc069975cc56fdb748db75/activemq-client-5.14.0.jar" />
           </element>
         </element>
         <element id="directory" name="META-INF">
@@ -3278,15 +3277,15 @@
         <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/opensymphony/ognl/2.6.11/12dfc2019d4ce5a30a48292f04f779074817bc1b/ognl-2.6.11-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Gradle: org.apache.activemq:activemq-client:5.13.3">
+    <library name="Gradle: org.apache.activemq:activemq-client:5.14.0">
       <CLASSES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.activemq/activemq-client/5.13.3/deaafde093d424fddf681e4337c6397a54d7ae30/activemq-client-5.13.3.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.activemq/activemq-client/5.14.0/e667e31cbb81c0e90adc069975cc56fdb748db75/activemq-client-5.14.0.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.activemq/activemq-client/5.13.3/730db1f20431f0371731315e2108aafe37245811/activemq-client-5.13.3-javadoc.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.activemq/activemq-client/5.14.0/22a276eaa823b7b1a3e111b3f5f9a1da02a933c/activemq-client-5.14.0-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.activemq/activemq-client/5.13.3/22937c10956c1bf544191a35f6e24322f23356fc/activemq-client-5.13.3-sources.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.activemq/activemq-client/5.14.0/3da3b6d92f0aec54dd8647cb699b2ab724635eeb/activemq-client-5.14.0-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="Gradle: org.apache.commons:commons-collections4:4.0">
