@@ -150,9 +150,9 @@ public class BusinessSearchController {
         redirectAttrs.addFlashAttribute("bizForm", bizForm);
 
         BizStoreEntity bizStore;
-        if (StringUtils.isNotEmpty(bizForm.getAddressId())) {
-            //TODO verify this getAddressId()
-            bizStore = bizService.getByStoreId(bizForm.getAddressId());
+        if (StringUtils.isNotEmpty(bizForm.getBizStoreId())) {
+            //TODO verify this getBizStoreId()
+            bizStore = bizService.getByStoreId(bizForm.getBizStoreId());
             bizStore.setAddress(bizForm.getAddress());
             bizStore.setPhone(bizForm.getPhone());
             try {
@@ -162,7 +162,7 @@ public class BusinessSearchController {
                 LOG.error("Failed to edit address/phone: {} {} reason={}", bizForm.getAddress(), bizForm.getPhone(), e.getLocalizedMessage(), e);
                 bizForm.setErrorMessage("Failed to edit address/phone: " + bizForm.getAddress() + ", " + bizForm.getPhone() + ", :" + e.getLocalizedMessage());
                 //Re-direct to prevent resubmit
-                return "redirect:" + "business/edit" + ".htm" + "?nameId=" + bizForm.getNameId() + "&storeId=" + bizForm.getAddressId();
+                return "redirect:" + "business/edit" + ".htm" + "?nameId=" + bizForm.getNameId() + "&storeId=" + bizForm.getBizStoreId();
             }
         }
 
@@ -177,7 +177,7 @@ public class BusinessSearchController {
                 LOG.error("Failed to edit name: " + bizForm.getBusinessName() + ", " + e.getLocalizedMessage());
                 bizForm.setErrorMessage("Failed to edit name: " + bizForm.getBusinessName() + ", " + e.getLocalizedMessage());
                 //Re-direct to prevent resubmit
-                return "redirect:" + "business/edit" + ".htm" + "?nameId=" + bizForm.getNameId() + "&storeId=" + bizForm.getAddressId();
+                return "redirect:" + "business/edit" + ".htm" + "?nameId=" + bizForm.getNameId() + "&storeId=" + bizForm.getBizStoreId();
             }
         }
 
@@ -207,9 +207,9 @@ public class BusinessSearchController {
         redirectAttrs.addFlashAttribute("bizForm", bizForm);
 
         BizStoreEntity bizStore;
-        if (StringUtils.isNotEmpty(bizForm.getAddressId())) {
-            //TODO verify this getAddressId()
-            bizStore = bizService.getByStoreId(bizForm.getAddressId());
+        if (StringUtils.isNotEmpty(bizForm.getBizStoreId())) {
+            //TODO verify this getBizStoreId()
+            bizStore = bizService.getByStoreId(bizForm.getBizStoreId());
             BizNameEntity bizName = bizStore.getBizName();
 
             Set<BizStoreEntity> bizStoreEntities = new HashSet<>();

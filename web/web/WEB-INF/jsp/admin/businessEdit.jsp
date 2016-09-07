@@ -67,7 +67,7 @@
             <h2 class="h2" style="padding-bottom:5px; text-decoration: underline;">Edit Business or Store information</h2>
             <form:form method="post" modelAttribute="bizForm" action="../businessSearch.htm">
                 <form:hidden path="nameId" />
-                <form:hidden path="addressId" />
+                <form:hidden path="bizStoreId" />
 
                 <c:if test="${!empty bizForm.errorMessage}">
                     <div class="r-error" style="width: 98%; margin: 0 0 0 0;">
@@ -99,7 +99,7 @@
                     <label class="profile_label">Name</label>
                     <form:input path="businessName" id="businessName" class="name_txt" cssStyle="width: 690px;"/>
                 </div>
-                <c:if test="${not empty bizForm.addressId}">
+                <c:if test="${not empty bizForm.bizStoreId}">
                 <div class="row_field">
                     <label class="profile_label">Address</label>
                     <form:input path="address" id="address" class="name_txt" cssStyle="width: 690px;"/>
