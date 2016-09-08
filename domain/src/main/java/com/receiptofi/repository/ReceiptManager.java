@@ -283,10 +283,4 @@ public interface ReceiptManager extends RepositoryManager<ReceiptEntity> {
      * @return
      */
     List<ReceiptEntity> getReceiptsWithExpenseTags(String rid, List<ObjectId> expenseTags, int delayDuration);
-
-
-    List<ReceiptEntity> getAllReceipts();
-
-    List<ReceiptEntity> getReceiptsWithNotes();
-    List<ReceiptEntity> getReceiptsWithRecheck();
 }
