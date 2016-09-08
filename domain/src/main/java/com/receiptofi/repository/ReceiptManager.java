@@ -286,4 +286,7 @@ public interface ReceiptManager extends RepositoryManager<ReceiptEntity> {
 
 
     List<ReceiptEntity> getAllReceipts();
+
+    List<ReceiptEntity> getReceiptsWithNotes();
+    List<ReceiptEntity> getReceiptsWithRecheck();
 }

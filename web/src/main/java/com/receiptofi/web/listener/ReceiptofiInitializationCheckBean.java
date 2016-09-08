@@ -1,6 +1,8 @@
 package com.receiptofi.web.listener;
 
+import com.receiptofi.domain.CommentEntity;
 import com.receiptofi.domain.ReceiptEntity;
+import com.receiptofi.repository.CommentManager;
 import com.receiptofi.repository.ReceiptManager;
 import com.receiptofi.service.cache.RedisCacheConfig;
 
@@ -41,6 +43,8 @@ public class ReceiptofiInitializationCheckBean {
 
     @Autowired
     private ReceiptManager receiptManager;
+    @Autowired
+    private CommentManager commentManager;
 
     @Autowired
     public ReceiptofiInitializationCheckBean(JmsTemplate jmsSenderTemplate, RedisCacheConfig redisCacheConfig) {
@@ -89,5 +93,52 @@ public class ReceiptofiInitializationCheckBean {
         }
         LOG.info("Update receipt success={} skipped={}", success, skipped);
         LOG.info("StoreId={}", aa);
+    }
+
+    @PostConstruct
+    public void updateRidForNotes() {
+        List<ReceiptEntity> receipts = receiptManager.getReceiptsWithNotes();
+        LOG.info("Found receipt size={}", receipts.size());
+        int success = 0, skipped = 0;
+        Set<String> aa = new HashSet<>();
+        for(ReceiptEntity receipt : receipts) {
+            if (StringUtils.isBlank(receipt.getNotes().getReceiptUserId())) {
+                success ++;
+
+                CommentEntity note = receipt.getNotes();
+                LOG.info("Notes count={} id={} commentType={}", success, note.getId(), note.getCommentType());
+                note.setReceiptUserId(receipt.getReceiptUserId());
+                commentManager.save(note);
+            } else {
+                skipped ++;
+                LOG.info("count={} CS={} noteId={}", skipped, receipt.getId(), receipt.getNotes().getId());
+                aa.add(receipt.getNotes().getId());
+            }
+        }
+        LOG.info("Update Notes comment success={} skipped={}", success, skipped);
+        LOG.info("NotesId={}", aa);
+    }
+
+    @PostConstruct
+    public void updateRidForRecheck() {
+        List<ReceiptEntity> receipts = receiptManager.getReceiptsWithRecheck();
+        LOG.info("Found receipt size={}", receipts.size());
+        int success = 0, skipped = 0;
+        Set<String> aa = new HashSet<>();
+        for(ReceiptEntity receipt : receipts) {
+            if (StringUtils.isBlank(receipt.getRecheckComment().getReceiptUserId())) {
+                success ++;
+                CommentEntity note = receipt.getRecheckComment();
+                LOG.info("Recheck count={} id={} commentType={}", success, note.getId(), note.getCommentType());
+                note.setReceiptUserId(receipt.getReceiptUserId());
+                commentManager.save(note);
+            } else {
+                skipped ++;
+                LOG.info("count={} CS={} commentId={}", skipped, receipt.getId(), receipt.getRecheckComment().getId());
+                aa.add(receipt.getRecheckComment().getId());
+            }
+        }
+        LOG.info("Update Recheck comment success={} skipped={}", success, skipped);
+        LOG.info("RecheckId={}", aa);
     }
 }

@@ -1,4 +1,5 @@
 Deployment:
+    Migrate from Server build 1795 to 1840 and Mobile Server build 1780 to 1820 
 
     brew update
     brew info activemq
