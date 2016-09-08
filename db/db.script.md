@@ -1,3 +1,38 @@
+Deployment:
+
+    brew update
+    brew info activemq
+    brew install activemq
+    brew doctor
+    brew cleanup
+    
+    db.getCollection('RECEIPT').dropIndex("receipt_unique_idx")
+    db.getCollection('RECEIPT').updateMany({}, {$rename: { "CS": "CZ" }})
+    
+    db.getCollection('RECEIPT').updateMany({}, {$rename: { "CN": "NO" }})
+    db.getCollection('DOCUMENT').updateMany({}, {$rename: { "CN": "NO" }})
+    
+    db.getCollection('BIZ_STORE').find().snapshot().forEach(
+      function (e) {           
+        // update document, using its own properties
+        e.FA = e.AD;
+    
+        // save the updated document
+        db.getCollection('BIZ_STORE').save(e);
+      }
+    )
+
+Complete
+
+    - Data base removed and updated business
+    
+            Added business South Carolina Education Lottery
+            
+            Found Biz_Store id and removed bad store address sceducationlottry.com
+            
+            Update Paytm.com to map to Paytm and then delete Paytm.com
+
+
 ### Date Sept 6 2016 - Build 1832
 - Brew update activemq to 5.14.0  
 
@@ -23,7 +58,12 @@
         - Update the BizName and BizStore for this record with new record thats created
         
         db.getCollection('BIZ_NAME').find({"N" : "South Carolina Education Lottery"})
-        db.getCollection('BIZ_STORE').find({"BIZ_NAME.$id" : ObjectId("57cfc8121b27d739ef65da36")})
+        db.getCollection('BIZ_STORE').find({"BIZ_NAME.$id" : ObjectId("57d0dc3df4a3b633b9313cb2")})
+        
+        BIZ_NAME id - 57d0dc3df4a3b633b9313cb2
+        BIZ_STORE id - 57d0dc3df4a3b633b9313cb3
+        
+        Replace Receipt with BIZ_STORE id - 5755eaa6f4a3b6c5ce89b5dd
         
         Get Ids and replace with existing "South carolina education lottery"
         
