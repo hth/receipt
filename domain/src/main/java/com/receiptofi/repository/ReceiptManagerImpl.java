@@ -618,9 +618,4 @@ public class ReceiptManagerImpl implements ReceiptManager {
 
         return new ArrayList<>();
     }
-
-    @Override
-    public List<ReceiptEntity> getAllReceipts() {
-        return mongoTemplate.findAll(ReceiptEntity.class, TABLE);
-    }
 }

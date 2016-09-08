@@ -1,10 +1,6 @@
 package com.receiptofi.web.listener;
 
-import com.receiptofi.domain.ReceiptEntity;
-import com.receiptofi.repository.ReceiptManager;
 import com.receiptofi.service.cache.RedisCacheConfig;
-
-import org.apache.commons.lang3.StringUtils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,8 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.jms.JMSException;
@@ -36,9 +30,6 @@ public class ReceiptofiInitializationCheckBean {
 
     private JmsTemplate jmsSenderTemplate;
     private RedisCacheConfig redisCacheConfig;
-
-    @Autowired
-    private ReceiptManager receiptManager;
 
     @Autowired
     public ReceiptofiInitializationCheckBean(JmsTemplate jmsSenderTemplate, RedisCacheConfig redisCacheConfig) {
@@ -65,24 +56,5 @@ public class ReceiptofiInitializationCheckBean {
             throw new RuntimeException("Redis Server could not be connected");
         }
         LOG.info("Redis Server connected");
-    }
-
-    @PostConstruct
-    public void updateLocation() {
-        List<ReceiptEntity> receipts = receiptManager.getAllReceipts();
-        LOG.info("Found receipt size={}", receipts.size());
-        int success = 0, skipped = 0;
-        for(ReceiptEntity receipt : receipts) {
-            if (null != receipt.getBizStore() && StringUtils.isNotBlank(receipt.getBizStore().getCountryShortName())) {
-                success ++;
-                LOG.info("count={} CS={}", success, receipt.getBizStore().getCountryShortName());
-                receipt.setCountryShortName(receipt.getBizStore().getCountryShortName());
-                receiptManager.save(receipt);
-            } else {
-                skipped ++;
-                LOG.info("count={} CS={}", skipped, receipt.getId());
-            }
-        }
-        LOG.info("Update receipt success={} skipped={}", success, skipped);
     }
 }
