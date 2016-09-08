@@ -14,9 +14,7 @@ import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Component;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import javax.annotation.PostConstruct;
 import javax.jms.JMSException;
@@ -74,7 +72,6 @@ public class ReceiptofiInitializationCheckBean {
         List<ReceiptEntity> receipts = receiptManager.getAllReceipts();
         LOG.info("Found receipt size={}", receipts.size());
         int success = 0, skipped = 0;
-        Set<String> aa = new HashSet<>();
         for(ReceiptEntity receipt : receipts) {
             if (null != receipt.getBizStore() && StringUtils.isNotBlank(receipt.getBizStore().getCountryShortName())) {
                 success ++;
@@ -83,11 +80,9 @@ public class ReceiptofiInitializationCheckBean {
                 receiptManager.save(receipt);
             } else {
                 skipped ++;
-                LOG.info("count={} CS={} bizId={}", skipped, receipt.getId(), receipt.getBizStore().getId());
-                aa.add(receipt.getBizStore().getId());
+                LOG.info("count={} CS={}", skipped, receipt.getId());
             }
         }
         LOG.info("Update receipt success={} skipped={}", success, skipped);
-        LOG.info("StoreId={}", aa);
     }
 }
