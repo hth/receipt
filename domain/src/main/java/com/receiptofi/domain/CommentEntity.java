@@ -96,6 +96,10 @@ public class CommentEntity extends BaseEntity {
         return receiptUserId;
     }
 
+    public void setReceiptUserId(String receiptUserId) {
+        this.receiptUserId = receiptUserId;
+    }
+
     @Override
     public String toString() {
         return "CommentEntity{" +
