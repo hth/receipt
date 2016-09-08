@@ -630,21 +630,4 @@ public class ReceiptManagerImpl implements ReceiptManager {
                 ReceiptEntity.class,
                 TABLE);
     }
-
-    @Override
-    public List<ReceiptEntity> getReceiptsWithNotes() {
-        return mongoTemplate.find(
-                query(where("NO").exists(true)),
-                ReceiptEntity.class,
-                TABLE);
-    }
-
-
-    @Override
-    public List<ReceiptEntity> getReceiptsWithRecheck() {
-        return mongoTemplate.find(
-                query(where("CR").exists(true)),
-                ReceiptEntity.class,
-                TABLE);
-    }
 }
