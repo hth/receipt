@@ -68,6 +68,10 @@ public class SplitExpensesEntity extends BaseEntity {
     @Field ("SS")
     private SplitStatusEnum splitStatus = SplitStatusEnum.U;
 
+    @NotNull
+    @Field ("CS")
+    private String countryShortName;
+
     /** To keep bean happy. */
     @SuppressWarnings ("unused")
     private SplitExpensesEntity() {
@@ -87,6 +91,7 @@ public class SplitExpensesEntity extends BaseEntity {
 
         this.bizName = receipt.getBizName();
         this.bizStore = receipt.getBizStore();
+        this.countryShortName = receipt.getCountryShortName();
     }
 
     public String getReceiptDocumentId() {
@@ -127,5 +132,13 @@ public class SplitExpensesEntity extends BaseEntity {
 
     public void setSplitStatus(SplitStatusEnum splitStatus) {
         this.splitStatus = splitStatus;
+    }
+
+    public void setCountryShortName(String countryShortName) {
+        this.countryShortName = countryShortName;
+    }
+
+    public String getCountryShortName() {
+        return countryShortName;
     }
 }

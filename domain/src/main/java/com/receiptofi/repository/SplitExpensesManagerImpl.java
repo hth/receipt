@@ -11,7 +11,7 @@ import static org.springframework.data.mongodb.core.aggregation.Aggregation.prev
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.sort;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
-import static org.springframework.data.mongodb.core.query.Update.*;
+import static org.springframework.data.mongodb.core.query.Update.update;
 
 import com.mongodb.WriteResult;
 
@@ -27,7 +27,6 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.TypedAggregation;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 
@@ -184,5 +183,10 @@ public class SplitExpensesManagerImpl implements SplitExpensesManager {
                         .and("SS").ne(SplitStatusEnum.U)),
                 SplitExpensesEntity.class
         ) > 0;
+    }
+
+    @Override
+    public List<SplitExpensesEntity> getAll() {
+        return mongoTemplate.findAll(SplitExpensesEntity.class, TABLE);
     }
 }
