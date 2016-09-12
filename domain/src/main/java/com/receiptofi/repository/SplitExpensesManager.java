@@ -43,6 +43,4 @@ public interface SplitExpensesManager extends RepositoryManager<SplitExpensesEnt
      * @return
      */
     boolean hasSettleProcessStarted(String rdid);
-
-    List<SplitExpensesEntity> getAll();
 }

@@ -134,10 +134,6 @@ public class SplitExpensesEntity extends BaseEntity {
         this.splitStatus = splitStatus;
     }
 
-    public void setCountryShortName(String countryShortName) {
-        this.countryShortName = countryShortName;
-    }
-
     public String getCountryShortName() {
         return countryShortName;
     }
