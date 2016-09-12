@@ -1,7 +1,5 @@
 package com.receiptofi.web.listener;
 
-import com.receiptofi.domain.SplitExpensesEntity;
-import com.receiptofi.repository.SplitExpensesManager;
 import com.receiptofi.service.cache.RedisCacheConfig;
 
 import org.slf4j.Logger;
@@ -11,8 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.jms.JMSException;
@@ -34,9 +30,6 @@ public class ReceiptofiInitializationCheckBean {
 
     private JmsTemplate jmsSenderTemplate;
     private RedisCacheConfig redisCacheConfig;
-
-    @Autowired
-    private SplitExpensesManager splitExpensesManager;
 
     @Autowired
     public ReceiptofiInitializationCheckBean(JmsTemplate jmsSenderTemplate, RedisCacheConfig redisCacheConfig) {
@@ -63,14 +56,5 @@ public class ReceiptofiInitializationCheckBean {
             throw new RuntimeException("Redis Server could not be connected");
         }
         LOG.info("Redis Server connected");
-    }
-
-    @PostConstruct
-    public void updateSplit() {
-        List<SplitExpensesEntity> splits = splitExpensesManager.getAll();
-        for (SplitExpensesEntity splitExpenses : splits) {
-            splitExpenses.setCountryShortName(splitExpenses.getBizStore().getCountryShortName());
-            splitExpensesManager.save(splitExpenses);
-        }
     }
 }
