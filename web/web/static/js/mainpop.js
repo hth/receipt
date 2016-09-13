@@ -436,7 +436,7 @@ function inactiveExpenseTagSaveUpdate_bt() {
     $('#expenseTagSaveUpdate_bt').attr('disabled', true).css('background', '#808080');
 }
 
-function loadMonthlyExpensesByBusiness(month, bizNames, expenseTags) {
+function loadMonthlyExpensesByBusiness(month, bizNames, expenseTags, currencyCode) {
     $('#expenseByBusiness').highcharts({
         chart: {
             type: 'pie'
@@ -460,9 +460,9 @@ function loadMonthlyExpensesByBusiness(month, bizNames, expenseTags) {
             }
         },
         tooltip: {
-            valueSuffix: '$',
+            valueSuffix: currencyCode,
             formatter: function () {
-                return this.point.name + ": " + '$' + Highcharts.numberFormat(this.y, 2);
+                return this.point.name + ": " + currencyCode + Highcharts.numberFormat(this.y, 2);
             }
         },
         series: [
@@ -506,7 +506,7 @@ function loadMonthlyExpensesByBusiness(month, bizNames, expenseTags) {
                     enabled: false,
                     formatter: function () {
                         // display only if larger than 1
-                        return this.y > 1 ? '<b>' + this.point.name + ':</b> ' + '$' + Highcharts.numberFormat(this.y, 2) : null;
+                        return this.y > 1 ? '<b>' + this.point.name + ':</b> ' + currencyCode + Highcharts.numberFormat(this.y, 2) : null;
                     }
                 },
                 point: {

@@ -78,7 +78,7 @@
 
                 <li>
                     <a href="${pageContext.request.contextPath}/access/landing/report/<spring:eval expression='receiptGrouped.dateTime.toString("MMM, yyyy")' />.htm" class="ll-t" target="_blank">
-                        <spring:eval expression='receiptGrouped.dateTime.toString("MMM")' /> &nbsp;&nbsp; <spring:eval expression="receiptGrouped.splitTotal" />
+                        <spring:eval expression='receiptGrouped.dateTime.toString("MMM")' /> &nbsp;&nbsp; <spring:eval expression="receiptGrouped.splitTotalString" />
                     </a>
                 </li>
                 </c:forEach>
@@ -108,7 +108,7 @@
                 <h1 class="rightside-title-text left">
                     <fmt:formatDate value="${receipts.date}" pattern="MMMM, yyyy"/>
                     &nbsp;&nbsp;&nbsp;&nbsp;
-                    <span style="color: #007aff;"><spring:eval expression="receipts.splitTotal" /></span>
+                    <span style="color: #007aff;"><spring:eval expression="receipts.splitTotalString" /></span>
                 </h1>
             </div>
             <div class="rightside-list-holder rightside-list-holder-report">
@@ -167,7 +167,7 @@
                         </c:otherwise>
                         </c:choose>
                         <span class="rightside-li-right-text">
-                            <spring:eval expression='receipt.splitTotal'/>
+                            <spring:eval expression='receipt.splitTotalString'/>
                         </span>
                     </li>
                     </c:forEach>
@@ -275,7 +275,7 @@
                 name: 'Monthly Expense',
                 data: [
                     <c:forEach var="month" items="${reportAnalysisForm.receiptGroupedByMonths}" varStatus="status">
-                    {y: ${month.stringTotal}, color: '#7CB5EC'},
+                    {y: ${month.splitTotal}, color: '#7CB5EC'},
                     </c:forEach>
                 ],
                 dataLabels: {

@@ -109,7 +109,7 @@
                     <c:set var="receiptGroupedIterator" value="${landingForm.receiptGrouped}" />
                     <c:forEach var="receiptGrouped" items="${receiptGroupedIterator}">
                     {
-                        title : '<fmt:formatNumber value="${receiptGrouped.stringTotal}" type="currency" />',
+                        title : '${receiptGrouped.splitTotalString}',
                         start : '${receiptGrouped.dateForFullCalendar}',
                         end   : '${receiptGrouped.dateForFullCalendar}',
                         url   : '${pageContext.request.contextPath}/access/day.htm?date=${receiptGrouped.date.time}',
@@ -387,7 +387,7 @@
                                 </a>
                             </c:otherwise>
                             </c:choose>
-                            <span class="rightside-li-right-text"><spring:eval expression='receipt.splitTotal'/></span>
+                            <span class="rightside-li-right-text"><spring:eval expression='receipt.splitTotalString'/></span>
                         </li>
                         </c:forEach>
                     </ul>
@@ -512,7 +512,7 @@ function drawExpenseByBusiness() {
         var bizNames = [];
         var expenseTags = [];
         populateExpenseByBusiness(data, bizNames, categories, expenseTags);
-        loadMonthlyExpensesByBusiness('${landingForm.receiptForMonth.monthYear}', bizNames, expenseTags);
+        loadMonthlyExpensesByBusiness('${landingForm.receiptForMonth.monthYear}', bizNames, expenseTags, '${landingForm.countryShortName}');
     });
 }
 </script>
@@ -534,7 +534,7 @@ function drawExpenseByBusiness() {
             <c:if test="${loc.bizStore.validatedUsingExternalAPI && !empty loc.bizStore.coordinate}">
             [
                 '<div class="mapContainer">' +
-                '<div><h3>${loc.bizName.safeJSBusinessName} : <b>${loc.totalStr}</b></h3></div>' +
+                '<div><h3>${loc.bizName.safeJSBusinessName} : <b>${loc.totalString}</b></h3></div>' +
                 '<div>' +
                 '<div>${loc.bizStore.safeJSAddress}</div>' +
                 '</div>' +

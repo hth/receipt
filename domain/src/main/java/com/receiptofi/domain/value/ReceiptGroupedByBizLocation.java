@@ -2,10 +2,11 @@ package com.receiptofi.domain.value;
 
 import com.receiptofi.domain.BizNameEntity;
 import com.receiptofi.domain.BizStoreEntity;
+import com.receiptofi.utils.LocaleUtil;
+import com.receiptofi.utils.Maths;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.text.NumberFormat;
 
 /**
  * TODO(hth) this class can be further extended to individually list out the expense in that store on a particular date.
@@ -43,9 +44,10 @@ public class ReceiptGroupedByBizLocation implements Serializable {
         this.splitTotal = splitTotal;
     }
 
-    public String getTotalStr() {
-        NumberFormat fmt = NumberFormat.getCurrencyInstance();
-        return fmt.format(splitTotal);
+    /* Used in google map. */
+    @SuppressWarnings("unused")
+    public String getTotalString() {
+        return LocaleUtil.getNumberFormat(bizStore.getCountryShortName()).format(Maths.adjustScale(splitTotal));
     }
 
     public BizNameEntity getBizName() {

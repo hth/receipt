@@ -3,6 +3,8 @@ package com.receiptofi.domain.value;
 import com.receiptofi.domain.BizNameEntity;
 import com.receiptofi.domain.ExpenseTagEntity;
 import com.receiptofi.domain.types.BilledStatusEnum;
+import com.receiptofi.utils.LocaleUtil;
+import com.receiptofi.utils.Maths;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -50,6 +52,9 @@ public class ReceiptListViewGrouped {
     @Field ("RF")
     private String referToReceiptId;
 
+    @Field ("CS")
+    private String countryShortName;
+
     public String getId() {
         return id;
     }
@@ -80,6 +85,10 @@ public class ReceiptListViewGrouped {
 
     public Double getSplitTotal() {
         return splitTotal;
+    }
+
+    public String getSplitTotalString() {
+        return LocaleUtil.getNumberFormat(countryShortName).format(Maths.adjustScale(splitTotal));
     }
 
     public void setSplitTotal(Double splitTotal) {

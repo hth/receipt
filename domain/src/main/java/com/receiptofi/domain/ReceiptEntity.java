@@ -241,6 +241,11 @@ public class ReceiptEntity extends BaseEntity {
         return tax;
     }
 
+    @Transient
+    public String getTaxString() {
+        return LocaleUtil.getNumberFormat(countryShortName).format(tax);
+    }
+
     public void setTax(Double tax) {
         this.tax = tax;
         this.splitTax = tax;
@@ -384,6 +389,16 @@ public class ReceiptEntity extends BaseEntity {
         return splitTotal;
     }
 
+    /**
+     * Used in showing the currency symbol and net amount in notification.
+     *
+     * @return
+     */
+    @Transient
+    public String getSplitTotalString() {
+        return LocaleUtil.getNumberFormat(countryShortName).format(splitTotal);
+    }
+
     private void setSplitTotal(Double splitTotal) {
         this.splitTotal = splitTotal;
     }
@@ -433,6 +448,12 @@ public class ReceiptEntity extends BaseEntity {
     @NumberFormat (style = Style.CURRENCY)
     public Double getSubTotal() {
         return total - tax;
+    }
+
+    @Transient
+    @NotNull
+    public String getSubTotalString() {
+        return LocaleUtil.getNumberFormat(getBizStore().getCountryShortName()).format(total - tax);
     }
 
     @Override

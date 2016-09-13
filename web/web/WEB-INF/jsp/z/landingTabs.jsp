@@ -91,7 +91,7 @@
                 </a>
             </c:otherwise>
             </c:choose>
-            <span class="rightside-li-right-text"><spring:eval expression='receipt.splitTotal'/></span>
+            <span class="rightside-li-right-text"><spring:eval expression='receipt.splitTotalString'/></span>
         </li>
         </c:forEach>
     </ul>

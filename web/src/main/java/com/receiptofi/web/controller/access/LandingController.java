@@ -159,6 +159,11 @@ public class LandingController {
 //        modelAndView.addObject("receiptForMonth", receiptForMonth);
         landingForm.setReceiptForMonth(receiptForMonth);
 
+        /* TODO set this using user profile. */
+        if (!allReceiptsForThisMonth.isEmpty()) {
+            landingForm.setCountryShortName(allReceiptsForThisMonth.get(0).getCountryShortName());
+        }
+
         documentStatsForm.setPendingCount(landingService.pendingReceipt(receiptUser.getRid()));
         documentStatsForm.setRejectedCount(landingService.rejectedReceipt(receiptUser.getRid()));
 

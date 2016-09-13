@@ -48,11 +48,15 @@ public class JsonOweExpenses {
     @JsonProperty ("name")
     private String name;
 
-    public JsonOweExpenses(String receiptUserId, String friendUserId, Double splitTotal, String name) {
+    @JsonProperty ("cs")
+    private String countryShortName;
+
+    public JsonOweExpenses(String receiptUserId, String friendUserId, Double splitTotal, String name, String countryShortName) {
         this.receiptUserId = receiptUserId;
         this.friendUserId = friendUserId;
         this.splitTotal = splitTotal;
         this.name = name;
+        this.countryShortName = countryShortName;
     }
 
     public String getReceiptUserId() {
@@ -69,5 +73,9 @@ public class JsonOweExpenses {
 
     public String getName() {
         return name;
+    }
+
+    public String getCountryShortName() {
+        return countryShortName;
     }
 }

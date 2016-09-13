@@ -154,7 +154,8 @@ public class SplitExpensesService {
                         splitExpense.getReceiptUserId(),
                         splitExpense.getFriendUserId(),
                         splitExpense.getSplitTotal(),
-                        userProfile.getName());
+                        userProfile.getName(),
+                        splitExpense.getCountryShortName());
 
                 jsonOweOthers.add(jsonOweExpense);
             }
@@ -172,7 +173,8 @@ public class SplitExpensesService {
                         splitExpense.getReceiptUserId(),
                         splitExpense.getFriendUserId(),
                         splitExpense.getSplitTotal(),
-                        userProfile.getName());
+                        userProfile.getName(),
+                        splitExpense.getCountryShortName());
 
                 jsonOweMe.add(jsonOweExpense);
             }

@@ -1,5 +1,8 @@
 package com.receiptofi.domain.value;
 
+import com.receiptofi.utils.LocaleUtil;
+import com.receiptofi.utils.Maths;
+
 import org.springframework.format.annotation.NumberFormat;
 
 import java.math.BigDecimal;
@@ -18,6 +21,8 @@ public class ReceiptListView {
 
     @NumberFormat (style = NumberFormat.Style.CURRENCY)
     private BigDecimal splitTotal;
+
+    private String countryShortName;
 
     private List<ReceiptListViewGrouped> receiptListViewGroupedList;
 
@@ -47,6 +52,18 @@ public class ReceiptListView {
 
     public BigDecimal getSplitTotal() {
         return splitTotal;
+    }
+
+    public String getSplitTotalString() {
+        return LocaleUtil.getNumberFormat(countryShortName).format(Maths.adjustScale(splitTotal));
+    }
+
+    public String getCountryShortName() {
+        return countryShortName;
+    }
+
+    public void setCountryShortName(String countryShortName) {
+        this.countryShortName = countryShortName;
     }
 
     public void setSplitTotal(BigDecimal splitTotal) {

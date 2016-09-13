@@ -11,7 +11,7 @@ import static org.springframework.data.mongodb.core.aggregation.Aggregation.prev
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.sort;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
-import static org.springframework.data.mongodb.core.query.Update.*;
+import static org.springframework.data.mongodb.core.query.Update.update;
 
 import com.mongodb.WriteResult;
 
@@ -27,7 +27,6 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.TypedAggregation;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 
@@ -121,7 +120,8 @@ public class SplitExpensesManagerImpl implements SplitExpensesManager {
                         )),
                 group("friendUserId")
                         .first("friendUserId").as("FID")
-                        .sum("splitTotal").as("ST"),
+                        .sum("splitTotal").as("ST")
+                        .first("countryShortName").as("CS"),
                 sort(DESC, previousOperation())
         );
 
@@ -139,7 +139,8 @@ public class SplitExpensesManagerImpl implements SplitExpensesManager {
                         )),
                 group("receiptUserId")
                         .first("receiptUserId").as("RID")
-                        .sum("splitTotal").as("ST"),
+                        .sum("splitTotal").as("ST")
+                .first("countryShortName").as("CS"),
                 sort(DESC, previousOperation())
         );
 

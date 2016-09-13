@@ -422,7 +422,7 @@
                             </span>
                         </td>
                         <td width="170px" class="font2em" style="margin-left: 5px; vertical-align: middle;">
-                            <span class="colorblue right" id="my_total"><spring:eval expression="receiptForm.receipt.splitTotal" /></span>
+                            <span class="colorblue right" id="my_total"><spring:eval expression="receiptForm.receipt.splitTotalString" /></span>
                         </td>
                     </tr>
                 </table>
@@ -485,12 +485,12 @@
                                     &nbsp;
                                 </c:when>
                                 <c:otherwise>
-                                    <spring:eval expression="item.totalTax"/>
+                                    <spring:eval expression="item.totalTaxString"/>
                                 </c:otherwise>
                             </c:choose>
                         </td>
                         <td class="receipt-li-price-text">
-                            <spring:eval expression="item.totalPriceWithoutTax" />
+                            <spring:eval expression="item.totalPriceWithoutTaxString" />
                         </td>
                     </tr>
                     </c:forEach>
@@ -500,14 +500,14 @@
                         <td class="receipt-item-name" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">Sub Total</td>
                         <td class="receipt-tag" style="background: none;"></td>
                         <td class="receipt-li-price-text"></td>
-                        <td class="receipt-li-price-text"><spring:eval expression="receiptForm.receipt.subTotal" /></td>
+                        <td class="receipt-li-price-text"><spring:eval expression="receiptForm.receipt.subTotalString" /></td>
                     </tr>
                     <tr>
                         <td class="receipt-item-check"></td>
                         <td class="rightside-li-date-text" style="width: 25px"></td>
                         <td class="receipt-item-name" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">Tax</td>
                         <td class="receipt-tag" style="background: none;"></td>
-                        <td class="receipt-li-price-text"><spring:eval expression="receiptForm.receipt.tax" /></td>
+                        <td class="receipt-li-price-text"><spring:eval expression="receiptForm.receipt.taxString" /></td>
                         <td class="receipt-li-price-text"></td>
                     </tr>
                     <tr style="border-bottom: 1px solid #919191;">
@@ -516,7 +516,7 @@
                         <td class="receipt-item-name" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">Grand Total</td>
                         <td class="receipt-tag" style="background: none;"></td>
                         <td class="receipt-li-price-text"></td>
-                        <td class="receipt-li-price-text" id="gtId"><spring:eval expression="receiptForm.receipt.total" /></td>
+                        <td class="receipt-li-price-text" id="gtId"><spring:eval expression="receiptForm.receipt.totalString" /></td>
                     </tr>
                 </table>
 
