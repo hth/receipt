@@ -37,9 +37,11 @@
 - Install Java manual
 
         sudo rm /usr/bin/java
-        sudo ln -s /Library/Java/JavaVirtualMachines/jdk1.8.0_51.jdk/Contents/Home/bin/java /usr/bin/java
+        sudo ln -s /Library/Java/JavaVirtualMachines/jdk1.8.0_102.jdk/Contents/Home/bin/java /usr/bin/java
+        
+        /* Link Java. Above steps don't work after installing latest java */
         sudo rm /Library/Java/Home
-        sudo ln -s /Library/Java/JavaVirtualMachines/jdk1.8.0_51.jdk/Contents/Home /Library/Java/Home
+        sudo ln -s /Library/Java/JavaVirtualMachines/jdk1.8.0_102.jdk/Contents/Home /Library/Java/Home
 
 - [Install ActiveMQ manual] (activemq/readme.md)
 - [Install Tomcat manual] (tomcat/readme.md)

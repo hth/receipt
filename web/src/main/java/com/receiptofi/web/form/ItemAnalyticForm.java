@@ -2,6 +2,7 @@ package com.receiptofi.web.form;
 
 import com.receiptofi.domain.ExpenseTagEntity;
 import com.receiptofi.domain.ItemEntity;
+import com.receiptofi.utils.LocaleUtil;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -49,12 +50,22 @@ public final class ItemAnalyticForm {
         return siteAveragePrice;
     }
 
+    @SuppressWarnings("unused")
+    public String getSiteAveragePriceString() {
+        return LocaleUtil.getNumberFormat(item.getReceipt().getCountryShortName()).format(siteAveragePrice);
+    }
+
     public void setSiteAveragePrice(BigDecimal siteAveragePrice) {
         this.siteAveragePrice = siteAveragePrice;
     }
 
     public BigDecimal getYourAveragePrice() {
         return yourAveragePrice;
+    }
+
+    @SuppressWarnings("unused")
+    public String getYourAveragePriceString() {
+        return LocaleUtil.getNumberFormat(item.getReceipt().getCountryShortName()).format(yourAveragePrice);
     }
 
     public void setYourAveragePrice(BigDecimal yourAveragePrice) {

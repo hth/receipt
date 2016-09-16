@@ -4,6 +4,7 @@
 package com.receiptofi.domain.value;
 
 import com.receiptofi.utils.DateUtil;
+import com.receiptofi.utils.LocaleUtil;
 import com.receiptofi.utils.Maths;
 
 import org.joda.time.DateTime;
@@ -39,6 +40,7 @@ public class ReceiptGrouped implements Serializable {
     private int year;
     private int month;
     private int day;
+    private String countryShortName;
 
     /**
      * Used by mongo groupBy method
@@ -48,26 +50,17 @@ public class ReceiptGrouped implements Serializable {
         super();
     }
 
-    private ReceiptGrouped(BigDecimal splitTotal, int year, int month, int day) {
+    private ReceiptGrouped(BigDecimal splitTotal, int year, int month, int day, String countryShortName) {
         super();
         this.splitTotal = splitTotal;
         this.year = year;
         this.month = month;
         this.day = day;
+        this.countryShortName = countryShortName;
     }
 
-    public static ReceiptGrouped newInstance(BigDecimal splitTotal, int year, int month, int day) {
-        return new ReceiptGrouped(splitTotal, year, month, day);
-    }
-
-    /**
-     * Used in the Calendar for display. Helps scale the total number computed from GroupBy
-     *
-     * @return
-     */
-    @SuppressWarnings ("unused")
-    public BigDecimal getStringTotal() {
-        return splitTotal.setScale(2, BigDecimal.ROUND_HALF_UP);
+    public static ReceiptGrouped newInstance(BigDecimal splitTotal, int year, int month, int day, String countryShortName) {
+        return new ReceiptGrouped(splitTotal, year, month, day, countryShortName);
     }
 
     //TODO: Note day should not be zero other wise gets an exception while setting the date with zero. May remove this code
@@ -117,8 +110,21 @@ public class ReceiptGrouped implements Serializable {
         return this.day;
     }
 
+    public String getCountryShortName() {
+        return countryShortName;
+    }
+
+    /**
+     * Used in the Calendar for display. Helps scale the total number computed from GroupBy.
+     *
+     * @return
+     */
     public BigDecimal getSplitTotal() {
         return Maths.adjustScale(splitTotal);
+    }
+
+    public String getSplitTotalString() {
+        return LocaleUtil.getNumberFormat(countryShortName).format(Maths.adjustScale(splitTotal));
     }
 
     @Override

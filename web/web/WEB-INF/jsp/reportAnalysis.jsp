@@ -78,7 +78,7 @@
 
                 <li>
                     <a href="${pageContext.request.contextPath}/access/landing/report/<spring:eval expression='receiptGrouped.dateTime.toString("MMM, yyyy")' />.htm" class="ll-t" target="_blank">
-                        <spring:eval expression='receiptGrouped.dateTime.toString("MMM")' /> &nbsp;&nbsp; <spring:eval expression="receiptGrouped.splitTotal" />
+                        <spring:eval expression='receiptGrouped.dateTime.toString("MMM")' /> &nbsp;&nbsp; ${receiptGrouped.splitTotalString}
                     </a>
                 </li>
                 </c:forEach>
@@ -103,71 +103,71 @@
         <div id="tab1" class="report-content">
             <c:choose>
             <c:when test="${!empty reportAnalysisForm.receiptListViews}">
-            <c:forEach var="receipts" items="${reportAnalysisForm.receiptListViews}" varStatus="status">
+            <c:forEach var="receiptListView" items="${reportAnalysisForm.receiptListViews}" varStatus="status">
             <div class="rightside-title report-title">
                 <h1 class="rightside-title-text left">
-                    <fmt:formatDate value="${receipts.date}" pattern="MMMM, yyyy"/>
+                    <fmt:formatDate value="${receiptListView.date}" pattern="MMMM, yyyy"/>
                     &nbsp;&nbsp;&nbsp;&nbsp;
-                    <span style="color: #007aff;"><spring:eval expression="receipts.splitTotal" /></span>
+                    <span style="color: #007aff;">${receiptListView.splitTotalString}</span>
                 </h1>
             </div>
             <div class="rightside-list-holder rightside-list-holder-report">
                 <ul>
-                    <c:forEach var="receipt" items="${receipts.receiptListViewGroupedList}" varStatus="status">
+                    <c:forEach var="receiptListViewGrouped" items="${receiptListView.receiptListViewGroupedList}" varStatus="status">
                     <li>
                         <c:choose>
-                            <c:when test="${receipt.splitCount gt 1}">
-                                <span class="rightside-li-date-text rightside-li-date-text-short"><fmt:formatDate value="${receipt.date}" pattern="MMM. dd"/></span>
+                            <c:when test="${receiptListViewGrouped.splitCount gt 1}">
+                                <span class="rightside-li-date-text rightside-li-date-text-short"><fmt:formatDate value="${receiptListViewGrouped.date}" pattern="MMM. dd"/></span>
                                 <p class="rightside-li-date-text rightside-li-date-text-show-attr" align="center">
                                     <c:choose>
-                                    <c:when test="${receipt.ownReceipt}">
+                                    <c:when test="${receiptListViewGrouped.ownReceipt}">
                                         <span class="member" style="background-color: #00529B; width: 25px; height: 25px; margin-top: 3px;">
-                                            <span class="member-initials" style="line-height: 25px;">+${receipt.splitCount - 1}</span>
+                                            <span class="member-initials" style="line-height: 25px;">+${receiptListViewGrouped.splitCount - 1}</span>
                                         </span>
                                     </c:when>
                                     <c:otherwise>
                                         <span class="member" style="background-color: #606060; width: 25px; height: 25px; margin-top: 3px;">
-                                            <span class="member-initials" style="line-height: 25px;">+${receipt.splitCount - 1}</span>
+                                            <span class="member-initials" style="line-height: 25px;">+${receiptListViewGrouped.splitCount - 1}</span>
                                         </span>
                                     </c:otherwise>
                                     </c:choose>
                                 </p>
                             </c:when>
                             <c:otherwise>
-                                <span class="rightside-li-date-text"><fmt:formatDate value="${receipt.date}" pattern="MMMM dd, yyyy"/></span>
+                                <span class="rightside-li-date-text"><fmt:formatDate value="${receiptListViewGrouped.date}" pattern="MMMM dd, yyyy"/></span>
                             </c:otherwise>
                         </c:choose>
-                        <span style="background-color: ${receipt.expenseColor}" title="${receipt.expenseTagName}">&nbsp;&nbsp;&nbsp;</span>
+                        <span style="background-color: ${receiptListViewGrouped.expenseColor}" title="${receiptListViewGrouped.expenseTagName}">&nbsp;&nbsp;&nbsp;</span>
                         <c:choose>
-                        <c:when test="${receipt.billedStatus eq 'NB'}">
+                        <c:when test="${receiptListViewGrouped.billedStatus eq 'NB'}">
                             <a href="/access/userprofilepreference/i.htm#tabs-3"
                                     class="rightside-li-middle-text">
                                 <c:choose>
-                                    <c:when test="${receipt.name.length() gt 38}">
-                                        <spring:eval expression="receipt.name.substring(0, 38)"/>...
+                                    <c:when test="${receiptListViewGrouped.name.length() gt 38}">
+                                        <spring:eval expression="receiptListViewGrouped.name.substring(0, 38)"/>...
                                     </c:when>
                                     <c:otherwise>
-                                        <spring:eval expression="receipt.name"/>
+                                        <spring:eval expression="receiptListViewGrouped.name"/>
                                     </c:otherwise>
                                 </c:choose>
                             </a>
                         </c:when>
                         <c:otherwise>
-                            <a href="${pageContext.request.contextPath}/access/receipt/${receipt.id}.htm"
+                            <a href="${pageContext.request.contextPath}/access/receipt/${receiptListViewGrouped.id}.htm"
                                     class="rightside-li-middle-text" target="_blank">
                                 <c:choose>
-                                    <c:when test="${receipt.name.length() gt 38}">
-                                        <spring:eval expression="receipt.name.substring(0, 38)"/>...
+                                    <c:when test="${receiptListViewGrouped.name.length() gt 38}">
+                                        <spring:eval expression="receiptListViewGrouped.name.substring(0, 38)"/>...
                                     </c:when>
                                     <c:otherwise>
-                                        <spring:eval expression="receipt.name"/>
+                                        <spring:eval expression="receiptListViewGrouped.name"/>
                                     </c:otherwise>
                                 </c:choose>
                             </a>
                         </c:otherwise>
                         </c:choose>
                         <span class="rightside-li-right-text">
-                            <spring:eval expression='receipt.splitTotal'/>
+                            ${receiptListViewGrouped.splitTotalString}
                         </span>
                     </li>
                     </c:forEach>
@@ -227,6 +227,12 @@
     $(function () {
         "use strict";
 
+        Highcharts.setOptions({
+            lang: {
+                thousandsSep: ','
+            }
+        });
+
         $('#monthly').highcharts({
             chart: {
                 type: 'column',
@@ -242,8 +248,8 @@
             },
             xAxis: {
                 categories: [
-                    <c:forEach var="month" items="${reportAnalysisForm.receiptGroupedByMonths}"  varStatus="status">
-                    '${month.monthName}',
+                    <c:forEach var="receiptGroupedByMonth" items="${reportAnalysisForm.receiptGroupedByMonths}" varStatus="status">
+                    '${receiptGroupedByMonth.monthName}',
                     </c:forEach>
                 ],
                 labels: {
@@ -258,7 +264,7 @@
             yAxis: {
                 min: 0,
                 title: {
-                    text: 'Expenses in Dollar($)'
+                    text: 'Total Expense Amount'
                 }
             },
             legend: {
@@ -267,15 +273,14 @@
             tooltip: {
                 formatter: function() {
                     return '<b>'+ this.x +'</b> ' +
-                            'total expense : '+ Highcharts.numberFormat(this.y, 2) +
-                            '$';
+                            'total expense : '+ Highcharts.numberFormat(this.y, 2);
                 }
             },
             series: [{
                 name: 'Monthly Expense',
                 data: [
-                    <c:forEach var="month" items="${reportAnalysisForm.receiptGroupedByMonths}" varStatus="status">
-                    {y: ${month.stringTotal}, color: '#7CB5EC'},
+                    <c:forEach var="receiptGroupedByMonth" items="${reportAnalysisForm.receiptGroupedByMonths}" varStatus="status">
+                    {y: ${receiptGroupedByMonth.splitTotal}, color: '#7CB5EC'},
                     </c:forEach>
                 ],
                 dataLabels: {

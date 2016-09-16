@@ -147,6 +147,7 @@ public class ReceiptManagerImpl implements ReceiptManager {
                         "  result.day = obj.T; " +
                         "  result.month = obj.M; " +
                         "  result.year = obj.Y; " +
+                        "  result.countryShortName = obj.CS; " +
                         "  result.splitTotal += obj.ST; " +
                         "}");
 
@@ -187,6 +188,7 @@ public class ReceiptManagerImpl implements ReceiptManager {
                 group("year", "month")
                         .first("year").as("Y")
                         .first("month").as("M")
+                        .first("countryShortName").as("countryShortName")
                         .sum("splitTotal").as("splitTotal"),
                 sort(DESC, previousOperation())
         );

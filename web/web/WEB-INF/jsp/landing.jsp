@@ -24,7 +24,7 @@
     <script src="${pageContext.request.contextPath}/static/external/js/fineuploader/jquery.fine-uploader.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.3.1/fullcalendar.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/randomcolor/0.3.0/randomColor.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/randomcolor/0.4.4/randomColor.min.js"></script>
     <script src="${pageContext.request.contextPath}/static/js/classie.js"></script>
 
     <script>
@@ -109,7 +109,7 @@
                     <c:set var="receiptGroupedIterator" value="${landingForm.receiptGrouped}" />
                     <c:forEach var="receiptGrouped" items="${receiptGroupedIterator}">
                     {
-                        title : '<fmt:formatNumber value="${receiptGrouped.stringTotal}" type="currency" />',
+                        title : '${receiptGrouped.splitTotalString}',
                         start : '${receiptGrouped.dateForFullCalendar}',
                         end   : '${receiptGrouped.dateForFullCalendar}',
                         url   : '${pageContext.request.contextPath}/access/day.htm?date=${receiptGrouped.date.time}',
@@ -364,8 +364,8 @@
                                 <a href="/access/userprofilepreference/i.htm#tabs-3"
                                         class="rightside-li-middle-text">
                                     <c:choose>
-                                        <c:when test="${receipt.name.length() gt 34}">
-                                            <spring:eval expression="receipt.name.substring(0, 34)"/>...
+                                        <c:when test="${receipt.name.length() gt 33}">
+                                            <spring:eval expression="receipt.name.substring(0, 33)"/>...
                                         </c:when>
                                         <c:otherwise>
                                             <spring:eval expression="receipt.name"/>
@@ -377,8 +377,8 @@
                                 <a href="${pageContext.request.contextPath}/access/receipt/${receipt.id}.htm"
                                         class="rightside-li-middle-text" target="_blank">
                                     <c:choose>
-                                        <c:when test="${receipt.name.length() gt 34}">
-                                            <spring:eval expression="receipt.name.substring(0, 34)"/>...
+                                        <c:when test="${receipt.name.length() gt 33}">
+                                            <spring:eval expression="receipt.name.substring(0, 33)"/>...
                                         </c:when>
                                         <c:otherwise>
                                             <spring:eval expression="receipt.name"/>
@@ -387,7 +387,7 @@
                                 </a>
                             </c:otherwise>
                             </c:choose>
-                            <span class="rightside-li-right-text"><spring:eval expression='receipt.splitTotal'/></span>
+                            <span class="rightside-li-right-text">${receipt.splitTotalString}</span>
                         </li>
                         </c:forEach>
                     </ul>
@@ -421,7 +421,7 @@
 
             <c:choose>
             <c:when test="${!empty landingForm.receiptGroupedByBizLocations}">
-            <div class="rightside-list-holder">
+            <div class="rightside-list-holder-map">
                 <div id="map-placeholder"></div>
             </div>
             </c:when>
@@ -490,19 +490,19 @@ function drawExpenseByBusiness() {
         var colors = randomColor({hue: 'blue', luminosity: 'bright', count: ${landingForm.bizByExpenseTypes.size()}});
         var categories = [${landingForm.bizNames}];
         var data = [
-            <c:forEach var="item" items="${landingForm.bizByExpenseTypes}" varStatus="status">
+            <c:forEach var="landingDonutChart" items="${landingForm.bizByExpenseTypes}" varStatus="status">
             {
-                y: ${item.total},
+                y: ${landingDonutChart.total},
                 color: colors[${status.count-1}],
-                url: '${pageContext.request.contextPath}/access/receipt/biz/${item.bizName}/${landingForm.receiptForMonth.monthYear}.htm',
-                id: '${item.bizNameForId}',
+                url: '${pageContext.request.contextPath}/access/receipt/biz/${landingDonutChart.bizName}/${landingForm.receiptForMonth.monthYear}.htm',
+                id: '${landingDonutChart.bizNameForId}',
                 drilldown: {
-                    name: '${item.bizName}',
-                    categories: [${item.expenseTags}],
-                    data: [${item.expenseValues}],
+                    name: '${landingDonutChart.bizName}',
+                    categories: [${landingDonutChart.expenseTags}],
+                    data: [${landingDonutChart.expenseValues}],
                     color: colors[${status.count-1}],
-                    url: '${pageContext.request.contextPath}/access/receipt/biz/${item.bizName}/${landingForm.receiptForMonth.monthYear}.htm',
-                    id: '${item.bizNameForId}'
+                    url: '${pageContext.request.contextPath}/access/receipt/biz/${landingDonutChart.bizName}/${landingForm.receiptForMonth.monthYear}.htm',
+                    id: '${landingDonutChart.bizNameForId}'
                 }
             },
             </c:forEach>
@@ -512,7 +512,7 @@ function drawExpenseByBusiness() {
         var bizNames = [];
         var expenseTags = [];
         populateExpenseByBusiness(data, bizNames, categories, expenseTags);
-        loadMonthlyExpensesByBusiness('${landingForm.receiptForMonth.monthYear}', bizNames, expenseTags);
+        loadMonthlyExpensesByBusiness('${landingForm.receiptForMonth.monthYear}', bizNames, expenseTags, '${landingForm.countryShortName}');
     });
 }
 </script>
@@ -534,7 +534,7 @@ function drawExpenseByBusiness() {
             <c:if test="${loc.bizStore.validatedUsingExternalAPI && !empty loc.bizStore.coordinate}">
             [
                 '<div class="mapContainer">' +
-                '<div><h3>${loc.bizName.safeJSBusinessName} : <b>${loc.totalStr}</b></h3></div>' +
+                '<div><h3>${loc.bizName.safeJSBusinessName} : <b>${loc.splitTotalString}</b></h3></div>' +
                 '<div>' +
                 '<div>${loc.bizStore.safeJSAddress}</div>' +
                 '</div>' +

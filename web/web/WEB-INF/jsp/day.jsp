@@ -114,11 +114,11 @@
                     <fmt:formatDate value="${receipt.receiptDate}" type="both"/>
                 </td>
                 <td style="padding:3px;" align="right">
-                    <spring:eval expression="receipt.tax" />
+                    <spring:eval expression="receipt.taxString" />
                 </td>
                 <td style="padding:3px;" align="right">
                     <a href="${pageContext.request.contextPath}/access/receipt/${receipt.id}.htm">
-                        <spring:eval expression="receipt.total" />
+                        <spring:eval expression="receipt.splitTotalString" />
                     </a>
                 </td>
             </tr>

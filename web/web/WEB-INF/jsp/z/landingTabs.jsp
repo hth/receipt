@@ -81,8 +81,8 @@
                 <a href="${pageContext.request.contextPath}/access/receipt/${receipt.id}.htm"
                         class="rightside-li-middle-text" target="_blank">
                     <c:choose>
-                        <c:when test="${receipt.name.length() gt 34}">
-                            <spring:eval expression="receipt.name.substring(0, 34)"/>...
+                        <c:when test="${receipt.name.length() gt 33}">
+                            <spring:eval expression="receipt.name.substring(0, 33)"/>...
                         </c:when>
                         <c:otherwise>
                             <spring:eval expression="receipt.name"/>
@@ -91,7 +91,7 @@
                 </a>
             </c:otherwise>
             </c:choose>
-            <span class="rightside-li-right-text"><spring:eval expression='receipt.splitTotal'/></span>
+            <span class="rightside-li-right-text"><spring:eval expression='receipt.splitTotalString'/></span>
         </li>
         </c:forEach>
     </ul>
@@ -106,7 +106,7 @@
 
 <c:if test="${!empty landingForm.bizByExpenseTypes}">
 <!-- Biz by expense -->
-<script src="//cdnjs.cloudflare.com/ajax/libs/randomcolor/0.3.0/randomColor.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/randomcolor/0.4.4/randomColor.min.js"></script>
 <script>
     $(function () {
         "use strict";
@@ -114,19 +114,19 @@
         var colors = randomColor({hue: 'blue', luminosity: 'bright', count: ${landingForm.bizByExpenseTypes.size()}});
         var categories = [${landingForm.bizNames}];
         var data = [
-            <c:forEach var="item" items="${landingForm.bizByExpenseTypes}" varStatus="status">
+            <c:forEach var="landingDonutChart" items="${landingForm.bizByExpenseTypes}" varStatus="status">
             {
-                y: ${item.total},
+                y: ${landingDonutChart.total},
                 color: colors[${status.count-1}],
-                url: '${pageContext.request.contextPath}/access/receipt/biz/${item.bizName}/${landingForm.receiptForMonth.monthYear}.htm',
-                id: '${item.bizNameForId}',
+                url: '${pageContext.request.contextPath}/access/receipt/biz/${landingDonutChart.bizName}/${landingForm.receiptForMonth.monthYear}.htm',
+                id: '${landingDonutChart.bizNameForId}',
                 drilldown: {
-                    name: '${item.bizName}',
-                    categories: [${item.expenseTags}],
-                    data: [${item.expenseValues}],
+                    name: '${landingDonutChart.bizName}',
+                    categories: [${landingDonutChart.expenseTags}],
+                    data: [${landingDonutChart.expenseValues}],
                     color: colors[${status.count-1}],
-                    url: '${pageContext.request.contextPath}/access/receipt/biz/${item.bizName}/${landingForm.receiptForMonth.monthYear}.htm',
-                    id: '${item.bizNameForId}'
+                    url: '${pageContext.request.contextPath}/access/receipt/biz/${landingDonutChart.bizName}/${landingForm.receiptForMonth.monthYear}.htm',
+                    id: '${landingDonutChart.bizNameForId}'
                 }
             },
             </c:forEach>
@@ -159,7 +159,7 @@
             }
         }
 
-        loadMonthlyExpensesByBusiness('${landingForm.receiptForMonth.monthYear}', bizNames, expenseTags);
+        loadMonthlyExpensesByBusiness('${landingForm.receiptForMonth.monthYear}', bizNames, expenseTags, '${landingForm.countryShortName}');
     });
 </script>
 </c:if>
