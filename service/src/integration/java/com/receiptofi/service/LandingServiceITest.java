@@ -40,7 +40,8 @@ import java.util.Map;
 @Category (IntegrationTests.class)
 public class LandingServiceITest extends ITest {
 
-    UserAccountEntity primaryUserAccount;
+    private UserAccountEntity primaryUserAccount;
+    private static String COUNTRY_SHORT_NAME = "IN";
 
     @Before
     public void classSetup() throws IOException {
@@ -64,12 +65,14 @@ public class LandingServiceITest extends ITest {
             receipt1.setTotal(3.65);
             receipt1.setTax(1.00);
             receipt1.setReceiptDate(DateUtil.midnight(receiptTransactionDate.withDayOfMonth(1)).toDate());
+            receipt1.setCountryShortName(COUNTRY_SHORT_NAME);
             createReceiptWithItems(receipt1);
 
             ReceiptEntity receipt2 = populateReceiptWithComments(primaryUserAccount);
             receipt2.setTotal(1.65);
             receipt2.setTax(1.00);
             receipt2.setReceiptDate(DateUtil.midnight(receiptTransactionDate.withDayOfMonth(1)).plusHours(1).toDate());
+            receipt2.setCountryShortName(COUNTRY_SHORT_NAME);
             createReceiptWithItems(receipt2);
 
             /** Last year receipt. */
@@ -77,6 +80,7 @@ public class LandingServiceITest extends ITest {
             receipt3.setTotal(3.33);
             receipt3.setTax(1.00);
             receipt3.setReceiptDate(DateUtil.midnight(receiptTransactionDate.withDayOfMonth(1).minusYears(1)).toDate());
+            receipt3.setCountryShortName(COUNTRY_SHORT_NAME);
             createReceiptWithItems(receipt3);
         }
     }
@@ -123,6 +127,8 @@ public class LandingServiceITest extends ITest {
         assertEquals("Total for last year", Maths.adjustScale(new BigDecimal(3.33)), receiptGrouped2.getSplitTotal());
 
         assertEquals("Difference in year", 1, receiptGrouped1.getYear() - receiptGrouped2.getYear());
+
+        assertEquals("Country matching", COUNTRY_SHORT_NAME, receiptGrouped1.getCountryShortName());
     }
 
     @Test
