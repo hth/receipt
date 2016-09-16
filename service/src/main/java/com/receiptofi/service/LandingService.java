@@ -152,11 +152,12 @@ public class LandingService {
         List<ReceiptListView> receiptListViews = new LinkedList<>();
         for (ReceiptGrouped receiptGrouped : groupedByMonth) {
 
-            ReceiptListView receiptListView = new ReceiptListView();
-            receiptListView.setMonth(receiptGrouped.getMonth());
-            receiptListView.setYear(receiptGrouped.getYear());
-            receiptListView.setDate(receiptGrouped.getDateTime().toDate());
-            receiptListView.setSplitTotal(receiptGrouped.getSplitTotal());
+            ReceiptListView receiptListView = new ReceiptListView()
+                    .setMonth(receiptGrouped.getMonth())
+                    .setYear(receiptGrouped.getYear())
+                    .setDate(receiptGrouped.getDateTime().toDate())
+                    .setSplitTotal(receiptGrouped.getSplitTotal())
+                    .setCountryShortName(receiptGrouped.getCountryShortName());
 
             receiptListView.setReceiptListViewGroupedList(
                     receiptManager.getReceiptForGroupedByMonth(
@@ -193,7 +194,8 @@ public class LandingService {
                     BigDecimal.ZERO,
                     dateTime.getYear(),
                     dateTime.getMonthOfYear(),
-                    dateTime.getDayOfMonth());
+                    dateTime.getDayOfMonth(),
+                    receiptGrouped.getCountryShortName());
             copiedList.add(r1);
 
             dateTime = dateTime.minusMonths(1);
@@ -201,7 +203,8 @@ public class LandingService {
                     BigDecimal.ZERO,
                     dateTime.getYear(),
                     dateTime.getMonthOfYear(),
-                    dateTime.getDayOfMonth());
+                    dateTime.getDayOfMonth(),
+                    receiptGrouped.getCountryShortName());
             copiedList.add(r2);
         } else if (size == 2) {
             ReceiptGrouped receiptGrouped = copiedList.get(1);
@@ -212,7 +215,8 @@ public class LandingService {
                     BigDecimal.ZERO,
                     dateTime.getYear(),
                     dateTime.getMonthOfYear(),
-                    dateTime.getDayOfMonth());
+                    dateTime.getDayOfMonth(),
+                    receiptGrouped.getCountryShortName());
             copiedList.add(r1);
         }
 
@@ -233,11 +237,11 @@ public class LandingService {
         Map<String, Map<String, BigDecimal>> maps = new HashMap<>();
 
         for (ReceiptEntity receipt : receipts) {
-            List<ItemEntity> itemEntities = itemService.getAllItemsOfReceipt(receipt.getId());
-            if (!itemEntities.isEmpty()) {
+            List<ItemEntity> items = itemService.getAllItemsOfReceipt(receipt.getId());
+            if (!items.isEmpty()) {
                 Map<String, BigDecimal> itemMaps = new HashMap<>();
 
-                for (ItemEntity itemEntity : itemEntities) {
+                for (ItemEntity itemEntity : items) {
                     BigDecimal sum = BigDecimal.ZERO;
                     sum = itemService.calculateTotalCost(sum, itemEntity);
                     if (null == itemEntity.getExpenseTag()) {

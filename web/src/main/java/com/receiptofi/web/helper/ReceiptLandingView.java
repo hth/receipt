@@ -2,6 +2,7 @@ package com.receiptofi.web.helper;
 
 import com.receiptofi.domain.ReceiptEntity;
 import com.receiptofi.domain.types.BilledStatusEnum;
+import com.receiptofi.utils.LocaleUtil;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -43,6 +44,7 @@ public final class ReceiptLandingView {
     private String expenseColor;
     private BilledStatusEnum billedStatus;
     private boolean ownReceipt;
+    private String countryShortName;
 
     private ReceiptLandingView(ReceiptEntity receipt) {
         id = receipt.getId();
@@ -62,6 +64,7 @@ public final class ReceiptLandingView {
         bizNameForId = StringUtils.deleteWhitespace(receipt.getBizName().getBusinessName()).replaceAll("[^a-zA-Z0-9]", "");
         billedStatus = receipt.getBilledStatus();
         ownReceipt = StringUtils.isBlank(receipt.getReferReceiptId());
+        countryShortName = receipt.getCountryShortName();
     }
 
     public static ReceiptLandingView newInstance(ReceiptEntity receiptEntity) {
@@ -110,6 +113,10 @@ public final class ReceiptLandingView {
 
     public Double getSplitTotal() {
         return splitTotal;
+    }
+
+    public String getSplitTotalString() {
+        return LocaleUtil.getNumberFormat(countryShortName).format(splitTotal);
     }
 
     public void setSplitTotal(Double splitTotal) {

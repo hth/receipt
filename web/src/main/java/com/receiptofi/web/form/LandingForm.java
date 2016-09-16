@@ -29,6 +29,9 @@ public final class LandingForm {
     private List<LandingDonutChart> bizByExpenseTypes;
     private String bizNames;
 
+    /* TODO add country code from UserProfile. */
+    private String countryShortName;
+
     public ReceiptForMonth getReceiptForMonth() {
         return receiptForMonth;
     }
@@ -50,8 +53,8 @@ public final class LandingForm {
     }
 
     /**
-     * Currently list receipt data for 13 months.
-     * TODO Should it be increased to 7 years?
+     * Currently list receipt data for 12 months.
+     * @see @Value ("${displayMonths:12}")
      *
      * @param receiptGroupedByMonths
      */
@@ -81,6 +84,14 @@ public final class LandingForm {
 
     public void setBizNames(String bizNames) {
         this.bizNames = bizNames;
+    }
+
+    public String getCountryShortName() {
+        return countryShortName;
+    }
+
+    public void setCountryShortName(String countryShortName) {
+        this.countryShortName = countryShortName;
     }
 }
 

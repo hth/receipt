@@ -235,7 +235,7 @@ div .sidebar-invite form input {
 	padding-left: 10px; }
 
 
-/*-----RIght Side Content-----*/
+/*-----Right Side Content-----*/
 .rightside-content {
 	width: 580px;
 	height: auto;
@@ -245,6 +245,12 @@ div .sidebar-invite form input {
 	margin-bottom: 60px; }
 
 .rightside-list-holder {
+	width: 580px;
+	height: auto;
+	min-height: 270px;
+	margin-top: 14px; }
+
+.rightside-list-holder-map {
 	width: 580px;
 	height: auto;
 	min-height: 270px;

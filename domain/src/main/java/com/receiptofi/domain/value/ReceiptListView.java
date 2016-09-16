@@ -1,5 +1,8 @@
 package com.receiptofi.domain.value;
 
+import com.receiptofi.utils.LocaleUtil;
+import com.receiptofi.utils.Maths;
+
 import org.springframework.format.annotation.NumberFormat;
 
 import java.math.BigDecimal;
@@ -15,6 +18,7 @@ public class ReceiptListView {
     private int year;
     private int month;
     private Date date;
+    private String countryShortName;
 
     @NumberFormat (style = NumberFormat.Style.CURRENCY)
     private BigDecimal splitTotal;
@@ -25,32 +29,50 @@ public class ReceiptListView {
         return year;
     }
 
-    public void setYear(int year) {
+    public ReceiptListView setYear(int year) {
         this.year = year;
+        return this;
     }
 
     public int getMonth() {
         return month;
     }
 
-    public void setMonth(int month) {
+    public ReceiptListView setMonth(int month) {
         this.month = month;
+        return this;
     }
 
     public Date getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public ReceiptListView setDate(Date date) {
         this.date = date;
+        return this;
     }
 
     public BigDecimal getSplitTotal() {
         return splitTotal;
     }
 
-    public void setSplitTotal(BigDecimal splitTotal) {
+    @SuppressWarnings("unused")
+    public String getSplitTotalString() {
+        return LocaleUtil.getNumberFormat(countryShortName).format(Maths.adjustScale(splitTotal));
+    }
+
+    public ReceiptListView setSplitTotal(BigDecimal splitTotal) {
         this.splitTotal = splitTotal;
+        return this;
+    }
+
+    public String getCountryShortName() {
+        return countryShortName;
+    }
+
+    public ReceiptListView setCountryShortName(String countryShortName) {
+        this.countryShortName = countryShortName;
+        return this;
     }
 
     public List<ReceiptListViewGrouped> getReceiptListViewGroupedList() {

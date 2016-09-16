@@ -289,7 +289,6 @@ public class ReceiptController {
         LOG.debug("Receipt id={} fid={} splitAction={}", receiptId, fid, splitAction);
 
         boolean result;
-        Double splitTotal;
 
         ReceiptEntity receipt = receiptService.findReceipt(receiptId.getText(), receiptUser.getRid());
         if (null == receipt) {
@@ -298,14 +297,13 @@ public class ReceiptController {
             return null;
         } else {
             result = receiptService.splitAction(fid.getText(), splitAction, receipt);
-            splitTotal = receipt.getSplitTotal();
         }
 
         JsonObject jsonObject = new JsonObject();
         try {
             jsonObject.addProperty("result", result);
             if (result) {
-                jsonObject.addProperty("splitTotal", splitTotal.toString());
+                jsonObject.addProperty("splitTotal", receipt.getSplitTotalString());
             }
             /** Success message is set in JS. */
         } catch (Exception e) {

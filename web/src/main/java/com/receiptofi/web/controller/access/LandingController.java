@@ -159,6 +159,11 @@ public class LandingController {
 //        modelAndView.addObject("receiptForMonth", receiptForMonth);
         landingForm.setReceiptForMonth(receiptForMonth);
 
+        /* TODO set this using user profile. */
+        if (!allReceiptsForThisMonth.isEmpty()) {
+            landingForm.setCountryShortName(allReceiptsForThisMonth.get(0).getCountryShortName());
+        }
+
         documentStatsForm.setPendingCount(landingService.pendingReceipt(receiptUser.getRid()));
         documentStatsForm.setRejectedCount(landingService.rejectedReceipt(receiptUser.getRid()));
 
@@ -213,6 +218,11 @@ public class LandingController {
         List<ReceiptEntity> allReceiptsForThisMonth = landingService.getAllReceiptsForThisMonth(receiptUser.getRid(), monthYear);
         ReceiptForMonth receiptForMonth = getReceiptForMonth(allReceiptsForThisMonth, monthYear);
         landingForm.setReceiptForMonth(receiptForMonth);
+
+        /* TODO set this using user profile. */
+        if (!allReceiptsForThisMonth.isEmpty()) {
+            landingForm.setCountryShortName(allReceiptsForThisMonth.get(0).getCountryShortName());
+        }
 
         /** Used for donut chart of each receipts with respect to expense types in TAB 1. */
         LOG.info("Calculating Donut chart - receipt expense");

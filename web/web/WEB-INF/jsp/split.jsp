@@ -139,7 +139,7 @@
                                                 <spring:eval expression="splitExpense.bizName.businessName"/>
                                             </a>
                                         </span>
-                                        <span class="rightside-li-date-text" style="color: black"><fmt:formatNumber value="${splitExpense.splitTotal}" type="currency" /></span>
+                                        <span class="rightside-li-date-text" style="color: black">${splitExpense.splitTotalString}</span>
                                         <span class="rightside-li-date-text">
                                             <c:if test="${splitForm.canBeSettledWithFriend(splitExpense.friendUserId)}">
                                             <div class="gd-button-holder" style="width: 50px;">
@@ -191,7 +191,7 @@
                                                 <spring:eval expression="splitExpense.bizName.businessName"/>
                                             </a>
                                         </span>
-                                        <span class="rightside-li-date-text" style="color: black"><fmt:formatNumber value="${splitExpense.splitTotal}" type="currency" /></span>
+                                        <span class="rightside-li-date-text" style="color: black">${splitExpense.splitTotalString}</span>
                                     </li>
                                     </c:forEach>
                                 </ul>

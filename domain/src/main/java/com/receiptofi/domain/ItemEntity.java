@@ -6,6 +6,7 @@ package com.receiptofi.domain;
 import static org.springframework.format.annotation.DateTimeFormat.ISO;
 
 import com.receiptofi.domain.types.TaxEnum;
+import com.receiptofi.utils.LocaleUtil;
 import com.receiptofi.utils.Maths;
 
 import org.apache.commons.lang3.StringUtils;
@@ -125,6 +126,12 @@ public class ItemEntity extends BaseEntity {
         return price;
     }
 
+    @SuppressWarnings("unused")
+    @Transient
+    public String getPriceString() {
+        return LocaleUtil.getNumberFormat(receipt.getCountryShortName()).format(price);
+    }
+
     public void setPrice(Double price) {
         this.price = price;
     }
@@ -153,6 +160,12 @@ public class ItemEntity extends BaseEntity {
         return Maths.multiply(tax, quantity);
     }
 
+    @SuppressWarnings("unused")
+    @Transient
+    public String getTotalTaxString() {
+        return LocaleUtil.getNumberFormat(receipt.getCountryShortName()).format(Maths.multiply(tax, quantity));
+    }
+
     public Double getQuantity() {
         return quantity;
     }
@@ -165,6 +178,12 @@ public class ItemEntity extends BaseEntity {
     @Transient
     public BigDecimal getTotalPriceWithoutTax() {
         return Maths.multiply(price, quantity);
+    }
+
+    @SuppressWarnings("unused")
+    @Transient
+    public String getTotalPriceWithoutTaxString() {
+        return LocaleUtil.getNumberFormat(receipt.getCountryShortName()).format(Maths.multiply(price, quantity));
     }
 
     @NumberFormat (style = Style.CURRENCY)

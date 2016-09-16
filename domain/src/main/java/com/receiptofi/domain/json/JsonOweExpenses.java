@@ -7,6 +7,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import com.receiptofi.domain.annotation.Mobile;
+import com.receiptofi.utils.LocaleUtil;
+
+import org.springframework.data.annotation.Transient;
 
 import javax.validation.constraints.Null;
 
@@ -48,11 +51,15 @@ public class JsonOweExpenses {
     @JsonProperty ("name")
     private String name;
 
-    public JsonOweExpenses(String receiptUserId, String friendUserId, Double splitTotal, String name) {
+    @JsonProperty ("cs")
+    private String countryShortName;
+
+    public JsonOweExpenses(String receiptUserId, String friendUserId, Double splitTotal, String name, String countryShortName) {
         this.receiptUserId = receiptUserId;
         this.friendUserId = friendUserId;
         this.splitTotal = splitTotal;
         this.name = name;
+        this.countryShortName = countryShortName;
     }
 
     public String getReceiptUserId() {
@@ -67,7 +74,17 @@ public class JsonOweExpenses {
         return splitTotal;
     }
 
+    @SuppressWarnings("unused")
+    @Transient
+    public String getSplitTotalString() {
+        return LocaleUtil.getNumberFormat(countryShortName).format(splitTotal);
+    }
+
     public String getName() {
         return name;
+    }
+
+    public String getCountryShortName() {
+        return countryShortName;
     }
 }

@@ -1,7 +1,10 @@
 package com.receiptofi.domain;
 
 import com.receiptofi.domain.types.SplitStatusEnum;
+import com.receiptofi.utils.LocaleUtil;
+import com.receiptofi.utils.Maths;
 
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.DBRef;
@@ -108,6 +111,12 @@ public class SplitExpensesEntity extends BaseEntity {
 
     public Double getSplitTotal() {
         return splitTotal;
+    }
+
+    @SuppressWarnings ("unused")
+    @Transient
+    public String getSplitTotalString() {
+        return LocaleUtil.getNumberFormat(countryShortName).format(Maths.adjustScale(splitTotal));
     }
 
     public void setSplitTotal(Double splitTotal) {

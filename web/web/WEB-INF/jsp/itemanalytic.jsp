@@ -123,13 +123,13 @@
                         ${itemAnalyticForm.item.receipt.bizStore.location}
                     </td>
                     <td class="analysis">
-                        <spring:eval expression="itemAnalyticForm.item.price" />
+                        ${itemAnalyticForm.item.priceString}
                     </td>
                     <td class="analysis">
-                        <fmt:formatNumber value="${itemAnalyticForm.yourAveragePrice}" type="currency" />
+                        ${itemAnalyticForm.yourAveragePriceString}
                     </td>
                     <td class="analysis">
-                        <fmt:formatNumber value="${itemAnalyticForm.siteAveragePrice}" type="currency" />
+                        ${itemAnalyticForm.siteAveragePriceString}
                     </td>
                 </tr>
             </table>
@@ -197,7 +197,7 @@
                         ${item.receipt.bizStore.location}
                     </td>
                     <td class="analysis">
-                        <spring:eval expression="item.price" />
+                        ${item.priceString}
                         <spring:eval expression="item.taxed == T(com.receiptofi.domain.types.TaxEnum).T" var="isValid" />
                         <c:choose>
                             <c:when test="${!isValid}">
