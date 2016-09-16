@@ -128,7 +128,7 @@ public class LandingServiceITest extends ITest {
 
         assertEquals("Difference in year", 1, receiptGrouped1.getYear() - receiptGrouped2.getYear());
 
-        assertEquals(COUNTRY_SHORT_NAME, receiptGrouped1.getCountryShortName(), "Country matching");
+        assertEquals("Country matching", COUNTRY_SHORT_NAME, receiptGrouped1.getCountryShortName());
     }
 
     @Test
