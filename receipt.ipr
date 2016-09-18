@@ -85,7 +85,6 @@
             <element id="library" level="project" name="Gradle: org.codehaus.woodstox:stax2-api:3.1.4" />
             <element id="library" level="project" name="Gradle: org.aspectj:aspectjweaver:1.8.9" />
             <element id="library" level="project" name="Gradle: opensymphony:ognl:2.6.11" />
-            <element id="library" level="project" name="Gradle: net.bull.javamelody:javamelody-core:1.60.0" />
             <element id="library" level="project" name="Gradle: org.slf4j:jcl-over-slf4j:1.7.21" />
             <element id="library" level="project" name="Gradle: org.slf4j:slf4j-api:1.7.21" />
             <element id="library" level="project" name="Gradle: org.springframework.social:spring-social-core:1.1.4.RELEASE" />
@@ -212,12 +211,8 @@
             <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-commons:1.13.0.M1" />
             <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-redis:1.7.2.RELEASE" />
             <element id="library" level="project" name="Gradle: redis.clients:jedis:2.9.0" />
-            <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-s3:1.11.24" />
             <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-keyvalue:1.1.2.RELEASE" />
-            <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-kms:1.11.24" />
-            <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-core:1.11.24" />
             <element id="library" level="project" name="Gradle: com.fasterxml.jackson.dataformat:jackson-dataformat-cbor:2.6.6" />
-            <element id="library" level="project" name="Gradle: com.googlecode.libphonenumber:libphonenumber:7.5.2" />
             <element id="library" level="project" name="Gradle: org.springframework.security:spring-security-acl:4.1.3.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework.security:spring-security-aspects:4.1.3.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework.security:spring-security-config:4.1.3.RELEASE" />
@@ -226,6 +221,11 @@
             <element id="library" level="project" name="Gradle: org.springframework.security:spring-security-taglibs:4.1.3.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework.security:spring-security-web:4.1.3.RELEASE" />
             <element id="library" level="project" name="Gradle: org.apache.activemq:activemq-client:5.14.0" />
+            <element id="library" level="project" name="Gradle: net.bull.javamelody:javamelody-core:1.61.0" />
+            <element id="library" level="project" name="Gradle: com.googlecode.libphonenumber:libphonenumber:7.6.0" />
+            <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-core:1.11.34" />
+            <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-kms:1.11.34" />
+            <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-s3:1.11.34" />
           </element>
           <element id="file-copy" path="$PROJECT_DIR$/web/environment/dev/mongo-config.xml" />
           <element id="file-copy" path="$PROJECT_DIR$/web/environment/dev/receipt-servlet.xml" />
@@ -300,6 +300,7 @@
             <element id="library" level="project" name="Gradle: com.braintreepayments.gateway:braintree-java:2.64.0" />
             <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-redis:1.7.2.RELEASE" />
             <element id="library" level="project" name="Gradle: redis.clients:jedis:2.9.0" />
+            <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-s3:1.11.34" />
             <element id="library" level="project" name="Gradle: org.quartz-scheduler:quartz:2.2.3" />
             <element id="library" level="project" name="Gradle: com.notnoop.apns:apns:1.0.0.Beta6" />
             <element id="library" level="project" name="Gradle: org.springframework.webflow:spring-webflow:2.4.4.RELEASE" />
@@ -312,6 +313,7 @@
             <element id="library" level="project" name="Gradle: com.google.guava:guava:19.0" />
             <element id="library" level="project" name="Gradle: com.google.code.gson:gson:2.7" />
             <element id="library" level="project" name="Gradle: com.google.maps:google-maps-services:0.1.15" />
+            <element id="library" level="project" name="Gradle: com.googlecode.libphonenumber:libphonenumber:7.6.0" />
             <element id="library" level="project" name="Gradle: com.googlecode.owasp-java-html-sanitizer:owasp-java-html-sanitizer:r239" />
             <element id="library" level="project" name="Gradle: com.fasterxml:classmate:1.3.1" />
             <element id="library" level="project" name="Gradle: com.fasterxml.jackson.core:jackson-annotations:2.8.1" />
@@ -335,6 +337,7 @@
             <element id="library" level="project" name="Gradle: ch.qos.logback:logback-core:1.1.7" />
             <element id="library" level="project" name="Gradle: ch.qos.logback:logback-classic:1.1.7" />
             <element id="library" level="project" name="Gradle: net.logstash.logback:logstash-logback-encoder:4.7" />
+            <element id="library" level="project" name="Gradle: net.bull.javamelody:javamelody-core:1.61.0" />
             <element id="library" level="project" name="Gradle: junit:junit:4.12" />
             <element id="archive" name="com.receiptofi-common-2.0.0.jar">
               <element id="module-output" name="common_main" />
@@ -347,6 +350,9 @@
             <element id="library" level="project" name="Gradle: org.osgi:org.osgi.core:4.2.0" />
             <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-keyvalue:1.1.2.RELEASE" />
             <element id="library" level="project" name="Gradle: org.apache.commons:commons-pool2:2.4.2" />
+            <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-kms:1.11.34" />
+            <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-core:1.11.34" />
+            <element id="library" level="project" name="Gradle: com.amazonaws:jmespath-java:1.0" />
             <element id="library" level="project" name="Gradle: c3p0:c3p0:0.9.1.1" />
             <element id="library" level="project" name="Gradle: commons-httpclient:commons-httpclient:3.1" />
             <element id="library" level="project" name="Gradle: opensymphony:ognl:2.6.11" />
@@ -354,6 +360,7 @@
             <element id="library" level="project" name="Gradle: org.springframework.webflow:spring-js:2.4.4.RELEASE" />
             <element id="library" level="project" name="Gradle: org.jboss.logging:jboss-logging:3.2.1.Final" />
             <element id="library" level="project" name="Gradle: com.squareup.okhttp:okhttp:2.7.5" />
+            <element id="library" level="project" name="Gradle: com.google.protobuf.nano:protobuf-javanano:3.0.0-alpha-7" />
             <element id="library" level="project" name="Gradle: com.google.code.findbugs:jsr305:3.0.1" />
             <element id="library" level="project" name="Gradle: commons-beanutils:commons-beanutils:1.9.2" />
             <element id="library" level="project" name="Gradle: commons-digester:commons-digester:1.8.1" />
@@ -454,13 +461,6 @@
               <element id="dir-copy" path="$PROJECT_DIR$/domain/build/resources/main" />
             </element>
             <element id="library" level="project" name="Gradle: javax.servlet:jstl:1.2" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/aws-java-sdk-s3/1.11.34/53b9b6bc96523ea764eeaac6abeee589293d8065/aws-java-sdk-s3-1.11.34.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.googlecode.libphonenumber/libphonenumber/7.6.0/1dcb28ce4cc02ad2f514fd5ac47e3ddceace1319/libphonenumber-7.6.0.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/net.bull.javamelody/javamelody-core/1.61.0/4f58f4d02a0d9eb3796eebc15ed84e84182ba4f8/javamelody-core-1.61.0.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/aws-java-sdk-kms/1.11.34/2176a6b3bbd90843ccaf54182d90512792f792cc/aws-java-sdk-kms-1.11.34.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/aws-java-sdk-core/1.11.34/2ebcb9e78cf88d76e1073e4f14419c0460e983f7/aws-java-sdk-core-1.11.34.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/jmespath-java/1.0/179bd97646b82151f87e9c089eafe4dbc9ead31f/jmespath-java-1.0.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.protobuf.nano/protobuf-javanano/3.0.0-alpha-7/52587934797e3433992a9d69178a1471e4a8f85d/protobuf-javanano-3.0.0-alpha-7.jar" />
           </element>
         </element>
         <element id="directory" name="META-INF">
@@ -518,6 +518,7 @@
             <element id="library" level="project" name="Gradle: com.braintreepayments.gateway:braintree-java:2.64.0" />
             <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-redis:1.7.2.RELEASE" />
             <element id="library" level="project" name="Gradle: redis.clients:jedis:2.9.0" />
+            <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-s3:1.11.34" />
             <element id="library" level="project" name="Gradle: org.quartz-scheduler:quartz:2.2.3" />
             <element id="library" level="project" name="Gradle: com.notnoop.apns:apns:1.0.0.Beta6" />
             <element id="library" level="project" name="Gradle: org.springframework.webflow:spring-webflow:2.4.4.RELEASE" />
@@ -530,6 +531,7 @@
             <element id="library" level="project" name="Gradle: com.google.guava:guava:19.0" />
             <element id="library" level="project" name="Gradle: com.google.code.gson:gson:2.7" />
             <element id="library" level="project" name="Gradle: com.google.maps:google-maps-services:0.1.15" />
+            <element id="library" level="project" name="Gradle: com.googlecode.libphonenumber:libphonenumber:7.6.0" />
             <element id="library" level="project" name="Gradle: com.googlecode.owasp-java-html-sanitizer:owasp-java-html-sanitizer:r239" />
             <element id="library" level="project" name="Gradle: com.fasterxml:classmate:1.3.1" />
             <element id="library" level="project" name="Gradle: com.fasterxml.jackson.core:jackson-annotations:2.8.1" />
@@ -553,6 +555,7 @@
             <element id="library" level="project" name="Gradle: ch.qos.logback:logback-core:1.1.7" />
             <element id="library" level="project" name="Gradle: ch.qos.logback:logback-classic:1.1.7" />
             <element id="library" level="project" name="Gradle: net.logstash.logback:logstash-logback-encoder:4.7" />
+            <element id="library" level="project" name="Gradle: net.bull.javamelody:javamelody-core:1.61.0" />
             <element id="library" level="project" name="Gradle: junit:junit:4.12" />
             <element id="archive" name="com.receiptofi-common-2.0.0.jar">
               <element id="module-output" name="common_main" />
@@ -565,6 +568,9 @@
             <element id="library" level="project" name="Gradle: org.osgi:org.osgi.core:4.2.0" />
             <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-keyvalue:1.1.2.RELEASE" />
             <element id="library" level="project" name="Gradle: org.apache.commons:commons-pool2:2.4.2" />
+            <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-kms:1.11.34" />
+            <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-core:1.11.34" />
+            <element id="library" level="project" name="Gradle: com.amazonaws:jmespath-java:1.0" />
             <element id="library" level="project" name="Gradle: c3p0:c3p0:0.9.1.1" />
             <element id="library" level="project" name="Gradle: commons-httpclient:commons-httpclient:3.1" />
             <element id="library" level="project" name="Gradle: opensymphony:ognl:2.6.11" />
@@ -572,6 +578,7 @@
             <element id="library" level="project" name="Gradle: org.springframework.webflow:spring-js:2.4.4.RELEASE" />
             <element id="library" level="project" name="Gradle: org.jboss.logging:jboss-logging:3.2.1.Final" />
             <element id="library" level="project" name="Gradle: com.squareup.okhttp:okhttp:2.7.5" />
+            <element id="library" level="project" name="Gradle: com.google.protobuf.nano:protobuf-javanano:3.0.0-alpha-7" />
             <element id="library" level="project" name="Gradle: com.google.code.findbugs:jsr305:3.0.1" />
             <element id="library" level="project" name="Gradle: commons-beanutils:commons-beanutils:1.9.2" />
             <element id="library" level="project" name="Gradle: commons-digester:commons-digester:1.8.1" />
@@ -672,13 +679,6 @@
               <element id="dir-copy" path="$PROJECT_DIR$/domain/build/resources/main" />
             </element>
             <element id="library" level="project" name="Gradle: javax.servlet:jstl:1.2" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/aws-java-sdk-s3/1.11.34/53b9b6bc96523ea764eeaac6abeee589293d8065/aws-java-sdk-s3-1.11.34.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.googlecode.libphonenumber/libphonenumber/7.6.0/1dcb28ce4cc02ad2f514fd5ac47e3ddceace1319/libphonenumber-7.6.0.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/net.bull.javamelody/javamelody-core/1.61.0/4f58f4d02a0d9eb3796eebc15ed84e84182ba4f8/javamelody-core-1.61.0.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/aws-java-sdk-kms/1.11.34/2176a6b3bbd90843ccaf54182d90512792f792cc/aws-java-sdk-kms-1.11.34.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/aws-java-sdk-core/1.11.34/2ebcb9e78cf88d76e1073e4f14419c0460e983f7/aws-java-sdk-core-1.11.34.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/jmespath-java/1.0/179bd97646b82151f87e9c089eafe4dbc9ead31f/jmespath-java-1.0.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.protobuf.nano/protobuf-javanano/3.0.0-alpha-7/52587934797e3433992a9d69178a1471e4a8f85d/protobuf-javanano-3.0.0-alpha-7.jar" />
           </element>
         </element>
         <element id="directory" name="META-INF">
@@ -736,6 +736,7 @@
             <element id="library" level="project" name="Gradle: com.braintreepayments.gateway:braintree-java:2.64.0" />
             <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-redis:1.7.2.RELEASE" />
             <element id="library" level="project" name="Gradle: redis.clients:jedis:2.9.0" />
+            <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-s3:1.11.34" />
             <element id="library" level="project" name="Gradle: org.quartz-scheduler:quartz:2.2.3" />
             <element id="library" level="project" name="Gradle: com.notnoop.apns:apns:1.0.0.Beta6" />
             <element id="library" level="project" name="Gradle: org.springframework.webflow:spring-webflow:2.4.4.RELEASE" />
@@ -748,6 +749,7 @@
             <element id="library" level="project" name="Gradle: com.google.guava:guava:19.0" />
             <element id="library" level="project" name="Gradle: com.google.code.gson:gson:2.7" />
             <element id="library" level="project" name="Gradle: com.google.maps:google-maps-services:0.1.15" />
+            <element id="library" level="project" name="Gradle: com.googlecode.libphonenumber:libphonenumber:7.6.0" />
             <element id="library" level="project" name="Gradle: com.googlecode.owasp-java-html-sanitizer:owasp-java-html-sanitizer:r239" />
             <element id="library" level="project" name="Gradle: com.fasterxml:classmate:1.3.1" />
             <element id="library" level="project" name="Gradle: com.fasterxml.jackson.core:jackson-annotations:2.8.1" />
@@ -771,6 +773,7 @@
             <element id="library" level="project" name="Gradle: ch.qos.logback:logback-core:1.1.7" />
             <element id="library" level="project" name="Gradle: ch.qos.logback:logback-classic:1.1.7" />
             <element id="library" level="project" name="Gradle: net.logstash.logback:logstash-logback-encoder:4.7" />
+            <element id="library" level="project" name="Gradle: net.bull.javamelody:javamelody-core:1.61.0" />
             <element id="library" level="project" name="Gradle: junit:junit:4.12" />
             <element id="archive" name="com.receiptofi-common-2.0.0.jar">
               <element id="module-output" name="common_main" />
@@ -783,6 +786,9 @@
             <element id="library" level="project" name="Gradle: org.osgi:org.osgi.core:4.2.0" />
             <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-keyvalue:1.1.2.RELEASE" />
             <element id="library" level="project" name="Gradle: org.apache.commons:commons-pool2:2.4.2" />
+            <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-kms:1.11.34" />
+            <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-core:1.11.34" />
+            <element id="library" level="project" name="Gradle: com.amazonaws:jmespath-java:1.0" />
             <element id="library" level="project" name="Gradle: c3p0:c3p0:0.9.1.1" />
             <element id="library" level="project" name="Gradle: commons-httpclient:commons-httpclient:3.1" />
             <element id="library" level="project" name="Gradle: opensymphony:ognl:2.6.11" />
@@ -790,6 +796,7 @@
             <element id="library" level="project" name="Gradle: org.springframework.webflow:spring-js:2.4.4.RELEASE" />
             <element id="library" level="project" name="Gradle: org.jboss.logging:jboss-logging:3.2.1.Final" />
             <element id="library" level="project" name="Gradle: com.squareup.okhttp:okhttp:2.7.5" />
+            <element id="library" level="project" name="Gradle: com.google.protobuf.nano:protobuf-javanano:3.0.0-alpha-7" />
             <element id="library" level="project" name="Gradle: com.google.code.findbugs:jsr305:3.0.1" />
             <element id="library" level="project" name="Gradle: commons-beanutils:commons-beanutils:1.9.2" />
             <element id="library" level="project" name="Gradle: commons-digester:commons-digester:1.8.1" />
@@ -894,13 +901,6 @@
               <element id="dir-copy" path="$PROJECT_DIR$/service/build/resources/main" />
             </element>
             <element id="library" level="project" name="Gradle: javax.servlet:jstl:1.2" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/aws-java-sdk-s3/1.11.34/53b9b6bc96523ea764eeaac6abeee589293d8065/aws-java-sdk-s3-1.11.34.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.googlecode.libphonenumber/libphonenumber/7.6.0/1dcb28ce4cc02ad2f514fd5ac47e3ddceace1319/libphonenumber-7.6.0.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/net.bull.javamelody/javamelody-core/1.61.0/4f58f4d02a0d9eb3796eebc15ed84e84182ba4f8/javamelody-core-1.61.0.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/aws-java-sdk-kms/1.11.34/2176a6b3bbd90843ccaf54182d90512792f792cc/aws-java-sdk-kms-1.11.34.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/aws-java-sdk-core/1.11.34/2ebcb9e78cf88d76e1073e4f14419c0460e983f7/aws-java-sdk-core-1.11.34.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/jmespath-java/1.0/179bd97646b82151f87e9c089eafe4dbc9ead31f/jmespath-java-1.0.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.protobuf.nano/protobuf-javanano/3.0.0-alpha-7/52587934797e3433992a9d69178a1471e4a8f85d/protobuf-javanano-3.0.0-alpha-7.jar" />
           </element>
         </element>
         <element id="directory" name="META-INF">
@@ -958,6 +958,7 @@
             <element id="library" level="project" name="Gradle: com.braintreepayments.gateway:braintree-java:2.64.0" />
             <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-redis:1.7.2.RELEASE" />
             <element id="library" level="project" name="Gradle: redis.clients:jedis:2.9.0" />
+            <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-s3:1.11.34" />
             <element id="library" level="project" name="Gradle: org.quartz-scheduler:quartz:2.2.3" />
             <element id="library" level="project" name="Gradle: com.notnoop.apns:apns:1.0.0.Beta6" />
             <element id="library" level="project" name="Gradle: org.springframework.webflow:spring-webflow:2.4.4.RELEASE" />
@@ -970,6 +971,7 @@
             <element id="library" level="project" name="Gradle: com.google.guava:guava:19.0" />
             <element id="library" level="project" name="Gradle: com.google.code.gson:gson:2.7" />
             <element id="library" level="project" name="Gradle: com.google.maps:google-maps-services:0.1.15" />
+            <element id="library" level="project" name="Gradle: com.googlecode.libphonenumber:libphonenumber:7.6.0" />
             <element id="library" level="project" name="Gradle: com.googlecode.owasp-java-html-sanitizer:owasp-java-html-sanitizer:r239" />
             <element id="library" level="project" name="Gradle: com.fasterxml:classmate:1.3.1" />
             <element id="library" level="project" name="Gradle: com.fasterxml.jackson.core:jackson-annotations:2.8.1" />
@@ -993,6 +995,7 @@
             <element id="library" level="project" name="Gradle: ch.qos.logback:logback-core:1.1.7" />
             <element id="library" level="project" name="Gradle: ch.qos.logback:logback-classic:1.1.7" />
             <element id="library" level="project" name="Gradle: net.logstash.logback:logstash-logback-encoder:4.7" />
+            <element id="library" level="project" name="Gradle: net.bull.javamelody:javamelody-core:1.61.0" />
             <element id="library" level="project" name="Gradle: junit:junit:4.12" />
             <element id="archive" name="com.receiptofi-common-2.0.0.jar">
               <element id="module-output" name="common_main" />
@@ -1005,6 +1008,9 @@
             <element id="library" level="project" name="Gradle: org.osgi:org.osgi.core:4.2.0" />
             <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-keyvalue:1.1.2.RELEASE" />
             <element id="library" level="project" name="Gradle: org.apache.commons:commons-pool2:2.4.2" />
+            <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-kms:1.11.34" />
+            <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-core:1.11.34" />
+            <element id="library" level="project" name="Gradle: com.amazonaws:jmespath-java:1.0" />
             <element id="library" level="project" name="Gradle: c3p0:c3p0:0.9.1.1" />
             <element id="library" level="project" name="Gradle: commons-httpclient:commons-httpclient:3.1" />
             <element id="library" level="project" name="Gradle: opensymphony:ognl:2.6.11" />
@@ -1012,6 +1018,7 @@
             <element id="library" level="project" name="Gradle: org.springframework.webflow:spring-js:2.4.4.RELEASE" />
             <element id="library" level="project" name="Gradle: org.jboss.logging:jboss-logging:3.2.1.Final" />
             <element id="library" level="project" name="Gradle: com.squareup.okhttp:okhttp:2.7.5" />
+            <element id="library" level="project" name="Gradle: com.google.protobuf.nano:protobuf-javanano:3.0.0-alpha-7" />
             <element id="library" level="project" name="Gradle: com.google.code.findbugs:jsr305:3.0.1" />
             <element id="library" level="project" name="Gradle: commons-beanutils:commons-beanutils:1.9.2" />
             <element id="library" level="project" name="Gradle: commons-digester:commons-digester:1.8.1" />
@@ -1116,13 +1123,6 @@
               <element id="dir-copy" path="$PROJECT_DIR$/service/build/resources/main" />
             </element>
             <element id="library" level="project" name="Gradle: javax.servlet:jstl:1.2" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/aws-java-sdk-s3/1.11.34/53b9b6bc96523ea764eeaac6abeee589293d8065/aws-java-sdk-s3-1.11.34.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.googlecode.libphonenumber/libphonenumber/7.6.0/1dcb28ce4cc02ad2f514fd5ac47e3ddceace1319/libphonenumber-7.6.0.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/net.bull.javamelody/javamelody-core/1.61.0/4f58f4d02a0d9eb3796eebc15ed84e84182ba4f8/javamelody-core-1.61.0.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/aws-java-sdk-kms/1.11.34/2176a6b3bbd90843ccaf54182d90512792f792cc/aws-java-sdk-kms-1.11.34.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/aws-java-sdk-core/1.11.34/2ebcb9e78cf88d76e1073e4f14419c0460e983f7/aws-java-sdk-core-1.11.34.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/jmespath-java/1.0/179bd97646b82151f87e9c089eafe4dbc9ead31f/jmespath-java-1.0.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.protobuf.nano/protobuf-javanano/3.0.0-alpha-7/52587934797e3433992a9d69178a1471e4a8f85d/protobuf-javanano-3.0.0-alpha-7.jar" />
           </element>
         </element>
         <element id="directory" name="META-INF">
@@ -1180,6 +1180,7 @@
             <element id="library" level="project" name="Gradle: com.braintreepayments.gateway:braintree-java:2.64.0" />
             <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-redis:1.7.2.RELEASE" />
             <element id="library" level="project" name="Gradle: redis.clients:jedis:2.9.0" />
+            <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-s3:1.11.34" />
             <element id="library" level="project" name="Gradle: org.quartz-scheduler:quartz:2.2.3" />
             <element id="library" level="project" name="Gradle: com.notnoop.apns:apns:1.0.0.Beta6" />
             <element id="library" level="project" name="Gradle: org.springframework.webflow:spring-webflow:2.4.4.RELEASE" />
@@ -1192,6 +1193,7 @@
             <element id="library" level="project" name="Gradle: com.google.guava:guava:19.0" />
             <element id="library" level="project" name="Gradle: com.google.code.gson:gson:2.7" />
             <element id="library" level="project" name="Gradle: com.google.maps:google-maps-services:0.1.15" />
+            <element id="library" level="project" name="Gradle: com.googlecode.libphonenumber:libphonenumber:7.6.0" />
             <element id="library" level="project" name="Gradle: com.googlecode.owasp-java-html-sanitizer:owasp-java-html-sanitizer:r239" />
             <element id="library" level="project" name="Gradle: com.fasterxml:classmate:1.3.1" />
             <element id="library" level="project" name="Gradle: com.fasterxml.jackson.core:jackson-annotations:2.8.1" />
@@ -1215,6 +1217,7 @@
             <element id="library" level="project" name="Gradle: ch.qos.logback:logback-core:1.1.7" />
             <element id="library" level="project" name="Gradle: ch.qos.logback:logback-classic:1.1.7" />
             <element id="library" level="project" name="Gradle: net.logstash.logback:logstash-logback-encoder:4.7" />
+            <element id="library" level="project" name="Gradle: net.bull.javamelody:javamelody-core:1.61.0" />
             <element id="library" level="project" name="Gradle: junit:junit:4.12" />
             <element id="archive" name="com.receiptofi-common-2.0.0.jar">
               <element id="module-output" name="common_main" />
@@ -1227,6 +1230,9 @@
             <element id="library" level="project" name="Gradle: org.osgi:org.osgi.core:4.2.0" />
             <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-keyvalue:1.1.2.RELEASE" />
             <element id="library" level="project" name="Gradle: org.apache.commons:commons-pool2:2.4.2" />
+            <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-kms:1.11.34" />
+            <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-core:1.11.34" />
+            <element id="library" level="project" name="Gradle: com.amazonaws:jmespath-java:1.0" />
             <element id="library" level="project" name="Gradle: c3p0:c3p0:0.9.1.1" />
             <element id="library" level="project" name="Gradle: commons-httpclient:commons-httpclient:3.1" />
             <element id="library" level="project" name="Gradle: opensymphony:ognl:2.6.11" />
@@ -1234,6 +1240,7 @@
             <element id="library" level="project" name="Gradle: org.springframework.webflow:spring-js:2.4.4.RELEASE" />
             <element id="library" level="project" name="Gradle: org.jboss.logging:jboss-logging:3.2.1.Final" />
             <element id="library" level="project" name="Gradle: com.squareup.okhttp:okhttp:2.7.5" />
+            <element id="library" level="project" name="Gradle: com.google.protobuf.nano:protobuf-javanano:3.0.0-alpha-7" />
             <element id="library" level="project" name="Gradle: com.google.code.findbugs:jsr305:3.0.1" />
             <element id="library" level="project" name="Gradle: commons-beanutils:commons-beanutils:1.9.2" />
             <element id="library" level="project" name="Gradle: commons-digester:commons-digester:1.8.1" />
@@ -1350,13 +1357,6 @@
               <element id="module-output" name="loader_main" />
               <element id="dir-copy" path="$PROJECT_DIR$/loader/build/resources/main" />
             </element>
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/aws-java-sdk-s3/1.11.34/53b9b6bc96523ea764eeaac6abeee589293d8065/aws-java-sdk-s3-1.11.34.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.googlecode.libphonenumber/libphonenumber/7.6.0/1dcb28ce4cc02ad2f514fd5ac47e3ddceace1319/libphonenumber-7.6.0.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/net.bull.javamelody/javamelody-core/1.61.0/4f58f4d02a0d9eb3796eebc15ed84e84182ba4f8/javamelody-core-1.61.0.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/aws-java-sdk-kms/1.11.34/2176a6b3bbd90843ccaf54182d90512792f792cc/aws-java-sdk-kms-1.11.34.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/aws-java-sdk-core/1.11.34/2ebcb9e78cf88d76e1073e4f14419c0460e983f7/aws-java-sdk-core-1.11.34.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/jmespath-java/1.0/179bd97646b82151f87e9c089eafe4dbc9ead31f/jmespath-java-1.0.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.protobuf.nano/protobuf-javanano/3.0.0-alpha-7/52587934797e3433992a9d69178a1471e4a8f85d/protobuf-javanano-3.0.0-alpha-7.jar" />
           </element>
         </element>
         <element id="directory" name="META-INF">
@@ -1414,6 +1414,7 @@
             <element id="library" level="project" name="Gradle: com.braintreepayments.gateway:braintree-java:2.64.0" />
             <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-redis:1.7.2.RELEASE" />
             <element id="library" level="project" name="Gradle: redis.clients:jedis:2.9.0" />
+            <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-s3:1.11.34" />
             <element id="library" level="project" name="Gradle: org.quartz-scheduler:quartz:2.2.3" />
             <element id="library" level="project" name="Gradle: com.notnoop.apns:apns:1.0.0.Beta6" />
             <element id="library" level="project" name="Gradle: org.springframework.webflow:spring-webflow:2.4.4.RELEASE" />
@@ -1426,6 +1427,7 @@
             <element id="library" level="project" name="Gradle: com.google.guava:guava:19.0" />
             <element id="library" level="project" name="Gradle: com.google.code.gson:gson:2.7" />
             <element id="library" level="project" name="Gradle: com.google.maps:google-maps-services:0.1.15" />
+            <element id="library" level="project" name="Gradle: com.googlecode.libphonenumber:libphonenumber:7.6.0" />
             <element id="library" level="project" name="Gradle: com.googlecode.owasp-java-html-sanitizer:owasp-java-html-sanitizer:r239" />
             <element id="library" level="project" name="Gradle: com.fasterxml:classmate:1.3.1" />
             <element id="library" level="project" name="Gradle: com.fasterxml.jackson.core:jackson-annotations:2.8.1" />
@@ -1449,6 +1451,7 @@
             <element id="library" level="project" name="Gradle: ch.qos.logback:logback-core:1.1.7" />
             <element id="library" level="project" name="Gradle: ch.qos.logback:logback-classic:1.1.7" />
             <element id="library" level="project" name="Gradle: net.logstash.logback:logstash-logback-encoder:4.7" />
+            <element id="library" level="project" name="Gradle: net.bull.javamelody:javamelody-core:1.61.0" />
             <element id="library" level="project" name="Gradle: junit:junit:4.12" />
             <element id="archive" name="com.receiptofi-common-2.0.0.jar">
               <element id="module-output" name="common_main" />
@@ -1461,6 +1464,9 @@
             <element id="library" level="project" name="Gradle: org.osgi:org.osgi.core:4.2.0" />
             <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-keyvalue:1.1.2.RELEASE" />
             <element id="library" level="project" name="Gradle: org.apache.commons:commons-pool2:2.4.2" />
+            <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-kms:1.11.34" />
+            <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-core:1.11.34" />
+            <element id="library" level="project" name="Gradle: com.amazonaws:jmespath-java:1.0" />
             <element id="library" level="project" name="Gradle: c3p0:c3p0:0.9.1.1" />
             <element id="library" level="project" name="Gradle: commons-httpclient:commons-httpclient:3.1" />
             <element id="library" level="project" name="Gradle: opensymphony:ognl:2.6.11" />
@@ -1468,6 +1474,7 @@
             <element id="library" level="project" name="Gradle: org.springframework.webflow:spring-js:2.4.4.RELEASE" />
             <element id="library" level="project" name="Gradle: org.jboss.logging:jboss-logging:3.2.1.Final" />
             <element id="library" level="project" name="Gradle: com.squareup.okhttp:okhttp:2.7.5" />
+            <element id="library" level="project" name="Gradle: com.google.protobuf.nano:protobuf-javanano:3.0.0-alpha-7" />
             <element id="library" level="project" name="Gradle: com.google.code.findbugs:jsr305:3.0.1" />
             <element id="library" level="project" name="Gradle: commons-beanutils:commons-beanutils:1.9.2" />
             <element id="library" level="project" name="Gradle: commons-digester:commons-digester:1.8.1" />
@@ -1584,13 +1591,6 @@
               <element id="module-output" name="loader_main" />
               <element id="dir-copy" path="$PROJECT_DIR$/loader/build/resources/main" />
             </element>
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/aws-java-sdk-s3/1.11.34/53b9b6bc96523ea764eeaac6abeee589293d8065/aws-java-sdk-s3-1.11.34.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.googlecode.libphonenumber/libphonenumber/7.6.0/1dcb28ce4cc02ad2f514fd5ac47e3ddceace1319/libphonenumber-7.6.0.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/net.bull.javamelody/javamelody-core/1.61.0/4f58f4d02a0d9eb3796eebc15ed84e84182ba4f8/javamelody-core-1.61.0.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/aws-java-sdk-kms/1.11.34/2176a6b3bbd90843ccaf54182d90512792f792cc/aws-java-sdk-kms-1.11.34.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/aws-java-sdk-core/1.11.34/2ebcb9e78cf88d76e1073e4f14419c0460e983f7/aws-java-sdk-core-1.11.34.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/jmespath-java/1.0/179bd97646b82151f87e9c089eafe4dbc9ead31f/jmespath-java-1.0.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.protobuf.nano/protobuf-javanano/3.0.0-alpha-7/52587934797e3433992a9d69178a1471e4a8f85d/protobuf-javanano-3.0.0-alpha-7.jar" />
           </element>
         </element>
         <element id="directory" name="META-INF">
@@ -1648,6 +1648,7 @@
             <element id="library" level="project" name="Gradle: com.braintreepayments.gateway:braintree-java:2.64.0" />
             <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-redis:1.7.2.RELEASE" />
             <element id="library" level="project" name="Gradle: redis.clients:jedis:2.9.0" />
+            <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-s3:1.11.34" />
             <element id="library" level="project" name="Gradle: org.quartz-scheduler:quartz:2.2.3" />
             <element id="library" level="project" name="Gradle: com.notnoop.apns:apns:1.0.0.Beta6" />
             <element id="library" level="project" name="Gradle: org.springframework.webflow:spring-webflow:2.4.4.RELEASE" />
@@ -1660,6 +1661,7 @@
             <element id="library" level="project" name="Gradle: com.google.guava:guava:19.0" />
             <element id="library" level="project" name="Gradle: com.google.code.gson:gson:2.7" />
             <element id="library" level="project" name="Gradle: com.google.maps:google-maps-services:0.1.15" />
+            <element id="library" level="project" name="Gradle: com.googlecode.libphonenumber:libphonenumber:7.6.0" />
             <element id="library" level="project" name="Gradle: com.googlecode.owasp-java-html-sanitizer:owasp-java-html-sanitizer:r239" />
             <element id="library" level="project" name="Gradle: com.fasterxml:classmate:1.3.1" />
             <element id="library" level="project" name="Gradle: com.fasterxml.jackson.core:jackson-annotations:2.8.1" />
@@ -1683,6 +1685,7 @@
             <element id="library" level="project" name="Gradle: ch.qos.logback:logback-core:1.1.7" />
             <element id="library" level="project" name="Gradle: ch.qos.logback:logback-classic:1.1.7" />
             <element id="library" level="project" name="Gradle: net.logstash.logback:logstash-logback-encoder:4.7" />
+            <element id="library" level="project" name="Gradle: net.bull.javamelody:javamelody-core:1.61.0" />
             <element id="library" level="project" name="Gradle: junit:junit:4.12" />
             <element id="archive" name="com.receiptofi-common-2.0.0.jar">
               <element id="module-output" name="common_main" />
@@ -1695,6 +1698,9 @@
             <element id="library" level="project" name="Gradle: org.osgi:org.osgi.core:4.2.0" />
             <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-keyvalue:1.1.2.RELEASE" />
             <element id="library" level="project" name="Gradle: org.apache.commons:commons-pool2:2.4.2" />
+            <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-kms:1.11.34" />
+            <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-core:1.11.34" />
+            <element id="library" level="project" name="Gradle: com.amazonaws:jmespath-java:1.0" />
             <element id="library" level="project" name="Gradle: c3p0:c3p0:0.9.1.1" />
             <element id="library" level="project" name="Gradle: commons-httpclient:commons-httpclient:3.1" />
             <element id="library" level="project" name="Gradle: opensymphony:ognl:2.6.11" />
@@ -1702,6 +1708,7 @@
             <element id="library" level="project" name="Gradle: org.springframework.webflow:spring-js:2.4.4.RELEASE" />
             <element id="library" level="project" name="Gradle: org.jboss.logging:jboss-logging:3.2.1.Final" />
             <element id="library" level="project" name="Gradle: com.squareup.okhttp:okhttp:2.7.5" />
+            <element id="library" level="project" name="Gradle: com.google.protobuf.nano:protobuf-javanano:3.0.0-alpha-7" />
             <element id="library" level="project" name="Gradle: com.google.code.findbugs:jsr305:3.0.1" />
             <element id="library" level="project" name="Gradle: commons-beanutils:commons-beanutils:1.9.2" />
             <element id="library" level="project" name="Gradle: commons-digester:commons-digester:1.8.1" />
@@ -1805,13 +1812,6 @@
               <element id="module-output" name="domain_main" />
               <element id="dir-copy" path="$PROJECT_DIR$/domain/build/resources/main" />
             </element>
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/aws-java-sdk-s3/1.11.34/53b9b6bc96523ea764eeaac6abeee589293d8065/aws-java-sdk-s3-1.11.34.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.googlecode.libphonenumber/libphonenumber/7.6.0/1dcb28ce4cc02ad2f514fd5ac47e3ddceace1319/libphonenumber-7.6.0.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/net.bull.javamelody/javamelody-core/1.61.0/4f58f4d02a0d9eb3796eebc15ed84e84182ba4f8/javamelody-core-1.61.0.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/aws-java-sdk-kms/1.11.34/2176a6b3bbd90843ccaf54182d90512792f792cc/aws-java-sdk-kms-1.11.34.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/aws-java-sdk-core/1.11.34/2ebcb9e78cf88d76e1073e4f14419c0460e983f7/aws-java-sdk-core-1.11.34.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/jmespath-java/1.0/179bd97646b82151f87e9c089eafe4dbc9ead31f/jmespath-java-1.0.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.protobuf.nano/protobuf-javanano/3.0.0-alpha-7/52587934797e3433992a9d69178a1471e4a8f85d/protobuf-javanano-3.0.0-alpha-7.jar" />
           </element>
         </element>
         <element id="directory" name="META-INF">
@@ -1869,6 +1869,7 @@
             <element id="library" level="project" name="Gradle: com.braintreepayments.gateway:braintree-java:2.64.0" />
             <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-redis:1.7.2.RELEASE" />
             <element id="library" level="project" name="Gradle: redis.clients:jedis:2.9.0" />
+            <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-s3:1.11.34" />
             <element id="library" level="project" name="Gradle: org.quartz-scheduler:quartz:2.2.3" />
             <element id="library" level="project" name="Gradle: com.notnoop.apns:apns:1.0.0.Beta6" />
             <element id="library" level="project" name="Gradle: org.springframework.webflow:spring-webflow:2.4.4.RELEASE" />
@@ -1881,6 +1882,7 @@
             <element id="library" level="project" name="Gradle: com.google.guava:guava:19.0" />
             <element id="library" level="project" name="Gradle: com.google.code.gson:gson:2.7" />
             <element id="library" level="project" name="Gradle: com.google.maps:google-maps-services:0.1.15" />
+            <element id="library" level="project" name="Gradle: com.googlecode.libphonenumber:libphonenumber:7.6.0" />
             <element id="library" level="project" name="Gradle: com.googlecode.owasp-java-html-sanitizer:owasp-java-html-sanitizer:r239" />
             <element id="library" level="project" name="Gradle: com.fasterxml:classmate:1.3.1" />
             <element id="library" level="project" name="Gradle: com.fasterxml.jackson.core:jackson-annotations:2.8.1" />
@@ -1904,6 +1906,7 @@
             <element id="library" level="project" name="Gradle: ch.qos.logback:logback-core:1.1.7" />
             <element id="library" level="project" name="Gradle: ch.qos.logback:logback-classic:1.1.7" />
             <element id="library" level="project" name="Gradle: net.logstash.logback:logstash-logback-encoder:4.7" />
+            <element id="library" level="project" name="Gradle: net.bull.javamelody:javamelody-core:1.61.0" />
             <element id="library" level="project" name="Gradle: junit:junit:4.12" />
             <element id="archive" name="com.receiptofi-common-2.0.0.jar">
               <element id="module-output" name="common_main" />
@@ -1916,6 +1919,9 @@
             <element id="library" level="project" name="Gradle: org.osgi:org.osgi.core:4.2.0" />
             <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-keyvalue:1.1.2.RELEASE" />
             <element id="library" level="project" name="Gradle: org.apache.commons:commons-pool2:2.4.2" />
+            <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-kms:1.11.34" />
+            <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-core:1.11.34" />
+            <element id="library" level="project" name="Gradle: com.amazonaws:jmespath-java:1.0" />
             <element id="library" level="project" name="Gradle: c3p0:c3p0:0.9.1.1" />
             <element id="library" level="project" name="Gradle: commons-httpclient:commons-httpclient:3.1" />
             <element id="library" level="project" name="Gradle: opensymphony:ognl:2.6.11" />
@@ -1923,6 +1929,7 @@
             <element id="library" level="project" name="Gradle: org.springframework.webflow:spring-js:2.4.4.RELEASE" />
             <element id="library" level="project" name="Gradle: org.jboss.logging:jboss-logging:3.2.1.Final" />
             <element id="library" level="project" name="Gradle: com.squareup.okhttp:okhttp:2.7.5" />
+            <element id="library" level="project" name="Gradle: com.google.protobuf.nano:protobuf-javanano:3.0.0-alpha-7" />
             <element id="library" level="project" name="Gradle: com.google.code.findbugs:jsr305:3.0.1" />
             <element id="library" level="project" name="Gradle: commons-beanutils:commons-beanutils:1.9.2" />
             <element id="library" level="project" name="Gradle: commons-digester:commons-digester:1.8.1" />
@@ -2026,13 +2033,6 @@
               <element id="module-output" name="domain_main" />
               <element id="dir-copy" path="$PROJECT_DIR$/domain/build/resources/main" />
             </element>
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/aws-java-sdk-s3/1.11.34/53b9b6bc96523ea764eeaac6abeee589293d8065/aws-java-sdk-s3-1.11.34.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.googlecode.libphonenumber/libphonenumber/7.6.0/1dcb28ce4cc02ad2f514fd5ac47e3ddceace1319/libphonenumber-7.6.0.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/net.bull.javamelody/javamelody-core/1.61.0/4f58f4d02a0d9eb3796eebc15ed84e84182ba4f8/javamelody-core-1.61.0.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/aws-java-sdk-kms/1.11.34/2176a6b3bbd90843ccaf54182d90512792f792cc/aws-java-sdk-kms-1.11.34.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/aws-java-sdk-core/1.11.34/2ebcb9e78cf88d76e1073e4f14419c0460e983f7/aws-java-sdk-core-1.11.34.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/jmespath-java/1.0/179bd97646b82151f87e9c089eafe4dbc9ead31f/jmespath-java-1.0.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.protobuf.nano/protobuf-javanano/3.0.0-alpha-7/52587934797e3433992a9d69178a1471e4a8f85d/protobuf-javanano-3.0.0-alpha-7.jar" />
           </element>
         </element>
         <element id="directory" name="META-INF">
