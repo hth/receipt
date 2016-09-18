@@ -710,6 +710,7 @@ task clean(type: Delete) {
 //import org.apache.tools.ant.filters.ReplaceTokens
 task war(type: War, dependsOn: prepWar) {
     doFirst {
+        exclude('**/receiptofi-loader-*.jar')
         if (env == 'test' || env == 'prod') {
             // This adds escape character to message.properties; if you would like to avoid updating file at runtime
             // then create a new file 'versionFile.name' in your favorite location and add the new file as below
@@ -741,6 +742,41 @@ task war(type: War, dependsOn: prepWar) {
     from warDir
     version ""
     destinationDir = file("$buildDir/war/$env")
+}
+
+task loaderWar(type: War, dependsOn: prepWar) {
+    doFirst {
+        if (env == 'test' || env == 'prod') {
+            // This adds escape character to message.properties; if you would like to avoid updating file at runtime
+            // then create a new file 'versionFile.name' in your favorite location and add the new file as below
+            //
+            // from(rootDir) {
+            //      include versionFile.name
+            // }
+
+            ant.propertyfile(file: "$warDir/WEB-INF/classes/messages.properties") {
+                entry(key: "build.version", value: System.getenv().BUILD_NUMBER?.toInteger())
+                entry(key: "build.env", value: env)
+            }
+
+            baseName = "ROOT-$env." + System.getenv().BUILD_NUMBER?.toInteger()
+        }
+
+        if (env == 'dev') {
+            ant.propertyfile(file: "$warDir/WEB-INF/classes/messages.properties") {
+                entry(key: "build.version", value: 'dev')
+            }
+
+            baseName = "ROOT-loader-$env"
+        }
+
+//        filter(ReplaceTokens, tokens: ['style': 'style-min.css'])
+//        filter(ReplaceTokens, tokens: ['stylelogin': 'stylelogin-min.css'])
+    }
+
+    from warDir
+    version ""
+    destinationDir = file("$buildDir/war/$env-loader")
 }
 
 task testReport(type: TestReport) {
@@ -854,4 +890,4 @@ publishing {
 //Line below is not required because defaultTasks order is followed
 //testReport.mustRunAfter war
 //publishToMavenLocal for local
-defaultTasks 'clean', 'setUpProfileForJunit', 'build', 'jar', 'war', 'test', 'integration', 'testReport', 'jacocoTestReport', 'publish'
+defaultTasks 'clean', 'setUpProfileForJunit', 'build', 'jar', 'war', 'loaderWar', 'test', 'integration', 'testReport', 'jacocoTestReport', 'publish'
