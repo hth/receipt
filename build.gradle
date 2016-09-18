@@ -759,7 +759,7 @@ task loaderWar(type: War, dependsOn: prepWar) {
                 entry(key: "build.env", value: env)
             }
 
-            baseName = "ROOT-$env." + System.getenv().BUILD_NUMBER?.toInteger()
+            baseName = "ROOT-loader-$env." + System.getenv().BUILD_NUMBER?.toInteger()
         }
 
         if (env == 'dev') {
