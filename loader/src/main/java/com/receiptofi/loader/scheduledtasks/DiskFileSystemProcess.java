@@ -108,7 +108,9 @@ public class DiskFileSystemProcess {
     }
 
     private void removeExpiredExcel(File file) {
-        FileUtils.deleteQuietly(file);
+        if (!FileUtils.deleteQuietly(file)) {
+            LOG.error("Failed to delete file={} from disk location={}", file, expensofiReportLocation);
+        }
     }
 
     /**

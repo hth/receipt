@@ -498,13 +498,13 @@ public class ReceiptService {
     /**
      * Used for updating expense report info in the receipt.
      *
-     * @param receipt
+     * @param id
+     * @param filename
      * @return
      */
-    public boolean updateReceiptWithExpReportFilename(ReceiptEntity receipt) {
+    public boolean updateReceiptWithExpReportFilename(String id, String filename) {
         try {
-            save(receipt);
-            return true;
+            return receiptManager.upsertExpensofiFilenameReference(id, filename);
         } catch (Exception e) {
             LOG.error("Failed updating ReceiptEntity with Expense Report Filename, reason={}", e.getLocalizedMessage(), e);
             return false;
