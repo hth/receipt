@@ -109,6 +109,7 @@ public class DiskFileSystemProcess {
 
     private void removeExpiredExcel(File file) {
         if (!FileUtils.deleteQuietly(file)) {
+            /* Could be missing read and write access. add chmod 775 to expensofiReportLocation. */
             LOG.error("Failed to delete file={} from disk location={}", file, expensofiReportLocation);
         }
     }
