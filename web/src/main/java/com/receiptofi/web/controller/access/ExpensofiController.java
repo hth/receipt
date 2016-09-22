@@ -13,13 +13,13 @@ import com.receiptofi.domain.types.NotificationTypeEnum;
 import com.receiptofi.service.ItemAnalyticService;
 import com.receiptofi.service.NotificationService;
 import com.receiptofi.service.ReceiptService;
+import com.receiptofi.service.ftp.FtpService;
 import com.receiptofi.utils.FileUtil;
 import com.receiptofi.utils.ScrubbedInput;
 import com.receiptofi.web.helper.AnchorFileInExcel;
 import com.receiptofi.web.helper.json.ExcelFileName;
 import com.receiptofi.web.view.ExpensofiExcelView;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -73,6 +73,7 @@ public class ExpensofiController {
     private final NotificationService notificationService;
     private final ItemAnalyticService itemAnalyticService;
     private final ExpensofiExcelView expensofiExcelView;
+    private final FtpService ftpService;
 
     @Autowired
     public ExpensofiController(
@@ -85,7 +86,8 @@ public class ExpensofiController {
             ReceiptService receiptService,
             NotificationService notificationService,
             ItemAnalyticService itemAnalyticService,
-            ExpensofiExcelView expensofiExcelView
+            ExpensofiExcelView expensofiExcelView,
+            FtpService ftpService
     ) {
         this.bucketName = bucketName;
         this.awsS3Endpoint = awsS3Endpoint;
@@ -94,6 +96,7 @@ public class ExpensofiController {
         this.notificationService = notificationService;
         this.itemAnalyticService = itemAnalyticService;
         this.expensofiExcelView = expensofiExcelView;
+        this.ftpService = ftpService;
     }
 
     @RequestMapping (
@@ -161,12 +164,12 @@ public class ExpensofiController {
         return new ExcelFileName("").asJson();
     }
 
-    private void updateReceiptWithExcelFilename(ReceiptEntity receiptEntity, String filename) {
-        if (StringUtils.isNotEmpty(receiptEntity.getExpenseReportInFS())) {
-            FileUtils.deleteQuietly(FileUtil.getExcelFile(expensofiReportLocation, filename));
+    private void updateReceiptWithExcelFilename(ReceiptEntity receipt, String filename) {
+        if (StringUtils.isNotEmpty(receipt.getExpenseReportInFS())) {
+            /* Delete existing file on server before updating. */
+            ftpService.delete(receipt.getExpenseReportInFS());
         }
-        receiptEntity.setExpenseReportInFS(filename);
-        receiptService.updateReceiptWithExpReportFilename(receiptEntity);
+        receiptService.updateReceiptWithExpReportFilename(receipt.getId(), filename);
     }
 
     private List<ItemEntity> getItemEntities(String receiptUserId, JsonArray jsonItems) {

@@ -459,6 +459,17 @@ public class ReceiptManagerImpl implements ReceiptManager {
     }
 
     @Override
+    public boolean upsertExpensofiFilenameReference(String id, String filename) {
+        WriteResult writeResult = mongoTemplate.updateFirst(
+                query(where("id").is(id)),
+                entityUpdate(new Update().set("EXF", filename)),
+                ReceiptEntity.class
+        );
+
+        return writeResult.getN() > 0;
+    }
+
+    @Override
     public void removeExpensofiFilenameReference(String filename) {
         mongoTemplate.findAndModify(
                 query(where("EXF").is(filename)),

@@ -1,8 +1,10 @@
 package com.receiptofi.web.view;
 
 import com.receiptofi.domain.ItemEntity;
+import com.receiptofi.service.ftp.FtpService;
 import com.receiptofi.web.helper.AnchorFileInExcel;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
@@ -22,9 +24,9 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import org.springframework.util.Assert;
 import org.springframework.web.servlet.view.document.AbstractExcelView;
 
 import java.io.File;
@@ -57,9 +59,6 @@ public final class ExpensofiExcelView extends AbstractExcelView {
     private static final int UNIT = 1300;
     private static final HSSFCellStyle NO_STYLE = null;
 
-    @Value ("${expensofiReportLocation}")
-    private String expensofiReportLocation;
-
     @Value ("${ExpensofiExcelView.heading:Description,Date,Quantity,Tax,Price,Expense Type}")
     private String heading;
 
@@ -68,6 +67,13 @@ public final class ExpensofiExcelView extends AbstractExcelView {
      */
     @Value ("${ExpensofiExcelView.columnSize:4,3,2,2,3,3}")
     private String columnSize;
+
+    private FtpService ftpService;
+
+    @Autowired
+    public ExpensofiExcelView(FtpService ftpService) {
+        this.ftpService = ftpService;
+    }
 
     public void generateExcel(Map<String, Object> model, HSSFWorkbook workbook) throws IOException {
         buildExcelDocument(model, workbook, null, null);
@@ -173,16 +179,23 @@ public final class ExpensofiExcelView extends AbstractExcelView {
         }
     }
 
+    /**
+     * Generate and stream out to a file in local directory
+     * @param workbook
+     * @param filename
+     * @throws IOException
+     */
     private void persistWorkbookToFileSystem(Workbook workbook, String filename) throws IOException {
         FileOutputStream out = null;
         try {
-            Assert.notNull(expensofiReportLocation);
-            out = new FileOutputStream(new File(expensofiReportLocation + File.separator + filename));
+            out = new FileOutputStream(new File(FileUtils.getTempDirectoryPath() + File.separator + filename));
             workbook.write(out);
+
+            ftpService.upload(filename);
         } catch (IOException e) {
             LOG.error(
                     "Possible permission error while persisting file to file system={}{}{}, reason={}",
-                    expensofiReportLocation,
+                    FileUtils.getTempDirectory(),
                     File.separator,
                     filename,
                     e.getLocalizedMessage(),

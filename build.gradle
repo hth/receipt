@@ -230,6 +230,8 @@ subprojects {
         compile "org.quartz-scheduler:quartz:$quartz"
         compile "com.notnoop.apns:apns:$apns"
         compile "org.springframework.webflow:spring-webflow:$webflow"
+        compile "org.apache.commons:commons-vfs2:$vfs2"
+        compile "com.jcraft:jsch:$jsch"
         /** ------- */
 
         compile 'aopalliance:aopalliance:1.0'

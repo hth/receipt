@@ -9,6 +9,7 @@ import com.receiptofi.domain.ReceiptEntity;
 import com.receiptofi.domain.site.ReceiptUser;
 import com.receiptofi.service.FileDBService;
 import com.receiptofi.service.ReceiptService;
+import com.receiptofi.service.ftp.FtpService;
 import com.receiptofi.utils.FileUtil;
 import com.receiptofi.utils.Formatter;
 import com.receiptofi.utils.ScrubbedInput;
@@ -30,7 +31,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -54,19 +54,18 @@ import javax.servlet.http.HttpServletResponse;
 public class FileDownloadController {
     private static final Logger LOG = LoggerFactory.getLogger(FileDownloadController.class);
 
-    @Value ("${expensofiReportLocation}")
-    private String expensofiReportLocation;
-
     private FileDBService fileDBService;
     private ReceiptService receiptService;
+    private FtpService ftpService;
 
     @Value ("${imageNotFoundPlaceHolder:/static/images/no_image.gif}")
     private String imageNotFound;
 
     @Autowired
-    public FileDownloadController(FileDBService fileDBService, ReceiptService receiptService) {
+    public FileDownloadController(FileDBService fileDBService, ReceiptService receiptService, FtpService ftpService) {
         this.fileDBService = fileDBService;
         this.receiptService = receiptService;
+        this.ftpService = ftpService;
     }
 
     /**
@@ -122,24 +121,35 @@ public class FileDownloadController {
     ) {
         ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
+        InputStream inputStream = null;
         try {
             ReceiptEntity receipt = receiptService.findReceipt(receiptId.getText(), receiptUser.getRid());
             setHeaderForExcel(receipt, response);
 
-            InputStream inputStream = new FileInputStream(FileUtil.getExcelFile(expensofiReportLocation, receipt.getExpenseReportInFS()));
+            inputStream = ftpService.getFile(receipt.getExpenseReportInFS());
+            if (inputStream == null) {
+                receiptService.removeExpensofiFilenameReference(receipt.getExpenseReportInFS());
+                LOG.info("Could find file removed reference to receiptId={} filename={}", receipt.getId(), receipt.getExpenseReportInFS());
+            }
             IOUtils.copy(inputStream, response.getOutputStream());
         } catch (IOException e) {
             LOG.error("Excel retrieval error occurred Receipt={} for user={} reason={}",
                     receiptId, receiptUser.getRid(), e.getLocalizedMessage(), e);
+        } finally {
+            if (inputStream != null) {
+                IOUtils.closeQuietly(inputStream);
+            }
         }
     }
 
     private void setHeaderForExcel(ReceiptEntity receiptEntity, HttpServletResponse response) {
         response.addHeader("Content-Disposition",
-                "inline; filename=" +
-                        receiptEntity.getBizName().getBusinessName() +
-                        "-" +
-                        Formatter.toSmallDate(receiptEntity.getReceiptDate()));
+                "inline; filename="
+                        + receiptEntity.getBizName().getBusinessName()
+                        + "_"
+                        + Formatter.toSmallDate(receiptEntity.getReceiptDate())
+                        + ".xls"
+        );
         response.setContentType("application/vnd.ms-excel");
     }
 
