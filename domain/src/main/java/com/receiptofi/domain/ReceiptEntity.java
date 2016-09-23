@@ -409,6 +409,12 @@ public class ReceiptEntity extends BaseEntity {
         return splitTax;
     }
 
+    @SuppressWarnings("unused")
+    @Transient
+    public String getSplitTaxString() {
+        return LocaleUtil.getNumberFormat(countryShortName).format(splitTax);
+    }
+
     private void setSplitTax(Double splitTax) {
         this.splitTax = splitTax;
     }

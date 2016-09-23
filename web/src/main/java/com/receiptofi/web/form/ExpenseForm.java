@@ -19,9 +19,9 @@ import java.util.List;
 })
 public final class ExpenseForm {
 
-    String name;
-    List<ExpenseTagEntity> expenseTags;
-    List<ItemEntity> items;
+    private String name;
+    private List<ExpenseTagEntity> expenseTags;
+    private List<ItemEntity> items;
 
     public String getName() {
         return name;
