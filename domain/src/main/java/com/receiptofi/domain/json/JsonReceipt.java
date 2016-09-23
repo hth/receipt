@@ -93,6 +93,9 @@ public class JsonReceipt {
     @JsonProperty ("cs")
     private String countryShortName;
 
+    @JsonProperty ("cd")
+    private String cardDigit;
+
     @JsonProperty ("a")
     private boolean active;
 
@@ -130,6 +133,10 @@ public class JsonReceipt {
         this.splitTotal = receipt.getSplitTotal();
         this.splitTax = receipt.getSplitTax();
         this.countryShortName = receipt.getCountryShortName();
+
+        if (null != receipt.getPaymentCard()) {
+            this.cardDigit = receipt.getPaymentCard().getCardDigit();
+        }
 
         this.active = receipt.isActive();
         this.deleted = receipt.isDeleted();
@@ -205,6 +212,10 @@ public class JsonReceipt {
 
     public String getCountryShortName() {
         return countryShortName;
+    }
+
+    public String getCardDigit() {
+        return cardDigit;
     }
 
     public boolean isActive() {
