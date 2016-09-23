@@ -124,7 +124,7 @@
                     </c:choose>
                 </span>
                 <span class="rightside-li-right-text" style="width: 80px;">
-                    <spring:eval expression='item.price'/>
+                    <spring:eval expression='item.priceString'/>
                 </span>
                 <span class="receipt-tag" style="margin-left: -5px;">
                     <form:select path="items[${status.index}].expenseTag.id">

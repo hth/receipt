@@ -100,9 +100,9 @@ public class FtpService {
             /* Copy local file to sftp server. */
             remoteFile.copyFrom(localFile, Selectors.SELECT_SELF);
 
-            LOG.info("File upload success");
+            LOG.info("File ftp to remote successfully");
         } catch (FileSystemException | URIException e) {
-            LOG.error("upload {}", e.getLocalizedMessage(), e);
+            LOG.error("ftp upload remote {}", e.getLocalizedMessage(), e);
             throw new RuntimeException(e);
         } finally {
             manager.close();
@@ -126,7 +126,7 @@ public class FtpService {
 
             return false;
         } catch (FileSystemException | URIException e) {
-            LOG.error("upload {}", e.getLocalizedMessage(), e);
+            LOG.error("ftp delete remote {}", e.getLocalizedMessage(), e);
             throw new RuntimeException(e);
         } finally {
             manager.close();
