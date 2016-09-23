@@ -90,6 +90,9 @@ public class JsonReceipt {
     @JsonProperty ("splitTax")
     private Double splitTax;
 
+    @JsonProperty ("cs")
+    private String countryShortName;
+
     @JsonProperty ("a")
     private boolean active;
 
@@ -126,6 +129,7 @@ public class JsonReceipt {
         this.splitCount = receipt.getSplitCount();
         this.splitTotal = receipt.getSplitTotal();
         this.splitTax = receipt.getSplitTax();
+        this.countryShortName = receipt.getCountryShortName();
 
         this.active = receipt.isActive();
         this.deleted = receipt.isDeleted();
@@ -197,6 +201,10 @@ public class JsonReceipt {
 
     public Double getSplitTax() {
         return splitTax;
+    }
+
+    public String getCountryShortName() {
+        return countryShortName;
     }
 
     public boolean isActive() {
