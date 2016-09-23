@@ -48,6 +48,9 @@ public class JsonReceiptItem {
     @JsonProperty ("tax")
     private String tax;
 
+    @JsonProperty ("cs")
+    private String countryShortName;
+
     @JsonProperty ("receiptId")
     private String receiptId;
 
@@ -61,6 +64,7 @@ public class JsonReceiptItem {
         this.quantity = String.valueOf(item.getQuantity());
         this.price = String.valueOf(item.getPrice());
         this.tax = String.valueOf(item.getTax());
+        this.countryShortName = item.getReceipt().getCountryShortName();
         this.receiptId = item.getReceipt().getId();
         this.expenseTagId = item.getExpenseTag() == null ? "" : item.getExpenseTag().getId();
     }
