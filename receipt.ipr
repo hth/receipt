@@ -54,7 +54,6 @@
             <element id="file-copy" path="$PROJECT_DIR$/lib/user-agent-detector.jar" />
             <element id="library" level="project" name="Gradle: org.apache.geronimo.specs:geronimo-j2ee-management_1.1_spec:1.0.1" />
             <element id="library" level="project" name="Gradle: org.apache.geronimo.specs:geronimo-jms_1.1_spec:1.1.1" />
-            <element id="library" level="project" name="Gradle: org.apache.commons:commons-collections4:4.0" />
             <element id="library" level="project" name="Gradle: javax.mail:mail:1.4.7" />
             <element id="library" level="project" name="Gradle: javax.inject:javax.inject:1" />
             <element id="library" level="project" name="Gradle: c3p0:c3p0:0.9.1.1" />
@@ -231,7 +230,6 @@
             <element id="library" level="project" name="Gradle: org.springframework:spring-test:4.3.3.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework:spring-web:4.3.3.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework:spring-webmvc:4.3.3.RELEASE" />
-            <element id="library" level="project" name="Gradle: com.amazonaws:jmespath-java:1.0" />
           </element>
           <element id="file-copy" path="$PROJECT_DIR$/web/environment/dev/mongo-config.xml" />
           <element id="file-copy" path="$PROJECT_DIR$/web/environment/dev/receipt-servlet.xml" />
@@ -341,7 +339,6 @@
             <element id="library" level="project" name="Gradle: org.apache.tika:tika-parsers:1.13" />
             <element id="library" level="project" name="Gradle: org.apache.tika:tika-core:1.13" />
             <element id="library" level="project" name="Gradle: org.apache.httpcomponents:httpclient:4.5.2" />
-            <element id="library" level="project" name="Gradle: org.apache.commons:commons-collections4:4.0" />
             <element id="library" level="project" name="Gradle: ch.qos.logback:logback-core:1.1.7" />
             <element id="library" level="project" name="Gradle: ch.qos.logback:logback-classic:1.1.7" />
             <element id="library" level="project" name="Gradle: net.logstash.logback:logstash-logback-encoder:4.7" />
@@ -360,7 +357,6 @@
             <element id="library" level="project" name="Gradle: org.apache.commons:commons-pool2:2.4.2" />
             <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-kms:1.11.34" />
             <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-core:1.11.34" />
-            <element id="library" level="project" name="Gradle: com.amazonaws:jmespath-java:1.0" />
             <element id="library" level="project" name="Gradle: c3p0:c3p0:0.9.1.1" />
             <element id="library" level="project" name="Gradle: commons-httpclient:commons-httpclient:3.1" />
             <element id="library" level="project" name="Gradle: opensymphony:ognl:2.6.11" />
@@ -463,6 +459,8 @@
               <element id="dir-copy" path="$PROJECT_DIR$/domain/build/resources/main" />
             </element>
             <element id="library" level="project" name="Gradle: javax.servlet:jstl:1.2" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-collections4/4.1/a4cf4688fe1c7e3a63aa636cc96d013af537768e/commons-collections4-4.1.jar" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/jmespath-java/1.0/1d1f5c57b867df86808ba0865b8a82ed27ebc770/jmespath-java-1.0.jar" />
           </element>
         </element>
         <element id="directory" name="META-INF">
@@ -555,7 +553,6 @@
             <element id="library" level="project" name="Gradle: org.apache.tika:tika-parsers:1.13" />
             <element id="library" level="project" name="Gradle: org.apache.tika:tika-core:1.13" />
             <element id="library" level="project" name="Gradle: org.apache.httpcomponents:httpclient:4.5.2" />
-            <element id="library" level="project" name="Gradle: org.apache.commons:commons-collections4:4.0" />
             <element id="library" level="project" name="Gradle: ch.qos.logback:logback-core:1.1.7" />
             <element id="library" level="project" name="Gradle: ch.qos.logback:logback-classic:1.1.7" />
             <element id="library" level="project" name="Gradle: net.logstash.logback:logstash-logback-encoder:4.7" />
@@ -574,7 +571,6 @@
             <element id="library" level="project" name="Gradle: org.apache.commons:commons-pool2:2.4.2" />
             <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-kms:1.11.34" />
             <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-core:1.11.34" />
-            <element id="library" level="project" name="Gradle: com.amazonaws:jmespath-java:1.0" />
             <element id="library" level="project" name="Gradle: c3p0:c3p0:0.9.1.1" />
             <element id="library" level="project" name="Gradle: commons-httpclient:commons-httpclient:3.1" />
             <element id="library" level="project" name="Gradle: opensymphony:ognl:2.6.11" />
@@ -677,6 +673,8 @@
               <element id="dir-copy" path="$PROJECT_DIR$/domain/build/resources/main" />
             </element>
             <element id="library" level="project" name="Gradle: javax.servlet:jstl:1.2" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-collections4/4.1/a4cf4688fe1c7e3a63aa636cc96d013af537768e/commons-collections4-4.1.jar" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/jmespath-java/1.0/1d1f5c57b867df86808ba0865b8a82ed27ebc770/jmespath-java-1.0.jar" />
           </element>
         </element>
         <element id="directory" name="META-INF">
@@ -769,7 +767,6 @@
             <element id="library" level="project" name="Gradle: org.apache.tika:tika-parsers:1.13" />
             <element id="library" level="project" name="Gradle: org.apache.tika:tika-core:1.13" />
             <element id="library" level="project" name="Gradle: org.apache.httpcomponents:httpclient:4.5.2" />
-            <element id="library" level="project" name="Gradle: org.apache.commons:commons-collections4:4.0" />
             <element id="library" level="project" name="Gradle: ch.qos.logback:logback-core:1.1.7" />
             <element id="library" level="project" name="Gradle: ch.qos.logback:logback-classic:1.1.7" />
             <element id="library" level="project" name="Gradle: net.logstash.logback:logstash-logback-encoder:4.7" />
@@ -788,7 +785,6 @@
             <element id="library" level="project" name="Gradle: org.apache.commons:commons-pool2:2.4.2" />
             <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-kms:1.11.34" />
             <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-core:1.11.34" />
-            <element id="library" level="project" name="Gradle: com.amazonaws:jmespath-java:1.0" />
             <element id="library" level="project" name="Gradle: c3p0:c3p0:0.9.1.1" />
             <element id="library" level="project" name="Gradle: commons-httpclient:commons-httpclient:3.1" />
             <element id="library" level="project" name="Gradle: opensymphony:ognl:2.6.11" />
@@ -895,6 +891,8 @@
               <element id="dir-copy" path="$PROJECT_DIR$/service/build/resources/main" />
             </element>
             <element id="library" level="project" name="Gradle: javax.servlet:jstl:1.2" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-collections4/4.1/a4cf4688fe1c7e3a63aa636cc96d013af537768e/commons-collections4-4.1.jar" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/jmespath-java/1.0/1d1f5c57b867df86808ba0865b8a82ed27ebc770/jmespath-java-1.0.jar" />
           </element>
         </element>
         <element id="directory" name="META-INF">
@@ -987,7 +985,6 @@
             <element id="library" level="project" name="Gradle: org.apache.tika:tika-parsers:1.13" />
             <element id="library" level="project" name="Gradle: org.apache.tika:tika-core:1.13" />
             <element id="library" level="project" name="Gradle: org.apache.httpcomponents:httpclient:4.5.2" />
-            <element id="library" level="project" name="Gradle: org.apache.commons:commons-collections4:4.0" />
             <element id="library" level="project" name="Gradle: ch.qos.logback:logback-core:1.1.7" />
             <element id="library" level="project" name="Gradle: ch.qos.logback:logback-classic:1.1.7" />
             <element id="library" level="project" name="Gradle: net.logstash.logback:logstash-logback-encoder:4.7" />
@@ -1006,7 +1003,6 @@
             <element id="library" level="project" name="Gradle: org.apache.commons:commons-pool2:2.4.2" />
             <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-kms:1.11.34" />
             <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-core:1.11.34" />
-            <element id="library" level="project" name="Gradle: com.amazonaws:jmespath-java:1.0" />
             <element id="library" level="project" name="Gradle: c3p0:c3p0:0.9.1.1" />
             <element id="library" level="project" name="Gradle: commons-httpclient:commons-httpclient:3.1" />
             <element id="library" level="project" name="Gradle: opensymphony:ognl:2.6.11" />
@@ -1113,6 +1109,8 @@
               <element id="dir-copy" path="$PROJECT_DIR$/service/build/resources/main" />
             </element>
             <element id="library" level="project" name="Gradle: javax.servlet:jstl:1.2" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-collections4/4.1/a4cf4688fe1c7e3a63aa636cc96d013af537768e/commons-collections4-4.1.jar" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/jmespath-java/1.0/1d1f5c57b867df86808ba0865b8a82ed27ebc770/jmespath-java-1.0.jar" />
           </element>
         </element>
         <element id="directory" name="META-INF">
@@ -1205,7 +1203,6 @@
             <element id="library" level="project" name="Gradle: org.apache.tika:tika-parsers:1.13" />
             <element id="library" level="project" name="Gradle: org.apache.tika:tika-core:1.13" />
             <element id="library" level="project" name="Gradle: org.apache.httpcomponents:httpclient:4.5.2" />
-            <element id="library" level="project" name="Gradle: org.apache.commons:commons-collections4:4.0" />
             <element id="library" level="project" name="Gradle: ch.qos.logback:logback-core:1.1.7" />
             <element id="library" level="project" name="Gradle: ch.qos.logback:logback-classic:1.1.7" />
             <element id="library" level="project" name="Gradle: net.logstash.logback:logstash-logback-encoder:4.7" />
@@ -1224,7 +1221,6 @@
             <element id="library" level="project" name="Gradle: org.apache.commons:commons-pool2:2.4.2" />
             <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-kms:1.11.34" />
             <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-core:1.11.34" />
-            <element id="library" level="project" name="Gradle: com.amazonaws:jmespath-java:1.0" />
             <element id="library" level="project" name="Gradle: c3p0:c3p0:0.9.1.1" />
             <element id="library" level="project" name="Gradle: commons-httpclient:commons-httpclient:3.1" />
             <element id="library" level="project" name="Gradle: opensymphony:ognl:2.6.11" />
@@ -1343,6 +1339,8 @@
               <element id="module-output" name="loader_main" />
               <element id="dir-copy" path="$PROJECT_DIR$/loader/build/resources/main" />
             </element>
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-collections4/4.1/a4cf4688fe1c7e3a63aa636cc96d013af537768e/commons-collections4-4.1.jar" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/jmespath-java/1.0/1d1f5c57b867df86808ba0865b8a82ed27ebc770/jmespath-java-1.0.jar" />
           </element>
         </element>
         <element id="directory" name="META-INF">
@@ -1435,7 +1433,6 @@
             <element id="library" level="project" name="Gradle: org.apache.tika:tika-parsers:1.13" />
             <element id="library" level="project" name="Gradle: org.apache.tika:tika-core:1.13" />
             <element id="library" level="project" name="Gradle: org.apache.httpcomponents:httpclient:4.5.2" />
-            <element id="library" level="project" name="Gradle: org.apache.commons:commons-collections4:4.0" />
             <element id="library" level="project" name="Gradle: ch.qos.logback:logback-core:1.1.7" />
             <element id="library" level="project" name="Gradle: ch.qos.logback:logback-classic:1.1.7" />
             <element id="library" level="project" name="Gradle: net.logstash.logback:logstash-logback-encoder:4.7" />
@@ -1454,7 +1451,6 @@
             <element id="library" level="project" name="Gradle: org.apache.commons:commons-pool2:2.4.2" />
             <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-kms:1.11.34" />
             <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-core:1.11.34" />
-            <element id="library" level="project" name="Gradle: com.amazonaws:jmespath-java:1.0" />
             <element id="library" level="project" name="Gradle: c3p0:c3p0:0.9.1.1" />
             <element id="library" level="project" name="Gradle: commons-httpclient:commons-httpclient:3.1" />
             <element id="library" level="project" name="Gradle: opensymphony:ognl:2.6.11" />
@@ -1573,6 +1569,8 @@
               <element id="module-output" name="loader_main" />
               <element id="dir-copy" path="$PROJECT_DIR$/loader/build/resources/main" />
             </element>
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-collections4/4.1/a4cf4688fe1c7e3a63aa636cc96d013af537768e/commons-collections4-4.1.jar" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/jmespath-java/1.0/1d1f5c57b867df86808ba0865b8a82ed27ebc770/jmespath-java-1.0.jar" />
           </element>
         </element>
         <element id="directory" name="META-INF">
@@ -1665,7 +1663,6 @@
             <element id="library" level="project" name="Gradle: org.apache.tika:tika-parsers:1.13" />
             <element id="library" level="project" name="Gradle: org.apache.tika:tika-core:1.13" />
             <element id="library" level="project" name="Gradle: org.apache.httpcomponents:httpclient:4.5.2" />
-            <element id="library" level="project" name="Gradle: org.apache.commons:commons-collections4:4.0" />
             <element id="library" level="project" name="Gradle: ch.qos.logback:logback-core:1.1.7" />
             <element id="library" level="project" name="Gradle: ch.qos.logback:logback-classic:1.1.7" />
             <element id="library" level="project" name="Gradle: net.logstash.logback:logstash-logback-encoder:4.7" />
@@ -1684,7 +1681,6 @@
             <element id="library" level="project" name="Gradle: org.apache.commons:commons-pool2:2.4.2" />
             <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-kms:1.11.34" />
             <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-core:1.11.34" />
-            <element id="library" level="project" name="Gradle: com.amazonaws:jmespath-java:1.0" />
             <element id="library" level="project" name="Gradle: c3p0:c3p0:0.9.1.1" />
             <element id="library" level="project" name="Gradle: commons-httpclient:commons-httpclient:3.1" />
             <element id="library" level="project" name="Gradle: opensymphony:ognl:2.6.11" />
@@ -1790,6 +1786,8 @@
               <element id="module-output" name="domain_main" />
               <element id="dir-copy" path="$PROJECT_DIR$/domain/build/resources/main" />
             </element>
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-collections4/4.1/a4cf4688fe1c7e3a63aa636cc96d013af537768e/commons-collections4-4.1.jar" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/jmespath-java/1.0/1d1f5c57b867df86808ba0865b8a82ed27ebc770/jmespath-java-1.0.jar" />
           </element>
         </element>
         <element id="directory" name="META-INF">
@@ -1882,7 +1880,6 @@
             <element id="library" level="project" name="Gradle: org.apache.tika:tika-parsers:1.13" />
             <element id="library" level="project" name="Gradle: org.apache.tika:tika-core:1.13" />
             <element id="library" level="project" name="Gradle: org.apache.httpcomponents:httpclient:4.5.2" />
-            <element id="library" level="project" name="Gradle: org.apache.commons:commons-collections4:4.0" />
             <element id="library" level="project" name="Gradle: ch.qos.logback:logback-core:1.1.7" />
             <element id="library" level="project" name="Gradle: ch.qos.logback:logback-classic:1.1.7" />
             <element id="library" level="project" name="Gradle: net.logstash.logback:logstash-logback-encoder:4.7" />
@@ -1901,7 +1898,6 @@
             <element id="library" level="project" name="Gradle: org.apache.commons:commons-pool2:2.4.2" />
             <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-kms:1.11.34" />
             <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-core:1.11.34" />
-            <element id="library" level="project" name="Gradle: com.amazonaws:jmespath-java:1.0" />
             <element id="library" level="project" name="Gradle: c3p0:c3p0:0.9.1.1" />
             <element id="library" level="project" name="Gradle: commons-httpclient:commons-httpclient:3.1" />
             <element id="library" level="project" name="Gradle: opensymphony:ognl:2.6.11" />
@@ -2007,6 +2003,8 @@
               <element id="module-output" name="domain_main" />
               <element id="dir-copy" path="$PROJECT_DIR$/domain/build/resources/main" />
             </element>
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-collections4/4.1/a4cf4688fe1c7e3a63aa636cc96d013af537768e/commons-collections4-4.1.jar" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/jmespath-java/1.0/1d1f5c57b867df86808ba0865b8a82ed27ebc770/jmespath-java-1.0.jar" />
           </element>
         </element>
         <element id="directory" name="META-INF">
@@ -2502,17 +2500,6 @@
       </JAVADOC>
       <SOURCES>
         <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/aws-java-sdk-s3/1.11.34/fd63b7fda5707bf04de8d2df8e8362f091db6577/aws-java-sdk-s3-1.11.34-sources.jar!/" />
-      </SOURCES>
-    </library>
-    <library name="Gradle: com.amazonaws:jmespath-java:1.0">
-      <CLASSES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/jmespath-java/1.0/f797e463ddc2cabd2659e697787f0b0c53d90351/jmespath-java-1.0.jar!/" />
-      </CLASSES>
-      <JAVADOC>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/jmespath-java/1.0/294a6c3c2c04d8b9ae0c4512be62552601889681/jmespath-java-1.0-javadoc.jar!/" />
-      </JAVADOC>
-      <SOURCES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/jmespath-java/1.0/5902561ea3f03d08770863f529ec10922ac3c122/jmespath-java-1.0-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="Gradle: com.beust:jcommander:1.35">
@@ -3313,15 +3300,15 @@
         <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.activemq/activemq-client/5.14.0/3da3b6d92f0aec54dd8647cb699b2ab724635eeb/activemq-client-5.14.0-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Gradle: org.apache.commons:commons-collections4:4.0">
+    <library name="Gradle: org.apache.commons:commons-collections4:4.1">
       <CLASSES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-collections4/4.0/da217367fd25e88df52ba79e47658d4cf928b0d1/commons-collections4-4.0.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-collections4/4.1/a4cf4688fe1c7e3a63aa636cc96d013af537768e/commons-collections4-4.1.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-collections4/4.0/de7bd8e63225fe4cc4e2ec5c620940573beb1377/commons-collections4-4.0-javadoc.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-collections4/4.1/4bb2e39f1eed190d997b8aefccc68d25b4e5af0a/commons-collections4-4.1-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-collections4/4.0/f8262a0e305c01bb4e8cb4053374315a8bc08e21/commons-collections4-4.0-sources.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-collections4/4.1/f305f3aa45a3b208c013ef92328f8f230329f20e/commons-collections4-4.1-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="Gradle: org.apache.commons:commons-compress:1.11">
