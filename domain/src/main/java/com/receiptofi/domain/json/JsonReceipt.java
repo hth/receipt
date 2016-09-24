@@ -94,7 +94,7 @@ public class JsonReceipt {
     private String countryShortName;
 
     @JsonProperty ("cd")
-    private String cardDigit;
+    private String cardDigit = "";
 
     @JsonProperty ("a")
     private boolean active;
