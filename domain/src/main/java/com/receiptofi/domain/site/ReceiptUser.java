@@ -25,6 +25,7 @@ public final class ReceiptUser extends User {
     private ProviderEnum pid;
     private UserLevelEnum userLevel;
     private boolean accountValidated;
+    private String countryShortName;
 
     public ReceiptUser(
             String username,
@@ -42,13 +43,15 @@ public final class ReceiptUser extends User {
             ProviderEnum pid,
             UserLevelEnum userLevel,
             boolean active,
-            boolean accountValidated
+            boolean accountValidated,
+            String countryShortName
     ) {
         super(username, password, active, true, true, true, authorities);
         this.rid = rid;
         this.pid = pid;
         this.userLevel = userLevel;
         this.accountValidated = accountValidated;
+        this.countryShortName = countryShortName;
     }
 
     public ReceiptUser(
@@ -99,6 +102,10 @@ public final class ReceiptUser extends User {
 
     public boolean isAccountValidated() {
         return accountValidated;
+    }
+
+    public String getCountryShortName() {
+        return countryShortName;
     }
 
     @Override

@@ -171,7 +171,8 @@ public class LoginController {
                 userProfile.getProviderId(),
                 userProfile.getLevel(),
                 customUserDetailsService.isUserActiveAndRegistrationTurnedOn(userAccount),
-                userAccount.isAccountValidated()
+                userAccount.isAccountValidated(),
+                userProfile.getCountryShortName()
         );
         Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, userAccount.getUserAuthentication().getPassword(), authorities);
         SecurityContextHolder.getContext().setAuthentication(authentication);
