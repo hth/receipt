@@ -213,6 +213,8 @@ public final class UserProfileManagerImpl implements UserProfileManager {
 
     @Override
     public void updateCountryShortName(String countryShortName, String rid) {
+        Assert.isTrue(countryShortName.equals(countryShortName.toUpperCase()), "Country short name has to be upper case " + countryShortName);
+
         mongoTemplate.updateFirst(
                 query(where("RID").is(rid)),
                 entityUpdate(update("CS", countryShortName)),
