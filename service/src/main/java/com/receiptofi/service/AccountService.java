@@ -20,7 +20,6 @@ import com.receiptofi.domain.types.ProviderEnum;
 import com.receiptofi.domain.types.RoleEnum;
 import com.receiptofi.domain.types.UserLevelEnum;
 import com.receiptofi.repository.ForgotRecoverManager;
-import com.receiptofi.repository.GenerateUserIdManager;
 import com.receiptofi.repository.InviteManager;
 import com.receiptofi.repository.UserAccountManager;
 import com.receiptofi.repository.UserAuthenticationManager;
@@ -554,6 +553,10 @@ public class AccountService {
 
         userProfileManager.save(userProfile);
         userAccountManager.save(userAccount);
+    }
+
+    public void updateCountryShortName(String countryShortName, String rid) {
+        userProfileManager.updateCountryShortName(countryShortName.toUpperCase(), rid);
     }
 
     public int inactiveNonValidatedAccount(Date pastActivationDate) {

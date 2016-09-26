@@ -118,7 +118,7 @@ header nav {
     width: 578px;
 }
 
-.nav-list li {
+.nav-block li {
     float: left;
     width: 110px;
     height: 40px;
@@ -143,7 +143,7 @@ header nav {
     margin-top: 1px;
 }
 
-.nav-list li a {
+.nav-block li a {
     text-align: center;
     color: #333333;
     font-size: 0.688em;
@@ -1510,3 +1510,13 @@ a.expense-tag:hover, a.expense-tag:visited, a.expense-tag:link {
     width: 100%;
 }
 /** Circle div image */
+
+.countryInput {
+    height: 35px;
+    margin: 0;
+    padding: 6px 12px;
+    border-radius: 2px;
+    font-family: inherit;
+    font-size: 100%;
+    color: inherit;
+}

@@ -237,6 +237,9 @@ public class UserProfilePreferenceController {
                 }
 
                 redirectAttrs.addFlashAttribute("profileForm", profileForm);
+            } else {
+                /* Ignore email change. */
+                changeProfileDetails(profileForm, receiptUser, userProfile);
             }
         } catch (Exception e) {
             LOG.error("Error updating profile={} reason={}", receiptUser.getRid(), e.getLocalizedMessage(), e);
@@ -488,6 +491,7 @@ public class UserProfilePreferenceController {
         profileForm.setLevel(userProfile.getLevel());
         profileForm.setActive(userProfile.isActive());
         profileForm.setRid(userProfile.getReceiptUserId());
+        profileForm.setCountryShortName(userProfile.getCountryShortName());
     }
 
     /**
@@ -540,6 +544,10 @@ public class UserProfilePreferenceController {
                     profileForm.getFirstName().getText(),
                     profileForm.getLastName().getText(),
                     receiptUser.getRid());
+        }
+
+        if (null != profileForm.getCountry_code() && !profileForm.getCountry_code().getText().equals(userProfile.getCountryShortName())) {
+            accountService.updateCountryShortName(profileForm.getCountry_code().getText(), receiptUser.getRid());
         }
     }
 

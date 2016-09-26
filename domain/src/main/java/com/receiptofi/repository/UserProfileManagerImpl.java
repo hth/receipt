@@ -3,9 +3,11 @@
  */
 package com.receiptofi.repository;
 
+import static com.receiptofi.repository.util.AppendAdditionalFields.entityUpdate;
 import static com.receiptofi.repository.util.AppendAdditionalFields.isActive;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
+import static org.springframework.data.mongodb.core.query.Update.update;
 
 import com.mongodb.WriteResult;
 
@@ -204,6 +206,18 @@ public final class UserProfileManagerImpl implements UserProfileManager {
     public UserProfileEntity getProfileUpdateSince(String rid, Date since) {
         return mongoTemplate.findOne(
                 query(where("RID").is(rid).and("U").gte(since)),
+                UserProfileEntity.class,
+                TABLE
+        );
+    }
+
+    @Override
+    public void updateCountryShortName(String countryShortName, String rid) {
+        Assert.isTrue(countryShortName.equals(countryShortName.toUpperCase()), "Country short name has to be upper case " + countryShortName);
+
+        mongoTemplate.updateFirst(
+                query(where("RID").is(rid)),
+                entityUpdate(update("CS", countryShortName)),
                 UserProfileEntity.class,
                 TABLE
         );

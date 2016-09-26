@@ -121,7 +121,8 @@ public class CustomUserDetailsService implements UserDetailsService {
                     userProfile.getProviderId(),
                     userProfile.getLevel(),
                     condition,
-                    userAccount.isAccountValidated()
+                    userAccount.isAccountValidated(),
+                    userProfile.getCountryShortName()
             );
         }
     }
@@ -217,7 +218,8 @@ public class CustomUserDetailsService implements UserDetailsService {
                     userProfile.getProviderId(),
                     userProfile.getLevel(),
                     condition,
-                    userAccount.isAccountValidated()
+                    userAccount.isAccountValidated(),
+                    userProfile.getCountryShortName()
             );
         }
     }

@@ -19,6 +19,7 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/style.css"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/stylelogin.css"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/colpick.css"/>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/external/css/countrySelect/countrySelect.min.css"/>
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css"/>
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
@@ -28,6 +29,7 @@
     <script src="${pageContext.request.contextPath}/static/external/js/noble-count/jquery.NobleCount.min.js"></script>
     <script src="${pageContext.request.contextPath}/static/external/js/cute-time/jquery.cuteTime.min.js"></script>
     <script src="${pageContext.request.contextPath}/static/js/colpick.js"></script>
+    <script src="${pageContext.request.contextPath}/static/external/js/countrySelect/countrySelect.min.js"></script>
 
     <script>
         $(function () {
@@ -149,6 +151,7 @@
                     <form:form modelAttribute="profileForm" method="post" action="i.htm">
                         <form:hidden path="rid"/>
                         <form:hidden path="updated"/>
+                        <form:hidden path="country_code" />
 
                         <spring:hasBindErrors name="profileForm">
                         <div class="r-validation" style="width: 98%; margin: 0 0 0 0;">
@@ -220,26 +223,27 @@
                         </div>
                         </c:if>
                         <div class="row_field">
+                            <label class="profile_label">Country</label>
+                            <input id="country" type="text" class="countryInput" style="width: 274px;">
+                        </div>
+                        <div class="row_field">
                             <label class="profile_label">Last modified</label>
                             <label class="profile_label" style="width: 274px; !important; color: #606060; !important; font-weight: normal; !important;">
                                 <fmt:formatDate value="${profileForm.updated}" type="both"/>
                             </label>
                         </div>
 
-                        <c:choose>
-                            <c:when test="${empty pageContext.request.userPrincipal.principal.pid}">
-                                <div class="full" style="display: <c:out value="${(isSameUser) ? '' : 'none'}"/>">
-                                    <input type="submit" value="UPDATE" style="background: #2c97de;" class="read_btn" disabled="disabled"
-                                            name="profile_update" id="profileUpdate_bt">
-                                </div>
-                            </c:when>
-                            <c:otherwise>
-                                <label class="profile_label profile_label_note" style="width: 400px;">
-                                    <c:out value="${pageContext.request.userPrincipal.principal.pid}"/> Social signup account.
-                                    Please update your social account to see changes here.
-                                </label>
-                            </c:otherwise>
-                        </c:choose>
+                        <div class="full" style="display: <c:out value="${(isSameUser) ? '' : 'none'}"/>">
+                            <input type="submit" value="UPDATE" style="background: #808080;" class="read_btn" disabled="disabled"
+                                    name="profile_update" id="profileUpdate_bt">
+                        </div>
+
+                        <c:if test="${empty pageContext.request.userPrincipal.principal.pid}">
+                            <label class="profile_label profile_label_note" style="width: 400px;">
+                                Some field cannot be updates as it is a <c:out value="${pageContext.request.userPrincipal.principal.pid}"/> Social signup account.
+                                Please update your social account to see changes here.
+                            </label>
+                        </c:if>
                     </form:form>
                 </div>
                 <c:if test="${!empty profileForm.profileImage}">
@@ -520,6 +524,21 @@
         $('#profileUpdate_bt').attr('disabled', false).css('background', '#2c97de');
     });
     </c:if>
+</script>
+<script>
+    $("#country").countrySelect({
+        responsiveDropdown : true,
+        defaultCountry: "${profileForm.countryShortName.text}",
+        preferredCountries: ['us', 'ca', 'gb']
+    });
+    objTextBox = document.getElementById("country_code");
+    oldValue = objTextBox.value;
+    function track_country_change() {
+        if (objTextBox.value != oldValue) {
+            $('#profileUpdate_bt').attr('disabled', false).css('background', '#2c97de');
+        }
+    }
+    setInterval(function() { track_country_change()}, 100);
 </script>
 <script src="${pageContext.request.contextPath}/static/js/mainpop.js"></script>
 </html>
