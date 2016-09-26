@@ -44,6 +44,8 @@ public class ProfileForm {
     private ScrubbedInput mail;
     private Date updated;
     private String profileImage;
+    private ScrubbedInput countryShortName;
+    private ScrubbedInput country_code;
 
     /** For Admin related tab. */
     private String rid;
@@ -191,5 +193,21 @@ public class ProfileForm {
 
     public void setProfileImage(String profileImage) {
         this.profileImage = profileImage;
+    }
+
+    public ScrubbedInput getCountryShortName() {
+        return countryShortName;
+    }
+
+    public void setCountryShortName(String countryShortName) {
+        this.countryShortName = new ScrubbedInput(countryShortName.toLowerCase());
+    }
+
+    public ScrubbedInput getCountry_code() {
+        return country_code;
+    }
+
+    public void setCountry_code(ScrubbedInput country_code) {
+        this.country_code = country_code;
     }
 }

@@ -42,4 +42,7 @@ public interface UserProfileManager extends RepositoryManager<UserProfileEntity>
 
     @Mobile
     UserProfileEntity getProfileUpdateSince(String rid, Date since);
+
+    @Mobile
+    void updateCountryShortName(String country, String rid);
 }
