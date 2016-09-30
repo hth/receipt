@@ -59,7 +59,7 @@ public class ReceiptofiServletContextListener implements ServletContextListener 
             LOG.error("could not load config properties file reason={}", e.getLocalizedMessage(), e);
         }
 
-        checkEnvironment(messages);
+        checkEnvironment(messages, environment);
         checkIfPropertiesExists(environment);
     }
 
@@ -83,16 +83,17 @@ public class ReceiptofiServletContextListener implements ServletContextListener 
         }
     }
 
-    private void checkEnvironment(Properties messages) {
+    private void checkEnvironment(Properties messages, Properties environment) {
         try {
             String hostName = InetAddress.getLocalHost().getHostName();
             String buildEnvironment = messages.getProperty("build.env");
+            String hostname = environment.getProperty("hostname.starts.with");
 
             LOG.info("Deploying on environment={} and host={}", buildEnvironment, hostName);
-            if (StringUtils.equals(buildEnvironment, "prod") && !hostName.startsWith("t")) {
+            if (StringUtils.equals(buildEnvironment, "prod") && !hostName.startsWith(hostname)) {
                 LOG.error("Mismatch environment. Found env={} on host={}", buildEnvironment, hostName);
                 throw new RuntimeException("Mismatch environment. Found env=" + buildEnvironment + " on host=" + hostName);
-            } else if (StringUtils.equals(buildEnvironment, "test") && !hostName.equals("receiptofi.com")) {
+            } else if (StringUtils.equals(buildEnvironment, "test") && !hostName.equals(hostname)) {
                 LOG.error("Mismatch environment. Found env={} on host={}", buildEnvironment, hostName);
                 throw new RuntimeException("Mismatch environment. Found env=" + buildEnvironment + " on host=" + hostName);
             }
