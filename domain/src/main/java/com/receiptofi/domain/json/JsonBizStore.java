@@ -8,8 +8,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.receiptofi.domain.BizStoreEntity;
 import com.receiptofi.domain.annotation.Mobile;
 
-import org.apache.commons.lang3.StringUtils;
-
 import java.util.Arrays;
 
 /**
@@ -55,9 +53,6 @@ public class JsonBizStore {
     @JsonProperty ("rating")
     private float rating;
 
-    @JsonProperty ("country")
-    private String country = "";
-
     private JsonBizStore(BizStoreEntity bizStore) {
         this.address = bizStore.getAddress();
         this.formattedAddress = bizStore.getFormattedAddress();
@@ -68,10 +63,6 @@ public class JsonBizStore {
         }
         this.type = Arrays.toString(bizStore.getPlaceType());
         this.rating = bizStore.getPlaceRating();
-
-        if (StringUtils.isNotBlank(bizStore.getCountryShortName())) {
-            this.country = bizStore.getCountryShortName();
-        }
     }
 
     public static JsonBizStore newInstance(BizStoreEntity bizStore) {
