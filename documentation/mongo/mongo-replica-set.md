@@ -19,7 +19,7 @@ Note: Port is not required if the set ports are default. You can also refer offi
 Do not forget to set the host name through this command for the primary mongo as it take the name from some other. 
 Without this replica set fails. If replica set fails then stop `mongo` and delete `db` and restart `mongo` 
     
-    sudo scutil -set HostName t1
+    sudo scutil --set HostName t1
     
 else name is set incorrectly
  
