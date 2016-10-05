@@ -67,11 +67,11 @@ public class ReceiptofiInitializationCheckBean {
 
     @PostConstruct
     public void hasAccessToFileSystem() {
-        if (!ftpService.exist()) {
-            /* Check if access set correctly for the user and remote location exists. */
-            LOG.error("Cannot access file system directory, location={}", expensofiReportLocation);
-            throw new RuntimeException("File server could not be connected");
-        }
+//        if (!ftpService.exist()) {
+//            /* Check if access set correctly for the user and remote location exists. */
+//            LOG.error("Cannot access file system directory, location={}", expensofiReportLocation);
+//            throw new RuntimeException("File server could not be connected");
+//        }
         LOG.info("Found and has access, to remote ftp directory={}", expensofiReportLocation);
     }
 }
