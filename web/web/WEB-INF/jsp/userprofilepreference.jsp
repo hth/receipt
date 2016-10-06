@@ -22,9 +22,8 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/external/css/countrySelect/countrySelect.min.css"/>
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css"/>
 
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-migrate/3.0.0/jquery-migrate.min.js"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
     <script src="${pageContext.request.contextPath}/static/external/js/noble-count/jquery.NobleCount.min.js"></script>
     <script src="${pageContext.request.contextPath}/static/external/js/cute-time/jquery.cuteTime.min.js"></script>
@@ -238,7 +237,7 @@
                                     name="profile_update" id="profileUpdate_bt">
                         </div>
 
-                        <c:if test="${empty pageContext.request.userPrincipal.principal.pid}">
+                        <c:if test="${empty !pageContext.request.userPrincipal.principal.pid}">
                             <label class="profile_label profile_label_note" style="width: 400px;">
                                 Some field cannot be updates as it is a <c:out value="${pageContext.request.userPrincipal.principal.pid}"/> Social signup account.
                                 Please update your social account to see changes here.
