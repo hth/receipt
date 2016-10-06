@@ -20,7 +20,7 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/stylelogin.css"/>
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
     <script src="${pageContext.request.contextPath}/static/external/js/raty/jquery.raty.min.js"></script>
     <script src="${pageContext.request.contextPath}/static/external/js/noble-count/jquery.NobleCount.min.js"></script>
 </head>
