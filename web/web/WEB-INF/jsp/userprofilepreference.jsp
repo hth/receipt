@@ -20,6 +20,7 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/stylelogin.css"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/colpick.css"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/external/css/countrySelect/countrySelect.min.css"/>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/external/css/image-picker/image-picker.css"/>
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css"/>
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
@@ -29,6 +30,7 @@
     <script src="${pageContext.request.contextPath}/static/external/js/cute-time/jquery.cuteTime.min.js"></script>
     <script src="${pageContext.request.contextPath}/static/js/colpick.js"></script>
     <script src="${pageContext.request.contextPath}/static/external/js/countrySelect/countrySelect.min.js"></script>
+    <script src="${pageContext.request.contextPath}/static/external/js/image-picker/image-picker.min.js"></script>
 
     <script>
         $(function () {
@@ -311,6 +313,15 @@
                         </span>
                     </div>
 
+                    <div>
+                        <select class="image-picker show-html">
+                            <option value=""></option>
+                            <c:forEach items="${profileForm.expenseTagIcons}" var="icon" varStatus="status">
+                                <option data-img-src="${icon}" value="${status.index + 1}">${icon}</option>
+                            </c:forEach>
+                        </select>
+                    </div>
+
                     <div class="full" style="display: <c:out value="${(isSameUser) ? '' : 'none'}"/>">
                         <input type="submit" value="SAVE" class="read_btn" name="expense_tag_save_update" id="expenseTagSaveUpdate_bt"
                                 style="background: #808080; margin: 77px 10px 0 0;" disabled="disabled">
@@ -538,6 +549,12 @@
         }
     }
     setInterval(function() { track_country_change()}, 100);
+</script>
+<script>
+    $("select").imagepicker({
+        hide_select : true,
+        show_label  : false
+    })
 </script>
 <script src="${pageContext.request.contextPath}/static/js/mainpop.js"></script>
 </html>
