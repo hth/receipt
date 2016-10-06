@@ -200,7 +200,9 @@ public class ProfileForm {
     }
 
     public void setCountryShortName(String countryShortName) {
-        this.countryShortName = new ScrubbedInput(countryShortName.toLowerCase());
+        if (StringUtils.isNotBlank(countryShortName)) {
+            this.countryShortName = new ScrubbedInput(countryShortName.toLowerCase());
+        }
     }
 
     public ScrubbedInput getCountry_code() {
