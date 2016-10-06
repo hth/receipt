@@ -238,7 +238,7 @@
                                     name="profile_update" id="profileUpdate_bt">
                         </div>
 
-                        <c:if test="${empty pageContext.request.userPrincipal.principal.pid}">
+                        <c:if test="${empty !pageContext.request.userPrincipal.principal.pid}">
                             <label class="profile_label profile_label_note" style="width: 400px;">
                                 Some field cannot be updates as it is a <c:out value="${pageContext.request.userPrincipal.principal.pid}"/> Social signup account.
                                 Please update your social account to see changes here.
