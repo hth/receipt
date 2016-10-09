@@ -107,6 +107,10 @@ public final class ReceiptLandingView {
         return splitTax;
     }
 
+    public String getSplitTaxString() {
+        return LocaleUtil.getNumberFormat(countryShortName).format(splitTax);
+    }
+
     public void setSplitTax(Double splitTax) {
         this.splitTax = splitTax;
     }
