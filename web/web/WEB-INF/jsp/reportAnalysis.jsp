@@ -136,7 +136,19 @@
                                 <span class="rightside-li-date-text"><fmt:formatDate value="${receiptListViewGrouped.date}" pattern="MMMM dd, yyyy"/></span>
                             </c:otherwise>
                         </c:choose>
-                        <span style="background-color: ${receiptListViewGrouped.expenseColor}" title="${receiptListViewGrouped.expenseTagName}">&nbsp;&nbsp;&nbsp;</span>
+                        <c:choose>
+                            <c:when test="${!empty receiptListViewGrouped.expenseColor}">
+                                <span style="background-color: ${receiptListViewGrouped.expenseColor}; padding: 1px;">
+                                    <img src="${receiptListViewGrouped.expenseIcon}"
+                                            width="15px" height="15px"
+                                            style="vertical-align: middle; margin-top: -4px; margin-left: 3px" />
+                                </span>
+                            </c:when>
+                            <c:otherwise>
+                                <span style="background-color: ${receiptListViewGrouped.expenseColor}; padding: 12px;">
+                                </span>
+                            </c:otherwise>
+                        </c:choose>
                         <c:choose>
                         <c:when test="${receiptListViewGrouped.billedStatus eq 'NB'}">
                             <a href="/access/userprofilepreference/i.htm#tabs-3"
@@ -340,7 +352,12 @@
                         color: '#000000',
                         connectorColor: '#000000',
                         formatter: function() {
-                            return '<b>'+ this.point.name +'</b>: '+ Highcharts.numberFormat(this.percentage, 2) +' %';
+                            if(this.point.icon === "") {
+                                return '<b>' + this.point.name + '</b>: ' + Highcharts.numberFormat(this.percentage, 2) + ' %';
+                            } else {
+                                return '<img width="15px" height="15px" src="' + this.point.icon + '" /></img>&nbsp;&nbsp;'
+                                        + '<span style="font-size: 13px">' + this.point.name + ': ' + Highcharts.numberFormat(this.percentage, 2) + ' % </span>';
+                            }
                         }
                     }
                 }
@@ -356,17 +373,21 @@
                         }
                     }
                 },
+                dataLabels: {
+                    useHTML: true
+                },
                 data: [
 
                     <c:choose>
                     <c:when test="${!empty reportAnalysisForm.thisYearExpenseByTags}">
                     <c:set var="first" value="false"/>
-                    <c:forEach var="item" items="${reportAnalysisForm.thisYearExpenseByTags}"  varStatus="status">
+                    <c:forEach var="item" items="${reportAnalysisForm.thisYearExpenseByTags}" varStatus="status">
                     <c:choose>
                     <c:when test="${first eq false}">
                     {
                         name: '${item.tagName}',
                         y: ${item.percentage},
+                        icon: '${item.tagIcon}',
                         sliced: true,
                         selected: true,
                         url: '${pageContext.request.contextPath}/access/expenses/${item.tagName}.htm'
@@ -377,6 +398,7 @@
                     {
                         name: '${item.tagName}',
                         y: ${item.percentage},
+                        icon: '${item.tagIcon}',
                         sliced: false,
                         selected: false,
                         url: '${pageContext.request.contextPath}/access/expenses/${item.tagName}.htm'
@@ -386,7 +408,7 @@
                     </c:forEach>
                     </c:when>
                     <c:otherwise>
-                    <c:forEach var="item" items="${reportAnalysisForm.thisYearExpenseByTags}"  varStatus="status">
+                    <c:forEach var="item" items="${reportAnalysisForm.thisYearExpenseByTags}" varStatus="status">
                     {
                         name: '${item.tagName}',
                         y: ${item.percentage},

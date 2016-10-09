@@ -119,6 +119,10 @@ public class ReceiptListViewGrouped {
         return expenseTag == null ? "" : expenseTag.getTagColor();
     }
 
+    public String getExpenseIcon() {
+        return expenseTag.getIcon().getWebLocationWithFilename();
+    }
+
     public BilledStatusEnum getBilledStatus() {
         return billedStatus;
     }

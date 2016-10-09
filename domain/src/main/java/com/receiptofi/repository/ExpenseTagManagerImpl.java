@@ -14,6 +14,7 @@ import com.mongodb.WriteResult;
 
 import com.receiptofi.domain.BaseEntity;
 import com.receiptofi.domain.ExpenseTagEntity;
+import com.receiptofi.domain.types.ExpenseTagIconEnum;
 
 import org.bson.types.ObjectId;
 
@@ -131,11 +132,11 @@ public class ExpenseTagManagerImpl implements ExpenseTagManager {
     }
 
     @Override
-    public void updateExpenseTag(String expenseTagId, String expenseTagName, String expenseTagColor, String rid) {
+    public void updateExpenseTag(String expenseTagId, String expenseTagName, String expenseTagColor, ExpenseTagIconEnum expenseTagIcon, String rid) {
         try {
             mongoTemplate.updateFirst(
                     query(where("id").is(new ObjectId(expenseTagId)).and("RID").is(rid)),
-                    entityUpdate(update("TAG", expenseTagName).set("CLR", expenseTagColor)),
+                    entityUpdate(update("TAG", expenseTagName).set("CLR", expenseTagColor).set("IC", expenseTagIcon)),
                     ExpenseTagEntity.class);
         } catch (DuplicateKeyException e) {
             LOG.error("Duplicate record entry for TagName={} rid={}", expenseTagName, rid, e);

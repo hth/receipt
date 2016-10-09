@@ -1,6 +1,7 @@
 package com.receiptofi.repository;
 
 import com.receiptofi.domain.ExpenseTagEntity;
+import com.receiptofi.domain.types.ExpenseTagIconEnum;
 
 import java.util.List;
 
@@ -25,7 +26,7 @@ public interface ExpenseTagManager extends RepositoryManager<ExpenseTagEntity> {
 
     ExpenseTagEntity getExpenseTagByName(String rid, String expenseTagName);
 
-    void updateExpenseTag(String expenseTagId, String expenseTagName, String expenseTagColor, String rid);
+    void updateExpenseTag(String expenseTagId, String expenseTagName, String expenseTagColor, ExpenseTagIconEnum expenseTagIcon, String rid);
 
     boolean softDeleteExpenseTag(String expenseTagId, String expenseTagName, String rid);
 }

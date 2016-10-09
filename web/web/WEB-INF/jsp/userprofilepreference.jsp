@@ -279,11 +279,12 @@
                 <div class="">
                     <c:forEach var="expenseTag" items="${profileForm.expenseTags}" varStatus="status">
                     <input type="button"
-                            value="&times;&nbsp;&nbsp; <spring:eval expression="expenseTag.tagName" /> &nbsp;<spring:eval expression="profileForm.expenseTagCount.get(expenseTag.tagName)" />"
-                            style="color: <spring:eval expression="expenseTag.tagColor" />"
+                            value="&nbsp;&nbsp;&nbsp;&nbsp; ${expenseTag.tagName} &nbsp;${profileForm.expenseTagCount.get(expenseTag.tagName)}"
+                            style="color: ${expenseTag.tagColor};
+                                    background: url('${expenseTag.icon.webLocation}/${expenseTag.icon.name}.png') no-repeat center left;"
                             class="white_btn"
-                            id="<spring:eval expression="expenseTag.id" />"
-                            onclick="clickedExpenseTag(this);">
+                            id="${expenseTag.id}"
+                            onclick="clickedExpenseTag(this, '${expenseTag.icon.name}')">
                     </c:forEach>
                 </div>
                 <h3 class="h3 padtop2per" style="padding-top:25px;color:#0079FF;">&#43; ADD TAG</h3>
@@ -300,6 +301,9 @@
                             <c:if test="${errors.hasFieldErrors('tagColor')}">
                                 <form:errors path="tagColor"/><br/>
                             </c:if>
+                            <c:if test="${errors.hasFieldErrors('tagIcon')}">
+                                <form:errors path="tagIcon"/><br/>
+                            </c:if>
                         </div>
                     </div>
                     </spring:hasBindErrors>
@@ -313,13 +317,13 @@
                         </span>
                     </div>
 
-                    <div>
-                        <select class="image-picker show-html">
+                    <div style="width: 484px">
+                        <form:select path="tagIcon" cssClass="image-picker show-html">
                             <option value=""></option>
                             <c:forEach items="${profileForm.expenseTagIcons}" var="icon" varStatus="status">
-                                <option data-img-src="${icon}" value="${status.index + 1}">${icon}</option>
+                                <option data-img-src="${icon}" value="${status.index + 1}" id="${profileForm.getExpenseTagIconByIndex(status.index + 1)}">${icon}</option>
                             </c:forEach>
-                        </select>
+                        </form:select>
                     </div>
 
                     <div class="full" style="display: <c:out value="${(isSameUser) ? '' : 'none'}"/>">
@@ -551,10 +555,7 @@
     setInterval(function() { track_country_change()}, 100);
 </script>
 <script>
-    $("select").imagepicker({
-        hide_select : true,
-        show_label  : false
-    })
+    $("select").imagepicker()
 </script>
 <script src="${pageContext.request.contextPath}/static/js/mainpop.js"></script>
 </html>

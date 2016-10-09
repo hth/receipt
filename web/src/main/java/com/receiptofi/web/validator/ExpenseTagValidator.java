@@ -42,6 +42,7 @@ public class ExpenseTagValidator implements Validator {
         LOG.debug("Executing validation");
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "tagName", "field.required", new Object[]{"Tag name"});
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "tagColor", "field.required", new Object[]{"Tag color"});
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "tagIcon", "expenseTag.tagIcon", new Object[]{"Tag icon"});
 
         ExpenseTagForm expenseTagForm = (ExpenseTagForm) obj;
         if (expenseTagForm.getTagName() != null && expenseTagForm.getTagName().length() > expenseTagSize) {

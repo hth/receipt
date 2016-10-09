@@ -11,12 +11,14 @@ import java.math.BigDecimal;
 public class ThisYearExpenseByTag {
     private String tagName;
     private String tagColor;
+    private String tagIcon;
     private BigDecimal total;
     private BigDecimal percentage;
 
-    public ThisYearExpenseByTag(String tagName, String tagColor, BigDecimal total) {
+    public ThisYearExpenseByTag(String tagName, String tagColor, String tagIcon, BigDecimal total) {
         this.tagName = tagName;
         this.tagColor = tagColor;
+        this.tagIcon = tagIcon;
         this.total = total;
     }
 
@@ -26,6 +28,10 @@ public class ThisYearExpenseByTag {
 
     public String getTagColor() {
         return tagColor;
+    }
+
+    public String getTagIcon() {
+        return tagIcon;
     }
 
     public BigDecimal getTotal() {

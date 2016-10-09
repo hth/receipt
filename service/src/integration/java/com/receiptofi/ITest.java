@@ -180,6 +180,7 @@ public class ITest extends RealMongoForTests {
         accountService = new AccountService(
                 new String[]{"HOME", "BUSINESS"},
                 new String[]{"#1a9af9", "#b492e8"},
+                new String[]{"V101", "V102"},
                 3,
                 userAccountManager,
                 userAuthenticationManager,

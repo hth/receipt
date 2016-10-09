@@ -2,6 +2,7 @@ package com.receiptofi.service;
 
 import com.receiptofi.domain.ExpenseTagEntity;
 import com.receiptofi.domain.annotation.Mobile;
+import com.receiptofi.domain.types.ExpenseTagIconEnum;
 import com.receiptofi.repository.ExpenseTagManager;
 import com.receiptofi.repository.ItemManager;
 import com.receiptofi.repository.ReceiptManager;
@@ -97,10 +98,10 @@ public class ExpensesService {
     }
 
     @Mobile
-    public void updateExpenseTag(String expenseTypeId, String expenseTagName, String expenseTagColor, String rid) {
+    public void updateExpenseTag(String expenseTypeId, String expenseTagName, String expenseTagColor, ExpenseTagIconEnum expenseTagIcon, String rid) {
         ExpenseTagEntity expenseTag = expenseTagManager.getExpenseTagByName(rid, expenseTagName);
         if (expenseTag == null) {
-            expenseTagManager.updateExpenseTag(expenseTypeId, expenseTagName, expenseTagColor, rid);
+            expenseTagManager.updateExpenseTag(expenseTypeId, expenseTagName, expenseTagColor, expenseTagIcon, rid);
         } else {
             //TODO(hth) prefer to delete inactive expenseTag instead.
             LOG.warn("Previously existing expense tag by name={}", expenseTag.getTagName());
@@ -109,7 +110,7 @@ public class ExpensesService {
 
             LOG.warn("Inactive expense tag saved by new name={} and now updating existing expense tag with name={}",
                     expenseTag.getTagName(), expenseTagName);
-            expenseTagManager.updateExpenseTag(expenseTypeId, expenseTagName, expenseTagColor, rid);
+            expenseTagManager.updateExpenseTag(expenseTypeId, expenseTagName, expenseTagColor, expenseTagIcon, rid);
         }
     }
 
