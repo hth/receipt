@@ -11,6 +11,7 @@ import com.receiptofi.domain.ExpenseTagEntity;
 import com.receiptofi.domain.UserAccountEntity;
 import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.domain.site.ReceiptUser;
+import com.receiptofi.domain.types.ExpenseTagIconEnum;
 import com.receiptofi.service.AccountService;
 import com.receiptofi.service.AdminService;
 import com.receiptofi.service.BillingService;
@@ -293,7 +294,8 @@ public class UserProfilePreferenceController {
                     ExpenseTagEntity expenseTag = ExpenseTagEntity.newInstance(
                             expenseTagForm.getTagName(),
                             receiptUser.getRid(),
-                            expenseTagForm.getTagColor());
+                            expenseTagForm.getTagColor(),
+                            ExpenseTagIconEnum.getExpenseTagIcon(Integer.parseInt(expenseTagForm.getTagIcon())));
 
                     expensesService.saveExpenseTag(expenseTag);
                 } else {
@@ -312,6 +314,7 @@ public class UserProfilePreferenceController {
                         expenseTagForm.getTagId(),
                         expenseTagForm.getTagName(),
                         expenseTagForm.getTagColor(),
+                        ExpenseTagIconEnum.getExpenseTagIcon(Integer.parseInt(expenseTagForm.getTagIcon())),
                         receiptUser.getRid()
                 );
             }

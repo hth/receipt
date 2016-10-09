@@ -402,7 +402,7 @@ function userProfilePreferences() {
     });
 }
 
-function clickedExpenseTag(button) {
+function clickedExpenseTag(button, iconId) {
     var buttonValue = button.value.split(" ");
     var tagName = '', space = '';
     for(var i = 0; i < buttonValue.length - 1; i ++) {
@@ -412,12 +412,14 @@ function clickedExpenseTag(button) {
             tagName = tagName + buttonValue[i];
         }
     }
-    $('#tagColor').val($(button).attr('style').split(" ")[1]);
+    $('#tagColor').val($(button).attr('style').split(" ")[1].substring(0,7));
     $('#tagId').val($(button).attr('id'));
 
     $('#tagName').focus().val(tagName);
     $('.color-box').css('background-color', $(button).attr('style').split(" ")[1]);
     $('#textCount').text(22 - tagName.length);
+    // $('#' + iconId).prop('selected', true);
+    // $('#tagIcon').prop('selected', true);
 
     $('#expenseTagSaveUpdate_bt').val('UPDATE');
     $('#expenseTagDelete_bt').attr('hidden', false);

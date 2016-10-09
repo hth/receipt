@@ -18,6 +18,7 @@ import com.receiptofi.utils.ScrubbedInput;
 public final class ExpenseTagForm {
     private String tagName;
     private String tagColor;
+    private String tagIcon;
     private String tagId;
 
     private ExpenseTagForm() {
@@ -42,6 +43,14 @@ public final class ExpenseTagForm {
 
     public void setTagColor(String tagColor) {
         this.tagColor = new ScrubbedInput(tagColor).getText().toUpperCase();
+    }
+
+    public String getTagIcon() {
+        return tagIcon;
+    }
+
+    public void setTagIcon(String tagIcon) {
+        this.tagIcon = new ScrubbedInput(tagIcon).getText().toUpperCase();
     }
 
     public String getTagId() {

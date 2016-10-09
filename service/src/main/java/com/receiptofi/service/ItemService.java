@@ -5,6 +5,7 @@ import static java.math.BigDecimal.ZERO;
 import com.receiptofi.domain.ExpenseTagEntity;
 import com.receiptofi.domain.ItemEntity;
 import com.receiptofi.domain.ReceiptEntity;
+import com.receiptofi.domain.types.ExpenseTagIconEnum;
 import com.receiptofi.repository.ExpenseTagManager;
 import com.receiptofi.repository.ItemManager;
 import com.receiptofi.service.wrapper.ThisYearExpenseByTag;
@@ -75,7 +76,7 @@ public class ItemService {
      * @param rid
      * @return
      */
-    public List<ThisYearExpenseByTag> getAllItemExpenseForTheYear(String rid) {
+    List<ThisYearExpenseByTag> getAllItemExpenseForTheYear(String rid) {
         List<ThisYearExpenseByTag> thisYearExpenseByTags = new LinkedList<>();
         BigDecimal netSum = ZERO;
 
@@ -88,7 +89,7 @@ public class ItemService {
             List<ItemEntity> items = itemManager.getItemEntitiesForSpecificExpenseTypeForTheYear(expenseTag);
             sum = calculateSum(sum, items);
             netSum = Maths.add(netSum, sum);
-            thisYearExpenseByTags.add(new ThisYearExpenseByTag(expenseTag.getTagName(), expenseTag.getTagColor(), sum));
+            thisYearExpenseByTags.add(new ThisYearExpenseByTag(expenseTag.getTagName(), expenseTag.getTagColor(), expenseTag.getIcon().getWebLocationWithFilename(), sum));
         }
 
         netSum = populateWithUnAssignedItems(thisYearExpenseByTags, netSum, rid);
@@ -136,7 +137,7 @@ public class ItemService {
         if (!unassignedItems.isEmpty()) {
             BigDecimal sum = calculateSum(ZERO, unassignedItems);
             newNetSum = Maths.add(newNetSum, sum);
-            thisYearExpenseByTags.add(new ThisYearExpenseByTag("Un-Assigned", "#808080", sum));
+            thisYearExpenseByTags.add(new ThisYearExpenseByTag("Un-Assigned", "#808080", ExpenseTagIconEnum.V100.getWebLocationWithFilename(), sum));
         }
         return newNetSum;
     }

@@ -14,6 +14,7 @@ import com.receiptofi.domain.site.ReceiptUser;
 import com.receiptofi.domain.types.AccountInactiveReasonEnum;
 import com.receiptofi.domain.types.BilledStatusEnum;
 import com.receiptofi.domain.types.BillingPlanEnum;
+import com.receiptofi.domain.types.ExpenseTagIconEnum;
 import com.receiptofi.domain.types.NotificationGroupEnum;
 import com.receiptofi.domain.types.NotificationTypeEnum;
 import com.receiptofi.domain.types.ProviderEnum;
@@ -84,6 +85,7 @@ public class AccountService {
 
     private String[] expenseTags;
     private String[] expenseTagColors;
+    private String[] expenseTagIcons;
     private int promotionalPeriod;
 
     @Autowired
@@ -93,6 +95,9 @@ public class AccountService {
 
             @Value ("${ExpenseTagColors.Default:#1a9af9,#b492e8}")
             String[] expenseTagColors,
+
+            @Value ("${ExpenseTagIcons.Default:V101,V102}")
+            String[] expenseTagIcons,
 
             @Value ("${promotionalPeriod}")
             int promotionalPeriod,
@@ -111,6 +116,7 @@ public class AccountService {
             InviteManager inviteManager) {
         this.expenseTags = expenseTags;
         this.expenseTagColors = expenseTagColors;
+        this.expenseTagIcons = expenseTagIcons;
         this.promotionalPeriod = promotionalPeriod;
 
         this.userAccountManager = userAccountManager;
@@ -297,7 +303,8 @@ public class AccountService {
             ExpenseTagEntity expenseTag = ExpenseTagEntity.newInstance(
                     tag,
                     rid,
-                    expenseTagColors[i]);
+                    expenseTagColors[i],
+                    ExpenseTagIconEnum.valueOf(expenseTagIcons[i]));
 
             expensesService.saveExpenseTag(expenseTag);
             i++;

@@ -20,6 +20,7 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/stylelogin.css"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/colpick.css"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/external/css/countrySelect/countrySelect.min.css"/>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/external/css/image-picker/image-picker.css"/>
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css"/>
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
@@ -29,6 +30,7 @@
     <script src="${pageContext.request.contextPath}/static/external/js/cute-time/jquery.cuteTime.min.js"></script>
     <script src="${pageContext.request.contextPath}/static/js/colpick.js"></script>
     <script src="${pageContext.request.contextPath}/static/external/js/countrySelect/countrySelect.min.js"></script>
+    <script src="${pageContext.request.contextPath}/static/external/js/image-picker/image-picker.min.js"></script>
 
     <script>
         $(function () {
@@ -277,11 +279,12 @@
                 <div class="">
                     <c:forEach var="expenseTag" items="${profileForm.expenseTags}" varStatus="status">
                     <input type="button"
-                            value="&times;&nbsp;&nbsp; <spring:eval expression="expenseTag.tagName" /> &nbsp;<spring:eval expression="profileForm.expenseTagCount.get(expenseTag.tagName)" />"
-                            style="color: <spring:eval expression="expenseTag.tagColor" />"
+                            value="&nbsp;&nbsp;&nbsp;&nbsp; ${expenseTag.tagName} &nbsp;${profileForm.expenseTagCount.get(expenseTag.tagName)}"
+                            style="color: ${expenseTag.tagColor};
+                                    background: url('${expenseTag.icon.webLocation}/${expenseTag.icon.name}.png') no-repeat center left;"
                             class="white_btn"
-                            id="<spring:eval expression="expenseTag.id" />"
-                            onclick="clickedExpenseTag(this);">
+                            id="${expenseTag.id}"
+                            onclick="clickedExpenseTag(this, '${expenseTag.icon.name}')">
                     </c:forEach>
                 </div>
                 <h3 class="h3 padtop2per" style="padding-top:25px;color:#0079FF;">&#43; ADD TAG</h3>
@@ -298,6 +301,9 @@
                             <c:if test="${errors.hasFieldErrors('tagColor')}">
                                 <form:errors path="tagColor"/><br/>
                             </c:if>
+                            <c:if test="${errors.hasFieldErrors('tagIcon')}">
+                                <form:errors path="tagIcon"/><br/>
+                            </c:if>
                         </div>
                     </div>
                     </spring:hasBindErrors>
@@ -309,6 +315,15 @@
                         <span class="si-general-text remaining-characters">
                             <span id="textCount"></span> characters remaining
                         </span>
+                    </div>
+
+                    <div style="width: 484px">
+                        <form:select path="tagIcon" cssClass="image-picker show-html">
+                            <option value=""></option>
+                            <c:forEach items="${profileForm.expenseTagIcons}" var="icon" varStatus="status">
+                                <option data-img-src="${icon}" value="${status.index + 1}" id="${profileForm.getExpenseTagIconByIndex(status.index + 1)}">${icon}</option>
+                            </c:forEach>
+                        </form:select>
                     </div>
 
                     <div class="full" style="display: <c:out value="${(isSameUser) ? '' : 'none'}"/>">
@@ -538,6 +553,9 @@
         }
     }
     setInterval(function() { track_country_change()}, 100);
+</script>
+<script>
+    $("select").imagepicker()
 </script>
 <script src="${pageContext.request.contextPath}/static/js/mainpop.js"></script>
 </html>

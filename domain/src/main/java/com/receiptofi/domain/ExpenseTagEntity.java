@@ -1,5 +1,6 @@
 package com.receiptofi.domain;
 
+import com.receiptofi.domain.types.ExpenseTagIconEnum;
 import com.receiptofi.utils.ColorUtil;
 import com.receiptofi.utils.DateUtil;
 
@@ -7,7 +8,6 @@ import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
-import org.springframework.format.annotation.NumberFormat;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -48,6 +48,10 @@ public class ExpenseTagEntity extends BaseEntity {
     @Field ("CLR")
     private String tagColor;
 
+    @NotNull
+    @Field ("IC")
+    private ExpenseTagIconEnum icon;
+
     //TODO add budget through expense tags
 //    @NumberFormat (style = NumberFormat.Style.CURRENCY)
 //    @Field ("BG")
@@ -58,7 +62,7 @@ public class ExpenseTagEntity extends BaseEntity {
         super();
     }
 
-    private ExpenseTagEntity(String tagName, String receiptUserId, String tagColor) {
+    private ExpenseTagEntity(String tagName, String receiptUserId, String tagColor, ExpenseTagIconEnum icon) {
         super();
         this.tagName = tagName;
         this.receiptUserId = receiptUserId;
@@ -68,10 +72,11 @@ public class ExpenseTagEntity extends BaseEntity {
         } else {
             this.tagColor = ColorUtil.getRandom();
         }
+        this.icon = icon;
     }
 
-    public static ExpenseTagEntity newInstance(String tagName, String receiptUserId, String tagColor) {
-        return new ExpenseTagEntity(tagName, receiptUserId, tagColor);
+    public static ExpenseTagEntity newInstance(String tagName, String receiptUserId, String tagColor, ExpenseTagIconEnum icon) {
+        return new ExpenseTagEntity(tagName, receiptUserId, tagColor, icon);
     }
 
     public String getTagName() {
@@ -100,6 +105,14 @@ public class ExpenseTagEntity extends BaseEntity {
 
     public String getTagColor() {
         return tagColor;
+    }
+
+    public ExpenseTagIconEnum getIcon() {
+        return icon;
+    }
+
+    public void setIcon(ExpenseTagIconEnum icon) {
+        this.icon = icon;
     }
 
 //    public Double getBudget() {

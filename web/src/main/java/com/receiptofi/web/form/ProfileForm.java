@@ -1,6 +1,7 @@
 package com.receiptofi.web.form;
 
 import com.receiptofi.domain.ExpenseTagEntity;
+import com.receiptofi.domain.types.ExpenseTagIconEnum;
 import com.receiptofi.domain.types.UserLevelEnum;
 import com.receiptofi.utils.DateUtil;
 import com.receiptofi.utils.ScrubbedInput;
@@ -211,5 +212,18 @@ public class ProfileForm {
 
     public void setCountry_code(ScrubbedInput country_code) {
         this.country_code = country_code;
+    }
+
+    /**
+     * List web location for the icons.
+     *
+     * @return
+     */
+    public List<String> getExpenseTagIcons() {
+        return ExpenseTagIconEnum.asListLocation();
+    }
+
+    public String getExpenseTagIconByIndex(int index) {
+        return ExpenseTagIconEnum.getExpenseTagIcon(index).name();
     }
 }

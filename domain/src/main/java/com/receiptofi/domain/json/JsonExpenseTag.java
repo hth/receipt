@@ -41,18 +41,27 @@ public class JsonExpenseTag {
     @JsonProperty ("color")
     private String color;
 
+    @JsonProperty ("ic")
+    private String icon;
+
     @JsonProperty ("d")
     private boolean deleted;
 
-    private JsonExpenseTag(String id, String tag, String color, boolean deleted) {
+    private JsonExpenseTag(String id, String tag, String color, String icon, boolean deleted) {
         this.id = id;
         this.tag = tag;
         this.color = color;
         this.deleted = deleted;
+        this.icon = icon;
     }
 
     public static JsonExpenseTag newInstance(ExpenseTagEntity expenseTag) {
         Assert.notNull(expenseTag, "ExpenseTag is null");
-        return new JsonExpenseTag(expenseTag.getId(), expenseTag.getTagName(), expenseTag.getTagColor(), expenseTag.isDeleted());
+        return new JsonExpenseTag(
+                expenseTag.getId(),
+                expenseTag.getTagName(),
+                expenseTag.getTagColor(),
+                expenseTag.getIcon().getName(),
+                expenseTag.isDeleted());
     }
 }

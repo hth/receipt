@@ -12,7 +12,6 @@ import static org.mockito.Mockito.when;
 import com.receiptofi.domain.ForgotRecoverEntity;
 import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.repository.ForgotRecoverManager;
-import com.receiptofi.repository.GenerateUserIdManager;
 import com.receiptofi.repository.InviteManager;
 import com.receiptofi.repository.UserAccountManager;
 import com.receiptofi.repository.UserAuthenticationManager;
@@ -51,6 +50,7 @@ public class AccountServiceTest {
         accountService = new AccountService(
                 new String[]{"HOME", "BUSINESS"},
                 new String[]{"#1a9af9", "#b492e8"},
+                new String[]{"V101", "V102"},
                 3,
                 userAccountManager,
                 userAuthenticationManager,
