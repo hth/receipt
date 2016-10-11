@@ -1,18 +1,73 @@
 ### Sudoer
+In file `/etc/sudoers`
 
     Make `db` as sudoer
+    
+After making `db` as `sudoer`, `init 0` does not work. It now takes `sudo init 0` for reboot instead.
+    
+### SSH
+    
+    sudo apt-get update
+    sudo apt-get install openssh-server
+    sudo ufw allow 22
+    
+### Update Ubuntu
+    
+- sudo apt-get update        # Fetches the list of available updates
+- sudo apt-get upgrade       # Strictly upgrades the current packages
+- sudo apt-get dist-upgrade  # Installs updates (new ones)
+
+
+    sudo apt-get update && sudo apt-get upgrade && sudo apt-get dist-upgrade
+    
+### Install java
+    
+Download `jdk-8u102-linux-x64.tar.gz`. 
+
+    sftp l4@192.X.X.X
+    put javax
+    exit
+    
+    ssh l4@192.X.X.X
+    
+Installing Java in `/opt/java`
+
+    tar -xvf jdk-8u102-linux-x64.tar.gz
+    sudo mkdir /opt/java
+    sudo mv jdk1.8.0_102 /opt/java/
+    rm jdk-8u102-linux-x64.tar.gz 
+    sudo ln -s /opt/java/jdk1.8.0_102 /usr/local/java
+
+Screenshot sample    
+
+    drwxr-xr-x  3 root root 4096 Oct  9 18:55 .
+    drwxr-xr-x 23 root root 4096 Oct  9 18:40 ..
+    drwxr-xr-x  3 root root 4096 Oct  9 18:56 java
+    l4@l4:/opt$ cd java/
+    l4@l4:/opt/java$ ls -al
+    total 12
+    drwxr-xr-x 3 root root 4096 Oct  9 18:56 .
+    drwxr-xr-x 3 root root 4096 Oct  9 18:55 ..
+    drwxr-xr-x 8 l4   l4   4096 Jun 22 18:56 jdk1.8.0_102
+    l4@l4:/opt/java$     
+
+Set JAVA_HOME
+ 
+    JAVA_HOME=/usr/local/java
+    export PATH=$JAVA_HOME/bin:$PATH
+
+Source to import environment
+    
+    source ~/.bash_profile
+    java -version
 
 ### Activemq
 
+#### Install ActiveMQ
+
 The command below creates `activemq` at `/usr/share/activemq`
 
-    sudo apt-get install activemq
-    sudo update-rc.d activemq enable
-    sudo update-rc.d activemq defaults
-    
-Check status    
-    
-    sudo service activemq status 
+    sudo apt-get install activemq 
     
 To remove the activemq following command is used:
 
@@ -42,13 +97,20 @@ ActiveMQ needs an enabled instance to run. Use the following command to create a
     sudo ln -s /etc/activemq/instances-available/main /etc/activemq/instances-enabled/main
     sudo sed -e 's/<broker /<broker schedulerSupport="true" /' -i /etc/activemq/instances-enabled/main/activemq.xml
 
-#Then start ActiveMQ
-sudo service activemq restart    
+#### Then start ActiveMQ
+    sudo service activemq start
+    sudo update-rc.d activemq enable
+    sudo update-rc.d activemq defaults
+    
+Check status    
+    
+    sudo service activemq status
     
 ### Tomcat 8.5.5
 Download tomcat. Copy to     
     
-    /opt/tomcat/apache-tomcat
+    sudo mkdir /opt/tomcat
+    sudo mv ~/apache-tomcat /opt/tomcat
     sudo chown db -R apache-tomact
     
 Link
@@ -106,17 +168,16 @@ Create `/data/db` with ownership to db
     
     sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv EA312927
     
-- Create a list file for MongoDB.¶
-    
+- Create a list file for MongoDB.
+ 
     
     echo "deb http://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/3.2 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-3.2.list
 
-- Reload local package database.¶
+- Reload local package database.
     
 
     sudo apt-get update
-    
-	
+    	
 - Install the MongoDB packages.
     
 Install the latest stable version of MongoDB.¶
@@ -245,5 +306,17 @@ Redis is installed! You can now enter the first data into your new Redis server.
     
 #### Check if port is open 
     
-    netstat -nl | grep 61616
-    netstat -an | grep 61616
+    netstat -plntu | grep 61616
+    netstat -plntu | grep 61616
+    
+- Active Internet connections (servers and established)
+
+    
+    netstat -atn           # For tcp
+    netstat -aun           # For udp
+    netstat -atun          # For both
+
+- Active Internet connections (only servers)
+
+    
+    netstat -plntu
