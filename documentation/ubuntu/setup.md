@@ -310,11 +310,13 @@ Redis is installed! You can now enter the first data into your new Redis server.
     netstat -plntu | grep 61616
     
 - Active Internet connections (servers and established)
+
     
     netstat -atn           # For tcp
     netstat -aun           # For udp
     netstat -atun          # For both
 
 - Active Internet connections (only servers)
+
     
     netstat -plntu
