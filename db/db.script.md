@@ -1,6 +1,18 @@
 ### Date Oct 9 2016 - Build 1876
 
     db.getCollection('EXPENSE_TAG').updateMany({}, {$set: {IC: "V100"} })
+    db.getCollection('BILLING_ACCOUNT').updateMany({}, {$rename: { "ABT": "BP" }})
+    db.getCollection('BILLING_HISTORY').updateMany({}, {$rename: { "ABT": "BP" }})
+    
+Billing Account update to Promotional, set to "P" -- On OCT 13, 2016
+    
+    db.getCollection('BILLING_ACCOUNT').find({ABT : {$ne : "P"}})
+    
+    db.getCollection('BILLING_HISTORY').find({"BS" : { $ne : "P"}})
+    db.getCollection('BILLING_HISTORY').updateMany({BS: {$ne : 'P'}}, { $set: {BS: 'P', ABT: 'P'}})
+        
+    db.getCollection('RECEIPT').find({"BS": {$ne : "P"}})
+    db.getCollection('RECEIPT').update({"BS" : "NB"},   { $set: {BS: 'P', U : new ISODate()} }, {multi: true});
 
 ##### After Build 1876 End
 

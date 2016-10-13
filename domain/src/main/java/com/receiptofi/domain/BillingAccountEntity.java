@@ -31,7 +31,7 @@ public class BillingAccountEntity extends BaseEntity {
     private String rid;
 
     /** Defaults to Promotional to begin with. */
-    @Field ("ABT")
+    @Field ("BP")
     private BillingPlanEnum billingPlan = BillingPlanEnum.P;
 
     @Field ("PG")
