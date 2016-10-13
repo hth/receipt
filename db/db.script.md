@@ -1,6 +1,6 @@
 ### Date Oct 9 2016 - Build 1876
 
-   db.getCollection('EXPENSE_TAG').updateMany({}, {$set: {IC: "V100"} })
+    db.getCollection('EXPENSE_TAG').updateMany({}, {$set: {IC: "V100"} })
 
 ##### After Build 1876 End
 
