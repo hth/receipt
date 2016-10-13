@@ -182,6 +182,66 @@
     
         server {
             listen          8443 ssl;
+            server_name     receiptapp.receiptofi.com;
+    
+            access_log  /var/logs/nginx/live.access.log main;
+    
+            location /monitoring {
+                # block one workstation
+                deny    192.168.1.1;
+                # allow anyone in 192.168.1.0/24
+                allow   192.168.1.0/24; 
+                allow   63.145.59.92;
+                # drop rest of the world
+                deny    all;
+                
+                proxy_buffers 16 4k;
+                proxy_buffer_size 2k;
+    
+                proxy_set_header    Host                    $http_host;
+                proxy_set_header    X-Real-IP               $remote_addr;
+                proxy_set_header    X-Forwarded-For         $proxy_add_x_forwarded_for;
+                proxy_set_header    X-NginX-Proxy           true;
+    
+                proxy_pass http://192.168.1.150:80;
+            }
+    
+            location /receipt-mobile/monitoring {
+                # block one workstation
+                deny    192.168.1.1;
+                # allow anyone in 192.168.1.0/24
+                allow   192.168.1.0/24; 
+                allow   63.145.59.92;
+                # drop rest of the world
+                deny    all;
+                
+                proxy_buffers 16 4k;
+                proxy_buffer_size 2k;
+    
+                proxy_set_header    Host                    $http_host;
+                proxy_set_header    X-Real-IP               $remote_addr;
+                proxy_set_header    X-Forwarded-For         $proxy_add_x_forwarded_for;
+                proxy_set_header    X-NginX-Proxy           true;
+    
+                proxy_pass http://192.168.1.150:80;
+            }
+    
+            location / {
+                expires 7d;
+                proxy_buffers 16 4k;
+                proxy_buffer_size 2k;
+    
+                proxy_set_header    Host                    $http_host;
+                proxy_set_header    X-Real-IP               $remote_addr;
+                proxy_set_header    X-Forwarded-For         $proxy_add_x_forwarded_for;
+                proxy_set_header    X-NginX-Proxy           true;
+    
+                proxy_pass http://192.168.1.150:80;
+            }
+        }
+    
+        server {
+            listen          8443 ssl;
             server_name     test.receiptofi.com;
     
             access_log  /var/logs/nginx/test.access.log main;
@@ -203,7 +263,7 @@
                 proxy_set_header    X-Forwarded-For         $proxy_add_x_forwarded_for;
                 proxy_set_header    X-NginX-Proxy           true;
     
-                proxy_pass http://192.168.1.71:9090;
+                proxy_pass http://192.168.1.17:9090;
             }
     
             location /receipt-mobile/monitoring {
@@ -223,7 +283,7 @@
                 proxy_set_header    X-Forwarded-For         $proxy_add_x_forwarded_for;
                 proxy_set_header    X-NginX-Proxy           true;
     
-                proxy_pass http://192.168.1.71:9090;
+                proxy_pass http://192.168.1.17:9090;
             }
     
             location / {
@@ -235,7 +295,7 @@
                 proxy_set_header    X-Forwarded-For         $proxy_add_x_forwarded_for;
                 proxy_set_header    X-NginX-Proxy           true;
     
-                proxy_pass http://192.168.1.71:9090;
+                proxy_pass http://192.168.1.17:8080;
     
                 # Subdomain test.m.receiptofi.com would be best in its own host,
                 # current architecture suggest (my opinion) to have one domain

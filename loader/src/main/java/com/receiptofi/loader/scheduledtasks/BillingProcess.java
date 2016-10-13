@@ -298,13 +298,13 @@ public class BillingProcess {
      *
      * @param billedForMonth
      * @param bs
-     * @param abt
+     * @param bp
      * @param rid
      */
-    private void insertBillingHistory(Date billedForMonth, BilledStatusEnum bs, BillingPlanEnum abt, String rid) {
+    private void insertBillingHistory(Date billedForMonth, BilledStatusEnum bs, BillingPlanEnum bp, String rid) {
         BillingHistoryEntity billingHistory = new BillingHistoryEntity(rid, billedForMonth);
         billingHistory.setBilledStatus(bs);
-        billingHistory.setBillingPlan(abt);
+        billingHistory.setBillingPlan(bp);
         billingService.save(billingHistory);
     }
 }

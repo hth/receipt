@@ -72,6 +72,7 @@ public class BillingAccountManagerImpl implements BillingAccountManager {
         return mongoTemplate.find(query(where("RID").is(rid)), BillingAccountEntity.class);
     }
 
+    //TODO is the PGU incorrect?
     @Override
     public BillingAccountEntity getBySubscription(String subscriptionId, PaymentGatewayEnum paymentGateway) {
         return mongoTemplate.findOne(

@@ -49,7 +49,7 @@ public class BillingHistoryEntity extends BaseEntity {
     @Field ("BS")
     private BilledStatusEnum billedStatus = BilledStatusEnum.NB;
 
-    @Field ("ABT")
+    @Field ("BP")
     private BillingPlanEnum billingPlan;
 
     @Field ("BM")
