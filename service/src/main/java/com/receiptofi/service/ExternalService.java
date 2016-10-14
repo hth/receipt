@@ -90,6 +90,7 @@ public class ExternalService {
      */
     public GeocodingResult[] getGeocodingResults(String address) {
         try {
+            LOG.info("Google GeoCodingResults API called address={}", address);
             Assert.hasText(address, "Address is empty");
             GeocodingResult[] geocodingResults = GeocodingApi.geocode(context, address).await();
             if (geocodingResults.length != 0) {
@@ -111,8 +112,9 @@ public class ExternalService {
      * @return
      * @throws Exception
      */
-    public PlaceDetails getPlaceDetails(String placeId) {
+    PlaceDetails getPlaceDetails(String placeId) {
         try {
+            LOG.info("Google Place API called placeId={}", placeId);
             Assert.hasText(placeId, "PlaceId is empty");
             return PlacesApi.placeDetails(context, placeId).await();
         } catch (Exception e) {
