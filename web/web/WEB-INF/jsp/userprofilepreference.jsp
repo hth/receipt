@@ -466,7 +466,7 @@
                         </label>
                     </div>
                     <div class="row_field">
-                        <form:label for="level" path="level" cssClass="profile_label"
+                        <form:label path="level" cssClass="profile_label"
                                 cssErrorClass="profile_label lb_error">Level</form:label>
                         <form:select path="level" cssClass="styled-select slate">
                             <form:option value="0" label="Select Account Type" />
@@ -555,7 +555,8 @@
     setInterval(function() { track_country_change()}, 100);
 </script>
 <script>
-    $("select").imagepicker()
+    $("select").imagepicker();
+    $("#level").show();
 </script>
 <script src="${pageContext.request.contextPath}/static/js/mainpop.js"></script>
 </html>
