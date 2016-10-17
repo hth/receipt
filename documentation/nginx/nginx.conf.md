@@ -263,7 +263,7 @@
                 proxy_set_header    X-Forwarded-For         $proxy_add_x_forwarded_for;
                 proxy_set_header    X-NginX-Proxy           true;
     
-                proxy_pass http://192.168.1.17:9090;
+                proxy_pass http://192.168.1.150:80;
             }
     
             location /receipt-mobile/monitoring {
@@ -283,7 +283,7 @@
                 proxy_set_header    X-Forwarded-For         $proxy_add_x_forwarded_for;
                 proxy_set_header    X-NginX-Proxy           true;
     
-                proxy_pass http://192.168.1.17:9090;
+                proxy_pass http://192.168.1.150:80;
             }
     
             location / {
@@ -295,7 +295,7 @@
                 proxy_set_header    X-Forwarded-For         $proxy_add_x_forwarded_for;
                 proxy_set_header    X-NginX-Proxy           true;
     
-                proxy_pass http://192.168.1.17:8080;
+                proxy_pass http://192.168.1.150:80;
     
                 # Subdomain test.m.receiptofi.com would be best in its own host,
                 # current architecture suggest (my opinion) to have one domain
@@ -331,7 +331,7 @@
                 proxy_set_header    X-Forwarded-For         $proxy_add_x_forwarded_for;
                 proxy_set_header    X-NginX-Proxy           true;
     
-                proxy_pass http://192.168.1.212:80;
+                proxy_pass http://192.168.1.150;
             }
     
             location /receipt-mobile/monitoring {
@@ -351,7 +351,7 @@
                 proxy_set_header    X-Forwarded-For         $proxy_add_x_forwarded_for;
                 proxy_set_header    X-NginX-Proxy           true;
     
-                proxy_pass http://192.168.1.212:80;
+                proxy_pass http://192.168.1.150;
             }
     
             location / {
@@ -363,7 +363,7 @@
                 proxy_set_header    X-Forwarded-For         $proxy_add_x_forwarded_for;
                 proxy_set_header    X-NginX-Proxy           true;
     
-                proxy_pass http://192.168.1.212:80;
+                proxy_pass http://192.168.1.150;
     
                 # Subdomain test.m.receiptofi.com would be best in its own host,
                 # current architecture suggest (my opinion) to have one domain
@@ -516,4 +516,24 @@
                 }
             }
         }
+    
+        server {
+            listen          8443 ssl;
+            server_name     focker.receiptofi.com;
+    
+            access_log  /var/logs/nginx/focker.access.log main;
+    
+            auth_basic "Receiptofi Focker authorized users";
+            auth_basic_user_file /usr/local/etc/nginx/kibana.smoker.htpasswd;
+    
+            location / {
+                proxy_pass http://192.168.1.13:5601;
+                proxy_http_version 1.1;
+                proxy_set_header Upgrade $http_upgrade;
+                proxy_set_header Connection 'upgrade';
+                proxy_set_header Host $host;
+                proxy_cache_bypass $http_upgrade;        
+            }
+        }
+    
     }
