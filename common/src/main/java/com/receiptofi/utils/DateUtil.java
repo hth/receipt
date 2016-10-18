@@ -72,7 +72,7 @@ public final class DateUtil {
                 }
             }
 
-            for (DateTypeWithoutTime dateType : DateTypeWithoutTime.values()) {
+            for (DateType dateType : DateType.values()) {
                 if (date.matches(dateType.getRegex())) {
                     LOG.debug("DateTypeWithTime={} regex={} example={}", dateType.name(), dateType.regex, dateType.example);
                     return convertToDate(date, dateType.getFormatter());
@@ -403,7 +403,7 @@ public final class DateUtil {
         }
     }
 
-    public enum DateTypeWithoutTime {
+    private enum DateType {
 
         DT1701("\\d{1}/\\d{1}/\\d{4}",
                 "1/1/2016",
@@ -427,7 +427,7 @@ public final class DateUtil {
 
         private final DateTimeFormatter formatter;
 
-        DateTypeWithoutTime(String regex, String example, String formatter) {
+        DateType(String regex, String example, String formatter) {
             this.regex = regex;
             this.example = example;
             this.formatter = DateTimeFormatter.ofPattern(formatter, Locale.US);
