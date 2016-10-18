@@ -514,7 +514,7 @@ public class ReceiptServiceITest extends ITest {
         document.setTotal("1.00");
         document.setSubTotal("1.00");
         document.setDocumentOfType(DocumentOfTypeEnum.RECEIPT);
-        document.setReceiptDate(DateUtil.dateToString(DateUtil.nowDate(), DateUtil.DateType.DT1.getFormatter()));
+        document.setReceiptDate(DateUtil.dateToString(DateUtil.nowDate(), DateUtil.DateTypeWithTime.DT1.getFormatter()));
         BizNameEntity bizName = getBizName("Costco");
         document.setBizName(bizName);
         BizStoreEntity bizStore = getBizStore(
