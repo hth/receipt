@@ -71,6 +71,13 @@ public final class DateUtil {
                     return convertToDateTime(date, dateType.getFormatter());
                 }
             }
+
+            for (DateTypeWithoutTime dateType : DateTypeWithoutTime.values()) {
+                if (date.matches(dateType.getRegex())) {
+                    LOG.debug("DateType={} regex={} example={}", dateType.name(), dateType.regex, dateType.example);
+                    return convertToDate(date, dateType.getFormatter());
+                }
+            }
         }
 
         LOG.warn("Unsupported date condition reached='{}'", dateAsStr);
@@ -377,6 +384,50 @@ public final class DateUtil {
         private final DateTimeFormatter formatter;
 
         DateType(String regex, String example, String formatter) {
+            this.regex = regex;
+            this.example = example;
+            this.formatter = DateTimeFormatter.ofPattern(formatter, Locale.US);
+        }
+
+        public String getRegex() {
+            return regex;
+        }
+
+        @SuppressWarnings ("unused")
+        public String getExample() {
+            return example;
+        }
+
+        public DateTimeFormatter getFormatter() {
+            return formatter;
+        }
+    }
+
+    public enum DateTypeWithoutTime {
+
+        DT1701("\\d{1}/\\d{1}/\\d{4}",
+                "1/1/2016",
+                "M/d/yyyy"),
+
+        DT1702("\\d{2}/\\d{2}/\\d{4}",
+                "1/1/2016",
+                "MM/dd/yyyy"),
+
+        DT1703("\\d{2}/\\d{1}/\\d{4}",
+                "01/1/2016",
+                "MM/d/yyyy"),
+
+        DT1704("\\d{1}/\\d{2}/\\d{4}",
+                "1/01/2016",
+                "M/dd/yyyy");
+
+        private final String regex;
+
+        private final String example;
+
+        private final DateTimeFormatter formatter;
+
+        DateTypeWithoutTime(String regex, String example, String formatter) {
             this.regex = regex;
             this.example = example;
             this.formatter = DateTimeFormatter.ofPattern(formatter, Locale.US);

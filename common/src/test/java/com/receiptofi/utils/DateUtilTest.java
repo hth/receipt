@@ -137,4 +137,11 @@ public class DateUtilTest {
                 DateUtil.getDateFromString("1/1/2016 1:00"),
                 DateUtil.getDateFromString("1/1/2016 01:00"));
     }
+
+    @Test
+    public void DT17() {
+        assertEquals(
+                DateUtil.getDateFromString("1/1/2016"),
+                DateUtil.getDateFromString("01/01/2016"));
+    }
 }

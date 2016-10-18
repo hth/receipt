@@ -72,19 +72,14 @@ public final class Formatter {
     public static BigDecimal getCurrencyFormatted(String value) throws ParseException, NumberFormatException {
         BigDecimal d;
         try {
-            if (value.startsWith("$")) {
-                Number number = CURRENCY_INSTANCE.parse(value);
-                d = new BigDecimal(number.doubleValue()).setScale(Maths.SCALE_FOUR, BigDecimal.ROUND_HALF_UP);
-            } else {
-                try {
-                    Object object = SCRIPT_INSTANCE.eval(value);
-                    d = new BigDecimal(object.toString()).setScale(Maths.SCALE_FOUR, BigDecimal.ROUND_HALF_UP);
-                } catch (ScriptException se) {
-                    LOG.warn("Failed parsing number value={} reason={}", value, se.getLocalizedMessage(), se);
-                    throw new NumberFormatException("Failed parsing number value: " + value + ", exception: " + se.getLocalizedMessage());
-                }
-                //d = new BigDecimal(value).setScale(Maths.SCALE_FOUR, BigDecimal.ROUND_HALF_UP);
+            try {
+                Object object = SCRIPT_INSTANCE.eval(value);
+                d = new BigDecimal(object.toString()).setScale(Maths.SCALE_FOUR, BigDecimal.ROUND_HALF_UP);
+            } catch (ScriptException se) {
+                LOG.warn("Failed parsing number value={} reason={}", value, se.getLocalizedMessage(), se);
+                throw new NumberFormatException("Failed parsing number value: " + value + ", exception: " + se.getLocalizedMessage());
             }
+            //d = new BigDecimal(value).setScale(Maths.SCALE_FOUR, BigDecimal.ROUND_HALF_UP);\
             return d;
         } catch (NumberFormatException nfe) {
             LOG.warn("Failed parsing number value={} reason={}", value, nfe.getLocalizedMessage(), nfe);
