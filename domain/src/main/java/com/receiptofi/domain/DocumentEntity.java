@@ -270,7 +270,7 @@ public class DocumentEntity extends BaseEntity {
     }
 
     public void setCardDigit(String cardDigit) {
-        this.cardDigit = cardDigit;
+        this.cardDigit = cardDigit.trim();
     }
 
     @Override

@@ -19,7 +19,7 @@ public class DateUtilTest {
     @Test
     public void caseSensitivityAMPM() {
         LocalDateTime localDateTime = LocalDateTime.now();
-        LOG.info(localDateTime.format(DateUtil.DateType.DT5.getFormatter()));
+        LOG.info(localDateTime.format(DateUtil.DateTypeWithTime.DT5.getFormatter()));
 
         assertEquals(
                 DateUtil.getDateFromString("01/01/2016 4:00:00 pM"),
@@ -136,5 +136,12 @@ public class DateUtilTest {
         assertEquals(
                 DateUtil.getDateFromString("1/1/2016 1:00"),
                 DateUtil.getDateFromString("1/1/2016 01:00"));
+    }
+
+    @Test
+    public void DT17() {
+        assertEquals(
+                DateUtil.getDateFromString("1/1/2016"),
+                DateUtil.getDateFromString("01/01/2016"));
     }
 }

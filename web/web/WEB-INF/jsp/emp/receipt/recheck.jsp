@@ -462,6 +462,7 @@
                                     </td>
                                     <td style="text-align: left">
                                         <form:input path="items[${status.index}].quantity" size="4" />
+                                        <form:errors path="items[${status.index}].quantity" cssClass="error" />
                                     </td>
                                     <td style="text-align: right">
                                         <form:input path="items[${status.index}].price" size="8" />

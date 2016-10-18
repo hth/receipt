@@ -65,10 +65,17 @@ public final class DateUtil {
 
         if (StringUtils.isNotBlank(dateAsStr)) {
             String date = StringUtils.trim(dateAsStr.trim().toUpperCase().replaceAll("-", "/")).replaceAll("[\\t\\n\\r]+", " ");
+            for (DateTypeWithTime dateType : DateTypeWithTime.values()) {
+                if (date.matches(dateType.getRegex())) {
+                    LOG.debug("DateTypeWithTime={} regex={} example={}", dateType.name(), dateType.regex, dateType.example);
+                    return convertToDateTime(date, dateType.getFormatter());
+                }
+            }
+
             for (DateType dateType : DateType.values()) {
                 if (date.matches(dateType.getRegex())) {
-                    LOG.debug("DateType={} regex={} example={}", dateType.name(), dateType.regex, dateType.example);
-                    return convertToDateTime(date, dateType.getFormatter());
+                    LOG.debug("DateTypeWithTime={} regex={} example={}", dateType.name(), dateType.regex, dateType.example);
+                    return convertToDate(date, dateType.getFormatter());
                 }
             }
         }
@@ -241,7 +248,7 @@ public final class DateUtil {
     }
 
     /* Date string should have time appended since its a DateTimeFormatter. */
-    public enum DateType {
+    public enum DateTypeWithTime {
         DT1("\\d{2}/\\d{2}/\\d{4}\\s\\d{2}:\\d{2}:\\d{2}\\s(AM|PM)",
                 "01/01/2016 03:03:03 AM",
                 "MM/dd/yyyy hh:mm:ss a"),
@@ -369,6 +376,50 @@ public final class DateUtil {
         DT16("\\d{1}/\\d{1}/\\d{4}\\s\\d{2}:\\d{2}",
                 "1/1/2016 23:03",
                 "M/d/yyyy kk:mm");
+
+        private final String regex;
+
+        private final String example;
+
+        private final DateTimeFormatter formatter;
+
+        DateTypeWithTime(String regex, String example, String formatter) {
+            this.regex = regex;
+            this.example = example;
+            this.formatter = DateTimeFormatter.ofPattern(formatter, Locale.US);
+        }
+
+        public String getRegex() {
+            return regex;
+        }
+
+        @SuppressWarnings ("unused")
+        public String getExample() {
+            return example;
+        }
+
+        public DateTimeFormatter getFormatter() {
+            return formatter;
+        }
+    }
+
+    private enum DateType {
+
+        DT1701("\\d{1}/\\d{1}/\\d{4}",
+                "1/1/2016",
+                "M/d/yyyy"),
+
+        DT1702("\\d{2}/\\d{2}/\\d{4}",
+                "1/1/2016",
+                "MM/dd/yyyy"),
+
+        DT1703("\\d{2}/\\d{1}/\\d{4}",
+                "01/1/2016",
+                "MM/d/yyyy"),
+
+        DT1704("\\d{1}/\\d{2}/\\d{4}",
+                "1/01/2016",
+                "M/dd/yyyy");
 
         private final String regex;
 
