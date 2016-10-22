@@ -512,6 +512,7 @@ public class ReceiptEntity extends BaseEntity {
         friendReceipt.setSplitTotal(splitTotal);
         friendReceipt.setSplitTax(splitTax);
         friendReceipt.setReferReceiptId(id);
+        friendReceipt.setCountryShortName(countryShortName);
 
         return friendReceipt;
     }
