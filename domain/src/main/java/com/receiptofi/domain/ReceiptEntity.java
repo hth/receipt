@@ -229,12 +229,15 @@ public class ReceiptEntity extends BaseEntity {
 
     /**
      * Used in showing the currency symbol and net amount in notification.
+     * Choose receipt countryShortName instead of Biz Store countryShortName.
+     * Example: Book Depository has UK address but purchase was made in Indonesia with Indonesia currency. By using
+     * Receipt countryShortName of receipt we can fix showing correct currency symbol.
      *
      * @return
      */
     @Transient
     public String getTotalString() {
-        return LocaleUtil.getNumberFormat(getBizStore().getCountryShortName()).format(total);
+        return LocaleUtil.getNumberFormat(countryShortName).format(total);
     }
 
     public Double getTax() {
