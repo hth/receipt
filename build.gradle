@@ -590,8 +590,9 @@ task createBuildInfoFile << {
     Properties props = new Properties();
     props.setProperty('owner', 'Receiptofi Inc');
     props.setProperty('copyright', 'All rights reserved');
-    props.setProperty('version', project.version.toString());
-    props.setProperty('timestamp', project.buildTimestamp);
+    props.setProperty('build.version', project.version.toString());
+    props.setProperty('build.env', "$env");
+
     props.store(buildInfoFile.newWriter(), null);
 }
 
@@ -735,26 +736,10 @@ task war(type: War, dependsOn: prepWar) {
     doFirst {
         exclude('**/receiptofi-loader-*.jar')
         if (env == 'test' || env == 'prod') {
-            // This adds escape character to message.properties; if you would like to avoid updating file at runtime
-            // then create a new file 'versionFile.name' in your favorite location and add the new file as below
-            //
-            // from(rootDir) {
-            //      include versionFile.name
-            // }
-
-            ant.propertyfile(file: "$warDir/WEB-INF/classes/messages.properties") {
-                entry(key: "build.version", value: System.getenv().BUILD_NUMBER?.toInteger())
-                entry(key: "build.env", value: env)
-            }
-
-            baseName = "ROOT-$env." + System.getenv().BUILD_NUMBER?.toInteger()
+            baseName = "ROOT-$env." + version
         }
 
         if (env == 'dev') {
-            ant.propertyfile(file: "$warDir/WEB-INF/classes/messages.properties") {
-                entry(key: "build.version", value: 'dev')
-            }
-
             baseName = "ROOT-$env"
         }
 
@@ -770,26 +755,10 @@ task war(type: War, dependsOn: prepWar) {
 task loaderWar(type: War, dependsOn: prepWar) {
     doFirst {
         if (env == 'test' || env == 'prod') {
-            // This adds escape character to message.properties; if you would like to avoid updating file at runtime
-            // then create a new file 'versionFile.name' in your favorite location and add the new file as below
-            //
-            // from(rootDir) {
-            //      include versionFile.name
-            // }
-
-            ant.propertyfile(file: "$warDir/WEB-INF/classes/messages.properties") {
-                entry(key: "build.version", value: System.getenv().BUILD_NUMBER?.toInteger())
-                entry(key: "build.env", value: env)
-            }
-
-            baseName = "ROOT-loader-$env." + System.getenv().BUILD_NUMBER?.toInteger()
+            baseName = "ROOT-loader-$env." + version
         }
 
         if (env == 'dev') {
-            ant.propertyfile(file: "$warDir/WEB-INF/classes/messages.properties") {
-                entry(key: "build.version", value: 'dev')
-            }
-
             baseName = "ROOT-loader-$env"
         }
 
