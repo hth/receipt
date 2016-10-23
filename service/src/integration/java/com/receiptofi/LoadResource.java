@@ -31,7 +31,7 @@ import java.util.Properties;
         "PMD.LongVariable"
 })
 @Configuration
-@ActiveProfiles ({"dev", "test", "prod"})
+@ActiveProfiles ({"dev", "sandbox", "prod"})
 public class LoadResource {
     private static final Logger LOG = LoggerFactory.getLogger(LoadResource.class);
 
@@ -55,7 +55,7 @@ public class LoadResource {
             File.separator +
             "conf";
 
-    public static final FileFilter profileF = new WildcardFileFilter(Arrays.asList("dev", "test", "prod"));
+    public static final FileFilter profileF = new WildcardFileFilter(Arrays.asList("dev", "sandbox", "prod"));
     public static final FileFilter propertiesF = new WildcardFileFilter(
             Arrays.asList(
                     "dev.properties",

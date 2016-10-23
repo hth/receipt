@@ -73,7 +73,7 @@ import java.util.Properties;
         "PMD.LongVariable"
 })
 @Configuration
-@ActiveProfiles ({"dev", "test"})
+@ActiveProfiles ({"dev", "sandbox"})
 public class FilesUploadToS3Test {
     private static final Logger LOG = LoggerFactory.getLogger(FilesUploadToS3Test.class);
 
