@@ -38,7 +38,7 @@ import java.util.Properties;
         "PMD.LongVariable"
 })
 @Configuration
-@ActiveProfiles ({"dev", "test", "prod"})
+@ActiveProfiles ({"dev", "sandbox", "prod"})
 public class AmazonS3ServiceTest {
     private static final Logger LOG = LoggerFactory.getLogger(AmazonS3ServiceTest.class);
 

@@ -52,7 +52,7 @@ import java.util.Properties;
         "PMD.LongVariable"
 })
 @Configuration
-@ActiveProfiles ({"dev", "test"})
+@ActiveProfiles ({"dev", "sandbox"})
 public class FilesDeleteFromS3Test {
     private static final Logger LOG = LoggerFactory.getLogger(FilesDeleteFromS3Test.class);
 
