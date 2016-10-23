@@ -48,7 +48,7 @@ ext {
 
 allprojects {
     group = 'com.receiptofi'
-    apply from: "$rootDir/gradle/versioning.gradle"
+    apply from: "$rootDir/versioning.gradle"
     //version = '2.0.0'
 }
 
