@@ -2,11 +2,10 @@ package com.receiptofi.utils;
 
 import com.receiptofi.type.FileExtensionTypeEnum;
 
-import net.logstash.logback.encoder.org.apache.commons.lang.StringUtils;
-
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.tika.detect.DefaultDetector;
 import org.apache.tika.detect.Detector;
 import org.apache.tika.io.TikaInputStream;

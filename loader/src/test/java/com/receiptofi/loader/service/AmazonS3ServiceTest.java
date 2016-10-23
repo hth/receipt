@@ -56,7 +56,7 @@ public class AmazonS3ServiceTest {
             File.separator +
             "conf";
 
-    public static final FileFilter profileF = new WildcardFileFilter(Arrays.asList("dev", "test", "prod"));
+    public static final FileFilter profileF = new WildcardFileFilter(Arrays.asList("dev", "sandbox", "prod"));
     public static final FileFilter propertiesF = new WildcardFileFilter(
             Arrays.asList(
                     "dev.properties",
