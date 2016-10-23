@@ -675,7 +675,7 @@ task prepWar(dependsOn: [
             }
         }
 
-        if (env == 'test') {
+        if (env == 'sandbox') {
             if (apnsCertTest.exists()) {
                 from apnsCertificateTestFileLocation
             } else {
@@ -735,7 +735,7 @@ task clean(type: Delete) {
 task war(type: War, dependsOn: prepWar) {
     doFirst {
         exclude('**/receiptofi-loader-*.jar')
-        if (env == 'test' || env == 'prod') {
+        if (env == 'sandbox' || env == 'prod') {
             baseName = "ROOT-$env." + project.version.toString()
         }
 
@@ -754,7 +754,7 @@ task war(type: War, dependsOn: prepWar) {
 
 task loaderWar(type: War, dependsOn: prepWar) {
     doFirst {
-        if (env == 'test' || env == 'prod') {
+        if (env == 'sandbox' || env == 'prod') {
             baseName = "ROOT-loader-$env." + project.version.toString()
         }
 
