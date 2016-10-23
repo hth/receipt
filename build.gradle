@@ -736,7 +736,7 @@ task war(type: War, dependsOn: prepWar) {
     doFirst {
         exclude('**/receiptofi-loader-*.jar')
         if (env == 'test' || env == 'prod') {
-            baseName = "ROOT-$env." + version
+            baseName = "ROOT-$env." + project.version.toString()
         }
 
         if (env == 'dev') {
@@ -755,7 +755,7 @@ task war(type: War, dependsOn: prepWar) {
 task loaderWar(type: War, dependsOn: prepWar) {
     doFirst {
         if (env == 'test' || env == 'prod') {
-            baseName = "ROOT-loader-$env." + version
+            baseName = "ROOT-loader-$env." + project.version.toString()
         }
 
         if (env == 'dev') {
