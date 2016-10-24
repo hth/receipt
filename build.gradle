@@ -1,8 +1,6 @@
 import com.eriwen.gradle.css.tasks.MinifyCssTask
 import com.eriwen.gradle.js.tasks.MinifyJsTask
 
-apply plugin: 'maven-publish'
-
 if (!hasProperty('env')) {
     ext.env = System.env['GRADLE_ENV']
 }
@@ -63,6 +61,7 @@ buildscript {
     }
 }
 
+apply plugin: 'maven-publish'
 apply plugin: 'com.eriwen.gradle.js'
 apply plugin: 'css'
 
