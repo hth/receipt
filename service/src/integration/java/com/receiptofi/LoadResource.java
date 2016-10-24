@@ -59,7 +59,7 @@ public class LoadResource {
     public static final FileFilter propertiesF = new WildcardFileFilter(
             Arrays.asList(
                     "dev.properties",
-                    "test.properties",
+                    "sandbox.properties",
                     "prod.properties",
                     "application-messages.properties",
                     "config.properties",
