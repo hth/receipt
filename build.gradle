@@ -1,8 +1,6 @@
 import com.eriwen.gradle.css.tasks.MinifyCssTask
 import com.eriwen.gradle.js.tasks.MinifyJsTask
 
-apply plugin: 'maven-publish'
-
 if (!hasProperty('env')) {
     ext.env = System.env['GRADLE_ENV']
 }
@@ -63,6 +61,7 @@ buildscript {
     }
 }
 
+apply plugin: 'maven-publish'
 apply plugin: 'com.eriwen.gradle.js'
 apply plugin: 'css'
 
@@ -238,7 +237,7 @@ subprojects {
 
         compile "org.aspectj:aspectjrt:$aspectjrt"
         compile "org.slf4j:slf4j-api:$slf4japi"
-        compile 'org.hibernate:hibernate-validator:5.2.4.Final'
+        compile 'org.hibernate:hibernate-validator:5.3.0.Final'
         compile "joda-time:joda-time:$joda"
         compile 'org.freemarker:freemarker:2.3.23'
 
@@ -459,7 +458,7 @@ task unzip(type: Copy, dependsOn: [':web:war']) {
     into unzipDir
 }
 
-task setUpProfileForJunit(dependsOn: [':clean']) << {
+task setUpProfileForJunit(dependsOn: [':clean']) {
     activeProfilewarClassesDir.mkdirs()
     activeProfilewarConfDir.mkdirs()
     activeProfilewarFreemarkerDir.mkdirs();
@@ -602,7 +601,7 @@ task prepWar(dependsOn: [
         copyJars,
         individualCssMinify,
         individualJsMinify
-]) << {
+]) {
     warClassesDir.mkdirs()
     warConfDir.mkdirs()
 
