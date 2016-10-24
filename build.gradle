@@ -458,7 +458,7 @@ task unzip(type: Copy, dependsOn: [':web:war']) {
     into unzipDir
 }
 
-task setUpProfileForJunit(dependsOn: [':clean']) {
+task setUpProfileForJunit(dependsOn: [':clean']) << {
     activeProfilewarClassesDir.mkdirs()
     activeProfilewarConfDir.mkdirs()
     activeProfilewarFreemarkerDir.mkdirs();
@@ -601,7 +601,7 @@ task prepWar(dependsOn: [
         copyJars,
         individualCssMinify,
         individualJsMinify
-]) {
+]) << {
     warClassesDir.mkdirs()
     warConfDir.mkdirs()
 
@@ -881,5 +881,4 @@ publishing {
 //Line below is not required because defaultTasks order is followed
 //testReport.mustRunAfter war
 //publishToMavenLocal for local
-defaultTasks 'clean', 'setUpProfileForJunit', 'build', 'jar', 'war', 'loaderWar',
-        'test', 'integration', 'testReport', 'jacocoTestReport', 'publish'
+defaultTasks 'clean', 'setUpProfileForJunit', 'build', 'jar', 'war', 'loaderWar', 'test', 'integration', 'testReport', 'jacocoTestReport', 'publish'
