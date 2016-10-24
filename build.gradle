@@ -459,7 +459,7 @@ task unzip(type: Copy, dependsOn: [':web:war']) {
     into unzipDir
 }
 
-task setUpProfileForJunit(dependsOn: [':clean']) << {
+task setUpProfileForJunit(dependsOn: [':clean']) {
     activeProfilewarClassesDir.mkdirs()
     activeProfilewarConfDir.mkdirs()
     activeProfilewarFreemarkerDir.mkdirs();
@@ -602,7 +602,7 @@ task prepWar(dependsOn: [
         copyJars,
         individualCssMinify,
         individualJsMinify
-]) << {
+]) {
     warClassesDir.mkdirs()
     warConfDir.mkdirs()
 
