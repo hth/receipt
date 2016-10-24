@@ -60,7 +60,7 @@ public class AmazonS3ServiceTest {
     public static final FileFilter propertiesF = new WildcardFileFilter(
             Arrays.asList(
                     "dev.properties",
-                    "test.properties",
+                    "sandbox.properties",
                     "prod.properties",
                     "application-messages.properties",
                     /** Prod passwords are in saved in pass.properties */

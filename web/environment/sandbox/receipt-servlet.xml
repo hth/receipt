@@ -32,7 +32,7 @@
     <cache:annotation-driven />
 
     <!--suppress SpringModelInspection -->
-    <util:properties id="environmentProperty" location="classpath:/conf/test.properties" />
+    <util:properties id="environmentProperty" location="classpath:/conf/sandbox.properties" />
     <!--suppress SpringModelInspection -->
     <context:property-placeholder location="classpath:/conf/config.properties"                  order="1" ignore-unresolvable="true" />
     <!--suppress SpringModelInspection -->
