@@ -114,6 +114,7 @@ public class AmazonS3ServiceTest {
 
     @Test
     public void testIfBucketExists() {
+        LOG.info("Bucket name={}", properties.getProperty("aws.s3.bucketName"));
         assertTrue("exists", amazonS3Service.getS3client().doesBucketExist(properties.getProperty("aws.s3.bucketName")));
     }
 
