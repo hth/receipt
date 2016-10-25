@@ -34,6 +34,8 @@
     <!--suppress SpringModelInspection -->
     <util:properties id="systemProperty" location="classpath:/conf/prod.properties" />
     <!--suppress SpringModelInspection -->
+    <util:properties id="environmentProperty" location="classpath:/build-info.properties" />
+    <!--suppress SpringModelInspection -->
     <context:property-placeholder location="classpath:/conf/config.properties"                  order="1" ignore-unresolvable="true" />
     <!--suppress SpringModelInspection -->
     <context:property-placeholder location="classpath:/conf/pass.properties"                    order="1" ignore-unresolvable="true" />
@@ -42,7 +44,7 @@
     <!--suppress SpringModelInspection -->
     <context:property-placeholder location="classpath:/conf/application-messages.properties"    order="1" ignore-unresolvable="true" />
     <!--suppress SpringModelInspection -->
-    <context:property-placeholder location="classpath:/build-info.properties"                   order="1" ignore-unresolvable="true" />
+    <context:property-placeholder properties-ref="environmentProperty" />
 
     <mvc:resources mapping="/static/**" location="/static/" cache-period="31556926" />
 
