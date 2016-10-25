@@ -481,7 +481,7 @@ task setUpProfileForJunit(dependsOn: [':clean']) << {
             }
         }
 
-        if (env == 'test') {
+        if (env == 'sandbox') {
             if (passFileTest.exists()) {
                 from passwordTestFileLocation
             } else {
@@ -645,7 +645,7 @@ task prepWar(dependsOn: [
             }
         }
 
-        if (env == 'test') {
+        if (env == 'sandbox') {
             if (passFileTest.exists()) {
                 from passwordTestFileLocation
             } else {
