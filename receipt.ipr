@@ -38,6 +38,7 @@
             <element id="module-output" name="service_main" />
             <element id="module-output" name="social_main" />
             <element id="module-output" name="web_main" />
+            <element id="file-copy" path="$PROJECT_DIR$/web/resources/conf/build-info.properties" />
           </element>
           <element id="directory" name="lib">
             <element id="library" level="project" name="Gradle: net.sourceforge.jmatio:jmatio:1.0" />
