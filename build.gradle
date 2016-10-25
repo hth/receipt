@@ -53,19 +53,16 @@ buildscript {
     dependencies {
         classpath 'com.eriwen:gradle-js-plugin:2.14.1'
         classpath 'com.eriwen:gradle-css-plugin:2.14.0'
-        classpath 'org.hidetake:gradle-ssh-plugin:2.7.0'
     }
 }
 
 apply plugin: 'maven-publish'
 apply plugin: 'com.eriwen.gradle.js'
 apply plugin: 'css'
-apply plugin: 'org.hidetake.ssh'
 
 allprojects {
     group = 'com.receiptofi'
     apply from: "$rootDir/versioning.gradle"
-    apply from: "$rootDir/deploy.gradle"
 }
 
 subprojects {
