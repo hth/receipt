@@ -49,6 +49,7 @@ task stop {
     ssh.run {
         session(remotes.r1) {
             executeSudo 'service tomcat stop'
+            execute 'sleep 20'
         }
     }
 }
