@@ -518,7 +518,7 @@ function drawExpenseByBusiness() {
 
 <c:if test="${!empty landingForm.receiptGroupedByBizLocations && isValidForMap}">
 <!-- Google Map -->
-<script src="https://maps.googleapis.com/maps/api/js?key=<spring:eval expression="@environmentProperty.getProperty('google-browser-api-key')" />"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=<spring:eval expression="@systemProperty.getProperty('google-browser-api-key')" />"></script>
 <script type="text/javascript">
     $(document).ready(function () {
         "use strict";

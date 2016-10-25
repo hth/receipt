@@ -22,7 +22,7 @@
         window.onload = function () {
             <c:forEach items="${receiptDocumentForm.receiptDocument.fileSystemEntities}" var="arr" varStatus="status">
             fetchReceiptImage(
-                    'https://s3-us-west-2.amazonaws.com/<spring:eval expression="@environmentProperty.getProperty('aws.s3.bucketName')" />/<spring:eval expression="@environmentProperty.getProperty('aws.s3.bucketName')" />/${arr.key}',
+                    'https://s3-us-west-2.amazonaws.com/<spring:eval expression="@systemProperty.getProperty('aws.s3.bucketName')" />/<spring:eval expression="@systemProperty.getProperty('aws.s3.bucketName')" />/${arr.key}',
                     "holder_" + ${status.index},
                     '${arr.id}',
                     ${arr.imageOrientation},
@@ -594,7 +594,7 @@
             <td>&nbsp;</td>
             <td style="vertical-align: top;">
                 <c:forEach items="${receiptDocumentForm.receiptDocument.fileSystemEntities}" var="arr" varStatus="status">
-                    <a href="https://s3-us-west-2.amazonaws.com/<spring:eval expression="@environmentProperty.getProperty('aws.s3.bucketName')" />/<spring:eval expression="@environmentProperty.getProperty('aws.s3.bucketName')" />/${arr.key}" target="_blank">Full View of Receipt Image</a>
+                    <a href="https://s3-us-west-2.amazonaws.com/<spring:eval expression="@systemProperty.getProperty('aws.s3.bucketName')" />/<spring:eval expression="@systemProperty.getProperty('aws.s3.bucketName')" />/${arr.key}" target="_blank">Full View of Receipt Image</a>
 
                     <div id="holder_${status.index}" style="height: 850px; border-color:#ff0000 #0000ff;">
                     </div>

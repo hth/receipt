@@ -202,7 +202,7 @@
                 <c:choose>
                 <c:when test="${couponCampaign.campaignStatus eq 'A'}">
                 {
-                    src: "https://s3-us-west-2.amazonaws.com/<spring:eval expression="@environmentProperty.getProperty('aws.s3.bucketName')" />/<spring:eval expression="@environmentProperty.getProperty('aws.s3.couponBucketName')" />/${arr.key}",
+                    src: "https://s3-us-west-2.amazonaws.com/<spring:eval expression="@systemProperty.getProperty('aws.s3.bucketName')" />/<spring:eval expression="@systemProperty.getProperty('aws.s3.couponBucketName')" />/${arr.key}",
                     pos: {
                         top: topHeight = calculateTop(${arr.height}),
                         left: 0
