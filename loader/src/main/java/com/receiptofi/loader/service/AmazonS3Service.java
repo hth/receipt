@@ -31,9 +31,6 @@ public class AmazonS3Service {
             @Value ("${aws.s3.bucketName}")
             String bucketName
     ) {
-        Assert.hasLength(accessKey, "AccessKey is blank");
-        Assert.hasLength(secretKey, "SecretKey is blank");
-        Assert.hasLength(bucketName, "BucketName is blank");
         final ClientConfiguration clientConfiguration = new ClientConfiguration();
         clientConfiguration.setProtocol(Protocol.HTTPS);
 
