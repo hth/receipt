@@ -2,7 +2,7 @@ ssh.settings {
     dryRun = false
     logging = 'stdout'
     timeoutSec = 600000
-    identity = file('/Users/hitender/.ssh/id_rsa')
+    identity = file('/Users/jenkins/.ssh/id_rsa')
 }
 
 remotes {
