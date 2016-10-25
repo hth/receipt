@@ -1,3 +1,20 @@
+if (!hasProperty('env')) {
+    ext.env = System.env['GRADLE_ENV']
+}
+
+println "Building for environment: $env"
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'org.hidetake:gradle-ssh-plugin:2.7.0'
+    }
+}
+
+apply plugin: 'org.hidetake.ssh'
+
 ssh.settings {
     dryRun = false
     logging = 'stdout'
@@ -24,15 +41,7 @@ remotes {
     }
 }
 
-task whoami << {
-    ssh.run {
-        session(remotes.r1) {
-            execute 'whoami'
-        }
-    }
-}
-
-task stop (dependsOn: [whoami]) {
+task stop {
     doLast {
         println "Stop for environment: $env"
     }
@@ -44,23 +53,25 @@ task stop (dependsOn: [whoami]) {
     }
 }
 
-task deploy (dependsOn: [whoami]) {
+task reload (dependsOn: [stop]) {
     doLast {
         println "Deploy for environment: $env"
     }
 
     ssh.run {
         session(remotes.r1) {
-            execute 'cd /opt/tomcat/apache-tomcat-8.5.5/webapps/; rm -rf *'
+            execute 'cd /usr/local/tomcat/webapps/; rm -rf *'
             put from: files(
                     '/Users/Shared/Jenkins/Home/jobs/receiptofi-sandbox-build/workspace/build/war/sandbox/ROOT-sandbox.*.war',
                     '/Users/Shared/Jenkins/Home/jobs/receiptofi.mobile-sandbox-build/workspace/build/war/sandbox/receipt-mobile-sandbox.*.war'
-            ), into: '/opt/tomcat/apache-tomcat-8.5.5/webapps/'
+            ), into: '/usr/local/tomcat/webapps/'
+            execute 'cd /usr/local/tomcat/webapps/; mv ROOT-sandbox.*.war ROOT.war'
+            execute 'cd /usr/local/tomcat/webapps/; mv receipt-mobile-sandbox.*.war receipt-mobile.war'
         }
     }
 }
 
-task start << {
+task start (dependsOn: [reload]) {
     doLast {
         println "Starting Tomcat : $env"
     }
@@ -77,12 +88,6 @@ task checkWebServers << {
         session(remotes.r1) {
             // Execute a command
             def result = execute 'sudo service httpd status'
-
-            // Any Gradle methods or properties are available in a session closure
-            copy {
-                from "src/main/resources/example"
-                into "$buildDir/tmp"
-            }
 
             // Also Groovy methods or properties are available in a session closure
             println result
