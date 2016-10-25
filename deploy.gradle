@@ -51,8 +51,7 @@ task deploy (dependsOn: [whoami]) {
 
     ssh.run {
         session(remotes.r1) {
-            remove '/opt/tomcat/apache-tomcat-8.5.5/webapps/ROOT', '/opt/tomcat/apache-tomcat-8.5.5/webapps/ROOT.war'
-            remove '/opt/tomcat/apache-tomcat-8.5.5/webapps/receipt-mobile', '/opt/tomcat/apache-tomcat-8.5.5/webapps/receipt-mobile.war'
+            execute 'cd /opt/tomcat/apache-tomcat-8.5.5/webapps/; rm -rf *'
             put from: files(
                     '/Users/Shared/Jenkins/Home/jobs/receiptofi-sandbox-build/workspace/build/war/sandbox/ROOT-sandbox.*.war',
                     '/Users/Shared/Jenkins/Home/jobs/receiptofi.mobile-sandbox-build/workspace/build/war/sandbox/receipt-mobile-sandbox.*.war'
