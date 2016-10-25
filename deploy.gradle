@@ -56,7 +56,7 @@ task deploy (dependsOn: [whoami]) {
             put from: files(
                     '/Users/Shared/Jenkins/Home/jobs/receiptofi-sandbox-build/workspace/build/war/sandbox/ROOT-sandbox.*.war',
                     '/Users/Shared/Jenkins/Home/jobs/receiptofi.mobile-sandbox-build/workspace/build/war/sandbox/receipt-mobile-sandbox.*.war'
-            ), into: '/usr/local/tomcat/webapps/'
+            ), into: '/opt/tomcat/apache-tomcat-8.5.5/webapps/'
         }
     }
 }
