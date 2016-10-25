@@ -32,13 +32,13 @@
     <cache:annotation-driven />
 
     <!--suppress SpringModelInspection -->
-    <util:properties id="environmentProperty" location="classpath:/conf/dev.properties" />
+    <util:properties id="systemProperty" location="classpath:/conf/dev.properties" />
     <!--suppress SpringModelInspection -->
     <context:property-placeholder location="classpath:/conf/config.properties"                  order="1" ignore-unresolvable="true" />
     <!--suppress SpringModelInspection -->
     <context:property-placeholder location="classpath:/conf/pass.properties"                    order="1" ignore-unresolvable="true" />
     <!--suppress SpringModelInspection -->
-    <context:property-placeholder properties-ref="environmentProperty" />
+    <context:property-placeholder properties-ref="systemProperty" />
     <!--suppress SpringModelInspection -->
     <context:property-placeholder location="classpath:/conf/application-messages.properties"    order="1" ignore-unresolvable="true" />
     <!--suppress SpringModelInspection -->
