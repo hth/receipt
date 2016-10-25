@@ -39,18 +39,18 @@ public class ReceiptofiServletContextListener implements ServletContextListener 
     public void contextInitialized(ServletContextEvent arg0) {
         LOG.info("Receiptofi context initialized");
 
-        Properties messages = new Properties();
         Properties environment = new Properties();
+        Properties system = new Properties();
 
         try {
-            messages.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("messages.properties"));
+            environment.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("build-info.properties"));
 
-            if (StringUtils.equals(messages.getProperty("build.env"), "prod")) {
-                environment.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("conf/prod.properties"));
-            } else if (StringUtils.equals(messages.getProperty("build.env"), "sandbox")) {
-                environment.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("conf/sandbox.properties"));
+            if (StringUtils.equals(environment.getProperty("build.env"), "prod")) {
+                system.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("conf/prod.properties"));
+            } else if (StringUtils.equals(environment.getProperty("build.env"), "sandbox")) {
+                system.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("conf/sandbox.properties"));
             } else {
-                environment.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("conf/dev.properties"));
+                system.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("conf/dev.properties"));
             }
 
             URL url = Thread.currentThread().getContextClassLoader().getResource("..//jsp//images//smallGoogle.jpg");
@@ -59,43 +59,43 @@ public class ReceiptofiServletContextListener implements ServletContextListener 
             LOG.error("could not load config properties file reason={}", e.getLocalizedMessage(), e);
         }
 
-        checkEnvironment(messages, environment);
-        checkIfPropertiesExists(environment);
+        checkEnvironment(environment, system);
+        checkIfPropertiesExists(system);
     }
 
-    private void checkIfPropertiesExists(Properties environment) {
-        if (environment.getProperty("FilesUploadToS3.receipt.switch").isEmpty()) {
+    private void checkIfPropertiesExists(Properties system) {
+        if (system.getProperty("FilesUploadToS3.receipt.switch").isEmpty()) {
             throw new RuntimeException("Could not find property");
         } else {
-            LOG.info("AWS S3 receipt upload status={}", environment.getProperty("FilesUploadToS3.receipt.switch"));
+            LOG.info("AWS S3 receipt upload status={}", system.getProperty("FilesUploadToS3.receipt.switch"));
         }
 
-        if (environment.getProperty("FilesUploadToS3.coupon.switch").isEmpty()) {
+        if (system.getProperty("FilesUploadToS3.coupon.switch").isEmpty()) {
             throw new RuntimeException("Could not find property");
         } else {
-            LOG.info("AWS S3 coupon upload status={}", environment.getProperty("FilesUploadToS3.coupon.switch"));
+            LOG.info("AWS S3 coupon upload status={}", system.getProperty("FilesUploadToS3.coupon.switch"));
         }
 
-        if (environment.getProperty("FilesUploadToS3.campaign.switch").isEmpty()) {
+        if (system.getProperty("FilesUploadToS3.campaign.switch").isEmpty()) {
             throw new RuntimeException("Could not find property");
         } else {
-            LOG.info("AWS S3 campaign upload status={}", environment.getProperty("FilesUploadToS3.campaign.switch"));
+            LOG.info("AWS S3 campaign upload status={}", system.getProperty("FilesUploadToS3.campaign.switch"));
         }
     }
 
-    private void checkEnvironment(Properties messages, Properties environment) {
+    private void checkEnvironment(Properties environment, Properties system) {
         try {
             String hostName = InetAddress.getLocalHost().getHostName();
-            String buildEnvironment = messages.getProperty("build.env");
-            String hostname = environment.getProperty("hostname.starts.with");
+            String buildEnvironment = environment.getProperty("build.env");
+            String hostname = system.getProperty("hostname.starts.with");
 
-            LOG.info("Deploying on environment={} and host={}", buildEnvironment, hostName);
+            LOG.info("Deploying on system={} and host={}", buildEnvironment, hostName);
             if (StringUtils.equals(buildEnvironment, "prod") && !hostName.startsWith(hostname)) {
-                LOG.error("Mismatch environment. Found env={} on host={}", buildEnvironment, hostName);
-                throw new RuntimeException("Mismatch environment. Found env=" + buildEnvironment + " on host=" + hostName);
+                LOG.error("Mismatch system. Found env={} on host={}", buildEnvironment, hostName);
+                throw new RuntimeException("Mismatch system. Found env=" + buildEnvironment + " on host=" + hostName);
             } else if (StringUtils.equals(buildEnvironment, "sandbox") && !hostName.startsWith(hostname)) {
-                LOG.error("Mismatch environment. Found env={} on host={}", buildEnvironment, hostName);
-                throw new RuntimeException("Mismatch environment. Found env=" + buildEnvironment + " on host=" + hostName);
+                LOG.error("Mismatch system. Found env={} on host={}", buildEnvironment, hostName);
+                throw new RuntimeException("Mismatch system. Found env=" + buildEnvironment + " on host=" + hostName);
             }
         } catch (UnknownHostException e) {
             LOG.error("Could not get hostname reason={}", e.getLocalizedMessage(), e);
