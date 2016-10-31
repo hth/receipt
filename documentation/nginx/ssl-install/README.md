@@ -37,6 +37,14 @@ You can do it simply by running following command:
 or
 
     cat sf_bundle-g2-g1.crt >> 2bf57.crt 
+    
+For comodo, download `domain_validated.ca-bundle` if its not sent in zipped files in email. 
+    
+    cat STAR_receiptofi_com.crt domain_validated.ca-bundle > ssl-bundle.crt
+
+And get `key` file when `.csr` file was created. `Key` is your generated private key. Should create new `csr` and `key` 
+every time.  
+    
 Move this *example.com.crt* file to <code>/var/www/example.com/cert/directory</code> on nginx server.
 
 ###Step 4: Adjusting Nginx Configuration###
