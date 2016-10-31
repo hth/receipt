@@ -3,7 +3,7 @@ Nginx + GoDaddy SSL Setup
 
 ###Step 1: Create CSR – Certificate Signing Request on Nginx Server###
 
-Create a directory to store keys & certifcates for example.com domain. You can use any directory. Following example uses these conventions.
+Create a directory to store keys & certificates for example.com domain. You can use any directory. Following example uses these conventions.
 
     mkdir /var/www/example.com/cert/
     cd /var/www/example.com/cert/

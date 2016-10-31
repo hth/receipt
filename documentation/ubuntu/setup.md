@@ -4,7 +4,7 @@ Load `bash_profile` changes using command
     source .bash_profile
 
 ### Sudoer
-Make `db` as sudoer in file `/etc/sudoers` at the end of file
+Make `db` as sudoer in file `/etc/sudoers` at the end of file. `Shift+g` gets you to the end of file.
 
     db  ALL=(ALL) NOPASSWD: ALL
     
