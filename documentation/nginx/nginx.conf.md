@@ -20,6 +20,8 @@
         include         blockips.conf;
         include         ip.blocked.conf;
     
+        server_tokens   off;
+    
         include         mime.types;
         default_type    application/octet-stream;
     
@@ -62,9 +64,9 @@
     
         ssl_prefer_server_ciphers on;    
     
-        ssl_dhparam          /var/certs/dhparams.pem;
-        ssl_certificate      /var/certs/498290154bdc4.crt;
-        ssl_certificate_key  /var/certs/www_receiptofi_com.key;
+        ssl_dhparam          /var/certs/2016_OCT/dhparams.pem;
+        ssl_certificate      /var/certs/2016_OCT/ssl-bundle.crt;
+        ssl_certificate_key  /var/certs/2016_OCT/www_receiptofi_com.key;
         
         ssl_stapling        on;
         ssl_stapling_verify on;
