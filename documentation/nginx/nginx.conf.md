@@ -1,4 +1,4 @@
-    # Date: Oct 31 12:50 PM
+    # Date: Oct 31 3:50 PM
     # https://www.digitalocean.com/community/tutorials/how-to-optimize-nginx-configuration
     # user  nobody;
     # IP Address 192.168.1.71 is related to the nginx installed ip
@@ -68,10 +68,16 @@
         ssl_certificate      /var/certs/2016_OCT/ssl-bundle.crt;
         ssl_certificate_key  /var/certs/2016_OCT/www_receiptofi_com.key;
         
+        # OCSP Stapling ---
+        # fetch OCSP records from URL in ssl_certificate and cache them
         ssl_stapling        on;
         ssl_stapling_verify on;
-        resolver            8.8.4.4 8.8.8.8 valid=300s;
-        resolver_timeout    10s;
+        
+        ## verify chain of trust of OCSP response using Root CA and Intermediate certs
+        ssl_trusted_certificate /var/certs/2016_OCT/root_CA_cert_plus_intermediates.crt;
+    
+        resolver            8.8.4.4 8.8.8.8 valid=300s ipv6=off; # Google DNS
+        resolver_timeout    30s;
                 
         # Remember this setting for 365 days
         add_header Strict-Transport-Security "max-age=31536000; includeSubdomains";

@@ -47,6 +47,35 @@ every time.
     
 Move this *example.com.crt* file to <code>/var/www/example.com/cert/directory</code> on nginx server.
 
+###Step 4: OCSP stapling on nginx work
+
+You should have received these four files from Comodo after finishing the verification process:
+
+- AddTrustExternalCARoot.crt (Root CA Certificate)
+- COMODORSAAddTrustCA.crt (Intermediate CA Certificate)
+- COMODORSADomainValidationSecureServerCA.crt (Intermediate CA Certificate)
+- your_server.crt (Your PositiveSSL Certificate)
+
+
+    $ cat COMODORSADomainValidationSecureServerCA.crt COMODORSAAddTrustCA.crt > /path/to/root_CA_cert_plus_intermediates
+     
+Update nginx.conf 
+     
+    # OCSP Stapling ---
+    # fetch OCSP records from URL in ssl_certificate and cache them
+    ssl_stapling        on;
+    ssl_stapling_verify on;
+    
+    ## verify chain of trust of OCSP response using Root CA and Intermediate certs
+    ssl_trusted_certificate /var/certs/2016_OCT/root_CA_cert_plus_intermediates.crt;
+     
+    resolver            8.8.4.4 8.8.8.8 valid=300s ipv6=off; # Google DNS
+    resolver_timeout    30s;     
+    
+To test response and to prime the OCSP response cache
+    
+    echo QUIT | openssl s_client -connect receiptofi.com:443 -status 2> /dev/null | grep -A 17 'OCSP response:' | grep -B 17 'Next Update'
+
 ###Step 4: Adjusting Nginx Configuration###
 
 Enable SSL for example.com
