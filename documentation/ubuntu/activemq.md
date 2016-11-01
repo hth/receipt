@@ -39,10 +39,9 @@ Modify in `log4j.properties`
     log4j.appender.logfile.file=/var/log/activemq/activemq.log    
     log4j.appender.audit.file=/var/log/activemq/audit.log    
     
-Make directory
+Make directory for logging activemq
     
-    sudo mkdir activemq
-    sudo chown db:db activemq
+    sudo mkdir /var/log/activemq && sudo chown db:db /var/log/activemq
     
 #### Comment STOMP and WEB SOCKET 
     
