@@ -30,11 +30,11 @@ Inside `/etc/default/activemq` add `JAVA_HOME`. Uncomment and add
     
 Change Log place to access
 
-Inside /usr/local/activemq/conf/log4j.properties
+Modify `/usr/local/activemq/conf/log4j.properties`
     
     nano /usr/local/activemq/conf/log4j.properties
     
-Modify in `log4j.properties` 
+Edit to
     
     log4j.appender.logfile.file=/var/log/activemq/activemq.log    
     log4j.appender.audit.file=/var/log/activemq/audit.log    

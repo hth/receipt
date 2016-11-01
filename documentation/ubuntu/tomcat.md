@@ -10,7 +10,13 @@ Link
     sudo ln -s /opt/tomcat/apache-tomcat /usr/local/tomcat
     
 
-Add the file to location `/lib/systemd/system/tomcat.service`. We might need to make a link to `/etc/systemd/system/tomcat.serice`
+Add the file to location `/lib/systemd/system/tomcat.service`.
+
+    sudo touch /lib/systemd/system/tomcat.service
+    sudo chown db:db /lib/systemd/system/tomcat.service
+    nano /lib/systemd/system/tomcat.service
+     
+Add the following content     
     
     [Unit]
     Description=Apache Tomcat Web Application Container
@@ -19,18 +25,18 @@ Add the file to location `/lib/systemd/system/tomcat.service`. We might need to 
     [Service]
     Type=forking
     
-    Environment=JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/jre
-    Environment=CATALINA_PID=/opt/tomcat/temp/tomcat.pid
-    Environment=CATALINA_HOME=/opt/tomcat
-    Environment=CATALINA_BASE=/opt/tomcat
+    Environment=JAVA_HOME=/usr/local/java
+    Environment=CATALINA_PID=/usr/local/tomcat/temp/tomcat.pid
+    Environment=CATALINA_HOME=/usr/local/tomcat
+    Environment=CATALINA_BASE=/usr/local/tomcat
     Environment='CATALINA_OPTS=-Xms2048M -Xmx7158M -server -XX:+UseParallelGC'
     Environment='JAVA_OPTS=-Djava.awt.headless=true -Djava.security.egd=file:/dev/./urandom'
     
-    ExecStart=/opt/tomcat/bin/startup.sh
-    ExecStop=/opt/tomcat/bin/shutdown.sh
+    ExecStart=/usr/local/tomcat/bin/startup.sh
+    ExecStop=/usr/local/tomcat/bin/shutdown.sh
     
     User=db
-    Group=root
+    Group=db
     UMask=0007
     RestartSec=10
     Restart=always
@@ -47,4 +53,7 @@ Start the Tomcat service by typing:
 Double check that it started without errors by typing:
 
     sudo systemctl status tomcat
+    
+Enable the Service to Start at Boot : This creates a symlink
+    
     sudo systemctl enable tomcat
