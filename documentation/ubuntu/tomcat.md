@@ -16,7 +16,7 @@ Add the file to location `/lib/systemd/system/tomcat.service`.
     sudo chown db:db /lib/systemd/system/tomcat.service
     nano /lib/systemd/system/tomcat.service
      
-Add the following content     
+Add the following content to `tomcat.service`     
     
     [Unit]
     Description=Apache Tomcat Web Application Container
