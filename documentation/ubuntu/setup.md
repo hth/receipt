@@ -28,47 +28,6 @@ All commands
 
     sudo apt-get update && sudo apt-get upgrade && sudo apt-get dist-upgrade && sudo apt autoremove
     
-### Install java
-    
-Download `jdk-8u102-linux-x64.tar.gz`. 
-
-    sftp l4@192.X.X.X
-    put javax
-    exit
-    
-    ssh l4@192.X.X.X
-    
-Installing Java in `/opt/java`
-
-    tar -xvf jdk-8u102-linux-x64.tar.gz
-    sudo mkdir /opt/java
-    sudo mv jdk1.8.0_102 /opt/java/
-    rm jdk-8u102-linux-x64.tar.gz 
-    sudo ln -s /opt/java/jdk1.8.0_102 /usr/local/java
-
-Screenshot sample    
-
-    drwxr-xr-x  3 root root 4096 Oct  9 18:55 .
-    drwxr-xr-x 23 root root 4096 Oct  9 18:40 ..
-    drwxr-xr-x  3 root root 4096 Oct  9 18:56 java
-    l4@l4:/opt$ cd java/
-    l4@l4:/opt/java$ ls -al
-    total 12
-    drwxr-xr-x 3 root root 4096 Oct  9 18:56 .
-    drwxr-xr-x 3 root root 4096 Oct  9 18:55 ..
-    drwxr-xr-x 8 l4   l4   4096 Jun 22 18:56 jdk1.8.0_102
-    l4@l4:/opt/java$     
-
-Set JAVA_HOME
- 
-    JAVA_HOME=/usr/local/java
-    export PATH=$JAVA_HOME/bin:$PATH
-
-Source to import environment
-    
-    source ~/.bash_profile
-    java -version
-
 ### Activemq
 
 #### Install ActiveMQ
