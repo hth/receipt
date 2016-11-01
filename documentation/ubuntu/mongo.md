@@ -5,11 +5,13 @@ Download file for ubuntu.
     `sftp` to `/tmp` latest version of `mongodb-linux-x86_64-ubuntu1604-3.2.10.tgz`
     Create directory `/opt/mongo` as `root` 
     
+    sudo mkdir /opt/mongo
+    
 #### Directory to install    
 Inside `/tmp` perform `untar` of `mongodb`
 
     tar -xvf mongodb-linux-x86_64-ubuntu1604-3.2.10.tgz
-    mv /tmp/mongodb-linux-x86_64-ubuntu1604-3.2.10 /opt/mongo/
+    sudo mv /tmp/mongodb-linux-x86_64-ubuntu1604-3.2.10 /opt/mongo/
     
 Make directory for `log` and `data`    
     
@@ -55,14 +57,15 @@ Add Path (at the end of file .bashrc)
     processManagement:
       fork: false
       
+After every change in config. Do a system reload and then restart.      
+      
 #### Create `mongod.service` file
       
 Create mongod.service ( file shown below) in /etc/systemd/system  directory.
     
-    sudo touch /etc/systemd/system/mongod.service
-    sudo chown db:db /etc/systemd/system/mongod.service
+    sudo touch /etc/systemd/system/mongod.service && 
+    sudo chown db:db /etc/systemd/system/mongod.service && 
     nano /etc/systemd/system/mongod.service
-    
     
 #### Copy below code to - mongod.service
 
