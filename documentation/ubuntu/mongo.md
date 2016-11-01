@@ -11,8 +11,10 @@ Inside `/tmp` perform `untar` of `mongodb`
     tar -xvf mongodb-linux-x86_64-ubuntu1604-3.2.10.tgz
     mv /tmp/mongodb-linux-x86_64-ubuntu1604-3.2.10 /opt/mongo/
     
-    sudo mkdir /var/log/mongodb
-    sudo chown db:db /var/log/mongodb
+Make directory for `log` and `data`    
+    
+    sudo mkdir /var/log/mongodb && sudo chown db:db /var/log/mongodb
+    sudo mkdir /data && sudo mkdir /data/db && sudo chown db:db /data/db
     
 #### Create Link    
 
@@ -20,17 +22,22 @@ Inside `/tmp` perform `untar` of `mongodb`
     
 #### Add Path to bashrc
     
-Add to Path ( in the file .bashrc)  
+Add Path (at the end of file .bashrc)  
 
     nano ~/.bashrc
-    export PATH=/opt/mongo/mongodb-linux-x86_64-ubuntu1604-3.2.10/bin:$PATH
+    export PATH=/usr/local/mongodb/bin:$PATH
     
 #### Add link in /usr/bin
     
-    ln -snf /opt/mongo/mongodb-linux-x86_64-ubuntu1604-3.2.10/bin/mongod /usr/bin/mongod
+    sudo ln -snf /usr/local/mongodb/bin/mongod /usr/bin/mongod
    
 #### Mongod.conf create
 
+    sudo touch /etc/mongod.conf && sudo chown db:db /etc/mongod.conf && nano /etc/mongod.conf
+
+#### Copy the content to `mongod.conf` file
+
+    ---
     systemLog:
       destination: file
       path: /var/log/mongodb/mongo.log
@@ -54,6 +61,7 @@ Create mongod.service ( file shown below) in /etc/systemd/system  directory.
     
     sudo touch /etc/systemd/system/mongod.service
     sudo chown db:db /etc/systemd/system/mongod.service
+    nano /etc/systemd/system/mongod.service
     
     
 #### Copy below code to - mongod.service
@@ -85,6 +93,11 @@ Create mongod.service ( file shown below) in /etc/systemd/system  directory.
 
 
     sudo systemctl start mongod
+    
+- Re-Start Mongod :
+
+
+    sudo systemctl restart mongod    
 - Reload the systemd daemon :
 
 
