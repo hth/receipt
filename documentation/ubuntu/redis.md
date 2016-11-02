@@ -82,12 +82,15 @@ Add to file
 #### TEST if REDIS working fine ---
 
  Check Redis Instance
-   redis-cli
+   
+    redis-cli
  test connectivity by typing:
-   127.0.0.1:6379 > ping
+   
+    127.0.0.1:6379 > ping
 
  You should see:
-   PONG
+    
+    PONG
 
 Test :
  127.0.0.1:6379> set test "It's working!"
