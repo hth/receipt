@@ -18,7 +18,7 @@ Make directory for `log` and `data`
     
 #### Create Link  
 
-    sudo ln -s /opt/filebeat/filebeat-5.0.0-linux-x86_64/ /usr/local/filebeat
+    sudo ln -snf /opt/filebeat/filebeat-5.0.0-linux-x86_64/ /usr/local/filebeat
     
 #### Create file `filebeat.conf` 
     
