@@ -86,7 +86,8 @@ Delete `$CATALINA_BASE/conf/logging.properties` to prevent `java.util.logging` g
     mv tomcat-juli-adapters.jar /usr/local/tomcat/lib &&
     mv log4j.properties /usr/local/tomcat/lib &&
     mv log4j-1.2.17.jar /usr/local/tomcat/lib &&
-    rm /usr/local/tomcat/conf/logging.properties
+    rm /usr/local/tomcat/conf/logging.properties &&
+    rm -rf /usr/local/tomcat/webapps/*
         
     
 Next, reload the systemd daemon so that it knows about our service file:

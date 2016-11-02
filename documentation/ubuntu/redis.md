@@ -1,40 +1,96 @@
 ### Redis
 
-https://www.globo.tech/learning-center/install-configure-redis-ubuntu-16/
+#### Update local apt package cache and install the dependencies:
+
+    sudo apt-get update &&
+    sudo apt-get install build-essential tcl
+  
+#### Download REDIS
+
+    cd /tmp &&
+    curl -O http://download.redis.io/releases/redis-3.2.5.tar.gz
+
+#### Unpack the Tarball
+  
+    tar xzvf redis-3.2.5.tar.gz
+
+#### Build and Install REDIS
+
+    cd /tmp/redis-3.2.5 &&
+    make && 
+    make test && 
+    sudo make install
+
+#### Configure REDIS
     
-Tutorial
+    sudo mkdir /etc/redis &&
+    sudo chown -R db:db /etc/redis && 
+    sudo cp /tmp/redis-3.2.5/redis.conf /etc/redis
 
-Ensure that your installation of Ubuntu 16 is fully up to date with this command.
+#### Modify the redis.conf file
 
-    apt-get update && apt-get upgrade -y
+    sudo vi  /etc/redis/redis.conf
 
-Install the redis server package, which is included in the base repositories.
+#### Changes in redis.conf
 
-    apt-get install redis-server -y
+    supervised no => TO => supervised systemd
+    logfile "" => TO => logfile "/var/log/redis/redis.log"
+    dir ./ => TO => /data/redis
 
-To prevent others from accessing your Redis keystore, you will need to make sure that Redis is bound to your local IP address. This is hands-down the safest security option, and the best one for this particular guide.
+#### Create log directory /var/log/redis
 
-First, open the Redis configuration in a text editor.
+    sudo mkdir /var/log/redis &&
+    sudo chown db:db /var/log/redis &&
+    sudo mkdir /data/redis &&
+    sudo chown db:db /data/redis
 
-    nano /etc/redis/redis.conf
+#### Creating REDIS system file 
+   
+    sudo touch /etc/systemd/system/redis.service && 
+    sudo chown db:db /etc/systemd/system/redis.service &&
+    sudo nano /etc/systemd/system/redis.service
 
-Next, search for the line which starts with bind. Change it to this line instead:
+Add to file
 
-    bind 127.0.0.1
+    [Unit]
+    Description=Redis In-Memory Data Store
+    After=network.target
+    
+    [Service]
+    User=db
+    Group=db
+    ExecStart=/usr/local/bin/redis-server /etc/redis/redis.conf
+    ExecStop=/usr/local/bin/redis-cli shutdown
+    Restart=always
+    
+    [Install]
+    WantedBy=multi-user.target
+    
+#### Enable Redis to Start at Boot
+   
+    sudo systemctl enable redis    
 
-Start the Redis server.
+#### Start up the systemd service by typing:
+   
+    sudo systemctl start redis
+    sudo systemctl restart redis
 
-    service redis-server start
+#### Check that the service had no errors by running:
+   
+    sudo systemctl status redis
 
-In order for Redis to start up again when the server is restarted, enable it to start on boot.
+#### TEST if REDIS working fine ---
 
-    update-rc.d redis-server enable
-    update-rc.d redis-server defaults
+ Check Redis Instance
+   redis-cli
+ test connectivity by typing:
+   127.0.0.1:6379 > ping
 
-Redis is installed! You can now enter the first data into your new Redis server.
+ You should see:
+   PONG
 
-    root@redis-node:~# redis-cli
-    127.0.0.1:6379> set besthost "Globo.Tech"
-    OK
-    127.0.0.1:6379> get besthost
-    "Globo.Tech"  
+Test :
+ 127.0.0.1:6379> set test "It's working!"
+	OK
+127.0.0.1:6379> get test
+	"It's working!"    
