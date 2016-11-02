@@ -7,6 +7,86 @@ Download file for ubuntu.
     
     sudo mkdir /opt/mongo
     
+### Numactl
+
+#### Install
+        
+        sudo apt install numactl
+    
+#### Disable Transparent Huge Pages        
+    
+- Create the init.d script.
+
+    Create the following file at `/etc/init.d/disable-transparent-hugepages`:
+    
+    
+        sudo touch /etc/init.d/disable-transparent-hugepages
+    
+https://docs.mongodb.com/manual/tutorial/transparent-huge-pages/    
+
+-  Make it executable.
+ 
+        sudo chmod 755 /etc/init.d/disable-transparent-hugepages
+        sudo nano /etc/init.d/disable-transparent-hugepages 
+        
+- File content 
+        
+        #!/bin/bash
+        ### BEGIN INIT INFO
+        # Provides:          disable-transparent-hugepages
+        # Required-Start:    $local_fs
+        # Required-Stop:
+        # X-Start-Before:    mongod mongodb-mms-automation-agent
+        # Default-Start:     2 3 4 5
+        # Default-Stop:      0 1 6
+        # Short-Description: Disable Linux transparent huge pages
+        # Description:       Disable Linux transparent huge pages, to improve
+        #                    database performance.
+        ### END INIT INFO
+        
+        case $1 in
+          start)
+            if [ -d /sys/kernel/mm/transparent_hugepage ]; then
+              thp_path=/sys/kernel/mm/transparent_hugepage
+            elif [ -d /sys/kernel/mm/redhat_transparent_hugepage ]; then
+              thp_path=/sys/kernel/mm/redhat_transparent_hugepage
+            else
+              return 0
+            fi
+        
+            echo 'never' > ${thp_path}/enabled
+            echo 'never' > ${thp_path}/defrag
+        
+            re='^[0-1]+$'
+            if [[ $(cat ${thp_path}/khugepaged/defrag) =~ $re ]]
+            then
+              # RHEL 7
+              echo 0  > ${thp_path}/khugepaged/defrag
+            else
+              # RHEL 6
+              echo 'no' > ${thp_path}/khugepaged/defrag
+            fi
+        
+            unset re
+            unset thp_path
+            ;;
+        esac
+        
+-  Configure your operating system to run it on boot.
+       
+        sudo update-rc.d /etc/init.d/disable-transparent-hugepages defaults
+       
+-  Test Your Changes
+
+You can check the status of THP support by issuing the following commands:
+  
+        cat /sys/kernel/mm/transparent_hugepage/enabled
+        cat /sys/kernel/mm/transparent_hugepage/defrag  
+         
+Response 
+         
+        always madvise [never]         
+    
 #### Directory to install    
 Inside `/tmp` perform `untar` of `mongodb`
 
@@ -77,7 +157,7 @@ Create mongod.service ( file shown below) in /etc/systemd/system  directory.
     [Service]
     User=db
     Group=db
-    ExecStart=/usr/bin/mongod --quiet --config /etc/mongod.conf
+    ExecStart=/usr/bin/numactl --interleave=all /usr/bin/mongod --quiet --config /etc/mongod.conf
     
     [Install]
     WantedBy=multi-user.target
@@ -86,27 +166,20 @@ Create mongod.service ( file shown below) in /etc/systemd/system  directory.
     
 - Check Status of Mongod :
 
-
-	sudo systemctl status mongod
+        sudo systemctl status mongod
 - Stop Mongod :
 
-
-    sudo systemctl stop mongod
+        sudo systemctl stop mongod
 - Start Mongod :
 
-
-    sudo systemctl start mongod
-    
+        sudo systemctl start mongod    
 - Re-Start Mongod :
 
-
-    sudo systemctl restart mongod    
+        sudo systemctl restart mongod    
 - Reload the systemd daemon :
 
-
-    sudo systemctl daemon-reload
+        sudo systemctl daemon-reload
 - Enable the Service to Start at Boot : This creates a symlink
 
-
-    sudo systemctl enable mongod    
+        sudo systemctl enable mongod    
     
