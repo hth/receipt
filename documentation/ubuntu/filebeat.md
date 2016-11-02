@@ -9,7 +9,8 @@ Download file for ubuntu.
 #### Directory to install    
 Inside `/tmp` perform `untar` of `mongodb`
 
-    tar -xvf filebeat-5.0.0-linux-x86_64.tar.gz
+    sudo mkdir /opt/filebeat &&
+    tar -xvf filebeat-5.0.0-linux-x86_64.tar.gz &&
     sudo mv /tmp/filebeat-5.0.0-linux-x86_64 /opt/filebeat/
     
 Make directory for `log` and `data`    
@@ -27,6 +28,7 @@ Make directory for `log` and `data`
     nano /etc/filebeat.conf
      
 #### Copy the content to `filebeat.conf` file
+
 Note: Change name to correct host name
      
     ---

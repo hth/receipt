@@ -6,8 +6,8 @@ Create directory `/opt/activemq` as `root`
 #### Directory to install
 Inside `/tmp` perform `untar` of `activemq`
 
-    sudo mkdir /opt/activemq
-    tar -xvf apache-activemq-5.14.1-bin.tar.gz
+    sudo mkdir /opt/activemq &&
+    tar -xvf apache-activemq-5.14.1-bin.tar.gz &&
     sudo mv /tmp/apache-activemq-5.14.1 /opt/activemq/
      
 #### Create Link     
@@ -43,7 +43,8 @@ Edit to
     
 Make directory for logging activemq
     
-    sudo mkdir /var/log/activemq && sudo chown db:db /var/log/activemq
+    sudo mkdir /var/log/activemq && 
+    sudo chown db:db /var/log/activemq
     
 #### Comment STOMP and WEB SOCKET 
     
@@ -56,7 +57,7 @@ Conf File - comment - Transporter - stomp & web socket in - activemq.xml
 #### Create Link in init.d directory
 Use command to create link
     
-    sudo ln -snf /usr/local/activemq/bin/activemq /etc/init.d/activemq
+    sudo ln -snf /usr/local/activemq/bin/activemq /etc/init.d/activemq &&
     sudo update-rc.d activemq defaults
     
 ### Start Active MQ

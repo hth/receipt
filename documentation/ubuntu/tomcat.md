@@ -1,8 +1,8 @@
 ### Tomcat 8.5.5
 Download tomcat. Copy to `/tmp`    
     
-    tar -xvf apache-tomcat-8.5.6.tar.gz
-    sudo mkdir /opt/tomcat
+    tar -xvf apache-tomcat-8.5.6.tar.gz &&
+    sudo mkdir /opt/tomcat &&
     sudo mv apache-tomcat-8.5.6 /opt/tomcat
     
 Link
@@ -13,7 +13,6 @@ Log files directory
     
     sudo mkdir /var/log/tomcat && sudo chown db:db /var/log/tomcat   
     
-
 Add the file to location `/lib/systemd/system/tomcat.service`.
 
     sudo touch /lib/systemd/system/tomcat.service &&

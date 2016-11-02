@@ -10,11 +10,11 @@ Download `jdk-8u112-linux-x64.tar.gz`.
     
 Installing Java in `/opt/java`
 
-    tar -xvf jdk-8u112-linux-x64.tar.gz
-    sudo mkdir /opt/java
-    sudo mv jdk1.8.0_112 /opt/java/
-    rm jdk-8u112-linux-x64.tar.gz 
-    sudo ln -s /opt/java/jdk1.8.0_112 /usr/local/java
+    tar -xvf jdk-8u112-linux-x64.tar.gz &&
+    sudo mkdir /opt/java &&
+    sudo mv jdk1.8.0_112 /opt/java/ &&
+    rm jdk-8u112-linux-x64.tar.gz && 
+    sudo ln -s /opt/java/jdk1.8.0_112 /usr/local/java 
     
 Ownership of link remains with `root` and cannot be converted to `db`    
 

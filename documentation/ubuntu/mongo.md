@@ -26,7 +26,7 @@ https://docs.mongodb.com/manual/tutorial/transparent-huge-pages/
 
 -  Make it executable.
  
-        sudo chmod 755 /etc/init.d/disable-transparent-hugepages
+        sudo chmod 755 /etc/init.d/disable-transparent-hugepages &&
         sudo nano /etc/init.d/disable-transparent-hugepages 
         
 - File content 
@@ -82,7 +82,7 @@ https://docs.mongodb.com/manual/tutorial/transparent-huge-pages/
 
 You can check the status of THP support by issuing the following commands:
   
-        cat /sys/kernel/mm/transparent_hugepage/enabled
+        cat /sys/kernel/mm/transparent_hugepage/enabled &&
         cat /sys/kernel/mm/transparent_hugepage/defrag  
          
 Response 
@@ -92,13 +92,16 @@ Response
 #### Directory to install    
 Inside `/tmp` perform `untar` of `mongodb`
 
-    tar -xvf mongodb-linux-x86_64-ubuntu1604-3.2.10.tgz
+    tar -xvf mongodb-linux-x86_64-ubuntu1604-3.2.10.tgz &&
     sudo mv /tmp/mongodb-linux-x86_64-ubuntu1604-3.2.10 /opt/mongo/
     
 Make directory for `log` and `data`    
     
-    sudo mkdir /var/log/mongodb && sudo chown db:db /var/log/mongodb
-    sudo mkdir /data && sudo mkdir /data/db && sudo chown db:db /data/db
+    sudo mkdir /var/log/mongodb && 
+    sudo chown db:db /var/log/mongodb &&
+    sudo mkdir /data && 
+    sudo mkdir /data/db && 
+    sudo chown db:db /data/db
     
 #### Create Link    
 
@@ -117,7 +120,9 @@ Add Path (at the end of file .bashrc)
    
 #### Mongod.conf create
 
-    sudo touch /etc/mongod.conf && sudo chown db:db /etc/mongod.conf && nano /etc/mongod.conf
+    sudo touch /etc/mongod.conf && 
+    sudo chown db:db /etc/mongod.conf && 
+    nano /etc/mongod.conf
 
 #### Copy the content to `mongod.conf` file
 
