@@ -74,9 +74,11 @@ https://docs.mongodb.com/manual/tutorial/transparent-huge-pages/
         
 -  Configure your operating system to run it on boot.
        
-        sudo update-rc.d /etc/init.d/disable-transparent-hugepages defaults
+        sudo update-rc.d disable-transparent-hugepages defaults
        
--  Test Your Changes
+-  Test Your Changes after reboot
+
+        sudo reboot
 
 You can check the status of THP support by issuing the following commands:
   
