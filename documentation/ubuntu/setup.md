@@ -6,6 +6,8 @@ Load `bash_profile` changes using command
 ### Sudoer
 Make `db` as sudoer in file `/etc/sudoers` at the end of file. `Shift+g` gets you to the end of file.
 
+    sudo vi /etc/sudoers
+    shift+g
     db  ALL=(ALL) NOPASSWD: ALL
     
 After making `db` as `sudoer`, `init 0` does not work. It now takes `sudo init 0` for reboot instead.
