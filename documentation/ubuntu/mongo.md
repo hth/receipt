@@ -11,7 +11,7 @@ Download file for ubuntu.
 
 #### Install
         
-        sudo apt install numactl
+    sudo apt install numactl
     
 #### Disable Transparent Huge Pages        
     
@@ -165,7 +165,12 @@ Create mongod.service ( file shown below) in /etc/systemd/system  directory.
     WantedBy=multi-user.target
     
 #### Check status 
-    
+- Reload the systemd daemon :
+
+        sudo systemctl daemon-reload
+- Enable the Service to Start at Boot : This creates a symlink
+
+        sudo systemctl enable mongod 
 - Check Status of Mongod :
 
         sudo systemctl status mongod
@@ -177,11 +182,5 @@ Create mongod.service ( file shown below) in /etc/systemd/system  directory.
         sudo systemctl start mongod    
 - Re-Start Mongod :
 
-        sudo systemctl restart mongod    
-- Reload the systemd daemon :
-
-        sudo systemctl daemon-reload
-- Enable the Service to Start at Boot : This creates a symlink
-
-        sudo systemctl enable mongod    
+        sudo systemctl restart mongod       
     

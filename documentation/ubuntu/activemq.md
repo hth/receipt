@@ -6,8 +6,9 @@ Create directory `/opt/activemq` as `root`
 #### Directory to install
 Inside `/tmp` perform `untar` of `activemq`
 
-    tar -xvf jdk-8u102-linux-x64.tar.gz
-    mv /tmp/apache-activemq-5.14.1 /opt/activemq/
+    sudo mkdir /opt/activemq
+    tar -xvf apache-activemq-5.14.1-bin.tar.gz
+    sudo mv /tmp/apache-activemq-5.14.1 /opt/activemq/
      
 #### Create Link     
 

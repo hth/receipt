@@ -48,26 +48,13 @@ Add the following content to `tomcat.service`
     [Install]
     WantedBy=multi-user.target
     
-Next, reload the systemd daemon so that it knows about our service file:
-
-    sudo systemctl daemon-reload
-Start the Tomcat service by typing:
-
-    sudo systemctl start tomcat
-Double check that it started without errors by typing:
-
-    sudo systemctl status tomcat
-    
-Enable the Service to Start at Boot : This creates a symlink
-    
-    sudo systemctl enable tomcat
-    
 ### Other configurations
 
 #### Stop request to tomcat before unloading
 Tomcat supports unloadDelay which waits till the configured time for unloading servlets.
 This should configured in `context.xml` as follows: 20 seconds below
 
+    nano /usr/local/tomcat/conf/context.xml
     <Context unloadDelay="20000">  
     
 #### Warnings [consider increasing the maximum size of the cache]
@@ -95,9 +82,23 @@ Delete `$CATALINA_BASE/conf/logging.properties` to prevent `java.util.logging` g
     wget http://mirror.cogentco.com/pub/apache/tomcat/tomcat-8/v8.0.38/bin/extras/tomcat-juli-adapters.jar &&
     wget http://mirror.cogentco.com/pub/apache/tomcat/tomcat-8/v8.0.38/bin/extras/tomcat-juli.jar
     
-    mv tomcat-juli.jar /usr/local/tomcat/bin
-    mv tomcat-juli-adapters.jar /usr/local/tomcat/lib
-    mv log4j.properties /usr/local/tomcat/lib
-    mv log4j-1.2.17.jar /usr/local/tomcat/lib
+    mv tomcat-juli.jar /usr/local/tomcat/bin &&
+    mv tomcat-juli-adapters.jar /usr/local/tomcat/lib &&
+    mv log4j.properties /usr/local/tomcat/lib &&
+    mv log4j-1.2.17.jar /usr/local/tomcat/lib &&
     rm /usr/local/tomcat/conf/logging.properties
+        
     
+Next, reload the systemd daemon so that it knows about our service file:
+
+    sudo systemctl daemon-reload
+Enable the Service to Start at Boot : This creates a symlink
+    
+    sudo systemctl enable tomcat    
+Start the Tomcat service by typing:
+
+    sudo systemctl start tomcat
+Double check that it started without errors by typing:
+
+    sudo systemctl status tomcat
+   

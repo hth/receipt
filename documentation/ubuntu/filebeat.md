@@ -22,9 +22,12 @@ Make directory for `log` and `data`
     
 #### Create file `filebeat.conf` 
     
-    sudo touch /etc/filebeat.conf && sudo chown db:db /etc/filebeat.conf && nano /etc/filebeat.conf
+    sudo touch /etc/filebeat.conf && 
+    sudo chown db:db /etc/filebeat.conf && 
+    nano /etc/filebeat.conf
      
 #### Copy the content to `filebeat.conf` file
+Note: Change name to correct host name
      
     ---
     filebeat.prospectors:
@@ -36,7 +39,7 @@ Make directory for `log` and `data`
       multiline.pattern: ^\[
       multiline.negate: false
       multiline.match: after
-    name: s2
+    name: s3
     output.logstash:
       hosts: ["192.168.1.13:5044"]
     logging:
@@ -81,23 +84,18 @@ Create filebeat.service (file shown below) in /etc/systemd/system  directory.
     
 - Reload System Demon to get changes in service file
 
-
-	sudo systemctl daemon-reload
+    	sudo systemctl daemon-reload
+- Enable the Service to Start at Boot - This create a symlink
+    
+        sudo systemctl enable filebeat
+    
+    Above command does this Example -- Created symlink from /etc/systemd/system/multi-user.target.wants/filebeat.service to /etc/systemd/system/filebeat.service.	
 - Start Filebeat Service
 
-
-	sudo systemctl start filebeat
+        sudo systemctl start filebeat
 - Check Status of Service
-
-
-    sudo systemctl status filebeat
+        
+        sudo systemctl status filebeat
 - Stop Service
 
-
-    sudo systemctl stop filebeat
-- Enable the Service to Start at Boot - This create a symlink
- 
- 
-    sudo systemctl enable filebeat
-    
-Above command does this Example -- Created symlink from /etc/systemd/system/multi-user.target.wants/filebeat.service to /etc/systemd/system/filebeat.service.
+        sudo systemctl stop filebeat
