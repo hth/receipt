@@ -116,8 +116,10 @@ Add Path (at the end of file .bashrc)
     
 #### Add link in /usr/bin
     
-    sudo ln -snf /usr/local/mongodb/bin/mongod /usr/bin/mongod
-    sudo ln -snf /usr/local/mongodb/bin/mongo /usr/bin/mongo
+    sudo ln -snf /usr/local/mongodb/bin/mongod /usr/bin/mongod &&
+    sudo ln -snf /usr/local/mongodb/bin/mongo /usr/bin/mongo &&
+    sudo ln -snf /usr/local/mongodb/bin/mongodump /usr/bin/mongodump &&
+    sudo ln -snf /usr/local/mongodb/bin/mongorestore /usr/bin/mongorestore
    
 #### Mongod.conf create
 
