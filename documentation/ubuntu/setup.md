@@ -56,3 +56,11 @@ All commands
     192.168.1.30    s1
     192.168.1.31    s2
     192.168.1.32    s3
+    
+### Initiate replica
+Mongo console to s1    
+    
+    rs.initiate()
+    rs.add("s2")
+    rs.add("s3")
+    
