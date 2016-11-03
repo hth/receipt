@@ -39,8 +39,8 @@ Note: Change name to correct host name
         - /var/log/mongodb/mongo.log
         - /var/log/activemq/activemq.log
         - /var/log/activemq/audit.log
-    - /var/log/tomcat/receiptofi.log
-    - /var/log/tomcat/receiptofi-mobile.log
+        - /var/log/tomcat/receiptofi.log
+        - /var/log/tomcat/receiptofi-mobile.log
       multiline.pattern: ^\[
       multiline.negate: false
       multiline.match: after
