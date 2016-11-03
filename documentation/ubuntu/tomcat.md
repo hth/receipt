@@ -11,7 +11,8 @@ Link
     
 Log files directory 
     
-    sudo mkdir /var/log/tomcat && sudo chown db:db /var/log/tomcat   
+    sudo mkdir /var/log/tomcat && 
+    sudo chown db:db /var/log/tomcat   
     
 Add the file to location `/lib/systemd/system/tomcat.service`.
 

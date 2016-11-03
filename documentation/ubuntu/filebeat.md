@@ -15,7 +15,8 @@ Inside `/tmp` perform `untar` of `mongodb`
     
 Make directory for `log` and `data`    
     
-    sudo mkdir /var/log/filebeat && sudo chown db:db /var/log/filebeat
+    sudo mkdir /var/log/filebeat && 
+    sudo chown db:db /var/log/filebeat
     
 #### Create Link  
 
