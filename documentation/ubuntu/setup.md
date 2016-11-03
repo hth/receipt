@@ -64,3 +64,15 @@ Mongo console to s1
     rs.add("s2")
     rs.add("s3")
     
+### Created dbftp user on loader
+
+    sudo adduser --system --no-create-home dbftp
+    sudo passwd dbftp
+    sudo cat /etc/passwd
+    sudo chown dbftp:db /opt/receiptofi/expensofi
+    
+To delete user
+    
+    sudo deluser dbftp
+    sudo deluser --remove-home dbftp
+    
