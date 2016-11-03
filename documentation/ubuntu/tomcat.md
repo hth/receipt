@@ -77,7 +77,6 @@ Replace `$CATALINA_HOME/bin/tomcat-juli.jar` with `tomcat-juli.jar` from "extras
 
 Delete `$CATALINA_BASE/conf/logging.properties` to prevent `java.util.logging` generating zero length log files.
 
-
     cd /tmp
     wget http://mirror.cogentco.com/pub/apache/tomcat/tomcat-8/v8.0.38/bin/extras/tomcat-juli-adapters.jar &&
     wget http://mirror.cogentco.com/pub/apache/tomcat/tomcat-8/v8.0.38/bin/extras/tomcat-juli.jar
