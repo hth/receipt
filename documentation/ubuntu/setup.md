@@ -65,10 +65,9 @@ Mongo console to s1
     rs.add("s3")
     
 ### Created dbftp user on loader
+Do not set group for dbftp. It prevent password less access and continous deployment fails.  
 
-    sudo adduser --system --no-create-home dbftp
-    sudo passwd dbftp
-    sudo cat /etc/passwd
+    sudo adduser --no-create-home dbftp
     sudo chown dbftp:db /opt/receiptofi/expensofi
     
 To delete user
@@ -76,3 +75,6 @@ To delete user
     sudo deluser dbftp
     sudo deluser --remove-home dbftp
     
+To change password
+    
+    sudo cat /etc/passwd
