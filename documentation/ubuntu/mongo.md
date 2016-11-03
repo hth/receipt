@@ -117,6 +117,7 @@ Add Path (at the end of file .bashrc)
 #### Add link in /usr/bin
     
     sudo ln -snf /usr/local/mongodb/bin/mongod /usr/bin/mongod
+    sudo ln -snf /usr/local/mongodb/bin/mongo /usr/bin/mongo
    
 #### Mongod.conf create
 

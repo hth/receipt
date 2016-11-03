@@ -36,13 +36,23 @@ All commands
     netstat -plntu | grep 61616
     
 - Active Internet connections (servers and established)
-
     
-    netstat -atn           # For tcp
-    netstat -aun           # For udp
-    netstat -atun          # For both
+        netstat -atn           # For tcp
+        netstat -aun           # For udp
+        netstat -atun          # For both
 
 - Active Internet connections (only servers)
-
     
-    netstat -plntu
+        netstat -plntu
+    
+### Ubuntu Server time to UTC
+    
+    sudo dpkg-reconfigure tzdata    
+    
+### Set hostname for Mongo replica setup
+    
+    sudo /etc/hosts
+    
+    192.168.1.30    s1
+    192.168.1.31    s2
+    192.168.1.32    s3
