@@ -339,7 +339,7 @@
                 proxy_set_header    X-Forwarded-For         $proxy_add_x_forwarded_for;
                 proxy_set_header    X-NginX-Proxy           true;
     
-                proxy_pass http://192.168.1.150;
+                proxy_pass http://192.168.1.175;
             }
     
             location /receipt-mobile/monitoring {
@@ -359,7 +359,7 @@
                 proxy_set_header    X-Forwarded-For         $proxy_add_x_forwarded_for;
                 proxy_set_header    X-NginX-Proxy           true;
     
-                proxy_pass http://192.168.1.150;
+                proxy_pass http://192.168.1.175;
             }
     
             location / {
@@ -371,7 +371,7 @@
                 proxy_set_header    X-Forwarded-For         $proxy_add_x_forwarded_for;
                 proxy_set_header    X-NginX-Proxy           true;
     
-                proxy_pass http://192.168.1.150;
+                proxy_pass http://192.168.1.175;
     
                 # Subdomain test.m.receiptofi.com would be best in its own host,
                 # current architecture suggest (my opinion) to have one domain
