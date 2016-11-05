@@ -51,14 +51,24 @@ Load `bash_profile` changes using command
     
 ### Set hostname for Mongo replica setup
     
-    sudo /etc/hosts
+    sudo nano /etc/hosts
     
     192.168.1.30    s1
     192.168.1.31    s2
     192.168.1.32    s3
     
+    
+    sudo nano /etc/hosts
+        
+    192.168.1.20    r1
+    192.168.1.21    r2
+    192.168.1.22    r3
+    192.168.1.23    r4
+    
 ### Initiate replica
-Mongo console to s1    
+Mongo console to s1   
+ 
+    mongo --host s2 --port 27017
     
     rs.initiate()
     rs.add("s2")

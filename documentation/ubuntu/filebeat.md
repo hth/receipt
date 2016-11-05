@@ -108,5 +108,10 @@ Create filebeat.service (file shown below) in /etc/systemd/system  directory.
         
         sudo systemctl daemon-reload &&
         sudo systemctl enable filebeat &&
-        sudo systemctl restart filebeat         
+        sudo systemctl restart filebeat &&
+        sudo systemctl status filebeat
+        
+### Test config
+        
+    filebeat -c filebeat.conf -configtest        
         

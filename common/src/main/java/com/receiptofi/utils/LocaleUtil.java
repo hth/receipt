@@ -26,7 +26,8 @@ public class LocaleUtil {
      * @return
      */
     static Locale getCountrySpecificLocale(String countryCode) {
-        LOG.debug("Country code={}", countryCode);
+        //TODO uncomment the log below
+        //LOG.debug("Country code={}", countryCode);
         Map<String, Locale> supportedLocale;
         if (locales == null) {
             locales = new HashMap<>();
