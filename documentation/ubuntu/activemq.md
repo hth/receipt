@@ -1,7 +1,8 @@
 ### ActiveMQ
 
+Download file for ubuntu. 
+
 `sftp` to `/tmp` latest version of `ActiveMQ`
-Create directory `/opt/activemq` as `root` 
 
 #### Directory to install
 Inside `/tmp` perform `untar` of `activemq`
