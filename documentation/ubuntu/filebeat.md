@@ -36,26 +36,30 @@ Note: Change name to correct host name
     filebeat.prospectors:
     - input_type: log
       paths:
-        - /var/log/mongodb/mongo.log
-        - /var/log/activemq/activemq.log
-        - /var/log/activemq/audit.log
         - /var/log/tomcat/receiptofi.log
         - /var/log/tomcat/receiptofi-mobile.log
-      multiline.pattern: ^\[
-      multiline.negate: false
-      multiline.match: after
-    name: s3
+      exclude_files: [".lck"]
+      fields:
+        tags: ['json']
+      document_type: tomcatlog
+      scan_frequency: 1s
+      close_inactive: 1m  
+      #multiline.pattern: ^\[
+      #multiline.negate: false
+      #multiline.match: after
+      #multiline.max_lines: 5000
+    name: r4
     output.logstash:
-      hosts: ["192.168.1.13:5044"]
+      hosts: ["192.168.1.45:5044"]
     logging:
-       level: info
-       to_files: true
-       to_syslog: false
-       files:
-           path: /var/log/filebeat
-           name: filebeat.log
-           keepfiles: 7
-           rotateeverybytes: 10485760
+      level: info
+      to_files: true
+      to_syslog: false
+      files:
+        path: /var/log/filebeat
+        name: filebeat.log
+        keepfiles: 7
+        rotateeverybytes: 10485760
            
 After every change in config. Do a system reload and then restart.            
            

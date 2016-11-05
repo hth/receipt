@@ -33,11 +33,11 @@
       fields:
         tags: ['json']
       scan_frequency: 1s
-      close_inactive: 1m        
+      close_inactive: 5m        
       document_type: tomcatlog
-      multiline.pattern: '^\['
-      multiline.negate: true
-      multiline.match: after
+      #multiline.pattern: '^\['
+      #multiline.negate: true
+      #multiline.match: after
     - input_type: log
       paths:
         - /var/log/activemq/activemq.log
@@ -45,22 +45,22 @@
       fields:
         apache: true 
       scan_frequency: 1s
-      close_inactive: 1m  
+      close_inactive: 5m  
       document_type: activemqlog
-      multiline.pattern: '^\['
-      multiline.negate: true
-      multiline.match: after
+      #multiline.pattern: '^\['
+      #multiline.negate: true
+      #multiline.match: after
     - input_type: log
       paths:
         - /var/log/mongodb/mongo.log
       fields:
         apache: true 
       scan_frequency: 1s
-      close_inactive: 1m  
+      close_inactive: 5m  
       document_type: mongolog
-      multiline.pattern: '^\['
-      multiline.negate: true
-      multiline.match: after
+      #multiline.pattern: '^\['
+      #multiline.negate: true
+      #multiline.match: after
     name: s1
     output.logstash:
       hosts: ["192.168.1.45:5044"]
