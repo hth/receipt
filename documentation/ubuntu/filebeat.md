@@ -3,8 +3,6 @@
 Download file for ubuntu. 
  
     `sftp` to `/tmp` latest version of `filebeat-5.0.0-linux-x86_64.tar.gz`
-    Create directory `/opt/filebeat` as `root` 
-    sudo mkdir /opt/filebeat
     
 #### Directory to install    
 Inside `/tmp` perform `untar` of `mongodb`

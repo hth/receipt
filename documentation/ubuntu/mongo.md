@@ -3,7 +3,8 @@
 Download file for ubuntu. 
  
     `sftp` to `/tmp` latest version of `mongodb-linux-x86_64-ubuntu1604-3.2.10.tgz`
-    Create directory `/opt/mongo` as `root` 
+    
+#### Directory to install      
     
     sudo mkdir /opt/mongo
     
