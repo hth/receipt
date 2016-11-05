@@ -10,7 +10,7 @@
       multiline.pattern: ^\[
       multiline.negate: false
       multiline.match: after
-    name: s2
+    name: s1
     output.logstash:
       hosts: ["192.168.1.13:5044"]
     logging:
@@ -32,6 +32,8 @@
       exclude_files: [".lck"]
       fields:
         tags: ['json']
+      scan_frequency: 1s
+      close_inactive: 1m        
       document_type: tomcatlog
       multiline.pattern: '^\['
       multiline.negate: true
@@ -42,6 +44,8 @@
         - /var/log/activemq/audit.log
       fields:
         apache: true 
+      scan_frequency: 1s
+      close_inactive: 1m  
       document_type: activemqlog
       multiline.pattern: '^\['
       multiline.negate: true
@@ -51,11 +55,13 @@
         - /var/log/mongodb/mongo.log
       fields:
         apache: true 
+      scan_frequency: 1s
+      close_inactive: 1m  
       document_type: mongolog
       multiline.pattern: '^\['
       multiline.negate: true
       multiline.match: after
-    name: r4
+    name: s1
     output.logstash:
       hosts: ["192.168.1.45:5044"]
     logging:
