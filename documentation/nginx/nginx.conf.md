@@ -1,4 +1,4 @@
-    # Date: Oct 31 3:50 PM
+    # Date: Nov 04 7:30 PM
     # https://www.digitalocean.com/community/tutorials/how-to-optimize-nginx-configuration
     # user  nobody;
     # IP Address 192.168.1.71 is related to the nginx installed ip
@@ -250,74 +250,6 @@
     
         server {
             listen          8443 ssl;
-            server_name     test.receiptofi.com;
-    
-            access_log  /var/logs/nginx/test.access.log main;
-    
-            location /monitoring {
-                # block one workstation
-                deny    192.168.1.1;
-                # allow anyone in 192.168.1.0/24
-                allow   192.168.1.0/24; 
-                allow   63.145.59.92;
-                # drop rest of the world
-                deny    all;
-                
-                proxy_buffers 16 4k;
-                proxy_buffer_size 2k;
-    
-                proxy_set_header    Host                    $http_host;
-                proxy_set_header    X-Real-IP               $remote_addr;
-                proxy_set_header    X-Forwarded-For         $proxy_add_x_forwarded_for;
-                proxy_set_header    X-NginX-Proxy           true;
-    
-                proxy_pass http://192.168.1.150:80;
-            }
-    
-            location /receipt-mobile/monitoring {
-                # block one workstation
-                deny    192.168.1.1;
-                # allow anyone in 192.168.1.0/24
-                allow   192.168.1.0/24; 
-                allow   63.145.59.92;
-                # drop rest of the world
-                deny    all;
-                
-                proxy_buffers 16 4k;
-                proxy_buffer_size 2k;
-    
-                proxy_set_header    Host                    $http_host;
-                proxy_set_header    X-Real-IP               $remote_addr;
-                proxy_set_header    X-Forwarded-For         $proxy_add_x_forwarded_for;
-                proxy_set_header    X-NginX-Proxy           true;
-    
-                proxy_pass http://192.168.1.150:80;
-            }
-    
-            location / {
-                proxy_buffers 16 4k;
-                proxy_buffer_size 2k;
-    
-                proxy_set_header    Host                    $http_host;
-                proxy_set_header    X-Real-IP               $remote_addr;
-                proxy_set_header    X-Forwarded-For         $proxy_add_x_forwarded_for;
-                proxy_set_header    X-NginX-Proxy           true;
-    
-                proxy_pass http://192.168.1.150:80;
-    
-                # Subdomain test.m.receiptofi.com would be best in its own host,
-                # current architecture suggest (my opinion) to have one domain
-                # and other application(s) list as /test.domain.com/receipt-mobile/
-                # instead of /test.m.domain.com/receipt-mobile/
-                #proxy_set_header   X-Forwarded-Host        $host;
-                #proxy_set_header   X-Forwarded-Server      $host;
-                #proxy_set_header   X-Forwarded-For         $proxy_add_x_forwarded_for;
-                #proxy_pass http://localhost:9090/receipt-mobile/;
-            }
-        }
-    
-        server {
-            listen          8443 ssl;
             server_name     sandbox.receiptofi.com;
     
             access_log  /var/logs/nginx/sandbox.access.log main;
@@ -535,7 +467,7 @@
             auth_basic_user_file /usr/local/etc/nginx/kibana.smoker.htpasswd;
     
             location / {
-                proxy_pass http://192.168.1.13:5601;
+                proxy_pass http://192.168.1.45:5601;
                 proxy_http_version 1.1;
                 proxy_set_header Upgrade $http_upgrade;
                 proxy_set_header Connection 'upgrade';
