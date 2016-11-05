@@ -26,12 +26,12 @@ Make `db` as sudoer in file `/etc/sudoers` at the end of file. `Shift+g` gets yo
     
 ### Steps to configure machine
     
-01. [Java](documentation/ubuntu/java.md)
-02. [ActiveMQ](documentation/ubuntu/activemq.md)
-03. [Filebeat](documentation/ubuntu/filebeat.md)
-04. [Mongo](documentation/ubuntu/mongo.md)
-05. [Redis](documentation/ubuntu/redis.md)
-06. [Tomcat](documentation/ubuntu/tomcat.md)
+01. [Java](java.md)
+02. [ActiveMQ](activemq.md)
+03. [Filebeat](filebeat.md)
+04. [Mongo](mongo.md)
+05. [Redis](redis.md)
+06. [Tomcat](tomcat.md)
     
 After making `db` as `sudoer`, `init 0` does not work. It now takes `sudo init 0` for reboot instead.
 ### Changes to bash_profile
