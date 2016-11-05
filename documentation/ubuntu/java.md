@@ -39,5 +39,5 @@ Set JAVA_HOME
 
 Source to import environment
     
-    source ~/.bash_profile
+    source ~/.bash_profile &&
     java -version
