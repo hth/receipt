@@ -83,6 +83,10 @@ Mongo console to s1
     rs.add("s2")
     rs.add("s3")
     
+Mongo check replica status
+    
+    rs.status()
+    
 ### Created dbftp user on loader
 Do not set group for dbftp. It prevent password less access and continous deployment fails.  
 
@@ -97,3 +101,12 @@ To delete user
 To change password
     
     sudo cat /etc/passwd
+    
+    
+#### Elastic search background
+    
+    cd /opt/elastic/elasticsearch-5.0.0 &&
+    nohup elasticsearch > /dev/null 2>&1 &
+         
+    cd /opt/logstash/logstash-5.0.0
+    nohup logstash -f /etc/logstash.conf > /dev/null 2>&1 &               
