@@ -1,4 +1,4 @@
-    # Date: Nov 04 7:30 PM
+    # Date: Nov 06 10:30 AM
     # https://www.digitalocean.com/community/tutorials/how-to-optimize-nginx-configuration
     # user  nobody;
     # IP Address 192.168.1.71 is related to the nginx installed ip
@@ -151,7 +151,7 @@
                 proxy_set_header    X-Forwarded-For         $proxy_add_x_forwarded_for;
                 proxy_set_header    X-NginX-Proxy           true;
     
-                proxy_pass http://192.168.1.75:8080;
+                proxy_pass http://192.168.1.150;
             }
     
             location /receipt-mobile/monitoring {
@@ -171,7 +171,7 @@
                 proxy_set_header    X-Forwarded-For         $proxy_add_x_forwarded_for;
                 proxy_set_header    X-NginX-Proxy           true;
     
-                proxy_pass http://192.168.1.75:8080;
+                proxy_pass http://192.168.1.150;
             }
     
             location / {
@@ -184,7 +184,7 @@
                 proxy_set_header    X-Forwarded-For         $proxy_add_x_forwarded_for;
                 proxy_set_header    X-NginX-Proxy           true;
     
-                proxy_pass http://192.168.1.75:8080;
+                proxy_pass http://192.168.1.150;
             }
         }
     
@@ -211,7 +211,7 @@
                 proxy_set_header    X-Forwarded-For         $proxy_add_x_forwarded_for;
                 proxy_set_header    X-NginX-Proxy           true;
     
-                proxy_pass http://192.168.1.150:80;
+                proxy_pass http://192.168.1.150;
             }
     
             location /receipt-mobile/monitoring {
@@ -231,7 +231,7 @@
                 proxy_set_header    X-Forwarded-For         $proxy_add_x_forwarded_for;
                 proxy_set_header    X-NginX-Proxy           true;
     
-                proxy_pass http://192.168.1.150:80;
+                proxy_pass http://192.168.1.150;
             }
     
             location / {
@@ -244,7 +244,7 @@
                 proxy_set_header    X-Forwarded-For         $proxy_add_x_forwarded_for;
                 proxy_set_header    X-NginX-Proxy           true;
     
-                proxy_pass http://192.168.1.150:80;
+                proxy_pass http://192.168.1.150;
             }
         }
     
