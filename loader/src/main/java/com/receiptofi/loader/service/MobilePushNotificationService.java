@@ -74,7 +74,7 @@ public class MobilePushNotificationService {
                     .build();
         } else {
             this.apnsService = APNS.newService()
-                    .withCert(this.getClass().getClassLoader().getResourceAsStream("/cert/aps_dev_credentials.p12"), apnsCertificatePassword)
+                    .withCert(this.getClass().getClassLoader().getResourceAsStream("/cert/aps_sandbox_credentials.p12"), apnsCertificatePassword)
                     .withSandboxDestination()
                     .withDelegate(getDelegate())
                     .build();
