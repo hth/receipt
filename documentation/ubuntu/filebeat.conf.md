@@ -1,3 +1,5 @@
+## Not used 
+
     ---
     filebeat.prospectors:
     - input_type: log
@@ -22,6 +24,8 @@
           name: filebeat.log
           keepfiles: 7
           rotateeverybytes: 10485760
+
+## Live    
     
     ---
     filebeat.prospectors:
@@ -72,7 +76,8 @@
         keepfiles: 7
         rotateeverybytes: 10485760
     name: r1        
-        
+
+## Sandbox        
 
     ---
     filebeat.prospectors:

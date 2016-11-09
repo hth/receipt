@@ -106,7 +106,11 @@ To change password
 #### Elastic search background
     
     cd /opt/elastic/elasticsearch-5.0.0 &&
-    nohup elasticsearch > /dev/null 2>&1 &
+    nohup bin/elasticsearch > /dev/null 2>&1 &
          
     cd /opt/logstash/logstash-5.0.0
-    nohup logstash -f /etc/logstash.conf > /dev/null 2>&1 &               
+    nohup bin/logstash -f /etc/logstash.conf > /dev/null 2>&1 &
+                   
+#### Find background jobs
+                   
+    jobs -l                   
