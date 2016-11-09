@@ -1,3 +1,9 @@
+### Date Nov 8 20016 - Build 1946
+
+Missed changing ULE to UL for MessageDocumentEntity. There was no adverse effect.
+
+    db.getCollection('MESSAGE_DOCUMENT').updateMany({}, {$rename: { "ULE": "UL" }})
+
 ### Date Oct 9 2016 - Build 1876
 
     db.getCollection('EXPENSE_TAG').updateMany({}, {$set: {IC: "V100"} })
