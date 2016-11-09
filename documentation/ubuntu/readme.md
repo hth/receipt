@@ -73,6 +73,7 @@ Load `bash_profile` changes using command
     192.168.1.21    r2
     192.168.1.22    r3
     192.168.1.23    r4
+    192.169.1.24    r5
     
 ### Initiate replica
 Mongo console to s1   
