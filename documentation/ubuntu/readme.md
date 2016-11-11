@@ -73,6 +73,7 @@ Load `bash_profile` changes using command
     192.168.1.21    r2
     192.168.1.22    r3
     192.168.1.23    r4
+    192.168.1.24    r5
     
 ### Initiate replica
 Mongo console to s1   
@@ -106,7 +107,11 @@ To change password
 #### Elastic search background
     
     cd /opt/elastic/elasticsearch-5.0.0 &&
-    nohup elasticsearch > /dev/null 2>&1 &
+    nohup bin/elasticsearch > /dev/null 2>&1 &
          
     cd /opt/logstash/logstash-5.0.0
-    nohup logstash -f /etc/logstash.conf > /dev/null 2>&1 &               
+    nohup bin/logstash -f /etc/logstash.conf > /dev/null 2>&1 &
+                   
+#### Find background jobs
+                   
+    jobs -l                   

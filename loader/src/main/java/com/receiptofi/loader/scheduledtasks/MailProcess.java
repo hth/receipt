@@ -22,7 +22,13 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
+import net.markenwerk.utils.mail.dkim.Canonicalization;
+import net.markenwerk.utils.mail.dkim.DkimMessage;
+import net.markenwerk.utils.mail.dkim.DkimSigner;
+import net.markenwerk.utils.mail.dkim.SigningAlgorithm;
+
 import java.io.File;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -56,6 +62,7 @@ public class MailProcess {
     private final String googlePlay;
     private final String emailSwitch;
     private final int sendAttempt;
+    private final String dkimPath;
 
     private JavaMailSenderImpl mailSender;
     private MailManager mailManager;
@@ -93,6 +100,9 @@ public class MailProcess {
             @Value ("${MailProcess.sendAttempt}")
             int sendAttempt,
 
+            @Value ("${MailProcess.dkim.der.path}")
+            String dkimPath,
+
             JavaMailSenderImpl mailSender,
             MailManager mailManager,
             CronStatsService cronStatsService
@@ -107,6 +117,7 @@ public class MailProcess {
         this.appStore = appStore;
         this.emailSwitch = emailSwitch;
         this.sendAttempt = sendAttempt;
+        this.dkimPath = dkimPath;
 
         this.mailSender = mailSender;
         this.mailManager = mailManager;
@@ -199,12 +210,15 @@ public class MailProcess {
             while (!noAuthenticationException && count < 10) {
                 count++;
                 try {
-                    mailSender.send(message);
+                    MimeMessage dkimSignedMessage = dkimSignMessage(message, dkimPath, "receiptofi.com", "receiptapp");
+                    mailSender.send(dkimSignedMessage);
                     noAuthenticationException = true;
                     LOG.info("Mail success... subject={}", mail.getSubject());
                     return;
                 } catch (MailAuthenticationException | MailSendException e) {
                     LOG.error("Failed to send mail server count={} reason={}", count, e.getLocalizedMessage(), e);
+                } catch (Exception e) {
+                    LOG.error(e.getLocalizedMessage());
                 }
                 LOG.warn("Mail fail... subject={}", mail.getSubject());
             }
@@ -247,6 +261,31 @@ public class MailProcess {
             helper.setTo(new InternetAddress(mail.getToMail(), mail.getToName()));
         }
         return helper;
+    }
+
+    /**
+     * Signing message with dkim.
+     *
+     * @param message
+     * @param dkimPath
+     * @param signingDomain
+     * @param selector
+     * @return
+     * @throws Exception
+     */
+    private MimeMessage dkimSignMessage(MimeMessage message, String dkimPath, String signingDomain, String selector) throws Exception {
+        DkimSigner dkimSigner = new DkimSigner(signingDomain, selector, getDkimPrivateKeyFileForSender(dkimPath));
+        dkimSigner.setIdentity(doNotReplyEmail);
+        dkimSigner.setHeaderCanonicalization(Canonicalization.SIMPLE);
+        dkimSigner.setBodyCanonicalization(Canonicalization.RELAXED);
+        dkimSigner.setSigningAlgorithm(SigningAlgorithm.SHA256_WITH_RSA);
+        dkimSigner.setLengthParam(true);
+        dkimSigner.setZParam(false);
+        return new DkimMessage(message, dkimSigner);
+    }
+
+    private InputStream getDkimPrivateKeyFileForSender(String dkimPath) {
+        return this.getClass().getClassLoader().getResourceAsStream(dkimPath);
     }
 
     private void saveUploadStats(CronStatsEntity cronStats, int success, int failure, int skipped, int size) {

@@ -22,10 +22,6 @@ Ownership of link remains with `root` and cannot be converted to `db`
     sudo cp /opt/activemq/apache-activemq-5.14.1/bin/env /etc/default/activemq && 
     sudo sed -i '~s/^ACTIVEMQ_USER=""/ACTIVEMQ_USER="db"/' /etc/default/activemq
     
-Try this one 
-    
-    sudo sed -i '~s/^#JAVA_HOME=""/JAVA_HOME="/usr/local/java"/' /etc/default/activemq
-    
 Change ownership to `db`
     
     sudo chown db:db /etc/default/activemq
@@ -35,7 +31,7 @@ Inside `/etc/default/activemq` add `JAVA_HOME`. Uncomment and add
     nano /etc/default/activemq 
     JAVA_HOME="/usr/local/java"
     
-Change Log place to access
+### Change Log place to access
 
 Modify `/usr/local/activemq/conf/log4j.properties`
     
