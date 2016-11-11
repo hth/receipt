@@ -1,0 +1,445 @@
+[
+  {
+    "_id": "ReceiptApp-Dashboard",
+    "_type": "dashboard",
+    "_source": {
+      "title": "ReceiptApp Dashboard",
+      "hits": 0,
+      "description": "",
+      "panelsJSON": "[{\"col\":1,\"id\":\"ReceiptApp-Barchart\",\"panelIndex\":1,\"row\":1,\"size_x\":6,\"size_y\":5,\"type\":\"visualization\"},{\"col\":7,\"id\":\"ReceiptApp-Upload-Documents-Barchart\",\"panelIndex\":3,\"row\":1,\"size_x\":3,\"size_y\":5,\"type\":\"visualization\"},{\"col\":10,\"id\":\"ReceiptApp-Account-Validation-Email\",\"panelIndex\":4,\"row\":1,\"size_x\":3,\"size_y\":5,\"type\":\"visualization\"},{\"col\":1,\"columns\":[\"@timestamp\",\"level\",\"logger_name\",\"message\",\"X-REQUEST-ID\",\"host\"],\"id\":\"ReceiptApp-Search\",\"panelIndex\":2,\"row\":8,\"size_x\":12,\"size_y\":7,\"sort\":[\"@timestamp\",\"desc\"],\"type\":\"search\"},{\"id\":\"ReceiptApp-Search-Error\",\"type\":\"search\",\"panelIndex\":5,\"size_x\":12,\"size_y\":2,\"col\":1,\"row\":6,\"columns\":[\"@timestamp\",\"level\",\"logger_name\",\"message\",\"X-REQUEST-ID\",\"host\"],\"sort\":[\"@timestamp\",\"desc\"]}]",
+      "optionsJSON": "{\"darkTheme\":true}",
+      "uiStateJSON": "{\"P-1\":{\"vis\":{\"legendOpen\":false}},\"P-3\":{\"vis\":{\"legendOpen\":false}},\"P-4\":{\"vis\":{\"colors\":{\"Account Validation Email\":\"#508642\"},\"legendOpen\":false}}}",
+      "version": 1,
+      "timeRestore": false,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"filter\":[{\"query\":{\"query_string\":{\"analyze_wildcard\":true,\"query\":\"*\"}}}]}"
+      }
+    }
+  },
+  {
+    "_id": "ReceiptApp-Mobile-Dashboard",
+    "_type": "dashboard",
+    "_source": {
+      "title": "ReceiptApp Mobile Dashboard",
+      "hits": 0,
+      "description": "",
+      "panelsJSON": "[{\"col\":1,\"id\":\"ReceiptApp-Mobile-Barchart\",\"panelIndex\":1,\"row\":1,\"size_x\":8,\"size_y\":4,\"type\":\"visualization\"},{\"col\":9,\"id\":\"ReceiptApp-Mobile-Upload\",\"panelIndex\":3,\"row\":1,\"size_x\":4,\"size_y\":4,\"type\":\"visualization\"},{\"col\":1,\"columns\":[\"@timestamp\",\"level\",\"logger_name\",\"message\",\"X-REQUEST-ID\",\"host\"],\"id\":\"ReceiptApp-Mobile-Search\",\"panelIndex\":2,\"row\":7,\"size_x\":12,\"size_y\":7,\"sort\":[\"@timestamp\",\"desc\"],\"type\":\"search\"},{\"id\":\"ReceiptApp-Mobile-Search-Error\",\"type\":\"search\",\"panelIndex\":4,\"size_x\":12,\"size_y\":2,\"col\":1,\"row\":5,\"columns\":[\"@timestamp\",\"level\",\"logger_name\",\"message\",\"X-REQUEST-ID\",\"host\"],\"sort\":[\"@timestamp\",\"desc\"]}]",
+      "optionsJSON": "{\"darkTheme\":true}",
+      "uiStateJSON": "{\"P-1\":{\"vis\":{\"legendOpen\":false}},\"P-3\":{\"vis\":{\"colors\":{\"RECEIPT\":\"#3F6833\"},\"legendOpen\":false}}}",
+      "version": 1,
+      "timeRestore": false,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"filter\":[{\"query\":{\"query_string\":{\"analyze_wildcard\":true,\"query\":\"*\"}}}]}"
+      }
+    }
+  },
+  {
+    "_id": "Sandbox-Dashboard",
+    "_type": "dashboard",
+    "_source": {
+      "title": "Sandbox Dashboard",
+      "hits": 0,
+      "description": "",
+      "panelsJSON": "[{\"col\":1,\"id\":\"Sandbox-Barchart\",\"panelIndex\":1,\"row\":1,\"size_x\":6,\"size_y\":5,\"type\":\"visualization\"},{\"col\":7,\"id\":\"Sandbox-Upload-Documents-Barchart\",\"panelIndex\":3,\"row\":1,\"size_x\":3,\"size_y\":5,\"type\":\"visualization\"},{\"col\":10,\"id\":\"Sandbox-Account-Validation-Email\",\"panelIndex\":4,\"row\":1,\"size_x\":3,\"size_y\":5,\"type\":\"visualization\"},{\"col\":1,\"columns\":[\"@timestamp\",\"level\",\"logger_name\",\"message\",\"X-REQUEST-ID\",\"host\"],\"id\":\"Sandbox-Search\",\"panelIndex\":2,\"row\":8,\"size_x\":12,\"size_y\":7,\"sort\":[\"@timestamp\",\"desc\"],\"type\":\"search\"},{\"id\":\"Sandbox-Search-Error\",\"type\":\"search\",\"panelIndex\":5,\"size_x\":12,\"size_y\":2,\"col\":1,\"row\":6,\"columns\":[\"@timestamp\",\"level\",\"logger_name\",\"message\",\"X-REQUEST-ID\",\"host\"],\"sort\":[\"@timestamp\",\"desc\"]}]",
+      "optionsJSON": "{\"darkTheme\":true}",
+      "uiStateJSON": "{\"P-1\":{\"vis\":{\"legendOpen\":false}},\"P-3\":{\"vis\":{\"legendOpen\":false}},\"P-4\":{\"vis\":{\"colors\":{\"Account Validation Email\":\"#508642\"},\"legendOpen\":false}}}",
+      "version": 1,
+      "timeRestore": false,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"filter\":[{\"query\":{\"query_string\":{\"analyze_wildcard\":true,\"query\":\"*\"}}}]}"
+      }
+    }
+  },
+  {
+    "_id": "Sandbox-Mobile-Dashboard",
+    "_type": "dashboard",
+    "_source": {
+      "title": "Sandbox Mobile Dashboard",
+      "hits": 0,
+      "description": "",
+      "panelsJSON": "[{\"col\":1,\"id\":\"Sandbox-Mobile-Barchart\",\"panelIndex\":1,\"row\":1,\"size_x\":8,\"size_y\":4,\"type\":\"visualization\"},{\"col\":9,\"id\":\"Sandbox-Mobile-Upload\",\"panelIndex\":3,\"row\":1,\"size_x\":4,\"size_y\":4,\"type\":\"visualization\"},{\"col\":1,\"columns\":[\"@timestamp\",\"level\",\"logger_name\",\"message\",\"X-REQUEST-ID\",\"host\"],\"id\":\"Sandbox-Mobile-Search\",\"panelIndex\":2,\"row\":7,\"size_x\":12,\"size_y\":7,\"sort\":[\"@timestamp\",\"desc\"],\"type\":\"search\"},{\"id\":\"Sandbox-Mobile-Search-Error\",\"type\":\"search\",\"panelIndex\":4,\"size_x\":12,\"size_y\":2,\"col\":1,\"row\":5,\"columns\":[\"@timestamp\",\"level\",\"logger_name\",\"message\",\"X-REQUEST-ID\",\"host\"],\"sort\":[\"@timestamp\",\"desc\"]}]",
+      "optionsJSON": "{\"darkTheme\":true}",
+      "uiStateJSON": "{\"P-1\":{\"vis\":{\"legendOpen\":false}},\"P-3\":{\"vis\":{\"colors\":{\"RECEIPT\":\"#3F6833\"},\"legendOpen\":false}}}",
+      "version": 1,
+      "timeRestore": false,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"filter\":[{\"query\":{\"query_string\":{\"analyze_wildcard\":true,\"query\":\"*\"}}}]}"
+      }
+    }
+  },
+  {
+    "_id": "ReceiptApp-Search",
+    "_type": "search",
+    "_source": {
+      "title": "ReceiptApp Search",
+      "description": "",
+      "hits": 0,
+      "columns": [
+        "@timestamp",
+        "level",
+        "logger_name",
+        "message",
+        "X-REQUEST-ID",
+        "host"
+      ],
+      "sort": [
+        "@timestamp",
+        "desc"
+      ],
+      "version": 1,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"index\":\"*\",\"filter\":[{\"$state\":{\"store\":\"appState\"},\"meta\":{\"alias\":null,\"disabled\":false,\"index\":\"*\",\"key\":\"type\",\"negate\":false,\"value\":\"receiptapp\"},\"query\":{\"match\":{\"type\":{\"query\":\"receiptapp\",\"type\":\"phrase\"}}}},{\"$state\":{\"store\":\"appState\"},\"meta\":{\"alias\":\"INFO\",\"disabled\":true,\"index\":\"*\",\"key\":\"level\",\"negate\":false,\"value\":\"INFO\"},\"query\":{\"match\":{\"level\":{\"query\":\"INFO\",\"type\":\"phrase\"}}}},{\"$state\":{\"store\":\"appState\"},\"meta\":{\"alias\":\"S3 R\",\"disabled\":true,\"index\":\"*\",\"key\":\"message\",\"negate\":false,\"value\":\"Documents to upload to cloud\"},\"query\":{\"match\":{\"message\":{\"query\":\"Documents to upload to cloud\",\"type\":\"phrase\"}}}},{\"$state\":{\"store\":\"appState\"},\"meta\":{\"alias\":\"Server\",\"disabled\":true,\"index\":\"*\",\"key\":\"message\",\"negate\":false,\"value\":\"Upload complete document\"},\"query\":{\"match\":{\"message\":{\"query\":\"Upload complete document\",\"type\":\"phrase\"}}}},{\"$state\":{\"store\":\"appState\"},\"meta\":{\"alias\":\"WARN\",\"disabled\":true,\"index\":\"*\",\"key\":\"level\",\"negate\":false,\"value\":\"WARN\"},\"query\":{\"match\":{\"level\":{\"query\":\"WARN\",\"type\":\"phrase\"}}}},{\"$state\":{\"store\":\"appState\"},\"meta\":{\"alias\":\"Account Validation Email\",\"disabled\":true,\"index\":\"*\",\"key\":\"message\",\"negate\":false,\"value\":\"Account validation sent\"},\"query\":{\"match\":{\"message\":{\"query\":\"Account validation sent\",\"type\":\"phrase\"}}}},{\"$state\":{\"store\":\"appState\"},\"meta\":{\"alias\":\"S3 Coupon\",\"disabled\":true,\"index\":\"*\",\"key\":\"message\",\"negate\":false,\"value\":\"Uploaded coupon\"},\"query\":{\"match\":{\"message\":{\"query\":\"Uploaded coupon\",\"type\":\"phrase\"}}}}],\"highlight\":{\"pre_tags\":[\"@kibana-highlighted-field@\"],\"post_tags\":[\"@/kibana-highlighted-field@\"],\"fields\":{\"*\":{}},\"require_field_match\":false,\"fragment_size\":2147483647},\"query\":{\"query_string\":{\"analyze_wildcard\":true,\"query\":\"*\"}}}"
+      }
+    }
+  },
+  {
+    "_id": "ReceiptApp-Mobile-Search",
+    "_type": "search",
+    "_source": {
+      "title": "ReceiptApp Mobile Search",
+      "description": "",
+      "hits": 0,
+      "columns": [
+        "@timestamp",
+        "level",
+        "logger_name",
+        "message",
+        "X-REQUEST-ID",
+        "host"
+      ],
+      "sort": [
+        "@timestamp",
+        "desc"
+      ],
+      "version": 1,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"index\":\"*\",\"query\":{\"query_string\":{\"analyze_wildcard\":true,\"query\":\"*\"}},\"filter\":[{\"$state\":{\"store\":\"appState\"},\"meta\":{\"alias\":null,\"disabled\":false,\"index\":\"*\",\"key\":\"type\",\"negate\":false,\"value\":\"receiptapp_mobile_app\"},\"query\":{\"match\":{\"type\":{\"query\":\"receiptapp_mobile_app\",\"type\":\"phrase\"}}}},{\"$state\":{\"store\":\"appState\"},\"meta\":{\"alias\":\"Receipt\",\"disabled\":true,\"index\":\"*\",\"key\":\"message\",\"negate\":false,\"value\":\"upload document successfully\"},\"query\":{\"match\":{\"message\":{\"query\":\"upload document successfully\",\"type\":\"phrase\"}}}},{\"$state\":{\"store\":\"appState\"},\"meta\":{\"alias\":\"Coupon\",\"disabled\":true,\"index\":\"*\",\"key\":\"message\",\"negate\":false,\"value\":\"Starting coupon upload\"},\"query\":{\"match\":{\"message\":{\"query\":\"Starting coupon upload\",\"type\":\"phrase\"}}}},{\"$state\":{\"store\":\"appState\"},\"meta\":{\"alias\":\"Upload Server Fail\",\"disabled\":true,\"index\":\"*\",\"key\":\"message\",\"negate\":false,\"value\":\"upload document failed reason\"},\"query\":{\"match\":{\"message\":{\"query\":\"upload document failed reason\",\"type\":\"phrase\"}}}}],\"highlight\":{\"pre_tags\":[\"@kibana-highlighted-field@\"],\"post_tags\":[\"@/kibana-highlighted-field@\"],\"fields\":{\"*\":{}},\"require_field_match\":false,\"fragment_size\":2147483647}}"
+      }
+    }
+  },
+  {
+    "_id": "Sandbox-Mobile-Search",
+    "_type": "search",
+    "_source": {
+      "title": "Sandbox Mobile Search",
+      "description": "",
+      "hits": 0,
+      "columns": [
+        "@timestamp",
+        "level",
+        "logger_name",
+        "message",
+        "X-REQUEST-ID",
+        "host"
+      ],
+      "sort": [
+        "@timestamp",
+        "desc"
+      ],
+      "version": 1,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"index\":\"*\",\"filter\":[{\"meta\":{\"negate\":false,\"index\":\"*\",\"key\":\"type\",\"value\":\"sandbox_mobile_app\",\"disabled\":false,\"alias\":null},\"query\":{\"match\":{\"type\":{\"query\":\"sandbox_mobile_app\",\"type\":\"phrase\"}}},\"$state\":{\"store\":\"appState\"}},{\"meta\":{\"negate\":false,\"index\":\"*\",\"key\":\"level\",\"value\":\"INFO\",\"disabled\":true,\"alias\":\"INFO\"},\"query\":{\"match\":{\"level\":{\"query\":\"INFO\",\"type\":\"phrase\"}}},\"$state\":{\"store\":\"appState\"}},{\"meta\":{\"negate\":false,\"index\":\"*\",\"key\":\"level\",\"value\":\"WARN\",\"disabled\":true,\"alias\":\"WARN\"},\"query\":{\"match\":{\"level\":{\"query\":\"WARN\",\"type\":\"phrase\"}}},\"$state\":{\"store\":\"appState\"}}],\"highlight\":{\"pre_tags\":[\"@kibana-highlighted-field@\"],\"post_tags\":[\"@/kibana-highlighted-field@\"],\"fields\":{\"*\":{}},\"require_field_match\":false,\"fragment_size\":2147483647}}"
+      }
+    }
+  },
+  {
+    "_id": "Sandbox-Search",
+    "_type": "search",
+    "_source": {
+      "title": "Sandbox Search",
+      "description": "",
+      "hits": 0,
+      "columns": [
+        "@timestamp",
+        "level",
+        "logger_name",
+        "message",
+        "X-REQUEST-ID",
+        "host"
+      ],
+      "sort": [
+        "@timestamp",
+        "desc"
+      ],
+      "version": 1,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"index\":\"*\",\"filter\":[{\"meta\":{\"negate\":false,\"index\":\"*\",\"key\":\"type\",\"value\":\"sandbox\",\"disabled\":false,\"alias\":null},\"query\":{\"match\":{\"type\":{\"query\":\"sandbox\",\"type\":\"phrase\"}}},\"$state\":{\"store\":\"appState\"}},{\"meta\":{\"negate\":false,\"index\":\"*\",\"key\":\"level\",\"value\":\"DEBUG\",\"disabled\":true,\"alias\":\"DEBUG\"},\"query\":{\"match\":{\"level\":{\"query\":\"DEBUG\",\"type\":\"phrase\"}}},\"$state\":{\"store\":\"appState\"}},{\"meta\":{\"negate\":false,\"index\":\"*\",\"key\":\"level\",\"value\":\"INFO\",\"disabled\":true,\"alias\":\"INFO\"},\"query\":{\"match\":{\"level\":{\"query\":\"INFO\",\"type\":\"phrase\"}}},\"$state\":{\"store\":\"appState\"}},{\"meta\":{\"negate\":false,\"index\":\"*\",\"key\":\"level\",\"value\":\"WARN\",\"disabled\":true,\"alias\":\"WARN\"},\"query\":{\"match\":{\"level\":{\"query\":\"WARN\",\"type\":\"phrase\"}}},\"$state\":{\"store\":\"appState\"}}],\"highlight\":{\"pre_tags\":[\"@kibana-highlighted-field@\"],\"post_tags\":[\"@/kibana-highlighted-field@\"],\"fields\":{\"*\":{}},\"require_field_match\":false,\"fragment_size\":2147483647}}"
+      }
+    }
+  },
+  {
+    "_id": "All-Search",
+    "_type": "search",
+    "_source": {
+      "title": "All Search",
+      "description": "",
+      "hits": 0,
+      "columns": [
+        "@timestamp",
+        "level",
+        "logger_name",
+        "message",
+        "X-REQUEST-ID",
+        "host"
+      ],
+      "sort": [
+        "@timestamp",
+        "desc"
+      ],
+      "version": 1,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"index\":\"*\",\"filter\":[{\"meta\":{\"negate\":false,\"index\":\"*\",\"key\":\"level\",\"value\":\"INFO\",\"disabled\":true,\"alias\":null},\"query\":{\"match\":{\"level\":{\"query\":\"INFO\",\"type\":\"phrase\"}}},\"$state\":{\"store\":\"appState\"}},{\"meta\":{\"negate\":false,\"index\":\"*\",\"key\":\"level\",\"value\":\"DEBUG\",\"disabled\":true,\"alias\":null},\"query\":{\"match\":{\"level\":{\"query\":\"DEBUG\",\"type\":\"phrase\"}}},\"$state\":{\"store\":\"appState\"}},{\"meta\":{\"negate\":false,\"index\":\"*\",\"key\":\"level\",\"value\":\"WARN\",\"disabled\":true,\"alias\":null},\"query\":{\"match\":{\"level\":{\"query\":\"WARN\",\"type\":\"phrase\"}}},\"$state\":{\"store\":\"appState\"}},{\"meta\":{\"negate\":false,\"index\":\"*\",\"key\":\"message\",\"value\":\"Documents to upload to cloud\",\"disabled\":true,\"alias\":\"S3 R\"},\"query\":{\"match\":{\"message\":{\"query\":\"Documents to upload to cloud\",\"type\":\"phrase\"}}},\"$state\":{\"store\":\"appState\"}}],\"highlight\":{\"pre_tags\":[\"@kibana-highlighted-field@\"],\"post_tags\":[\"@/kibana-highlighted-field@\"],\"fields\":{\"*\":{}},\"require_field_match\":false,\"fragment_size\":2147483647}}"
+      }
+    }
+  },
+  {
+    "_id": "ReceiptApp-Search-Error",
+    "_type": "search",
+    "_source": {
+      "title": "ReceiptApp Search Error",
+      "description": "",
+      "hits": 0,
+      "columns": [
+        "@timestamp",
+        "level",
+        "logger_name",
+        "message",
+        "X-REQUEST-ID",
+        "host"
+      ],
+      "sort": [
+        "@timestamp",
+        "desc"
+      ],
+      "version": 1,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"index\":\"*\",\"filter\":[{\"$state\":{\"store\":\"appState\"},\"meta\":{\"alias\":null,\"disabled\":false,\"index\":\"*\",\"key\":\"type\",\"negate\":false,\"value\":\"receiptapp\"},\"query\":{\"match\":{\"type\":{\"query\":\"receiptapp\",\"type\":\"phrase\"}}}},{\"$state\":{\"store\":\"appState\"},\"meta\":{\"alias\":\"INFO\",\"disabled\":true,\"index\":\"*\",\"key\":\"level\",\"negate\":false,\"value\":\"INFO\"},\"query\":{\"match\":{\"level\":{\"query\":\"INFO\",\"type\":\"phrase\"}}}},{\"$state\":{\"store\":\"appState\"},\"meta\":{\"alias\":\"S3 R\",\"disabled\":true,\"index\":\"*\",\"key\":\"message\",\"negate\":false,\"value\":\"Documents to upload to cloud\"},\"query\":{\"match\":{\"message\":{\"query\":\"Documents to upload to cloud\",\"type\":\"phrase\"}}}},{\"$state\":{\"store\":\"appState\"},\"meta\":{\"alias\":\"Server\",\"disabled\":true,\"index\":\"*\",\"key\":\"message\",\"negate\":false,\"value\":\"Upload complete document\"},\"query\":{\"match\":{\"message\":{\"query\":\"Upload complete document\",\"type\":\"phrase\"}}}},{\"$state\":{\"store\":\"appState\"},\"meta\":{\"alias\":\"WARN\",\"disabled\":true,\"index\":\"*\",\"key\":\"level\",\"negate\":false,\"value\":\"WARN\"},\"query\":{\"match\":{\"level\":{\"query\":\"WARN\",\"type\":\"phrase\"}}}},{\"$state\":{\"store\":\"appState\"},\"meta\":{\"alias\":\"Account Validation Email\",\"disabled\":true,\"index\":\"*\",\"key\":\"message\",\"negate\":false,\"value\":\"Account validation sent\"},\"query\":{\"match\":{\"message\":{\"query\":\"Account validation sent\",\"type\":\"phrase\"}}}},{\"$state\":{\"store\":\"appState\"},\"meta\":{\"alias\":\"S3 Coupon\",\"disabled\":true,\"index\":\"*\",\"key\":\"message\",\"negate\":false,\"value\":\"Uploaded coupon\"},\"query\":{\"match\":{\"message\":{\"query\":\"Uploaded coupon\",\"type\":\"phrase\"}}}},{\"meta\":{\"negate\":false,\"index\":\"*\",\"key\":\"level\",\"value\":\"ERROR\",\"disabled\":false,\"alias\":null},\"query\":{\"match\":{\"level\":{\"query\":\"ERROR\",\"type\":\"phrase\"}}},\"$state\":{\"store\":\"appState\"}}],\"highlight\":{\"pre_tags\":[\"@kibana-highlighted-field@\"],\"post_tags\":[\"@/kibana-highlighted-field@\"],\"fields\":{\"*\":{}},\"require_field_match\":false,\"fragment_size\":2147483647},\"query\":{\"query_string\":{\"query\":\"ERROR\",\"analyze_wildcard\":true}}}"
+      }
+    }
+  },
+  {
+    "_id": "ReceiptApp-Mobile-Search-Error",
+    "_type": "search",
+    "_source": {
+      "title": "ReceiptApp Mobile Search Error",
+      "description": "",
+      "hits": 0,
+      "columns": [
+        "@timestamp",
+        "level",
+        "logger_name",
+        "message",
+        "X-REQUEST-ID",
+        "host"
+      ],
+      "sort": [
+        "@timestamp",
+        "desc"
+      ],
+      "version": 1,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"index\":\"*\",\"query\":{\"query_string\":{\"query\":\"ERROR\",\"analyze_wildcard\":true}},\"filter\":[{\"$state\":{\"store\":\"appState\"},\"meta\":{\"alias\":null,\"disabled\":false,\"index\":\"*\",\"key\":\"type\",\"negate\":false,\"value\":\"receiptapp_mobile_app\"},\"query\":{\"match\":{\"type\":{\"query\":\"receiptapp_mobile_app\",\"type\":\"phrase\"}}}},{\"$state\":{\"store\":\"appState\"},\"meta\":{\"alias\":\"Receipt\",\"disabled\":true,\"index\":\"*\",\"key\":\"message\",\"negate\":false,\"value\":\"upload document successfully\"},\"query\":{\"match\":{\"message\":{\"query\":\"upload document successfully\",\"type\":\"phrase\"}}}},{\"$state\":{\"store\":\"appState\"},\"meta\":{\"alias\":\"Coupon\",\"disabled\":true,\"index\":\"*\",\"key\":\"message\",\"negate\":false,\"value\":\"Starting coupon upload\"},\"query\":{\"match\":{\"message\":{\"query\":\"Starting coupon upload\",\"type\":\"phrase\"}}}},{\"$state\":{\"store\":\"appState\"},\"meta\":{\"alias\":\"Upload Server Fail\",\"disabled\":true,\"index\":\"*\",\"key\":\"message\",\"negate\":false,\"value\":\"upload document failed reason\"},\"query\":{\"match\":{\"message\":{\"query\":\"upload document failed reason\",\"type\":\"phrase\"}}}},{\"meta\":{\"negate\":false,\"index\":\"*\",\"key\":\"level\",\"value\":\"ERROR\",\"disabled\":false,\"alias\":null},\"query\":{\"match\":{\"level\":{\"query\":\"ERROR\",\"type\":\"phrase\"}}},\"$state\":{\"store\":\"appState\"}}],\"highlight\":{\"pre_tags\":[\"@kibana-highlighted-field@\"],\"post_tags\":[\"@/kibana-highlighted-field@\"],\"fields\":{\"*\":{}},\"require_field_match\":false,\"fragment_size\":2147483647}}"
+      }
+    }
+  },
+  {
+    "_id": "Sandbox-Mobile-Search-Error",
+    "_type": "search",
+    "_source": {
+      "title": "Sandbox Mobile Search Error",
+      "description": "",
+      "hits": 0,
+      "columns": [
+        "@timestamp",
+        "level",
+        "logger_name",
+        "message",
+        "X-REQUEST-ID",
+        "host"
+      ],
+      "sort": [
+        "@timestamp",
+        "desc"
+      ],
+      "version": 1,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"index\":\"*\",\"filter\":[{\"$state\":{\"store\":\"appState\"},\"meta\":{\"alias\":null,\"disabled\":false,\"index\":\"*\",\"key\":\"type\",\"negate\":false,\"value\":\"sandbox_mobile_app\"},\"query\":{\"match\":{\"type\":{\"query\":\"sandbox_mobile_app\",\"type\":\"phrase\"}}}},{\"$state\":{\"store\":\"appState\"},\"meta\":{\"alias\":\"INFO\",\"disabled\":true,\"index\":\"*\",\"key\":\"level\",\"negate\":false,\"value\":\"INFO\"},\"query\":{\"match\":{\"level\":{\"query\":\"INFO\",\"type\":\"phrase\"}}}},{\"$state\":{\"store\":\"appState\"},\"meta\":{\"alias\":\"WARN\",\"disabled\":true,\"index\":\"*\",\"key\":\"level\",\"negate\":false,\"value\":\"WARN\"},\"query\":{\"match\":{\"level\":{\"query\":\"WARN\",\"type\":\"phrase\"}}}},{\"meta\":{\"negate\":false,\"index\":\"*\",\"key\":\"level\",\"value\":\"ERROR\",\"disabled\":false,\"alias\":null},\"query\":{\"match\":{\"level\":{\"query\":\"ERROR\",\"type\":\"phrase\"}}},\"$state\":{\"store\":\"appState\"}}],\"highlight\":{\"pre_tags\":[\"@kibana-highlighted-field@\"],\"post_tags\":[\"@/kibana-highlighted-field@\"],\"fields\":{\"*\":{}},\"require_field_match\":false,\"fragment_size\":2147483647},\"query\":{\"query_string\":{\"analyze_wildcard\":true,\"query\":\"ERROR\"}}}"
+      }
+    }
+  },
+  {
+    "_id": "Sandbox-Search-Error",
+    "_type": "search",
+    "_source": {
+      "title": "Sandbox Search Error",
+      "description": "",
+      "hits": 0,
+      "columns": [
+        "@timestamp",
+        "level",
+        "logger_name",
+        "message",
+        "X-REQUEST-ID",
+        "host"
+      ],
+      "sort": [
+        "@timestamp",
+        "desc"
+      ],
+      "version": 1,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"index\":\"*\",\"filter\":[{\"meta\":{\"negate\":false,\"index\":\"*\",\"key\":\"type\",\"value\":\"sandbox\",\"disabled\":false,\"alias\":null},\"query\":{\"match\":{\"type\":{\"query\":\"sandbox\",\"type\":\"phrase\"}}},\"$state\":{\"store\":\"appState\"}},{\"meta\":{\"negate\":false,\"index\":\"*\",\"key\":\"level\",\"value\":\"DEBUG\",\"disabled\":true,\"alias\":\"DEBUG\"},\"query\":{\"match\":{\"level\":{\"query\":\"DEBUG\",\"type\":\"phrase\"}}},\"$state\":{\"store\":\"appState\"}},{\"meta\":{\"negate\":false,\"index\":\"*\",\"key\":\"level\",\"value\":\"INFO\",\"disabled\":true,\"alias\":\"INFO\"},\"query\":{\"match\":{\"level\":{\"query\":\"INFO\",\"type\":\"phrase\"}}},\"$state\":{\"store\":\"appState\"}},{\"meta\":{\"negate\":false,\"index\":\"*\",\"key\":\"level\",\"value\":\"WARN\",\"disabled\":true,\"alias\":\"WARN\"},\"query\":{\"match\":{\"level\":{\"query\":\"WARN\",\"type\":\"phrase\"}}},\"$state\":{\"store\":\"appState\"}},{\"meta\":{\"negate\":false,\"index\":\"*\",\"key\":\"level\",\"value\":\"ERROR\",\"disabled\":false,\"alias\":null},\"query\":{\"match\":{\"level\":{\"query\":\"ERROR\",\"type\":\"phrase\"}}},\"$state\":{\"store\":\"appState\"}}],\"highlight\":{\"pre_tags\":[\"@kibana-highlighted-field@\"],\"post_tags\":[\"@/kibana-highlighted-field@\"],\"fields\":{\"*\":{}},\"require_field_match\":false,\"fragment_size\":2147483647},\"query\":{\"query_string\":{\"query\":\"ERROR\",\"analyze_wildcard\":true}}}"
+      }
+    }
+  },
+  {
+    "_id": "ReceiptApp-Mobile-Upload",
+    "_type": "visualization",
+    "_source": {
+      "title": "ReceiptApp Mobile Upload",
+      "visState": "{\"title\":\"ReceiptApp Mobile Upload\",\"type\":\"histogram\",\"params\":{\"addLegend\":true,\"addTimeMarker\":false,\"addTooltip\":true,\"defaultYExtents\":false,\"legendPosition\":\"right\",\"mode\":\"stacked\",\"scale\":\"linear\",\"setYExtents\":false,\"shareYAxis\":true,\"times\":[],\"yAxis\":{}},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"count\",\"schema\":\"metric\",\"params\":{}},{\"id\":\"2\",\"enabled\":true,\"type\":\"date_histogram\",\"schema\":\"segment\",\"params\":{\"field\":\"@timestamp\",\"interval\":\"h\",\"customInterval\":\"2h\",\"min_doc_count\":1,\"extended_bounds\":{}}},{\"id\":\"3\",\"enabled\":true,\"type\":\"filters\",\"schema\":\"group\",\"params\":{\"filters\":[{\"input\":{\"query\":{\"query_string\":{\"analyze_wildcard\":true,\"query\":\"\\\"upload document successfully\\\"\"}}},\"label\":\"Receipt\"},{\"input\":{\"query\":{\"query_string\":{\"analyze_wildcard\":true,\"query\":\"\\\"upload document failed reason\\\"\"}}},\"label\":\"Upload Server Fail\"},{\"input\":{\"query\":{\"query_string\":{\"analyze_wildcard\":true,\"query\":\"\\\"Starting coupon upload\\\"\"}}},\"label\":\"Coupon\"}]}}],\"listeners\":{}}",
+      "uiStateJSON": "{\"vis\":{\"colors\":{\"Coupon\":\"#0A50A1\",\"RECEIPT\":\"#508642\",\"Receipt\":\"#629E51\",\"Upload Server Fail\":\"#BF1B00\"},\"legendOpen\":true}}",
+      "description": "",
+      "savedSearchId": "ReceiptApp-Mobile-Search",
+      "version": 1,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"filter\":[]}"
+      }
+    }
+  },
+  {
+    "_id": "ReceiptApp-Upload-Documents-Barchart",
+    "_type": "visualization",
+    "_source": {
+      "title": "ReceiptApp Upload Documents Barchart",
+      "visState": "{\"title\":\"ReceiptApp Upload Documents Barchart\",\"type\":\"histogram\",\"params\":{\"shareYAxis\":true,\"addTooltip\":true,\"addLegend\":true,\"legendPosition\":\"right\",\"scale\":\"linear\",\"mode\":\"stacked\",\"times\":[],\"addTimeMarker\":false,\"defaultYExtents\":false,\"setYExtents\":false,\"yAxis\":{}},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"count\",\"schema\":\"metric\",\"params\":{}},{\"id\":\"2\",\"enabled\":true,\"type\":\"date_histogram\",\"schema\":\"segment\",\"params\":{\"field\":\"@timestamp\",\"interval\":\"h\",\"customInterval\":\"2h\",\"min_doc_count\":1,\"extended_bounds\":{}}},{\"id\":\"3\",\"enabled\":true,\"type\":\"filters\",\"schema\":\"group\",\"params\":{\"filters\":[{\"input\":{\"query\":{\"query_string\":{\"query\":\"\\\"Uploaded coupon\\\"\",\"analyze_wildcard\":true}}},\"label\":\"S3 Coupon\"},{\"input\":{\"query\":{\"query_string\":{\"query\":\"\\\"Documents to upload to cloud\\\"\",\"analyze_wildcard\":true}}},\"label\":\"S3 R\"}]}}],\"listeners\":{}}",
+      "uiStateJSON": "{\"vis\":{\"colors\":{\"S3 Coupon\":\"#64B0C8\",\"S3 R\":\"#962D82\"}}}",
+      "description": "",
+      "savedSearchId": "ReceiptApp-Search",
+      "version": 1,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"filter\":[]}"
+      }
+    }
+  },
+  {
+    "_id": "ReceiptApp-Mobile-Barchart",
+    "_type": "visualization",
+    "_source": {
+      "title": "ReceiptApp Mobile Barchart",
+      "visState": "{\"title\":\"ReceiptApp Mobile Barchart\",\"type\":\"histogram\",\"params\":{\"shareYAxis\":true,\"addTooltip\":true,\"addLegend\":true,\"legendPosition\":\"right\",\"scale\":\"linear\",\"mode\":\"stacked\",\"times\":[],\"addTimeMarker\":false,\"defaultYExtents\":false,\"setYExtents\":false,\"yAxis\":{}},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"count\",\"schema\":\"metric\",\"params\":{}},{\"id\":\"2\",\"enabled\":true,\"type\":\"date_histogram\",\"schema\":\"segment\",\"params\":{\"field\":\"@timestamp\",\"interval\":\"h\",\"customInterval\":\"2h\",\"min_doc_count\":1,\"extended_bounds\":{}}},{\"id\":\"3\",\"enabled\":true,\"type\":\"filters\",\"schema\":\"group\",\"params\":{\"filters\":[{\"input\":{\"query\":{\"query_string\":{\"query\":\"INFO\",\"analyze_wildcard\":true}}},\"label\":\"\"},{\"input\":{\"query\":{\"query_string\":{\"query\":\"WARN\",\"analyze_wildcard\":true}}}},{\"input\":{\"query\":{\"query_string\":{\"query\":\"ERROR\",\"analyze_wildcard\":true}}}},{\"input\":{\"query\":{\"query_string\":{\"query\":\"DEBUG\",\"analyze_wildcard\":true}}}}]}}],\"listeners\":{}}",
+      "uiStateJSON": "{\"vis\":{\"colors\":{\"DEBUG\":\"#614D93\",\"ERROR\":\"#BF1B00\",\"INFO\":\"#629E51\",\"WARN\":\"#E0752D\"}}}",
+      "description": "",
+      "savedSearchId": "ReceiptApp-Mobile-Search",
+      "version": 1,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"filter\":[]}"
+      }
+    }
+  },
+  {
+    "_id": "ReceiptApp-Barchart",
+    "_type": "visualization",
+    "_source": {
+      "title": "ReceiptApp Barchart",
+      "visState": "{\"title\":\"ReceiptApp Barchart\",\"type\":\"histogram\",\"params\":{\"shareYAxis\":true,\"addTooltip\":true,\"addLegend\":true,\"legendPosition\":\"right\",\"scale\":\"linear\",\"mode\":\"stacked\",\"times\":[],\"addTimeMarker\":false,\"defaultYExtents\":false,\"setYExtents\":false,\"yAxis\":{}},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"count\",\"schema\":\"metric\",\"params\":{}},{\"id\":\"2\",\"enabled\":true,\"type\":\"date_histogram\",\"schema\":\"segment\",\"params\":{\"field\":\"@timestamp\",\"interval\":\"h\",\"customInterval\":\"2h\",\"min_doc_count\":1,\"extended_bounds\":{}}},{\"id\":\"3\",\"enabled\":true,\"type\":\"filters\",\"schema\":\"group\",\"params\":{\"filters\":[{\"input\":{\"query\":{\"query_string\":{\"query\":\"INFO\",\"analyze_wildcard\":true}}},\"label\":\"\"},{\"input\":{\"query\":{\"query_string\":{\"query\":\"WARN\",\"analyze_wildcard\":true}}}},{\"input\":{\"query\":{\"query_string\":{\"query\":\"ERROR\",\"analyze_wildcard\":true}}}},{\"input\":{\"query\":{\"query_string\":{\"query\":\"DEBUG\",\"analyze_wildcard\":true}}}}]}}],\"listeners\":{}}",
+      "uiStateJSON": "{\"vis\":{\"legendOpen\":true,\"colors\":{\"DEBUG\":\"#614D93\",\"ERROR\":\"#BF1B00\",\"INFO\":\"#629E51\",\"WARN\":\"#E0752D\"}}}",
+      "description": "",
+      "savedSearchId": "ReceiptApp-Search",
+      "version": 1,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"filter\":[]}"
+      }
+    }
+  },
+  {
+    "_id": "ReceiptApp-Account-Validation-Email",
+    "_type": "visualization",
+    "_source": {
+      "title": "ReceiptApp Account Validation Email",
+      "visState": "{\"title\":\"ReceiptApp Account Validation Email\",\"type\":\"histogram\",\"params\":{\"addLegend\":true,\"addTimeMarker\":false,\"addTooltip\":true,\"defaultYExtents\":false,\"legendPosition\":\"right\",\"mode\":\"stacked\",\"scale\":\"linear\",\"setYExtents\":false,\"shareYAxis\":true,\"times\":[],\"yAxis\":{}},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"count\",\"schema\":\"metric\",\"params\":{}},{\"id\":\"2\",\"enabled\":true,\"type\":\"date_histogram\",\"schema\":\"segment\",\"params\":{\"field\":\"@timestamp\",\"interval\":\"h\",\"customInterval\":\"2h\",\"min_doc_count\":1,\"extended_bounds\":{}}},{\"id\":\"3\",\"enabled\":true,\"type\":\"filters\",\"schema\":\"group\",\"params\":{\"filters\":[{\"input\":{\"query\":{\"query_string\":{\"analyze_wildcard\":true,\"query\":\"\\\"Account validation sent\\\"\"}}},\"label\":\"Account Validation Email\"}]}}],\"listeners\":{}}",
+      "uiStateJSON": "{\"vis\":{\"colors\":{\"Account Validation Email\":\"#629E51\"}}}",
+      "description": "",
+      "savedSearchId": "ReceiptApp-Search",
+      "version": 1,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"filter\":[]}"
+      }
+    }
+  },
+  {
+    "_id": "Sandbox-Mobile-Upload",
+    "_type": "visualization",
+    "_source": {
+      "title": "Sandbox Mobile Upload",
+      "visState": "{\"title\":\"Sandbox Mobile Upload\",\"type\":\"histogram\",\"params\":{\"addLegend\":true,\"addTimeMarker\":false,\"addTooltip\":true,\"defaultYExtents\":false,\"legendPosition\":\"right\",\"mode\":\"stacked\",\"scale\":\"linear\",\"setYExtents\":false,\"shareYAxis\":true,\"times\":[],\"yAxis\":{}},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"count\",\"schema\":\"metric\",\"params\":{}},{\"id\":\"2\",\"enabled\":true,\"type\":\"date_histogram\",\"schema\":\"segment\",\"params\":{\"field\":\"@timestamp\",\"interval\":\"h\",\"customInterval\":\"2h\",\"min_doc_count\":1,\"extended_bounds\":{}}},{\"id\":\"3\",\"enabled\":true,\"type\":\"filters\",\"schema\":\"group\",\"params\":{\"filters\":[{\"input\":{\"query\":{\"query_string\":{\"analyze_wildcard\":true,\"query\":\"\\\"upload document successfully\\\"\"}}},\"label\":\"Receipt\"},{\"input\":{\"query\":{\"query_string\":{\"analyze_wildcard\":true,\"query\":\"\\\"upload document failed reason\\\"\"}}},\"label\":\"Upload Server Fail\"},{\"input\":{\"query\":{\"query_string\":{\"analyze_wildcard\":true,\"query\":\"\\\"Starting coupon upload\\\"\"}}},\"label\":\"Coupon\"}]}}],\"listeners\":{}}",
+      "uiStateJSON": "{\"vis\":{\"colors\":{\"Coupon\":\"#0A50A1\",\"RECEIPT\":\"#508642\",\"Receipt\":\"#629E51\",\"Upload Server Fail\":\"#BF1B00\"},\"legendOpen\":true}}",
+      "description": "",
+      "savedSearchId": "Sandbox-Mobile-Search",
+      "version": 1,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"filter\":[]}"
+      }
+    }
+  },
+  {
+    "_id": "Sandbox-Upload-Documents-Barchart",
+    "_type": "visualization",
+    "_source": {
+      "title": "Sandbox Upload Documents Barchart",
+      "visState": "{\"title\":\"Sandbox Upload Documents Barchart\",\"type\":\"histogram\",\"params\":{\"shareYAxis\":true,\"addTooltip\":true,\"addLegend\":true,\"legendPosition\":\"right\",\"scale\":\"linear\",\"mode\":\"stacked\",\"times\":[],\"addTimeMarker\":false,\"defaultYExtents\":false,\"setYExtents\":false,\"yAxis\":{}},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"count\",\"schema\":\"metric\",\"params\":{}},{\"id\":\"2\",\"enabled\":true,\"type\":\"date_histogram\",\"schema\":\"segment\",\"params\":{\"field\":\"@timestamp\",\"interval\":\"h\",\"customInterval\":\"2h\",\"min_doc_count\":1,\"extended_bounds\":{}}},{\"id\":\"3\",\"enabled\":true,\"type\":\"filters\",\"schema\":\"group\",\"params\":{\"filters\":[{\"input\":{\"query\":{\"query_string\":{\"query\":\"\\\"Uploaded coupon\\\"\",\"analyze_wildcard\":true}}},\"label\":\"S3 Coupon\"},{\"input\":{\"query\":{\"query_string\":{\"query\":\"\\\"Documents to upload to cloud\\\"\",\"analyze_wildcard\":true}}},\"label\":\"S3 R\"}]}}],\"listeners\":{}}",
+      "uiStateJSON": "{\"vis\":{\"colors\":{\"S3 Coupon\":\"#64B0C8\",\"S3 R\":\"#962D82\"}}}",
+      "description": "",
+      "savedSearchId": "Sandbox-Search",
+      "version": 1,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"filter\":[]}"
+      }
+    }
+  },
+  {
+    "_id": "Sandbox-Mobile-Barchart",
+    "_type": "visualization",
+    "_source": {
+      "title": "Sandbox Mobile Barchart",
+      "visState": "{\"title\":\"Sandbox Mobile Barchart\",\"type\":\"histogram\",\"params\":{\"shareYAxis\":true,\"addTooltip\":true,\"addLegend\":true,\"legendPosition\":\"right\",\"scale\":\"linear\",\"mode\":\"stacked\",\"times\":[],\"addTimeMarker\":false,\"defaultYExtents\":false,\"setYExtents\":false,\"yAxis\":{}},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"count\",\"schema\":\"metric\",\"params\":{}},{\"id\":\"2\",\"enabled\":true,\"type\":\"date_histogram\",\"schema\":\"segment\",\"params\":{\"field\":\"@timestamp\",\"interval\":\"h\",\"customInterval\":\"2h\",\"min_doc_count\":1,\"extended_bounds\":{}}},{\"id\":\"3\",\"enabled\":true,\"type\":\"filters\",\"schema\":\"group\",\"params\":{\"filters\":[{\"input\":{\"query\":{\"query_string\":{\"query\":\"INFO\",\"analyze_wildcard\":true}}},\"label\":\"\"},{\"input\":{\"query\":{\"query_string\":{\"query\":\"WARN\",\"analyze_wildcard\":true}}}},{\"input\":{\"query\":{\"query_string\":{\"query\":\"ERROR\",\"analyze_wildcard\":true}}}},{\"input\":{\"query\":{\"query_string\":{\"query\":\"DEBUG\",\"analyze_wildcard\":true}}}}]}}],\"listeners\":{}}",
+      "uiStateJSON": "{\"vis\":{\"colors\":{\"DEBUG\":\"#614D93\",\"ERROR\":\"#BF1B00\",\"INFO\":\"#629E51\",\"WARN\":\"#E0752D\"}}}",
+      "description": "",
+      "savedSearchId": "Sandbox-Mobile-Search",
+      "version": 1,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"filter\":[]}"
+      }
+    }
+  },
+  {
+    "_id": "Sandbox-Barchart",
+    "_type": "visualization",
+    "_source": {
+      "title": "Sandbox Barchart",
+      "visState": "{\"title\":\"Sandbox Barchart\",\"type\":\"histogram\",\"params\":{\"shareYAxis\":true,\"addTooltip\":true,\"addLegend\":true,\"legendPosition\":\"right\",\"scale\":\"linear\",\"mode\":\"stacked\",\"times\":[],\"addTimeMarker\":false,\"defaultYExtents\":false,\"setYExtents\":false,\"yAxis\":{}},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"count\",\"schema\":\"metric\",\"params\":{}},{\"id\":\"2\",\"enabled\":true,\"type\":\"date_histogram\",\"schema\":\"segment\",\"params\":{\"field\":\"@timestamp\",\"interval\":\"h\",\"customInterval\":\"2h\",\"min_doc_count\":1,\"extended_bounds\":{}}},{\"id\":\"3\",\"enabled\":true,\"type\":\"filters\",\"schema\":\"group\",\"params\":{\"filters\":[{\"input\":{\"query\":{\"query_string\":{\"query\":\"INFO\",\"analyze_wildcard\":true}}},\"label\":\"\"},{\"input\":{\"query\":{\"query_string\":{\"query\":\"WARN\",\"analyze_wildcard\":true}}}},{\"input\":{\"query\":{\"query_string\":{\"query\":\"ERROR\",\"analyze_wildcard\":true}}}},{\"input\":{\"query\":{\"query_string\":{\"query\":\"DEBUG\",\"analyze_wildcard\":true}}}}]}}],\"listeners\":{}}",
+      "uiStateJSON": "{\"vis\":{\"legendOpen\":true,\"colors\":{\"DEBUG\":\"#614D93\",\"ERROR\":\"#BF1B00\",\"INFO\":\"#629E51\",\"WARN\":\"#E0752D\"}}}",
+      "description": "",
+      "savedSearchId": "Sandbox-Search",
+      "version": 1,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"filter\":[]}"
+      }
+    }
+  },
+  {
+    "_id": "Sandbox-Account-Validation-Email",
+    "_type": "visualization",
+    "_source": {
+      "title": "Sandbox Account Validation Email",
+      "visState": "{\"title\":\"Sandbox Account Validation Email\",\"type\":\"histogram\",\"params\":{\"addLegend\":true,\"addTimeMarker\":false,\"addTooltip\":true,\"defaultYExtents\":false,\"legendPosition\":\"right\",\"mode\":\"stacked\",\"scale\":\"linear\",\"setYExtents\":false,\"shareYAxis\":true,\"times\":[],\"yAxis\":{}},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"count\",\"schema\":\"metric\",\"params\":{}},{\"id\":\"2\",\"enabled\":true,\"type\":\"date_histogram\",\"schema\":\"segment\",\"params\":{\"field\":\"@timestamp\",\"interval\":\"h\",\"customInterval\":\"2h\",\"min_doc_count\":1,\"extended_bounds\":{}}},{\"id\":\"3\",\"enabled\":true,\"type\":\"filters\",\"schema\":\"group\",\"params\":{\"filters\":[{\"input\":{\"query\":{\"query_string\":{\"analyze_wildcard\":true,\"query\":\"\\\"Account validation sent\\\"\"}}},\"label\":\"Account Validation Email\"}]}}],\"listeners\":{}}",
+      "uiStateJSON": "{\"vis\":{\"colors\":{\"Account Validation Email\":\"#629E51\"}}}",
+      "description": "",
+      "savedSearchId": "Sandbox-Search",
+      "version": 1,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"filter\":[]}"
+      }
+    }
+  }
+]
