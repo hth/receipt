@@ -12,16 +12,18 @@ ext {
     freemarker = file("$webInf/freemarker")
     lib = file("$webInf/lib")
     javaClasses = file("$webInf/classes")
-    conf = file("$javaClasses/conf")
     cert = file("$javaClasses/cert")
+    conf = file("$javaClasses/conf")
+    dkim = file("$javaClasses/dkim")
     images = file("$javaClasses/images")
 
     warDir = file("$buildDir/explodedWar/$env")
     warWebInfDir = file("$warDir$webInf")
     warLibDir = file("$warDir$lib")
     warClassesDir = file("$warDir$javaClasses")
-    warConfDir = file("$warDir$conf")
     warCertDir = file("$warDir$cert")
+    warConfDir = file("$warDir$conf")
+    warDkimDir = file("$warDir$dkim")
     warWebInfClassesImagesDir = file("$warDir$images")
 
     activeProfilewarDir = file("$buildDir/activeProfile/$env")
@@ -40,6 +42,10 @@ ext {
     apnsCertLocal = file('web/resources/cert/aps_sandbox_credentials.p12')
     apnsCertTest = file(apnsCertificateTestFileLocation)
     apnsCertProd = file(apnsCertificateProdFileLocation)
+
+    dkimCertLocal = file('web/resources/dkim/dkim.der')
+    dkimCertTest = file(dkimCertificateTestFileLocation)
+    dkimCertProd = file(dkimCertificateProdFileLocation)
 
     baseName = "receiptofi"
 }
@@ -229,6 +235,7 @@ subprojects {
         compile "org.quartz-scheduler:quartz:$quartz"
         compile "com.notnoop.apns:apns:$apns"
         compile "org.springframework.webflow:spring-webflow:$webflow"
+        compile 'net.markenwerk:utils-mail-dkim:1.1.7'
         /** ------- */
 
         compile 'aopalliance:aopalliance:1.0'
@@ -604,6 +611,7 @@ task prepWar(dependsOn: [
 ]) << {
     warClassesDir.mkdirs()
     warConfDir.mkdirs()
+    warDkimDir.mkdirs()
 
     copy {
         from 'web/web'
@@ -692,6 +700,35 @@ task prepWar(dependsOn: [
         }
 
         into warCertDir
+    }
+
+    copy {
+        if (env == 'prod') {
+            if (dkimCertProd.exists()) {
+                from dkimCertificateProdFileLocation
+            } else {
+                throw new Exception("Required cert file does not exists: $passFileProd.canonicalPath")
+            }
+        }
+
+        if (env == 'sandbox') {
+            if (dkimCertTest.exists()) {
+                from dkimCertificateTestFileLocation
+            } else {
+                throw new Exception("Required cert file does not exists: $passFileTest.canonicalPath")
+            }
+        }
+
+        if (env == 'dev') {
+            println "Development environment, getting local dkim file $passFileLocal.canonicalPath"
+            if (dkimCertLocal.exists()) {
+                from dkimCertLocal
+            } else {
+                throw new Exception("Required cert file does not exists: $passFileLocal.canonicalPath")
+            }
+        }
+
+        into warDkimDir
     }
 
     copy {
