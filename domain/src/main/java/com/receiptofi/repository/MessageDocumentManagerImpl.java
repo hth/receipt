@@ -81,7 +81,7 @@ public final class MessageDocumentManagerImpl implements MessageDocumentManager 
     }
 
     @Override
-    public List<MessageDocumentEntity> findUpdateWithLimit(String emailId, String receiptUserId, DocumentStatusEnum status, int limit) {
+    public List<MessageDocumentEntity> findUpdateWithLimit(String emailId, String rid, DocumentStatusEnum status, int limit) {
 //        String updateQuery = "{ " +
 //                "set : " +
 //                    "{" +
@@ -101,11 +101,17 @@ public final class MessageDocumentManagerImpl implements MessageDocumentManager 
         List<MessageDocumentEntity> list = findWithLimit(status);
         for (MessageDocumentEntity object : list) {
             try {
-                mongoTemplate.updateFirst(
+                WriteResult writeResult = mongoTemplate.updateFirst(
                         query(where("id").is(object.getId())),
-                        entityUpdate(update("EM", emailId).set("RID", receiptUserId).set("LOK", true)),
+                        entityUpdate(
+                                update("EM", emailId)
+                                        .set("RID", rid)
+                                        .set("LOK", true)
+                        ),
                         MessageDocumentEntity.class,
                         TABLE);
+
+                LOG.info("Update message updateOfExisting={} n={}", writeResult.isUpdateOfExisting(), writeResult.getN());
             } catch (Exception e) {
                 LOG.error("Update failed reason={}", e.getLocalizedMessage(), e);
                 object.setRecordLocked(false);
