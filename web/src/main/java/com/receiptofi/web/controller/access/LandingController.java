@@ -309,16 +309,16 @@ public class LandingController {
                                 image.getOriginalFileName(),
                                 rid);
 
-                        messageDocumentService.markMessageForReceiptAsDuplicate(
-                                document.getId(),
-                                documentRejectUserId,
-                                documentRejectRid);
-
                         documentUpdateService.processDocumentForReject(
                                 documentRejectRid,
                                 document.getId(),
                                 DocumentOfTypeEnum.RECEIPT,
                                 DocumentRejectReasonEnum.D);
+
+                        messageDocumentService.markMessageForReceiptAsDuplicate(
+                                document.getId(),
+                                documentRejectUserId,
+                                documentRejectRid);
                     }
 
                     jsonObject.addProperty(SUCCESS, true);
