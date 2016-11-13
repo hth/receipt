@@ -159,7 +159,7 @@ public final class MessageDocumentManagerImpl implements MessageDocumentManager 
     public WriteResult updateObject(String documentId, DocumentStatusEnum statusFind, DocumentStatusEnum statusSet) {
         mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
         return mongoTemplate.updateFirst(
-                query(where("LOK").is(true).and("DS").is(statusFind).and("DID").is(documentId)),
+                query(where("LOK").is(true).and("DS").is(statusFind).and("DID").is(documentId).and("A").is(true)),
                 entityUpdate(update("DS", statusSet).set("A", false)),
                 MessageDocumentEntity.class);
     }
