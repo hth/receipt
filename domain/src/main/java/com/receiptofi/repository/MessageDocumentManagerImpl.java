@@ -8,6 +8,7 @@ import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
 import static org.springframework.data.mongodb.core.query.Update.update;
 
+import com.mongodb.WriteConcern;
 import com.mongodb.WriteResult;
 
 import com.receiptofi.domain.BaseEntity;
@@ -207,6 +208,20 @@ public final class MessageDocumentManagerImpl implements MessageDocumentManager 
     public void markMessageForReceiptAsDuplicate(String did, String emailId, String rid, DocumentStatusEnum documentStatus) {
         LOG.info("Marking message as {} for did={}", documentStatus, did);
         Assert.assertEquals("Can only set to reject", DocumentStatusEnum.REJECT, documentStatus);
+
+        WriteConcern writeConcern = mongoTemplate.getDb().getWriteConcern();
+        int count = mongoTemplate.getDb().getMongo().getAllAddress().size();
+        switch (count) {
+            case 1:
+                mongoTemplate.setWriteConcern(WriteConcern.W1);
+                break;
+            case 2:
+                mongoTemplate.setWriteConcern(WriteConcern.W2);
+                break;
+            default:
+                mongoTemplate.setWriteConcern(WriteConcern.W3);
+                break;
+        }
         mongoTemplate.updateFirst(
                 query(where("DID").is(did)),
                 update("LOK", true)
@@ -215,5 +230,8 @@ public final class MessageDocumentManagerImpl implements MessageDocumentManager 
                         .set("RID", rid)
                         .set("A", false),
                 MessageDocumentEntity.class);
+
+        /** Re-set to the original write concern. */
+        mongoTemplate.setWriteConcern(writeConcern);
     }
 }
