@@ -158,10 +158,17 @@ public final class MessageDocumentManagerImpl implements MessageDocumentManager 
     @Override
     public WriteResult updateObject(String documentId, DocumentStatusEnum statusFind, DocumentStatusEnum statusSet) {
         mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
-        return mongoTemplate.updateFirst(
-                query(where("LOK").is(true).and("DS").is(statusFind).and("DID").is(documentId).and("A").is(true)),
+        LOG.info("UpdateObject did={} docStatusFind={} docSetStatus={}", documentId, statusFind, statusSet);
+
+        WriteResult writeResult = mongoTemplate.updateFirst(
+                query(where("LOK").is(true)
+                        .and("DS").is(statusFind)
+                        .and("DID").is(documentId)),
                 entityUpdate(update("DS", statusSet).set("A", false)),
                 MessageDocumentEntity.class);
+
+        LOG.info("Update message updateOfExisting={} n={}", writeResult.isUpdateOfExisting(), writeResult.getN());
+        return writeResult;
     }
 
     @Override
@@ -207,13 +214,17 @@ public final class MessageDocumentManagerImpl implements MessageDocumentManager 
     public void markMessageForReceiptAsDuplicate(String did, String emailId, String rid, DocumentStatusEnum documentStatus) {
         LOG.info("Marking message as {} for did={}", documentStatus, did);
         Assert.assertEquals("Can only set to reject", DocumentStatusEnum.REJECT, documentStatus);
-        mongoTemplate.updateFirst(
+        WriteResult writeResult = mongoTemplate.updateFirst(
                 query(where("DID").is(did)),
-                update("LOK", true)
-                        .set("DS", documentStatus)
-                        .set("EM", emailId)
-                        .set("RID", rid)
-                        .set("A", false),
+                entityUpdate(
+                        update("LOK", true)
+                            .set("DS", documentStatus)
+                            .set("EM", emailId)
+                            .set("RID", rid)
+                            .set("A", false)
+                ),
                 MessageDocumentEntity.class);
+
+        LOG.info("Update message updateOfExisting={} n={}", writeResult.isUpdateOfExisting(), writeResult.getN());
     }
 }
