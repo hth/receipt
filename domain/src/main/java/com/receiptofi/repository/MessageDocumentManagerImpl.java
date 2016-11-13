@@ -80,8 +80,7 @@ public final class MessageDocumentManagerImpl implements MessageDocumentManager 
         return findUpdateWithLimit(emailId, rid, status, messageQueryLimit);
     }
 
-    @Override
-    public List<MessageDocumentEntity> findUpdateWithLimit(String emailId, String rid, DocumentStatusEnum status, int limit) {
+    private List<MessageDocumentEntity> findUpdateWithLimit(String emailId, String rid, DocumentStatusEnum status, int limit) {
 //        String updateQuery = "{ " +
 //                "set : " +
 //                    "{" +
