@@ -134,8 +134,8 @@ public class UserAccountEntity extends BaseEntity {
         this();
         this.receiptUserId = receiptUserId;
         this.userId = userId;
-        this.firstName = WordUtils.capitalize(firstName);
-        this.lastName = WordUtils.capitalize(lastName);
+        this.firstName = WordUtils.capitalizeFully(firstName);
+        this.lastName = WordUtils.capitalizeFully(lastName);
         this.userAuthentication = userAuthentication;
         billingAccount = new BillingAccountEntity(receiptUserId);
     }
@@ -251,7 +251,7 @@ public class UserAccountEntity extends BaseEntity {
     }
 
     public void setFirstName(String firstName) {
-        this.firstName = WordUtils.capitalize(firstName);
+        this.firstName = WordUtils.capitalizeFully(firstName);
     }
 
     public String getLastName() {
@@ -259,7 +259,7 @@ public class UserAccountEntity extends BaseEntity {
     }
 
     public void setLastName(String lastName) {
-        this.lastName = WordUtils.capitalize(lastName);
+        this.lastName = WordUtils.capitalizeFully(lastName);
     }
 
     public Set<RoleEnum> getRoles() {
