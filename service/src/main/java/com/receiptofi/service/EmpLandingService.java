@@ -30,19 +30,19 @@ public class EmpLandingService {
         this.messageDocumentManager = messageDocumentManager;
     }
 
-    public List<MessageDocumentEntity> pendingReceipts(String emailId, String profileId, DocumentStatusEnum status) {
-        return messageDocumentManager.findPending(emailId, profileId, status);
+    public List<MessageDocumentEntity> pendingReceipts(String email, String rid, DocumentStatusEnum status) {
+        return messageDocumentManager.findPending(email, rid, status);
     }
 
-    public List<MessageDocumentEntity> queuedReceipts(String emailId, String profileId) {
-        return messageDocumentManager.findUpdateWithLimit(emailId, profileId, DocumentStatusEnum.PENDING);
+    public List<MessageDocumentEntity> queuedReceipts(String email, String rid) {
+        return messageDocumentManager.findUpdateWithLimit(email, rid, DocumentStatusEnum.PENDING);
     }
 
-    public List<MessageDocumentEntity> recheck(String emailId, String profileId) {
-        return messageDocumentManager.findUpdateWithLimit(emailId, profileId, DocumentStatusEnum.REPROCESS);
+    public List<MessageDocumentEntity> recheck(String email, String rid) {
+        return messageDocumentManager.findUpdateWithLimit(email, rid, DocumentStatusEnum.REPROCESS);
     }
 
-    public void delete(MessageDocumentEntity messageDocumentEntity) {
-        messageDocumentManager.deleteHard(messageDocumentEntity);
+    public void delete(MessageDocumentEntity messageDocument) {
+        messageDocumentManager.deleteHard(messageDocument);
     }
 }

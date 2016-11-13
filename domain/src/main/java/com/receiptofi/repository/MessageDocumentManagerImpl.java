@@ -76,12 +76,11 @@ public final class MessageDocumentManagerImpl implements MessageDocumentManager 
     }
 
     @Override
-    public List<MessageDocumentEntity> findUpdateWithLimit(String emailId, String receiptUserId, DocumentStatusEnum status) {
-        return findUpdateWithLimit(emailId, receiptUserId, status, messageQueryLimit);
+    public List<MessageDocumentEntity> findUpdateWithLimit(String emailId, String rid, DocumentStatusEnum status) {
+        return findUpdateWithLimit(emailId, rid, status, messageQueryLimit);
     }
 
-    @Override
-    public List<MessageDocumentEntity> findUpdateWithLimit(String emailId, String receiptUserId, DocumentStatusEnum status, int limit) {
+    private List<MessageDocumentEntity> findUpdateWithLimit(String emailId, String rid, DocumentStatusEnum status, int limit) {
 //        String updateQuery = "{ " +
 //                "set : " +
 //                    "{" +
@@ -101,11 +100,17 @@ public final class MessageDocumentManagerImpl implements MessageDocumentManager 
         List<MessageDocumentEntity> list = findWithLimit(status);
         for (MessageDocumentEntity object : list) {
             try {
-                mongoTemplate.updateFirst(
+                WriteResult writeResult = mongoTemplate.updateFirst(
                         query(where("id").is(object.getId())),
-                        entityUpdate(update("EM", emailId).set("RID", receiptUserId).set("LOK", true)),
+                        entityUpdate(
+                                update("EM", emailId)
+                                        .set("RID", rid)
+                                        .set("LOK", true)
+                        ),
                         MessageDocumentEntity.class,
                         TABLE);
+
+                LOG.info("Update message updateOfExisting={} n={}", writeResult.isUpdateOfExisting(), writeResult.getN());
             } catch (Exception e) {
                 LOG.error("Update failed reason={}", e.getLocalizedMessage(), e);
                 object.setRecordLocked(false);
@@ -123,12 +128,12 @@ public final class MessageDocumentManagerImpl implements MessageDocumentManager 
     }
 
     @Override
-    public List<MessageDocumentEntity> findPending(String emailId, String userProfileId, DocumentStatusEnum status) {
+    public List<MessageDocumentEntity> findPending(String emailId, String rid, DocumentStatusEnum status) {
         return mongoTemplate.find(
                 query(where("LOK").is(true)
                         .and("DS").is(status)
                         .and("EM").is(emailId)
-                        .and("RID").is(userProfileId)
+                        .and("RID").is(rid)
                 ).with(sortBy()),
                 MessageDocumentEntity.class,
                 TABLE);
@@ -194,9 +199,9 @@ public final class MessageDocumentManagerImpl implements MessageDocumentManager 
     }
 
     @Override
-    public void resetDocumentsToInitialState(String receiptUserId) {
+    public void resetDocumentsToInitialState(String rid) {
         mongoTemplate.updateMulti(
-                query(where("RID").is(receiptUserId)
+                query(where("RID").is(rid)
                         .orOperator(
                                 where("DS").is(DocumentStatusEnum.PENDING),
                                 where("DS").is(DocumentStatusEnum.REPROCESS)
@@ -211,7 +216,7 @@ public final class MessageDocumentManagerImpl implements MessageDocumentManager 
     }
 
     @Override
-    public void markMessageForReceiptAsDuplicate(String did, String emailId, String rid, DocumentStatusEnum documentStatus) {
+    public void markMessageForReceiptAsDuplicate(String did, String email, String rid, DocumentStatusEnum documentStatus) {
         LOG.info("Marking message as {} for did={}", documentStatus, did);
         Assert.assertEquals("Can only set to reject", DocumentStatusEnum.REJECT, documentStatus);
         WriteResult writeResult = mongoTemplate.updateFirst(
@@ -219,7 +224,7 @@ public final class MessageDocumentManagerImpl implements MessageDocumentManager 
                 entityUpdate(
                         update("LOK", true)
                             .set("DS", documentStatus)
-                            .set("EM", emailId)
+                            .set("EM", email)
                             .set("RID", rid)
                             .set("A", false)
                 ),

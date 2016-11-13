@@ -20,13 +20,11 @@ public interface MessageDocumentManager extends RepositoryManager<MessageDocumen
 
     List<MessageDocumentEntity> findWithLimit(DocumentStatusEnum status, int limit);
 
-    List<MessageDocumentEntity> findUpdateWithLimit(String emailId, String receiptUserId, DocumentStatusEnum status);
-
-    List<MessageDocumentEntity> findUpdateWithLimit(String emailId, String receiptUserId, DocumentStatusEnum status, int limit);
+    List<MessageDocumentEntity> findUpdateWithLimit(String email, String rid, DocumentStatusEnum status);
 
     List<MessageDocumentEntity> findAllPending(Date since);
 
-    List<MessageDocumentEntity> findPending(String emailId, String receiptUserId, DocumentStatusEnum status);
+    List<MessageDocumentEntity> findPending(String email, String rid, DocumentStatusEnum status);
 
     WriteResult updateObject(String documentId, DocumentStatusEnum statusFind, DocumentStatusEnum statusSet);
 
@@ -60,9 +58,9 @@ public interface MessageDocumentManager extends RepositoryManager<MessageDocumen
      * Used for auto rejecting when find existing document with similar name.
      *
      * @param did
-     * @param emailId
+     * @param email
      * @param rid
      * @param documentStatus
      */
-    void markMessageForReceiptAsDuplicate(String did, String emailId, String rid, DocumentStatusEnum documentStatus);
+    void markMessageForReceiptAsDuplicate(String did, String email, String rid, DocumentStatusEnum documentStatus);
 }
