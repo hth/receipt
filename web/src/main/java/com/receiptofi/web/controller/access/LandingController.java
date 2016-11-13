@@ -315,6 +315,11 @@ public class LandingController {
                                 DocumentOfTypeEnum.RECEIPT,
                                 DocumentRejectReasonEnum.D);
 
+
+                        /**
+                         * The process above marks message as reject. Changing the order because
+                         * there are dual rejection on same document.
+                         */
                         messageDocumentService.markMessageForReceiptAsDuplicate(
                                 document.getId(),
                                 documentRejectUserId,
