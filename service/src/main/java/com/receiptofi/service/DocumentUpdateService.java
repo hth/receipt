@@ -395,6 +395,7 @@ public class DocumentUpdateService {
                 document.markAsDeleted();
                 documentService.save(document);
 
+                /** Modify MessageDocumentEntity to reject for removing from pending list. */
                 updateMessageWithDocumentChanges(document);
                 itemOCRManager.deleteWhereReceipt(document);
 

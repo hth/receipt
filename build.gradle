@@ -678,7 +678,7 @@ task prepWar(dependsOn: [
             if (apnsCertProd.exists()) {
                 from apnsCertificateProdFileLocation
             } else {
-                throw new Exception("Required cert file does not exists: $passFileProd.canonicalPath")
+                throw new Exception("Required cert file does not exists: $apnsCertProd.canonicalPath")
             }
         }
 
@@ -686,16 +686,16 @@ task prepWar(dependsOn: [
             if (apnsCertTest.exists()) {
                 from apnsCertificateTestFileLocation
             } else {
-                throw new Exception("Required cert file does not exists: $passFileTest.canonicalPath")
+                throw new Exception("Required cert file does not exists: $apnsCertTest.canonicalPath")
             }
         }
 
         if (env == 'dev') {
-            println "Development environment, getting local pass file $passFileLocal.canonicalPath"
+            println "Development environment, getting local cert file $apnsCertLocal.canonicalPath"
             if (apnsCertLocal.exists()) {
                 from 'web/resources/conf/aps_sandbox_credentials.p12'
             } else {
-                throw new Exception("Required cert file does not exists: $passFileLocal.canonicalPath")
+                throw new Exception("Required cert file does not exists: $apnsCertLocal.canonicalPath")
             }
         }
 
@@ -707,7 +707,7 @@ task prepWar(dependsOn: [
             if (dkimCertProd.exists()) {
                 from dkimCertificateProdFileLocation
             } else {
-                throw new Exception("Required cert file does not exists: $passFileProd.canonicalPath")
+                throw new Exception("Required dkim file does not exists: $dkimCertProd.canonicalPath")
             }
         }
 
@@ -715,16 +715,16 @@ task prepWar(dependsOn: [
             if (dkimCertTest.exists()) {
                 from dkimCertificateTestFileLocation
             } else {
-                throw new Exception("Required cert file does not exists: $passFileTest.canonicalPath")
+                throw new Exception("Required dkim file does not exists: $dkimCertTest.canonicalPath")
             }
         }
 
         if (env == 'dev') {
-            println "Development environment, getting local dkim file $passFileLocal.canonicalPath"
+            println "Development environment, getting local dkim file $dkimCertLocal.canonicalPath"
             if (dkimCertLocal.exists()) {
                 from dkimCertLocal
             } else {
-                throw new Exception("Required cert file does not exists: $passFileLocal.canonicalPath")
+                throw new Exception("Required dkim file does not exists: $dkimCertLocal.canonicalPath")
             }
         }
 
