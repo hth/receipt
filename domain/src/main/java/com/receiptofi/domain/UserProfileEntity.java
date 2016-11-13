@@ -9,7 +9,6 @@ import com.receiptofi.utils.CommonUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.text.WordUtils;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
@@ -173,8 +172,8 @@ public class UserProfileEntity extends BaseEntity {
     private UserProfileEntity(String email, String firstName, String lastName, String receiptUserId, String birthday) {
         super();
         this.email = email;
-        this.firstName = WordUtils.capitalize(firstName);
-        this.lastName = WordUtils.capitalize(lastName);
+        this.firstName = WordUtils.capitalizeFully(firstName);
+        this.lastName = WordUtils.capitalizeFully(lastName);
         this.receiptUserId = receiptUserId;
         this.birthday = birthday;
     }
@@ -247,7 +246,7 @@ public class UserProfileEntity extends BaseEntity {
     }
 
     public void setFirstName(String firstName) {
-        this.firstName = WordUtils.capitalize(firstName);
+        this.firstName = WordUtils.capitalizeFully(firstName);
     }
 
     public String getMiddleName() {
@@ -263,7 +262,7 @@ public class UserProfileEntity extends BaseEntity {
     }
 
     public void setLastName(String lastName) {
-        this.lastName = WordUtils.capitalize(lastName);
+        this.lastName = WordUtils.capitalizeFully(lastName);
     }
 
     public String getGender() {

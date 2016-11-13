@@ -73,7 +73,7 @@ public class ProfileForm {
     }
 
     public void setFirstName(ScrubbedInput firstName) {
-        this.firstName = new ScrubbedInput(WordUtils.capitalize(firstName.getText()));
+        this.firstName = new ScrubbedInput(WordUtils.capitalizeFully(firstName.getText()));
     }
 
     public ScrubbedInput getLastName() {
@@ -81,7 +81,7 @@ public class ProfileForm {
     }
 
     public void setLastName(ScrubbedInput lastName) {
-        this.lastName = new ScrubbedInput(WordUtils.capitalize(lastName.getText()));
+        this.lastName = new ScrubbedInput(WordUtils.capitalizeFully(lastName.getText()));
     }
 
     public ScrubbedInput getMail() {
