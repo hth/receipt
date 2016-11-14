@@ -24,18 +24,18 @@ import java.util.List;
 @Service
 public class EmpLandingService {
 
-    private int documentLastUpdated;
+    private int messageLastUpdated;
     private MessageDocumentManager messageDocumentManager;
 
     @Autowired
     public EmpLandingService(
-            /** How many minutes ago. */
-            @Value ("${MobilePushNotificationProcess.how.long.ago.document.updated}")
-            int documentLastUpdated,
+            /** Delay showing new messages by X seconds. */
+            @Value ("${EmpLandingService.how.long.ago.message.updated.seconds}")
+            int messageLastUpdated,
 
             MessageDocumentManager messageDocumentManager
     ) {
-        this.documentLastUpdated = documentLastUpdated;
+        this.messageLastUpdated = messageLastUpdated;
         this.messageDocumentManager = messageDocumentManager;
     }
 
@@ -44,11 +44,11 @@ public class EmpLandingService {
     }
 
     public List<MessageDocumentEntity> queuedReceipts(String email, String rid) {
-        return messageDocumentManager.findUpdateWithLimit(email, rid, DocumentStatusEnum.PENDING, documentLastUpdated);
+        return messageDocumentManager.findUpdateWithLimit(email, rid, DocumentStatusEnum.PENDING, messageLastUpdated);
     }
 
     public List<MessageDocumentEntity> recheck(String email, String rid) {
-        return messageDocumentManager.findUpdateWithLimit(email, rid, DocumentStatusEnum.REPROCESS, documentLastUpdated);
+        return messageDocumentManager.findUpdateWithLimit(email, rid, DocumentStatusEnum.REPROCESS, messageLastUpdated);
     }
 
     public void delete(MessageDocumentEntity messageDocument) {
