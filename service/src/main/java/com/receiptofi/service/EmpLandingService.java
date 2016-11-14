@@ -5,6 +5,7 @@ import com.receiptofi.domain.types.DocumentStatusEnum;
 import com.receiptofi.repository.MessageDocumentManager;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,10 +24,18 @@ import java.util.List;
 @Service
 public class EmpLandingService {
 
+    private int documentLastUpdated;
     private MessageDocumentManager messageDocumentManager;
 
     @Autowired
-    public EmpLandingService(MessageDocumentManager messageDocumentManager) {
+    public EmpLandingService(
+            /** How many minutes ago. */
+            @Value ("${MobilePushNotificationProcess.how.long.ago.document.updated}")
+            int documentLastUpdated,
+
+            MessageDocumentManager messageDocumentManager
+    ) {
+        this.documentLastUpdated = documentLastUpdated;
         this.messageDocumentManager = messageDocumentManager;
     }
 
@@ -35,11 +44,11 @@ public class EmpLandingService {
     }
 
     public List<MessageDocumentEntity> queuedReceipts(String email, String rid) {
-        return messageDocumentManager.findUpdateWithLimit(email, rid, DocumentStatusEnum.PENDING);
+        return messageDocumentManager.findUpdateWithLimit(email, rid, DocumentStatusEnum.PENDING, documentLastUpdated);
     }
 
     public List<MessageDocumentEntity> recheck(String email, String rid) {
-        return messageDocumentManager.findUpdateWithLimit(email, rid, DocumentStatusEnum.REPROCESS);
+        return messageDocumentManager.findUpdateWithLimit(email, rid, DocumentStatusEnum.REPROCESS, documentLastUpdated);
     }
 
     public void delete(MessageDocumentEntity messageDocument) {

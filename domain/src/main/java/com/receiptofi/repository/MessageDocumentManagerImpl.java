@@ -14,6 +14,8 @@ import com.receiptofi.domain.BaseEntity;
 import com.receiptofi.domain.MessageDocumentEntity;
 import com.receiptofi.domain.types.DocumentStatusEnum;
 
+import org.joda.time.DateTime;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -62,42 +64,29 @@ public final class MessageDocumentManagerImpl implements MessageDocumentManager 
         this.mongoTemplate = mongoTemplate;
     }
 
-    @Override
-    public List<MessageDocumentEntity> findWithLimit(DocumentStatusEnum status) {
-        return findWithLimit(status, messageQueryLimit);
+    private List<MessageDocumentEntity> findWithLimit(DocumentStatusEnum status, int delay) {
+        return findWithLimit(status, messageQueryLimit, delay);
     }
 
-    @Override
-    public List<MessageDocumentEntity> findWithLimit(DocumentStatusEnum status, int limit) {
+    private List<MessageDocumentEntity> findWithLimit(DocumentStatusEnum status, int limit, int delay) {
         return mongoTemplate.find(
-                query(where("LOK").is(false).and("DS").is(status)).with(sortBy()).limit(limit),
+                query(
+                        where("LOK").is(false)
+                                .and("DS").is(status)
+                                .and("C").lte(DateTime.now().minusMinutes(delay))
+                ).with(sortBy()).limit(limit),
                 MessageDocumentEntity.class,
                 TABLE);
     }
 
     @Override
-    public List<MessageDocumentEntity> findUpdateWithLimit(String emailId, String rid, DocumentStatusEnum status) {
-        return findUpdateWithLimit(emailId, rid, status, messageQueryLimit);
-    }
-
-    private List<MessageDocumentEntity> findUpdateWithLimit(String emailId, String rid, DocumentStatusEnum status, int limit) {
-//        String updateQuery = "{ " +
-//                "set : " +
-//                    "{" +
-//                    "'emailId' : '" + emailId + "', " +
-//                    "'profileId' : '" + profileId + "', " +
-//                    "'recordLocked' : " + true +
-//                    "} " +
-//                "}";
-//
-//        String sortQuery  = "{ sort : { 'level' : " + -1 + ", 'created' : " + 1 + "} }";
-//        String limitQuery = "{ limit : " + messageQueryLimit + "}";
-
-//        BasicDBObject basicDBObject = new BasicDBObject()
-//                .append("recordLocked", false)
-//                .append("DS", "PENDING");
-
-        List<MessageDocumentEntity> list = findWithLimit(status);
+    public List<MessageDocumentEntity> findUpdateWithLimit(
+            String emailId,
+            String rid,
+            DocumentStatusEnum status,
+            int delay
+    ) {
+        List<MessageDocumentEntity> list = findWithLimit(status, delay);
         for (MessageDocumentEntity object : list) {
             try {
                 WriteResult writeResult = mongoTemplate.updateFirst(
