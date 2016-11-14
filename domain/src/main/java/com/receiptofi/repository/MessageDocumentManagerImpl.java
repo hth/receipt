@@ -73,7 +73,7 @@ public final class MessageDocumentManagerImpl implements MessageDocumentManager 
                 query(
                         where("LOK").is(false)
                                 .and("DS").is(status)
-                                .and("C").lte(DateTime.now().minusMinutes(delay))
+                                .and("C").lte(DateTime.now().minusSeconds(delay))
                 ).with(sortBy()).limit(limit),
                 MessageDocumentEntity.class,
                 TABLE);
