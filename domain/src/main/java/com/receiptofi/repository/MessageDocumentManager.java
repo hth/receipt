@@ -16,11 +16,16 @@ import java.util.List;
  */
 public interface MessageDocumentManager extends RepositoryManager<MessageDocumentEntity> {
 
-    List<MessageDocumentEntity> findWithLimit(DocumentStatusEnum status);
-
-    List<MessageDocumentEntity> findWithLimit(DocumentStatusEnum status, int limit);
-
-    List<MessageDocumentEntity> findUpdateWithLimit(String email, String rid, DocumentStatusEnum status);
+    /**
+     * Find messages that are before the delayed time with specified document status.
+     *
+     * @param email
+     * @param rid
+     * @param status
+     * @param delay
+     * @return
+     */
+    List<MessageDocumentEntity> findUpdateWithLimit(String email, String rid, DocumentStatusEnum status, int delay);
 
     List<MessageDocumentEntity> findAllPending(Date since);
 
