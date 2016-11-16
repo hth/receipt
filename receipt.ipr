@@ -370,7 +370,6 @@
             <element id="library" level="project" name="Gradle: org.apache.commons:commons-pool2:2.4.2" />
             <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-kms:1.11.34" />
             <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-core:1.11.34" />
-            <element id="library" level="project" name="Gradle: com.amazonaws:jmespath-java:1.0" />
             <element id="library" level="project" name="Gradle: c3p0:c3p0:0.9.1.1" />
             <element id="library" level="project" name="Gradle: commons-httpclient:commons-httpclient:3.1" />
             <element id="library" level="project" name="Gradle: opensymphony:ognl:2.6.11" />
@@ -478,6 +477,7 @@
               <element id="dir-copy" path="$PROJECT_DIR$/domain/build/resources/main" />
             </element>
             <element id="library" level="project" name="Gradle: javax.servlet:jstl:1.2" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/jmespath-java/1.0/a2d78b923230b22f002348640c5e38bade98afaa/jmespath-java-1.0.jar" />
           </element>
         </element>
         <element id="directory" name="META-INF">
@@ -589,7 +589,6 @@
             <element id="library" level="project" name="Gradle: org.apache.commons:commons-pool2:2.4.2" />
             <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-kms:1.11.34" />
             <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-core:1.11.34" />
-            <element id="library" level="project" name="Gradle: com.amazonaws:jmespath-java:1.0" />
             <element id="library" level="project" name="Gradle: c3p0:c3p0:0.9.1.1" />
             <element id="library" level="project" name="Gradle: commons-httpclient:commons-httpclient:3.1" />
             <element id="library" level="project" name="Gradle: opensymphony:ognl:2.6.11" />
@@ -697,6 +696,7 @@
               <element id="dir-copy" path="$PROJECT_DIR$/domain/build/resources/main" />
             </element>
             <element id="library" level="project" name="Gradle: javax.servlet:jstl:1.2" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/jmespath-java/1.0/a2d78b923230b22f002348640c5e38bade98afaa/jmespath-java-1.0.jar" />
           </element>
         </element>
         <element id="directory" name="META-INF">
@@ -808,7 +808,6 @@
             <element id="library" level="project" name="Gradle: org.apache.commons:commons-pool2:2.4.2" />
             <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-kms:1.11.34" />
             <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-core:1.11.34" />
-            <element id="library" level="project" name="Gradle: com.amazonaws:jmespath-java:1.0" />
             <element id="library" level="project" name="Gradle: c3p0:c3p0:0.9.1.1" />
             <element id="library" level="project" name="Gradle: commons-httpclient:commons-httpclient:3.1" />
             <element id="library" level="project" name="Gradle: opensymphony:ognl:2.6.11" />
@@ -920,6 +919,7 @@
               <element id="dir-copy" path="$PROJECT_DIR$/service/build/resources/main" />
             </element>
             <element id="library" level="project" name="Gradle: javax.servlet:jstl:1.2" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/jmespath-java/1.0/a2d78b923230b22f002348640c5e38bade98afaa/jmespath-java-1.0.jar" />
           </element>
         </element>
         <element id="directory" name="META-INF">
@@ -1031,7 +1031,6 @@
             <element id="library" level="project" name="Gradle: org.apache.commons:commons-pool2:2.4.2" />
             <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-kms:1.11.34" />
             <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-core:1.11.34" />
-            <element id="library" level="project" name="Gradle: com.amazonaws:jmespath-java:1.0" />
             <element id="library" level="project" name="Gradle: c3p0:c3p0:0.9.1.1" />
             <element id="library" level="project" name="Gradle: commons-httpclient:commons-httpclient:3.1" />
             <element id="library" level="project" name="Gradle: opensymphony:ognl:2.6.11" />
@@ -1143,6 +1142,7 @@
               <element id="dir-copy" path="$PROJECT_DIR$/service/build/resources/main" />
             </element>
             <element id="library" level="project" name="Gradle: javax.servlet:jstl:1.2" />
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/jmespath-java/1.0/a2d78b923230b22f002348640c5e38bade98afaa/jmespath-java-1.0.jar" />
           </element>
         </element>
         <element id="directory" name="META-INF">
@@ -1254,7 +1254,6 @@
             <element id="library" level="project" name="Gradle: org.apache.commons:commons-pool2:2.4.2" />
             <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-kms:1.11.34" />
             <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-core:1.11.34" />
-            <element id="library" level="project" name="Gradle: com.amazonaws:jmespath-java:1.0" />
             <element id="library" level="project" name="Gradle: c3p0:c3p0:0.9.1.1" />
             <element id="library" level="project" name="Gradle: commons-httpclient:commons-httpclient:3.1" />
             <element id="library" level="project" name="Gradle: opensymphony:ognl:2.6.11" />
@@ -1378,6 +1377,7 @@
               <element id="module-output" name="loader_main" />
               <element id="dir-copy" path="$PROJECT_DIR$/loader/build/resources/main" />
             </element>
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/jmespath-java/1.0/a2d78b923230b22f002348640c5e38bade98afaa/jmespath-java-1.0.jar" />
           </element>
         </element>
         <element id="directory" name="META-INF">
@@ -1489,7 +1489,6 @@
             <element id="library" level="project" name="Gradle: org.apache.commons:commons-pool2:2.4.2" />
             <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-kms:1.11.34" />
             <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-core:1.11.34" />
-            <element id="library" level="project" name="Gradle: com.amazonaws:jmespath-java:1.0" />
             <element id="library" level="project" name="Gradle: c3p0:c3p0:0.9.1.1" />
             <element id="library" level="project" name="Gradle: commons-httpclient:commons-httpclient:3.1" />
             <element id="library" level="project" name="Gradle: opensymphony:ognl:2.6.11" />
@@ -1613,6 +1612,7 @@
               <element id="module-output" name="loader_main" />
               <element id="dir-copy" path="$PROJECT_DIR$/loader/build/resources/main" />
             </element>
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/jmespath-java/1.0/a2d78b923230b22f002348640c5e38bade98afaa/jmespath-java-1.0.jar" />
           </element>
         </element>
         <element id="directory" name="META-INF">
@@ -1724,7 +1724,6 @@
             <element id="library" level="project" name="Gradle: org.apache.commons:commons-pool2:2.4.2" />
             <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-kms:1.11.34" />
             <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-core:1.11.34" />
-            <element id="library" level="project" name="Gradle: com.amazonaws:jmespath-java:1.0" />
             <element id="library" level="project" name="Gradle: c3p0:c3p0:0.9.1.1" />
             <element id="library" level="project" name="Gradle: commons-httpclient:commons-httpclient:3.1" />
             <element id="library" level="project" name="Gradle: opensymphony:ognl:2.6.11" />
@@ -1835,6 +1834,7 @@
               <element id="module-output" name="domain_main" />
               <element id="dir-copy" path="$PROJECT_DIR$/domain/build/resources/main" />
             </element>
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/jmespath-java/1.0/a2d78b923230b22f002348640c5e38bade98afaa/jmespath-java-1.0.jar" />
           </element>
         </element>
         <element id="directory" name="META-INF">
@@ -1946,7 +1946,6 @@
             <element id="library" level="project" name="Gradle: org.apache.commons:commons-pool2:2.4.2" />
             <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-kms:1.11.34" />
             <element id="library" level="project" name="Gradle: com.amazonaws:aws-java-sdk-core:1.11.34" />
-            <element id="library" level="project" name="Gradle: com.amazonaws:jmespath-java:1.0" />
             <element id="library" level="project" name="Gradle: c3p0:c3p0:0.9.1.1" />
             <element id="library" level="project" name="Gradle: commons-httpclient:commons-httpclient:3.1" />
             <element id="library" level="project" name="Gradle: opensymphony:ognl:2.6.11" />
@@ -2057,6 +2056,7 @@
               <element id="module-output" name="domain_main" />
               <element id="dir-copy" path="$PROJECT_DIR$/domain/build/resources/main" />
             </element>
+            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/jmespath-java/1.0/a2d78b923230b22f002348640c5e38bade98afaa/jmespath-java-1.0.jar" />
           </element>
         </element>
         <element id="directory" name="META-INF">
@@ -2560,12 +2560,15 @@
     <library name="Gradle: com.amazonaws:jmespath-java:1.0">
       <CLASSES>
         <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/jmespath-java/1.0/a35e43b38e16f70bb96037981762c8a9c4337978/jmespath-java-1.0.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/jmespath-java/1.0/a2d78b923230b22f002348640c5e38bade98afaa/jmespath-java-1.0.jar!/" />
       </CLASSES>
       <JAVADOC>
         <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/jmespath-java/1.0/89c8e8b94b6582d9a16245a4026a1530096d394c/jmespath-java-1.0-javadoc.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/jmespath-java/1.0/c0f8b3574743aae759b8642525f333a7d4582d9a/jmespath-java-1.0-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
         <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/jmespath-java/1.0/858ce22f2ea9583d120ab95b5abb5db34dfd1cab/jmespath-java-1.0-sources.jar!/" />
+        <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/jmespath-java/1.0/909a2aacb0ddb1c8e43ec28c104885613de4d984/jmespath-java-1.0-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="Gradle: com.beust:jcommander:1.35">
