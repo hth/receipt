@@ -465,68 +465,70 @@ task unzip(type: Copy, dependsOn: [':web:war']) {
     into unzipDir
 }
 
-task setUpProfileForJunit(dependsOn: [':clean']) << {
-    activeProfilewarClassesDir.mkdirs()
-    activeProfilewarConfDir.mkdirs()
-    activeProfilewarFreemarkerDir.mkdirs();
+task setUpProfileForJunit(dependsOn: [':clean']) {
+    doLast {
+        activeProfilewarClassesDir.mkdirs()
+        activeProfilewarConfDir.mkdirs()
+        activeProfilewarFreemarkerDir.mkdirs();
 
-    copy {
-        from file("web/environment/$env/$env" + ".properties")
-        into activeProfilewarConfDir
-    }
-
-    copy {
-        from 'web/resources/conf/application-messages.properties'
-        from 'web/resources/conf/config.properties'
-        from 'web/resources/conf/redis.properties'
-
-        if (env == 'prod') {
-            if (passFileProd.exists()) {
-                from passwordProdFileLocation
-            } else {
-                throw new Exception("Required pass file does not exists: $passFileProd.canonicalPath")
-            }
+        copy {
+            from file("web/environment/$env/$env" + ".properties")
+            into activeProfilewarConfDir
         }
 
-        if (env == 'sandbox') {
-            if (passFileTest.exists()) {
-                from passwordTestFileLocation
-            } else {
-                throw new Exception("Required pass file does not exists: $passFileTest.canonicalPath")
+        copy {
+            from 'web/resources/conf/application-messages.properties'
+            from 'web/resources/conf/config.properties'
+            from 'web/resources/conf/redis.properties'
+
+            if (env == 'prod') {
+                if (passFileProd.exists()) {
+                    from passwordProdFileLocation
+                } else {
+                    throw new Exception("Required pass file does not exists: $passFileProd.canonicalPath")
+                }
             }
+
+            if (env == 'sandbox') {
+                if (passFileTest.exists()) {
+                    from passwordTestFileLocation
+                } else {
+                    throw new Exception("Required pass file does not exists: $passFileTest.canonicalPath")
+                }
+            }
+
+            if (env == 'dev') {
+                println "Development environment, getting local pass file $passFileLocal.canonicalPath"
+                if (passFileLocal.exists()) {
+                    from 'web/resources/conf/pass.properties'
+                } else {
+                    throw new Exception("Required pass file does not exists: $passFileLocal.canonicalPath")
+                }
+            }
+
+            into activeProfilewarConfDir
         }
 
-        if (env == 'dev') {
-            println "Development environment, getting local pass file $passFileLocal.canonicalPath"
-            if (passFileLocal.exists()) {
-                from 'web/resources/conf/pass.properties'
-            } else {
-                throw new Exception("Required pass file does not exists: $passFileLocal.canonicalPath")
-            }
+        copy {
+            from "web/environment/$env/logback.xml"
+            from 'web/resources/conf/messages.properties'
+            into activeProfilewarClassesDir
         }
 
-        into activeProfilewarConfDir
-    }
+        copy {
+            from "web/environment/$env/receipt-servlet.xml"
+            into activeProfilewarWebInfDir
+        }
 
-    copy {
-        from "web/environment/$env/logback.xml"
-        from 'web/resources/conf/messages.properties'
-        into activeProfilewarClassesDir
-    }
+        copy {
+            from "web/environment/$env/mongo-config.xml"
+            into activeProfilewarWebInfDir
+        }
 
-    copy {
-        from "web/environment/$env/receipt-servlet.xml"
-        into activeProfilewarWebInfDir
-    }
-
-    copy {
-        from "web/environment/$env/mongo-config.xml"
-        into activeProfilewarWebInfDir
-    }
-
-    copy {
-        from "web/web$freemarker"
-        into activeProfilewarFreemarkerDir
+        copy {
+            from "web/web$freemarker"
+            into activeProfilewarFreemarkerDir
+        }
     }
 }
 
@@ -590,16 +592,18 @@ javascript.source.custom.js.files.eachWithIndex { jsFile, idx ->
 
 task individualCssMinify(dependsOn: tasks.matching { Task task -> task.name.startsWith("dominifyCss") })
 task individualJsMinify(dependsOn: tasks.matching { Task task -> task.name.startsWith("dominifyJs") })
-task createBuildInfoFile << {
-    buildDir.mkdirs()
-    def buildInfoFile = new File("$buildDir/build-info.properties")
-    Properties props = new Properties();
-    props.setProperty('owner', 'Receiptofi Inc');
-    props.setProperty('copyright', 'All rights reserved');
-    props.setProperty('build.version', project.version.toString());
-    props.setProperty('build.env', "$env");
+task createBuildInfoFile {
+    doLast {
+        buildDir.mkdirs()
+        def buildInfoFile = new File("$buildDir/build-info.properties")
+        Properties props = new Properties();
+        props.setProperty('owner', 'Receiptofi Inc');
+        props.setProperty('copyright', 'All rights reserved');
+        props.setProperty('build.version', project.version.toString());
+        props.setProperty('build.env', "$env");
 
-    props.store(buildInfoFile.newWriter(), null);
+        props.store(buildInfoFile.newWriter(), null);
+    }
 }
 
 task prepWar(dependsOn: [
@@ -608,158 +612,160 @@ task prepWar(dependsOn: [
         copyJars,
         individualCssMinify,
         individualJsMinify
-]) << {
-    warClassesDir.mkdirs()
-    warConfDir.mkdirs()
-    warDkimDir.mkdirs()
+]) {
+    doLast {
+        warClassesDir.mkdirs()
+        warConfDir.mkdirs()
+        warDkimDir.mkdirs()
 
-    copy {
-        from 'web/web'
-        into warDir
-        exclude '**/*.classes'
-        exclude '**/static/css/*.css'
-        exclude 'web/web/static/js/mainpop.js', 'web/web/static/js/colpick.js'
-    }
-
-    copy {
-        from("${buildDir}/tmp/css") {
-            include "**/*.css"
+        copy {
+            from 'web/web'
+            into warDir
+            exclude '**/*.classes'
+            exclude '**/static/css/*.css'
+            exclude 'web/web/static/js/mainpop.js', 'web/web/static/js/colpick.js'
         }
-        into "${warDir}/static/css"
-    }
 
-    copy {
-        from("${buildDir}/tmp/js") {
-            include "**/*.js"
-        }
-        into "${warDir}/static/js"
-    }
-
-    copy {
-        from file("web/environment/$env/$env" + ".properties")
-        into warConfDir
-    }
-
-    copy {
-        from 'web/resources/conf/application-messages.properties'
-        from 'web/resources/conf/config.properties'
-        from 'web/resources/conf/redis.properties'
-
-        if (env == 'prod') {
-            if (passFileProd.exists()) {
-                from passwordProdFileLocation
-            } else {
-                throw new Exception("Required pass file does not exists: $passFileProd.canonicalPath")
+        copy {
+            from("${buildDir}/tmp/css") {
+                include "**/*.css"
             }
+            into "${warDir}/static/css"
         }
 
-        if (env == 'sandbox') {
-            if (passFileTest.exists()) {
-                from passwordTestFileLocation
-            } else {
-                throw new Exception("Required pass file does not exists: $passFileTest.canonicalPath")
+        copy {
+            from("${buildDir}/tmp/js") {
+                include "**/*.js"
             }
+            into "${warDir}/static/js"
         }
 
-        if (env == 'dev') {
-            println "Development environment, getting local pass file $passFileLocal.canonicalPath"
-            if (passFileLocal.exists()) {
-                from 'web/resources/conf/pass.properties'
-            } else {
-                throw new Exception("Required pass file does not exists: $passFileLocal.canonicalPath")
+        copy {
+            from file("web/environment/$env/$env" + ".properties")
+            into warConfDir
+        }
+
+        copy {
+            from 'web/resources/conf/application-messages.properties'
+            from 'web/resources/conf/config.properties'
+            from 'web/resources/conf/redis.properties'
+
+            if (env == 'prod') {
+                if (passFileProd.exists()) {
+                    from passwordProdFileLocation
+                } else {
+                    throw new Exception("Required pass file does not exists: $passFileProd.canonicalPath")
+                }
             }
-        }
 
-        into warConfDir
-    }
-
-    copy {
-        if (env == 'prod') {
-            if (apnsCertProd.exists()) {
-                from apnsCertificateProdFileLocation
-            } else {
-                throw new Exception("Required cert file does not exists: $apnsCertProd.canonicalPath")
+            if (env == 'sandbox') {
+                if (passFileTest.exists()) {
+                    from passwordTestFileLocation
+                } else {
+                    throw new Exception("Required pass file does not exists: $passFileTest.canonicalPath")
+                }
             }
-        }
 
-        if (env == 'sandbox') {
-            if (apnsCertTest.exists()) {
-                from apnsCertificateTestFileLocation
-            } else {
-                throw new Exception("Required cert file does not exists: $apnsCertTest.canonicalPath")
+            if (env == 'dev') {
+                println "Development environment, getting local pass file $passFileLocal.canonicalPath"
+                if (passFileLocal.exists()) {
+                    from 'web/resources/conf/pass.properties'
+                } else {
+                    throw new Exception("Required pass file does not exists: $passFileLocal.canonicalPath")
+                }
             }
+
+            into warConfDir
         }
 
-        if (env == 'dev') {
-            println "Development environment, getting local cert file $apnsCertLocal.canonicalPath"
-            if (apnsCertLocal.exists()) {
-                from 'web/resources/conf/aps_sandbox_credentials.p12'
-            } else {
-                throw new Exception("Required cert file does not exists: $apnsCertLocal.canonicalPath")
+        copy {
+            if (env == 'prod') {
+                if (apnsCertProd.exists()) {
+                    from apnsCertificateProdFileLocation
+                } else {
+                    throw new Exception("Required cert file does not exists: $apnsCertProd.canonicalPath")
+                }
             }
-        }
 
-        into warCertDir
-    }
-
-    copy {
-        if (env == 'prod') {
-            if (dkimCertProd.exists()) {
-                from dkimCertificateProdFileLocation
-            } else {
-                throw new Exception("Required dkim file does not exists: $dkimCertProd.canonicalPath")
+            if (env == 'sandbox') {
+                if (apnsCertTest.exists()) {
+                    from apnsCertificateTestFileLocation
+                } else {
+                    throw new Exception("Required cert file does not exists: $apnsCertTest.canonicalPath")
+                }
             }
-        }
 
-        if (env == 'sandbox') {
-            if (dkimCertTest.exists()) {
-                from dkimCertificateTestFileLocation
-            } else {
-                throw new Exception("Required dkim file does not exists: $dkimCertTest.canonicalPath")
+            if (env == 'dev') {
+                println "Development environment, getting local cert file $apnsCertLocal.canonicalPath"
+                if (apnsCertLocal.exists()) {
+                    from 'web/resources/conf/aps_sandbox_credentials.p12'
+                } else {
+                    throw new Exception("Required cert file does not exists: $apnsCertLocal.canonicalPath")
+                }
             }
+
+            into warCertDir
         }
 
-        if (env == 'dev') {
-            println "Development environment, getting local dkim file $dkimCertLocal.canonicalPath"
-            if (dkimCertLocal.exists()) {
-                from dkimCertLocal
-            } else {
-                throw new Exception("Required dkim file does not exists: $dkimCertLocal.canonicalPath")
+        copy {
+            if (env == 'prod') {
+                if (dkimCertProd.exists()) {
+                    from dkimCertificateProdFileLocation
+                } else {
+                    throw new Exception("Required dkim file does not exists: $dkimCertProd.canonicalPath")
+                }
             }
+
+            if (env == 'sandbox') {
+                if (dkimCertTest.exists()) {
+                    from dkimCertificateTestFileLocation
+                } else {
+                    throw new Exception("Required dkim file does not exists: $dkimCertTest.canonicalPath")
+                }
+            }
+
+            if (env == 'dev') {
+                println "Development environment, getting local dkim file $dkimCertLocal.canonicalPath"
+                if (dkimCertLocal.exists()) {
+                    from dkimCertLocal
+                } else {
+                    throw new Exception("Required dkim file does not exists: $dkimCertLocal.canonicalPath")
+                }
+            }
+
+            into warDkimDir
         }
 
-        into warDkimDir
-    }
+        copy {
+            from "web/environment/$env/logback.xml"
+            from 'web/resources/conf/messages.properties'
+            into warClassesDir
+        }
 
-    copy {
-        from "web/environment/$env/logback.xml"
-        from 'web/resources/conf/messages.properties'
-        into warClassesDir
-    }
+        copy {
+            from "web/environment/$env/receipt-servlet.xml"
+            into warWebInfDir
+        }
 
-    copy {
-        from "web/environment/$env/receipt-servlet.xml"
-        into warWebInfDir
-    }
+        copy {
+            from "web/environment/$env/mongo-config.xml"
+            into warWebInfDir
+        }
 
-    copy {
-        from "web/environment/$env/mongo-config.xml"
-        into warWebInfDir
-    }
+        copy {
+            from 'web/web/static/images'
+            into warWebInfClassesImagesDir
+        }
 
-    copy {
-        from 'web/web/static/images'
-        into warWebInfClassesImagesDir
-    }
+        copy {
+            from unzipLibDir
+            into warLibDir
+        }
 
-    copy {
-        from unzipLibDir
-        into warLibDir
-    }
-
-    copy {
-        from "${buildDir}/build-info.properties"
-        into warClassesDir
+        copy {
+            from "${buildDir}/build-info.properties"
+            into warClassesDir
+        }
     }
 }
 
