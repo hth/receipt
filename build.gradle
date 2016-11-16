@@ -444,7 +444,7 @@ project(':web') {
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '3.1'
+    gradleVersion = '3.2'
 }
 
 task copyJars(type: Copy) {
