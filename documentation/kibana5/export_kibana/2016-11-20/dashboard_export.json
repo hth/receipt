@@ -1,0 +1,87 @@
+[
+  {
+    "_id": "Sandbox-Dashboard",
+    "_type": "dashboard",
+    "_source": {
+      "title": "Sandbox Dashboard",
+      "hits": 0,
+      "description": "",
+      "panelsJSON": "[{\"col\":1,\"id\":\"Sandbox-Barchart\",\"panelIndex\":1,\"row\":1,\"size_x\":6,\"size_y\":5,\"type\":\"visualization\"},{\"col\":7,\"id\":\"Sandbox-Upload-Documents-Barchart\",\"panelIndex\":3,\"row\":1,\"size_x\":3,\"size_y\":5,\"type\":\"visualization\"},{\"col\":10,\"id\":\"Sandbox-Account-Validation-Email\",\"panelIndex\":4,\"row\":1,\"size_x\":3,\"size_y\":5,\"type\":\"visualization\"},{\"col\":1,\"columns\":[\"@timestamp\",\"level\",\"logger_name\",\"message\",\"X-REQUEST-ID\",\"host\"],\"id\":\"Sandbox-Search\",\"panelIndex\":2,\"row\":8,\"size_x\":12,\"size_y\":7,\"sort\":[\"@timestamp\",\"desc\"],\"type\":\"search\"},{\"id\":\"Sandbox-Search-Error\",\"type\":\"search\",\"panelIndex\":5,\"size_x\":12,\"size_y\":2,\"col\":1,\"row\":6,\"columns\":[\"@timestamp\",\"level\",\"logger_name\",\"message\",\"X-REQUEST-ID\",\"host\"],\"sort\":[\"@timestamp\",\"desc\"]}]",
+      "optionsJSON": "{\"darkTheme\":true}",
+      "uiStateJSON": "{\"P-1\":{\"vis\":{\"legendOpen\":false}},\"P-3\":{\"vis\":{\"legendOpen\":false}},\"P-4\":{\"vis\":{\"colors\":{\"Account Validation Email\":\"#508642\"},\"legendOpen\":false}}}",
+      "version": 1,
+      "timeRestore": false,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"filter\":[{\"query\":{\"query_string\":{\"analyze_wildcard\":true,\"query\":\"*\"}}}]}"
+      }
+    }
+  },
+  {
+    "_id": "Sandbox-Mobile-Dashboard",
+    "_type": "dashboard",
+    "_source": {
+      "title": "Sandbox Mobile Dashboard",
+      "hits": 0,
+      "description": "",
+      "panelsJSON": "[{\"col\":1,\"id\":\"Sandbox-Mobile-Barchart\",\"panelIndex\":1,\"row\":1,\"size_x\":8,\"size_y\":4,\"type\":\"visualization\"},{\"col\":9,\"id\":\"Sandbox-Mobile-Upload\",\"panelIndex\":3,\"row\":1,\"size_x\":4,\"size_y\":4,\"type\":\"visualization\"},{\"col\":1,\"columns\":[\"@timestamp\",\"level\",\"logger_name\",\"message\",\"X-REQUEST-ID\",\"host\"],\"id\":\"Sandbox-Mobile-Search\",\"panelIndex\":2,\"row\":7,\"size_x\":12,\"size_y\":7,\"sort\":[\"@timestamp\",\"desc\"],\"type\":\"search\"},{\"id\":\"Sandbox-Mobile-Search-Error\",\"type\":\"search\",\"panelIndex\":4,\"size_x\":12,\"size_y\":2,\"col\":1,\"row\":5,\"columns\":[\"@timestamp\",\"level\",\"logger_name\",\"message\",\"X-REQUEST-ID\",\"host\"],\"sort\":[\"@timestamp\",\"desc\"]}]",
+      "optionsJSON": "{\"darkTheme\":true}",
+      "uiStateJSON": "{\"P-1\":{\"vis\":{\"legendOpen\":false}},\"P-3\":{\"vis\":{\"colors\":{\"RECEIPT\":\"#3F6833\"},\"legendOpen\":false}}}",
+      "version": 1,
+      "timeRestore": false,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"filter\":[{\"query\":{\"query_string\":{\"analyze_wildcard\":true,\"query\":\"*\"}}}]}"
+      }
+    }
+  },
+  {
+    "_id": "Google-API",
+    "_type": "dashboard",
+    "_source": {
+      "title": "Google API",
+      "hits": 0,
+      "description": "",
+      "panelsJSON": "[{\"col\":1,\"id\":\"Google-API\",\"panelIndex\":1,\"row\":1,\"size_x\":12,\"size_y\":3,\"type\":\"visualization\"},{\"id\":\"Google-API-Search\",\"type\":\"search\",\"panelIndex\":3,\"size_x\":12,\"size_y\":11,\"col\":1,\"row\":4,\"columns\":[\"@timestamp\",\"message\",\"HOSTNAME\"],\"sort\":[\"@timestamp\",\"desc\"]}]",
+      "optionsJSON": "{\"darkTheme\":true}",
+      "uiStateJSON": "{\"P-1\":{\"vis\":{\"colors\":{\"\\\"Google GeoCodingResults API\\\"\":\"#890F02\",\"\\\"Google Place API\\\"\":\"#614D93\"},\"legendOpen\":false}}}",
+      "version": 1,
+      "timeRestore": false,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"filter\":[{\"query\":{\"query_string\":{\"analyze_wildcard\":true,\"query\":\"*\"}}}]}"
+      }
+    }
+  },
+  {
+    "_id": "ReceiptApp-Dashboard",
+    "_type": "dashboard",
+    "_source": {
+      "title": "ReceiptApp Dashboard",
+      "hits": 0,
+      "description": "",
+      "panelsJSON": "[{\"col\":1,\"id\":\"ReceiptApp-Barchart\",\"panelIndex\":1,\"row\":1,\"size_x\":6,\"size_y\":2,\"type\":\"visualization\"},{\"col\":7,\"id\":\"ReceiptApp-Upload-Documents-Barchart\",\"panelIndex\":3,\"row\":1,\"size_x\":3,\"size_y\":2,\"type\":\"visualization\"},{\"col\":10,\"id\":\"ReceiptApp-Account-Validation-Email\",\"panelIndex\":4,\"row\":1,\"size_x\":3,\"size_y\":2,\"type\":\"visualization\"},{\"col\":1,\"columns\":[\"@timestamp\",\"level\",\"logger_name\",\"message\",\"X-REQUEST-ID\",\"host\"],\"id\":\"ReceiptApp-Search-Error\",\"panelIndex\":5,\"row\":3,\"size_x\":12,\"size_y\":3,\"sort\":[\"@timestamp\",\"desc\"],\"type\":\"search\"},{\"col\":1,\"columns\":[\"@timestamp\",\"level\",\"logger_name\",\"message\",\"X-REQUEST-ID\",\"host\"],\"id\":\"ReceiptApp-Search\",\"panelIndex\":2,\"row\":6,\"size_x\":12,\"size_y\":7,\"sort\":[\"@timestamp\",\"desc\"],\"type\":\"search\"}]",
+      "optionsJSON": "{\"darkTheme\":true}",
+      "uiStateJSON": "{\"P-1\":{\"vis\":{\"legendOpen\":false}},\"P-3\":{\"spy\":{\"mode\":{\"fill\":false,\"name\":null}},\"vis\":{\"legendOpen\":false}},\"P-4\":{\"spy\":{\"mode\":{\"fill\":false,\"name\":null}},\"vis\":{\"colors\":{\"Account Validation Email\":\"#508642\"},\"legendOpen\":false}}}",
+      "version": 1,
+      "timeRestore": false,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"filter\":[{\"query\":{\"query_string\":{\"analyze_wildcard\":true,\"query\":\"*\"}}}]}"
+      }
+    }
+  },
+  {
+    "_id": "ReceiptApp-Mobile-Dashboard",
+    "_type": "dashboard",
+    "_source": {
+      "title": "ReceiptApp Mobile Dashboard",
+      "hits": 0,
+      "description": "",
+      "panelsJSON": "[{\"col\":1,\"id\":\"ReceiptApp-Mobile-Barchart\",\"panelIndex\":1,\"row\":1,\"size_x\":8,\"size_y\":3,\"type\":\"visualization\"},{\"col\":9,\"id\":\"ReceiptApp-Mobile-Upload\",\"panelIndex\":3,\"row\":1,\"size_x\":4,\"size_y\":3,\"type\":\"visualization\"},{\"id\":\"ReceiptApp-Mobile-Search-Error\",\"type\":\"search\",\"panelIndex\":4,\"size_x\":12,\"size_y\":2,\"col\":1,\"row\":4,\"columns\":[\"@timestamp\",\"level\",\"logger_name\",\"message\",\"X-REQUEST-ID\",\"host\"],\"sort\":[\"@timestamp\",\"desc\"]},{\"col\":1,\"columns\":[\"@timestamp\",\"level\",\"logger_name\",\"message\",\"X-REQUEST-ID\",\"host\"],\"id\":\"ReceiptApp-Mobile-Search\",\"panelIndex\":2,\"row\":6,\"size_x\":12,\"size_y\":12,\"sort\":[\"@timestamp\",\"desc\"],\"type\":\"search\"}]",
+      "optionsJSON": "{\"darkTheme\":true}",
+      "uiStateJSON": "{\"P-1\":{\"vis\":{\"legendOpen\":false}},\"P-3\":{\"vis\":{\"colors\":{\"RECEIPT\":\"#3F6833\"},\"legendOpen\":false}}}",
+      "version": 1,
+      "timeRestore": false,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"filter\":[{\"query\":{\"query_string\":{\"analyze_wildcard\":true,\"query\":\"*\"}}}]}"
+      }
+    }
+  }
+]
