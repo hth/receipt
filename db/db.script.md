@@ -1,3 +1,19 @@
+### Date Nov 19 2016 - Build 1964
+
+Forced update Expense Tag 
+
+    db.getCollection('EXPENSE_TAG').update(
+        {"TAG" : "HOME", "IC" : "V100"},   
+        { $set: {IC: "V101", U : new ISODate()} }, 
+        {multi: true}
+    );
+    
+    db.getCollection('EXPENSE_TAG').update(
+        {"TAG" : "BUSINESS", "IC" : "V100"},   
+        { $set: {IC: "V102", U : new ISODate()} }, 
+        {multi: true}
+    );
+
 ### Date Nov 8 20016 - Build 1946
 
 Missed changing ULE to UL for MessageDocumentEntity. There was no adverse effect.
