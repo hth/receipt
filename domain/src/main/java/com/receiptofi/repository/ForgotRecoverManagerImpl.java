@@ -59,7 +59,12 @@ public final class ForgotRecoverManagerImpl implements ForgotRecoverManager {
     @Override
     public ForgotRecoverEntity findByAuthenticationKey(String key) {
         return mongoTemplate.findOne(
-                query(where("AUTH").is(key)).addCriteria(isActive()).addCriteria(isNotDeleted()),
+                query(where("AUTH").is(key)
+                        .andOperator(
+                                isActive(),
+                                isNotDeleted()
+                        )
+                ),
                 ForgotRecoverEntity.class,
                 TABLE);
     }

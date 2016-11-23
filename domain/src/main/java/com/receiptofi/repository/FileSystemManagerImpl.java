@@ -9,6 +9,7 @@ import static org.springframework.data.mongodb.core.aggregation.Aggregation.newA
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
 import static org.springframework.data.mongodb.core.query.Update.update;
+import static org.springframework.util.Assert.isTrue;
 
 import com.receiptofi.domain.BaseEntity;
 import com.receiptofi.domain.FileSystemEntity;
@@ -143,5 +144,17 @@ public final class FileSystemManagerImpl implements FileSystemManager {
                         )).limit(1),
                 FileSystemEntity.class
         ).isEmpty();
+    }
+
+    @Override
+    public void changeFSImageOrientation(String id, int orientation, int height, int width) {
+        isTrue(height > 0, "height should not be zero");
+        isTrue(width > 0, "width should not be zero");
+        mongoTemplate.updateFirst(
+                query(where("id").is(new ObjectId(id))),
+                /* Switch height to width and width to height when changing image orientation. */
+                entityUpdate(update("ORN", orientation).set("W", height).set("H", width)),
+                FileSystemEntity.class
+        );
     }
 }
