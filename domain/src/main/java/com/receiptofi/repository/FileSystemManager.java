@@ -22,4 +22,14 @@ public interface FileSystemManager extends RepositoryManager<FileSystemEntity> {
     List<DiskUsageGrouped> diskUsage(String rid);
 
     boolean fileWithSimilarNameDoesNotExists(String rid, String originalFilename);
+
+    /**
+     * Change orientation of image.
+     *
+     * @param id
+     * @param orientation
+     * @param height
+     * @param width
+     */
+    void changeFSImageOrientation(String id, int orientation, int height, int width);
 }
