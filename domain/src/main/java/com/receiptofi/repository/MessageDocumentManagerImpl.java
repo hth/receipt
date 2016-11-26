@@ -150,14 +150,14 @@ public final class MessageDocumentManagerImpl implements MessageDocumentManager 
     }
 
     @Override
-    public WriteResult updateObject(String documentId, DocumentStatusEnum statusFind, DocumentStatusEnum statusSet) {
+    public WriteResult updateObject(String did, DocumentStatusEnum statusFind, DocumentStatusEnum statusSet) {
         mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
-        LOG.info("UpdateObject did={} docStatusFind={} docSetStatus={}", documentId, statusFind, statusSet);
+        LOG.info("UpdateObject did={} docStatusFind={} docSetStatus={}", did, statusFind, statusSet);
 
         WriteResult writeResult = mongoTemplate.updateFirst(
                 query(where("LOK").is(true)
                         .and("DS").is(statusFind)
-                        .and("DID").is(documentId)),
+                        .and("DID").is(did)),
                 entityUpdate(update("DS", statusSet).set("A", false)),
                 MessageDocumentEntity.class);
 
@@ -166,13 +166,13 @@ public final class MessageDocumentManagerImpl implements MessageDocumentManager 
     }
 
     @Override
-    public WriteResult undoUpdateObject(String documentId, boolean value, DocumentStatusEnum statusFind, DocumentStatusEnum statusSet) {
+    public WriteResult undoUpdateObject(String did, boolean value, DocumentStatusEnum statusFind, DocumentStatusEnum statusSet) {
         mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
         return mongoTemplate.updateFirst(
                 query(where("LOK").is(true)
                         .and("DS").is(statusFind)
                         .and("A").is(false)
-                        .and("DID").is(documentId)),
+                        .and("DID").is(did)),
                 entityUpdate(update("LOK", false).set("A", true).set("DS", statusSet)),
                 MessageDocumentEntity.class);
     }
@@ -183,8 +183,8 @@ public final class MessageDocumentManagerImpl implements MessageDocumentManager 
     }
 
     @Override
-    public int deleteAllForReceiptOCR(String documentId) {
-        return mongoTemplate.remove(query(where("DID").is(documentId)), MessageDocumentEntity.class).getN();
+    public int deleteAllForReceiptOCR(String did) {
+        return mongoTemplate.remove(query(where("DID").is(did)), MessageDocumentEntity.class).getN();
     }
 
     @Override

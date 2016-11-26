@@ -31,26 +31,26 @@ public interface MessageDocumentManager extends RepositoryManager<MessageDocumen
 
     List<MessageDocumentEntity> findPending(String email, String rid, DocumentStatusEnum status);
 
-    WriteResult updateObject(String documentId, DocumentStatusEnum statusFind, DocumentStatusEnum statusSet);
+    WriteResult updateObject(String did, DocumentStatusEnum statusFind, DocumentStatusEnum statusSet);
 
     /**
      * On failure the status is reverted back to PENDING. For now the record is kept locked for the same user.
      * Note: User has to complete all the messages in their queue before logging out of their shift.
      * TODO(hth) May be change the parameters in the future by dropping 'value' parameters as this is currently being defaulted as false in the query
      *
-     * @param documentId
+     * @param did
      * @param value
      * @return
      */
-    WriteResult undoUpdateObject(String documentId, boolean value, DocumentStatusEnum statusFind, DocumentStatusEnum statusSet);
+    WriteResult undoUpdateObject(String did, boolean value, DocumentStatusEnum statusFind, DocumentStatusEnum statusSet);
 
     /**
      * Delete all the messages that are associated with DocumentEntity.
      * Process will include current and previous re-check request messages for the receipt.
      *
-     * @param documentId
+     * @param did
      */
-    int deleteAllForReceiptOCR(String documentId);
+    int deleteAllForReceiptOCR(String did);
 
     /**
      * Resets document to state before assigning to technician.
