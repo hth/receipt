@@ -26,8 +26,6 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.WriteResultChecking;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -92,9 +90,9 @@ public final class ItemOCRManagerImpl implements ItemOCRManager {
     }
 
     @Override
-    public void deleteWhereReceipt(DocumentEntity receipt) {
+    public void deleteWhere(String did) {
         mongoTemplate.remove(
-                query(where("DOCUMENT.$id").is(new ObjectId(receipt.getId()))),
+                query(where("DOCUMENT.$id").is(new ObjectId(did))),
                 ItemEntityOCR.class,
                 TABLE);
     }

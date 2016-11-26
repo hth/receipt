@@ -190,7 +190,7 @@ public class ReceiptService {
             if (!StringUtils.isEmpty(receipt.getDocumentId())) {
                 DocumentEntity document = documentService.findDocumentByRid(receipt.getDocumentId(), rid);
                 if (null != document) {
-                    itemOCRManager.deleteWhereReceipt(document);
+                    itemOCRManager.deleteWhere(document.getId());
                     documentService.deleteHard(document);
                     receipt.setDocumentId(null);
                 }
@@ -285,13 +285,13 @@ public class ReceiptService {
                     receipt.inActive();
                     List<ItemEntity> items = itemService.getAllItemsOfReceipt(receipt.getId());
 
-                    DocumentEntity receiptOCR = documentService.findDocumentByRid(receipt.getDocumentId(), rid);
-                    receiptOCR.active();
-                    receiptOCR.setDocumentStatus(DocumentStatusEnum.REPROCESS);
-                    receiptOCR.setNotifyUser(false);
-                    receiptOCR.setRecheckComment(receipt.getRecheckComment());
-                    receiptOCR.setNotes(receipt.getNotes());
-                    receiptOCR.setProcessedBy(receipt.getProcessedBy());
+                    DocumentEntity document = documentService.findDocumentByRid(receipt.getDocumentId(), rid);
+                    document.active();
+                    document.setDocumentStatus(DocumentStatusEnum.REPROCESS);
+                    document.setNotifyUser(false);
+                    document.setRecheckComment(receipt.getRecheckComment());
+                    document.setNotes(receipt.getNotes());
+                    document.setProcessedBy(receipt.getProcessedBy());
 
                     /**
                      * All activity at the end is better because you never know what could go
@@ -302,10 +302,10 @@ public class ReceiptService {
                         paymentCardService.increaseUsed(receipt.getReceiptUserId(), receipt.getPaymentCard().getCardDigit());
                     }
                     receiptManager.save(receipt);
-                    documentService.save(receiptOCR);
-                    itemOCRManager.deleteWhereReceipt(receiptOCR);
+                    documentService.save(document);
+                    itemOCRManager.deleteWhere(document.getId());
 
-                    List<ItemEntityOCR> ocrItems = getItemEntityFromItemEntityOCR(items, receiptOCR);
+                    List<ItemEntityOCR> ocrItems = getItemEntityFromItemEntityOCR(items, document);
                     itemOCRManager.saveObjects(ocrItems);
                     itemService.deleteWhereReceipt(receipt);
 
@@ -316,9 +316,9 @@ public class ReceiptService {
                             NotificationGroupEnum.R,
                             receipt);
 
-                    LOG.info("DocumentEntity @Id after save: " + receiptOCR.getId());
-                    UserProfileEntity userProfile = accountService.findProfileByReceiptUserId(receiptOCR.getReceiptUserId());
-                    senderJMS.send(receiptOCR, userProfile);
+                    LOG.info("DocumentEntity @Id after save: " + document.getId());
+                    UserProfileEntity userProfile = accountService.findProfileByReceiptUserId(document.getReceiptUserId());
+                    senderJMS.send(document, userProfile);
                     return true;
                 } else {
                     LOG.error("Attempt to invoke re-check on Receipt={}, Browser Back Action performed", receipt.getId());
