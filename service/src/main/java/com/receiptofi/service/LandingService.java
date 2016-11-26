@@ -402,7 +402,7 @@ public class LandingService {
             long sizeReceiptInitial = documentManager.collectionSize();
             long sizeItemInitial = itemOCRManager.collectionSize();
             if (null != document) {
-                itemOCRManager.deleteWhereReceipt(document);
+                itemOCRManager.deleteWhere(document.getId());
                 documentManager.deleteHard(document);
             }
             long sizeReceiptFinal = documentManager.collectionSize();

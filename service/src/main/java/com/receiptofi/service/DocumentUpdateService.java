@@ -397,8 +397,8 @@ public class DocumentUpdateService {
                 LOG.info("Document saved as Rejected");
 
                 /** Modify MessageDocumentEntity to reject for removing from pending list. */
-                updateMessageWithDocumentChanges(document);
-                itemOCRManager.deleteWhereReceipt(document);
+                updateMessageWithDocumentChanges(document.getId());
+                itemOCRManager.deleteWhere(document.getId());
                 LOG.info("Deleted items from rejected document");
 
                 fileSystemService.deleteSoft(document.getFileSystemEntities(), FileTypeEnum.D);
@@ -434,13 +434,13 @@ public class DocumentUpdateService {
         }
     }
 
-    private void updateMessageWithDocumentChanges(DocumentEntity document) {
+    private void updateMessageWithDocumentChanges(String did) {
         try {
-            LOG.info("Changing rejected document from PENDING to REJECT did={}", document.getId());
-            messageDocumentManager.updateObject(document.getId(), PENDING, REJECT);
+            LOG.info("Changing rejected document from PENDING to REJECT did={}", did);
+            messageDocumentManager.updateObject(did, PENDING, REJECT);
         } catch (Exception exce) {
             LOG.error("Error updating document change", exce.getLocalizedMessage(), exce);
-            messageDocumentManager.undoUpdateObject(document.getId(), false, REJECT, PENDING);
+            messageDocumentManager.undoUpdateObject(did, false, REJECT, PENDING);
             throw exce;
         }
     }
@@ -485,7 +485,7 @@ public class DocumentUpdateService {
                 .collect(Collectors.joining(", ")) + " deleted";
 
         documentService.deleteHard(document);
-        itemOCRManager.deleteWhereReceipt(document);
+        itemOCRManager.deleteWhere(document.getId());
         messageDocumentManager.deleteAllForReceiptOCR(document.getId());
         storageManager.deleteHard(document.getFileSystemEntities());
         fileSystemService.deleteHard(document.getFileSystemEntities());
