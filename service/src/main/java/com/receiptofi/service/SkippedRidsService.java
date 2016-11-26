@@ -76,6 +76,7 @@ public class SkippedRidsService {
     }
 
     boolean hasSkippedRidsFound() {
+        LOG.info("skippedRidsFound={} redisTemplate.hasKey={}", skippedRidsFound, redisTemplate.hasKey(keySkippedRids));
         return skippedRidsFound && redisTemplate.hasKey(keySkippedRids);
     }
 
