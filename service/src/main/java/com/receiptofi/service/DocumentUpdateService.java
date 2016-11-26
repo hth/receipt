@@ -394,21 +394,28 @@ public class DocumentUpdateService {
                 document.addProcessedBy(new Date(), technicianId);
                 document.markAsDeleted();
                 documentService.save(document);
+                LOG.info("Document saved as Rejected");
 
                 /** Modify MessageDocumentEntity to reject for removing from pending list. */
                 updateMessageWithDocumentChanges(document);
                 itemOCRManager.deleteWhereReceipt(document);
+                LOG.info("Deleted items from rejected document");
 
                 fileSystemService.deleteSoft(document.getFileSystemEntities(), FileTypeEnum.D);
+                LOG.info("fileSystemService deleted");
                 storageManager.deleteSoft(document.getFileSystemEntities());
+                LOG.info("storage manager deleted");
                 GridFSDBFile gridFSDBFile = storageManager.get(document.getFileSystemEntities().iterator().next().getBlobId());
+                LOG.info("gridFSDBFile found");
                 DBObject dbObject = gridFSDBFile.getMetaData();
+                LOG.info("Got dbObject");
 
                 notificationService.addNotification(
                         getNotificationMessageForReceiptReject(dbObject, document.getDocumentRejectReason()),
                         NotificationTypeEnum.DOCUMENT_REJECTED,
                         NotificationGroupEnum.R,
                         document);
+                LOG.info("Added notification");
             } catch (Exception exce) {
                 LOG.error("Revert all the transaction for documentId={}. Rejection of a receipt failed, reason={}",
                         document.getId(), exce.getLocalizedMessage(), exce);
@@ -429,9 +436,10 @@ public class DocumentUpdateService {
 
     private void updateMessageWithDocumentChanges(DocumentEntity document) {
         try {
+            LOG.info("Changing rejected document from PENDING to REJECT did={}", document.getId());
             messageDocumentManager.updateObject(document.getId(), PENDING, REJECT);
         } catch (Exception exce) {
-            LOG.error(exce.getLocalizedMessage(), exce);
+            LOG.error("Error updating document change", exce.getLocalizedMessage(), exce);
             messageDocumentManager.undoUpdateObject(document.getId(), false, REJECT, PENDING);
             throw exce;
         }
