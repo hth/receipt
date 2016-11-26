@@ -356,12 +356,12 @@ public class DocumentUpdateService {
         }
     }
 
-    private void updateMessageManager(DocumentEntity receiptOCR, DocumentStatusEnum from, DocumentStatusEnum to) {
+    private void updateMessageManager(DocumentEntity document, DocumentStatusEnum from, DocumentStatusEnum to) {
         try {
-            messageDocumentManager.updateObject(receiptOCR.getId(), from, to);
+            messageDocumentManager.updateObject(document.getId(), from, to);
         } catch (Exception exce) {
             LOG.error(exce.getLocalizedMessage());
-            messageDocumentManager.undoUpdateObject(receiptOCR.getId(), false, to, from);
+            messageDocumentManager.undoUpdateObject(document.getId(), false, to, from);
             throw exce;
         }
     }
