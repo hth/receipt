@@ -27,8 +27,6 @@ import org.springframework.data.mongodb.core.WriteResultChecking;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.stereotype.Repository;
 
-import org.junit.Assert;
-
 import java.util.Date;
 import java.util.List;
 
@@ -155,9 +153,9 @@ public final class MessageDocumentManagerImpl implements MessageDocumentManager 
         LOG.info("UpdateObject did={} docStatusFind={} docSetStatus={}", did, statusFind, statusSet);
 
         WriteResult writeResult = mongoTemplate.updateFirst(
-                query(where("LOK").is(true)
+                query(where("DID").is(did)
                         .and("DS").is(statusFind)
-                        .and("DID").is(did)),
+                        .and("LOK").is(true)),
                 entityUpdate(update("DS", statusSet).set("A", false)),
                 MessageDocumentEntity.class);
 
@@ -169,10 +167,10 @@ public final class MessageDocumentManagerImpl implements MessageDocumentManager 
     public WriteResult undoUpdateObject(String did, boolean value, DocumentStatusEnum statusFind, DocumentStatusEnum statusSet) {
         mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
         return mongoTemplate.updateFirst(
-                query(where("LOK").is(true)
+                query(where("DID").is(did)
                         .and("DS").is(statusFind)
                         .and("A").is(false)
-                        .and("DID").is(did)),
+                        .and("LOK").is(true)),
                 entityUpdate(update("LOK", false).set("A", true).set("DS", statusSet)),
                 MessageDocumentEntity.class);
     }
@@ -205,17 +203,14 @@ public final class MessageDocumentManagerImpl implements MessageDocumentManager 
     }
 
     @Override
-    public void markMessageForReceiptAsDuplicate(String did, String email, String rid, DocumentStatusEnum documentStatus) {
-        LOG.info("Marking message as {} for did={}", documentStatus, did);
-        Assert.assertEquals("Can only set to reject", DocumentStatusEnum.REJECT, documentStatus);
+    public void lockMessageWhenDuplicate(String did, String email, String rid) {
+        LOG.info("Locking messages for did={} by rid={} email={}", did, rid, email);
         WriteResult writeResult = mongoTemplate.updateFirst(
                 query(where("DID").is(did)),
                 entityUpdate(
                         update("LOK", true)
-                            .set("DS", documentStatus)
                             .set("EM", email)
                             .set("RID", rid)
-                            .set("A", false)
                 ),
                 MessageDocumentEntity.class);
 
