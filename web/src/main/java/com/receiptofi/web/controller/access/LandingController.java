@@ -309,7 +309,7 @@ public class LandingController {
                                 image.getOriginalFileName(),
                                 rid);
 
-                        messageDocumentService.markMessageForReceiptAsDuplicate(
+                        messageDocumentService.lockMessageWhenDuplicate(
                                 document.getId(),
                                 documentRejectUserId,
                                 documentRejectRid);
