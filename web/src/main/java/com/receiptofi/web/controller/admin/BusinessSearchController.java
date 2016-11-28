@@ -9,9 +9,9 @@ import com.receiptofi.service.ExternalService;
 import com.receiptofi.service.ReceiptService;
 import com.receiptofi.utils.CommonUtil;
 import com.receiptofi.utils.ScrubbedInput;
-import com.receiptofi.web.form.BizForm;
-import com.receiptofi.web.validator.BizSearchValidator;
-import com.receiptofi.web.validator.BizValidator;
+import com.receiptofi.web.form.admin.BizForm;
+import com.receiptofi.web.validator.admin.BizSearchValidator;
+import com.receiptofi.web.validator.admin.BizValidator;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -333,13 +333,13 @@ public class BusinessSearchController {
             redirectAttrs.addFlashAttribute("result", result);
             //Re-direct to prevent resubmit
             return "redirect:" + nextPage + ".htm";
-        } else {
-            Set<BizStoreEntity> bizStores = searchBizStoreEntities(bizForm);
-            bizForm.setLast10BizStore(bizStores);
-            redirectAttrs.addFlashAttribute("bizForm", bizForm);
-            //Re-direct to prevent resubmit
-            return "redirect:" + nextPage + ".htm";
         }
+
+        Set<BizStoreEntity> bizStores = searchBizStoreEntities(bizForm);
+        bizForm.setLast10BizStore(bizStores);
+        redirectAttrs.addFlashAttribute("bizForm", bizForm);
+        //Re-direct to prevent resubmit
+        return "redirect:" + nextPage + ".htm";
     }
 
     /**

@@ -21,7 +21,7 @@
         <div class="header_wrapper">
             <div class="header_left_contentmain">
                 <div id="logo">
-                    <h1><img src="https://www.receiptofi.com/img/Receipt-26x26.png" style="margin: -3px 0;"/><a href="/access/landing.htm">Receiptofi</a></h1>
+                    <h1><img src="https://www.receiptofi.com/img/Receipt-26x26.png" style="margin: -3px 0;"/><a href="/admin/landing.htm">Receiptofi</a></h1>
                 </div>
             </div>
             <div class="header_right_login">
@@ -58,15 +58,48 @@
 <div class="main clearfix">
     <div class="rightside-title rightside-title-less-margin">
         <h1 class="rightside-title-text">
-            Admin Actions
+            User Search
         </h1>
     </div>
-    <div class="rightside-list-holder full-list-holder" style="overflow-y: hidden; height: 800px;">
-        <div class="down_form" style="width: 95%;">
-            <h2 class="h2" style="padding-bottom:5%;"><a href="/admin/userSearch.htm">User search</a></h2>
-            <h2 class="h2" style="padding-bottom:5%;"><a href="/admin/businessSearch.htm">Business search</a></h2>
-            <h2 class="h2" style="padding-bottom:5%;"><a href="/admin/feedback.htm">Feedback</a> ${countEval}</h2>
-            <h2 class="h2" style="padding-bottom:5%;"><a href="/admin/notificationSend.htm">Notification Send</a></h2>
+    <div class="rightside-list-holder full-list-holder" style="overflow-y: hidden; height: 750px;">
+        <div class="down_form" style="width: 930px;">
+            <h2 class="h2" style="padding-bottom:5px; text-decoration: underline;">Send notification message to user. This is not a Push Notification</h2>
+            <form:form method="post" modelAttribute="notificationSendForm" action="notificationSend.htm">
+
+                <c:if test="${!empty notificationSendForm.errorMessage}">
+                <div class="r-error" style="width: 98%; margin: 0 0 0 0;">
+                    <c:out value="${notificationSendForm.errorMessage}" />
+                </div>
+                </c:if>
+
+                <c:if test="${!empty notificationSendForm.successMessage}">
+                <div class="r-success" style="width: 98%; margin: 0 0 0 0;">
+                    <c:out value="${notificationSendForm.successMessage}" />
+                </div>
+                </c:if>
+
+                <spring:hasBindErrors name="notificationSendForm">
+                <div class="r-validation" style="width: 98%; margin: 0 0 0 0;">
+                    <c:if test="${errors.hasFieldErrors('rid')}">
+                        <form:errors path="rid" /><br>
+                    </c:if>
+                    <c:if test="${errors.hasFieldErrors('message')}">
+                        <form:errors path="message" /><br>
+                    </c:if>
+                </div>
+                </spring:hasBindErrors>
+
+                <div class="row_field">
+                    <label class="profile_label">RID</label>
+                    <form:input path="rid" id="rid" size="15" cssClass="name_txt" />
+                </div>
+                <div class="row_field">
+                    <label class="profile_label">Message</label>
+                    <form:input path="message" id="message" size="100" cssClass="name_txt" />
+                </div>
+
+                <input type="submit" value="Send Notification" class="gd-button" style="width: 150px; margin: 20px 5px 10px 0; float: left;" name="sendNotification" />
+            </form:form>
         </div>
     </div>
     <div class="footer-tooth clearfix">

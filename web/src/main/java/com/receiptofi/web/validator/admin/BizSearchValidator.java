@@ -1,6 +1,6 @@
-package com.receiptofi.web.validator;
+package com.receiptofi.web.validator.admin;
 
-import com.receiptofi.web.form.BizForm;
+import com.receiptofi.web.form.admin.BizForm;
 
 import org.apache.commons.lang3.StringUtils;
 
