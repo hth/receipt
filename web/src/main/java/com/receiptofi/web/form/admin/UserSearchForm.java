@@ -1,7 +1,7 @@
 /**
  *
  */
-package com.receiptofi.web.form;
+package com.receiptofi.web.form.admin;
 
 import com.receiptofi.domain.UserProfileEntity;
 

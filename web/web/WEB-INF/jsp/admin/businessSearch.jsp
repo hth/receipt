@@ -105,9 +105,9 @@
                     <form:input path="phone" id="phone" class="name_txt" cssStyle="width: 690px;"/>
                 </div>
 
-                <input type="submit" value="Search Business" class="gd-button" style="width: 150px; margin: 20px 5px 10px 0;" name="search" />
-                <input type="submit" value="Add a Store or New Business" class="gd-button" style="margin: 20px 5px 10px 0;" name="add" />
-                <input type="submit" value="Reset" class="gd-button" style="width: 130px;  margin: 20px 5px 10px 0;" name="reset" />
+                <input type="submit" value="Search Business" class="gd-button" style="width: 150px; margin: 20px 5px 10px 0; float: left;" name="search" />
+                <input type="submit" value="Add a Store or New Business" class="gd-button" style="margin: 20px 5px 10px 0; float: left;" name="add" />
+                <input type="submit" value="Reset" class="gd-button" style="width: 130px;  margin: 20px 5px 10px 0; float: left;" name="reset" />
             </form:form>
 
             <c:if test="${!empty bizForm.addedBizStore}">

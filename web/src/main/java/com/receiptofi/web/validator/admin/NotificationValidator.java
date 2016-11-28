@@ -1,6 +1,7 @@
-package com.receiptofi.web.validator;
+package com.receiptofi.web.validator.admin;
 
-import com.receiptofi.web.form.BizForm;
+import com.receiptofi.web.form.admin.BizForm;
+import com.receiptofi.web.form.admin.NotificationSendForm;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,8 +13,7 @@ import org.springframework.validation.Validator;
 
 /**
  * User: hitender
- * Date: 5/10/13
- * Time: 12:35 AM
+ * Date: 11/27/16 7:01 PM
  */
 @SuppressWarnings ({
         "PMD.BeanMembersShouldSerialize",
@@ -22,8 +22,8 @@ import org.springframework.validation.Validator;
         "PMD.LongVariable"
 })
 @Component
-public class BizValidator implements Validator {
-    private static final Logger LOG = LoggerFactory.getLogger(BizValidator.class);
+public class NotificationValidator implements Validator {
+    private static final Logger LOG = LoggerFactory.getLogger(NotificationValidator.class);
 
     @Override
     public boolean supports(Class<?> clazz) {
@@ -34,17 +34,9 @@ public class BizValidator implements Validator {
     public void validate(Object obj, Errors errors) {
         LOG.debug("Executing validation");
 
-        ValidationUtils.rejectIfEmptyOrWhitespace(
-                errors,
-                "businessName",
-                "field.required",
-                new Object[]{"Biz Name"}
-        );
-        ValidationUtils.rejectIfEmptyOrWhitespace(
-                errors,
-                "address",
-                "field.required",
-                new Object[]{"Address"}
-        );
+        NotificationSendForm notificationSendForm = (NotificationSendForm) obj;
+
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "rid", "field.required", new Object[]{"RID"});
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "message", "field.required", new Object[]{"Message"});
     }
 }

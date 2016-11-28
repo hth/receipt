@@ -2,7 +2,7 @@ package com.receiptofi.web.controller.admin;
 
 import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.service.AdminLandingService;
-import com.receiptofi.web.form.UserSearchForm;
+import com.receiptofi.web.form.admin.UserSearchForm;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

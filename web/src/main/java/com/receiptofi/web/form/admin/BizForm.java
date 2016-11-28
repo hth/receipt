@@ -1,4 +1,4 @@
-package com.receiptofi.web.form;
+package com.receiptofi.web.form.admin;
 
 import com.receiptofi.domain.BizNameEntity;
 import com.receiptofi.domain.BizStoreEntity;
