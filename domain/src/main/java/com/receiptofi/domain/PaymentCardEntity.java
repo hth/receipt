@@ -31,50 +31,81 @@ public class PaymentCardEntity extends BaseEntity {
     @Field ("RID")
     private String rid;
 
+    @Field ("NM")
+    private String cardName;
+
     @Field ("CN")
     private CardNetworkEnum cardNetwork;
 
     @Field ("CD")
     private String cardDigit;
 
+    /** External computation. */
     @Field ("LU")
     private Date lastUsed;
 
+    /** External computation. */
     @Field ("UC")
     private int usedCount;
 
-    private PaymentCardEntity(String rid, CardNetworkEnum cardNetwork, String cardDigit, Date lastUsed) {
-        this.rid = rid;
-        this.cardNetwork = cardNetwork;
-        this.cardDigit = cardDigit;
-        this.lastUsed = lastUsed;
+    /** To keep bean happy. */
+    public PaymentCardEntity() {
+        super();
     }
 
-    public static PaymentCardEntity newInstance(String rid, CardNetworkEnum cardNetwork, String cardDigit, Date lastUsed) {
-        return new PaymentCardEntity(rid, cardNetwork, cardDigit, lastUsed);
+    private PaymentCardEntity(String rid, String cardName, CardNetworkEnum cardNetwork, String cardDigit) {
+        super();
+        this.rid = rid;
+        this.cardName = cardName;
+        this.cardNetwork = cardNetwork;
+        this.cardDigit = cardDigit;
+    }
+
+    public static PaymentCardEntity newInstance(String rid, CardNetworkEnum cardNetwork, String cardDigit) {
+        return new PaymentCardEntity(rid, null, cardNetwork, cardDigit);
+    }
+
+    public static PaymentCardEntity newInstance(String rid, String cardName, CardNetworkEnum cardNetwork, String cardDigit) {
+        return new PaymentCardEntity(rid, cardName, cardNetwork, cardDigit);
     }
 
     public String getRid() {
         return rid;
     }
 
+    public String getCardName() {
+        return cardName;
+    }
+
+    public void setCardName(String cardName) {
+        this.cardName = cardName;
+    }
+
     public CardNetworkEnum getCardNetwork() {
         return cardNetwork;
+    }
+
+    public void setCardNetwork(CardNetworkEnum cardNetwork) {
+        this.cardNetwork = cardNetwork;
     }
 
     public String getCardDigit() {
         return cardDigit;
     }
 
-    public Date getLastUsed() {
-        return lastUsed;
+    public void setCardDigit(String cardDigit) {
+        this.cardDigit = cardDigit;
     }
 
-    public void setLastUsed(Date lastUsed) {
-        this.lastUsed = lastUsed;
-    }
-
-    public int getUsedCount() {
-        return usedCount;
+    @Override
+    public String toString() {
+        return "PaymentCardEntity{" +
+                "rid='" + rid + '\'' +
+                ", cardName='" + cardName + '\'' +
+                ", cardNetwork=" + cardNetwork +
+                ", cardDigit='" + cardDigit + '\'' +
+                ", lastUsed=" + lastUsed +
+                ", usedCount=" + usedCount +
+                '}';
     }
 }

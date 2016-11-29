@@ -222,8 +222,7 @@ public class ITest extends RealMongoForTests {
                 expensesService,
                 notificationService,
                 friendService,
-                splitExpensesService,
-                paymentCardService);
+                splitExpensesService);
 
         externalService = new ExternalService(properties.getProperty("google-server-api-key"));
         bizStoreManager = new BizStoreManagerImpl(getMongoTemplate());

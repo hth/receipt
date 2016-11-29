@@ -1,17 +1,11 @@
 package com.receiptofi.domain.json;
 
-import static com.receiptofi.domain.json.JsonReceipt.ISO8601_FMT;
-
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import com.receiptofi.domain.PaymentCardEntity;
-
-import org.apache.commons.lang3.time.DateFormatUtils;
-
-import java.util.TimeZone;
 
 /**
  * User: hitender
@@ -34,27 +28,35 @@ import java.util.TimeZone;
 //@JsonInclude(JsonInclude.Include.NON_NULL)
 public class JsonPaymentCard {
 
+    @JsonProperty ("id")
+    private String id;
+
+    @JsonProperty ("nm")
+    private String cardName;
+
     @JsonProperty ("cn")
     private String cardNetwork;
 
     @JsonProperty ("cd")
     private String cardDigit;
 
-    @JsonProperty ("lu")
-    private String lastUsed;
-
-    @JsonProperty ("uc")
-    private int usedCount;
-
     @JsonProperty ("a")
     private boolean active;
 
     public JsonPaymentCard(PaymentCardEntity paymentCard) {
+        this.id = paymentCard.getId();
+        this.cardName = paymentCard.getCardName();
         this.cardNetwork = paymentCard.getCardNetwork().name();
         this.cardDigit = paymentCard.getCardDigit();
-        this.lastUsed = DateFormatUtils.format(paymentCard.getLastUsed(), ISO8601_FMT, TimeZone.getTimeZone("UTC"));
-        this.usedCount = paymentCard.getUsedCount();
         this.active = paymentCard.isActive();
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getCardName() {
+        return cardName;
     }
 
     public String getCardNetwork() {
@@ -63,14 +65,6 @@ public class JsonPaymentCard {
 
     public String getCardDigit() {
         return cardDigit;
-    }
-
-    public String getLastUsed() {
-        return lastUsed;
-    }
-
-    public int getUsedCount() {
-        return usedCount;
     }
 
     public boolean isActive() {
