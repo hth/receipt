@@ -1,9 +1,7 @@
 package com.receiptofi.repository;
 
-import static com.receiptofi.repository.util.AppendAdditionalFields.entityUpdate;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
-import static org.springframework.data.mongodb.core.query.Update.update;
 
 import com.receiptofi.domain.BaseEntity;
 import com.receiptofi.domain.PaymentCardEntity;
@@ -14,10 +12,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -51,45 +47,18 @@ public class PaymentCardManagerImpl implements PaymentCardManager {
     }
 
     @Override
-    public void updateLastUsed(String rid, String cardDigit, Date lastUsed) {
-        PaymentCardEntity paymentCard = findCard(rid, cardDigit);
-
-        if (null != paymentCard && paymentCard.getLastUsed().before(lastUsed)) {
-            mongoTemplate.updateFirst(
-                    query(where("RID").is(rid).and("CD").is(cardDigit)),
-                    entityUpdate(update("LU", lastUsed).inc("UC", 1)),
-                    PaymentCardEntity.class,
-                    TABLE
-            );
-        } else {
-            increaseUsed(rid, cardDigit);
-        }
-    }
-
-    @Override
-    public void decreaseUsed(String rid, String cardDigit) {
-        mongoTemplate.updateFirst(
-                query(where("RID").is(rid).and("CD").is(cardDigit)),
-                entityUpdate(new Update().inc("UC", -1)),
-                PaymentCardEntity.class,
-                TABLE
-        );
-    }
-
-    @Override
-    public void increaseUsed(String rid, String cardDigit) {
-        mongoTemplate.updateFirst(
-                query(where("RID").is(rid).and("CD").is(cardDigit)),
-                entityUpdate(new Update().inc("UC", 1)),
-                PaymentCardEntity.class,
-                TABLE
-        );
-    }
-
-    @Override
     public List<PaymentCardEntity> getPaymentCards(String rid) {
         return mongoTemplate.find(
                 query(where("RID").is(rid)),
+                PaymentCardEntity.class,
+                TABLE
+        );
+    }
+
+    @Override
+    public PaymentCardEntity findOne(String id, String rid) {
+        return mongoTemplate.findOne(
+                query(where("id").is(id).and("RID").is(rid)),
                 PaymentCardEntity.class,
                 TABLE
         );

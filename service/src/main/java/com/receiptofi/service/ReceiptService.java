@@ -69,7 +69,6 @@ public class ReceiptService {
     private FriendService friendService;
     private SplitExpensesService splitExpensesService;
     private DocumentService documentService;
-    private PaymentCardService paymentCardService;
 
     @Autowired
     public ReceiptService(
@@ -84,8 +83,7 @@ public class ReceiptService {
             ExpensesService expensesService,
             NotificationService notificationService,
             FriendService friendService,
-            SplitExpensesService splitExpensesService,
-            PaymentCardService paymentCardService) {
+            SplitExpensesService splitExpensesService) {
         this.receiptManager = receiptManager;
         this.documentService = documentService;
         this.itemService = itemService;
@@ -98,7 +96,6 @@ public class ReceiptService {
         this.notificationService = notificationService;
         this.friendService = friendService;
         this.splitExpensesService = splitExpensesService;
-        this.paymentCardService = paymentCardService;
     }
 
     /**
@@ -196,9 +193,6 @@ public class ReceiptService {
                 }
             }
 
-            if (null != receipt.getPaymentCard()) {
-                paymentCardService.decreaseUsed(receipt.getReceiptUserId(), receipt.getPaymentCard().getCardDigit());
-            }
             receiptManager.deleteSoft(receipt);
 
             /** Added document deleted successfully. */
@@ -298,9 +292,6 @@ public class ReceiptService {
                      * wrong during populating other data.
                      */
                     receipt.setReceiptStatus(DocumentStatusEnum.REPROCESS);
-                    if (null != receipt.getPaymentCard()) {
-                        paymentCardService.increaseUsed(receipt.getReceiptUserId(), receipt.getPaymentCard().getCardDigit());
-                    }
                     receiptManager.save(receipt);
                     documentService.save(document);
                     itemOCRManager.deleteWhere(document.getId());

@@ -346,12 +346,10 @@ public class DocumentUpdateService {
                 paymentCard = PaymentCardEntity.newInstance(
                         receipt.getReceiptUserId(),
                         document.getCardNetwork(),
-                        document.getCardDigit(),
-                        receipt.getReceiptDate());
+                        document.getCardDigit());
 
                 paymentCardService.save(paymentCard);
             }
-            paymentCardService.updateLastUsed(receipt.getReceiptUserId(), paymentCard.getCardDigit(), receipt.getReceiptDate());
             receipt.setPaymentCard(paymentCard);
         }
     }

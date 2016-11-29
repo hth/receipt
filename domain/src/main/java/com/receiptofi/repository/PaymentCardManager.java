@@ -1,8 +1,8 @@
 package com.receiptofi.repository;
 
 import com.receiptofi.domain.PaymentCardEntity;
+import com.receiptofi.domain.annotation.Mobile;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -10,19 +10,11 @@ import java.util.List;
  * Date: 8/30/16 6:27 PM
  */
 public interface PaymentCardManager extends RepositoryManager<PaymentCardEntity> {
-    void updateLastUsed(String rid, String cardDigit, Date lastUsed);
-
-    /**
-     * Used when receipt is deleted.
-     *
-     * @param rid
-     * @param cardDigit
-     */
-    void decreaseUsed(String rid, String cardDigit);
-
-    void increaseUsed(String rid, String cardDigit);
 
     PaymentCardEntity findCard(String rid, String cardDigit);
+
+    @Mobile
+    PaymentCardEntity findOne(String id, String rid);
 
     List<PaymentCardEntity> getPaymentCards(String rid);
 }

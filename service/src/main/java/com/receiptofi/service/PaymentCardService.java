@@ -6,7 +6,6 @@ import com.receiptofi.repository.PaymentCardManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,18 +31,6 @@ public class PaymentCardService {
 
     public void save(PaymentCardEntity paymentCard) {
         paymentCardManager.save(paymentCard);
-    }
-
-    void updateLastUsed(String rid, String cardDigit, Date lastUsed) {
-        paymentCardManager.updateLastUsed(rid, cardDigit, lastUsed);
-    }
-
-    void increaseUsed(String rid, String cardDigit) {
-        paymentCardManager.increaseUsed(rid, cardDigit);
-    }
-
-    void decreaseUsed(String rid, String cardDigit) {
-        paymentCardManager.decreaseUsed(rid, cardDigit);
     }
 
     public PaymentCardEntity findCard(String rid, String cardDigit) {
