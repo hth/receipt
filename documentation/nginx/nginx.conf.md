@@ -367,26 +367,7 @@
                 proxy_set_header    X-Forwarded-For         $proxy_add_x_forwarded_for;
                 proxy_set_header    X-NginX-Proxy           true;
     
-                proxy_pass http://192.168.1.68:8080;
-            }
-        }
-    
-        server {
-            listen          8443 ssl;
-            server_name     focker.receiptofi.com;
-    
-            access_log  /var/logs/nginx/focker.access.log main;
-    
-            auth_basic "Receiptofi Focker authorized users";
-            auth_basic_user_file /usr/local/etc/nginx/kibana.smoker.htpasswd;
-    
-            location / {
-                proxy_pass http://192.168.1.45:5601;
-                proxy_http_version 1.1;
-                proxy_set_header Upgrade $http_upgrade;
-                proxy_set_header Connection 'upgrade';
-                proxy_set_header Host $host;
-                proxy_cache_bypass $http_upgrade;        
+                proxy_pass http://192.168.1.123:8080;
             }
         }
     
@@ -400,7 +381,7 @@
             auth_basic_user_file /usr/local/etc/nginx/kibana.smoker.htpasswd;
     
             location / {
-                proxy_pass http://192.168.1.122:5601;
+                proxy_pass http://192.168.1.123:5601;
                 proxy_http_version 1.1;
                 proxy_set_header Upgrade $http_upgrade;
                 proxy_set_header Connection 'upgrade';
