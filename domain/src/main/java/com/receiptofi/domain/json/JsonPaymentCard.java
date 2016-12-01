@@ -45,7 +45,7 @@ public class JsonPaymentCard {
 
     public JsonPaymentCard(PaymentCardEntity paymentCard) {
         this.id = paymentCard.getId();
-        this.cardName = paymentCard.getCardName();
+        this.cardName = paymentCard.getCardName() == null ? "" : paymentCard.getCardName();
         this.cardNetwork = paymentCard.getCardNetwork().name();
         this.cardDigit = paymentCard.getCardDigit();
         this.active = paymentCard.isActive();
