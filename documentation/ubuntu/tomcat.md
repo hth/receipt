@@ -1,13 +1,13 @@
 ### Tomcat 8.5.5
 Download tomcat. Copy to `/tmp`    
     
-    tar -xvf apache-tomcat-8.5.6.tar.gz &&
+    tar -xvf apache-tomcat-8.5.8.tar.gz &&
     sudo mkdir /opt/tomcat &&
-    sudo mv apache-tomcat-8.5.6 /opt/tomcat
+    sudo mv apache-tomcat-8.5.8 /opt/tomcat
     
 Link
 
-    sudo ln -snf /opt/tomcat/apache-tomcat-8.5.6 /usr/local/tomcat
+    sudo ln -snf /opt/tomcat/apache-tomcat-8.5.8 /usr/local/tomcat
     
 Log files directory 
     
@@ -78,8 +78,8 @@ Replace `$CATALINA_HOME/bin/tomcat-juli.jar` with `tomcat-juli.jar` from "extras
 Delete `$CATALINA_BASE/conf/logging.properties` to prevent `java.util.logging` generating zero length log files.
 
     cd /tmp
-    wget http://mirror.cogentco.com/pub/apache/tomcat/tomcat-8/v8.0.38/bin/extras/tomcat-juli-adapters.jar &&
-    wget http://mirror.cogentco.com/pub/apache/tomcat/tomcat-8/v8.0.38/bin/extras/tomcat-juli.jar
+    wget http://mirror.cogentco.com/pub/apache/tomcat/tomcat-8/v8.0.39/bin/extras/tomcat-juli-adapters.jar &&
+    wget http://mirror.cogentco.com/pub/apache/tomcat/tomcat-8/v8.0.39/bin/extras/tomcat-juli.jar
     
     mv tomcat-juli.jar /usr/local/tomcat/bin &&
     mv tomcat-juli-adapters.jar /usr/local/tomcat/lib &&
