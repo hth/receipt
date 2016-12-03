@@ -303,6 +303,7 @@ public class LandingController {
                     boolean duplicateFile = fileSystemService.fileWithSimilarNameDoesNotExists(rid, image.getOriginalFileName());
                     DocumentEntity document = landingService.uploadDocument(image);
 
+                    /* Even if we know its a duplicate we need to add the document to list in rejection count. */
                     if (!duplicateFile) {
                         LOG.info("{} receipt found, delete, name={} rid={}",
                                 DocumentRejectReasonEnum.D.getDescription(),
