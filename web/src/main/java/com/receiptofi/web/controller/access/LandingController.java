@@ -337,7 +337,7 @@ public class LandingController {
                                         document.getId(),
                                         rid);
                             }
-                        } while (!lockObtained || attempt < 3);
+                        } while (!lockObtained || attempt <= 3);
 
                         documentUpdateService.processDocumentForReject(
                                 documentRejectRid,
