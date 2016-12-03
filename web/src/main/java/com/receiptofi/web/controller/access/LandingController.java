@@ -302,6 +302,7 @@ public class LandingController {
                         .setFileData(multipartFile)
                         .setRid(rid);
                 try {
+                    /* Find duplicate if the similar file exists in the queue. */
                     boolean duplicateFile = fileSystemService.fileWithSimilarNameDoesNotExists(rid, image.getOriginalFileName());
                     DocumentEntity document = landingService.uploadDocument(image);
 
