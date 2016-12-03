@@ -203,7 +203,7 @@ public final class MessageDocumentManagerImpl implements MessageDocumentManager 
     }
 
     @Override
-    public void lockMessageWhenDuplicate(String did, String email, String rid) {
+    public boolean lockMessageWhenDuplicate(String did, String email, String rid) {
         LOG.info("Locking messages for did={} by rid={} email={}", did, rid, email);
         WriteResult writeResult = mongoTemplate.updateFirst(
                 query(where("DID").is(did)),
@@ -215,5 +215,6 @@ public final class MessageDocumentManagerImpl implements MessageDocumentManager 
                 MessageDocumentEntity.class);
 
         LOG.info("Update message updateOfExisting={} n={}", writeResult.isUpdateOfExisting(), writeResult.getN());
+        return writeResult.getN() > 0;
     }
 }

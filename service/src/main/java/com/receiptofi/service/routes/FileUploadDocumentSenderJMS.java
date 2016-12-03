@@ -33,8 +33,6 @@ public final class FileUploadDocumentSenderJMS {
     private String queueName;
     private JmsTemplate jmsSenderTemplate;
 
-    private FileUploadDocumentSenderJMS() {}
-
     @Autowired
     public FileUploadDocumentSenderJMS(
             @Value ("${queue-name}")

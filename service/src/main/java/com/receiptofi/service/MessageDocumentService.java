@@ -41,7 +41,7 @@ public class MessageDocumentService {
         return messageDocumentManager.deleteAllForReceiptOCR(did);
     }
 
-    public void lockMessageWhenDuplicate(String did, String emailId, String rid) {
-        messageDocumentManager.lockMessageWhenDuplicate(did, emailId, rid);
+    public boolean lockMessageWhenDuplicate(String did, String emailId, String rid) {
+        return messageDocumentManager.lockMessageWhenDuplicate(did, emailId, rid);
     }
 }
