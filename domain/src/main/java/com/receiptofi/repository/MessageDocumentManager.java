@@ -22,10 +22,9 @@ public interface MessageDocumentManager extends RepositoryManager<MessageDocumen
      * @param email
      * @param rid
      * @param status
-     * @param delay
      * @return
      */
-    List<MessageDocumentEntity> findUpdateWithLimit(String email, String rid, DocumentStatusEnum status, int delay);
+    List<MessageDocumentEntity> findUpdateWithLimit(String email, String rid, DocumentStatusEnum status);
 
     List<MessageDocumentEntity> findAllPending(Date since);
 
