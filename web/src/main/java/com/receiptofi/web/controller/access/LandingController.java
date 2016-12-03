@@ -302,6 +302,7 @@ public class LandingController {
                         .setFileData(multipartFile)
                         .setRid(rid);
                 try {
+                    /* Find duplicate if the similar file exists in the queue. */
                     boolean duplicateFile = fileSystemService.fileWithSimilarNameDoesNotExists(rid, image.getOriginalFileName());
                     DocumentEntity document = landingService.uploadDocument(image);
 
@@ -313,6 +314,7 @@ public class LandingController {
                                 rid);
 
                         boolean lockObtained;
+                        int attempt = 0;
                         do {
                             lockObtained = messageDocumentService.lockMessageWhenDuplicate(
                                     document.getId(),
@@ -320,8 +322,10 @@ public class LandingController {
                                     documentRejectRid);
 
                             if (!lockObtained) {
+                                attempt ++;
                                 /* JMS takes a while, so there is a network delay. */
-                                LOG.info("lock not obtained on {} did={} rid={}",
+                                LOG.info("lock not obtained on attempt={} {} did={} rid={}",
+                                        attempt,
                                         DocumentRejectReasonEnum.D.getDescription(),
                                         document.getId(),
                                         rid);
@@ -333,7 +337,7 @@ public class LandingController {
                                         document.getId(),
                                         rid);
                             }
-                        } while (!lockObtained);
+                        } while (!lockObtained || attempt < 3);
 
                         documentUpdateService.processDocumentForReject(
                                 documentRejectRid,
