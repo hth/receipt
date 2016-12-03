@@ -32,8 +32,6 @@ public final class FileUploadDocumentListenerJMS {
 
     private MessageDocumentManager messageDocumentManager;
 
-    private FileUploadDocumentListenerJMS() {}
-
     @Autowired
     public FileUploadDocumentListenerJMS(MessageDocumentManager messageDocumentManager) {
         this.messageDocumentManager = messageDocumentManager;

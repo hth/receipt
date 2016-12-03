@@ -66,5 +66,5 @@ public interface MessageDocumentManager extends RepositoryManager<MessageDocumen
      * @param email
      * @param rid
      */
-    void lockMessageWhenDuplicate(String did, String email, String rid);
+    boolean lockMessageWhenDuplicate(String did, String email, String rid);
 }

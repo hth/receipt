@@ -3,6 +3,8 @@
  */
 package com.receiptofi.web.controller.access;
 
+import static java.lang.Thread.sleep;
+
 import com.google.gson.JsonObject;
 
 import com.receiptofi.domain.DocumentEntity;
@@ -310,10 +312,17 @@ public class LandingController {
                                 image.getOriginalFileName(),
                                 rid);
 
-                        messageDocumentService.lockMessageWhenDuplicate(
-                                document.getId(),
-                                documentRejectUserId,
-                                documentRejectRid);
+                        boolean lockObtained;
+                        do {
+                            lockObtained = messageDocumentService.lockMessageWhenDuplicate(
+                                    document.getId(),
+                                    documentRejectUserId,
+                                    documentRejectRid);
+
+                            /* JMS takes a while, so there is a network delay. */
+                            LOG.info("lock not obtained on {} did={} rid={}", DocumentRejectReasonEnum.D.getDescription(), document.getId(), rid);
+                            sleep(100);
+                        } while(!lockObtained);
 
                         documentUpdateService.processDocumentForReject(
                                 documentRejectRid,
