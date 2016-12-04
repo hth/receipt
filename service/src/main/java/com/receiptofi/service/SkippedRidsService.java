@@ -111,7 +111,7 @@ public class SkippedRidsService {
     private Set<Long> findSkippedRids() {
         long lastGenerateUserId = generateUserIdManager.getLastGenerateUserId();
 
-        List<UserAccountEntity> userAccounts = userAccountManager.getLastSoManyRecords(lookBackUntilRid);
+        List<UserAccountEntity> userAccounts = userAccountManager.getLastSoManyRecords(lookBackUntilRid + 1);
         Set<Long> userAccountWithIds = new HashSet<>();
         for (UserAccountEntity userAccount : userAccounts) {
             userAccountWithIds.add(Long.parseLong(userAccount.getReceiptUserId()));
