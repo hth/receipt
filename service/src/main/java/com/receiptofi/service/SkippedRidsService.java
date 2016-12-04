@@ -125,9 +125,11 @@ public class SkippedRidsService {
 
         while (start < lastGenerateUserId) {
             /**
-             * Increase the count before adding as lookBackUntilRid starts with a number higher than start.
+             * Increase the count 'start' before adding as lookBackUntilRid starts with a number higher than start.
              * Semi-open group excludes starting number and includes the end number. Hence (1,4], i.e 2,3,4
              * and not 1,2,3,4.
+             *
+             * On Dec 4th 2016, changed to "open" group to exclude the last number.
              *
              * [a,b] is a "closed" group, meaning that a and b are indeed included within the group.
              * For example: the natural group [1,4] consists of 1,2,3,4.
@@ -138,8 +140,8 @@ public class SkippedRidsService {
              * Groups can also be "semi-open" (or -closed) on one side, such as the natural group [1,4),
              * which would consist of 1,2,3; or (1,4], consisting of 2,3,4.
              */
-            start++;
             skippedRids.add(start);
+            start++;
         }
         skippedRids.removeAll(userAccountWithIds);
         return skippedRids;
