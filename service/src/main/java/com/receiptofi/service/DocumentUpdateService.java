@@ -399,6 +399,8 @@ public class DocumentUpdateService {
                 itemOCRManager.deleteWhere(document.getId());
                 LOG.info("Deleted items from rejected document");
 
+                LOG.info("{}", document);
+                LOG.info("filesystemEntities={}", document.getFileSystemEntities());
                 fileSystemService.deleteSoft(document.getFileSystemEntities(), FileTypeEnum.D);
                 LOG.info("fileSystemService deleted");
                 storageManager.deleteSoft(document.getFileSystemEntities());
