@@ -61,6 +61,7 @@ public final class FileSystemManagerImpl implements FileSystemManager {
             object.setUpdated();
         }
         mongoTemplate.save(object, TABLE);
+        LOG.info("Saved FileSystemEntity id={}", object.getId());
     }
 
     @Override

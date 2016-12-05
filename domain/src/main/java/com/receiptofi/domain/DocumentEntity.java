@@ -8,6 +8,9 @@ import com.receiptofi.domain.types.DocumentOfTypeEnum;
 import com.receiptofi.domain.types.DocumentRejectReasonEnum;
 import com.receiptofi.domain.types.DocumentStatusEnum;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
@@ -36,6 +39,7 @@ import javax.validation.constraints.NotNull;
 @Document (collection = "DOCUMENT")
 @CompoundIndexes ({@CompoundIndex (name = "document_idx", def = "{'FS': 1, 'RID': 1}")})
 public class DocumentEntity extends BaseEntity {
+    private static final Logger LOG = LoggerFactory.getLogger(DocumentEntity.class);
 
     @NotNull
     @Field ("DS")
@@ -128,11 +132,12 @@ public class DocumentEntity extends BaseEntity {
         this.fileSystemEntities = fileSystemEntities;
     }
 
-    public void addReceiptBlobId(FileSystemEntity receiptBlobId) {
+    public void addReceiptBlobId(FileSystemEntity fileSystem) {
         if (null == this.fileSystemEntities) {
             this.fileSystemEntities = new ArrayList<>();
         }
-        this.fileSystemEntities.add(receiptBlobId);
+        this.fileSystemEntities.add(fileSystem);
+        LOG.info("added filesystem id={}", fileSystem);
     }
 
     public String getReceiptDate() {
