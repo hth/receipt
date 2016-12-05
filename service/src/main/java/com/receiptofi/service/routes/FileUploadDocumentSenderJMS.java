@@ -43,17 +43,17 @@ public final class FileUploadDocumentSenderJMS {
         this.jmsSenderTemplate = jmsSenderTemplate;
     }
 
-    public void send(final DocumentEntity documentEntity, final UserProfileEntity userProfile) {
+    public void send(final DocumentEntity document, final UserProfileEntity userProfile) {
         jmsSenderTemplate.send(queueName,
                 session -> {
                     MapMessage mapMessage = session.createMapMessage();
-                    mapMessage.setString("id", documentEntity.getId());
+                    mapMessage.setString("id", document.getId());
                     mapMessage.setString("level", userProfile.getLevel().name());
-                    mapMessage.setString("status", documentEntity.getDocumentStatus().name());
-                    mapMessage.setJMSTimestamp(documentEntity.getUpdated().getTime());
+                    mapMessage.setString("status", document.getDocumentStatus().name());
+                    mapMessage.setJMSTimestamp(document.getUpdated().getTime());
                     return mapMessage;
                 }
         );
-        LOG.info("Message sent ReceiptOCR={}, level={}", documentEntity.getId(), userProfile.getLevel().getDescription());
+        LOG.info("Message sent ReceiptOCR={}, level={}", document.getId(), userProfile.getLevel().getDescription());
     }
 }
