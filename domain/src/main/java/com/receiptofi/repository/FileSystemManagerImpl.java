@@ -11,6 +11,9 @@ import static org.springframework.data.mongodb.core.query.Query.query;
 import static org.springframework.data.mongodb.core.query.Update.update;
 import static org.springframework.util.Assert.isTrue;
 
+import com.mongodb.ReadPreference;
+import com.mongodb.WriteConcern;
+
 import com.receiptofi.domain.BaseEntity;
 import com.receiptofi.domain.FileSystemEntity;
 import com.receiptofi.domain.value.DiskUsageGrouped;
@@ -57,6 +60,7 @@ public final class FileSystemManagerImpl implements FileSystemManager {
 
     @Override
     public void save(FileSystemEntity object) {
+        mongoTemplate.setWriteConcern(WriteConcern.W3);
         if (object.getId() != null) {
             object.setUpdated();
         }
@@ -67,7 +71,10 @@ public final class FileSystemManagerImpl implements FileSystemManager {
     @Override
     public FileSystemEntity getById(String id) {
         Assert.hasText(id, "Id is empty");
-        return mongoTemplate.findOne(query(where("id").is(id)), FileSystemEntity.class, TABLE);
+        mongoTemplate.setReadPreference(ReadPreference.primary());
+        FileSystemEntity fileSystem = mongoTemplate.findOne(query(where("id").is(id)), FileSystemEntity.class, TABLE);
+        mongoTemplate.setReadPreference(ReadPreference.nearest());
+        return fileSystem;
     }
 
     @Override
