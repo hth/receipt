@@ -60,7 +60,10 @@ public final class FileSystemManagerImpl implements FileSystemManager {
 
     @Override
     public void save(FileSystemEntity object) {
-        mongoTemplate.setWriteConcern(WriteConcern.W3);
+        LOG.info("replica set={}", mongoTemplate.getDb().getMongo().getServerAddressList());
+        if (mongoTemplate.getDb().getMongo().getServerAddressList().size() > 1) {
+            mongoTemplate.setWriteConcern(WriteConcern.W3);
+        }
         if (object.getId() != null) {
             object.setUpdated();
         }
