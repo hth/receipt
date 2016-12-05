@@ -276,8 +276,7 @@ public class DocumentEntity extends BaseEntity {
     @Override
     public String toString() {
         return "DocumentEntity{" +
-                "id=" + id +
-                ", documentStatus=" + documentStatus +
+                "documentStatus=" + documentStatus +
                 ", fileSystemEntities=" + fileSystemEntities +
                 ", receiptDate='" + receiptDate + '\'' +
                 ", subTotal='" + subTotal + '\'' +
@@ -290,6 +289,12 @@ public class DocumentEntity extends BaseEntity {
                 ", recheckComment=" + recheckComment +
                 ", notes=" + notes +
                 ", documentOfType=" + documentOfType +
+                ", documentRejectReason=" + documentRejectReason +
+                ", imageUploadedToCloud=" + imageUploadedToCloud +
+                ", processedBy=" + processedBy +
+                ", notifyUser=" + notifyUser +
+                ", cardNetwork=" + cardNetwork +
+                ", cardDigit='" + cardDigit + '\'' +
                 '}';
     }
 }
