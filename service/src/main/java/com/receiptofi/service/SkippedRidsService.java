@@ -111,6 +111,7 @@ public class SkippedRidsService {
     private Set<Long> findSkippedRids() {
         long lastGenerateUserId = generateUserIdManager.getLastGenerateUserId();
 
+        /* On Dec 4th 2016, Added +1 as changed to "open" group to exclude the last number by including in the list. */
         List<UserAccountEntity> userAccounts = userAccountManager.getLastSoManyRecords(lookBackUntilRid + 1);
         Set<Long> userAccountWithIds = new HashSet<>();
         for (UserAccountEntity userAccount : userAccounts) {

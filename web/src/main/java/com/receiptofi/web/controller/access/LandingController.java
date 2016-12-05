@@ -313,10 +313,9 @@ public class LandingController {
                                 image.getOriginalFileName(),
                                 rid);
 
-                        boolean lockObtained;
                         int attempt = 0;
                         do {
-                            lockObtained = messageDocumentService.lockMessageWhenDuplicate(
+                            boolean lockObtained = messageDocumentService.lockMessageWhenDuplicate(
                                     document.getId(),
                                     documentRejectUserId,
                                     documentRejectRid);
@@ -332,12 +331,13 @@ public class LandingController {
 
                                 sleep(100);
                             } else {
+                                attempt = 3;
                                 LOG.info("lock on {} did={} rid={}",
                                         DocumentRejectReasonEnum.D.getDescription(),
                                         document.getId(),
                                         rid);
                             }
-                        } while (!lockObtained || attempt <= 3);
+                        } while (attempt <= 3);
 
                         documentUpdateService.processDocumentForReject(
                                 documentRejectRid,
