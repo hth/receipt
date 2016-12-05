@@ -230,6 +230,7 @@ public class ITest extends RealMongoForTests {
         inviteService = new InviteService(accountService, inviteManager, userProfileManager, userAccountManager);
         loginService = new LoginService(userAuthenticationManager, browserManager);
         browserManager = new BrowserManagerImpl(getMongoTemplate());
+        messageDocumentManager = new MessageDocumentManagerImpl(10, getMongoTemplate());
 
         mailService = new MailService(
                 properties.getProperty("dev.sent.to"),
@@ -275,7 +276,6 @@ public class ITest extends RealMongoForTests {
 
         paymentCardManager = new PaymentCardManagerImpl(getMongoTemplate());
         paymentCardService = new PaymentCardService(paymentCardManager);
-        messageDocumentManager = new MessageDocumentManagerImpl(10, getMongoTemplate());
         documentUpdateService = new DocumentUpdateService(
                 documentService,
                 itemOCRManager,
