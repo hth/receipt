@@ -24,6 +24,7 @@ public interface DocumentManager extends RepositoryManager<DocumentEntity> {
 
     /**
      * Mostly used by technician and above level.
+     * Read Preference is set to primary.
      *
      * @param documentId
      * @return
