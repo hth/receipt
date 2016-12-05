@@ -282,6 +282,7 @@ public class FileSystemEntity extends BaseEntity {
     @Override
     public String toString() {
         return "FileSystemEntity{" +
+                "id='" + id + '\'' +
                 "rid='" + rid + '\'' +
                 ", blobId='" + blobId + '\'' +
                 ", originalFilename='" + originalFilename + '\'' +

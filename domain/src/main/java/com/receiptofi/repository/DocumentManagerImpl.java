@@ -76,10 +76,12 @@ public final class DocumentManagerImpl implements DocumentManager {
             // Save will always try to update or create new record.
             // mongoTemplate.insert(object, TABLE);
 
-            if (object.getId() != null) {
+            if (object.getId() == null) {
+                mongoTemplate.insert(object, TABLE);
+            } else {
                 object.setUpdated();
+                mongoTemplate.save(object, TABLE);
             }
-            mongoTemplate.save(object, TABLE);
         } catch (DataIntegrityViolationException e) {
             LOG.error("Duplicate record entry for DocumentEntity={}", e);
             throw new RuntimeException(e.getMessage());
