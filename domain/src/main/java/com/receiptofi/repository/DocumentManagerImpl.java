@@ -12,6 +12,8 @@ import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
 import static org.springframework.data.mongodb.core.query.Update.update;
 
+import com.mongodb.ReadPreference;
+
 import com.receiptofi.domain.BaseEntity;
 import com.receiptofi.domain.DocumentEntity;
 import com.receiptofi.domain.types.DocumentStatusEnum;
@@ -96,11 +98,14 @@ public final class DocumentManagerImpl implements DocumentManager {
     @Override
     public DocumentEntity findActiveOne(String id) {
         Assert.hasText(id, "Id is empty");
-        return mongoTemplate.findOne(
+        mongoTemplate.setReadPreference(ReadPreference.primary());
+        DocumentEntity document = mongoTemplate.findOne(
                 query(where("id").is(id).andOperator(isActive())),
                 DocumentEntity.class,
                 TABLE
         );
+        mongoTemplate.setReadPreference(ReadPreference.nearest());
+        return document;
     }
 
     @Override
