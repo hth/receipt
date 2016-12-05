@@ -268,13 +268,12 @@ public class ITest extends RealMongoForTests {
                 bizStoreManager,
                 userProfileManager,
                 fileDBService,
-                senderJMS,
                 itemService,
                 notificationService,
                 fileSystemService,
                 imageSplitService,
-                receiptParserService
-        );
+                receiptParserService,
+                messageDocumentManager);
 
         paymentCardManager = new PaymentCardManagerImpl(getMongoTemplate());
         paymentCardService = new PaymentCardService(paymentCardManager);

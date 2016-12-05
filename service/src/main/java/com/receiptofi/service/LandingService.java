@@ -6,6 +6,7 @@ import com.receiptofi.domain.DocumentEntity;
 import com.receiptofi.domain.FileSystemEntity;
 import com.receiptofi.domain.ItemEntity;
 import com.receiptofi.domain.ItemEntityOCR;
+import com.receiptofi.domain.MessageDocumentEntity;
 import com.receiptofi.domain.ReceiptEntity;
 import com.receiptofi.domain.UserProfileEntity;
 import com.receiptofi.domain.shared.UploadDocumentImage;
@@ -20,9 +21,9 @@ import com.receiptofi.repository.BizNameManager;
 import com.receiptofi.repository.BizStoreManager;
 import com.receiptofi.repository.DocumentManager;
 import com.receiptofi.repository.ItemOCRManager;
+import com.receiptofi.repository.MessageDocumentManager;
 import com.receiptofi.repository.ReceiptManager;
 import com.receiptofi.repository.UserProfileManager;
-import com.receiptofi.service.routes.FileUploadDocumentSenderJMS;
 import com.receiptofi.service.wrapper.ThisYearExpenseByTag;
 import com.receiptofi.utils.DateUtil;
 import com.receiptofi.utils.FileUtil;
@@ -73,12 +74,12 @@ public class LandingService {
     private BizStoreManager bizStoreManager;
     private UserProfileManager userProfileManager;
     private FileDBService fileDBService;
-    private FileUploadDocumentSenderJMS senderJMS;
     private ItemService itemService;
     private NotificationService notificationService;
     private FileSystemService fileSystemService;
     private ImageSplitService imageSplitService;
     private ReceiptParserService receiptParserService;
+    private MessageDocumentManager messageDocumentManager;
 
     @Autowired
     public LandingService(
@@ -89,12 +90,12 @@ public class LandingService {
             BizStoreManager bizStoreManager,
             UserProfileManager userProfileManager,
             FileDBService fileDBService,
-            FileUploadDocumentSenderJMS senderJMS,
             ItemService itemService,
             NotificationService notificationService,
             FileSystemService fileSystemService,
             ImageSplitService imageSplitService,
-            ReceiptParserService receiptParserService) {
+            ReceiptParserService receiptParserService,
+            MessageDocumentManager messageDocumentManager) {
         this.receiptManager = receiptManager;
         this.documentManager = documentManager;
         this.itemOCRManager = itemOCRManager;
@@ -102,12 +103,12 @@ public class LandingService {
         this.bizStoreManager = bizStoreManager;
         this.userProfileManager = userProfileManager;
         this.fileDBService = fileDBService;
-        this.senderJMS = senderJMS;
         this.itemService = itemService;
         this.notificationService = notificationService;
         this.fileSystemService = fileSystemService;
         this.imageSplitService = imageSplitService;
         this.receiptParserService = receiptParserService;
+        this.messageDocumentManager = messageDocumentManager;
     }
 
     public long pendingReceipt(String rid) {
@@ -382,7 +383,11 @@ public class LandingService {
 
             LOG.info("Upload complete document={} rid={}", document.getId(), document.getReceiptUserId());
             UserProfileEntity userProfile = userProfileManager.findByReceiptUserId(document.getReceiptUserId());
-            senderJMS.send(document, userProfile);
+
+            /* Add to Message document. */
+            MessageDocumentEntity messageDocument = MessageDocumentEntity.newInstance(document.getId(), userProfile.getLevel(), document.getDocumentStatus());
+            messageDocumentManager.save(messageDocument);
+
             return document;
         } catch (Exception exce) {
             LOG.error("Exception occurred during saving receipt={}", exce.getLocalizedMessage(), exce);

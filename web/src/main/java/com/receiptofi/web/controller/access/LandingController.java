@@ -321,11 +321,11 @@ public class LandingController {
                                     documentRejectRid);
 
                             if (lockObtained) {
-                                attempt = 4;
                                 LOG.info("lock on {} did={} rid={}",
                                         DocumentRejectReasonEnum.D.getDescription(),
                                         document.getId(),
                                         rid);
+                                break;
                             } else {
                                 attempt ++;
                                 /* JMS takes a while, so there is a network delay. */
@@ -335,7 +335,7 @@ public class LandingController {
                                         document.getId(),
                                         rid);
 
-                                sleep(150);
+                                sleep(50 * attempt);
                             }
                         } while (attempt <= 3);
 
