@@ -12,6 +12,8 @@ import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
 import static org.springframework.data.mongodb.core.query.Update.update;
 
+import com.mongodb.ReadPreference;
+
 import com.receiptofi.domain.BaseEntity;
 import com.receiptofi.domain.DocumentEntity;
 import com.receiptofi.domain.types.DocumentStatusEnum;
@@ -93,14 +95,27 @@ public final class DocumentManagerImpl implements DocumentManager {
         );
     }
 
+    /**
+     * Under replica mode, read from primary.
+     *
+     * @param id
+     * @return
+     */
     @Override
     public DocumentEntity findActiveOne(String id) {
         Assert.hasText(id, "Id is empty");
-        return mongoTemplate.findOne(
+        /*
+        * Force read from primary as secondary might not have been updated. Duplicate auto reject fails as document
+        * might not have been propagated to replica set.
+        */
+        mongoTemplate.setReadPreference(ReadPreference.primary());
+        DocumentEntity document = mongoTemplate.findOne(
                 query(where("id").is(id).andOperator(isActive())),
                 DocumentEntity.class,
                 TABLE
         );
+        mongoTemplate.setReadPreference(ReadPreference.nearest());
+        return document;
     }
 
     @Override
@@ -172,11 +187,11 @@ public final class DocumentManagerImpl implements DocumentManager {
     public List<DocumentEntity> getAllRejected(int purgeRejectedDocumentAfterDay) {
         return mongoTemplate.find(
                 query(where("DS").is(DocumentStatusEnum.REJECT)
-                                .and("U").lte(DateTime.now().minusDays(purgeRejectedDocumentAfterDay))
-                                .andOperator(
-                                        isNotActive(),
-                                        isDeleted()
-                                )
+                        .and("U").lte(DateTime.now().minusDays(purgeRejectedDocumentAfterDay))
+                        .andOperator(
+                                isNotActive(),
+                                isDeleted()
+                        )
                 ),
                 DocumentEntity.class,
                 TABLE

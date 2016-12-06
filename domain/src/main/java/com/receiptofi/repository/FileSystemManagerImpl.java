@@ -57,14 +57,17 @@ public final class FileSystemManagerImpl implements FileSystemManager {
         this.mongoTemplate = mongoTemplate;
     }
 
+    /**
+     * Under replica mode, awaits acknowledgement from three replica set.
+     * @param object
+     */
     @Override
     public void save(FileSystemEntity object) {
         if (mongoTemplate.getDb().getMongo().getServerAddressList().size() > 1) {
-            /*
-             * Under replica, add at least acknowledgement from three members. As
+            /**
+             * Under replica add at least acknowledgement from three members. As
              * there are issues when trying to access filesystem in document after
-             * writing to mongo when WriteConcern is not set to three in replica set.
-             * This prevents lag in accessing data from secondary as it forces acknowledgment.
+             * writing to mongo. This prevents lag when accessing data from secondary.
              */
             mongoTemplate.setWriteConcern(WriteConcern.W3);
         }
