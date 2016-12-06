@@ -9,11 +9,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.connection.RedisConnection;
-import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import javax.jms.JMSException;
 
 /**
  * Checks if all vital setup are running before starting server.
@@ -33,26 +31,13 @@ public class ReceiptofiInitializationCheckBean {
     @Value ("${expensofiReportLocation}")
     private String expensofiReportLocation;
 
-    private JmsTemplate jmsSenderTemplate;
     private RedisCacheConfig redisCacheConfig;
     private FtpService ftpService;
 
     @Autowired
-    public ReceiptofiInitializationCheckBean(JmsTemplate jmsSenderTemplate, RedisCacheConfig redisCacheConfig, FtpService ftpService) {
-        this.jmsSenderTemplate = jmsSenderTemplate;
+    public ReceiptofiInitializationCheckBean(RedisCacheConfig redisCacheConfig, FtpService ftpService) {
         this.redisCacheConfig = redisCacheConfig;
         this.ftpService = ftpService;
-    }
-
-    @PostConstruct
-    public void checkActiveMQ() {
-        try {
-            jmsSenderTemplate.getConnectionFactory().createConnection();
-            LOG.info("ActiveMQ messaging is running");
-        } catch (JMSException e) {
-            LOG.error("ActiveMQ messaging is unavailable reason={}", e.getLocalizedMessage(), e);
-            throw new RuntimeException(e.getMessage(), e);
-        }
     }
 
     @PostConstruct
