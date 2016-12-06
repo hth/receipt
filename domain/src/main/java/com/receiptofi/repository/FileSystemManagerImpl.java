@@ -60,15 +60,19 @@ public final class FileSystemManagerImpl implements FileSystemManager {
 
     @Override
     public void save(FileSystemEntity object) {
-        LOG.info("replica set={}", mongoTemplate.getDb().getMongo().getServerAddressList());
         if (mongoTemplate.getDb().getMongo().getServerAddressList().size() > 1) {
+            /**
+             * Under replica add at least acknowledgement from three members. As
+             * there are issues when trying to access filesystem in document after
+             * writing to mongo. This prevents lag in accessing data.
+             */
             mongoTemplate.setWriteConcern(WriteConcern.W3);
         }
         if (object.getId() != null) {
             object.setUpdated();
         }
         mongoTemplate.save(object, TABLE);
-        LOG.info("Saved FileSystemEntity id={}", object.getId());
+        LOG.debug("Saved FileSystemEntity id={}", object.getId());
     }
 
     @Override

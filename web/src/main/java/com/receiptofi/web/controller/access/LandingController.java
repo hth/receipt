@@ -3,8 +3,6 @@
  */
 package com.receiptofi.web.controller.access;
 
-import static java.lang.Thread.sleep;
-
 import com.google.gson.JsonObject;
 
 import com.receiptofi.domain.DocumentEntity;
@@ -313,31 +311,10 @@ public class LandingController {
                                 image.getOriginalFileName(),
                                 rid);
 
-                        int attempt = 0;
-                        do {
-                            boolean lockObtained = messageDocumentService.lockMessageWhenDuplicate(
-                                    document.getId(),
-                                    documentRejectUserId,
-                                    documentRejectRid);
-
-                            if (lockObtained) {
-                                LOG.info("lock on {} did={} rid={}",
-                                        DocumentRejectReasonEnum.D.getDescription(),
-                                        document.getId(),
-                                        rid);
-                                break;
-                            } else {
-                                attempt ++;
-                                /* JMS takes a while, so there is a network delay. */
-                                LOG.info("lock not obtained on attempt={} {} did={} rid={}",
-                                        attempt,
-                                        DocumentRejectReasonEnum.D.getDescription(),
-                                        document.getId(),
-                                        rid);
-
-                                sleep(50 * attempt);
-                            }
-                        } while (attempt <= 3);
+                        messageDocumentService.lockMessageWhenDuplicate(
+                                document.getId(),
+                                documentRejectUserId,
+                                documentRejectRid);
 
                         documentUpdateService.processDocumentForReject(
                                 documentRejectRid,
