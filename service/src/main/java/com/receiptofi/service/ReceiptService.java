@@ -7,6 +7,7 @@ import com.receiptofi.domain.DocumentEntity;
 import com.receiptofi.domain.ExpenseTagEntity;
 import com.receiptofi.domain.ItemEntity;
 import com.receiptofi.domain.ItemEntityOCR;
+import com.receiptofi.domain.MessageDocumentEntity;
 import com.receiptofi.domain.ReceiptEntity;
 import com.receiptofi.domain.SplitExpensesEntity;
 import com.receiptofi.domain.UserAccountEntity;
@@ -19,8 +20,8 @@ import com.receiptofi.domain.types.NotificationGroupEnum;
 import com.receiptofi.domain.types.NotificationTypeEnum;
 import com.receiptofi.domain.types.SplitActionEnum;
 import com.receiptofi.repository.ItemOCRManager;
+import com.receiptofi.repository.MessageDocumentManager;
 import com.receiptofi.repository.ReceiptManager;
-import com.receiptofi.service.routes.FileUploadDocumentSenderJMS;
 import com.receiptofi.utils.CommonUtil;
 import com.receiptofi.utils.Maths;
 
@@ -61,7 +62,6 @@ public class ReceiptService {
     private ItemService itemService;
     private ItemOCRManager itemOCRManager;
     private AccountService accountService;
-    private FileUploadDocumentSenderJMS senderJMS;
     private CommentService commentService;
     private FileSystemService fileSystemService;
     private ExpensesService expensesService;
@@ -69,6 +69,7 @@ public class ReceiptService {
     private FriendService friendService;
     private SplitExpensesService splitExpensesService;
     private DocumentService documentService;
+    private MessageDocumentManager messageDocumentManager;
 
     @Autowired
     public ReceiptService(
@@ -77,25 +78,25 @@ public class ReceiptService {
             ItemService itemService,
             ItemOCRManager itemOCRManager,
             AccountService accountService,
-            FileUploadDocumentSenderJMS senderJMS,
             CommentService commentService,
             FileSystemService fileSystemService,
             ExpensesService expensesService,
             NotificationService notificationService,
             FriendService friendService,
-            SplitExpensesService splitExpensesService) {
+            SplitExpensesService splitExpensesService,
+            MessageDocumentManager messageDocumentManager) {
         this.receiptManager = receiptManager;
         this.documentService = documentService;
         this.itemService = itemService;
         this.itemOCRManager = itemOCRManager;
         this.accountService = accountService;
-        this.senderJMS = senderJMS;
         this.commentService = commentService;
         this.fileSystemService = fileSystemService;
         this.expensesService = expensesService;
         this.notificationService = notificationService;
         this.friendService = friendService;
         this.splitExpensesService = splitExpensesService;
+        this.messageDocumentManager = messageDocumentManager;
     }
 
     /**
@@ -309,7 +310,10 @@ public class ReceiptService {
 
                     LOG.info("DocumentEntity @Id after save: " + document.getId());
                     UserProfileEntity userProfile = accountService.findProfileByReceiptUserId(document.getReceiptUserId());
-                    senderJMS.send(document, userProfile);
+
+                    /* Add to Message document. */
+                    MessageDocumentEntity messageDocument = MessageDocumentEntity.newInstance(document.getId(), userProfile.getLevel(), document.getDocumentStatus());
+                    messageDocumentManager.save(messageDocument);
                     return true;
                 } else {
                     LOG.error("Attempt to invoke re-check on Receipt={}, Browser Back Action performed", receipt.getId());

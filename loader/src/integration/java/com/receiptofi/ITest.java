@@ -11,7 +11,6 @@ import com.receiptofi.domain.types.CommentTypeEnum;
 import com.receiptofi.domain.types.FileTypeEnum;
 import com.receiptofi.repository.*;
 import com.receiptofi.service.*;
-import com.receiptofi.service.routes.FileUploadDocumentSenderJMS;
 
 import org.apache.commons.io.IOUtils;
 
@@ -51,7 +50,6 @@ public class ITest extends RealMongoForTests {
     public ItemService itemService;
     public ItemOCRManager itemOCRManager;
     public AccountService accountService;
-    public FileUploadDocumentSenderJMS senderJMS;
     public CommentService commentService;
     public FileSystemService fileSystemService;
     public CloudFileManager cloudFileManager;
@@ -197,8 +195,6 @@ public class ITest extends RealMongoForTests {
                 notificationService,
                 inviteManager);
 
-        senderJMS = new FileUploadDocumentSenderJMS(properties.getProperty("queue-name"), jmsTemplate);
-
         commentManager = new CommentManagerImpl(getMongoTemplate());
         commentService = new CommentService(commentManager);
         fileSystemService = new FileSystemService(fileSystemManager, cloudFileService);
@@ -216,13 +212,13 @@ public class ITest extends RealMongoForTests {
                 itemService,
                 itemOCRManager,
                 accountService,
-                senderJMS,
                 commentService,
                 fileSystemService,
                 expensesService,
                 notificationService,
                 friendService,
-                splitExpensesService);
+                splitExpensesService,
+                messageDocumentManager);
 
         externalService = new ExternalService(properties.getProperty("google-server-api-key"));
         bizStoreManager = new BizStoreManagerImpl(getMongoTemplate());
