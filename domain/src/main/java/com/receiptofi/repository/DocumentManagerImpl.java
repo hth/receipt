@@ -95,9 +95,19 @@ public final class DocumentManagerImpl implements DocumentManager {
         );
     }
 
+    /**
+     * Under replica mode, read from primary.
+     *
+     * @param id
+     * @return
+     */
     @Override
     public DocumentEntity findActiveOne(String id) {
         Assert.hasText(id, "Id is empty");
+        /*
+        * Force read from primary as secondary might not have been updated. Duplicate auto reject fails as document
+        * might not have been propagated to replica set.
+        */
         mongoTemplate.setReadPreference(ReadPreference.primary());
         DocumentEntity document = mongoTemplate.findOne(
                 query(where("id").is(id).andOperator(isActive())),
@@ -177,11 +187,11 @@ public final class DocumentManagerImpl implements DocumentManager {
     public List<DocumentEntity> getAllRejected(int purgeRejectedDocumentAfterDay) {
         return mongoTemplate.find(
                 query(where("DS").is(DocumentStatusEnum.REJECT)
-                                .and("U").lte(DateTime.now().minusDays(purgeRejectedDocumentAfterDay))
-                                .andOperator(
-                                        isNotActive(),
-                                        isDeleted()
-                                )
+                        .and("U").lte(DateTime.now().minusDays(purgeRejectedDocumentAfterDay))
+                        .andOperator(
+                                isNotActive(),
+                                isDeleted()
+                        )
                 ),
                 DocumentEntity.class,
                 TABLE
