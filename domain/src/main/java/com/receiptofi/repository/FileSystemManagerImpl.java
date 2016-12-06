@@ -11,7 +11,6 @@ import static org.springframework.data.mongodb.core.query.Query.query;
 import static org.springframework.data.mongodb.core.query.Update.update;
 import static org.springframework.util.Assert.isTrue;
 
-import com.mongodb.ReadPreference;
 import com.mongodb.WriteConcern;
 
 import com.receiptofi.domain.BaseEntity;
@@ -61,10 +60,11 @@ public final class FileSystemManagerImpl implements FileSystemManager {
     @Override
     public void save(FileSystemEntity object) {
         if (mongoTemplate.getDb().getMongo().getServerAddressList().size() > 1) {
-            /**
-             * Under replica add at least acknowledgement from three members. As
+            /*
+             * Under replica, add at least acknowledgement from three members. As
              * there are issues when trying to access filesystem in document after
-             * writing to mongo. This prevents lag in accessing data.
+             * writing to mongo when WriteConcern is not set to three in replica set.
+             * This prevents lag in accessing data from secondary as it forces acknowledgment.
              */
             mongoTemplate.setWriteConcern(WriteConcern.W3);
         }
@@ -78,10 +78,7 @@ public final class FileSystemManagerImpl implements FileSystemManager {
     @Override
     public FileSystemEntity getById(String id) {
         Assert.hasText(id, "Id is empty");
-        mongoTemplate.setReadPreference(ReadPreference.primary());
-        FileSystemEntity fileSystem = mongoTemplate.findOne(query(where("id").is(id)), FileSystemEntity.class, TABLE);
-        mongoTemplate.setReadPreference(ReadPreference.nearest());
-        return fileSystem;
+        return mongoTemplate.findOne(query(where("id").is(id)), FileSystemEntity.class, TABLE);
     }
 
     @Override
