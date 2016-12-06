@@ -1,4 +1,16 @@
 ### Date Nov 19 2016 - Build 1964
+Changed index for
+ 
+    ForgotRecover
+    Friend
+    Invite
+    
+Added index for
+ 
+    UserPreference
+
+
+### Date Nov 19 2016 - Build 1964
 
 Forced update Expense Tag 
 
