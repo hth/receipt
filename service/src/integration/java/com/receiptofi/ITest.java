@@ -203,6 +203,7 @@ public class ITest extends RealMongoForTests {
 
         splitExpenseManager = new SplitExpensesManagerImpl(getMongoTemplate());
         splitExpensesService = new SplitExpensesService(splitExpenseManager, userProfilePreferenceService);
+        messageDocumentManager = new MessageDocumentManagerImpl(10, getMongoTemplate());
 
         receiptService = new ReceiptService(
                 receiptManager,
@@ -226,7 +227,6 @@ public class ITest extends RealMongoForTests {
         inviteService = new InviteService(accountService, inviteManager, userProfileManager, userAccountManager);
         loginService = new LoginService(userAuthenticationManager, browserManager);
         browserManager = new BrowserManagerImpl(getMongoTemplate());
-        messageDocumentManager = new MessageDocumentManagerImpl(10, getMongoTemplate());
 
         mailService = new MailService(
                 properties.getProperty("dev.sent.to"),
