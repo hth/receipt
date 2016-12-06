@@ -3,6 +3,8 @@
  */
 package com.receiptofi.domain;
 
+import org.springframework.data.mongodb.core.index.CompoundIndex;
+import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -21,6 +23,9 @@ import javax.validation.constraints.NotNull;
         "PMD.LongVariable"
 })
 @Document (collection = "USER_PREFERENCE")
+@CompoundIndexes ({
+        @CompoundIndex (name = "user_preference_idx", def = "{'RID': 1}", unique = true)
+})
 public class UserPreferenceEntity extends BaseEntity {
 
     @NotNull

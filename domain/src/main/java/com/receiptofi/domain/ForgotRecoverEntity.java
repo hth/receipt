@@ -20,7 +20,7 @@ import javax.validation.constraints.NotNull;
 })
 @Document (collection = "FORGOT_RECOVER")
 @CompoundIndexes (value = {
-        @CompoundIndex (name = "forgot_recover_idx", def = "{'RID': 0, 'AUTH' : 0}", unique = true)
+        @CompoundIndex (name = "forgot_recover_idx", def = "{'RID': -1, 'AUTH' : -1}", unique = true)
 })
 public class ForgotRecoverEntity extends BaseEntity {
 
