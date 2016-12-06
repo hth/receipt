@@ -35,15 +35,15 @@ ext {
     unzipDir = file("${buildDir}/unpacked/dist")
     unzipLibDir = file("$unzipDir$lib")
 
-    passFileLocal = file('web/resources/conf/pass.properties')
+    passFileLocal = file('view/resources/conf/pass.properties')
     passFileTest = file(passwordTestFileLocation)
     passFileProd = file(passwordProdFileLocation)
 
-    apnsCertLocal = file('web/resources/cert/aps_sandbox_credentials.p12')
+    apnsCertLocal = file('view/resources/cert/aps_sandbox_credentials.p12')
     apnsCertTest = file(apnsCertificateTestFileLocation)
     apnsCertProd = file(apnsCertificateProdFileLocation)
 
-    dkimCertLocal = file('web/resources/dkim/dkim.der')
+    dkimCertLocal = file('view/resources/dkim/dkim.der')
     dkimCertTest = file(dkimCertificateTestFileLocation)
     dkimCertProd = file(dkimCertificateProdFileLocation)
 
@@ -425,10 +425,10 @@ project(':social') {
     }
 }
 
-project(':web') {
+project(':view') {
     apply plugin: 'war'
-    jar.baseName = baseName + '-web'
-    war.baseName = baseName + '-web'
+    jar.baseName = baseName + '-view'
+    war.baseName = baseName + '-view'
 
     repositories {
         mavenCentral()
@@ -452,13 +452,13 @@ task copyJars(type: Copy) {
     from 'security/build/libs'
     from 'service/build/libs'
     from 'social/build/libs'
-    from 'web/build/libs'
+    from 'view/build/libs'
     into warLibDir
     include '**/*.jar'
 }
 
-task unzip(type: Copy, dependsOn: [':web:war']) {
-    def zipFile = file("web/build/libs/$baseName" + '-web-' + version + '.war')
+task unzip(type: Copy, dependsOn: [':view:war']) {
+    def zipFile = file("view/build/libs/$baseName" + '-view-' + version + '.war')
 
     from zipTree(zipFile)
     into unzipDir
@@ -471,14 +471,14 @@ task setUpProfileForJunit(dependsOn: [':clean']) {
         activeProfilewarFreemarkerDir.mkdirs();
 
         copy {
-            from file("web/environment/$env/$env" + ".properties")
+            from file("view/environment/$env/$env" + ".properties")
             into activeProfilewarConfDir
         }
 
         copy {
-            from 'web/resources/conf/application-messages.properties'
-            from 'web/resources/conf/config.properties'
-            from 'web/resources/conf/redis.properties'
+            from 'view/resources/conf/application-messages.properties'
+            from 'view/resources/conf/config.properties'
+            from 'view/resources/conf/redis.properties'
 
             if (env == 'prod') {
                 if (passFileProd.exists()) {
@@ -499,7 +499,7 @@ task setUpProfileForJunit(dependsOn: [':clean']) {
             if (env == 'dev') {
                 println "Development environment, getting local pass file $passFileLocal.canonicalPath"
                 if (passFileLocal.exists()) {
-                    from 'web/resources/conf/pass.properties'
+                    from 'view/resources/conf/pass.properties'
                 } else {
                     throw new Exception("Required pass file does not exists: $passFileLocal.canonicalPath")
                 }
@@ -509,23 +509,23 @@ task setUpProfileForJunit(dependsOn: [':clean']) {
         }
 
         copy {
-            from "web/environment/$env/logback.xml"
-            from 'web/resources/conf/messages.properties'
+            from "view/environment/$env/logback.xml"
+            from 'view/resources/conf/messages.properties'
             into activeProfilewarClassesDir
         }
 
         copy {
-            from "web/environment/$env/receipt-servlet.xml"
+            from "view/environment/$env/receipt-servlet.xml"
             into activeProfilewarWebInfDir
         }
 
         copy {
-            from "web/environment/$env/mongo-config.xml"
+            from "view/environment/$env/mongo-config.xml"
             into activeProfilewarWebInfDir
         }
 
         copy {
-            from "web/web$freemarker"
+            from "view/web$freemarker"
             into activeProfilewarFreemarkerDir
         }
     }
@@ -534,7 +534,7 @@ task setUpProfileForJunit(dependsOn: [':clean']) {
 css.source {
     custom {
         css {
-            srcDir "web/web/static/css"
+            srcDir "view/web/static/css"
             include "*.css"
             exclude "*.min.css"
         }
@@ -544,7 +544,7 @@ css.source {
 javascript.source {
     custom {
         js {
-            srcDir "web/web/static/js"
+            srcDir "view/web/static/js"
             include "colpick.js", "mainpop.js"
             exclude "*.min.js"
         }
@@ -618,11 +618,11 @@ task prepWar(dependsOn: [
         warDkimDir.mkdirs()
 
         copy {
-            from 'web/web'
+            from 'view/web'
             into warDir
             exclude '**/*.classes'
             exclude '**/static/css/*.css'
-            exclude 'web/web/static/js/mainpop.js', 'web/web/static/js/colpick.js'
+            exclude 'view/web/static/js/mainpop.js', 'view/web/static/js/colpick.js'
         }
 
         copy {
@@ -640,14 +640,14 @@ task prepWar(dependsOn: [
         }
 
         copy {
-            from file("web/environment/$env/$env" + ".properties")
+            from file("view/environment/$env/$env" + ".properties")
             into warConfDir
         }
 
         copy {
-            from 'web/resources/conf/application-messages.properties'
-            from 'web/resources/conf/config.properties'
-            from 'web/resources/conf/redis.properties'
+            from 'view/resources/conf/application-messages.properties'
+            from 'view/resources/conf/config.properties'
+            from 'view/resources/conf/redis.properties'
 
             if (env == 'prod') {
                 if (passFileProd.exists()) {
@@ -668,7 +668,7 @@ task prepWar(dependsOn: [
             if (env == 'dev') {
                 println "Development environment, getting local pass file $passFileLocal.canonicalPath"
                 if (passFileLocal.exists()) {
-                    from 'web/resources/conf/pass.properties'
+                    from 'view/resources/conf/pass.properties'
                 } else {
                     throw new Exception("Required pass file does not exists: $passFileLocal.canonicalPath")
                 }
@@ -697,7 +697,7 @@ task prepWar(dependsOn: [
             if (env == 'dev') {
                 println "Development environment, getting local cert file $apnsCertLocal.canonicalPath"
                 if (apnsCertLocal.exists()) {
-                    from 'web/resources/conf/aps_sandbox_credentials.p12'
+                    from 'view/resources/conf/aps_sandbox_credentials.p12'
                 } else {
                     throw new Exception("Required cert file does not exists: $apnsCertLocal.canonicalPath")
                 }
@@ -736,23 +736,23 @@ task prepWar(dependsOn: [
         }
 
         copy {
-            from "web/environment/$env/logback.xml"
-            from 'web/resources/conf/messages.properties'
+            from "view/environment/$env/logback.xml"
+            from 'view/resources/conf/messages.properties'
             into warClassesDir
         }
 
         copy {
-            from "web/environment/$env/receipt-servlet.xml"
+            from "view/environment/$env/receipt-servlet.xml"
             into warWebInfDir
         }
 
         copy {
-            from "web/environment/$env/mongo-config.xml"
+            from "view/environment/$env/mongo-config.xml"
             into warWebInfDir
         }
 
         copy {
-            from 'web/web/static/images'
+            from 'view/web/static/images'
             into warWebInfClassesImagesDir
         }
 
