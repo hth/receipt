@@ -21,7 +21,7 @@ import javax.validation.constraints.NotNull;
 })
 @Document (collection = "FRIEND")
 @CompoundIndexes (value = {
-        @CompoundIndex (name = "friend_idx", def = "{'RID': -1, 'FID' : -1}", unique = true)
+        @CompoundIndex (name = "friend_idx", def = "{'RID': -1, 'FID' : -1}", unique = true, background = true)
 })
 public class FriendEntity  extends BaseEntity {
 

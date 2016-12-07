@@ -24,7 +24,7 @@ import javax.validation.constraints.NotNull;
 })
 @Document (collection = "USER_PREFERENCE")
 @CompoundIndexes ({
-        @CompoundIndex (name = "user_preference_idx", def = "{'RID': 1}", unique = true)
+        @CompoundIndex (name = "user_preference_idx", def = "{'RID': 1}", unique = true, background = true)
 })
 public class UserPreferenceEntity extends BaseEntity {
 
