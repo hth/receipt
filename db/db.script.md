@@ -1,14 +1,13 @@
-### Date Nov 19 2016 - Build 1964
-Changed index for
+### Date Dec 6 2016 - Build 2012
+Remove index for
  
     ForgotRecover
     Friend
     Invite
     
-Added index for
+Auto add index for
  
     UserPreference
-
 
 ### Date Nov 19 2016 - Build 1964
 

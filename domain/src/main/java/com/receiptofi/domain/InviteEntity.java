@@ -25,8 +25,8 @@ import javax.validation.constraints.NotNull;
 })
 @Document (collection = "INVITE")
 @CompoundIndexes (value = {
-        @CompoundIndex (name = "invite_email_idx", def = "{'EM': -1}", unique = false),
-        @CompoundIndex (name = "invite_key_idx", def = "{'AU' : -1}", unique = true)
+        @CompoundIndex (name = "invite_email_idx", def = "{'EM': -1}", background = true),
+        @CompoundIndex (name = "invite_key_idx", def = "{'AU' : -1}", unique = true, background = true)
 })
 public class InviteEntity extends BaseEntity {
 
