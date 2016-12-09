@@ -11,7 +11,6 @@ import static org.springframework.data.mongodb.core.query.Query.query;
 import static org.springframework.data.mongodb.core.query.Update.update;
 import static org.springframework.util.Assert.isTrue;
 
-import com.mongodb.ReadPreference;
 import com.mongodb.WriteConcern;
 
 import com.receiptofi.domain.BaseEntity;
@@ -89,10 +88,7 @@ public final class FileSystemManagerImpl implements FileSystemManager {
     @Override
     public FileSystemEntity getById(String id) {
         Assert.hasText(id, "Id is empty");
-        mongoTemplate.setReadPreference(ReadPreference.primary());
-        FileSystemEntity fileSystem = mongoTemplate.findOne(query(where("id").is(id)), FileSystemEntity.class, TABLE);
-        mongoTemplate.setReadPreference(ReadPreference.nearest());
-        return fileSystem;
+        return mongoTemplate.findOne(query(where("id").is(id)), FileSystemEntity.class, TABLE);
     }
 
     @Override
