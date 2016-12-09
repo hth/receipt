@@ -93,8 +93,8 @@ public class JsonReceipt {
     @JsonProperty ("cs")
     private String countryShortName;
 
-    @JsonProperty ("cd")
-    private String cardDigit = "";
+    @JsonProperty ("pc")
+    private String paymentCardId = "";
 
     @JsonProperty ("a")
     private boolean active;
@@ -135,11 +135,12 @@ public class JsonReceipt {
         this.countryShortName = receipt.getCountryShortName();
 
         if (null != receipt.getPaymentCard()) {
-            this.cardDigit = receipt.getPaymentCard().getCardDigit();
+            this.paymentCardId = receipt.getPaymentCard().getId();
         }
 
         this.active = receipt.isActive();
         this.deleted = receipt.isDeleted();
+
     }
 
     public String getId() {
@@ -214,8 +215,8 @@ public class JsonReceipt {
         return countryShortName;
     }
 
-    public String getCardDigit() {
-        return cardDigit;
+    public String getPaymentCardId() {
+        return paymentCardId;
     }
 
     public boolean isActive() {
