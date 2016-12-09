@@ -11,6 +11,7 @@ import static org.springframework.data.mongodb.core.query.Query.query;
 import static org.springframework.data.mongodb.core.query.Update.update;
 import static org.springframework.util.Assert.isTrue;
 
+import com.mongodb.ReadPreference;
 import com.mongodb.WriteConcern;
 
 import com.receiptofi.domain.BaseEntity;
@@ -59,6 +60,7 @@ public final class FileSystemManagerImpl implements FileSystemManager {
 
     /**
      * Under replica mode, awaits acknowledgement from three replica set.
+     *
      * @param object
      */
     @Override
@@ -78,10 +80,19 @@ public final class FileSystemManagerImpl implements FileSystemManager {
         LOG.debug("Saved FileSystemEntity id={}", object.getId());
     }
 
+    /**
+     * Add read from primary to fix the duplicate receipt rejection.
+     *
+     * @param id
+     * @return
+     */
     @Override
     public FileSystemEntity getById(String id) {
         Assert.hasText(id, "Id is empty");
-        return mongoTemplate.findOne(query(where("id").is(id)), FileSystemEntity.class, TABLE);
+        mongoTemplate.setReadPreference(ReadPreference.primary());
+        FileSystemEntity fileSystem = mongoTemplate.findOne(query(where("id").is(id)), FileSystemEntity.class, TABLE);
+        mongoTemplate.setReadPreference(ReadPreference.nearest());
+        return fileSystem;
     }
 
     @Override
