@@ -79,12 +79,6 @@ public final class FileSystemManagerImpl implements FileSystemManager {
         LOG.debug("Saved FileSystemEntity id={}", object.getId());
     }
 
-    /**
-     * Add read from primary to fix the duplicate receipt rejection.
-     *
-     * @param id
-     * @return
-     */
     @Override
     public FileSystemEntity getById(String id) {
         Assert.hasText(id, "Id is empty");
