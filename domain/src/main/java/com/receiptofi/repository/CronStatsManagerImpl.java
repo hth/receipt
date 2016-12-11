@@ -29,7 +29,7 @@ import java.util.List;
 })
 @Repository
 public class CronStatsManagerImpl implements CronStatsManager {
-    private static final Logger LOG = LoggerFactory.getLogger(ReceiptManagerImpl.class);
+    private static final Logger LOG = LoggerFactory.getLogger(CronStatsManagerImpl.class);
     private static final String TABLE = BaseEntity.getClassAnnotationValue(
             CronStatsEntity.class,
             Document.class,
