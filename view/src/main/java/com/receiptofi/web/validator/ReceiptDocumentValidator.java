@@ -290,13 +290,13 @@ public class ReceiptDocumentValidator implements Validator {
             }
 
             if (receiptDocumentForm.getReceiptDocument().getDocumentStatus() == DocumentStatusEnum.PENDING) {
-                Date previousDay = Date.from(LocalDate.now().minusDays(14).atStartOfDay(ZoneId.systemDefault()).toInstant().plusSeconds(60));
+                Date previousDay = Date.from(LocalDate.now().minusDays(21).atStartOfDay(ZoneId.systemDefault()).toInstant().plusSeconds(60));
                 if (receiptDate.before(previousDay)) {
                     errors.rejectValue(
                             "receiptDocument.receiptDate",
                             "field.date.past",
                             new Object[]{receiptDocumentForm.getReceiptDocument().getReceiptDate()},
-                            "Date is set more than 2 weeks in past. Format should be MM/dd/yyyy 11:59:59 PM. Check for month and day.");
+                            "Date is set more than 3 weeks in past. Format should be MM/dd/yyyy 11:59:59 PM. Check for month and day.");
                 }
             }
         } catch (IllegalArgumentException exce) {
