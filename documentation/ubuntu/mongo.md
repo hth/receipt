@@ -2,7 +2,7 @@
 
 Download file for ubuntu. 
  
-    `sftp` to `/tmp` latest version of `mongodb-linux-x86_64-ubuntu1604-3.2.10.tgz`
+    `sftp` to `/tmp` latest version of `mongodb-linux-x86_64-ubuntu1604-3.4.0.tgz`
     
 #### Directory to install      
     
@@ -74,10 +74,12 @@ https://docs.mongodb.com/manual/tutorial/transparent-huge-pages/
         esac
         
 -  Configure your operating system to run it on boot.
+
        
         sudo update-rc.d disable-transparent-hugepages defaults
        
 -  Test Your Changes after reboot
+
 
         sudo reboot
 
@@ -93,8 +95,8 @@ Response
 #### Directory to install    
 Inside `/tmp` perform `untar` of `mongodb`
 
-    tar -xvf mongodb-linux-x86_64-ubuntu1604-3.2.10.tgz &&
-    sudo mv /tmp/mongodb-linux-x86_64-ubuntu1604-3.2.10 /opt/mongo/
+    tar -xvf mongodb-linux-x86_64-ubuntu1604-3.4.0.tgz &&
+    sudo mv /tmp/mongodb-linux-x86_64-ubuntu1604-3.4.0 /opt/mongo/
     
 Make directory for `log` and `data`    
     
@@ -106,7 +108,7 @@ Make directory for `log` and `data`
     
 #### Create Link    
 
-    sudo ln -snf /opt/mongo/mongodb-linux-x86_64-ubuntu1604-3.2.10/ /usr/local/mongodb
+    sudo ln -snf /opt/mongo/mongodb-linux-x86_64-ubuntu1604-3.4.0/ /usr/local/mongodb
     
 #### Add Path to bashrc
     
@@ -176,20 +178,26 @@ Create mongod.service ( file shown below) in /etc/systemd/system  directory.
 #### Check status 
 - Reload the systemd daemon :
 
+
         sudo systemctl daemon-reload
 - Enable the Service to Start at Boot : This creates a symlink
+
 
         sudo systemctl enable mongod 
 - Check Status of Mongod :
 
+
         sudo systemctl status mongod
 - Stop Mongod :
+
 
         sudo systemctl stop mongod
 - Start Mongod :
 
+
         sudo systemctl start mongod    
 - Re-Start Mongod :
+
 
         sudo systemctl restart mongod       
     
