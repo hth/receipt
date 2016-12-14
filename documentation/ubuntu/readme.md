@@ -27,7 +27,7 @@ Make `db` as sudoer in file `/etc/sudoers` at the end of file. `Shift+g` gets yo
 ### Steps to configure machine
     
 01. [Java](java.md)
-02. [ActiveMQ](activemq.md)
+02. [ActiveMQ](activemq.md) [No longer installed]
 03. [Filebeat](filebeat.md)
 04. [Mongo](mongo.md)
 05. [Redis](redis.md)

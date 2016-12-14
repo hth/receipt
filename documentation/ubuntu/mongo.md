@@ -21,76 +21,78 @@ Download file for ubuntu.
     Create the following file at `/etc/init.d/disable-transparent-hugepages`:
     
     
-        sudo touch /etc/init.d/disable-transparent-hugepages
+    sudo touch /etc/init.d/disable-transparent-hugepages
     
 https://docs.mongodb.com/manual/tutorial/transparent-huge-pages/    
 
 -  Make it executable.
+
  
-        sudo chmod 755 /etc/init.d/disable-transparent-hugepages &&
-        sudo nano /etc/init.d/disable-transparent-hugepages 
+    sudo chmod 755 /etc/init.d/disable-transparent-hugepages &&
+    sudo nano /etc/init.d/disable-transparent-hugepages 
         
 - File content 
         
-        #!/bin/bash
-        ### BEGIN INIT INFO
-        # Provides:          disable-transparent-hugepages
-        # Required-Start:    $local_fs
-        # Required-Stop:
-        # X-Start-Before:    mongod mongodb-mms-automation-agent
-        # Default-Start:     2 3 4 5
-        # Default-Stop:      0 1 6
-        # Short-Description: Disable Linux transparent huge pages
-        # Description:       Disable Linux transparent huge pages, to improve
-        #                    database performance.
-        ### END INIT INFO
         
-        case $1 in
-          start)
-            if [ -d /sys/kernel/mm/transparent_hugepage ]; then
-              thp_path=/sys/kernel/mm/transparent_hugepage
-            elif [ -d /sys/kernel/mm/redhat_transparent_hugepage ]; then
-              thp_path=/sys/kernel/mm/redhat_transparent_hugepage
-            else
-              return 0
-            fi
-        
-            echo 'never' > ${thp_path}/enabled
-            echo 'never' > ${thp_path}/defrag
-        
-            re='^[0-1]+$'
-            if [[ $(cat ${thp_path}/khugepaged/defrag) =~ $re ]]
-            then
-              # RHEL 7
-              echo 0  > ${thp_path}/khugepaged/defrag
-            else
-              # RHEL 6
-              echo 'no' > ${thp_path}/khugepaged/defrag
-            fi
-        
-            unset re
-            unset thp_path
-            ;;
-        esac
+    #!/bin/bash
+    ### BEGIN INIT INFO
+    # Provides:          disable-transparent-hugepages
+    # Required-Start:    $local_fs
+    # Required-Stop:
+    # X-Start-Before:    mongod mongodb-mms-automation-agent
+    # Default-Start:     2 3 4 5
+    # Default-Stop:      0 1 6
+    # Short-Description: Disable Linux transparent huge pages
+    # Description:       Disable Linux transparent huge pages, to improve
+    #                    database performance.
+    ### END INIT INFO
+    
+    case $1 in
+      start)
+        if [ -d /sys/kernel/mm/transparent_hugepage ]; then
+          thp_path=/sys/kernel/mm/transparent_hugepage
+        elif [ -d /sys/kernel/mm/redhat_transparent_hugepage ]; then
+          thp_path=/sys/kernel/mm/redhat_transparent_hugepage
+        else
+          return 0
+        fi
+    
+        echo 'never' > ${thp_path}/enabled
+        echo 'never' > ${thp_path}/defrag
+    
+        re='^[0-1]+$'
+        if [[ $(cat ${thp_path}/khugepaged/defrag) =~ $re ]]
+        then
+          # RHEL 7
+          echo 0  > ${thp_path}/khugepaged/defrag
+        else
+          # RHEL 6
+          echo 'no' > ${thp_path}/khugepaged/defrag
+        fi
+    
+        unset re
+        unset thp_path
+        ;;
+    esac
         
 -  Configure your operating system to run it on boot.
 
        
-        sudo update-rc.d disable-transparent-hugepages defaults
+    sudo update-rc.d disable-transparent-hugepages defaults
        
 -  Test Your Changes after reboot
 
 
-        sudo reboot
+    sudo reboot
 
 You can check the status of THP support by issuing the following commands:
   
-        cat /sys/kernel/mm/transparent_hugepage/enabled &&
-        cat /sys/kernel/mm/transparent_hugepage/defrag  
+    cat /sys/kernel/mm/transparent_hugepage/enabled &&
+    cat /sys/kernel/mm/transparent_hugepage/defrag  
          
 Response 
          
-        always madvise [never]         
+    always madvise [never]         
     
 #### Directory to install    
 Inside `/tmp` perform `untar` of `mongodb`
