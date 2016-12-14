@@ -178,28 +178,40 @@ Create mongod.service ( file shown below) in /etc/systemd/system  directory.
     WantedBy=multi-user.target
     
 #### Check status 
+Clubbed steps to start mongo 
+
+    sudo systemctl daemon-reload &&
+    sudo systemctl enable mongod &&
+    sudo systemctl status mongod &&
+    echo restart machine
+
 - Reload the systemd daemon :
 
 
-        sudo systemctl daemon-reload
+    sudo systemctl daemon-reload
+    
 - Enable the Service to Start at Boot : This creates a symlink
 
 
-        sudo systemctl enable mongod 
+    sudo systemctl enable mongod
+     
 - Check Status of Mongod :
 
 
-        sudo systemctl status mongod
+     sudo systemctl status mongod
+     
 - Stop Mongod :
 
 
-        sudo systemctl stop mongod
+    sudo systemctl stop mongod
+    
 - Start Mongod :
 
 
-        sudo systemctl start mongod    
+    sudo systemctl start mongod
+        
 - Re-Start Mongod :
 
 
-        sudo systemctl restart mongod       
+    sudo systemctl restart mongod       
     
