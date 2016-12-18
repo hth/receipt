@@ -47,9 +47,11 @@ public class JsonBizStore {
     @JsonProperty ("lng")
     private String lng = "";
 
+    @Deprecated
     @JsonProperty ("type")
     private String type = "";
 
+    @Deprecated
     @JsonProperty ("rating")
     private float rating;
 
