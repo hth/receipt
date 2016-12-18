@@ -338,7 +338,7 @@ public class ReceiptDocumentValidator implements Validator {
         String rid = receiptDocumentForm.getReceiptDocument().getReceiptUserId();
         if (StringUtils.isNotBlank(cardDigit)) {
 
-            if (NumberUtils.isNumber(cardDigit)) {
+            if (NumberUtils.isDigits(cardDigit)) {
                 PaymentCardEntity paymentCard = paymentCardService.findCard(rid, cardDigit);
                 if (null != paymentCard
                         && null != receiptDocumentForm.getReceiptDocument().getCardNetwork()
