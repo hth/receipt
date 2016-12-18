@@ -187,6 +187,7 @@ public class JsonReceipt {
         return expenseReportInFS;
     }
 
+    @Deprecated
     public String getBilledStatus() {
         return billedStatus;
     }
