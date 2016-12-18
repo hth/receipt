@@ -57,4 +57,24 @@ public class ReceiptDocumentValidatorTest {
         Assert.isNull(errors.getFieldError("receiptDocument.cardDigit"));
     }
 
+    @Test
+    public void validatePaymentCardFail() throws Exception {
+        ReceiptDocumentForm receiptDocument = ReceiptDocumentForm.newInstance();
+        DocumentEntity document = DocumentEntity.newInstance();
+        document.setCardDigit("090a");
+        document.setCardNetwork(CardNetworkEnum.A);
+        document.setReceiptUserId("123");
+
+        ItemEntityOCR itemEntityOCR = ItemEntityOCR.newInstance();
+        itemEntityOCR.setReceiptUserId("123");
+        receiptDocument.setReceiptDocument(document);
+        receiptDocument.setItems(Collections.singletonList(itemEntityOCR));
+
+        Errors errors = new BeanPropertyBindingResult(receiptDocument, "receiptDocumentForm");
+        receiptDocumentValidator.validate(receiptDocument, errors);
+
+        Assert.isNull(errors.getFieldError("receiptDocument.cardNetwork"));
+        Assert.notNull(errors.getFieldError("receiptDocument.cardDigit"));
+    }
+
 }
