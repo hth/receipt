@@ -1,3 +1,15 @@
+### Update billing query
+
+Billing Account update to Promotional, set to "P"
+    
+    db.getCollection('BILLING_ACCOUNT').find({BP : {$ne : "P"}})
+    
+    db.getCollection('BILLING_HISTORY').find({"BS" : { $ne : "P"}})
+    db.getCollection('BILLING_HISTORY').updateMany({BS: {$ne : 'P'}}, { $set: {BS: 'P', BP: 'P'}})
+        
+    db.getCollection('RECEIPT').find({"BS": {$ne : "P"}})
+    db.getCollection('RECEIPT').update({"BS" : "NB"},   { $set: {BS: 'P', U : new ISODate()} }, {multi: true});
+
 ### Date Dec 6 2016 - Build 2012
 Remove index for
  
