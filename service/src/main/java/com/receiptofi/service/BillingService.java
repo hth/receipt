@@ -206,7 +206,7 @@ public class BillingService {
     }
 
     public void removeOrphanBillingAccount() {
-        List<BillingAccountEntity> billingAccounts = billingAccountManager.getAllBilling();
+        List<BillingAccountEntity> billingAccounts = billingAccountManager.getAll();
         for (BillingAccountEntity billingAccount : billingAccounts) {
             UserAccountEntity userAccount = userAccountManager.findByBillingAccount(billingAccount.getRid(), billingAccount.getId());
             if (userAccount == null) {

@@ -39,8 +39,8 @@ public class LoaderInitializationBean {
     }
 
     @PostConstruct
-    public void checkBillingAccountOrphan() {
+    public void removeBillingAccountOrphan() {
         billingService.removeOrphanBillingAccount();
-        billingProcess.createPlaceholderForBilling();
+        //billingProcess.createPlaceholderForBilling();
     }
 }
