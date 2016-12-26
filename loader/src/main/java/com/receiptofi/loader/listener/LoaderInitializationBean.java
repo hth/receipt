@@ -1,6 +1,7 @@
 package com.receiptofi.loader.listener;
 
 import com.receiptofi.loader.scheduledtasks.BillingProcess;
+import com.receiptofi.service.AccountService;
 import com.receiptofi.service.BillingService;
 
 import org.slf4j.Logger;
@@ -30,17 +31,24 @@ public class LoaderInitializationBean {
 
     private BillingProcess billingProcess;
     private BillingService billingService;
+    private AccountService accountService;
 
     @Autowired
-    public LoaderInitializationBean(BillingProcess billingProcess, BillingService billingService) {
+    public LoaderInitializationBean(BillingProcess billingProcess, BillingService billingService, AccountService accountService) {
         LOG.info("Initialized Loader");
         this.billingProcess = billingProcess;
         this.billingService = billingService;
+        this.accountService = accountService;
     }
 
     @PostConstruct
     public void removeBillingAccountOrphan() {
         billingService.removeOrphanBillingAccount();
         //billingProcess.createPlaceholderForBilling();
+    }
+
+    @PostConstruct
+    public void removeAuthenticationOrphan() {
+        accountService.removeAuthenticationOrphan();
     }
 }

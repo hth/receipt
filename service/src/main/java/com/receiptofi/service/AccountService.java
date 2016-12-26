@@ -669,4 +669,16 @@ public class AccountService {
     public UserProfileEntity findProfileByReceiptUserId(String receiptUserId) {
         return userProfileManager.findByReceiptUserId(receiptUserId);
     }
+
+    public void removeAuthenticationOrphan() {
+        List<UserAuthenticationEntity> userAuthentications = userAuthenticationManager.getAll();
+
+        for (UserAuthenticationEntity userAuthentication : userAuthentications) {
+            UserAccountEntity userAccount = userAccountManager.findByUserAuthentication(userAuthentication.getId());
+            if (userAccount == null) {
+                LOG.warn("Orphan user authentication={}", userAuthentication.getId());
+                //userAuthenticationManager.deleteHard(userAuthentication);
+            }
+        }
+    }
 }
