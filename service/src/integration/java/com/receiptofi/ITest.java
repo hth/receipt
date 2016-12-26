@@ -15,7 +15,6 @@ import com.receiptofi.service.*;
 import org.apache.commons.io.IOUtils;
 
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.jms.core.JmsTemplate;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.ui.freemarker.FreeMarkerConfigurationFactoryBean;
@@ -115,7 +114,6 @@ public class ITest extends RealMongoForTests {
     @Mock public MimeMessage message;
     @Mock public Configuration configuration;
     @Mock public Template template;
-    @Mock public JmsTemplate jmsTemplate;
     @Mock public RedisTemplate<String, Object> redisTemplate;
 
     @Before
