@@ -17,9 +17,10 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.WriteResultChecking;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
+
+import java.util.List;
 
 /**
  * @author hitender
@@ -69,5 +70,10 @@ public final class UserAuthenticationManagerImpl implements UserAuthenticationMa
     @Override
     public void deleteHard(UserAuthenticationEntity object) {
         mongoTemplate.remove(object, TABLE);
+    }
+
+    @Override
+    public List<UserAuthenticationEntity> getAll() {
+        return mongoTemplate.findAll(UserAuthenticationEntity.class);
     }
 }

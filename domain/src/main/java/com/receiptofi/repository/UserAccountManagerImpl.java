@@ -181,4 +181,13 @@ public class UserAccountManagerImpl implements UserAccountManager {
                 TABLE
         );
     }
+
+    @Override
+    public UserAccountEntity findByUserAuthentication(String userAuthenticationId) {
+        return mongoTemplate.findOne(
+                query(where("USER_AUTHENTICATION.$id").is(new ObjectId(userAuthenticationId))),
+                UserAccountEntity.class,
+                TABLE
+        );
+    }
 }
