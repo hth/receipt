@@ -124,6 +124,7 @@ public class FilesUploadToS3Test {
                 "ON",
                 prop.getProperty("FilesUploadToS3.coupon.switch"),
                 prop.getProperty("FilesUploadToS3.campaign.switch"),
+                prop.getProperty("FileUploadToS3.scaling.image.switch"),
                 documentService,
                 fileDBService,
                 imageSplitService,
