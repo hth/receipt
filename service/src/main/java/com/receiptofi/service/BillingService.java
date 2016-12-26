@@ -204,4 +204,15 @@ public class BillingService {
             return null;
         }
     }
+
+    public void removeOrphanBillingAccount() {
+        List<BillingAccountEntity> billingAccounts = billingAccountManager.getAllBilling();
+        for (BillingAccountEntity billingAccount : billingAccounts) {
+            UserAccountEntity userAccount = userAccountManager.findByBillingAccount(billingAccount.getRid(), billingAccount.getId());
+            if (userAccount == null) {
+                LOG.info("Orphan billing account={} rid={}", billingAccount.getId(), billingAccount.getRid());
+                billingAccountManager.deleteHard(billingAccount);
+            }
+        }
+    }
 }

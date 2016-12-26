@@ -35,4 +35,6 @@ public interface UserAccountManager extends RepositoryManager<UserAccountEntity>
     List<UserAccountEntity> findAllTechnician();
 
     List<UserAccountEntity> getLastSoManyRecords(int limit);
+
+    UserAccountEntity findByBillingAccount(String rid, String billingAccountId);
 }

@@ -80,4 +80,9 @@ public class BillingAccountManagerImpl implements BillingAccountManager {
                 BillingAccountEntity.class
         );
     }
+
+    @Override
+    public List<BillingAccountEntity> getAllBilling() {
+        return mongoTemplate.findAll(BillingAccountEntity.class);
+    }
 }
