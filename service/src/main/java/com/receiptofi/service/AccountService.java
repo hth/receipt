@@ -677,7 +677,7 @@ public class AccountService {
             UserAccountEntity userAccount = userAccountManager.findByUserAuthentication(userAuthentication.getId());
             if (userAccount == null) {
                 LOG.warn("Orphan user authentication={}", userAuthentication.getId());
-                //userAuthenticationManager.deleteHard(userAuthentication);
+                userAuthenticationManager.deleteHard(userAuthentication);
             }
         }
     }
