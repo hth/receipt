@@ -1,7 +1,5 @@
 package com.receiptofi.web.listener;
 
-import com.receiptofi.loader.scheduledtasks.BillingProcess;
-import com.receiptofi.service.BillingService;
 import com.receiptofi.service.cache.RedisCacheConfig;
 import com.receiptofi.service.ftp.FtpService;
 
@@ -35,20 +33,14 @@ public class ReceiptofiInitializationCheckBean {
 
     private RedisCacheConfig redisCacheConfig;
     private FtpService ftpService;
-    private BillingProcess billingProcess;
-    private BillingService billingService;
 
     @Autowired
     public ReceiptofiInitializationCheckBean(
             RedisCacheConfig redisCacheConfig,
-            FtpService ftpService,
-            BillingProcess billingProcess,
-            BillingService billingService
+            FtpService ftpService
     ) {
         this.redisCacheConfig = redisCacheConfig;
         this.ftpService = ftpService;
-        this.billingProcess = billingProcess;
-        this.billingService = billingService;
     }
 
     @PostConstruct
@@ -69,11 +61,5 @@ public class ReceiptofiInitializationCheckBean {
             throw new RuntimeException("File server could not be connected");
         }
         LOG.info("Found and has access, to remote ftp directory={}", expensofiReportLocation);
-    }
-
-    @PostConstruct
-    public void checkBillingAccountOrphan() {
-        billingService.removeOrphanBillingAccount();
-        billingProcess.createPlaceholderForBilling();
     }
 }
