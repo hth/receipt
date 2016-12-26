@@ -1,6 +1,6 @@
 package com.receiptofi.repository;
 
-import static com.receiptofi.repository.util.AppendAdditionalFields.*;
+import static com.receiptofi.repository.util.AppendAdditionalFields.entityUpdate;
 import static com.receiptofi.repository.util.AppendAdditionalFields.isActive;
 import static com.receiptofi.repository.util.AppendAdditionalFields.isNotDeleted;
 import static org.springframework.data.domain.Sort.Direction.DESC;
@@ -15,6 +15,8 @@ import com.receiptofi.domain.UserAccountEntity;
 import com.receiptofi.domain.types.AccountInactiveReasonEnum;
 import com.receiptofi.domain.types.ProviderEnum;
 import com.receiptofi.domain.types.RoleEnum;
+
+import org.bson.types.ObjectId;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -169,5 +171,14 @@ public class UserAccountManagerImpl implements UserAccountManager {
         query.fields().include("RID");
 
         return mongoTemplate.find(query, UserAccountEntity.class, TABLE);
+    }
+
+    @Override
+    public UserAccountEntity findByBillingAccount(String rid, String billingAccountId) {
+        return mongoTemplate.findOne(
+                query(where("RID").is(rid).and("BILLING_ACCOUNT.$id").is(new ObjectId(billingAccountId))),
+                UserAccountEntity.class,
+                TABLE
+        );
     }
 }

@@ -15,4 +15,6 @@ public interface BillingAccountManager extends RepositoryManager<BillingAccountE
     List<BillingAccountEntity> getAllBillingAccount(String rid);
 
     BillingAccountEntity getBySubscription(String subscriptionId, PaymentGatewayEnum paymentGatewayEnum);
+
+    List<BillingAccountEntity> getAllBilling();
 }
