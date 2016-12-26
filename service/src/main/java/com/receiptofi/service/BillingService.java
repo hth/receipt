@@ -210,7 +210,7 @@ public class BillingService {
         for (BillingAccountEntity billingAccount : billingAccounts) {
             UserAccountEntity userAccount = userAccountManager.findByBillingAccount(billingAccount.getRid(), billingAccount.getId());
             if (userAccount == null) {
-                LOG.info("Orphan billing account={} rid={}", billingAccount.getId(), billingAccount.getRid());
+                LOG.warn("Orphan billing account={} rid={}", billingAccount.getId(), billingAccount.getRid());
                 billingAccountManager.deleteHard(billingAccount);
             }
         }

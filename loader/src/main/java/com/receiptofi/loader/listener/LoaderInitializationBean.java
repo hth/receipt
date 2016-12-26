@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 
 /**
- * To make sure process run just once on a server put it on loader.
+ * To make sure process runs just once on a server put it on loader.
  *
  * User: hitender
  * Date: 12/26/16 5:42 AM
