@@ -16,6 +16,8 @@ import java.net.UnknownHostException;
 import javax.annotation.PostConstruct;
 
 /**
+ * To make sure process run just once on a server put it on loader.
+ *
  * User: hitender
  * Date: 12/26/16 5:42 AM
  */
@@ -38,6 +40,7 @@ public class LoaderInitializationBean {
 
     @Autowired
     public LoaderInitializationBean(BillingProcess billingProcess, BillingService billingService) {
+        LOG.info("Initialized Loader");
         this.billingProcess = billingProcess;
         this.billingService = billingService;
     }
@@ -46,6 +49,8 @@ public class LoaderInitializationBean {
     public void checkBillingAccountOrphan() {
         try {
             String hostname = InetAddress.getLocalHost().getHostAddress();
+            LOG.info("hostname={}", hostname);
+
             if (hostname.equalsIgnoreCase(host)) {
                 billingService.removeOrphanBillingAccount();
                 billingProcess.createPlaceholderForBilling();
