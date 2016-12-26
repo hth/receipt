@@ -70,6 +70,7 @@ public class FilesUploadToS3 {
     private final String receiptUploadSwitch;
     private final String couponUploadSwitch;
     private final String campaignUploadSwitch;
+    private final String scalingImageSwitch;
 
     private DocumentService documentService;
     private FileDBService fileDBService;
@@ -101,6 +102,9 @@ public class FilesUploadToS3 {
             @Value ("${FilesUploadToS3.campaign.switch}")
             String campaignUploadSwitch,
 
+            @Value ("${FileUploadToS3.scaling.image.switch}")
+            String scalingImageSwitch,
+
             DocumentService documentService,
             FileDBService fileDBService,
             ImageSplitService imageSplitService,
@@ -116,6 +120,7 @@ public class FilesUploadToS3 {
         this.receiptUploadSwitch = receiptUploadSwitch;
         this.couponUploadSwitch = couponUploadSwitch;
         this.campaignUploadSwitch = campaignUploadSwitch;
+        this.scalingImageSwitch = scalingImageSwitch;
 
         this.documentService = documentService;
         this.fileDBService = fileDBService;
@@ -466,7 +471,11 @@ public class FilesUploadToS3 {
                 FilenameUtils.getBaseName(fileSystem.getOriginalFilename()),
                 FileUtil.getFileExtension(fileSystem.getOriginalFilename()));
 
-        imageSplitService.decreaseResolution(fs.getInputStream(), new FileOutputStream(scaledImage));
+        if(scalingImageSwitch.equalsIgnoreCase("ON")) {
+            imageSplitService.decreaseResolution(fs.getInputStream(), new FileOutputStream(scaledImage));
+        } else {
+            fs.writeTo(scaledImage);
+        }
         LOG.info("fileSystemID={} filename={} newFilename={} originalLength={} newLength={}",
                 fileSystem.getId(),
                 fileSystem.getOriginalFilename(),
