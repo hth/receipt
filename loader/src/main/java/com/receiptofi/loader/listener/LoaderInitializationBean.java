@@ -7,11 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 
 import javax.annotation.PostConstruct;
 
@@ -32,9 +28,6 @@ public class LoaderInitializationBean {
 
     private static final Logger LOG = LoggerFactory.getLogger(LoaderInitializationBean.class);
 
-    @Value ("${fileserver.ftp.host}")
-    private String host;
-
     private BillingProcess billingProcess;
     private BillingService billingService;
 
@@ -47,16 +40,7 @@ public class LoaderInitializationBean {
 
     @PostConstruct
     public void checkBillingAccountOrphan() {
-        try {
-            String hostname = InetAddress.getLocalHost().getHostAddress();
-            LOG.info("hostname={}", hostname);
-
-            if (hostname.equalsIgnoreCase(host)) {
-                billingService.removeOrphanBillingAccount();
-                billingProcess.createPlaceholderForBilling();
-            }
-        } catch (UnknownHostException e) {
-            LOG.error("failed to get hostname={}", e.getLocalizedMessage(), e.getLocalizedMessage());
-        }
+        billingService.removeOrphanBillingAccount();
+        billingProcess.createPlaceholderForBilling();
     }
 }
