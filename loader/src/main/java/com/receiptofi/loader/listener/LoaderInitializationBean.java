@@ -62,12 +62,12 @@ public class LoaderInitializationBean {
     @PostConstruct
     public void cleanupOperation() {
         if("ON".equalsIgnoreCase(cleanupOperation)) {
-            LOG.info("........ Running cleanup operation is {} ........ ", cleanupOperation);
+            LOG.info("........ Cleanup operation is {} ........ ", cleanupOperation);
             removeBillingAccountOrphan();
             removeAuthenticationOrphan();
             createMissingUserPreferences();
         } else {
-            LOG.info("Running cleanup operation is {}", cleanupOperation);
+            LOG.info("Cleanup operation is {}", cleanupOperation);
         }
     }
 
