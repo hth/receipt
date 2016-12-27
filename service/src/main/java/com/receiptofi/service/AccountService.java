@@ -682,12 +682,24 @@ public class AccountService {
         }
     }
 
-    public void createMissingUserPreferences() {
+    public void removeUserPreferencesOrphan() {
         List<UserPreferenceEntity> userPreferences = userPreferenceManager.getAll();
         for (UserPreferenceEntity userPreference : userPreferences) {
             if (userPreference.getUserProfile() == null) {
                 LOG.warn("Orphan user preference={} rid={}", userPreference.getId(), userPreference.getReceiptUserId());
-                //userPreferenceManager.deleteHard(userPreference);
+                userPreferenceManager.deleteHard(userPreference);
+            }
+        }
+    }
+
+    public void createMissingUserPreferences() {
+        List<UserProfileEntity> userProfiles = userProfileManager.getAll();
+        for (UserProfileEntity userProfile : userProfiles) {
+            UserPreferenceEntity userPreference = userPreferenceManager.getByRid(userProfile.getReceiptUserId());
+            if (userPreference == null) {
+                userPreference = UserPreferenceEntity.newInstance(userProfile);
+                userPreferenceManager.save(userPreference);
+                LOG.warn("Created user preference for rid={}", userProfile.getReceiptUserId());
             }
         }
     }
