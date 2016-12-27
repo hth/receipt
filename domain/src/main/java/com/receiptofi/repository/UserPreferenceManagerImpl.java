@@ -19,6 +19,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 
+import java.util.List;
+
 /**
  * @author hitender
  * @since Dec 24, 2012 3:19:22 PM
@@ -73,5 +75,10 @@ public final class UserPreferenceManagerImpl implements UserPreferenceManager {
     @Override
     public void deleteHard(UserPreferenceEntity object) {
         mongoTemplate.remove(object, TABLE);
+    }
+
+    @Override
+    public List<UserPreferenceEntity> getAll() {
+        return mongoTemplate.findAll(UserPreferenceEntity.class);
     }
 }

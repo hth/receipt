@@ -681,4 +681,14 @@ public class AccountService {
             }
         }
     }
+
+    public void createMissingUserPreferences() {
+        List<UserPreferenceEntity> userPreferences = userPreferenceManager.getAll();
+        for (UserPreferenceEntity userPreference : userPreferences) {
+            if (userPreference.getUserProfile() == null) {
+                LOG.warn("Orphan user preference={} rid={}", userPreference.getId(), userPreference.getReceiptUserId());
+                //userPreferenceManager.deleteHard(userPreference);
+            }
+        }
+    }
 }
