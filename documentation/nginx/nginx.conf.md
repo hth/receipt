@@ -1,4 +1,4 @@
-    # Date: Nov 29 10:00 PM
+    # Date: Dec 27 3:00 PM
     # https://www.digitalocean.com/community/tutorials/how-to-optimize-nginx-configuration
     # user  nobody;
     # IP Address 192.168.1.71 is related to the nginx installed ip
@@ -316,6 +316,73 @@
             }
         }
     
+        server {
+            listen          8443 ssl;
+            server_name     tp.receiptofi.com;
+    
+            access_log  /var/logs/nginx/tp.access.log main;
+    
+            location /monitoring {
+                # block one workstation
+                deny    192.168.1.1;
+                # allow anyone in 192.168.1.0/24
+                allow   192.168.1.0/24; 
+                allow   63.145.59.92;
+                # drop rest of the world
+                deny    all;
+                
+                proxy_buffers 16 4k;
+                proxy_buffer_size 2k;
+    
+                proxy_set_header    Host                    $http_host;
+                proxy_set_header    X-Real-IP               $remote_addr;
+                proxy_set_header    X-Forwarded-For         $proxy_add_x_forwarded_for;
+                proxy_set_header    X-NginX-Proxy           true;
+    
+                proxy_pass http://192.168.1.185;
+            }
+    
+            location /token-mobile/monitoring {
+                # block one workstation
+                deny    192.168.1.1;
+                # allow anyone in 192.168.1.0/24
+                allow   192.168.1.0/24; 
+                allow   63.145.59.92;
+                # drop rest of the world
+                deny    all;
+                
+                proxy_buffers 16 4k;
+                proxy_buffer_size 2k;
+    
+                proxy_set_header    Host                    $http_host;
+                proxy_set_header    X-Real-IP               $remote_addr;
+                proxy_set_header    X-Forwarded-For         $proxy_add_x_forwarded_for;
+                proxy_set_header    X-NginX-Proxy           true;
+    
+                proxy_pass http://192.168.1.185;
+            }
+    
+            location / {
+                proxy_buffers 16 4k;
+                proxy_buffer_size 2k;
+    
+                proxy_set_header    Host                    $http_host;
+                proxy_set_header    X-Real-IP               $remote_addr;
+                proxy_set_header    X-Forwarded-For         $proxy_add_x_forwarded_for;
+                proxy_set_header    X-NginX-Proxy           true;
+    
+                proxy_pass http://192.168.1.185;
+    
+                # Subdomain test.m.receiptofi.com would be best in its own host,
+                # current architecture suggest (my opinion) to have one domain
+                # and other application(s) list as /test.domain.com/receipt-mobile/
+                # instead of /test.m.domain.com/receipt-mobile/
+                #proxy_set_header   X-Forwarded-Host        $host;
+                #proxy_set_header   X-Forwarded-Server      $host;
+                #proxy_set_header   X-Forwarded-For         $proxy_add_x_forwarded_for;
+                #proxy_pass http://localhost:9090/receipt-mobile/;
+            }
+        }
     
         server {
             listen          8443 ssl;
