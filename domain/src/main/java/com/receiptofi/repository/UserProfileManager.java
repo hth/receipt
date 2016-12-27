@@ -45,4 +45,6 @@ public interface UserProfileManager extends RepositoryManager<UserProfileEntity>
 
     @Mobile
     void updateCountryShortName(String country, String rid);
+
+    List<UserProfileEntity> getAll();
 }

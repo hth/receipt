@@ -54,6 +54,7 @@ public class LoaderInitializationBean {
 
     @PostConstruct
     public void createMissingUserPreferences() {
+        accountService.removeUserPreferencesOrphan();
         accountService.createMissingUserPreferences();
     }
 }

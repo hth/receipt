@@ -222,4 +222,9 @@ public final class UserProfileManagerImpl implements UserProfileManager {
                 TABLE
         );
     }
+
+    @Override
+    public List<UserProfileEntity> getAll() {
+        return mongoTemplate.findAll(UserProfileEntity.class);
+    }
 }
