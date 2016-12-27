@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -26,34 +27,60 @@ import javax.annotation.PostConstruct;
 })
 @Component
 public class LoaderInitializationBean {
-
     private static final Logger LOG = LoggerFactory.getLogger(LoaderInitializationBean.class);
 
     private BillingProcess billingProcess;
     private BillingService billingService;
     private AccountService accountService;
 
+    @Value ("${LoaderInitializationBean.cleanupOperation.switch:OFF}")
+    private String cleanupOperation;
+
     @Autowired
-    public LoaderInitializationBean(BillingProcess billingProcess, BillingService billingService, AccountService accountService) {
+    public LoaderInitializationBean(
+            BillingProcess billingProcess,
+            BillingService billingService,
+            AccountService accountService
+    ) {
         LOG.info("Initialized Loader");
         this.billingProcess = billingProcess;
         this.billingService = billingService;
         this.accountService = accountService;
     }
 
+    /**
+     * This needs to run when there are mis-match.
+     *
+     * BILLING_ACCOUNT when account fails to create the reminiscence of the failure is not deleted.
+     * USER_ACCOUNT is the actual number of accounts.
+     * USER_AUTHENTICATION when account fails to create the reminiscence of the failure is not deleted.
+     * USER_PREFERENCE when account fails to create, user preference fails to be created.
+     * USER_PROFILE is always created when account is failed. This helps replace the failed USER_ACCOUNT creation.
+     *
+     * This should never be run and instead these issue needs to be fixed.
+     */
     @PostConstruct
-    public void removeBillingAccountOrphan() {
+    public void cleanupOperation() {
+        if("ON".equalsIgnoreCase(cleanupOperation)) {
+            LOG.info("........ Running cleanup operation is {} ........ ", cleanupOperation);
+            removeBillingAccountOrphan();
+            removeAuthenticationOrphan();
+            createMissingUserPreferences();
+        } else {
+            LOG.info("Running cleanup operation is {}", cleanupOperation);
+        }
+    }
+
+    private void removeBillingAccountOrphan() {
         billingService.removeOrphanBillingAccount();
         //billingProcess.createPlaceholderForBilling();
     }
 
-    @PostConstruct
-    public void removeAuthenticationOrphan() {
+    private void removeAuthenticationOrphan() {
         accountService.removeAuthenticationOrphan();
     }
 
-    @PostConstruct
-    public void createMissingUserPreferences() {
+    private void createMissingUserPreferences() {
         accountService.removeUserPreferencesOrphan();
         accountService.createMissingUserPreferences();
     }
