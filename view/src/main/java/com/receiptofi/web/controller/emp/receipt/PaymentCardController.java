@@ -1,7 +1,5 @@
 package com.receiptofi.web.controller.emp.receipt;
 
-import com.receiptofi.domain.PaymentCardEntity;
-import com.receiptofi.domain.json.JsonPaymentCard;
 import com.receiptofi.domain.site.ReceiptUser;
 import com.receiptofi.service.PaymentCardService;
 import com.receiptofi.utils.ScrubbedInput;
@@ -19,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * User: hitender
@@ -41,23 +38,6 @@ public class PaymentCardController {
     @Autowired
     public PaymentCardController(PaymentCardService paymentCardService) {
         this.paymentCardService = paymentCardService;
-    }
-
-    @RequestMapping (
-            value = "/{rid}",
-            method = RequestMethod.GET,
-            headers = "Accept=application/json",
-            produces = "application/json")
-    @Cacheable (value = "getPaymentCards", keyGenerator = "customKeyGenerator")
-    public List<JsonPaymentCard> getPaymentCards(
-            @PathVariable
-            ScrubbedInput rid
-    ) {
-        ReceiptUser receiptUser = (ReceiptUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        LOG.info("payment cards for rid={} by emp={}", rid.getText(), receiptUser.getRid());
-
-        List<PaymentCardEntity> cards = paymentCardService.getPaymentCards(rid.getText());
-        return cards.stream().map(JsonPaymentCard::new).collect(Collectors.toList());
     }
 
     @RequestMapping (
