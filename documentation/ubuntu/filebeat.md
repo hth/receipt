@@ -28,7 +28,7 @@ Make directory for `log` and `data`
      
 #### Copy the content to `filebeat.conf` file
 
-Note: Change name to correct host name
+Note: Change name to correct host name and DO NOT COPY THIS ONE refer to `filebeat.conf.md`
      
     ---
     filebeat.prospectors:
@@ -48,7 +48,7 @@ Note: Change name to correct host name
       #multiline.max_lines: 5000
     name: r4
     output.logstash:
-      hosts: ["192.168.1.45:5044"]
+      hosts: ["192.168.1.123:5044"]
     logging:
       level: info
       to_files: true
