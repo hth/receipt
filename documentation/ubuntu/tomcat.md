@@ -1,13 +1,13 @@
 ### Tomcat 8.5.5
 Download tomcat. Copy to `/tmp`    
     
-    tar -xvf apache-tomcat-8.5.8.tar.gz &&
+    tar -xvf apache-tomcat-8.5.9.tar.gz &&
     sudo mkdir /opt/tomcat &&
-    sudo mv apache-tomcat-8.5.8 /opt/tomcat
+    sudo mv apache-tomcat-8.5.9 /opt/tomcat
     
 Link
 
-    sudo ln -snf /opt/tomcat/apache-tomcat-8.5.8 /usr/local/tomcat
+    sudo ln -snf /opt/tomcat/apache-tomcat-8.5.9 /usr/local/tomcat
     
 Log files directory 
     

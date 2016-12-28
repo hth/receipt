@@ -2,14 +2,14 @@
 
 Download file for ubuntu. 
  
-    `sftp` to `/tmp` latest version of `filebeat-5.0.0-linux-x86_64.tar.gz`
+    `sftp` to `/tmp` latest version of `filebeat-5.1.1-linux-x86_64.tar.gz`
     
 #### Directory to install    
 Inside `/tmp` perform `untar` of `mongodb`
 
     sudo mkdir /opt/filebeat &&
-    tar -xvf filebeat-5.0.0-linux-x86_64.tar.gz &&
-    sudo mv /tmp/filebeat-5.0.0-linux-x86_64 /opt/filebeat/
+    tar -xvf filebeat-5.1.1-linux-x86_64.tar.gz &&
+    sudo mv /tmp/filebeat-5.1.1-linux-x86_64 /opt/filebeat/
     
 Make directory for `log` and `data`    
     
@@ -18,7 +18,7 @@ Make directory for `log` and `data`
     
 #### Create Link  
 
-    sudo ln -snf /opt/filebeat/filebeat-5.0.0-linux-x86_64/ /usr/local/filebeat
+    sudo ln -snf /opt/filebeat/filebeat-5.1.1-linux-x86_64/ /usr/local/filebeat
     
 #### Create file `filebeat.conf` 
     
