@@ -8,15 +8,15 @@
 #### Download REDIS
 
     cd /tmp &&
-    curl -O http://download.redis.io/releases/redis-3.2.5.tar.gz
+    curl -O http://download.redis.io/releases/redis-3.2.6.tar.gz
 
 #### Unpack the Tarball
   
-    tar xzvf redis-3.2.5.tar.gz
+    tar xzvf redis-3.2.6.tar.gz
 
 #### Build and Install REDIS
 
-    cd /tmp/redis-3.2.5 &&
+    cd /tmp/redis-3.2.6 &&
     make && 
     make test && 
     sudo make install
@@ -25,7 +25,7 @@
     
     sudo mkdir /etc/redis &&
     sudo chown -R db:db /etc/redis && 
-    sudo cp /tmp/redis-3.2.5/redis.conf /etc/redis
+    sudo cp /tmp/redis-3.2.6/redis.conf /etc/redis
 
 #### Modify the redis.conf file
 

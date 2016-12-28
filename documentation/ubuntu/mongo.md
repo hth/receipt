@@ -97,8 +97,8 @@ Response
 #### Directory to install    
 Inside `/tmp` perform `untar` of `mongodb`
 
-    tar -xvf mongodb-linux-x86_64-ubuntu1604-3.4.0.tgz &&
-    sudo mv /tmp/mongodb-linux-x86_64-ubuntu1604-3.4.0 /opt/mongo/
+    tar -xvf mongodb-linux-x86_64-ubuntu1604-3.4.1.tgz &&
+    sudo mv /tmp/mongodb-linux-x86_64-ubuntu1604-3.4.1 /opt/mongo/
     
 Make directory for `log` and `data`    
     
@@ -110,7 +110,7 @@ Make directory for `log` and `data`
     
 #### Create Link    
 
-    sudo ln -snf /opt/mongo/mongodb-linux-x86_64-ubuntu1604-3.4.0/ /usr/local/mongodb
+    sudo ln -snf /opt/mongo/mongodb-linux-x86_64-ubuntu1604-3.4.1/ /usr/local/mongodb
     
 #### Add Path to bashrc
     
