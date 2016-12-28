@@ -1,7 +1,6 @@
 package com.receiptofi.repository;
 
 import com.receiptofi.domain.PaymentCardEntity;
-import com.receiptofi.domain.annotation.Mobile;
 
 import java.util.List;
 
@@ -13,8 +12,5 @@ public interface PaymentCardManager extends RepositoryManager<PaymentCardEntity>
 
     PaymentCardEntity findCard(String rid, String cardDigit);
 
-    @Mobile
-    PaymentCardEntity findOne(String id, String rid);
-
-    List<PaymentCardEntity> getPaymentCards(String rid);
+    List<PaymentCardEntity> getActivePaymentCards(String rid);
 }

@@ -37,12 +37,8 @@ public class PaymentCardService {
         return paymentCardManager.findCard(rid, cardDigit);
     }
 
-    public List<PaymentCardEntity> getPaymentCards(String rid) {
-        return paymentCardManager.getPaymentCards(rid);
-    }
-
     public List<String> getPaymentCardDigits(String rid) {
-        List<PaymentCardEntity> paymentCards = getPaymentCards(rid);
+        List<PaymentCardEntity> paymentCards = paymentCardManager.getActivePaymentCards(rid);
         return paymentCards.stream().map(PaymentCardEntity::getCardDigit).collect(Collectors.toList());
     }
 }
