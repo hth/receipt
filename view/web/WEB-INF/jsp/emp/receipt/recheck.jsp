@@ -102,13 +102,13 @@
         $(document).ready(function() {
             $( "#businessName" ).autocomplete({
                 source: function (request, response) {
-                    var s = request.term;
-                    var spaces = s.length - s.leftTrim().length;
-                    var bizName;
+                    const s = request.term;
+                    const spaces = s.length - s.leftTrim().length;
+                    let bizName;
                     if (spaces == 1) {
                         bizName = "^" + s.trim();
                     }
-                    if (spaces > 1) {
+                    if (spaces >= 2) {
                         bizName = "^^" + s.trim();
                     }
 
@@ -135,7 +135,8 @@
                         url: '${pageContext. request. contextPath}/ws/r/find_address.htm',
                         data: {
                             term: request.term,
-                            nameParam: $("#businessName").val()
+                            nameParam: $("#businessName").val(),
+                            phoneParam : $("#phone").val()
                         },
                         success: function (data) {
                             console.log('response=', data);
