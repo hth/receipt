@@ -423,7 +423,7 @@
     <div class="mfooter_up">
     </div>
     <div class="mfooter_down">
-        <p class="footer_copy">&#169; 2016 RECEIPTOFI, INC. ALL RIGHTS RESERVED.
+        <p class="footer_copy">&#169; 2017 RECEIPTOFI, INC. ALL RIGHTS RESERVED.
     </div>
 </div>
 </body>
