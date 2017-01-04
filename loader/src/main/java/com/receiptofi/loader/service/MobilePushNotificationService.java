@@ -1,6 +1,7 @@
 package com.receiptofi.loader.service;
 
 import com.receiptofi.domain.RegisteredDeviceEntity;
+import com.receiptofi.domain.json.fcm.JsonMessage;
 import com.receiptofi.domain.types.NotificationSendStateEnum;
 import com.receiptofi.repository.RegisteredDeviceManager;
 import com.receiptofi.utils.CommonUtil;
@@ -21,6 +22,11 @@ import com.notnoop.apns.ApnsDelegate;
 import com.notnoop.apns.ApnsNotification;
 import com.notnoop.apns.ApnsService;
 import com.notnoop.apns.DeliveryError;
+import com.squareup.okhttp.MediaType;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.RequestBody;
+import com.squareup.okhttp.Response;
 import org.json.JSONException;
 import org.json.simple.JSONObject;
 
@@ -42,16 +48,19 @@ import java.util.Map;
 public class MobilePushNotificationService {
     private static final Logger LOG = LoggerFactory.getLogger(MobilePushNotificationService.class);
 
-    private static final String GCM_LINK = "https://android.googleapis.com/gcm/send";
+    private static final String FCM_LINK = "https://fcm.googleapis.com/fcm/send";
+    private static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
-    private String googleServerApiKey;
+    private String firebaseServerKey;
+    private String authorizationKey;
     private RegisteredDeviceManager registeredDeviceManager;
     private ApnsService apnsService;
+    private OkHttpClient client;
 
     @Autowired
     public MobilePushNotificationService(
-            @Value ("${google-server-api-key}")
-            String googleServerApiKey,
+            @Value ("${firebase.server.key}")
+            String firebaseServerKey,
 
             @Value ("${braintree.environment}")
             String brainTreeEnvironment,
@@ -63,7 +72,8 @@ public class MobilePushNotificationService {
     ) {
         Assert.notNull(apnsCertificatePassword, "Empty cert password");
 
-        this.googleServerApiKey = googleServerApiKey;
+        this.firebaseServerKey = firebaseServerKey;
+        this.authorizationKey = "key=" + firebaseServerKey;
         this.registeredDeviceManager = registeredDeviceManager;
 
         if ("PRODUCTION".equals(brainTreeEnvironment)) {
@@ -79,6 +89,8 @@ public class MobilePushNotificationService {
                     .withDelegate(getDelegate())
                     .build();
         }
+
+        client = new OkHttpClient();
     }
 
     private ApnsDelegate getDelegate() {
@@ -118,7 +130,7 @@ public class MobilePushNotificationService {
             LOG.info("Invoked notification for rid={} deviceType={}", registeredDevice.getReceiptUserId(), registeredDevice.getDeviceType());
             switch (registeredDevice.getDeviceType()) {
                 case A:
-                    notificationSendStates.add(invokeGoogleNotification(message, rid, registeredDevice));
+                    notificationSendStates.add(invokeGoogleNotificationFCM(message, rid, registeredDevice));
                     break;
                 case I:
                     notificationSendStates.add(invokeAppleNotification(message, rid, registeredDevice));
@@ -130,6 +142,44 @@ public class MobilePushNotificationService {
         }
 
         return notificationSendStates;
+    }
+
+    private NotificationSendStateEnum invokeGoogleNotificationFCM(String message, String rid, RegisteredDeviceEntity registeredDevice) {
+        NotificationSendStateEnum notificationSendState = NotificationSendStateEnum.FAILED;
+
+        JsonMessage jsonMessage = new JsonMessage(registeredDevice.getToken(), message);
+        LOG.info("Message body={}", jsonMessage.asJson());
+
+        RequestBody body = RequestBody.create(JSON, jsonMessage.asJson());
+        Request request = new Request.Builder()
+                .url(FCM_LINK)
+                .addHeader("Authorization", authorizationKey)
+                .post(body)
+                .build();
+        Response response;
+        try {
+            response = client.newCall(request).execute();
+        } catch (IOException e) {
+            LOG.error("Error making FCM request reason={}", e.getLocalizedMessage(), e);
+            return notificationSendState;
+        }
+
+        LOG.debug("FCM success topic={} response={}", registeredDevice.getToken(), response.body());
+
+        if (!response.isSuccessful()) {
+            if (DateUtil.getDaysBetween(registeredDevice.getUpdated(), DateUtil.nowDate()) > 45) {
+                LOG.warn("Deleting {} device older than 45 days rid={} did={}",
+                        registeredDevice.getDeviceType(), rid, registeredDevice.getDeviceId());
+                registeredDeviceManager.deleteHard(rid, registeredDevice.getDeviceId());
+            } else {
+                LOG.warn("Error while sending notification reason={} deviceId={} rid={}",
+                        response.toString(), registeredDevice.getDeviceId(), rid);
+            }
+        } else {
+            notificationSendState = NotificationSendStateEnum.SUCCESS;
+        }
+
+        return notificationSendState;
     }
 
     private NotificationSendStateEnum invokeGoogleNotification(String message, String rid, RegisteredDeviceEntity registeredDevice) {
@@ -146,9 +196,9 @@ public class MobilePushNotificationService {
             jGcmData.put("data", jData);
 
             // Create connection to send GCM Message request.
-            URL url = new URL(GCM_LINK);
+            URL url = new URL(FCM_LINK);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestProperty("Authorization", "key=" + googleServerApiKey);
+            conn.setRequestProperty("Authorization", "key=" + firebaseServerKey);
             conn.setRequestProperty("Content-Type", "application/json");
             conn.setRequestMethod("POST");
             conn.setDoOutput(true);

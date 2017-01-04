@@ -3,10 +3,13 @@ package com.receiptofi.domain;
 import com.receiptofi.domain.annotation.Mobile;
 import com.receiptofi.domain.types.DeviceTypeEnum;
 
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
+
+import java.io.File;
 
 import javax.validation.constraints.NotNull;
 
@@ -27,6 +30,9 @@ import javax.validation.constraints.NotNull;
         @CompoundIndex (name = "registered_device_rid_token_idx", def = "{'RID': -1, 'TK': -1}", unique = false)
 })
 public class RegisteredDeviceEntity extends BaseEntity {
+
+    private static final String TOPICS = "/topics";
+    private static final String SEPARATOR = File.separator;
 
     @NotNull
     @Field ("RID")
@@ -82,5 +88,10 @@ public class RegisteredDeviceEntity extends BaseEntity {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    @Transient
+    public String getTopic() {
+        return TOPICS + SEPARATOR + token;
     }
 }
