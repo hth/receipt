@@ -130,7 +130,7 @@ public class MobilePushNotificationService {
             LOG.info("Invoked notification for rid={} deviceType={}", registeredDevice.getReceiptUserId(), registeredDevice.getDeviceType());
             switch (registeredDevice.getDeviceType()) {
                 case A:
-                    notificationSendStates.add(invokeGoogleNotificationFCM(message, rid, registeredDevice));
+                    notificationSendStates.add(invokeGoogleNotification(message, rid, registeredDevice));
                     break;
                 case I:
                     notificationSendStates.add(invokeAppleNotification(message, rid, registeredDevice));
@@ -144,7 +144,7 @@ public class MobilePushNotificationService {
         return notificationSendStates;
     }
 
-    private NotificationSendStateEnum invokeGoogleNotificationFCM(String message, String rid, RegisteredDeviceEntity registeredDevice) {
+    private NotificationSendStateEnum invokeGoogleNotification(String message, String rid, RegisteredDeviceEntity registeredDevice) {
         NotificationSendStateEnum notificationSendState = NotificationSendStateEnum.FAILED;
 
         JsonMessage jsonMessage = new JsonMessage(registeredDevice.getToken(), message);
@@ -182,7 +182,8 @@ public class MobilePushNotificationService {
         return notificationSendState;
     }
 
-    private NotificationSendStateEnum invokeGoogleNotification(String message, String rid, RegisteredDeviceEntity registeredDevice) {
+    @Deprecated
+    private NotificationSendStateEnum invokeGoogleNotificationObsolete(String message, String rid, RegisteredDeviceEntity registeredDevice) {
         NotificationSendStateEnum notificationSendState = NotificationSendStateEnum.FAILED;
         try {
             // Prepare JSON containing the GCM message content. What to send and where to send.
