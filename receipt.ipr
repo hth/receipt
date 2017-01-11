@@ -239,6 +239,7 @@
             <element id="library" level="project" name="Gradle: org.springframework:spring-tx:4.3.5.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework:spring-web:4.3.5.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework:spring-webmvc:4.3.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: com.google.guava:guava:21.0-rc2" />
           </element>
           <element id="file-copy" path="$PROJECT_DIR$/view/environment/dev/mongo-config.xml" />
           <element id="file-copy" path="$PROJECT_DIR$/view/environment/dev/receipt-servlet.xml" />
