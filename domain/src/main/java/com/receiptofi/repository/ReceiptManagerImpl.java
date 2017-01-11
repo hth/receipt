@@ -40,6 +40,7 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.convert.ConverterNotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -141,24 +142,32 @@ public class ReceiptManagerImpl implements ReceiptManager {
 
     @Override
     public Iterator<ReceiptGrouped> getAllObjectsGroupedByDate(String rid) {
-        GroupBy groupBy = GroupBy.key("T", "M", "Y")
-                .initialDocument("{ splitTotal: 0 }")
-                .reduceFunction("function(obj, result) { " +
-                        "  result.day = obj.T; " +
-                        "  result.month = obj.M; " +
-                        "  result.year = obj.Y; " +
-                        "  result.countryShortName = obj.CS; " +
-                        "  result.splitTotal += obj.ST; " +
-                        "}");
+        try {
+            GroupBy groupBy = GroupBy.key("T", "M", "Y")
+                    .initialDocument("{ splitTotal: 0 }")
+                    .reduceFunction("function(obj, result) { " +
+                            "  result.day = obj.T; " +
+                            "  result.month = obj.M; " +
+                            "  result.year = obj.Y; " +
+                            "  result.countryShortName = obj.CS; " +
+                            "  result.splitTotal += obj.ST; " +
+                            "}");
 
-        Criteria criteria = where("RID").is(rid)
-                .andOperator(
-                        isActive(),
-                        isNotDeleted()
-                );
+            Criteria criteria = where("RID").is(rid)
+                    .andOperator(
+                            isActive(),
+                            isNotDeleted()
+                    );
 
-        GroupByResults<ReceiptGrouped> results = mongoTemplate.group(criteria, TABLE, groupBy, ReceiptGrouped.class);
-        return results.iterator();
+            GroupByResults<ReceiptGrouped> results = mongoTemplate.group(criteria, TABLE, groupBy, ReceiptGrouped.class);
+            return results.iterator();
+        } catch (ConverterNotFoundException e) {
+            LOG.error("Could missing element reason={}", e.getLocalizedMessage(), e);
+            return null;
+        } catch (Exception e) {
+            LOG.error("Failed reason={}", e.getLocalizedMessage(), e);
+            return null;
+        }
     }
 
     /**
