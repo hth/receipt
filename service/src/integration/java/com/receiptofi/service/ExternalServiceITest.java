@@ -40,8 +40,8 @@ public class ExternalServiceITest extends ITest {
         Assert.notEmpty(geocodingResults);
         DecodedAddress decodedAddress = DecodedAddress.newInstance(geocodingResults, address);
 
-        Assert.isTrue(101.670489 == geocodingResults[0].geometry.location.lng, "Not matching lng");
-        Assert.isTrue(3.134055 == geocodingResults[0].geometry.location.lat, "Not matching lat");
+        Assert.isTrue(101.6705077 == geocodingResults[0].geometry.location.lng, "Not matching lng");
+        Assert.isTrue(3.1340549 == geocodingResults[0].geometry.location.lat, "Not matching lat");
         Assert.isTrue("MY".equals(decodedAddress.getCountryShortName()), "Country short name is not MY");
 
         Assert.isTrue(formattedAddress.equals(decodedAddress.getFormattedAddress()), "Formatted address matches " + decodedAddress.getFormattedAddress());
