@@ -376,7 +376,7 @@ public class LandingService {
 
             /** Added document uploaded successfully. */
             notificationService.addNotification(
-                    fileSystem.getOriginalFilename() + " upload successful. Receipt will be processed shortly.",
+                    fileSystem.getOriginalFilename() + " upload successful. Having technical issues. Receipt will be processed within 24hrs.",
                     NotificationTypeEnum.DOCUMENT_UPLOADED,
                     NotificationGroupEnum.F,
                     document);
