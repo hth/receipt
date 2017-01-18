@@ -363,7 +363,13 @@ subprojects {
 }
 
 project(':common') {
+    apply plugin: 'war'
     jar.baseName = baseName + '-common'
+
+    dependencies {
+        providedCompile 'javax.servlet:javax.servlet-api:3.1.+'
+        runtime 'javax.servlet:jstl:1.+'
+    }
 }
 
 project(':loader') {
