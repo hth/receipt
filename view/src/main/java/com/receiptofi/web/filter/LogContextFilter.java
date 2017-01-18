@@ -1,20 +1,19 @@
 package com.receiptofi.web.filter;
 
+import static com.receiptofi.utils.HttpUtil.extractDataFromURL;
+import static com.receiptofi.utils.HttpUtil.getHeader;
+import static com.receiptofi.utils.HttpUtil.getHeadersInfo;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
-
-import org.springframework.util.CollectionUtils;
 
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
-import java.util.Enumeration;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-import java.util.regex.Pattern;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -42,8 +41,6 @@ import javax.servlet.http.HttpServletResponseWrapper;
 public class LogContextFilter implements Filter {
     private static final Logger LOG = LoggerFactory.getLogger(LogContextFilter.class);
 
-    private static final Pattern EXTRACT_ENDPOINT_PATTERN =
-            Pattern.compile("^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\\?([^#]*))?(#(.*))?");
     private static final String REQUEST_ID_MDC_KEY = "X-REQUEST-ID";
 
     public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
@@ -75,28 +72,6 @@ public class LogContextFilter implements Filter {
         }
     }
 
-    private String getHeader(Map<String, String> allHeadersMap, String header) {
-        return CollectionUtils.isEmpty(allHeadersMap) && !allHeadersMap.containsKey(header) ? "" : allHeadersMap.get(header);
-    }
-
-    private String extractDataFromURL(String uri, String group) {
-        return EXTRACT_ENDPOINT_PATTERN.matcher(uri).replaceFirst(group);
-    }
-
-    private Map<String, String> getHeadersInfo(HttpServletRequest request) {
-
-        Map<String, String> map = new HashMap<>();
-
-        Enumeration headerNames = request.getHeaderNames();
-        while (headerNames.hasMoreElements()) {
-            String key = (String) headerNames.nextElement();
-            String value = request.getHeader(key);
-            map.put(key, value);
-        }
-
-        return map;
-    }
-
     public void init(FilterConfig filterConfig) {
         LOG.info("Initialized logContextFilter");
     }
@@ -121,7 +96,7 @@ public class LogContextFilter implements Filter {
     }
 
     private class ForceGetRequestWrapper extends HttpServletRequestWrapper {
-        public ForceGetRequestWrapper(HttpServletRequest request) {
+        ForceGetRequestWrapper(HttpServletRequest request) {
             super(request);
         }
 
@@ -134,7 +109,7 @@ public class LogContextFilter implements Filter {
         private final NoBodyOutputStream noBodyOutputStream = new NoBodyOutputStream();
         private PrintWriter writer;
 
-        public NoBodyResponseWrapper(HttpServletResponse response) {
+        NoBodyResponseWrapper(HttpServletResponse response) {
             super(response);
         }
 
