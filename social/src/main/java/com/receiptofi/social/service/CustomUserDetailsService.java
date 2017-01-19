@@ -88,12 +88,13 @@ public class CustomUserDetailsService implements UserDetailsService {
     private String accountSignupIncompleteMessage;
 
     /**
-     * @param email - lower case string
+     * @param emailAddress - lower case string
      * @return
      * @throws UsernameNotFoundException
      */
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String emailAddress) throws UsernameNotFoundException {
+        String email = StringUtils.lowerCase(emailAddress);
         LOG.info("login attempted user={}", email);
 
         /** Always check user login with lower letter email case. */
