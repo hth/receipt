@@ -8,8 +8,6 @@ import com.receiptofi.service.RegistrationService;
 import com.receiptofi.social.annotation.Social;
 import com.receiptofi.social.service.CustomUserDetailsService;
 
-import org.apache.commons.lang3.StringUtils;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -79,7 +77,7 @@ public final class SignInAdapterImpl implements SignInAdapter {
         UserDetails user;
         if (localUserId.contains("@")) {
             LOG.info("signin in user={} from receiptofi login page", localUserId);
-            user = customUserDetailsService.loadUserByUsername(StringUtils.lowerCase(localUserId));
+            user = customUserDetailsService.loadUserByUsername(localUserId);
         } else {
             userSignedInUsingProvider(localUserId, request);
             user = customUserDetailsService.loadUserByProviderUserId(localUserId);
