@@ -1,8 +1,5 @@
 package com.receiptofi.social.user;
 
-import static com.receiptofi.utils.HttpUtil.getHeader;
-import static com.receiptofi.utils.HttpUtil.getHeadersInfo;
-
 import com.receiptofi.domain.types.ProviderEnum;
 import com.receiptofi.service.RegistrationService;
 import com.receiptofi.social.annotation.Social;
@@ -28,7 +25,6 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.context.request.ServletWebRequest;
 
 import java.util.Collection;
-import java.util.Map;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
@@ -64,16 +60,6 @@ public final class SignInAdapterImpl implements SignInAdapter {
     }
 
     public String signIn(String localUserId, Connection<?> connection, NativeWebRequest request) {
-        HttpServletRequest httpServletRequest = (HttpServletRequest) request;
-        Map<String, String> headerMap = getHeadersInfo(httpServletRequest);
-
-        LOG.info("Request received:"
-                + " Host=\"" + getHeader(headerMap, "host") + "\""
-                + " UserAgent=\"" + getHeader(headerMap, "user-agent") + "\""
-                + " Accept=\"" + getHeader(headerMap, "accept") + "\""
-                + " ForwardedFor=\"" + getHeader(headerMap, "x-forwarded-for") + "\""
-        );
-
         UserDetails user;
         if (localUserId.contains("@")) {
             LOG.info("signin in user={} from receiptofi login page", localUserId);
