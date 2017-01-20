@@ -108,7 +108,8 @@ public class ConnectionServiceImpl implements ConnectionService {
         if (ProviderEnum.valueOf(userConn.getKey().getProviderId().toUpperCase()) == ProviderEnum.FACEBOOK) {
             Facebook facebook = getFacebook(userAccountFromConnection);
             User user = getFacebookUser(facebook);
-            UserProfileEntity userProfile = userProfileManager.findByEmail(user.getEmail());
+            String email = user.getEmail().toLowerCase();
+            UserProfileEntity userProfile = userProfileManager.findByEmail(email);
 
             if (userProfile == null) {
                 UserAccountEntity userAccount = null;
@@ -136,7 +137,7 @@ public class ConnectionServiceImpl implements ConnectionService {
                     throw new UserAccountDuplicateException("Found existing user with similar login");
                 }
             } else if (!userProfile.isActive()) {
-                update(user.getEmail(), userConn);
+                update(email, userConn);
             } else if (userProfile.getProviderId() != ProviderEnum.FACEBOOK) {
                 LOG.warn("Account already exists rid={} email={} pid={}",
                         userProfile.getReceiptUserId(), userProfile.getEmail(), userProfile.getProviderId());
@@ -145,7 +146,8 @@ public class ConnectionServiceImpl implements ConnectionService {
         } else {
             Google google = getGoogle(userAccountFromConnection);
             Person person = getGooglePerson(google);
-            UserProfileEntity userProfile = userProfileManager.findByEmail(person.getAccountEmail());
+            String email = person.getAccountEmail().toLowerCase();
+            UserProfileEntity userProfile = userProfileManager.findByEmail(email);
 
             if (userProfile == null) {
                 UserAccountEntity userAccount = null;
@@ -173,7 +175,7 @@ public class ConnectionServiceImpl implements ConnectionService {
                     throw new UserAccountDuplicateException("Found existing user with similar login");
                 }
             } else if (!userProfile.isActive()) {
-                update(person.getAccountEmail(), userConn);
+                update(email, userConn);
             } else if (userProfile.getProviderId() != ProviderEnum.GOOGLE) {
                 LOG.warn("Account already exists rid={} email={} pid={}",
                         userProfile.getReceiptUserId(), userProfile.getEmail(), userProfile.getProviderId());
