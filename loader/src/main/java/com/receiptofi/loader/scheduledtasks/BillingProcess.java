@@ -145,6 +145,7 @@ public class BillingProcess {
                                                     BilledStatusEnum.NB,
                                                     BillingPlanEnum.NB,
                                                     billingAccount.getRid());
+                                            LOG.warn("NB set for rid={}", billingAccount.getRid());
 
                                             billingAccount.setBillingPlan(BillingPlanEnum.NB);
                                             billingService.save(billingAccount);
