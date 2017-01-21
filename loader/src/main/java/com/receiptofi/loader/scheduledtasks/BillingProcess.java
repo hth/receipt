@@ -277,6 +277,12 @@ public class BillingProcess {
                         monthlyCount, skippedMonthlyCount,
                         annualCount, skippedAnnualCount
                 );
+
+                if (0 < billingService.countBillingHistory(billedForMonth, BillingPlanEnum.P)) {
+                    LOG.warn("Warning about billing marked as NOT plan={}", BillingPlanEnum.P.getDescription());
+                } else {
+                    LOG.info("All billing marked as plan={}", BillingPlanEnum.P.getDescription());
+                }
             }
         } else {
             LOG.info("Feature is {}", billingProcessStatus);
