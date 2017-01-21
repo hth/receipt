@@ -4,10 +4,7 @@ import com.receiptofi.domain.RegisteredDeviceEntity;
 import com.receiptofi.domain.json.fcm.JsonMessage;
 import com.receiptofi.domain.types.NotificationSendStateEnum;
 import com.receiptofi.repository.RegisteredDeviceManager;
-import com.receiptofi.utils.CommonUtil;
 import com.receiptofi.utils.DateUtil;
-
-import org.apache.commons.io.IOUtils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,14 +24,8 @@ import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.Response;
-import org.json.JSONException;
-import org.json.simple.JSONObject;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -177,68 +168,6 @@ public class MobilePushNotificationService {
             }
         } else {
             notificationSendState = NotificationSendStateEnum.SUCCESS;
-        }
-
-        return notificationSendState;
-    }
-
-    @Deprecated
-    private NotificationSendStateEnum invokeGoogleNotificationObsolete(String message, String rid, RegisteredDeviceEntity registeredDevice) {
-        NotificationSendStateEnum notificationSendState = NotificationSendStateEnum.FAILED;
-        try {
-            // Prepare JSON containing the GCM message content. What to send and where to send.
-            JSONObject jGcmData = new JSONObject();
-            JSONObject jData = new JSONObject();
-            jData.put("message", message);
-            // Where to send GCM message.
-            jGcmData.put("to", "/topics/" + registeredDevice.getDeviceId());
-
-            // What to send in GCM message.
-            jGcmData.put("data", jData);
-
-            // Create connection to send GCM Message request.
-            URL url = new URL(FCM_LINK);
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestProperty("Authorization", "key=" + firebaseServerKey);
-            conn.setRequestProperty("Content-Type", "application/json");
-            conn.setRequestMethod("POST");
-            conn.setDoOutput(true);
-
-            // Send GCM message content.
-            OutputStream outputStream = conn.getOutputStream();
-            outputStream.write(jGcmData.toString().getBytes());
-
-            // Read GCM response.
-            InputStream inputStream = conn.getInputStream();
-            String resp = IOUtils.toString(inputStream);
-            if (CommonUtil.isJSONValid(resp)) {
-                try {
-                    org.json.JSONObject jo = new org.json.JSONObject(resp);
-                    if (jo.has("error")) {
-                        if (DateUtil.getDaysBetween(registeredDevice.getUpdated(), DateUtil.nowDate()) > 45) {
-                            LOG.warn("Deleting {} device older than 45 days rid={} did={}",
-                                    registeredDevice.getDeviceType(), rid, registeredDevice.getDeviceId());
-                            registeredDeviceManager.deleteHard(rid, registeredDevice.getDeviceId());
-                        } else {
-                            LOG.warn("Error while sending notification reason={} deviceId={} rid={}",
-                                    jo.getString("error"), registeredDevice.getDeviceId(), rid);
-                        }
-                    }
-
-                    if (jo.has("message_id")) {
-                        LOG.info("Success sending notification messageId={} deviceId={} rid={}",
-                                jo.getInt("message_id"), registeredDevice.getDeviceId(), rid);
-
-                        notificationSendState = NotificationSendStateEnum.SUCCESS;
-                    }
-                } catch (JSONException e) {
-                    LOG.error("Failed parsing JSON string={}", resp);
-                }
-            } else {
-                LOG.info(resp);
-            }
-        } catch (IOException e) {
-            LOG.error("Unable to send GCM message. Reason={}", e.getLocalizedMessage(), e);
         }
 
         return notificationSendState;
