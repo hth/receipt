@@ -117,7 +117,8 @@ public class MobilePushNotificationProcess {
                             for (UserAccountEntity userAccount : userAccounts) {
                                 mobilePushNotificationService.sendNotification(
                                         "New document received.",
-                                        userAccount.getReceiptUserId());
+                                        userAccount.getReceiptUserId(),
+                                        true);
                             }
                             success++;
                             break;
@@ -130,7 +131,8 @@ public class MobilePushNotificationProcess {
                             for (UserAccountEntity userAccount : userAccounts) {
                                 mobilePushNotificationService.sendNotification(
                                         "Re-check document received.",
-                                        userAccount.getReceiptUserId());
+                                        userAccount.getReceiptUserId(),
+                                        true);
                             }
                             success++;
                             break;
@@ -199,7 +201,8 @@ public class MobilePushNotificationProcess {
                 try {
                     List<NotificationSendStateEnum> notificationSendStates = mobilePushNotificationService.sendNotification(
                             notification.getMessage(),
-                            notification.getReceiptUserId());
+                            notification.getReceiptUserId(),
+                            false);
                     LOG.info("Attempts to send notification count={} rid={}", notificationSendStates.size(), notification.getReceiptUserId());
 
                     boolean atLeastOneNotificationSent = false;

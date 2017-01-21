@@ -113,7 +113,7 @@ public class MobilePushNotificationService {
         };
     }
 
-    public List<NotificationSendStateEnum> sendNotification(String message, String rid) {
+    public List<NotificationSendStateEnum> sendNotification(String message, String rid, boolean sound) {
         List<RegisteredDeviceEntity> registeredDevices = registeredDeviceManager.getDevicesForRid(rid);
 
         List<NotificationSendStateEnum> notificationSendStates = new LinkedList<>();
@@ -124,7 +124,7 @@ public class MobilePushNotificationService {
                     notificationSendStates.add(invokeGoogleNotification(message, rid, registeredDevice));
                     break;
                 case I:
-                    notificationSendStates.add(invokeAppleNotification(message, rid, registeredDevice));
+                    notificationSendStates.add(invokeAppleNotification(message, rid, registeredDevice, sound));
                     break;
                 default:
                     LOG.error("DeviceTypeEnum={} not defined", registeredDevice.getDeviceType());
@@ -173,18 +173,27 @@ public class MobilePushNotificationService {
         return notificationSendState;
     }
 
-    private NotificationSendStateEnum invokeAppleNotification(String message, String rid, RegisteredDeviceEntity registeredDevice) {
+    private NotificationSendStateEnum invokeAppleNotification(String message, String rid, RegisteredDeviceEntity registeredDevice, boolean sound) {
         LOG.info("Invoked apple notification rid={}", rid);
 
         NotificationSendStateEnum notificationSendState = NotificationSendStateEnum.FAILED;
         if (null == registeredDevice.getToken()) {
             LOG.info("Skipped notifying as token is missing rid={}", rid);
         } else {
-            String payload = APNS.newPayload()
-                    .alertBody(message)
-                    .sound("default")
-                    .instantDeliveryOrSilentNotification()
-                    .build();
+            String payload;
+
+            if (sound) {
+                payload = APNS.newPayload()
+                        .alertBody(message)
+                        .sound("default")
+                        .instantDeliveryOrSilentNotification()
+                        .build();
+            } else {
+                payload = APNS.newPayload()
+                        .alertBody(message)
+                        .instantDeliveryOrSilentNotification()
+                        .build();
+            }
             try {
                 apnsService.push(registeredDevice.getToken(), payload);
                 Map<String, Date> inactiveDevices = apnsService.getInactiveDevices();
