@@ -141,8 +141,8 @@ public class SkippedRidsService {
              * Groups can also be "semi-open" (or -closed) on one side, such as the natural group [1,4),
              * which would consist of 1,2,3; or (1,4], consisting of 2,3,4.
              */
-            skippedRids.add(start);
             start++;
+            skippedRids.add(start);
         }
         skippedRids.removeAll(userAccountWithIds);
         return skippedRids;
