@@ -114,4 +114,18 @@ To change password
                    
 #### Find background jobs
                    
-    jobs -l                   
+    jobs -l              
+         
+#### To delete all index on Elastic 
+
+Note: Do not delete all, unless you open all the dashboard or save all the dashboard, since they will get deleted 
+    
+    curl -XDELETE 'http://localhost:9200/*/'
+    curl -XDELETE 'http://localhost:9200/filebeat-2016.**.**/'
+    curl -XDELETE 'http://localhost:9200/filebeat-2017.01.**/'
+    
+To see stats, indices on host where `Elastic` is setup
+    
+    curl -XGET http://localhost:9200/_stats
+    curl -XGET http://localhost:9200/_cat/indices?v
+    curl -XGET http://localhost:9200/_all/_search?pretty         
