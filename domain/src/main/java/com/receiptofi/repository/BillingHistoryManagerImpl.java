@@ -10,6 +10,7 @@ import static org.springframework.data.mongodb.core.query.Query.query;
 import com.receiptofi.domain.BaseEntity;
 import com.receiptofi.domain.BillingHistoryEntity;
 import com.receiptofi.domain.types.BilledStatusEnum;
+import com.receiptofi.domain.types.BillingPlanEnum;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -97,5 +98,10 @@ public class BillingHistoryManagerImpl implements BillingHistoryManager {
                 ),
                 BillingHistoryEntity.class
         );
+    }
+
+    @Override
+    public long countBillingHistory(String billedForMonth, BillingPlanEnum billingPlan) {
+        return mongoTemplate.count(query(where("BS").ne(billingPlan).and("BM").is(billedForMonth)), BillingHistoryEntity.class);
     }
 }
