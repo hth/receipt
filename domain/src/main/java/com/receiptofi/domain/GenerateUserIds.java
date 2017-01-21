@@ -16,7 +16,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 })
 @Document (collection = "GENERATE_USER_IDS")
 public class GenerateUserIds {
-    public static final long STARTING_USER_ID = 10_000_000_001L;
+    public static final long STARTING_USER_ID = 10_000_000_000L;
 
     @Id
     private final String className;
