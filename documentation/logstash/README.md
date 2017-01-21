@@ -221,14 +221,14 @@ To delete all index
 Note: Do not delete all, unless you open all the dashboard or save all the dashboard, since they will get deleted 
 
 	curl -XDELETE 'http://localhost:9200/*/'
-	curl -XDELETE 'http://192.168.1.74:9200/logstash-2014.09.05/'
-	curl -XDELETE 'http://192.168.1.74:9200/logstash-2014.06.**/'
+	curl -XDELETE 'http://localhost:9200/filebeat-2016.**.**/'
+	curl -XDELETE 'http://localhost:9200/filebeat-2017.01.**/'
 
-To see stats, indices
+To see stats, indices on host where `Elastic` is setup
 
-	http://192.168.1.74:9200/_stats
-	http://192.168.1.74:9200/_cat/indices?v
-	http://192.168.1.74:9200/_all/_search?pretty
+	curl -XGET http://localhost:9200/_stats
+	curl -XGET http://localhost:9200/_cat/indices?v
+	curl -XGET http://localhost:9200/_all/_search?pretty
 
 Install Logstash on Central Server
 
