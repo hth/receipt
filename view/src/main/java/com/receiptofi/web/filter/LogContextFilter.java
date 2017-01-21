@@ -52,7 +52,7 @@ public class LogContextFilter implements Filter {
         String url = httpServletRequest.getRequestURL().toString();
         String query = httpServletRequest.getQueryString();
 
-        LOG.info("Request received:"
+        LOG.debug("Request received:"
                         + " Host=\"" + getHeader(headerMap, "host") + "\""
                         + " UserAgent=\"" + getHeader(headerMap, "user-agent") + "\""
                         + " Accept=\"" + getHeader(headerMap, "accept") + "\""
@@ -89,6 +89,7 @@ public class LogContextFilter implements Filter {
      * crawlers when a valid user has logged in. We plan to use this until a decision would be made in near future.
      * <p>
      * The reason for this addition has already been fixed in code at location below.
+     *
      * @see com.receiptofi.web.controller.open.IndexController#index(org.springframework.ui.ModelMap)
      */
     private boolean isHttpHead(HttpServletRequest request) {
