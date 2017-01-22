@@ -97,7 +97,6 @@
             <element id="library" level="project" name="Gradle: org.quartz-scheduler:quartz:2.2.3" />
             <element id="library" level="project" name="Gradle: com.notnoop.apns:apns:1.0.0.Beta6" />
             <element id="library" level="project" name="Gradle: aopalliance:aopalliance:1.0" />
-            <element id="library" level="project" name="Gradle: org.apache.commons:commons-lang3:3.4" />
             <element id="library" level="project" name="Gradle: commons-codec:commons-codec:1.10" />
             <element id="library" level="project" name="Gradle: commons-logging:commons-logging:1.2" />
             <element id="library" level="project" name="Gradle: com.googlecode.owasp-java-html-sanitizer:owasp-java-html-sanitizer:r239" />
@@ -239,7 +238,6 @@
             <element id="library" level="project" name="Gradle: org.springframework:spring-tx:4.3.5.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework:spring-web:4.3.5.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework:spring-webmvc:4.3.5.RELEASE" />
-            <element id="library" level="project" name="Gradle: com.google.guava:guava:21.0-rc2" />
           </element>
           <element id="file-copy" path="$PROJECT_DIR$/view/environment/dev/mongo-config.xml" />
           <element id="file-copy" path="$PROJECT_DIR$/view/environment/dev/receipt-servlet.xml" />
