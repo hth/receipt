@@ -175,7 +175,6 @@
             <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-keyvalue:1.1.3.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-redis:1.7.3.RELEASE" />
             <element id="library" level="project" name="Gradle: com.sun.mail:javax.mail:1.5.5" />
-            <element id="library" level="project" name="Gradle: net.bull.javamelody:javamelody-core:1.62.0" />
             <element id="library" level="project" name="Gradle: net.iharder:base64:2.3.9" />
             <element id="library" level="project" name="Gradle: net.markenwerk:commons-nulls:1.0.2" />
             <element id="library" level="project" name="Gradle: net.markenwerk:utils-data-fetcher:4.0.1" />
@@ -210,7 +209,6 @@
             <element id="library" level="project" name="Gradle: com.fasterxml:classmate:1.3.3" />
             <element id="library" level="project" name="Gradle: com.google.code.gson:gson:2.8.0" />
             <element id="library" level="project" name="Gradle: com.googlecode.libphonenumber:libphonenumber:8.0.0" />
-            <element id="library" level="project" name="Gradle: joda-time:joda-time:2.9.6" />
             <element id="library" level="project" name="Gradle: net.logstash.logback:logstash-logback-encoder:4.8" />
             <element id="library" level="project" name="Gradle: org.json:json:20160810" />
             <element id="library" level="project" name="Gradle: org.slf4j:slf4j-api:1.7.22" />
@@ -238,6 +236,10 @@
             <element id="library" level="project" name="Gradle: org.springframework:spring-tx:4.3.5.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework:spring-web:4.3.5.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework:spring-webmvc:4.3.5.RELEASE" />
+            <element id="library" level="project" name="Gradle: com.google.guava:guava:21.0" />
+            <element id="library" level="project" name="Gradle: joda-time:joda-time:2.9.7" />
+            <element id="library" level="project" name="Gradle: net.bull.javamelody:javamelody-core:1.63.0" />
+            <element id="library" level="project" name="Gradle: org.apache.commons:commons-lang3:3.5" />
           </element>
           <element id="file-copy" path="$PROJECT_DIR$/view/environment/dev/mongo-config.xml" />
           <element id="file-copy" path="$PROJECT_DIR$/view/environment/dev/receipt-servlet.xml" />
@@ -337,7 +339,9 @@
             <element id="library" level="project" name="Gradle: org.aspectj:aspectjrt:1.8.9" />
             <element id="library" level="project" name="Gradle: org.slf4j:slf4j-api:1.7.22" />
             <element id="library" level="project" name="Gradle: org.hibernate:hibernate-validator:5.3.0.Final" />
+            <element id="library" level="project" name="Gradle: joda-time:joda-time:2.9.7" />
             <element id="library" level="project" name="Gradle: org.freemarker:freemarker:2.3.23" />
+            <element id="library" level="project" name="Gradle: com.google.guava:guava:21.0" />
             <element id="library" level="project" name="Gradle: com.google.code.gson:gson:2.8.0" />
             <element id="library" level="project" name="Gradle: com.google.maps:google-maps-services:0.1.17" />
             <element id="library" level="project" name="Gradle: com.googlecode.libphonenumber:libphonenumber:8.0.0" />
@@ -363,6 +367,7 @@
             <element id="library" level="project" name="Gradle: ch.qos.logback:logback-core:1.1.7" />
             <element id="library" level="project" name="Gradle: ch.qos.logback:logback-classic:1.1.7" />
             <element id="library" level="project" name="Gradle: net.logstash.logback:logstash-logback-encoder:4.8" />
+            <element id="library" level="project" name="Gradle: net.bull.javamelody:javamelody-core:1.63.0" />
             <element id="library" level="project" name="Gradle: junit:junit:4.12" />
             <element id="archive" name="com.receiptofi-common.jar">
               <element id="module-output" name="common_main" />
@@ -371,6 +376,7 @@
             <element id="library" level="project" name="Gradle: org.aspectj:aspectjweaver:1.8.9" />
             <element id="library" level="project" name="Gradle: org.springframework:spring-messaging:4.3.5.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework.security:spring-security-acl:4.2.1.RELEASE" />
+            <element id="library" level="project" name="Gradle: javax.servlet:jstl:1.2" />
             <element id="library" level="project" name="Gradle: org.slf4j:jcl-over-slf4j:1.7.21" />
             <element id="library" level="project" name="Gradle: org.osgi:org.osgi.core:4.2.0" />
             <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-keyvalue:1.1.3.RELEASE" />
@@ -478,14 +484,10 @@
             <element id="library" level="project" name="Gradle: org.springframework.social:spring-social-config:1.1.4.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-commons:1.13.0.M1" />
             <element id="library" level="project" name="Gradle: org.json:json:20160810" />
-            <element id="library" level="project" name="Gradle: com.google.guava:guava:21.0" />
-            <element id="library" level="project" name="Gradle: javax.servlet:jstl:1.2" />
             <element id="archive" name="com.receiptofi-domain.jar">
               <element id="module-output" name="domain_main" />
               <element id="dir-copy" path="$PROJECT_DIR$/domain/build/resources/main" />
             </element>
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/joda-time/joda-time/2.9.7/6eb2e87ddb09e944bb88f06f19ba0638d4607ffd/joda-time-2.9.7.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/net.bull.javamelody/javamelody-core/1.63.0/a20c895599af5cec865388e1005b1a725f2d7a1d/javamelody-core-1.63.0.jar" />
           </element>
         </element>
       </root>
@@ -565,7 +567,9 @@
             <element id="library" level="project" name="Gradle: org.aspectj:aspectjrt:1.8.9" />
             <element id="library" level="project" name="Gradle: org.slf4j:slf4j-api:1.7.22" />
             <element id="library" level="project" name="Gradle: org.hibernate:hibernate-validator:5.3.0.Final" />
+            <element id="library" level="project" name="Gradle: joda-time:joda-time:2.9.7" />
             <element id="library" level="project" name="Gradle: org.freemarker:freemarker:2.3.23" />
+            <element id="library" level="project" name="Gradle: com.google.guava:guava:21.0" />
             <element id="library" level="project" name="Gradle: com.google.code.gson:gson:2.8.0" />
             <element id="library" level="project" name="Gradle: com.google.maps:google-maps-services:0.1.17" />
             <element id="library" level="project" name="Gradle: com.googlecode.libphonenumber:libphonenumber:8.0.0" />
@@ -591,6 +595,7 @@
             <element id="library" level="project" name="Gradle: ch.qos.logback:logback-core:1.1.7" />
             <element id="library" level="project" name="Gradle: ch.qos.logback:logback-classic:1.1.7" />
             <element id="library" level="project" name="Gradle: net.logstash.logback:logstash-logback-encoder:4.8" />
+            <element id="library" level="project" name="Gradle: net.bull.javamelody:javamelody-core:1.63.0" />
             <element id="library" level="project" name="Gradle: junit:junit:4.12" />
             <element id="archive" name="com.receiptofi-common.jar">
               <element id="module-output" name="common_main" />
@@ -599,6 +604,7 @@
             <element id="library" level="project" name="Gradle: org.aspectj:aspectjweaver:1.8.9" />
             <element id="library" level="project" name="Gradle: org.springframework:spring-messaging:4.3.5.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework.security:spring-security-acl:4.2.1.RELEASE" />
+            <element id="library" level="project" name="Gradle: javax.servlet:jstl:1.2" />
             <element id="library" level="project" name="Gradle: org.slf4j:jcl-over-slf4j:1.7.21" />
             <element id="library" level="project" name="Gradle: org.osgi:org.osgi.core:4.2.0" />
             <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-keyvalue:1.1.3.RELEASE" />
@@ -706,8 +712,6 @@
             <element id="library" level="project" name="Gradle: org.springframework.social:spring-social-config:1.1.4.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-commons:1.13.0.M1" />
             <element id="library" level="project" name="Gradle: org.json:json:20160810" />
-            <element id="library" level="project" name="Gradle: com.google.guava:guava:21.0" />
-            <element id="library" level="project" name="Gradle: javax.servlet:jstl:1.2" />
             <element id="archive" name="com.receiptofi-domain.jar">
               <element id="module-output" name="domain_main" />
               <element id="dir-copy" path="$PROJECT_DIR$/domain/build/resources/main" />
@@ -716,8 +720,6 @@
               <element id="module-output" name="service_main" />
               <element id="dir-copy" path="$PROJECT_DIR$/service/build/resources/main" />
             </element>
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/joda-time/joda-time/2.9.7/6eb2e87ddb09e944bb88f06f19ba0638d4607ffd/joda-time-2.9.7.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/net.bull.javamelody/javamelody-core/1.63.0/a20c895599af5cec865388e1005b1a725f2d7a1d/javamelody-core-1.63.0.jar" />
           </element>
         </element>
       </root>
@@ -797,7 +799,9 @@
             <element id="library" level="project" name="Gradle: org.aspectj:aspectjrt:1.8.9" />
             <element id="library" level="project" name="Gradle: org.slf4j:slf4j-api:1.7.22" />
             <element id="library" level="project" name="Gradle: org.hibernate:hibernate-validator:5.3.0.Final" />
+            <element id="library" level="project" name="Gradle: joda-time:joda-time:2.9.7" />
             <element id="library" level="project" name="Gradle: org.freemarker:freemarker:2.3.23" />
+            <element id="library" level="project" name="Gradle: com.google.guava:guava:21.0" />
             <element id="library" level="project" name="Gradle: com.google.code.gson:gson:2.8.0" />
             <element id="library" level="project" name="Gradle: com.google.maps:google-maps-services:0.1.17" />
             <element id="library" level="project" name="Gradle: com.googlecode.libphonenumber:libphonenumber:8.0.0" />
@@ -823,6 +827,7 @@
             <element id="library" level="project" name="Gradle: ch.qos.logback:logback-core:1.1.7" />
             <element id="library" level="project" name="Gradle: ch.qos.logback:logback-classic:1.1.7" />
             <element id="library" level="project" name="Gradle: net.logstash.logback:logstash-logback-encoder:4.8" />
+            <element id="library" level="project" name="Gradle: net.bull.javamelody:javamelody-core:1.63.0" />
             <element id="library" level="project" name="Gradle: junit:junit:4.12" />
             <element id="archive" name="com.receiptofi-common.jar">
               <element id="module-output" name="common_main" />
@@ -831,6 +836,7 @@
             <element id="library" level="project" name="Gradle: org.aspectj:aspectjweaver:1.8.9" />
             <element id="library" level="project" name="Gradle: org.springframework:spring-messaging:4.3.5.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework.security:spring-security-acl:4.2.1.RELEASE" />
+            <element id="library" level="project" name="Gradle: javax.servlet:jstl:1.2" />
             <element id="library" level="project" name="Gradle: org.slf4j:jcl-over-slf4j:1.7.21" />
             <element id="library" level="project" name="Gradle: org.osgi:org.osgi.core:4.2.0" />
             <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-keyvalue:1.1.3.RELEASE" />
@@ -938,8 +944,6 @@
             <element id="library" level="project" name="Gradle: org.springframework.social:spring-social-config:1.1.4.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-commons:1.13.0.M1" />
             <element id="library" level="project" name="Gradle: org.json:json:20160810" />
-            <element id="library" level="project" name="Gradle: com.google.guava:guava:21.0" />
-            <element id="library" level="project" name="Gradle: javax.servlet:jstl:1.2" />
             <element id="archive" name="com.receiptofi-service.jar">
               <element id="module-output" name="service_main" />
               <element id="dir-copy" path="$PROJECT_DIR$/service/build/resources/main" />
@@ -948,8 +952,6 @@
               <element id="module-output" name="domain_main" />
               <element id="dir-copy" path="$PROJECT_DIR$/domain/build/resources/main" />
             </element>
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/joda-time/joda-time/2.9.7/6eb2e87ddb09e944bb88f06f19ba0638d4607ffd/joda-time-2.9.7.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/net.bull.javamelody/javamelody-core/1.63.0/a20c895599af5cec865388e1005b1a725f2d7a1d/javamelody-core-1.63.0.jar" />
           </element>
         </element>
       </root>
@@ -1020,7 +1022,9 @@
             <element id="library" level="project" name="Gradle: org.aspectj:aspectjrt:1.8.9" />
             <element id="library" level="project" name="Gradle: org.slf4j:slf4j-api:1.7.22" />
             <element id="library" level="project" name="Gradle: org.hibernate:hibernate-validator:5.3.0.Final" />
+            <element id="library" level="project" name="Gradle: joda-time:joda-time:2.9.7" />
             <element id="library" level="project" name="Gradle: org.freemarker:freemarker:2.3.23" />
+            <element id="library" level="project" name="Gradle: com.google.guava:guava:21.0" />
             <element id="library" level="project" name="Gradle: com.google.code.gson:gson:2.8.0" />
             <element id="library" level="project" name="Gradle: com.google.maps:google-maps-services:0.1.17" />
             <element id="library" level="project" name="Gradle: com.googlecode.libphonenumber:libphonenumber:8.0.0" />
@@ -1046,6 +1050,7 @@
             <element id="library" level="project" name="Gradle: ch.qos.logback:logback-core:1.1.7" />
             <element id="library" level="project" name="Gradle: ch.qos.logback:logback-classic:1.1.7" />
             <element id="library" level="project" name="Gradle: net.logstash.logback:logstash-logback-encoder:4.8" />
+            <element id="library" level="project" name="Gradle: net.bull.javamelody:javamelody-core:1.63.0" />
             <element id="library" level="project" name="Gradle: junit:junit:4.12" />
             <element id="archive" name="com.receiptofi-common.jar">
               <element id="module-output" name="common_main" />
@@ -1054,6 +1059,7 @@
             <element id="library" level="project" name="Gradle: org.aspectj:aspectjweaver:1.8.9" />
             <element id="library" level="project" name="Gradle: org.springframework:spring-messaging:4.3.5.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework.security:spring-security-acl:4.2.1.RELEASE" />
+            <element id="library" level="project" name="Gradle: javax.servlet:jstl:1.2" />
             <element id="library" level="project" name="Gradle: org.slf4j:jcl-over-slf4j:1.7.21" />
             <element id="library" level="project" name="Gradle: org.osgi:org.osgi.core:4.2.0" />
             <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-keyvalue:1.1.3.RELEASE" />
@@ -1161,8 +1167,6 @@
             <element id="library" level="project" name="Gradle: org.springframework.social:spring-social-config:1.1.4.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-commons:1.13.0.M1" />
             <element id="library" level="project" name="Gradle: org.json:json:20160810" />
-            <element id="library" level="project" name="Gradle: com.google.guava:guava:21.0" />
-            <element id="library" level="project" name="Gradle: javax.servlet:jstl:1.2" />
             <element id="archive" name="com.receiptofi-domain.jar">
               <element id="module-output" name="domain_main" />
               <element id="dir-copy" path="$PROJECT_DIR$/domain/build/resources/main" />
@@ -1183,8 +1187,6 @@
               <element id="module-output" name="loader_main" />
               <element id="dir-copy" path="$PROJECT_DIR$/loader/build/resources/main" />
             </element>
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/joda-time/joda-time/2.9.7/6eb2e87ddb09e944bb88f06f19ba0638d4607ffd/joda-time-2.9.7.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/net.bull.javamelody/javamelody-core/1.63.0/a20c895599af5cec865388e1005b1a725f2d7a1d/javamelody-core-1.63.0.jar" />
           </element>
         </element>
       </root>
@@ -1264,7 +1266,9 @@
             <element id="library" level="project" name="Gradle: org.aspectj:aspectjrt:1.8.9" />
             <element id="library" level="project" name="Gradle: org.slf4j:slf4j-api:1.7.22" />
             <element id="library" level="project" name="Gradle: org.hibernate:hibernate-validator:5.3.0.Final" />
+            <element id="library" level="project" name="Gradle: joda-time:joda-time:2.9.7" />
             <element id="library" level="project" name="Gradle: org.freemarker:freemarker:2.3.23" />
+            <element id="library" level="project" name="Gradle: com.google.guava:guava:21.0" />
             <element id="library" level="project" name="Gradle: com.google.code.gson:gson:2.8.0" />
             <element id="library" level="project" name="Gradle: com.google.maps:google-maps-services:0.1.17" />
             <element id="library" level="project" name="Gradle: com.googlecode.libphonenumber:libphonenumber:8.0.0" />
@@ -1290,10 +1294,12 @@
             <element id="library" level="project" name="Gradle: ch.qos.logback:logback-core:1.1.7" />
             <element id="library" level="project" name="Gradle: ch.qos.logback:logback-classic:1.1.7" />
             <element id="library" level="project" name="Gradle: net.logstash.logback:logstash-logback-encoder:4.8" />
+            <element id="library" level="project" name="Gradle: net.bull.javamelody:javamelody-core:1.63.0" />
             <element id="library" level="project" name="Gradle: junit:junit:4.12" />
             <element id="library" level="project" name="Gradle: org.aspectj:aspectjweaver:1.8.9" />
             <element id="library" level="project" name="Gradle: org.springframework:spring-messaging:4.3.5.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework.security:spring-security-acl:4.2.1.RELEASE" />
+            <element id="library" level="project" name="Gradle: javax.servlet:jstl:1.2" />
             <element id="library" level="project" name="Gradle: org.slf4j:jcl-over-slf4j:1.7.21" />
             <element id="library" level="project" name="Gradle: org.osgi:org.osgi.core:4.2.0" />
             <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-keyvalue:1.1.3.RELEASE" />
@@ -1401,10 +1407,6 @@
             <element id="library" level="project" name="Gradle: org.springframework.social:spring-social-config:1.1.4.RELEASE" />
             <element id="library" level="project" name="Gradle: org.springframework.data:spring-data-commons:1.13.0.M1" />
             <element id="library" level="project" name="Gradle: org.json:json:20160810" />
-            <element id="library" level="project" name="Gradle: com.google.guava:guava:21.0" />
-            <element id="library" level="project" name="Gradle: javax.servlet:jstl:1.2" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/joda-time/joda-time/2.9.7/6eb2e87ddb09e944bb88f06f19ba0638d4607ffd/joda-time-2.9.7.jar" />
-            <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/net.bull.javamelody/javamelody-core/1.63.0/a20c895599af5cec865388e1005b1a725f2d7a1d/javamelody-core-1.63.0.jar" />
           </element>
         </element>
       </root>
