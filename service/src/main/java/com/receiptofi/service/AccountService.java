@@ -703,4 +703,15 @@ public class AccountService {
             }
         }
     }
+
+    public void createMissingExpenseTags() {
+        List<UserProfileEntity> userProfiles = userProfileManager.getAll();
+        for (UserProfileEntity userProfile : userProfiles) {
+            List<ExpenseTagEntity> allExpenseTypes = expensesService.getAllExpenseTypes(userProfile.getReceiptUserId());
+            if (allExpenseTypes.isEmpty()) {
+                addDefaultExpenseTag(userProfile.getReceiptUserId());
+                LOG.warn("Created default expenseTag for rid={}", userProfile.getReceiptUserId());
+            }
+        }
+    }
 }
