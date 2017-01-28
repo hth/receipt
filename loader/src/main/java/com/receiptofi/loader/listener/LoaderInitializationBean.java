@@ -3,6 +3,7 @@ package com.receiptofi.loader.listener;
 import com.receiptofi.loader.scheduledtasks.BillingProcess;
 import com.receiptofi.service.AccountService;
 import com.receiptofi.service.BillingService;
+import com.receiptofi.service.ExpensesService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,20 +33,22 @@ public class LoaderInitializationBean {
     private BillingProcess billingProcess;
     private BillingService billingService;
     private AccountService accountService;
+    private ExpensesService expensesService;
 
-    @Value ("${LoaderInitializationBean.cleanupOperation.switch:OFF}")
+    @Value ("${LoaderInitializationBean.cleanupOperation.switch:ON}")
     private String cleanupOperation;
 
     @Autowired
     public LoaderInitializationBean(
             BillingProcess billingProcess,
             BillingService billingService,
-            AccountService accountService
-    ) {
+            AccountService accountService,
+            ExpensesService expensesService) {
         LOG.info("Initialized Loader");
         this.billingProcess = billingProcess;
         this.billingService = billingService;
         this.accountService = accountService;
+        this.expensesService = expensesService;
     }
 
     /**
@@ -83,5 +86,6 @@ public class LoaderInitializationBean {
     private void createMissingUserPreferences() {
         accountService.removeUserPreferencesOrphan();
         accountService.createMissingUserPreferences();
+        accountService.createMissingExpenseTags();
     }
 }
