@@ -87,5 +87,6 @@ public class LoaderInitializationBean {
         accountService.removeUserPreferencesOrphan();
         accountService.createMissingUserPreferences();
         accountService.createMissingExpenseTags();
+        accountService.removeDuplicatesBillingHistory();
     }
 }

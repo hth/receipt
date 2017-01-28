@@ -49,6 +49,7 @@ import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -711,6 +712,23 @@ public class AccountService {
             if (allExpenseTypes.isEmpty()) {
                 addDefaultExpenseTag(userProfile.getReceiptUserId());
                 LOG.warn("Created default expenseTag for rid={}", userProfile.getReceiptUserId());
+            }
+        }
+    }
+
+    public void removeDuplicatesBillingHistory() {
+        List<UserProfileEntity> userProfiles = userProfileManager.getAll();
+        for (UserProfileEntity userProfile : userProfiles) {
+            List<BillingHistoryEntity> billingHistories = billingService.getHistory(userProfile.getReceiptUserId());
+            Set<String> unique = new HashSet<>();
+
+            for (BillingHistoryEntity billingHistory : billingHistories) {
+                if (unique.contains(billingHistory.getBilledForMonth())) {
+                    billingService.deleteHardBillingHistory(billingHistory);
+                    LOG.warn("delete duplicate history rid={} billedForMonth={}", billingHistory.getRid(), billingHistory.getBilledForMonth());
+                } else {
+                    unique.add(billingHistory.getBilledForMonth());
+                }
             }
         }
     }
