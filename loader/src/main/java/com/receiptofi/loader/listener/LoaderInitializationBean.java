@@ -3,7 +3,6 @@ package com.receiptofi.loader.listener;
 import com.receiptofi.loader.scheduledtasks.BillingProcess;
 import com.receiptofi.service.AccountService;
 import com.receiptofi.service.BillingService;
-import com.receiptofi.service.ExpensesService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,7 +14,11 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 
 /**
- * To make sure process runs just once on a server put it on loader.
+ * To make sure process runs just once on a server put it on loader. This was written when there was intermittent
+ * failure in creating new account as returned value for new userGeneratedId was sometimes from secondary which
+ * had stale id. Instead this was fixed by added option to query for returning generated id. This should fade away
+ * when things start working perfect. In any case this should not be done as cleanup process should be managed by
+ * the ones that fail. A separate task is big no no.
  *
  * User: hitender
  * Date: 12/26/16 5:42 AM
@@ -33,28 +36,29 @@ public class LoaderInitializationBean {
     private BillingProcess billingProcess;
     private BillingService billingService;
     private AccountService accountService;
-    private ExpensesService expensesService;
 
-    @Value ("${LoaderInitializationBean.cleanupOperation.switch:ON}")
+    @Value ("${LoaderInitializationBean.cleanupOperation.switch:OFF}")
     private String cleanupOperation;
+
+    @Value ("${LoaderInitializationBean.createPlaceholderForBilling.switch:OFF}")
+    private String createPlaceholderForBilling;
 
     @Autowired
     public LoaderInitializationBean(
             BillingProcess billingProcess,
             BillingService billingService,
-            AccountService accountService,
-            ExpensesService expensesService) {
+            AccountService accountService) {
         LOG.info("Initialized Loader");
         this.billingProcess = billingProcess;
         this.billingService = billingService;
         this.accountService = accountService;
-        this.expensesService = expensesService;
     }
 
     /**
      * This needs to run when there are mis-match.
      *
      * BILLING_ACCOUNT when account fails to create the reminiscence of the failure is not deleted.
+     * BILLING_HISTORY when account fails to create the reminiscence of the failure is not deleted and shows as duplicate.
      * USER_ACCOUNT is the actual number of accounts.
      * USER_AUTHENTICATION when account fails to create the reminiscence of the failure is not deleted.
      * USER_PREFERENCE when account fails to create, user preference fails to be created.
@@ -76,7 +80,10 @@ public class LoaderInitializationBean {
 
     private void removeBillingAccountOrphan() {
         billingService.removeOrphanBillingAccount();
-        //billingProcess.createPlaceholderForBilling();
+        if ("ON".equalsIgnoreCase(createPlaceholderForBilling)) {
+            billingProcess.createPlaceholderForBilling();
+        }
+        accountService.removeDuplicatesBillingHistory();
     }
 
     private void removeAuthenticationOrphan() {
@@ -87,6 +94,5 @@ public class LoaderInitializationBean {
         accountService.removeUserPreferencesOrphan();
         accountService.createMissingUserPreferences();
         accountService.createMissingExpenseTags();
-        accountService.removeDuplicatesBillingHistory();
     }
 }
