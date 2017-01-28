@@ -219,4 +219,8 @@ public class BillingService {
     public long countBillingHistory(Date date, BillingPlanEnum billingPlan) {
         return billingHistoryManager.countBillingHistory(BillingHistoryEntity.YYYY_MM.format(date), billingPlan);
     }
+
+    public void deleteHardBillingHistory(BillingHistoryEntity billingHistory) {
+        billingHistoryManager.deleteHard(billingHistory);
+    }
 }
