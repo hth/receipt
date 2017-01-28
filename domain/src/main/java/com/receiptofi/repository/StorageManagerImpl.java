@@ -87,14 +87,14 @@ public final class StorageManagerImpl implements StorageManager {
 
     @Override
     public void deleteHard(String id) {
-        LOG.info("deleted GridFs object={}", id);
+        LOG.debug("deleted GridFs object={}", id);
         gridFs.remove(new ObjectId(id));
     }
 
     @Override
     public void deleteHard(Collection<FileSystemEntity> fileSystems) {
         for (FileSystemEntity fileSystem : fileSystems) {
-            LOG.info("Deleting GridFs object={}", fileSystem.getBlobId());
+            LOG.debug("Deleting GridFs object={}", fileSystem.getBlobId());
             gridFs.remove(new ObjectId(fileSystem.getBlobId()));
         }
     }
