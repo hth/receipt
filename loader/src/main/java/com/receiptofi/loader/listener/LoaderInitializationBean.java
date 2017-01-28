@@ -33,7 +33,7 @@ public class LoaderInitializationBean {
     private BillingService billingService;
     private AccountService accountService;
 
-    @Value ("${LoaderInitializationBean.cleanupOperation.switch:OFF}")
+    @Value ("${LoaderInitializationBean.cleanupOperation.switch:ON}")
     private String cleanupOperation;
 
     @Autowired
