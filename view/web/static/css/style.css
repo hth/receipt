@@ -546,6 +546,13 @@ div .sidebar-invite form input {
     color: #000;
     float: right;
     text-transform: lowercase;
+
+    /* Substring with css for big email address */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display: inline-block;
+    width: 220px;
 }
 
 .big-view {
