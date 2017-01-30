@@ -6,6 +6,7 @@
     <meta name="description" content=""/>
     <meta name="_csrf" content="${_csrf.token}"/>
     <meta name="_csrf_header" content="${_csrf.headerName}"/>
+    <meta http-equiv="refresh" content="120" >
 
     <title>Receiptofi, Dashboard</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/style.css"/>
@@ -19,7 +20,7 @@
     <script>
         function init() {
             window.addEventListener('scroll', function (e) {
-                var distanceY = window.pageYOffset || document.documentElement.scrollTop,
+                let distanceY = window.pageYOffset || document.documentElement.scrollTop,
                         shrinkOn = 300,
                         header = document.querySelector("header");
                 if (distanceY > shrinkOn) {
@@ -34,7 +35,7 @@
         window.onload = init();
 
         function documentProcessingPace() {
-            var json = $.ajax({
+            let json = $.ajax({
                 type: "GET",
                 url: '${pageContext. request. contextPath}/display/documentProcessingPace.json',
                 async: false
@@ -45,7 +46,7 @@
             }).responseText;
             console.log(json);
 
-            var obj = JSON.parse(json);
+            let obj = JSON.parse(json);
             $('#pending').html(obj.pending);
             $('#processedToday').html(obj.processedToday);
         }
@@ -266,9 +267,9 @@
     </script>
     <script>
         $(function () {
-            var chart;
+            let chart;
             $(document).ready(function () {
-                var options = {
+                let options = {
                     chart: {
                         renderTo: 'container'
                     },
@@ -308,12 +309,12 @@
                     series: []
                 };
 
-                var seriesData = [];
+                let seriesData = [];
                 $.getJSON('${pageContext. request. contextPath}/display/loadStats.json', function (json) {
                     $.map(json, function (value, key) {
                         $.map(value, function (count, day) {
                             if (day !== 'dates') {
-                                var series = {
+                                let series = {
                                     name: '',
                                     data: []
                                 };
