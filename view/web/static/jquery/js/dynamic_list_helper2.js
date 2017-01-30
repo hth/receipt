@@ -161,6 +161,9 @@ function DynamicListHelper( config ) {
     function addAddRowListener() {
         $(config.addRowId).click( function(){
             addRow();
+            addRow();
+            addRow();
+            addRow();
             return false;
         });
     }
