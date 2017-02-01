@@ -9,6 +9,7 @@ import com.mongodb.DBObject;
 import com.receiptofi.domain.types.FileTypeEnum;
 
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 /**
  * This class acts as a form and entity. Its shared across multiple layers. Used in persisting Image file.
@@ -35,7 +36,9 @@ public class UploadDocumentImage {
     private String rid;
     private FileTypeEnum fileType;
     private String blobId;
+    private String completeFileName;
 
+    @SuppressWarnings ("unused")
     private UploadDocumentImage() {}
 
     private UploadDocumentImage(FileTypeEnum fileType) {
@@ -52,6 +55,7 @@ public class UploadDocumentImage {
 
     public UploadDocumentImage setFileData(MultipartFile fileData) {
         this.fileData = fileData;
+        this.completeFileName = ((CommonsMultipartFile) fileData).getFileItem().getName();
         return this;
     }
 
@@ -60,7 +64,7 @@ public class UploadDocumentImage {
     }
 
     public String getFileName() {
-        return getRid() + UNDER_SCORE + fileData.getOriginalFilename();
+        return getRid() + UNDER_SCORE + completeFileName;
     }
 
     public String getRid() {
@@ -79,7 +83,7 @@ public class UploadDocumentImage {
     public DBObject getMetaData() {
         DBObject metaData = new BasicDBObject();
 
-        metaData.put("ORIGINAL_FILENAME", getOriginalFileName());
+        metaData.put("ORIGINAL_FILENAME", completeFileName);
         metaData.put("RID", getRid());
         metaData.put("RID_AND_FILENAME", getRid() + UNDER_SCORE + getOriginalFileName());
         return metaData;
