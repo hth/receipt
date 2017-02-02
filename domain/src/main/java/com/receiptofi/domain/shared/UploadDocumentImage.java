@@ -57,10 +57,6 @@ public class UploadDocumentImage {
         return this;
     }
 
-    public String getOriginalFileName() {
-        return fileData.getOriginalFilename();
-    }
-
     public String getFileName() {
         return getRid() + UNDER_SCORE + getRealFileName();
     }
@@ -91,7 +87,7 @@ public class UploadDocumentImage {
 
         metaData.put("ORIGINAL_FILENAME", getRealFileName());
         metaData.put("RID", getRid());
-        metaData.put("RID_AND_FILENAME", getRid() + UNDER_SCORE + getOriginalFileName());
+        metaData.put("RID_AND_FILENAME", getRid() + UNDER_SCORE + getRealFileName());
         return metaData;
     }
 
