@@ -14,6 +14,7 @@ import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -139,7 +140,7 @@ public class FileSystemEntity extends BaseEntity {
         this.sequence = sequence;
         this.contentType = multipartFile.getContentType();
         this.fileLength = multipartFile.getSize();
-        this.originalFilename = multipartFile.getOriginalFilename();
+        this.originalFilename = ((CommonsMultipartFile) multipartFile).getFileItem().getName();
         this.fileType = fileType;
 
         if (!contentType.startsWith("image")) {
