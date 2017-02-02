@@ -140,7 +140,11 @@ public class FileSystemEntity extends BaseEntity {
         this.sequence = sequence;
         this.contentType = multipartFile.getContentType();
         this.fileLength = multipartFile.getSize();
-        this.originalFilename = ((CommonsMultipartFile) multipartFile).getFileItem().getName();
+        if(multipartFile instanceof CommonsMultipartFile) {
+            this.originalFilename = ((CommonsMultipartFile) multipartFile).getFileItem().getName();
+        } else {
+            this.originalFilename = multipartFile.getOriginalFilename();
+        }
         this.fileType = fileType;
 
         if (!contentType.startsWith("image")) {
