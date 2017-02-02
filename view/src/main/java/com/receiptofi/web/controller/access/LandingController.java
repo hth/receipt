@@ -301,7 +301,7 @@ public class LandingController {
                         .setRid(rid);
                 try {
                     /* Find duplicate if the similar file exists in the queue. */
-                    boolean duplicateFile = fileSystemService.fileWithSimilarNameDoesNotExists(rid, image.getOriginalFileName());
+                    boolean duplicateFile = fileSystemService.fileWithSimilarNameDoesNotExists(rid, image.getRealFileName());
                     DocumentEntity document = landingService.uploadDocument(image);
 
                     /* Even if we know its a duplicate we need to add the document to list in rejection count. */
