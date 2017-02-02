@@ -36,7 +36,6 @@ public class UploadDocumentImage {
     private String rid;
     private FileTypeEnum fileType;
     private String blobId;
-    private String completeFileName;
 
     @SuppressWarnings ("unused")
     private UploadDocumentImage() {}
@@ -55,7 +54,6 @@ public class UploadDocumentImage {
 
     public UploadDocumentImage setFileData(MultipartFile fileData) {
         this.fileData = fileData;
-        this.completeFileName = ((CommonsMultipartFile) fileData).getFileItem().getName();
         return this;
     }
 
@@ -64,7 +62,7 @@ public class UploadDocumentImage {
     }
 
     public String getFileName() {
-        return getRid() + UNDER_SCORE + completeFileName;
+        return getRid() + UNDER_SCORE + getRealFileName();
     }
 
     public String getRid() {
@@ -80,10 +78,18 @@ public class UploadDocumentImage {
         return fileType;
     }
 
+    private String getRealFileName() {
+        if (fileData instanceof CommonsMultipartFile) {
+            return ((CommonsMultipartFile) fileData).getFileItem().getName();
+        } else {
+            return fileData.getOriginalFilename();
+        }
+    }
+
     public DBObject getMetaData() {
         DBObject metaData = new BasicDBObject();
 
-        metaData.put("ORIGINAL_FILENAME", completeFileName);
+        metaData.put("ORIGINAL_FILENAME", getRealFileName());
         metaData.put("RID", getRid());
         metaData.put("RID_AND_FILENAME", getRid() + UNDER_SCORE + getOriginalFileName());
         return metaData;
