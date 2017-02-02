@@ -78,7 +78,7 @@ public class UploadDocumentImage {
         return fileType;
     }
 
-    private String getRealFileName() {
+    public String getRealFileName() {
         if (fileData instanceof CommonsMultipartFile) {
             return ((CommonsMultipartFile) fileData).getFileItem().getName();
         } else {
