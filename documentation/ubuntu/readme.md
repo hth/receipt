@@ -89,7 +89,7 @@ Mongo check replica status
     rs.status()
     
 ### Created dbftp user on loader
-Do not set group for dbftp. It prevent password less access and continous deployment fails.  
+Do not set group for dbftp. It prevents password less access and continuous deployment fails.  
 
     sudo adduser --no-create-home dbftp
     sudo chown dbftp:db /opt/receiptofi/expensofi
