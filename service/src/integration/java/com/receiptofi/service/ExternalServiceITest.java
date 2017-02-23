@@ -35,13 +35,13 @@ public class ExternalServiceITest extends ITest {
     @Test
     public void getPlaceDetails() {
         String address = "Lot F7, 1st Floor, Bangsar Shopping Centre, No 1, Jln Tetawi 1, Bangsar Baru 59700 K Lumpur";
-        String formattedAddress = "1, Jalan Telawi, Bangsar Baru, 59100 Kuala Lumpur, Wilayah Persekutuan Kuala Lumpur, Malaysia";
+        String formattedAddress = "285, Jalan Maarof, Bukit Bandaraya, 59000 Kuala Lumpur, Wilayah Persekutuan Kuala Lumpur, Malaysia";
         GeocodingResult[] geocodingResults = externalService.getGeocodingResults(address);
         Assert.notEmpty(geocodingResults);
         DecodedAddress decodedAddress = DecodedAddress.newInstance(geocodingResults, address);
 
-        Assert.isTrue(101.6705077 == geocodingResults[0].geometry.location.lng, "Not matching lng");
-        Assert.isTrue(3.1340549 == geocodingResults[0].geometry.location.lat, "Not matching lat");
+        Assert.isTrue(101.6673598 == geocodingResults[0].geometry.location.lng, "Not matching lng");
+        Assert.isTrue(3.1430501 == geocodingResults[0].geometry.location.lat, "Not matching lat");
         Assert.isTrue("MY".equals(decodedAddress.getCountryShortName()), "Country short name is not MY");
 
         Assert.isTrue(formattedAddress.equals(decodedAddress.getFormattedAddress()), "Formatted address matches " + decodedAddress.getFormattedAddress());
