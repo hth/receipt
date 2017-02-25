@@ -52,7 +52,7 @@
         client_max_body_size 10M;
     
         # Cannot mark ssl on as it will make http as not working. Only works on https. Redirect to https is better choice.
-        #ssl on;    
+        #ssl on;
         ssl_session_cache   shared:SSL:10m;
         ssl_session_timeout 10m;
         ssl_buffer_size     1400;
@@ -62,23 +62,23 @@
     
         ssl_ciphers 'ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-DSS-AES128-GCM-SHA256:kEDH+AESGCM:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-DSS-AES128-SHA256:DHE-RSA-AES256-SHA256:DHE-DSS-AES256-SHA:DHE-RSA-AES256-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:AES:CAMELLIA:DES-CBC3-SHA:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!MD5:!PSK:!aECDH:!EDH-DSS-DES-CBC3-SHA:!EDH-RSA-DES-CBC3-SHA:!KRB5-DES-CBC3-SHA';
     
-        ssl_prefer_server_ciphers on;    
+        ssl_prefer_server_ciphers on;
     
         ssl_dhparam          /var/certs/2016_OCT/dhparams.pem;
         ssl_certificate      /var/certs/2016_OCT/ssl-bundle.crt;
         ssl_certificate_key  /var/certs/2016_OCT/www_receiptofi_com.key;
-        
+    
         # OCSP Stapling ---
         # fetch OCSP records from URL in ssl_certificate and cache them
         ssl_stapling        on;
         ssl_stapling_verify on;
-        
+    
         ## verify chain of trust of OCSP response using Root CA and Intermediate certs
         ssl_trusted_certificate /var/certs/2016_OCT/root_CA_cert_plus_intermediates.crt;
     
         resolver            8.8.4.4 8.8.8.8 valid=300s ipv6=off; # Google DNS
         resolver_timeout    30s;
-                
+    
         # Remember this setting for 365 days
         add_header Strict-Transport-Security "max-age=31536000; includeSubdomains";
         add_header X-Frame-Options DENY;
@@ -97,7 +97,7 @@
                 root   /data/www;
                 index  index.html;
     
-                # try_files not required here 
+                # try_files not required here
                 # this way nginx first tries to serve the file as an .html although it doesn't have the extension
                 try_files $uri.html $uri $uri/ @handler;
             }
@@ -116,7 +116,7 @@
             listen          8443 ssl;
             server_name     receiptofi.com;
     
-            access_log  /var/logs/nginx/access.log main;       
+            access_log  /var/logs/nginx/access.log main;
     
             location / {
                 expires 7d;
@@ -138,11 +138,11 @@
                 # block one workstation
                 deny    192.168.1.1;
                 # allow anyone in 192.168.1.0/24
-                allow   192.168.1.0/24; 
+                allow   192.168.1.0/24;
                 allow   63.145.59.92;
                 # drop rest of the world
                 deny    all;
-                
+    
                 proxy_buffers 16 4k;
                 proxy_buffer_size 2k;
     
@@ -158,11 +158,11 @@
                 # block one workstation
                 deny    192.168.1.1;
                 # allow anyone in 192.168.1.0/24
-                allow   192.168.1.0/24; 
+                allow   192.168.1.0/24;
                 allow   63.145.59.92;
                 # drop rest of the world
                 deny    all;
-                
+    
                 proxy_buffers 16 4k;
                 proxy_buffer_size 2k;
     
@@ -198,11 +198,11 @@
                 # block one workstation
                 deny    192.168.1.1;
                 # allow anyone in 192.168.1.0/24
-                allow   192.168.1.0/24; 
+                allow   192.168.1.0/24;
                 allow   63.145.59.92;
                 # drop rest of the world
                 deny    all;
-                
+    
                 proxy_buffers 16 4k;
                 proxy_buffer_size 2k;
     
@@ -218,11 +218,11 @@
                 # block one workstation
                 deny    192.168.1.1;
                 # allow anyone in 192.168.1.0/24
-                allow   192.168.1.0/24; 
+                allow   192.168.1.0/24;
                 allow   63.145.59.92;
                 # drop rest of the world
                 deny    all;
-                
+    
                 proxy_buffers 16 4k;
                 proxy_buffer_size 2k;
     
@@ -258,11 +258,11 @@
                 # block one workstation
                 deny    192.168.1.1;
                 # allow anyone in 192.168.1.0/24
-                allow   192.168.1.0/24; 
+                allow   192.168.1.0/24;
                 allow   63.145.59.92;
                 # drop rest of the world
                 deny    all;
-                
+    
                 proxy_buffers 16 4k;
                 proxy_buffer_size 2k;
     
@@ -278,11 +278,11 @@
                 # block one workstation
                 deny    192.168.1.1;
                 # allow anyone in 192.168.1.0/24
-                allow   192.168.1.0/24; 
+                allow   192.168.1.0/24;
                 allow   63.145.59.92;
                 # drop rest of the world
                 deny    all;
-                
+    
                 proxy_buffers 16 4k;
                 proxy_buffer_size 2k;
     
@@ -326,11 +326,11 @@
                 # block one workstation
                 deny    192.168.1.1;
                 # allow anyone in 192.168.1.0/24
-                allow   192.168.1.0/24; 
+                allow   192.168.1.0/24;
                 allow   63.145.59.92;
                 # drop rest of the world
                 deny    all;
-                
+    
                 proxy_buffers 16 4k;
                 proxy_buffer_size 2k;
     
@@ -346,11 +346,11 @@
                 # block one workstation
                 deny    192.168.1.1;
                 # allow anyone in 192.168.1.0/24
-                allow   192.168.1.0/24; 
+                allow   192.168.1.0/24;
                 allow   63.145.59.92;
                 # drop rest of the world
                 deny    all;
-                
+    
                 proxy_buffers 16 4k;
                 proxy_buffer_size 2k;
     
@@ -422,7 +422,7 @@
                 deny    192.168.1.1;
                 # allow anyone in 192.168.1.0/24
                 allow   192.168.1.0/24;
-                allow   63.145.59.92;
+                allow   114.79.152.175;
                 # drop rest of the world
                 deny    all;
     
@@ -453,7 +453,7 @@
                 proxy_set_header Upgrade $http_upgrade;
                 proxy_set_header Connection 'upgrade';
                 proxy_set_header Host $host;
-                proxy_cache_bypass $http_upgrade;        
+                proxy_cache_bypass $http_upgrade;
             }
         }
     
