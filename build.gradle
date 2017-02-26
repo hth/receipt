@@ -449,7 +449,9 @@ project(':view') {
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '3.3'
+    gradleVersion = '3.4'
+    // Upgrade gradle wrapper
+    // ./gradlew wrapper --gradle-version=3.4
 }
 
 task copyJars(type: Copy) {
