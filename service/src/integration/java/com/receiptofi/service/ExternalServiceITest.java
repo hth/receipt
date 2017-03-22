@@ -19,13 +19,13 @@ public class ExternalServiceITest extends ITest {
     @Test
     public void getGeocodingResultNotValidAddress() {
         String address = "OR Tambo Airport Rd, Level 2, Domtex Building, OR Tambo International Airport, Johannesburg, 1627, South Africa";
-        String formattedAddress = "O.R. Tambo International Airport, O.r. Tambo International Airport, O R Tambo Airport Rd, Johannesburg, 1619, South Africa";
+        String formattedAddress = "O.R. Tambo International Airport, OR Tambo International Airport, OR Tambo Airport Rd, Johannesburg, 1627, South Africa";
         GeocodingResult[] geocodingResults = externalService.getGeocodingResults(address);
         Assert.notEmpty(geocodingResults);
         DecodedAddress decodedAddress = DecodedAddress.newInstance(geocodingResults, address);
 
-        Assert.isTrue(28.2307006 == geocodingResults[0].geometry.location.lng, "Not matching lng");
-        Assert.isTrue(-26.1331917 == geocodingResults[0].geometry.location.lat, "Not matching lat");
+        Assert.isTrue(28.2295904 == geocodingResults[0].geometry.location.lng, "Not matching lng");
+        Assert.isTrue(-26.1325203 == geocodingResults[0].geometry.location.lat, "Not matching lat");
         Assert.isTrue("ZA".equals(decodedAddress.getCountryShortName()), "Country short name is not MY");
 
         Assert.isTrue(formattedAddress.equals(decodedAddress.getFormattedAddress()), "Formatted address matches");
