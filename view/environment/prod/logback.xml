@@ -40,7 +40,7 @@
     <logger name="org.apache" level="OFF"/>
     <logger name="org.mongodb" level="WARN"/>
     <!--Maps google logging is not working-->
-    <logger name="com.google.maps" level="OFF"/>
+    <logger name="com.google.maps" level="INFO"/>
     <logger name="org.springframework.jms.listener.DefaultMessageListenerContainer" level="ON"/>
 
     <root level="INFO">
