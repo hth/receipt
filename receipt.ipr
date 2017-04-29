@@ -155,6 +155,8 @@
             <element id="library" level="project" name="Gradle: org.aspectj:aspectjrt:1.8.9" />
             <element id="library" level="project" name="Gradle: redis.clients:jedis:2.9.0" />
             <element id="library" level="project" name="Gradle: com.fasterxml.jackson.dataformat:jackson-dataformat-cbor:2.6.6" />
+            <element id="library" level="project" name="Gradle: de.flapdoodle.embed:de.flapdoodle.embed.mongo:1.50.5" />
+            <element id="library" level="project" name="Gradle: de.flapdoodle.embed:de.flapdoodle.embed.process:1.50.2" />
             <element id="library" level="project" name="Gradle: javax.servlet:javax.servlet-api:3.1.0" />
             <element id="library" level="project" name="Gradle: junit:junit:4.12" />
             <element id="library" level="project" name="Gradle: net.java.dev.jna:jna-platform:4.0.0" />

@@ -449,9 +449,9 @@ project(':view') {
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '3.5'
+    gradleVersion = '3.4.1'
     // Upgrade gradle wrapper
-    // ./gradlew wrapper --gradle-version=3.5
+    // ./gradlew wrapper --gradle-version=3.4
 }
 
 task copyJars(type: Copy) {
@@ -777,10 +777,7 @@ task prepWar(dependsOn: [
 }
 
 task clean(type: Delete) {
-    doFirst {
-        delete buildDir
-        println 'Executing clean complete'
-    }
+    delete buildDir
 }
 
 //import org.apache.tools.ant.filters.ReplaceTokens
