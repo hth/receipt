@@ -777,7 +777,10 @@ task prepWar(dependsOn: [
 }
 
 task clean(type: Delete) {
-    delete buildDir
+    doFirst {
+        delete buildDir
+        println 'Executing clean complete'
+    }
 }
 
 //import org.apache.tools.ant.filters.ReplaceTokens
