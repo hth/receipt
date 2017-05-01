@@ -125,14 +125,14 @@ public class LoginController {
             String cookieId = cookie.getValue();
             String ip = HttpRequestResponseParser.getClientIpAddress(request);
 
-            String browser = res.getBrowser().description;
-            String browserVersion = res.getBrowser().version;
+            String browser = res.getBrowser().getDescription();
+            String browserVersion = res.getBrowser().getVersion();
 
-            String device = res.getDevice().deviceType.getLabel();
-            String deviceBrand = res.getDevice().brand.getLabel();
+            String device = res.getDevice().getDeviceType().getLabel();
+            String deviceBrand = res.getDevice().getBrand().getLabel();
 
-            String operatingSystem = res.getOperatingSystem().family.getLabel();
-            String operatingSystemVersion = res.getOperatingSystem().version;
+            String operatingSystem = res.getOperatingSystem().getFamily().getLabel();
+            String operatingSystemVersion = res.getOperatingSystem().getVersion();
 
             LOG.info("cookie={}, ip={}, user-agent={}", cookieId, ip, userAgent);
             loginService.saveUpdateBrowserInfo(cookieId, ip, userAgent, browser, browserVersion, device, deviceBrand, operatingSystem, operatingSystemVersion);
