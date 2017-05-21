@@ -218,6 +218,7 @@
                                     <c:otherwise>
                                         Disables after
                                         <span style="color: red; font-weight: bold"><fmt:formatDate value="${profileForm.accountValidationExpireDay}" type="both" pattern="MMM dd, yyyy"/></span>
+                                        if email not validated
                                     </c:otherwise>
                                 </c:choose>
                             </label>
