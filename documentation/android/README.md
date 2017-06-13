@@ -24,3 +24,28 @@
     Enter key password for <receiptofi.com>
     	(RETURN if same as keystore password):  
     [Storing android-receiptofi.keystore]
+
+
+# For Release
+    
+    keytool -genkey -v -keystore noqueue.merchant.keystore -alias noqueue.client -keyalg RSA -keysize 2048 -validity 8500
+    
+    Enter keystore password:  
+    Re-enter new password: 
+    What is your first and last name?
+      [Unknown]:  NoQApp
+    What is the name of your organizational unit?
+      [Unknown]:  noqapp.com 
+    What is the name of your organization?
+      [Unknown]:  NoQueue Inc
+    What is the name of your City or Locality?
+      [Unknown]:  Sunnyvale
+    What is the name of your State or Province?
+      [Unknown]:  California
+    What is the two-letter country code for this unit?
+      [Unknown]:  US
+    Is CN=NoQApp, OU=noqapp.com, O=NoQueue Inc, L=Sunnyvale, ST=California, C=US correct?
+      [no]:  yes
+      
+
+    keytool -genkey -v -keystore noqueue.merchant.keystore -alias noqueue.merchant -keyalg RSA -keysize 2048 -validity 8500      
