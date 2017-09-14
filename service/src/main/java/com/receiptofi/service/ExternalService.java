@@ -103,6 +103,13 @@ public class ExternalService {
             } else {
                 index = address.indexOf(" ") + 1;
             }
+
+            String shortenedAddress = address.substring(index, address.length()).trim();
+            if (shortenedAddress.length() == address.length()) {
+                LOG.warn("Could not find GeocodingResult for address={}", address);
+                return null;
+            }
+            
             return getGeocodingResults(address.substring(index, address.length()).trim());
         } catch (Exception e) {
             LOG.error("Failed fetching from google address={} reason={}", address, e.getLocalizedMessage(), e);
