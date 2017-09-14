@@ -109,8 +109,8 @@ public class ExternalService {
                 LOG.warn("Could not find GeocodingResult for address={}", address);
                 return null;
             }
-            
-            return getGeocodingResults(address.substring(index, address.length()).trim());
+
+            return getGeocodingResults(shortenedAddress);
         } catch (Exception e) {
             LOG.error("Failed fetching from google address={} reason={}", address, e.getLocalizedMessage(), e);
         }
