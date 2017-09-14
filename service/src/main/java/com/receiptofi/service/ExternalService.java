@@ -97,7 +97,12 @@ public class ExternalService {
                 return geocodingResults;
             }
 
-            int index = address.indexOf(",") + 1;
+            int index;
+            if(address.contains(",")) {
+                index = address.indexOf(",") + 1;
+            } else {
+                index = address.indexOf(" ") + 1;
+            }
             return getGeocodingResults(address.substring(index, address.length()).trim());
         } catch (Exception e) {
             LOG.error("Failed fetching from google address={} reason={}", address, e.getLocalizedMessage(), e);
