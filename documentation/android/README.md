@@ -29,6 +29,7 @@
 # For Release
     
     keytool -genkey -v -keystore noqueue.merchant.keystore -alias noqueue.client -keyalg RSA -keysize 2048 -validity 8500
+    keytool -genkey -v -keystore noqueue.merchant.keystore -alias noqueue.merchant -keyalg RSA -keysize 2048 -validity 8500
     
     Enter keystore password:  
     Re-enter new password: 
