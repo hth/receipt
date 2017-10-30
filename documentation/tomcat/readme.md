@@ -71,9 +71,9 @@ Then go into `utilities > terminal` and type the following commands:
 After reboot
 
     sudo rm /usr/bin/java
-    sudo ln -s /Library/Java/JavaVirtualMachines/jdk1.8.0_102.jdk/Contents/Home/bin/java /usr/bin/java
+    sudo ln -s /Library/Java/JavaVirtualMachines/jdk1.8.0_144.jdk/Contents/Home/bin/java /usr/bin/java
     sudo rm /Library/Java/Home
-    sudo ln -s /Library/Java/JavaVirtualMachines/jdk1.8.0_102.jdk/Contents/Home /Library/Java/Home
+    sudo ln -s /Library/Java/JavaVirtualMachines/jdk1.8.0_144.jdk/Contents/Home /Library/Java/Home
     
 Check
     
