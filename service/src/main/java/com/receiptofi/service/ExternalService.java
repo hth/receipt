@@ -39,9 +39,16 @@ public class ExternalService {
     @Autowired
     public ExternalService(
             @Value ("${google-server-api-key}")
-            String googleServerApiKey
+            String googleServerApiKey,
+
+            @Value("${google-api-max-retries}")
+            int maxRetries
     ) {
-        this.context = new GeoApiContext().setApiKey(googleServerApiKey);
+        this.context = new GeoApiContext.Builder()
+                .apiKey(googleServerApiKey)
+                .maxRetries(maxRetries)
+                .disableRetries()
+                .build();
     }
 
     /**

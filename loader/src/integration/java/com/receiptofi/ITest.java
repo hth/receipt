@@ -220,7 +220,7 @@ public class ITest extends RealMongoForTests {
                 splitExpensesService,
                 messageDocumentManager);
 
-        externalService = new ExternalService(properties.getProperty("google-server-api-key"));
+        externalService = new ExternalService(properties.getProperty("google-server-api-key"), Integer.parseInt(properties.getProperty("google-api-max-retries")));
         bizStoreManager = new BizStoreManagerImpl(getMongoTemplate());
         bizService = new BizService(69.172, 111.321, bizNameManager, bizStoreManager, externalService);
 

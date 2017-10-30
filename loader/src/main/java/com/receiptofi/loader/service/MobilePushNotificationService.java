@@ -1,29 +1,26 @@
 package com.receiptofi.loader.service;
 
-import com.receiptofi.domain.RegisteredDeviceEntity;
-import com.receiptofi.domain.json.fcm.JsonMessage;
-import com.receiptofi.domain.types.NotificationSendStateEnum;
-import com.receiptofi.repository.RegisteredDeviceManager;
-import com.receiptofi.utils.DateUtil;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
-import org.springframework.util.Assert;
-
 import com.notnoop.apns.APNS;
 import com.notnoop.apns.ApnsDelegate;
 import com.notnoop.apns.ApnsNotification;
 import com.notnoop.apns.ApnsService;
 import com.notnoop.apns.DeliveryError;
-import com.squareup.okhttp.MediaType;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.RequestBody;
-import com.squareup.okhttp.Response;
+import com.receiptofi.domain.RegisteredDeviceEntity;
+import com.receiptofi.domain.json.fcm.JsonMessage;
+import com.receiptofi.domain.types.NotificationSendStateEnum;
+import com.receiptofi.repository.RegisteredDeviceManager;
+import com.receiptofi.utils.DateUtil;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
 import java.io.IOException;
 import java.util.Date;

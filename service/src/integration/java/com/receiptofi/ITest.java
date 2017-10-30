@@ -121,6 +121,7 @@ public class ITest extends RealMongoForTests {
         MockitoAnnotations.initMocks(this);
         LoadResource.loadProperties(properties);
         Assert.assertNotNull(properties.getProperty("google-server-api-key"));
+        Assert.assertNotNull(properties.getProperty("google-api-max-retries"));
 
         bizNameManager = new BizNameManagerImpl(getMongoTemplate());
         itemManager = new ItemManagerImpl(bizNameManager, getMongoTemplate());
@@ -217,7 +218,7 @@ public class ITest extends RealMongoForTests {
                 splitExpensesService,
                 messageDocumentManager);
 
-        externalService = new ExternalService(properties.getProperty("google-server-api-key"));
+        externalService = new ExternalService(properties.getProperty("google-server-api-key"), Integer.parseInt(properties.getProperty("google-api-max-retries")));
         bizStoreManager = new BizStoreManagerImpl(getMongoTemplate());
         bizService = new BizService(69.172, 111.321, bizNameManager, bizStoreManager, externalService);
 
