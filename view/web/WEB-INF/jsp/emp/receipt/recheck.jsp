@@ -471,10 +471,7 @@
                                         <form:errors path="items[${status.index}].price" cssClass="error" />
                                     </td>
                                     <td>
-                                        <form:select path="items[${status.index}].taxed">
-                                            <form:option value="NONE" label="--- Select ---"/>
-                                            <form:options itemValue="name" itemLabel="description" />
-                                        </form:select>
+                                        &nbsp;
                                     </td>
                                 </tr>
                             </c:forEach>

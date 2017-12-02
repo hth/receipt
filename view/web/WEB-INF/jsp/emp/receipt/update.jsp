@@ -469,10 +469,7 @@
                                             <form:errors path="items[${status.index}].price" cssClass="error" />
                                         </td>
                                         <td>
-                                            <form:select path="items[${status.index}].taxed">
-                                                <form:option value="NONE" label="--- Select ---"/>
-                                                <form:options itemValue="name" itemLabel="description" />
-                                            </form:select>
+                                            &nbsp;
                                         </td>
                                     </tr>
                                 </c:forEach>
@@ -675,7 +672,7 @@
             formId : 'receiptUpdateForm',
             rowContainerId : 'itemListContainer',
             indexedPropertyName : 'items',
-            indexedPropertyMemberNames : 'name,quantity,price,taxed',
+            indexedPropertyMemberNames : 'name,quantity,price',
             rowAddedListener : rowAdded
         };
         new DynamicListHelper(config);
