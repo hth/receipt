@@ -33,6 +33,7 @@
         };
 
         function fetchReceiptImage(location, holder, id, angle, blobId, receiptUserId) {
+            console.log(location + ":" + holder + ":" + id + ":" + angle + "bolbId" + ":" + receiptUserId);
             document.getElementById(holder).innerHTML = "";
             var R = Raphael(holder, 930, 800);
             /* R.circle(470, 400, 400).attr({fill: "#000", "fill-opacity": .5, "stroke-width": 5}); */
