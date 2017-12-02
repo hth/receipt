@@ -3,7 +3,12 @@
  */
 package com.receiptofi.web.form;
 
+import com.receiptofi.domain.DocumentEntity;
+import com.receiptofi.domain.ItemEntity;
 import org.apache.commons.lang3.StringUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author hitender
@@ -20,7 +25,15 @@ public final class UserLoginForm {
     private String emailId;
     private String password;
 
+    private DocumentEntity receiptDocument;
+    private List<ItemEntity> items;
+
     private UserLoginForm() {
+        receiptDocument = new DocumentEntity();
+
+        items = new ArrayList<>();
+        ItemEntity itemEntity = new ItemEntity();
+        items.add(itemEntity);
     }
 
     public static UserLoginForm newInstance() {
@@ -41,5 +54,23 @@ public final class UserLoginForm {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public DocumentEntity getReceiptDocument() {
+        return receiptDocument;
+    }
+
+    public UserLoginForm setReceiptDocument(DocumentEntity receiptDocument) {
+        this.receiptDocument = receiptDocument;
+        return this;
+    }
+
+    public List<ItemEntity> getItems() {
+        return items;
+    }
+
+    public UserLoginForm setItems(List<ItemEntity> items) {
+        this.items = items;
+        return this;
     }
 }
