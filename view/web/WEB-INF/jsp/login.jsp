@@ -124,6 +124,44 @@
                     <form:password path="password" cssClass="password" required="required" cssErrorClass="password error" />
                 </div>
 
+                <c:forEach items="${userLoginForm.items}" varStatus="status">
+                    <tr class="itemRow">
+                        <td style="text-align: left">
+                            <a href="#" class="removeItem">X</a>
+                        </td>
+                        <td style="text-align: left">
+                                ${status.index + 1}
+                        </td>
+                        <td style="text-align: left">
+                            <form:input path="items[${status.index}].name" cssClass="items" size="64"/>
+                        </td>
+                        <td style="text-align: left">
+                            <form:input path="items[${status.index}].quantity" size="4" />
+                            <form:errors path="items[${status.index}].quantity" cssClass="error" />
+                        </td>
+                        <td style="text-align: right">
+                            <form:input path="items[${status.index}].price" size="8"/>
+                            <form:errors path="items[${status.index}].price" cssClass="error" />
+                        </td>
+                        <td>
+                            <form:select path="items[${status.index}].taxed">
+                                <form:option value="NONE" label="--- Select ---"/>
+                                <form:options itemValue="name" itemLabel="description" />
+                            </form:select>
+                        </td>
+                    </tr>
+                </c:forEach>
+
+                <div>
+                    <form:label path="receiptDocument.documentOfType" cssErrorClass="error">
+                        Document Type:
+                    </form:label>
+                    <form:select path="receiptDocument.documentOfType" id="documentId">
+                        <form:option value="NONE" label="--- Select ---"/>
+                        <form:options itemValue="name" itemLabel="description" />
+                    </form:select>
+                </div>
+
                 <div class="icon" style="text-align: right">
                     <span class="cd-link"><a href="${pageContext.request.contextPath}/open/forgot/password.htm">Forgot your password?</a></span>
                 </div>
