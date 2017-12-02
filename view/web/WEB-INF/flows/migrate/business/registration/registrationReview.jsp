@@ -65,7 +65,7 @@
         <sec:authorize access="hasRole('ROLE_BUSINESS')">
         <div class="business_reg">
             <div class="down_form" style="width: 90%">
-                <form:form commandName="register">
+                <form:form modelAttribute="register">
                     <h1 class="h1">Confirm your personal and business details</h1>
                     <hr>
                     <input type="hidden" name="_flowExecutionKey" value="${flowExecutionKey}"/>

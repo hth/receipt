@@ -65,7 +65,7 @@
     <div class="rightside-content">
         <div class="business_reg">
             <div class="down_form" style="width: 90%">
-                <form:form commandName="couponCampaign">
+                <form:form modelAttribute="couponCampaign">
                     <h1 class="h1">${couponCampaign.businessName}</h1>
                     <hr>
 

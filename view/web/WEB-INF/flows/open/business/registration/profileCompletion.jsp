@@ -52,7 +52,7 @@
         <%--</fieldset>--%>
 
         <fieldset class="cd-form floating-labels">
-            <form:form commandName="register.registerUser" autocomplete="true">
+            <form:form modelAttribute="register.registerUser" autocomplete="true">
                 <input type="hidden" name="_flowExecutionKey" value="${flowExecutionKey}"/>
 
                 <c:if test="${!empty flowRequestContext.messageContext.allMessages}">

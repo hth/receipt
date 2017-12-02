@@ -52,7 +52,7 @@
         <%--</fieldset>--%>
 
         <fieldset class="cd-form floating-labels">
-            <form:form commandName="register" autocomplete="true">
+            <form:form modelAttribute="register" autocomplete="true">
                 <input type="hidden" name="_flowExecutionKey" value="${flowExecutionKey}"/>
 
                 <fieldset>
