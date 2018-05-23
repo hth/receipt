@@ -1,26 +1,12 @@
 package com.receiptofi.repository;
 
-import static com.receiptofi.repository.util.AppendAdditionalFields.entityUpdate;
-import static com.receiptofi.repository.util.AppendAdditionalFields.isActive;
-import static com.receiptofi.repository.util.AppendAdditionalFields.isDeleted;
-import static com.receiptofi.repository.util.AppendAdditionalFields.isNotActive;
-import static com.receiptofi.repository.util.AppendAdditionalFields.isNotDeleted;
-import static org.springframework.data.domain.Sort.Direction.ASC;
-import static org.springframework.data.mongodb.core.query.Criteria.where;
-import static org.springframework.data.mongodb.core.query.Query.query;
-import static org.springframework.data.mongodb.core.query.Update.update;
-
-import com.mongodb.WriteResult;
-
+import com.mongodb.client.result.UpdateResult;
 import com.receiptofi.domain.BaseEntity;
 import com.receiptofi.domain.ExpenseTagEntity;
 import com.receiptofi.domain.types.ExpenseTagIconEnum;
-
 import org.bson.types.ObjectId;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.DuplicateKeyException;
@@ -31,6 +17,12 @@ import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 
 import java.util.List;
+
+import static com.receiptofi.repository.util.AppendAdditionalFields.*;
+import static org.springframework.data.domain.Sort.Direction.ASC;
+import static org.springframework.data.mongodb.core.query.Criteria.where;
+import static org.springframework.data.mongodb.core.query.Query.query;
+import static org.springframework.data.mongodb.core.query.Update.update;
 
 /**
  * User: hitender
@@ -146,12 +138,12 @@ public class ExpenseTagManagerImpl implements ExpenseTagManager {
 
     @Override
     public boolean softDeleteExpenseTag(String expenseTagId, String expenseTagName, String rid) {
-        WriteResult writeResult = mongoTemplate.updateFirst(
+        UpdateResult updateResult = mongoTemplate.updateFirst(
                 query(where("id").is(new ObjectId(expenseTagId))
                         .and("RID").is(rid)
                         .and("TAG").is(expenseTagName)),
                 entityUpdate(update("A", false).set("D", true)),
                 ExpenseTagEntity.class);
-        return writeResult.getN() > 0;
+        return updateResult.getModifiedCount() > 0;
     }
 }

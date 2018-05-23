@@ -3,8 +3,7 @@
  */
 package com.receiptofi.repository;
 
-import com.mongodb.WriteResult;
-
+import com.mongodb.client.result.UpdateResult;
 import com.receiptofi.domain.DocumentEntity;
 import com.receiptofi.domain.ItemEntityOCR;
 
@@ -18,7 +17,7 @@ public interface ItemOCRManager extends RepositoryManager<ItemEntityOCR> {
 
     void saveObjects(List<ItemEntityOCR> objects) throws Exception;
 
-    WriteResult updateObject(ItemEntityOCR object);
+    UpdateResult updateObject(ItemEntityOCR object);
 
     List<ItemEntityOCR> getWhereReceipt(DocumentEntity receipt);
 

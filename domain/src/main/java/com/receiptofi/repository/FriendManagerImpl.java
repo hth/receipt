@@ -1,15 +1,8 @@
 package com.receiptofi.repository;
 
-import static com.receiptofi.repository.util.AppendAdditionalFields.entityUpdate;
-import static org.springframework.data.mongodb.core.query.Criteria.where;
-import static org.springframework.data.mongodb.core.query.Query.query;
-import static org.springframework.data.mongodb.core.query.Update.update;
-
-import com.mongodb.WriteResult;
-
+import com.mongodb.client.result.UpdateResult;
 import com.receiptofi.domain.BaseEntity;
 import com.receiptofi.domain.FriendEntity;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -18,6 +11,11 @@ import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+
+import static com.receiptofi.repository.util.AppendAdditionalFields.entityUpdate;
+import static org.springframework.data.mongodb.core.query.Criteria.where;
+import static org.springframework.data.mongodb.core.query.Query.query;
+import static org.springframework.data.mongodb.core.query.Update.update;
 
 /**
  * User: hitender
@@ -126,22 +124,22 @@ public class FriendManagerImpl implements FriendManager {
 
     @Override
     public boolean updateResponse(String id, String authenticationKey, boolean acceptConnection, String rid) {
-        WriteResult writeResult = this.mongoTemplate.updateFirst(
+        UpdateResult updateResult = this.mongoTemplate.updateFirst(
                 query(where("id").is(id).and("AUTH").is(authenticationKey).and("AC").is(false).and("FID").is(rid)),
                 entityUpdate(update("AC", acceptConnection).set("CON", acceptConnection).unset("AUTH")),
                 FriendEntity.class);
 
-        return writeResult.getN() > 0;
+        return updateResult.getModifiedCount() > 0;
     }
 
     @Override
     public boolean cancelInvite(String id, String authenticationKey) {
-        WriteResult writeResult = this.mongoTemplate.updateFirst(
+        UpdateResult updateResult = this.mongoTemplate.updateFirst(
                 query(where("id").is(id).and("AUTH").is(authenticationKey)),
                 entityUpdate(new Update().unset("AUTH")),
                 FriendEntity.class);
 
-        return writeResult.getN() > 0;
+        return updateResult.getModifiedCount() > 0;
     }
 
     @Override
@@ -156,7 +154,7 @@ public class FriendManagerImpl implements FriendManager {
 
     @Override
     public boolean unfriend(String rid, String fid) {
-        WriteResult writeResult = this.mongoTemplate.updateFirst(
+        UpdateResult updateResult = this.mongoTemplate.updateFirst(
                 query(new Criteria().orOperator(
                         Criteria.where("FID").is(rid).and("RID").is(fid).and("CON").is(true),
                         Criteria.where("RID").is(rid).and("FID").is(fid).and("CON").is(true))),
@@ -164,17 +162,17 @@ public class FriendManagerImpl implements FriendManager {
                 FriendEntity.class
         );
 
-        return writeResult.getN() > 0;
+        return updateResult.getModifiedCount() > 0;
     }
 
     @Override
     public boolean inviteAgain(String id, String authKey) {
-        WriteResult writeResult = this.mongoTemplate.updateFirst(
+        UpdateResult updateResult = this.mongoTemplate.updateFirst(
                 query(where("id").is(id)),
                 entityUpdate(update("AUTH", authKey)),
                 FriendEntity.class
         );
 
-        return writeResult.getN() > 0;
+        return updateResult.getModifiedCount() > 0;
     }
 }

@@ -3,35 +3,21 @@
  */
 package com.receiptofi.repository;
 
-import static com.receiptofi.repository.util.AppendAdditionalFields.entityUpdate;
-import static com.receiptofi.repository.util.AppendAdditionalFields.isActive;
-import static com.receiptofi.repository.util.AppendAdditionalFields.isDeleted;
-import static com.receiptofi.repository.util.AppendAdditionalFields.isNotActive;
-import static com.receiptofi.repository.util.AppendAdditionalFields.isNotDeleted;
-import static org.springframework.data.mongodb.core.query.Criteria.where;
-import static org.springframework.data.mongodb.core.query.Query.query;
-import static org.springframework.data.mongodb.core.query.Update.update;
-
 import com.mongodb.ReadPreference;
-
 import com.receiptofi.domain.BaseEntity;
 import com.receiptofi.domain.DocumentEntity;
 import com.receiptofi.domain.types.DocumentStatusEnum;
 import com.receiptofi.domain.value.DocumentGrouped;
 import com.receiptofi.utils.DateUtil;
-
 import org.joda.time.DateTime;
 import org.joda.time.Days;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.WriteResultChecking;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapreduce.GroupBy;
 import org.springframework.data.mongodb.core.mapreduce.GroupByResults;
@@ -42,6 +28,11 @@ import org.springframework.util.Assert;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+
+import static com.receiptofi.repository.util.AppendAdditionalFields.*;
+import static org.springframework.data.mongodb.core.query.Criteria.where;
+import static org.springframework.data.mongodb.core.query.Query.query;
+import static org.springframework.data.mongodb.core.query.Update.update;
 
 /**
  * @author hitender
@@ -70,7 +61,6 @@ public final class DocumentManagerImpl implements DocumentManager {
 
     @Override
     public void save(DocumentEntity object) {
-        mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
         try {
             // Cannot use insert because insert does not perform update like save.
             // Save will always try to update or create new record.

@@ -1,31 +1,18 @@
 package com.receiptofi.repository;
 
-import static com.receiptofi.repository.util.AppendAdditionalFields.entityUpdate;
-import static com.receiptofi.repository.util.AppendAdditionalFields.isActive;
-import static com.receiptofi.repository.util.AppendAdditionalFields.isNotDeleted;
-import static org.springframework.data.domain.Sort.Direction.DESC;
-import static org.springframework.data.mongodb.core.query.Criteria.where;
-import static org.springframework.data.mongodb.core.query.Query.query;
-import static org.springframework.data.mongodb.core.query.Update.update;
-
-import com.mongodb.WriteResult;
-
+import com.mongodb.client.result.UpdateResult;
 import com.receiptofi.domain.BaseEntity;
 import com.receiptofi.domain.UserAccountEntity;
 import com.receiptofi.domain.types.AccountInactiveReasonEnum;
 import com.receiptofi.domain.types.ProviderEnum;
 import com.receiptofi.domain.types.RoleEnum;
-
 import org.bson.types.ObjectId;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.WriteResultChecking;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
@@ -34,6 +21,12 @@ import org.springframework.util.Assert;
 
 import java.util.Date;
 import java.util.List;
+
+import static com.receiptofi.repository.util.AppendAdditionalFields.*;
+import static org.springframework.data.domain.Sort.Direction.DESC;
+import static org.springframework.data.mongodb.core.query.Criteria.where;
+import static org.springframework.data.mongodb.core.query.Query.query;
+import static org.springframework.data.mongodb.core.query.Update.update;
 
 /**
  * User: hitender
@@ -62,7 +55,6 @@ public class UserAccountManagerImpl implements UserAccountManager {
 
     @Override
     public void save(UserAccountEntity object) {
-        mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
         try {
             if (object.getId() != null) {
                 object.setUpdated();
@@ -109,14 +101,14 @@ public class UserAccountManagerImpl implements UserAccountManager {
     }
 
     @Override
-    public int inactiveNonValidatedAccount(Date pastActivationDate) {
-        WriteResult writeResult = mongoTemplate.updateMulti(
+    public long inactiveNonValidatedAccount(Date pastActivationDate) {
+        UpdateResult updateResult = mongoTemplate.updateMulti(
                 query(where("AV").is(false).and("AVD").lt(pastActivationDate).and("A").is(true)),
                 entityUpdate(update("A", false).set("AIR", AccountInactiveReasonEnum.ANV)),
                 UserAccountEntity.class
         );
 
-        return writeResult.getN();
+        return updateResult.getModifiedCount();
     }
 
     @Override

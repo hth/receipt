@@ -1,7 +1,6 @@
 package com.receiptofi.repository;
 
-import com.mongodb.WriteResult;
-
+import com.mongodb.client.result.UpdateResult;
 import com.receiptofi.domain.MessageDocumentEntity;
 import com.receiptofi.domain.types.DocumentStatusEnum;
 
@@ -30,7 +29,7 @@ public interface MessageDocumentManager extends RepositoryManager<MessageDocumen
 
     List<MessageDocumentEntity> findPending(String email, String rid, DocumentStatusEnum status);
 
-    WriteResult updateObject(String did, DocumentStatusEnum statusFind, DocumentStatusEnum statusSet);
+    UpdateResult updateObject(String did, DocumentStatusEnum statusFind, DocumentStatusEnum statusSet);
 
     /**
      * On failure the status is reverted back to PENDING. For now the record is kept locked for the same user.
@@ -41,7 +40,7 @@ public interface MessageDocumentManager extends RepositoryManager<MessageDocumen
      * @param value
      * @return
      */
-    WriteResult undoUpdateObject(String did, boolean value, DocumentStatusEnum statusFind, DocumentStatusEnum statusSet);
+    UpdateResult undoUpdateObject(String did, boolean value, DocumentStatusEnum statusFind, DocumentStatusEnum statusSet);
 
     /**
      * Delete all the messages that are associated with DocumentEntity.
@@ -49,7 +48,7 @@ public interface MessageDocumentManager extends RepositoryManager<MessageDocumen
      *
      * @param did
      */
-    int deleteAllForReceiptOCR(String did);
+    long deleteAllForReceiptOCR(String did);
 
     /**
      * Resets document to state before assigning to technician.

@@ -442,7 +442,7 @@
                         </th>
                         <th class="receipt-tag" style="margin-left: -5px;">
                             <form:select path="receipt.expenseTag.id" id="receiptExpenseTagId">
-                                <form:option value="NONE" label="SELECT" />
+                                <form:option value="" label="SELECT" />
                                 <form:options items="${receiptForm.expenseTags}" itemValue="id" itemLabel="tagName" />
                             </form:select>
                         </th>
@@ -473,7 +473,7 @@
                         </td>
                         <td class="receipt-tag">
                             <form:select path="items[${status.index}].expenseTag.id" id="itemId" cssClass="noClassItem">
-                                <form:option value="NONE" label="SELECT" />
+                                <form:option value="" label="SELECT" />
                                 <form:options items="${receiptForm.expenseTags}" itemValue="id" itemLabel="tagName" />
                             </form:select>
                         </td>

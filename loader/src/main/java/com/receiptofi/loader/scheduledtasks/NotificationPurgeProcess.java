@@ -69,7 +69,7 @@ public class NotificationPurgeProcess {
                 purgeNotification);
 
         if ("ON".equalsIgnoreCase(purgeNotification)) {
-            int deletedCount = 0, inactiveCount = 0;
+            long deletedCount = 0, inactiveCount = 0;
             try {
                 Instant since = LocalDateTime.now().minusDays(purgeNotificationAfterDay).toInstant(ZoneOffset.UTC);
                 Date sinceDate = Date.from(since);

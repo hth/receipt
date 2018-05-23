@@ -3,38 +3,20 @@
  */
 package com.receiptofi.repository;
 
-import static com.receiptofi.repository.util.AppendAdditionalFields.entityUpdate;
-import static com.receiptofi.repository.util.AppendAdditionalFields.isActive;
-import static com.receiptofi.repository.util.AppendAdditionalFields.isNotDeleted;
-import static org.springframework.data.mongodb.core.query.Criteria.where;
-import static org.springframework.data.mongodb.core.query.Query.query;
-import static org.springframework.data.mongodb.core.query.Update.update;
-
 import com.mongodb.DBRef;
-import com.mongodb.WriteResult;
-
-import com.receiptofi.domain.BaseEntity;
-import com.receiptofi.domain.BizNameEntity;
-import com.receiptofi.domain.ExpenseTagEntity;
-import com.receiptofi.domain.ItemEntity;
-import com.receiptofi.domain.ReceiptEntity;
+import com.mongodb.client.result.UpdateResult;
+import com.receiptofi.domain.*;
 import com.receiptofi.utils.DateUtil;
-
 import org.apache.commons.lang3.StringUtils;
-
 import org.bson.types.ObjectId;
-
 import org.joda.time.DateTime;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.WriteResultChecking;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -43,7 +25,11 @@ import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.StringTokenizer;
+
+import static com.receiptofi.repository.util.AppendAdditionalFields.*;
+import static org.springframework.data.mongodb.core.query.Criteria.where;
+import static org.springframework.data.mongodb.core.query.Query.query;
+import static org.springframework.data.mongodb.core.query.Update.update;
 
 /**
  * @author hitender
@@ -74,7 +60,6 @@ public final class ItemManagerImpl implements ItemManager {
 
     @Override
     public void save(ItemEntity object) {
-        mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
         try {
             if (object.getId() != null) {
                 object.setUpdated();
@@ -88,7 +73,6 @@ public final class ItemManagerImpl implements ItemManager {
 
     @Override
     public void saveObjects(List<ItemEntity> objects) {
-        mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
         try {
             //TODO reflection error saving the list
             //mongoTemplate.insert(objects, TABLE);
@@ -203,7 +187,7 @@ public final class ItemManagerImpl implements ItemManager {
     }
 
     @Override
-    public WriteResult updateObject(ItemEntity object) {
+    public UpdateResult updateObject(ItemEntity object) {
         return mongoTemplate.updateFirst(
                 query(where("id").is(object.getId())),
                 entityUpdate(update("IN", object.getName())),
@@ -212,13 +196,11 @@ public final class ItemManagerImpl implements ItemManager {
 
     @Override
     public void deleteWhereReceipt(ReceiptEntity receipt) {
-        mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
         mongoTemplate.remove(query(where("RECEIPT.$id").is(new ObjectId(receipt.getId()))), ItemEntity.class);
     }
 
     @Override
     public void deleteSoft(ReceiptEntity receipt) {
-        mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
         mongoTemplate.updateMulti(
                 query(where("RECEIPT.$id").is(new ObjectId(receipt.getId()))),
                 entityUpdate(update("D", true)),
@@ -253,7 +235,6 @@ public final class ItemManagerImpl implements ItemManager {
 
     @Override
     public void updateAllItemWithExpenseTag(String receiptId, String expenseTagId) {
-        mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
         mongoTemplate.updateMulti(
                 query(where("RECEIPT.$id").is(new ObjectId(receiptId))),
                 update("EXPENSE_TAG", new DBRef(ExpenseTagManagerImpl.TABLE, new ObjectId(expenseTagId))),
@@ -326,6 +307,6 @@ public final class ItemManagerImpl implements ItemManager {
                 query(where("RID").is(rid).and("EXPENSE_TAG.$id").is(new ObjectId(expenseTagId))),
                 entityUpdate(new Update().unset("EXPENSE_TAG")),
                 TABLE
-        ).getN() > 0;
+        ).getModifiedCount() > 0;
     }
 }

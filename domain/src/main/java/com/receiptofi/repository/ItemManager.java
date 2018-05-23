@@ -3,12 +3,10 @@
  */
 package com.receiptofi.repository;
 
-import com.mongodb.WriteResult;
-
+import com.mongodb.client.result.UpdateResult;
 import com.receiptofi.domain.ExpenseTagEntity;
 import com.receiptofi.domain.ItemEntity;
 import com.receiptofi.domain.ReceiptEntity;
-
 import org.joda.time.DateTime;
 
 import java.util.List;
@@ -21,7 +19,7 @@ public interface ItemManager extends RepositoryManager<ItemEntity> {
 
     void saveObjects(List<ItemEntity> objects);
 
-    WriteResult updateObject(ItemEntity object);
+    UpdateResult updateObject(ItemEntity object);
 
     List<ItemEntity> getAllItemsOfReceipt(String receiptId);
 

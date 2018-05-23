@@ -1,5 +1,21 @@
 package com.receiptofi.repository;
 
+import com.mongodb.client.result.UpdateResult;
+import com.receiptofi.domain.BaseEntity;
+import com.receiptofi.domain.MessageDocumentEntity;
+import com.receiptofi.domain.types.DocumentStatusEnum;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.stereotype.Repository;
+
+import java.util.Date;
+import java.util.List;
+
 import static com.receiptofi.repository.util.AppendAdditionalFields.entityUpdate;
 import static org.springframework.data.domain.Sort.Direction.ASC;
 import static org.springframework.data.domain.Sort.Direction.DESC;
@@ -7,26 +23,6 @@ import static org.springframework.data.domain.Sort.Order;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
 import static org.springframework.data.mongodb.core.query.Update.update;
-
-import com.mongodb.WriteResult;
-
-import com.receiptofi.domain.BaseEntity;
-import com.receiptofi.domain.MessageDocumentEntity;
-import com.receiptofi.domain.types.DocumentStatusEnum;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.WriteResultChecking;
-import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.stereotype.Repository;
-
-import java.util.Date;
-import java.util.List;
 
 /**
  * User: hitender
@@ -83,7 +79,7 @@ public final class MessageDocumentManagerImpl implements MessageDocumentManager 
         List<MessageDocumentEntity> list = findWithLimit(status);
         for (MessageDocumentEntity object : list) {
             try {
-                WriteResult writeResult = mongoTemplate.updateFirst(
+                UpdateResult updateResult = mongoTemplate.updateFirst(
                         query(where("id").is(object.getId())),
                         entityUpdate(
                                 update("EM", emailId)
@@ -93,7 +89,7 @@ public final class MessageDocumentManagerImpl implements MessageDocumentManager 
                         MessageDocumentEntity.class,
                         TABLE);
 
-                LOG.info("Update message updateOfExisting={} n={}", writeResult.isUpdateOfExisting(), writeResult.getN());
+                LOG.info("Update message updateOfExisting={} n={}", updateResult.getMatchedCount(), updateResult.getModifiedCount());
             } catch (Exception e) {
                 LOG.error("Update failed reason={}", e.getLocalizedMessage(), e);
                 object.setRecordLocked(false);
@@ -136,7 +132,6 @@ public final class MessageDocumentManagerImpl implements MessageDocumentManager 
 
     @Override
     public void save(MessageDocumentEntity object) {
-        mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
         if (null != object.getId()) {
             object.setUpdated();
         }
@@ -144,24 +139,22 @@ public final class MessageDocumentManagerImpl implements MessageDocumentManager 
     }
 
     @Override
-    public WriteResult updateObject(String did, DocumentStatusEnum statusFind, DocumentStatusEnum statusSet) {
-        mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
+    public UpdateResult updateObject(String did, DocumentStatusEnum statusFind, DocumentStatusEnum statusSet) {
         LOG.info("UpdateObject did={} docStatusFind={} docSetStatus={}", did, statusFind, statusSet);
 
-        WriteResult writeResult = mongoTemplate.updateFirst(
+        UpdateResult updateResult = mongoTemplate.updateFirst(
                 query(where("DID").is(did)
                         .and("DS").is(statusFind)
                         .and("LOK").is(true)),
                 entityUpdate(update("DS", statusSet).set("A", false)),
                 MessageDocumentEntity.class);
 
-        LOG.info("Update message updateOfExisting={} n={}", writeResult.isUpdateOfExisting(), writeResult.getN());
-        return writeResult;
+        LOG.info("Update message updateOfExisting={} n={}", updateResult.getMatchedCount(), updateResult.getModifiedCount());
+        return updateResult;
     }
 
     @Override
-    public WriteResult undoUpdateObject(String did, boolean value, DocumentStatusEnum statusFind, DocumentStatusEnum statusSet) {
-        mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
+    public UpdateResult undoUpdateObject(String did, boolean value, DocumentStatusEnum statusFind, DocumentStatusEnum statusSet) {
         return mongoTemplate.updateFirst(
                 query(where("DID").is(did)
                         .and("DS").is(statusFind)
@@ -177,8 +170,8 @@ public final class MessageDocumentManagerImpl implements MessageDocumentManager 
     }
 
     @Override
-    public int deleteAllForReceiptOCR(String did) {
-        return mongoTemplate.remove(query(where("DID").is(did)), MessageDocumentEntity.class).getN();
+    public long deleteAllForReceiptOCR(String did) {
+        return mongoTemplate.remove(query(where("DID").is(did)), MessageDocumentEntity.class).getDeletedCount();
     }
 
     @Override
@@ -201,7 +194,7 @@ public final class MessageDocumentManagerImpl implements MessageDocumentManager 
     @Override
     public boolean lockMessageWhenDuplicate(String did, String email, String rid) {
         LOG.info("Locking messages for did={} by rid={} email={}", did, rid, email);
-        WriteResult writeResult = mongoTemplate.updateFirst(
+        UpdateResult updateResult = mongoTemplate.updateFirst(
                 query(where("DID").is(did)),
                 entityUpdate(
                         update("LOK", true)
@@ -210,7 +203,7 @@ public final class MessageDocumentManagerImpl implements MessageDocumentManager 
                 ),
                 MessageDocumentEntity.class);
 
-        LOG.info("Update message updateOfExisting={} n={}", writeResult.isUpdateOfExisting(), writeResult.getN());
-        return writeResult.getN() > 0;
+        LOG.info("Update message updateOfExisting={} n={}", updateResult.getMatchedCount(), updateResult.getModifiedCount());
+        return updateResult.getModifiedCount() > 0;
     }
 }

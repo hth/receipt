@@ -185,10 +185,10 @@ subprojects {
     }
 
     dependencies {
-        compile 'org.springframework.social:spring-social-core:1.1.4.RELEASE'
+        compile 'org.springframework.social:spring-social-core:1.1.6.RELEASE'
         compile 'org.springframework.social:spring-social-google:1.0.0.RELEASE'
-        compile 'org.springframework.social:spring-social-web:1.1.4.RELEASE'
-        compile 'org.springframework.social:spring-social-security:1.1.4.RELEASE'
+        compile 'org.springframework.social:spring-social-web:1.1.6.RELEASE'
+        compile 'org.springframework.social:spring-social-security:1.1.6.RELEASE'
         compile 'org.springframework.social:spring-social-facebook:2.0.3.RELEASE'
         compile files('../lib/user-agent-detector.jar')
 
@@ -207,7 +207,6 @@ subprojects {
         compile "$springGroup:spring-core:$springVersion"
         compile "$springGroup:spring-expression:$springVersion"
         compile "$springGroup:spring-instrument:$springVersion"
-        compile "$springGroup:spring-instrument-tomcat:$springVersion"
         compile "$springGroup:spring-jms:$springVersion"
         compile "$springGroup:spring-oxm:$springVersion"
         compile "$springGroup:spring-test:$springVersion"

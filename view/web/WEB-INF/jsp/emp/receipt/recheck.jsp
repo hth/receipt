@@ -472,7 +472,7 @@
                                     </td>
                                     <td>
                                         <form:select path="items[${status.index}].taxed">
-                                            <form:option value="NONE" label="--- Select ---"/>
+                                            <form:option value="" label="--- Select ---"/>
                                             <form:options itemValue="name" itemLabel="description" />
                                         </form:select>
                                     </td>

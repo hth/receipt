@@ -387,7 +387,7 @@
             Document Type:
         </form:label>
         <form:select path="receiptDocumentForm.receiptDocument.documentOfType" id="documentId">
-            <form:option value="NONE" label="--- Select ---"/>
+            <form:option value="" label="--- Select ---"/>
             <form:options itemValue="name" itemLabel="description" />
         </form:select>
     </div>
@@ -470,7 +470,7 @@
                                         </td>
                                         <td>
                                             <form:select path="items[${status.index}].taxed">
-                                                <form:option value="NONE" label="--- Select ---"/>
+                                                <form:option value="" label="--- Select ---"/>
                                                 <form:options itemValue="name" itemLabel="description" />
                                             </form:select>
                                         </td>
@@ -528,7 +528,7 @@
                                     <td colspan="3">
                                         <form:label path="receiptDocument.documentRejectReason" cssErrorClass="error">Reject Reason: </form:label>
                                         <form:select path="receiptDocument.documentRejectReason" id="documentRejectReason">
-                                            <form:option value="NONE" label="--- Select ---"/>
+                                            <form:option value="" label="--- Select ---"/>
                                             <form:options itemValue="name" itemLabel="description" />
                                         </form:select>
                                         <br/>

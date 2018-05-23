@@ -221,11 +221,11 @@ public class NotificationService {
         return notificationManager.notificationCount(rid);
     }
 
-    public int deleteInactiveNotification(Date sinceDate) {
+    public long deleteInactiveNotification(Date sinceDate) {
         return notificationManager.deleteHardInactiveNotification(sinceDate);
     }
 
-    public int setNotificationInactive(Date sinceDate) {
+    public long setNotificationInactive(Date sinceDate) {
         return notificationManager.setNotificationInactive(sinceDate);
     }
 

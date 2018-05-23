@@ -127,7 +127,7 @@
                 </span>
                 <span class="receipt-tag" style="margin-left: -5px;">
                     <form:select path="items[${status.index}].expenseTag.id">
-                        <form:option value="NONE" label="SELECT" />
+                        <form:option value="" label="SELECT" />
                         <form:options items="${expenseForm.expenseTags}" itemValue="id" itemLabel="tagName" />
                     </form:select>
                 </span>

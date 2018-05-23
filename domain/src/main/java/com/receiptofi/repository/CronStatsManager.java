@@ -1,5 +1,6 @@
 package com.receiptofi.repository;
 
+import com.mongodb.client.DistinctIterable;
 import com.receiptofi.domain.CronStatsEntity;
 
 import java.util.List;
@@ -10,7 +11,7 @@ import java.util.List;
  */
 public interface CronStatsManager extends RepositoryManager<CronStatsEntity> {
 
-    List<String> getUniqueCronTasks();
+    DistinctIterable<String> getUniqueCronTasks();
 
     List<CronStatsEntity> getHistoricalData(String task, int limit);
 }

@@ -5,10 +5,8 @@ package com.receiptofi.repository;
 
 import com.receiptofi.domain.BaseEntity;
 import com.receiptofi.domain.ItemFeatureEntity;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.WriteResultChecking;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.stereotype.Repository;
 
@@ -33,7 +31,6 @@ public final class ItemFeatureManagerImpl implements ItemFeatureManager {
 
     @Override
     public void save(ItemFeatureEntity object) {
-        mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
         if (object.getId() != null) {
             object.setUpdated();
         }

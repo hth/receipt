@@ -23,7 +23,7 @@ public interface NotificationManager extends RepositoryManager<NotificationEntit
      * @param sinceDate
      * @return
      */
-    int deleteHardInactiveNotification(Date sinceDate);
+    long deleteHardInactiveNotification(Date sinceDate);
 
     /**
      * Set the notification inactive when older than sinceDate.
@@ -31,7 +31,7 @@ public interface NotificationManager extends RepositoryManager<NotificationEntit
      * @param sinceDate
      * @return
      */
-    int setNotificationInactive(Date sinceDate);
+    long setNotificationInactive(Date sinceDate);
 
     /**
      * Gets all the Notification that are marked as push notification.

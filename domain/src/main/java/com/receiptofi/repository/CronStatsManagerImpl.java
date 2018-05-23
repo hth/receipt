@@ -1,14 +1,10 @@
 package com.receiptofi.repository;
 
-import static org.springframework.data.mongodb.core.query.Criteria.where;
-import static org.springframework.data.mongodb.core.query.Query.query;
-
+import com.mongodb.client.DistinctIterable;
 import com.receiptofi.domain.BaseEntity;
 import com.receiptofi.domain.CronStatsEntity;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -16,6 +12,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+
+import static org.springframework.data.mongodb.core.query.Criteria.where;
+import static org.springframework.data.mongodb.core.query.Query.query;
 
 /**
  * User: hitender
@@ -54,8 +53,8 @@ public class CronStatsManagerImpl implements CronStatsManager {
 
     @Override
     @SuppressWarnings ("unchecked")
-    public List<String> getUniqueCronTasks() {
-        return mongoTemplate.getCollection(TABLE).distinct("TN");
+    public DistinctIterable<String> getUniqueCronTasks() {
+        return mongoTemplate.getCollection(TABLE).distinct("TN", String.class);
     }
 
     @Override

@@ -1,37 +1,28 @@
 package com.receiptofi.repository;
 
-import static com.receiptofi.repository.util.AppendAdditionalFields.entityUpdate;
-import static com.receiptofi.repository.util.AppendAdditionalFields.isActive;
-import static com.receiptofi.repository.util.AppendAdditionalFields.isNotDeleted;
-import static org.springframework.data.domain.Sort.Direction.DESC;
-import static org.springframework.data.mongodb.core.aggregation.Aggregation.group;
-import static org.springframework.data.mongodb.core.aggregation.Aggregation.match;
-import static org.springframework.data.mongodb.core.aggregation.Aggregation.newAggregation;
-import static org.springframework.data.mongodb.core.aggregation.Aggregation.previousOperation;
-import static org.springframework.data.mongodb.core.aggregation.Aggregation.sort;
-import static org.springframework.data.mongodb.core.query.Criteria.where;
-import static org.springframework.data.mongodb.core.query.Query.query;
-import static org.springframework.data.mongodb.core.query.Update.*;
-
-import com.mongodb.WriteResult;
-
+import com.mongodb.client.result.DeleteResult;
+import com.mongodb.client.result.UpdateResult;
 import com.receiptofi.domain.BaseEntity;
 import com.receiptofi.domain.SplitExpensesEntity;
 import com.receiptofi.domain.types.SplitStatusEnum;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.TypedAggregation;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 
 import java.util.List;
+
+import static com.receiptofi.repository.util.AppendAdditionalFields.*;
+import static org.springframework.data.domain.Sort.Direction.DESC;
+import static org.springframework.data.mongodb.core.aggregation.Aggregation.*;
+import static org.springframework.data.mongodb.core.query.Criteria.where;
+import static org.springframework.data.mongodb.core.query.Query.query;
+import static org.springframework.data.mongodb.core.query.Update.update;
 
 /**
  * User: hitender
@@ -84,14 +75,14 @@ public class SplitExpensesManagerImpl implements SplitExpensesManager {
 
     @Override
     public boolean deleteHard(String rdid, String rid, String fid) {
-        WriteResult writeResult = mongoTemplate.remove(
+        DeleteResult deleteResult = mongoTemplate.remove(
                 query(where("RDID").is(rdid)
                         .and("RID").is(rid)
                         .and("FID").is(fid)
                         .and("SS").is(SplitStatusEnum.U)),
                 SplitExpensesEntity.class
         );
-        return writeResult.getN() > 0;
+        return deleteResult.getDeletedCount() > 0;
     }
 
     @Override
@@ -148,12 +139,12 @@ public class SplitExpensesManagerImpl implements SplitExpensesManager {
 
     @Override
     public boolean updateSplitTotal(String rdid, Double splitTotal) {
-        WriteResult writeResult = mongoTemplate.updateMulti(
+        UpdateResult updateResult = mongoTemplate.updateMulti(
                 query(where("RDID").is(rdid)),
                 entityUpdate(update("ST", splitTotal)),
                 SplitExpensesEntity.class
         );
-        return writeResult.getN() > 0;
+        return updateResult.getModifiedCount() > 0;
     }
 
     @Override

@@ -22,7 +22,7 @@ public interface UserAccountManager extends RepositoryManager<UserAccountEntity>
 
     UserAccountEntity findByAuthorizationCode(ProviderEnum provider, String authorizationCode);
 
-    int inactiveNonValidatedAccount(Date pastActivationDate);
+    long inactiveNonValidatedAccount(Date pastActivationDate);
 
     List<UserAccountEntity> findRegisteredAccountWhenRegistrationIsOff(int registrationInviteDailyLimit);
 

@@ -79,7 +79,7 @@ public class MessageDocumentOrphanReport {
                     if (null == document) {
                         LOG.warn("Orphan Message DocumentId={} messageDocumentId={}",
                                 messageDocument.getDocumentId(), messageDocument.getId());
-                        int deleted = messageDocumentService.deleteAllForReceiptOCR(messageDocument.getDocumentId());
+                        long deleted = messageDocumentService.deleteAllForReceiptOCR(messageDocument.getDocumentId());
                         if (deleted > 0) {
                             success += deleted;
                             LOG.info("Deleted messageDocument did={}", messageDocument.getDocumentId());

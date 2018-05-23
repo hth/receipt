@@ -3,43 +3,24 @@ package com.receiptofi.web.view;
 import com.receiptofi.domain.ItemEntity;
 import com.receiptofi.service.ftp.FtpService;
 import com.receiptofi.web.helper.AnchorFileInExcel;
-
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFCellStyle;
-import org.apache.poi.hssf.usermodel.HSSFDataFormat;
-import org.apache.poi.hssf.usermodel.HSSFFont;
-import org.apache.poi.hssf.usermodel.HSSFRichTextString;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.hssf.util.HSSFColor;
-import org.apache.poi.ss.usermodel.ClientAnchor;
-import org.apache.poi.ss.usermodel.CreationHelper;
-import org.apache.poi.ss.usermodel.Drawing;
-import org.apache.poi.ss.usermodel.Picture;
-import org.apache.poi.ss.usermodel.Workbook;
-
+import org.apache.poi.ss.usermodel.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import org.springframework.web.servlet.view.document.AbstractExcelView;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import org.springframework.web.servlet.view.document.AbstractXlsView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.*;
 
 /**
  * This view generates an Excel report from receipt item objects.
@@ -53,7 +34,7 @@ import javax.servlet.http.HttpServletResponse;
         "PMD.LongVariable"
 })
 @Component
-public final class ExpensofiExcelView extends AbstractExcelView {
+public final class ExpensofiExcelView extends AbstractXlsView {
     private static final Logger LOG = LoggerFactory.getLogger(ExpensofiExcelView.class);
     // Columns - width is measured in 256ths of an el and 1330 equals 1 cm
     private static final int UNIT = 1300;
@@ -82,12 +63,12 @@ public final class ExpensofiExcelView extends AbstractExcelView {
 
     @Override
     @SuppressWarnings ("unchecked")
-    protected void buildExcelDocument(Map<String, Object> model, HSSFWorkbook workbook, HttpServletRequest request, HttpServletResponse response) {
-        HSSFSheet sheet = workbook.createSheet();
+    protected void buildExcelDocument(Map<String, Object> model, Workbook workbook, HttpServletRequest request, HttpServletResponse response) {
+        Sheet sheet = workbook.createSheet();
 
         List<ItemEntity> items = (ArrayList) model.get("items");
         if (null == items) {
-            HSSFRow row = sheet.createRow(0);
+            Row row = sheet.createRow(0);
             addToCell(row, 0, "Error creating spreadsheet", NO_STYLE);
             return;
         }
@@ -95,10 +76,10 @@ public final class ExpensofiExcelView extends AbstractExcelView {
         setHeadings(workbook, sheet);
 
         // Other styles
-        HSSFCellStyle dateStyle = workbook.createCellStyle();
+        CellStyle dateStyle = workbook.createCellStyle();
         dateStyle.setDataFormat(HSSFDataFormat.getBuiltinFormat("m/d/yy"));
 
-        HSSFCellStyle moneyStyle = workbook.createCellStyle();
+        CellStyle moneyStyle = workbook.createCellStyle();
         moneyStyle.setDataFormat(HSSFDataFormat.getBuiltinFormat("#,##0.00"));
 
         int nAccounts = items.size();
@@ -106,7 +87,7 @@ public final class ExpensofiExcelView extends AbstractExcelView {
         // Content
         for (int i = 0; i < nAccounts; i++) {
             ItemEntity item = items.get(i);
-            HSSFRow row = sheet.createRow(i + 1);
+            Row row = sheet.createRow(i + 1);
             addToCell(row, 0, item.getName(), NO_STYLE);
             addToCell(row, 1, item.getReceipt().getReceiptDate(), dateStyle);
             addToCell(row, 2, item.getQuantity(), NO_STYLE);
@@ -121,7 +102,7 @@ public final class ExpensofiExcelView extends AbstractExcelView {
         }
 
         // Totals
-        HSSFRow row = sheet.createRow(nAccounts + 2);
+        Row row = sheet.createRow(nAccounts + 2);
         addToCell(row, 2, "SUM", NO_STYLE);
         addToCell(row, 3, "=sum(D2:D" + (nAccounts + 1) + ')', moneyStyle);
         addToCell(row, 4, "=sum(E2:E" + (nAccounts + 1) + ')', moneyStyle);
@@ -145,9 +126,9 @@ public final class ExpensofiExcelView extends AbstractExcelView {
      * @param workbook
      * @param sheet
      */
-    private void setHeadings(HSSFWorkbook workbook, HSSFSheet sheet) {
+    private void setHeadings(Workbook workbook, Sheet sheet) {
         // Heading style and font
-        HSSFCellStyle cellHeader = setHeadingStyle(workbook);
+        CellStyle cellHeader = setHeadingStyle(workbook);
         setHeadingFont(workbook, cellHeader);
 
         // Headings
@@ -160,7 +141,7 @@ public final class ExpensofiExcelView extends AbstractExcelView {
      * @param cellHeader
      * @param row
      */
-    private void setHeadingTitles(HSSFCellStyle cellHeader, HSSFRow row) {
+    private void setHeadingTitles(CellStyle cellHeader, Row row) {
         String[] header = heading.split(",");
         for (int i = 0; i < header.length; i++) {
             addToCell(row, i, header[i], cellHeader);
@@ -172,7 +153,7 @@ public final class ExpensofiExcelView extends AbstractExcelView {
      *
      * @param sheet
      */
-    private void setColumnWidth(HSSFSheet sheet) {
+    private void setColumnWidth(Sheet sheet) {
         String[] sizes = columnSize.split(",");
         for (int i = 0; i < sizes.length; i++) {
             sheet.setColumnWidth(i, UNIT * Integer.valueOf(sizes[i]));
@@ -220,9 +201,9 @@ public final class ExpensofiExcelView extends AbstractExcelView {
     private void anchorReceiptImage(
             byte[] imageBytes,
             String imageContentType,
-            HSSFWorkbook workbook,
-            HSSFSheet sheet,
-            HSSFRow row
+            Workbook workbook,
+            Sheet sheet,
+            Row row
     ) {
         int pictureIdx = workbook.addPicture(
                 imageBytes,
@@ -245,25 +226,25 @@ public final class ExpensofiExcelView extends AbstractExcelView {
         pict.resize();
     }
 
-    private HSSFCellStyle setHeadingStyle(HSSFWorkbook workbook) {
-        HSSFCellStyle cellHeader = workbook.createCellStyle();
-        cellHeader.setBorderBottom(HSSFCellStyle.BORDER_THIN);
+    private CellStyle setHeadingStyle(Workbook workbook) {
+        CellStyle cellHeader = workbook.createCellStyle();
+        cellHeader.setBorderBottom(BorderStyle.THIN);
         cellHeader.setBottomBorderColor(HSSFColor.BLACK.index);
-        cellHeader.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+        cellHeader.setAlignment(HorizontalAlignment.CENTER);
         cellHeader.setFillBackgroundColor(HSSFColor.LIGHT_GREEN.index);
-        cellHeader.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+        cellHeader.setFillPattern(FillPatternType.SOLID_FOREGROUND);
         return cellHeader;
     }
 
-    private void setHeadingFont(HSSFWorkbook workbook, HSSFCellStyle heading) {
-        HSSFFont font = workbook.createFont();
-        font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+    private void setHeadingFont(Workbook workbook, CellStyle heading) {
+        Font font = workbook.createFont();
+        font.setBold(true);
         font.setColor(HSSFColor.WHITE.index);
         heading.setFont(font);
     }
 
-    private HSSFCell addToCell(HSSFRow row, int index, Object value, HSSFCellStyle style) {
-        HSSFCell cell = row.createCell(index);
+    private Cell addToCell(Row row, int index, Object value, CellStyle style) {
+        Cell cell = row.createCell(index);
 
         if (null == style) {
             style = cell.getCellStyle();
@@ -278,15 +259,15 @@ public final class ExpensofiExcelView extends AbstractExcelView {
                 cell.setCellValue(new HSSFRichTextString(str));
             }
 
-            style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+            style.setAlignment(HorizontalAlignment.CENTER);
         } else if (value instanceof Date) {
             LOG.debug("DATE: {}", value);
             cell.setCellValue((Date) value);
-            style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+            style.setAlignment(HorizontalAlignment.CENTER);
         } else if (value instanceof Double) {
             LOG.debug("MONEY: {}", value);
             cell.setCellValue((Double) value);
-            style.setAlignment(HSSFCellStyle.ALIGN_RIGHT);
+            style.setAlignment(HorizontalAlignment.RIGHT);
         } else {
             if (null == value) {
                 LOG.debug("OTHER: {} ({})", "", StringUtils.EMPTY.getClass());
@@ -295,7 +276,7 @@ public final class ExpensofiExcelView extends AbstractExcelView {
                 LOG.debug("OTHER: {} ({})", value, value.getClass());
                 cell.setCellValue(new HSSFRichTextString(value.toString()));
             }
-            style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+            style.setAlignment(HorizontalAlignment.CENTER);
         }
 
         cell.setCellStyle(style);

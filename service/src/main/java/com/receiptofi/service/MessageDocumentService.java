@@ -37,7 +37,7 @@ public class MessageDocumentService {
         return messageDocumentManager.findAllPending(since);
     }
 
-    public int deleteAllForReceiptOCR(String did) {
+    public long deleteAllForReceiptOCR(String did) {
         return messageDocumentManager.deleteAllForReceiptOCR(did);
     }
 

@@ -567,7 +567,7 @@ public class AccountService {
         userProfileManager.updateCountryShortName(countryShortName.toUpperCase(), rid);
     }
 
-    public int inactiveNonValidatedAccount(Date pastActivationDate) {
+    public long inactiveNonValidatedAccount(Date pastActivationDate) {
         return userAccountManager.inactiveNonValidatedAccount(pastActivationDate);
     }
 

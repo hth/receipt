@@ -1,8 +1,8 @@
 package com.receiptofi.service;
 
+import com.mongodb.client.DistinctIterable;
 import com.receiptofi.domain.CronStatsEntity;
 import com.receiptofi.repository.CronStatsManager;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -37,7 +37,7 @@ public class CronStatsService {
 
     public Map<String, List<CronStatsEntity>> getUniqueCronTasks(int limit) {
         Map<String, List<CronStatsEntity>> taskStats = new LinkedHashMap<>();
-        List<String> tasks = cronStatsManager.getUniqueCronTasks();
+        DistinctIterable<String> tasks = cronStatsManager.getUniqueCronTasks();
         for (String task : tasks) {
             taskStats.put(task, cronStatsManager.getHistoricalData(task, limit));
         }

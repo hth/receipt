@@ -79,6 +79,10 @@ public class CronStatsEntity extends BaseEntity {
         this.stats.put(key, String.valueOf(value));
     }
 
+    public void addStats(String key, long value) {
+        this.stats.put(key, String.valueOf(value));
+    }
+
     public Date getEnd() {
         return end;
     }

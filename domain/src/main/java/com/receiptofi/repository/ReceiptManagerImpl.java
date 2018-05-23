@@ -3,22 +3,7 @@
  */
 package com.receiptofi.repository;
 
-import static com.receiptofi.repository.util.AppendAdditionalFields.entityUpdate;
-import static com.receiptofi.repository.util.AppendAdditionalFields.isActive;
-import static com.receiptofi.repository.util.AppendAdditionalFields.isNotActive;
-import static com.receiptofi.repository.util.AppendAdditionalFields.isNotDeleted;
-import static org.springframework.data.domain.Sort.Direction.DESC;
-import static org.springframework.data.mongodb.core.aggregation.Aggregation.group;
-import static org.springframework.data.mongodb.core.aggregation.Aggregation.match;
-import static org.springframework.data.mongodb.core.aggregation.Aggregation.newAggregation;
-import static org.springframework.data.mongodb.core.aggregation.Aggregation.previousOperation;
-import static org.springframework.data.mongodb.core.aggregation.Aggregation.sort;
-import static org.springframework.data.mongodb.core.query.Criteria.where;
-import static org.springframework.data.mongodb.core.query.Query.query;
-import static org.springframework.data.mongodb.core.query.Update.update;
-
-import com.mongodb.WriteResult;
-
+import com.mongodb.client.result.UpdateResult;
 import com.receiptofi.domain.BaseEntity;
 import com.receiptofi.domain.BizNameEntity;
 import com.receiptofi.domain.BizStoreEntity;
@@ -28,23 +13,17 @@ import com.receiptofi.domain.value.ReceiptGrouped;
 import com.receiptofi.domain.value.ReceiptGroupedByBizLocation;
 import com.receiptofi.domain.value.ReceiptListViewGrouped;
 import com.receiptofi.utils.DateUtil;
-
 import org.apache.commons.lang3.StringUtils;
-
 import org.bson.types.ObjectId;
-
 import org.joda.time.DateTime;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.convert.ConverterNotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.WriteResultChecking;
 import org.springframework.data.mongodb.core.aggregation.TypedAggregation;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapreduce.GroupBy;
@@ -59,6 +38,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+
+import static com.receiptofi.repository.util.AppendAdditionalFields.*;
+import static org.springframework.data.domain.Sort.Direction.DESC;
+import static org.springframework.data.mongodb.core.aggregation.Aggregation.*;
+import static org.springframework.data.mongodb.core.query.Criteria.where;
+import static org.springframework.data.mongodb.core.query.Query.query;
+import static org.springframework.data.mongodb.core.query.Update.update;
 
 /**
  * @author hitender
@@ -249,7 +235,6 @@ public class ReceiptManagerImpl implements ReceiptManager {
 
     @Override
     public void save(ReceiptEntity object) {
-        mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
         try {
             // Cannot use insert because insert does not perform update like save.
             // Save will always try to update or create new record.
@@ -424,12 +409,12 @@ public class ReceiptManagerImpl implements ReceiptManager {
 
     @Override
     public void updateReceiptCSWhenStoreUpdated(String countryShortName, String bizStoreId) {
-        WriteResult writeResult = mongoTemplate.updateMulti(
+        UpdateResult updateResult = mongoTemplate.updateMulti(
                 query(where("BIZ_STORE.$id").is(new ObjectId(bizStoreId))),
                 entityUpdate(update("CS", countryShortName)),
                 ReceiptEntity.class);
 
-        LOG.debug("Updated records count={} ack={}", writeResult.getN(), writeResult.wasAcknowledged());
+        LOG.debug("Updated records count={} ack={}", updateResult.getModifiedCount(), updateResult.wasAcknowledged());
     }
 
     @Override
@@ -469,13 +454,13 @@ public class ReceiptManagerImpl implements ReceiptManager {
 
     @Override
     public boolean upsertExpensofiFilenameReference(String id, String filename) {
-        WriteResult writeResult = mongoTemplate.updateFirst(
+        UpdateResult updateResult = mongoTemplate.updateFirst(
                 query(where("id").is(id)),
                 entityUpdate(new Update().set("EXF", filename)),
                 ReceiptEntity.class
         );
 
-        return writeResult.getN() > 0;
+        return updateResult.getModifiedCount() > 0;
     }
 
     @Override
@@ -543,7 +528,7 @@ public class ReceiptManagerImpl implements ReceiptManager {
                 query(where("RID").is(rid).and("EXPENSE_TAG.$id").is(new ObjectId(expenseTagId))),
                 entityUpdate(new Update().unset("EXPENSE_TAG")),
                 TABLE
-        ).getN() > 0;
+        ).getModifiedCount() > 0;
     }
 
     @Override
@@ -557,7 +542,7 @@ public class ReceiptManagerImpl implements ReceiptManager {
                 ),
                 entityUpdate(update("SC", splitCount).set("ST", splitTotal).set("SX", splitTax)),
                 TABLE
-        ).getN() > 0;
+        ).getModifiedCount() > 0;
     }
 
     @Override
@@ -566,7 +551,7 @@ public class ReceiptManagerImpl implements ReceiptManager {
                 query(where("RF").is(receiptId).and("RID").is(rid)),
                 entityUpdate(update("A", false).set("D", true)),
                 TABLE
-        ).getN() > 0;
+        ).getModifiedCount() > 0;
     }
 
     @Override
@@ -575,7 +560,7 @@ public class ReceiptManagerImpl implements ReceiptManager {
                 query(where("id").is(receiptId)),
                 entityUpdate(update("ST", splitTotal).set("SX", splitTax).inc("SC", 1)),
                 ReceiptEntity.class
-        ).isUpdateOfExisting();
+        ).wasAcknowledged();
     }
 
     @Override
@@ -584,7 +569,7 @@ public class ReceiptManagerImpl implements ReceiptManager {
                 query(where("id").is(receiptId)),
                 entityUpdate(update("ST", splitTotal).set("SX", splitTax).inc("SC", -1)),
                 ReceiptEntity.class
-        ).isUpdateOfExisting();
+        ).wasAcknowledged();
     }
 
     @Override

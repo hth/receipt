@@ -56,7 +56,7 @@ public class InactiveNonValidatedAccount {
                 "Mark_Account_Inactive_When_Not_Validated",
                 inactiveNonValidatedAccountSwitch);
 
-        int count = 0;
+        long count = 0;
         LOG.info("begins");
         if ("ON".equals(inactiveNonValidatedAccountSwitch)) {
             DateTime pastActivationDate = DateTime.now().minusDays(mailValidationTimeoutPeriod);

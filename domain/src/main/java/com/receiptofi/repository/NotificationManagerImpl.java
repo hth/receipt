@@ -1,30 +1,15 @@
 package com.receiptofi.repository;
 
 
-import static com.receiptofi.domain.types.NotificationTypeEnum.DOCUMENT_REJECTED;
-import static com.receiptofi.domain.types.NotificationTypeEnum.EXPENSE_REPORT;
-import static com.receiptofi.domain.types.NotificationTypeEnum.PUSH_NOTIFICATION;
-import static com.receiptofi.domain.types.NotificationTypeEnum.RECEIPT;
-import static com.receiptofi.repository.util.AppendAdditionalFields.entityUpdate;
-import static com.receiptofi.repository.util.AppendAdditionalFields.isActive;
-import static com.receiptofi.repository.util.AppendAdditionalFields.isNotDeleted;
-import static org.springframework.data.domain.Sort.Direction;
-import static org.springframework.data.mongodb.core.query.Criteria.where;
-import static org.springframework.data.mongodb.core.query.Query.query;
-import static org.springframework.data.mongodb.core.query.Update.update;
-
-import com.mongodb.WriteResult;
-
+import com.mongodb.client.result.UpdateResult;
 import com.receiptofi.domain.BaseEntity;
 import com.receiptofi.domain.NotificationEntity;
 import com.receiptofi.domain.types.NotificationMarkerEnum;
 import com.receiptofi.domain.types.NotificationStateEnum;
 import com.receiptofi.domain.types.PaginationEnum;
 import com.receiptofi.utils.DateUtil;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -34,6 +19,13 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Date;
 import java.util.List;
+
+import static com.receiptofi.domain.types.NotificationTypeEnum.*;
+import static com.receiptofi.repository.util.AppendAdditionalFields.*;
+import static org.springframework.data.domain.Sort.Direction;
+import static org.springframework.data.mongodb.core.query.Criteria.where;
+import static org.springframework.data.mongodb.core.query.Query.query;
+import static org.springframework.data.mongodb.core.query.Update.update;
 
 /**
  * User: hitender
@@ -105,15 +97,15 @@ public class NotificationManagerImpl implements NotificationManager {
     }
 
     @Override
-    public int deleteHardInactiveNotification(Date sinceDate) {
+    public long deleteHardInactiveNotification(Date sinceDate) {
         return mongoTemplate.remove(
                 query(where("A").is(false).and("C").lte(sinceDate)),
                 NotificationEntity.class
-        ).getN();
+        ).getDeletedCount();
     }
 
     @Override
-    public int setNotificationInactive(Date sinceDate) {
+    public long setNotificationInactive(Date sinceDate) {
         return mongoTemplate.updateMulti(
                 query(where("C").lte(sinceDate)
                                 .andOperator(
@@ -123,7 +115,7 @@ public class NotificationManagerImpl implements NotificationManager {
                 ),
                 entityUpdate(update("A", false)),
                 NotificationEntity.class
-        ).getN();
+        ).getModifiedCount();
     }
 
     @Override
@@ -148,7 +140,7 @@ public class NotificationManagerImpl implements NotificationManager {
 
     @Override
     public void markNotificationRead(List<String> notificationIds, String rid) {
-        WriteResult writeResult = mongoTemplate.updateMulti(
+        UpdateResult updateResult = mongoTemplate.updateMulti(
                 query(where("RID").is(rid)
                         .orOperator(
                             where("MR").exists(false),
@@ -159,6 +151,6 @@ public class NotificationManagerImpl implements NotificationManager {
                 TABLE
         );
 
-        LOG.debug("Marked read notification actual={} expected={}", writeResult.getN(), notificationIds.size());
+        LOG.debug("Marked read notification actual={} expected={}", updateResult.getModifiedCount(), notificationIds.size());
     }
 }

@@ -1,27 +1,12 @@
 package com.receiptofi.repository;
 
-import static com.receiptofi.repository.util.AppendAdditionalFields.entityUpdate;
-import static com.receiptofi.repository.util.AppendAdditionalFields.isActive;
-import static com.receiptofi.repository.util.AppendAdditionalFields.isNotDeleted;
-import static org.springframework.data.mongodb.core.aggregation.Aggregation.group;
-import static org.springframework.data.mongodb.core.aggregation.Aggregation.match;
-import static org.springframework.data.mongodb.core.aggregation.Aggregation.newAggregation;
-import static org.springframework.data.mongodb.core.query.Criteria.where;
-import static org.springframework.data.mongodb.core.query.Query.query;
-import static org.springframework.data.mongodb.core.query.Update.update;
-import static org.springframework.util.Assert.isTrue;
-
 import com.mongodb.WriteConcern;
-
 import com.receiptofi.domain.BaseEntity;
 import com.receiptofi.domain.FileSystemEntity;
 import com.receiptofi.domain.value.DiskUsageGrouped;
-
 import org.bson.types.ObjectId;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.TypedAggregation;
@@ -31,6 +16,13 @@ import org.springframework.util.Assert;
 
 import java.util.Collection;
 import java.util.List;
+
+import static com.receiptofi.repository.util.AppendAdditionalFields.*;
+import static org.springframework.data.mongodb.core.aggregation.Aggregation.*;
+import static org.springframework.data.mongodb.core.query.Criteria.where;
+import static org.springframework.data.mongodb.core.query.Query.query;
+import static org.springframework.data.mongodb.core.query.Update.update;
+import static org.springframework.util.Assert.isTrue;
 
 /**
  * User: hitender
@@ -64,7 +56,7 @@ public final class FileSystemManagerImpl implements FileSystemManager {
      */
     @Override
     public void save(FileSystemEntity object) {
-        if (mongoTemplate.getDb().getMongo().getServerAddressList().size() > 1) {
+        if (mongoTemplate.getMongoDbFactory().getLegacyDb().getMongo().getAllAddress().size() > 2) {
             /**
              * Under replica add at least acknowledgement from three members. As
              * there are issues when trying to access filesystem in document after

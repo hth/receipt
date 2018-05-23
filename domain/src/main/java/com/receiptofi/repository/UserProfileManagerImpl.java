@@ -3,28 +3,17 @@
  */
 package com.receiptofi.repository;
 
-import static com.receiptofi.repository.util.AppendAdditionalFields.entityUpdate;
-import static com.receiptofi.repository.util.AppendAdditionalFields.isActive;
-import static org.springframework.data.mongodb.core.query.Criteria.where;
-import static org.springframework.data.mongodb.core.query.Query.query;
-import static org.springframework.data.mongodb.core.query.Update.update;
-
-import com.mongodb.WriteResult;
-
+import com.mongodb.client.result.DeleteResult;
 import com.receiptofi.domain.BaseEntity;
 import com.receiptofi.domain.UserAuthenticationEntity;
 import com.receiptofi.domain.UserProfileEntity;
-
 import org.bson.types.ObjectId;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.WriteResultChecking;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -33,6 +22,12 @@ import org.springframework.util.Assert;
 
 import java.util.Date;
 import java.util.List;
+
+import static com.receiptofi.repository.util.AppendAdditionalFields.entityUpdate;
+import static com.receiptofi.repository.util.AppendAdditionalFields.isActive;
+import static org.springframework.data.mongodb.core.query.Criteria.where;
+import static org.springframework.data.mongodb.core.query.Query.query;
+import static org.springframework.data.mongodb.core.query.Update.update;
 
 /**
  * @author hitender
@@ -65,7 +60,6 @@ public final class UserProfileManagerImpl implements UserProfileManager {
     @Override
     public void save(UserProfileEntity object) {
         try {
-            mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
             if (object.getId() != null) {
                 if (!ObjectId.isValid(object.getId())) {
                     LOG.error("UserProfileId is not valid id={} rid={}", object.getId(), object.getReceiptUserId());
@@ -80,11 +74,11 @@ public final class UserProfileManagerImpl implements UserProfileManager {
                 LOG.error("UserProfile saving optimistic locking failure, override optimistic locking rid={} reason={}",
                         object.getReceiptUserId(), e.getLocalizedMessage(), e);
 
-                WriteResult writeResult = mongoTemplate.remove(
+                DeleteResult deleteResult = mongoTemplate.remove(
                         query(where("RID").is(object.getReceiptUserId())),
                         UserProfileEntity.class,
                         TABLE);
-                if (writeResult.getN() > 0) {
+                if (deleteResult.getDeletedCount() > 0) {
                     LOG.info("Deleted optimistic locking data issue for rid={}", object.getReceiptUserId());
                     object.setId(null);
                     object.setVersion(null);

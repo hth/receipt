@@ -1,10 +1,5 @@
 package com.receiptofi.service;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
 import com.receiptofi.ITest;
 import com.receiptofi.LoadResource;
 import com.receiptofi.domain.EmailValidateEntity;
@@ -12,27 +7,22 @@ import com.receiptofi.domain.FriendEntity;
 import com.receiptofi.domain.UserAccountEntity;
 import com.receiptofi.domain.types.MailTypeEnum;
 import com.receiptofi.utils.DateUtil;
-
-import org.joda.time.DateTime;
-
-import org.springframework.mail.javamail.JavaMailSenderImpl;
-import org.springframework.ui.freemarker.FreeMarkerConfigurationFactory;
-
 import freemarker.cache.FileTemplateLoader;
 import freemarker.cache.TemplateLoader;
+import org.joda.time.DateTime;
 import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.ui.freemarker.FreeMarkerConfigurationFactory;
 
 import java.io.IOException;
 import java.util.LinkedHashSet;
 import java.util.Properties;
 import java.util.Set;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
+import java.util.concurrent.*;
+
+import static org.junit.Assert.*;
 
 /**
  * User: hitender
@@ -325,7 +315,7 @@ public class MailServiceITest extends ITest {
                     DateUtil.parseAgeForBirthday("25"));
         }
         assertFalse("Account validated", existing.isAccountValidated());
-        int inactiveAccount = accountService.inactiveNonValidatedAccount(DateTime.now().plusDays(2).toDate());
+        long inactiveAccount = accountService.inactiveNonValidatedAccount(DateTime.now().plusDays(2).toDate());
         assertEquals("Marked one account inactive", 1, inactiveAccount);
         existing = accountService.findByUserId("invite-inactive@receiptofi.com");
         assertFalse("Account Active", existing.isActive());

@@ -1,19 +1,12 @@
 package com.receiptofi.repository;
 
-import static org.springframework.data.mongodb.core.query.Criteria.where;
-import static org.springframework.data.mongodb.core.query.Query.query;
-
 import com.receiptofi.domain.BaseEntity;
 import com.receiptofi.domain.BizNameEntity;
-
 import org.apache.commons.lang3.StringUtils;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.WriteResultChecking;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
@@ -22,6 +15,9 @@ import org.springframework.util.Assert;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import static org.springframework.data.mongodb.core.query.Criteria.where;
+import static org.springframework.data.mongodb.core.query.Query.query;
 
 /**
  * User: hitender
@@ -52,7 +48,6 @@ public final class BizNameManagerImpl implements BizNameManager {
     @Override
     public void save(BizNameEntity object) {
         if (StringUtils.isNotBlank(object.getBusinessName())) {
-            mongoTemplate.setWriteResultChecking(WriteResultChecking.LOG);
             if (null != object.getId()) {
                 object.setUpdated();
             }
