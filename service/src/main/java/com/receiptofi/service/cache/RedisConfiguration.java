@@ -7,9 +7,14 @@ import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.interceptor.KeyGenerator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.cache.RedisCacheConfiguration;
 import org.springframework.data.redis.cache.RedisCacheManager;
+import org.springframework.data.redis.cache.RedisCacheWriter;
+import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
+
+import java.time.Duration;
 
 /**
  * User: hitender
@@ -17,7 +22,7 @@ import org.springframework.data.redis.core.RedisTemplate;
  */
 @Configuration
 @EnableCaching
-public class RedisCacheConfig extends CachingConfigurerSupport {
+public class RedisConfiguration extends CachingConfigurerSupport {
 
     @Value ("${redis.host}")
     private String redisHost;
@@ -26,29 +31,36 @@ public class RedisCacheConfig extends CachingConfigurerSupport {
     private int redisPort;
 
     @Bean
-    public JedisConnectionFactory jedisConnectionFactory() {
-        JedisConnectionFactory jedisConnectionFactory = new JedisConnectionFactory();
-        jedisConnectionFactory.setHostName(redisHost);
-        jedisConnectionFactory.setPort(redisPort);
-        jedisConnectionFactory.setUsePool(true);
-        return jedisConnectionFactory;
+    JedisConnectionFactory jedisConnectionFactory() {
+        return new JedisConnectionFactory(new RedisStandaloneConfiguration(redisHost, redisPort));
     }
 
     @Bean
-    public RedisTemplate<String, Object> redisTemplate() {
+    RedisTemplate<String, Object> redisTemplate() {
         RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
         redisTemplate.setConnectionFactory(jedisConnectionFactory());
         return redisTemplate;
     }
 
     @Bean
-    public CacheManager cacheManager(RedisTemplate redisTemplate) {
-        RedisCacheManager cacheManager = new RedisCacheManager(redisTemplate);
+    RedisCacheWriter redisCacheWriter(JedisConnectionFactory jedisConnectionFactory) {
+        return RedisCacheWriter.nonLockingRedisCacheWriter(jedisConnectionFactory);
+    }
+
+    @Bean
+    RedisCacheConfiguration redisCacheConfiguration() {
+        RedisCacheConfiguration redisCacheConfiguration = RedisCacheConfiguration.defaultCacheConfig();
 
         /* Number of seconds before expiration. Defaults to unlimited (0) */
-        cacheManager.setDefaultExpiration(300);
-        cacheManager.setUsePrefix(true);
-        return cacheManager;
+        redisCacheConfiguration.entryTtl(Duration.ofSeconds(300));
+        redisCacheConfiguration.usePrefix();
+
+        return redisCacheConfiguration;
+    }
+
+    @Bean
+    RedisCacheManager cacheManager(RedisCacheWriter redisCacheWriter, RedisCacheConfiguration redisCacheConfiguration) {
+        return new RedisCacheManager(redisCacheWriter, redisCacheConfiguration);
     }
 
     /**
@@ -57,7 +69,7 @@ public class RedisCacheConfig extends CachingConfigurerSupport {
      * @return
      */
     @Bean
-    public KeyGenerator customKeyGenerator() {
+    KeyGenerator customKeyGenerator() {
         return (o, method, objects) -> {
             // This will generate a unique key of the class name, the method name,
             // and all method parameters appended.

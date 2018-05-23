@@ -163,13 +163,13 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/org.springframework.data/spring-data-redis/1.8.7.RELEASE/59edfc0fb98138b09679b409f3d297af1fa04bdd/spring-data-redis-1.8.7.RELEASE.jar!/"/>
+          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/org.springframework.data/spring-data-redis/2.0.7.RELEASE/22e3898b2044070aa5173bbcc576538297eba56d/spring-data-redis-2.0.7.RELEASE.jar!/"/>
         </CLASSES>
         <JAVADOC>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/org.springframework.data/spring-data-redis/1.8.7.RELEASE/e924dd2a656a9a8607c2ab4704f46b13694499da/spring-data-redis-1.8.7.RELEASE-javadoc.jar!/"/>
+          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/org.springframework.data/spring-data-redis/2.0.7.RELEASE/9719370ce8c782fbdca1a5cdb79dee87d23fb8fe/spring-data-redis-2.0.7.RELEASE-javadoc.jar!/"/>
         </JAVADOC>
         <SOURCES>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/org.springframework.data/spring-data-redis/1.8.7.RELEASE/497f83fcffbf98839f957241c0ccffb1cffdd938/spring-data-redis-1.8.7.RELEASE-sources.jar!/"/>
+          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/org.springframework.data/spring-data-redis/2.0.7.RELEASE/482b09ad173e2f6ee6e1a864a33fb0274dd7590d/spring-data-redis-2.0.7.RELEASE-sources.jar!/"/>
         </SOURCES>
       </library>
     </orderEntry>
@@ -306,13 +306,13 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/org.springframework.data/spring-data-keyvalue/1.2.7.RELEASE/d93ff04eea69f09a71ac15dd8424fc9290d9b1be/spring-data-keyvalue-1.2.7.RELEASE.jar!/"/>
+          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/org.springframework.data/spring-data-keyvalue/2.0.7.RELEASE/6f607e5dbf7b9427e1355790ac28f8392dd589e/spring-data-keyvalue-2.0.7.RELEASE.jar!/"/>
         </CLASSES>
         <JAVADOC>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/org.springframework.data/spring-data-keyvalue/1.2.7.RELEASE/392bcfd3e6b7eaaee7aca208865efee959909598/spring-data-keyvalue-1.2.7.RELEASE-javadoc.jar!/"/>
+          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/org.springframework.data/spring-data-keyvalue/2.0.7.RELEASE/56dc9c0429ed21c4468e1b1c4e2918026ea71356/spring-data-keyvalue-2.0.7.RELEASE-javadoc.jar!/"/>
         </JAVADOC>
         <SOURCES>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/org.springframework.data/spring-data-keyvalue/1.2.7.RELEASE/6142e28251b2cd71c9122efef5b427e09d19638b/spring-data-keyvalue-1.2.7.RELEASE-sources.jar!/"/>
+          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/org.springframework.data/spring-data-keyvalue/2.0.7.RELEASE/d002a111556aa70c115a6e2fef82c2f0d1f48ed0/spring-data-keyvalue-2.0.7.RELEASE-sources.jar!/"/>
         </SOURCES>
       </library>
     </orderEntry>
@@ -772,19 +772,6 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/org.slf4j/jcl-over-slf4j/1.7.25/f8c32b13ff142a513eeb5b6330b1588dcb2c0461/jcl-over-slf4j-1.7.25.jar!/"/>
-        </CLASSES>
-        <JAVADOC>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/org.slf4j/jcl-over-slf4j/1.7.25/6ffb2ee76a022f5057517e865360873f483ff594/jcl-over-slf4j-1.7.25-javadoc.jar!/"/>
-        </JAVADOC>
-        <SOURCES>
-          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/org.slf4j/jcl-over-slf4j/1.7.25/ffd0827a7c67d5915b7dc611afbda56a1f247191/jcl-over-slf4j-1.7.25-sources.jar!/"/>
-        </SOURCES>
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
           <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/com.zaxxer/HikariCP-java6/2.3.13/376d13a7b2dc57379c550619fe02ecfe51e62465/HikariCP-java6-2.3.13.jar!/"/>
         </CLASSES>
         <JAVADOC>
@@ -818,6 +805,19 @@
         </JAVADOC>
         <SOURCES>
           <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/org.slf4j/jul-to-slf4j/1.7.24/a9414b56295d6d9a057d3f1adc288519a8befa9e/jul-to-slf4j-1.7.24-sources.jar!/"/>
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/org.slf4j/jcl-over-slf4j/1.7.24/e6a8629079856a2aa7862c6327ccf6dd1988d7fc/jcl-over-slf4j-1.7.24.jar!/"/>
+        </CLASSES>
+        <JAVADOC>
+          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/org.slf4j/jcl-over-slf4j/1.7.24/46e765292dadf56531c7388e623f4c6f58095465/jcl-over-slf4j-1.7.24-javadoc.jar!/"/>
+        </JAVADOC>
+        <SOURCES>
+          <root url="jar:///Users/hitender/.gradle/caches/modules-2/files-2.1/org.slf4j/jcl-over-slf4j/1.7.24/4bdf69b0b7d3553dfe144e9d74cd256b79e5d4d4/jcl-over-slf4j-1.7.24-sources.jar!/"/>
         </SOURCES>
       </library>
     </orderEntry>
