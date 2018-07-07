@@ -60,8 +60,8 @@ import java.util.List;
 })
 @RestController
 @RequestMapping (value = "/access/expensofi")
-public class ExpensofiController {
-    private static final Logger LOG = LoggerFactory.getLogger(ExpensofiController.class);
+public class ExpensofiReportController {
+    private static final Logger LOG = LoggerFactory.getLogger(ExpensofiReportController.class);
 
     @Value ("${expensofiReportLocation}")
     private String expensofiReportLocation;
@@ -76,7 +76,7 @@ public class ExpensofiController {
     private final FtpService ftpService;
 
     @Autowired
-    public ExpensofiController(
+    public ExpensofiReportController(
             @Value ("${aws.s3.bucketName}")
             String bucketName,
 
