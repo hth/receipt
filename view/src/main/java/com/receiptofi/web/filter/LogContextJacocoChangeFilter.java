@@ -1,13 +1,14 @@
 package com.receiptofi.web.filter;
 
-import static com.receiptofi.utils.HttpUtil.extractDataFromURL;
-import static com.receiptofi.utils.HttpUtil.getHeader;
-import static com.receiptofi.utils.HttpUtil.getHeadersInfo;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 
+import javax.servlet.*;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequestWrapper;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpServletResponseWrapper;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
@@ -15,18 +16,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.Map;
 import java.util.UUID;
 
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
-import javax.servlet.ServletOutputStream;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.WriteListener;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpServletResponseWrapper;
+import static com.receiptofi.utils.HttpUtil.*;
 
 /**
  * User: hitender
@@ -38,8 +28,8 @@ import javax.servlet.http.HttpServletResponseWrapper;
         "PMD.MethodArgumentCouldBeFinal",
         "PMD.LongVariable"
 })
-public class LogContextFilter implements Filter {
-    private static final Logger LOG = LoggerFactory.getLogger(LogContextFilter.class);
+public class LogContextJacocoChangeFilter implements Filter {
+    private static final Logger LOG = LoggerFactory.getLogger(LogContextJacocoChangeFilter.class);
 
     private static final String REQUEST_ID_MDC_KEY = "X-REQUEST-ID";
 
