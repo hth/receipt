@@ -99,7 +99,7 @@
 
     <filter>
         <filter-name>logContextFilter</filter-name>
-        <filter-class>com.receiptofi.web.filter.LogContextJacocoChangeFilter</filter-class>
+        <filter-class>com.receiptofi.web.filter.LogContextFilter</filter-class>
     </filter>
     <filter-mapping>
         <filter-name>logContextFilter</filter-name>
