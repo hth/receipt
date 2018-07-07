@@ -40,7 +40,7 @@
     </appender>
 
     <logger name="com.receiptofi" level="DEBUG" />
-    <logger name="com.receiptofi.web.filter.LogContextFilter" level="OFF" />
+    <logger name="com.receiptofi.web.filter.LogContextJacocoChangeFilter" level="OFF" />
     <logger name="org.springframework" level="WARN" />
     <logger name="org.springframework.social" level="WARN" />
     <logger name="org.springframework.data.mongodb" level="WARN" />
