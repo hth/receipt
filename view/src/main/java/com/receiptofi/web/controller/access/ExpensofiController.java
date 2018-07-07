@@ -18,7 +18,7 @@ import com.receiptofi.utils.FileUtil;
 import com.receiptofi.utils.ScrubbedInput;
 import com.receiptofi.web.helper.AnchorFileInExcel;
 import com.receiptofi.web.helper.json.ExcelFileName;
-import com.receiptofi.web.view.ExpensofiExcelView;
+import com.receiptofi.web.view.ExpensofiDoExcelView;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -60,8 +60,8 @@ import java.util.List;
 })
 @RestController
 @RequestMapping (value = "/access/expensofi")
-public class ExpensofiReportController {
-    private static final Logger LOG = LoggerFactory.getLogger(ExpensofiReportController.class);
+public class ExpensofiController {
+    private static final Logger LOG = LoggerFactory.getLogger(ExpensofiController.class);
 
     @Value ("${expensofiReportLocation}")
     private String expensofiReportLocation;
@@ -72,11 +72,11 @@ public class ExpensofiReportController {
     private final ReceiptService receiptService;
     private final NotificationService notificationService;
     private final ItemAnalyticService itemAnalyticService;
-    private final ExpensofiExcelView expensofiExcelView;
+    private final ExpensofiDoExcelView expensofiDoExcelView;
     private final FtpService ftpService;
 
     @Autowired
-    public ExpensofiReportController(
+    public ExpensofiController(
             @Value ("${aws.s3.bucketName}")
             String bucketName,
 
@@ -86,7 +86,7 @@ public class ExpensofiReportController {
             ReceiptService receiptService,
             NotificationService notificationService,
             ItemAnalyticService itemAnalyticService,
-            ExpensofiExcelView expensofiExcelView,
+            ExpensofiDoExcelView expensofiDoExcelView,
             FtpService ftpService
     ) {
         this.bucketName = bucketName;
@@ -95,7 +95,7 @@ public class ExpensofiReportController {
         this.receiptService = receiptService;
         this.notificationService = notificationService;
         this.itemAnalyticService = itemAnalyticService;
-        this.expensofiExcelView = expensofiExcelView;
+        this.expensofiDoExcelView = expensofiDoExcelView;
         this.ftpService = ftpService;
     }
 
@@ -148,7 +148,7 @@ public class ExpensofiReportController {
             try {
                 String filename = FileUtil.createRandomFilename();
                 model.addAttribute("file-name", filename);
-                expensofiExcelView.generateExcel(model.asMap(), new HSSFWorkbook());
+                expensofiDoExcelView.generateExcel(model.asMap(), new HSSFWorkbook());
                 updateReceiptWithExcelFilename(receiptEntity, filename);
                 notificationService.addNotification(
                         receiptEntity.getBizName().getBusinessName() +
