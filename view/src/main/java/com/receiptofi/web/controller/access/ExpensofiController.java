@@ -18,7 +18,7 @@ import com.receiptofi.utils.FileUtil;
 import com.receiptofi.utils.ScrubbedInput;
 import com.receiptofi.web.helper.AnchorFileInExcel;
 import com.receiptofi.web.helper.json.ExcelFileName;
-import com.receiptofi.web.view.ExpensofiDoExcelView;
+import com.receiptofi.web.view.ExpensofiExcelView;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -72,7 +72,7 @@ public class ExpensofiController {
     private final ReceiptService receiptService;
     private final NotificationService notificationService;
     private final ItemAnalyticService itemAnalyticService;
-    private final ExpensofiDoExcelView expensofiDoExcelView;
+    private final ExpensofiExcelView expensofiExcelView;
     private final FtpService ftpService;
 
     @Autowired
@@ -86,7 +86,7 @@ public class ExpensofiController {
             ReceiptService receiptService,
             NotificationService notificationService,
             ItemAnalyticService itemAnalyticService,
-            ExpensofiDoExcelView expensofiDoExcelView,
+            ExpensofiExcelView expensofiExcelView,
             FtpService ftpService
     ) {
         this.bucketName = bucketName;
@@ -95,7 +95,7 @@ public class ExpensofiController {
         this.receiptService = receiptService;
         this.notificationService = notificationService;
         this.itemAnalyticService = itemAnalyticService;
-        this.expensofiDoExcelView = expensofiDoExcelView;
+        this.expensofiExcelView = expensofiExcelView;
         this.ftpService = ftpService;
     }
 
@@ -148,7 +148,7 @@ public class ExpensofiController {
             try {
                 String filename = FileUtil.createRandomFilename();
                 model.addAttribute("file-name", filename);
-                expensofiDoExcelView.generateExcel(model.asMap(), new HSSFWorkbook());
+                expensofiExcelView.generateExcel(model.asMap(), new HSSFWorkbook());
                 updateReceiptWithExcelFilename(receiptEntity, filename);
                 notificationService.addNotification(
                         receiptEntity.getBizName().getBusinessName() +

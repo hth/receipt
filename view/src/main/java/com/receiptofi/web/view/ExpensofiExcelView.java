@@ -3,24 +3,43 @@ package com.receiptofi.web.view;
 import com.receiptofi.domain.ItemEntity;
 import com.receiptofi.service.ftp.FtpService;
 import com.receiptofi.web.helper.AnchorFileInExcel;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.poi.hssf.usermodel.*;
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFDataFormat;
+import org.apache.poi.hssf.usermodel.HSSFFont;
+import org.apache.poi.hssf.usermodel.HSSFRichTextString;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
-import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.usermodel.ClientAnchor;
+import org.apache.poi.ss.usermodel.CreationHelper;
+import org.apache.poi.ss.usermodel.Drawing;
+import org.apache.poi.ss.usermodel.Picture;
+import org.apache.poi.ss.usermodel.Workbook;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.view.document.AbstractExcelView;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * This view generates an Excel report from receipt item objects.
@@ -34,8 +53,8 @@ import java.util.*;
         "PMD.LongVariable"
 })
 @Component
-public final class ExpensofiDoExcelView extends AbstractExcelView {
-    private static final Logger LOG = LoggerFactory.getLogger(ExpensofiDoExcelView.class);
+public final class ExpensofiExcelView extends AbstractExcelView {
+    private static final Logger LOG = LoggerFactory.getLogger(ExpensofiExcelView.class);
     // Columns - width is measured in 256ths of an el and 1330 equals 1 cm
     private static final int UNIT = 1300;
     private static final HSSFCellStyle NO_STYLE = null;
@@ -52,7 +71,7 @@ public final class ExpensofiDoExcelView extends AbstractExcelView {
     private FtpService ftpService;
 
     @Autowired
-    public ExpensofiDoExcelView(FtpService ftpService) {
+    public ExpensofiExcelView(FtpService ftpService) {
         this.ftpService = ftpService;
     }
 
